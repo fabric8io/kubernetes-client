@@ -60,15 +60,15 @@ public class ImageSpec implements Editable<ImageSpecBuilder> , KubernetesResourc
 {
 
     @JsonProperty("additionalTrustedCA")
-    private ImageSpecAdditionalTrustedCA additionalTrustedCA;
+    private ConfigMapNameReference additionalTrustedCA;
     @JsonProperty("allowedRegistriesForImport")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ImageSpecAllowedRegistriesForImport> allowedRegistriesForImport = new ArrayList<>();
+    private List<RegistryLocation> allowedRegistriesForImport = new ArrayList<>();
     @JsonProperty("externalRegistryHostnames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> externalRegistryHostnames = new ArrayList<>();
     @JsonProperty("registrySources")
-    private ImageSpecRegistrySources registrySources;
+    private RegistrySources registrySources;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -79,7 +79,7 @@ public class ImageSpec implements Editable<ImageSpecBuilder> , KubernetesResourc
     public ImageSpec() {
     }
 
-    public ImageSpec(ImageSpecAdditionalTrustedCA additionalTrustedCA, List<ImageSpecAllowedRegistriesForImport> allowedRegistriesForImport, List<String> externalRegistryHostnames, ImageSpecRegistrySources registrySources) {
+    public ImageSpec(ConfigMapNameReference additionalTrustedCA, List<RegistryLocation> allowedRegistriesForImport, List<String> externalRegistryHostnames, RegistrySources registrySources) {
         super();
         this.additionalTrustedCA = additionalTrustedCA;
         this.allowedRegistriesForImport = allowedRegistriesForImport;
@@ -88,23 +88,23 @@ public class ImageSpec implements Editable<ImageSpecBuilder> , KubernetesResourc
     }
 
     @JsonProperty("additionalTrustedCA")
-    public ImageSpecAdditionalTrustedCA getAdditionalTrustedCA() {
+    public ConfigMapNameReference getAdditionalTrustedCA() {
         return additionalTrustedCA;
     }
 
     @JsonProperty("additionalTrustedCA")
-    public void setAdditionalTrustedCA(ImageSpecAdditionalTrustedCA additionalTrustedCA) {
+    public void setAdditionalTrustedCA(ConfigMapNameReference additionalTrustedCA) {
         this.additionalTrustedCA = additionalTrustedCA;
     }
 
     @JsonProperty("allowedRegistriesForImport")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<ImageSpecAllowedRegistriesForImport> getAllowedRegistriesForImport() {
+    public List<RegistryLocation> getAllowedRegistriesForImport() {
         return allowedRegistriesForImport;
     }
 
     @JsonProperty("allowedRegistriesForImport")
-    public void setAllowedRegistriesForImport(List<ImageSpecAllowedRegistriesForImport> allowedRegistriesForImport) {
+    public void setAllowedRegistriesForImport(List<RegistryLocation> allowedRegistriesForImport) {
         this.allowedRegistriesForImport = allowedRegistriesForImport;
     }
 
@@ -120,12 +120,12 @@ public class ImageSpec implements Editable<ImageSpecBuilder> , KubernetesResourc
     }
 
     @JsonProperty("registrySources")
-    public ImageSpecRegistrySources getRegistrySources() {
+    public RegistrySources getRegistrySources() {
         return registrySources;
     }
 
     @JsonProperty("registrySources")
-    public void setRegistrySources(ImageSpecRegistrySources registrySources) {
+    public void setRegistrySources(RegistrySources registrySources) {
         this.registrySources = registrySources;
     }
 

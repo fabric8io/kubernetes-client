@@ -34,7 +34,8 @@ import lombok.experimental.Accessors;
     "defaultNodeSelector",
     "mastersSchedulable",
     "policy",
-    "profile"
+    "profile",
+    "profileCustomizations"
 })
 @ToString
 @EqualsAndHashCode
@@ -62,9 +63,11 @@ public class SchedulerSpec implements Editable<SchedulerSpecBuilder> , Kubernete
     @JsonProperty("mastersSchedulable")
     private Boolean mastersSchedulable;
     @JsonProperty("policy")
-    private SchedulerSpecPolicy policy;
+    private ConfigMapNameReference policy;
     @JsonProperty("profile")
     private String profile;
+    @JsonProperty("profileCustomizations")
+    private ProfileCustomizations profileCustomizations;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -75,12 +78,13 @@ public class SchedulerSpec implements Editable<SchedulerSpecBuilder> , Kubernete
     public SchedulerSpec() {
     }
 
-    public SchedulerSpec(String defaultNodeSelector, Boolean mastersSchedulable, SchedulerSpecPolicy policy, String profile) {
+    public SchedulerSpec(String defaultNodeSelector, Boolean mastersSchedulable, ConfigMapNameReference policy, String profile, ProfileCustomizations profileCustomizations) {
         super();
         this.defaultNodeSelector = defaultNodeSelector;
         this.mastersSchedulable = mastersSchedulable;
         this.policy = policy;
         this.profile = profile;
+        this.profileCustomizations = profileCustomizations;
     }
 
     @JsonProperty("defaultNodeSelector")
@@ -104,12 +108,12 @@ public class SchedulerSpec implements Editable<SchedulerSpecBuilder> , Kubernete
     }
 
     @JsonProperty("policy")
-    public SchedulerSpecPolicy getPolicy() {
+    public ConfigMapNameReference getPolicy() {
         return policy;
     }
 
     @JsonProperty("policy")
-    public void setPolicy(SchedulerSpecPolicy policy) {
+    public void setPolicy(ConfigMapNameReference policy) {
         this.policy = policy;
     }
 
@@ -121,6 +125,16 @@ public class SchedulerSpec implements Editable<SchedulerSpecBuilder> , Kubernete
     @JsonProperty("profile")
     public void setProfile(String profile) {
         this.profile = profile;
+    }
+
+    @JsonProperty("profileCustomizations")
+    public ProfileCustomizations getProfileCustomizations() {
+        return profileCustomizations;
+    }
+
+    @JsonProperty("profileCustomizations")
+    public void setProfileCustomizations(ProfileCustomizations profileCustomizations) {
+        this.profileCustomizations = profileCustomizations;
     }
 
     @JsonIgnore

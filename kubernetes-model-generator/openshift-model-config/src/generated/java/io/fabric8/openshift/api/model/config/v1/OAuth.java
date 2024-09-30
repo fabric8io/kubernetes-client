@@ -86,8 +86,7 @@ public class OAuth implements Editable<OAuthBuilder> , HasMetadata
     @JsonProperty("spec")
     private OAuthSpec spec;
     @JsonProperty("status")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
-    private Object status;
+    private OAuthStatus status;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -98,7 +97,7 @@ public class OAuth implements Editable<OAuthBuilder> , HasMetadata
     public OAuth() {
     }
 
-    public OAuth(String apiVersion, String kind, ObjectMeta metadata, OAuthSpec spec, Object status) {
+    public OAuth(String apiVersion, String kind, ObjectMeta metadata, OAuthSpec spec, OAuthStatus status) {
         super();
         this.apiVersion = apiVersion;
         this.kind = kind;
@@ -168,13 +167,12 @@ public class OAuth implements Editable<OAuthBuilder> , HasMetadata
     }
 
     @JsonProperty("status")
-    public Object getStatus() {
+    public OAuthStatus getStatus() {
         return status;
     }
 
     @JsonProperty("status")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
-    public void setStatus(Object status) {
+    public void setStatus(OAuthStatus status) {
         this.status = status;
     }
 

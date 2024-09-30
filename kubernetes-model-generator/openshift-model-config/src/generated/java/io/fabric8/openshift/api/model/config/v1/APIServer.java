@@ -86,8 +86,7 @@ public class APIServer implements Editable<APIServerBuilder> , HasMetadata
     @JsonProperty("spec")
     private APIServerSpec spec;
     @JsonProperty("status")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
-    private Object status;
+    private APIServerStatus status;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -98,7 +97,7 @@ public class APIServer implements Editable<APIServerBuilder> , HasMetadata
     public APIServer() {
     }
 
-    public APIServer(String apiVersion, String kind, ObjectMeta metadata, APIServerSpec spec, Object status) {
+    public APIServer(String apiVersion, String kind, ObjectMeta metadata, APIServerSpec spec, APIServerStatus status) {
         super();
         this.apiVersion = apiVersion;
         this.kind = kind;
@@ -168,13 +167,12 @@ public class APIServer implements Editable<APIServerBuilder> , HasMetadata
     }
 
     @JsonProperty("status")
-    public Object getStatus() {
+    public APIServerStatus getStatus() {
         return status;
     }
 
     @JsonProperty("status")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
-    public void setStatus(Object status) {
+    public void setStatus(APIServerStatus status) {
         this.status = status;
     }
 

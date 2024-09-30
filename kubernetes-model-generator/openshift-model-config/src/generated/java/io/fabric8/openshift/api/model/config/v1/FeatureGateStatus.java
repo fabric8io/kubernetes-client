@@ -14,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
+import io.fabric8.kubernetes.api.model.Condition;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -59,10 +60,10 @@ public class FeatureGateStatus implements Editable<FeatureGateStatusBuilder> , K
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<FeatureGateStatusConditions> conditions = new ArrayList<>();
+    private List<Condition> conditions = new ArrayList<>();
     @JsonProperty("featureGates")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<FeatureGateStatusFeatureGates> featureGates = new ArrayList<>();
+    private List<FeatureGateDetails> featureGates = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -73,7 +74,7 @@ public class FeatureGateStatus implements Editable<FeatureGateStatusBuilder> , K
     public FeatureGateStatus() {
     }
 
-    public FeatureGateStatus(List<FeatureGateStatusConditions> conditions, List<FeatureGateStatusFeatureGates> featureGates) {
+    public FeatureGateStatus(List<Condition> conditions, List<FeatureGateDetails> featureGates) {
         super();
         this.conditions = conditions;
         this.featureGates = featureGates;
@@ -81,23 +82,23 @@ public class FeatureGateStatus implements Editable<FeatureGateStatusBuilder> , K
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<FeatureGateStatusConditions> getConditions() {
+    public List<Condition> getConditions() {
         return conditions;
     }
 
     @JsonProperty("conditions")
-    public void setConditions(List<FeatureGateStatusConditions> conditions) {
+    public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
     }
 
     @JsonProperty("featureGates")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<FeatureGateStatusFeatureGates> getFeatureGates() {
+    public List<FeatureGateDetails> getFeatureGates() {
         return featureGates;
     }
 
     @JsonProperty("featureGates")
-    public void setFeatureGates(List<FeatureGateStatusFeatureGates> featureGates) {
+    public void setFeatureGates(List<FeatureGateDetails> featureGates) {
         this.featureGates = featureGates;
     }
 

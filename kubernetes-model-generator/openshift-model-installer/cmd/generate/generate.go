@@ -26,7 +26,6 @@ import (
 	"strings"
 	"time"
 
-	config "github.com/openshift/api/config/v1"
 	ipnet "github.com/openshift/installer/pkg/ipnet"
 	installer "github.com/openshift/installer/pkg/types"
 	alibabacloud "github.com/openshift/installer/pkg/types/alibabacloud"
@@ -101,11 +100,6 @@ func main() {
 		reflect.TypeOf(runtime.RawExtension{}):                 "java.util.Map<String, Object>",
 		reflect.TypeOf(v1apiextensions.JSON{}):                 "com.fasterxml.jackson.databind.JsonNode",
 		reflect.TypeOf(intstr.IntOrString{}):                   "io.fabric8.kubernetes.api.model.IntOrString",
-		reflect.TypeOf(config.BareMetalPlatformLoadBalancer{}): "io.fabric8.openshift.api.model.config.v1.InfrastructureStatusPSBaremetalLoadBalancer",
-		reflect.TypeOf(config.NutanixPlatformLoadBalancer{}):   "io.fabric8.openshift.api.model.config.v1.InfrastructureStatusPSNutanixLoadBalancer",
-		reflect.TypeOf(config.OpenStackPlatformLoadBalancer{}): "io.fabric8.openshift.api.model.config.v1.InfrastructureStatusPSOpenstackLoadBalancer",
-		reflect.TypeOf(config.OvirtPlatformLoadBalancer{}):     "io.fabric8.openshift.api.model.config.v1.InfrastructureStatusPSOvirtLoadBalancer",
-		reflect.TypeOf(config.VSpherePlatformLoadBalancer{}):   "io.fabric8.openshift.api.model.config.v1.InfrastructureStatusPSVsphereLoadBalancer",
 	}
 	schema, err := schemagen.GenerateSchema(reflect.TypeOf(Schema{}), packages, typeMap, manualTypeMap, "installer")
 	if err != nil {

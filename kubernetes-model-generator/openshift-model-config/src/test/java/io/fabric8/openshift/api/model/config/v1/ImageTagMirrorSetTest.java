@@ -49,7 +49,7 @@ class ImageTagMirrorSetTest {
         .hasFieldOrPropertyWithValue("metadata.name", "tag-mirror")
         .extracting(ImageTagMirrorSet::getSpec)
         .extracting(ImageTagMirrorSetSpec::getImageTagMirrors)
-        .asInstanceOf(InstanceOfAssertFactories.list(ImageTagMirrorSetSpecImageTagMirrors.class)).singleElement()
+        .asInstanceOf(InstanceOfAssertFactories.list(ImageTagMirrors.class)).singleElement()
         .hasFieldOrPropertyWithValue("mirrors", Collections.singletonList("mirror.example.com/redhat"))
         .hasFieldOrPropertyWithValue("source", "registry.redhat.io/openshift4")
         .hasFieldOrPropertyWithValue("mirrorSourcePolicy", "AllowContactingSource");
@@ -78,7 +78,7 @@ class ImageTagMirrorSetTest {
         .hasFieldOrPropertyWithValue("metadata.name", "tag-mirror")
         .extracting(ImageTagMirrorSet::getSpec)
         .extracting(ImageTagMirrorSetSpec::getImageTagMirrors)
-        .asInstanceOf(InstanceOfAssertFactories.list(ImageTagMirrorSetSpecImageTagMirrors.class)).singleElement()
+        .asInstanceOf(InstanceOfAssertFactories.list(ImageTagMirrors.class)).singleElement()
         .hasFieldOrPropertyWithValue("mirrors", Collections.singletonList("example.com/example/ubi-minimal"))
         .hasFieldOrPropertyWithValue("source", "registry.access.redhat.com/ubi9/ubi-minimal")
         .hasFieldOrPropertyWithValue("mirrorSourcePolicy", "AllowContactingSource");

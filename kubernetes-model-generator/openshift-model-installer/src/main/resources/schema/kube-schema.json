@@ -468,7 +468,7 @@
         }
       },
       "additionalProperties": true,
-      "existingJavaType": "io.fabric8.openshift.api.model.config.v1.InfrastructureStatusPSBaremetalLoadBalancer",
+      "existingJavaType": "io.fabric8.openshift.api.model.config.v1.BareMetalPlatformLoadBalancer",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -481,7 +481,7 @@
         }
       },
       "additionalProperties": true,
-      "existingJavaType": "io.fabric8.openshift.api.model.config.v1.InfrastructureStatusPSNutanixLoadBalancer",
+      "existingJavaType": "io.fabric8.openshift.api.model.config.v1.NutanixPlatformLoadBalancer",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -494,7 +494,7 @@
         }
       },
       "additionalProperties": true,
-      "existingJavaType": "io.fabric8.openshift.api.model.config.v1.InfrastructureStatusPSOpenstackLoadBalancer",
+      "existingJavaType": "io.fabric8.openshift.api.model.config.v1.OpenStackPlatformLoadBalancer",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -507,7 +507,7 @@
         }
       },
       "additionalProperties": true,
-      "existingJavaType": "io.fabric8.openshift.api.model.config.v1.InfrastructureStatusPSOvirtLoadBalancer",
+      "existingJavaType": "io.fabric8.openshift.api.model.config.v1.OvirtPlatformLoadBalancer",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -520,7 +520,7 @@
         }
       },
       "additionalProperties": true,
-      "existingJavaType": "io.fabric8.openshift.api.model.config.v1.InfrastructureStatusPSVsphereLoadBalancer",
+      "existingJavaType": "io.fabric8.openshift.api.model.config.v1.VSpherePlatformLoadBalancer",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1015,7 +1015,7 @@
         },
         "loadBalancer": {
           "$ref": "#/definitions/os_config_v1_BareMetalPlatformLoadBalancer",
-          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.InfrastructureStatusPSBaremetalLoadBalancer"
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.BareMetalPlatformLoadBalancer"
         },
         "provisioningBridge": {
           "type": "string"
@@ -1489,7 +1489,7 @@
         },
         "loadBalancer": {
           "$ref": "#/definitions/os_config_v1_NutanixPlatformLoadBalancer",
-          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.InfrastructureStatusPSNutanixLoadBalancer"
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.NutanixPlatformLoadBalancer"
         },
         "prismCentral": {
           "$ref": "#/definitions/os_installer_nutanix_v1_PrismCentral",
@@ -1761,7 +1761,7 @@
         },
         "loadBalancer": {
           "$ref": "#/definitions/os_config_v1_OpenStackPlatformLoadBalancer",
-          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.InfrastructureStatusPSOpenstackLoadBalancer"
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.OpenStackPlatformLoadBalancer"
         },
         "machinesSubnet": {
           "type": "string"
@@ -1966,7 +1966,7 @@
         },
         "loadBalancer": {
           "$ref": "#/definitions/os_config_v1_OvirtPlatformLoadBalancer",
-          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.InfrastructureStatusPSOvirtLoadBalancer"
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.OvirtPlatformLoadBalancer"
         },
         "ovirt_cluster_id": {
           "type": "string"
@@ -2592,7 +2592,7 @@
         },
         "loadBalancer": {
           "$ref": "#/definitions/os_config_v1_VSpherePlatformLoadBalancer",
-          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.InfrastructureStatusPSVsphereLoadBalancer"
+          "existingJavaType": "io.fabric8.openshift.api.model.config.v1.VSpherePlatformLoadBalancer"
         },
         "network": {
           "type": "string"

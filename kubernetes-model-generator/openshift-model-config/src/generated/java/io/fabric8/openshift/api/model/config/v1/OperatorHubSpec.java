@@ -61,7 +61,7 @@ public class OperatorHubSpec implements Editable<OperatorHubSpecBuilder> , Kuber
     private Boolean disableAllDefaultSources;
     @JsonProperty("sources")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<OperatorHubSpecSources> sources = new ArrayList<>();
+    private List<HubSource> sources = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -72,7 +72,7 @@ public class OperatorHubSpec implements Editable<OperatorHubSpecBuilder> , Kuber
     public OperatorHubSpec() {
     }
 
-    public OperatorHubSpec(Boolean disableAllDefaultSources, List<OperatorHubSpecSources> sources) {
+    public OperatorHubSpec(Boolean disableAllDefaultSources, List<HubSource> sources) {
         super();
         this.disableAllDefaultSources = disableAllDefaultSources;
         this.sources = sources;
@@ -90,12 +90,12 @@ public class OperatorHubSpec implements Editable<OperatorHubSpecBuilder> , Kuber
 
     @JsonProperty("sources")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<OperatorHubSpecSources> getSources() {
+    public List<HubSource> getSources() {
         return sources;
     }
 
     @JsonProperty("sources")
-    public void setSources(List<OperatorHubSpecSources> sources) {
+    public void setSources(List<HubSource> sources) {
         this.sources = sources;
     }
 

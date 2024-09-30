@@ -86,8 +86,7 @@ public class ImageTagMirrorSet implements Editable<ImageTagMirrorSetBuilder> , H
     @JsonProperty("spec")
     private ImageTagMirrorSetSpec spec;
     @JsonProperty("status")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
-    private Object status;
+    private ImageTagMirrorSetStatus status;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -98,7 +97,7 @@ public class ImageTagMirrorSet implements Editable<ImageTagMirrorSetBuilder> , H
     public ImageTagMirrorSet() {
     }
 
-    public ImageTagMirrorSet(String apiVersion, String kind, ObjectMeta metadata, ImageTagMirrorSetSpec spec, Object status) {
+    public ImageTagMirrorSet(String apiVersion, String kind, ObjectMeta metadata, ImageTagMirrorSetSpec spec, ImageTagMirrorSetStatus status) {
         super();
         this.apiVersion = apiVersion;
         this.kind = kind;
@@ -168,13 +167,12 @@ public class ImageTagMirrorSet implements Editable<ImageTagMirrorSetBuilder> , H
     }
 
     @JsonProperty("status")
-    public Object getStatus() {
+    public ImageTagMirrorSetStatus getStatus() {
         return status;
     }
 
     @JsonProperty("status")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
-    public void setStatus(Object status) {
+    public void setStatus(ImageTagMirrorSetStatus status) {
         this.status = status;
     }
 

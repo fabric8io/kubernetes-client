@@ -65,15 +65,15 @@ public class APIServerSpec implements Editable<APIServerSpecBuilder> , Kubernete
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> additionalCORSAllowedOrigins = new ArrayList<>();
     @JsonProperty("audit")
-    private APIServerSpecAudit audit;
+    private Audit audit;
     @JsonProperty("clientCA")
-    private APIServerSpecClientCA clientCA;
+    private ConfigMapNameReference clientCA;
     @JsonProperty("encryption")
-    private APIServerSpecEncryption encryption;
+    private APIServerEncryption encryption;
     @JsonProperty("servingCerts")
-    private APIServerSpecServingCerts servingCerts;
+    private APIServerServingCerts servingCerts;
     @JsonProperty("tlsSecurityProfile")
-    private APIServerSpecTlsSecurityProfile tlsSecurityProfile;
+    private TLSSecurityProfile tlsSecurityProfile;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -84,7 +84,7 @@ public class APIServerSpec implements Editable<APIServerSpecBuilder> , Kubernete
     public APIServerSpec() {
     }
 
-    public APIServerSpec(List<String> additionalCORSAllowedOrigins, APIServerSpecAudit audit, APIServerSpecClientCA clientCA, APIServerSpecEncryption encryption, APIServerSpecServingCerts servingCerts, APIServerSpecTlsSecurityProfile tlsSecurityProfile) {
+    public APIServerSpec(List<String> additionalCORSAllowedOrigins, Audit audit, ConfigMapNameReference clientCA, APIServerEncryption encryption, APIServerServingCerts servingCerts, TLSSecurityProfile tlsSecurityProfile) {
         super();
         this.additionalCORSAllowedOrigins = additionalCORSAllowedOrigins;
         this.audit = audit;
@@ -106,52 +106,52 @@ public class APIServerSpec implements Editable<APIServerSpecBuilder> , Kubernete
     }
 
     @JsonProperty("audit")
-    public APIServerSpecAudit getAudit() {
+    public Audit getAudit() {
         return audit;
     }
 
     @JsonProperty("audit")
-    public void setAudit(APIServerSpecAudit audit) {
+    public void setAudit(Audit audit) {
         this.audit = audit;
     }
 
     @JsonProperty("clientCA")
-    public APIServerSpecClientCA getClientCA() {
+    public ConfigMapNameReference getClientCA() {
         return clientCA;
     }
 
     @JsonProperty("clientCA")
-    public void setClientCA(APIServerSpecClientCA clientCA) {
+    public void setClientCA(ConfigMapNameReference clientCA) {
         this.clientCA = clientCA;
     }
 
     @JsonProperty("encryption")
-    public APIServerSpecEncryption getEncryption() {
+    public APIServerEncryption getEncryption() {
         return encryption;
     }
 
     @JsonProperty("encryption")
-    public void setEncryption(APIServerSpecEncryption encryption) {
+    public void setEncryption(APIServerEncryption encryption) {
         this.encryption = encryption;
     }
 
     @JsonProperty("servingCerts")
-    public APIServerSpecServingCerts getServingCerts() {
+    public APIServerServingCerts getServingCerts() {
         return servingCerts;
     }
 
     @JsonProperty("servingCerts")
-    public void setServingCerts(APIServerSpecServingCerts servingCerts) {
+    public void setServingCerts(APIServerServingCerts servingCerts) {
         this.servingCerts = servingCerts;
     }
 
     @JsonProperty("tlsSecurityProfile")
-    public APIServerSpecTlsSecurityProfile getTlsSecurityProfile() {
+    public TLSSecurityProfile getTlsSecurityProfile() {
         return tlsSecurityProfile;
     }
 
     @JsonProperty("tlsSecurityProfile")
-    public void setTlsSecurityProfile(APIServerSpecTlsSecurityProfile tlsSecurityProfile) {
+    public void setTlsSecurityProfile(TLSSecurityProfile tlsSecurityProfile) {
         this.tlsSecurityProfile = tlsSecurityProfile;
     }
 

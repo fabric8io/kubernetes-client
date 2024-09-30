@@ -15,8 +15,8 @@
  */
 package io.fabric8.openshift.client.server.mock.hive;
 
-import io.fabric8.openshift.api.model.config.v1.OAuthSpecIPGithubBuilder;
-import io.fabric8.openshift.api.model.config.v1.OAuthSpecIdentityProvidersBuilder;
+import io.fabric8.openshift.api.model.config.v1.GitHubIdentityProviderBuilder;
+import io.fabric8.openshift.api.model.config.v1.IdentityProviderBuilder;
 import io.fabric8.openshift.api.model.hive.v1.SelectorSyncIdentityProvider;
 import io.fabric8.openshift.api.model.hive.v1.SelectorSyncIdentityProviderBuilder;
 import io.fabric8.openshift.api.model.hive.v1.SelectorSyncIdentityProviderList;
@@ -92,10 +92,10 @@ class SelectorSyncIdentityProviderTest {
         .withName(name)
         .endMetadata()
         .withNewSpec()
-        .addToIdentityProviders(new OAuthSpecIdentityProvidersBuilder()
+        .addToIdentityProviders(new IdentityProviderBuilder()
             .withName("my_allow_provider")
             .withType("GitHubIdentityProvider")
-            .withGithub(new OAuthSpecIPGithubBuilder()
+            .withGithub(new GitHubIdentityProviderBuilder()
                 .withClientID("sample-client-id")
                 .withNewClientSecret()
                 .withName("foo")

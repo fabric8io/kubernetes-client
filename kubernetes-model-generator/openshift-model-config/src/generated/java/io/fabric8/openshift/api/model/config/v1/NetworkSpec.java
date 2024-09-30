@@ -63,11 +63,11 @@ public class NetworkSpec implements Editable<NetworkSpecBuilder> , KubernetesRes
 
     @JsonProperty("clusterNetwork")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<NetworkSpecClusterNetwork> clusterNetwork = new ArrayList<>();
+    private List<ClusterNetworkEntry> clusterNetwork = new ArrayList<>();
     @JsonProperty("externalIP")
-    private NetworkSpecExternalIP externalIP;
+    private ExternalIPConfig externalIP;
     @JsonProperty("networkDiagnostics")
-    private NetworkSpecNetworkDiagnostics networkDiagnostics;
+    private NetworkDiagnostics networkDiagnostics;
     @JsonProperty("networkType")
     private String networkType;
     @JsonProperty("serviceNetwork")
@@ -85,7 +85,7 @@ public class NetworkSpec implements Editable<NetworkSpecBuilder> , KubernetesRes
     public NetworkSpec() {
     }
 
-    public NetworkSpec(List<NetworkSpecClusterNetwork> clusterNetwork, NetworkSpecExternalIP externalIP, NetworkSpecNetworkDiagnostics networkDiagnostics, String networkType, List<String> serviceNetwork, String serviceNodePortRange) {
+    public NetworkSpec(List<ClusterNetworkEntry> clusterNetwork, ExternalIPConfig externalIP, NetworkDiagnostics networkDiagnostics, String networkType, List<String> serviceNetwork, String serviceNodePortRange) {
         super();
         this.clusterNetwork = clusterNetwork;
         this.externalIP = externalIP;
@@ -97,32 +97,32 @@ public class NetworkSpec implements Editable<NetworkSpecBuilder> , KubernetesRes
 
     @JsonProperty("clusterNetwork")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<NetworkSpecClusterNetwork> getClusterNetwork() {
+    public List<ClusterNetworkEntry> getClusterNetwork() {
         return clusterNetwork;
     }
 
     @JsonProperty("clusterNetwork")
-    public void setClusterNetwork(List<NetworkSpecClusterNetwork> clusterNetwork) {
+    public void setClusterNetwork(List<ClusterNetworkEntry> clusterNetwork) {
         this.clusterNetwork = clusterNetwork;
     }
 
     @JsonProperty("externalIP")
-    public NetworkSpecExternalIP getExternalIP() {
+    public ExternalIPConfig getExternalIP() {
         return externalIP;
     }
 
     @JsonProperty("externalIP")
-    public void setExternalIP(NetworkSpecExternalIP externalIP) {
+    public void setExternalIP(ExternalIPConfig externalIP) {
         this.externalIP = externalIP;
     }
 
     @JsonProperty("networkDiagnostics")
-    public NetworkSpecNetworkDiagnostics getNetworkDiagnostics() {
+    public NetworkDiagnostics getNetworkDiagnostics() {
         return networkDiagnostics;
     }
 
     @JsonProperty("networkDiagnostics")
-    public void setNetworkDiagnostics(NetworkSpecNetworkDiagnostics networkDiagnostics) {
+    public void setNetworkDiagnostics(NetworkDiagnostics networkDiagnostics) {
         this.networkDiagnostics = networkDiagnostics;
     }
 

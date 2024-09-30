@@ -114,9 +114,6 @@ func main() {
 	}
 	manualTypeMap := map[reflect.Type]string{
 		reflect.TypeOf(runtime.RawExtension{}):                              "java.util.Map<String, Object>",
-		reflect.TypeOf(openshiftconfigapi.ConfigMapNameReference{}):         "io.fabric8.openshift.api.model.config.v1.BuildSpecBDDPTrustedCA",
-		reflect.TypeOf(openshiftconfigapi.ClusterOperatorStatusCondition{}): "io.fabric8.openshift.api.model.config.v1.ClusterOperatorStatusConditions",
-		reflect.TypeOf(openshiftconfigapi.IdentityProvider{}):               "io.fabric8.openshift.api.model.config.v1.OAuthSpecIdentityProviders",
 	}
 	schema, err := schemagen.GenerateSchema(reflect.TypeOf(Schema{}), packages, typeMap, manualTypeMap, "hive")
 	if err != nil {

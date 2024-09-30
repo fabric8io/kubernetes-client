@@ -1,7 +1,9 @@
 
 package io.fabric8.openshift.api.model.config.v1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -31,7 +33,8 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "integratedOAuthMetadata"
+    "integratedOAuthMetadata",
+    "oidcClients"
 })
 @ToString
 @EqualsAndHashCode
@@ -55,7 +58,10 @@ public class AuthenticationStatus implements Editable<AuthenticationStatusBuilde
 {
 
     @JsonProperty("integratedOAuthMetadata")
-    private AuthenticationStatusIntegratedOAuthMetadata integratedOAuthMetadata;
+    private ConfigMapNameReference integratedOAuthMetadata;
+    @JsonProperty("oidcClients")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<OIDCClientStatus> oidcClients = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -66,19 +72,31 @@ public class AuthenticationStatus implements Editable<AuthenticationStatusBuilde
     public AuthenticationStatus() {
     }
 
-    public AuthenticationStatus(AuthenticationStatusIntegratedOAuthMetadata integratedOAuthMetadata) {
+    public AuthenticationStatus(ConfigMapNameReference integratedOAuthMetadata, List<OIDCClientStatus> oidcClients) {
         super();
         this.integratedOAuthMetadata = integratedOAuthMetadata;
+        this.oidcClients = oidcClients;
     }
 
     @JsonProperty("integratedOAuthMetadata")
-    public AuthenticationStatusIntegratedOAuthMetadata getIntegratedOAuthMetadata() {
+    public ConfigMapNameReference getIntegratedOAuthMetadata() {
         return integratedOAuthMetadata;
     }
 
     @JsonProperty("integratedOAuthMetadata")
-    public void setIntegratedOAuthMetadata(AuthenticationStatusIntegratedOAuthMetadata integratedOAuthMetadata) {
+    public void setIntegratedOAuthMetadata(ConfigMapNameReference integratedOAuthMetadata) {
         this.integratedOAuthMetadata = integratedOAuthMetadata;
+    }
+
+    @JsonProperty("oidcClients")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<OIDCClientStatus> getOidcClients() {
+        return oidcClients;
+    }
+
+    @JsonProperty("oidcClients")
+    public void setOidcClients(List<OIDCClientStatus> oidcClients) {
+        this.oidcClients = oidcClients;
     }
 
     @JsonIgnore

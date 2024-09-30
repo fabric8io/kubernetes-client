@@ -57,11 +57,11 @@ public class BuildSpec implements Editable<BuildSpecBuilder> , KubernetesResourc
 {
 
     @JsonProperty("additionalTrustedCA")
-    private BuildSpecAdditionalTrustedCA additionalTrustedCA;
+    private ConfigMapNameReference additionalTrustedCA;
     @JsonProperty("buildDefaults")
-    private BuildSpecBuildDefaults buildDefaults;
+    private BuildDefaults buildDefaults;
     @JsonProperty("buildOverrides")
-    private BuildSpecBuildOverrides buildOverrides;
+    private BuildOverrides buildOverrides;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -72,7 +72,7 @@ public class BuildSpec implements Editable<BuildSpecBuilder> , KubernetesResourc
     public BuildSpec() {
     }
 
-    public BuildSpec(BuildSpecAdditionalTrustedCA additionalTrustedCA, BuildSpecBuildDefaults buildDefaults, BuildSpecBuildOverrides buildOverrides) {
+    public BuildSpec(ConfigMapNameReference additionalTrustedCA, BuildDefaults buildDefaults, BuildOverrides buildOverrides) {
         super();
         this.additionalTrustedCA = additionalTrustedCA;
         this.buildDefaults = buildDefaults;
@@ -80,32 +80,32 @@ public class BuildSpec implements Editable<BuildSpecBuilder> , KubernetesResourc
     }
 
     @JsonProperty("additionalTrustedCA")
-    public BuildSpecAdditionalTrustedCA getAdditionalTrustedCA() {
+    public ConfigMapNameReference getAdditionalTrustedCA() {
         return additionalTrustedCA;
     }
 
     @JsonProperty("additionalTrustedCA")
-    public void setAdditionalTrustedCA(BuildSpecAdditionalTrustedCA additionalTrustedCA) {
+    public void setAdditionalTrustedCA(ConfigMapNameReference additionalTrustedCA) {
         this.additionalTrustedCA = additionalTrustedCA;
     }
 
     @JsonProperty("buildDefaults")
-    public BuildSpecBuildDefaults getBuildDefaults() {
+    public BuildDefaults getBuildDefaults() {
         return buildDefaults;
     }
 
     @JsonProperty("buildDefaults")
-    public void setBuildDefaults(BuildSpecBuildDefaults buildDefaults) {
+    public void setBuildDefaults(BuildDefaults buildDefaults) {
         this.buildDefaults = buildDefaults;
     }
 
     @JsonProperty("buildOverrides")
-    public BuildSpecBuildOverrides getBuildOverrides() {
+    public BuildOverrides getBuildOverrides() {
         return buildOverrides;
     }
 
     @JsonProperty("buildOverrides")
-    public void setBuildOverrides(BuildSpecBuildOverrides buildOverrides) {
+    public void setBuildOverrides(BuildOverrides buildOverrides) {
         this.buildOverrides = buildOverrides;
     }
 

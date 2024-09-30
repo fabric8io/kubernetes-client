@@ -70,7 +70,7 @@ public class ProxySpec implements Editable<ProxySpecBuilder> , KubernetesResourc
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> readinessEndpoints = new ArrayList<>();
     @JsonProperty("trustedCA")
-    private ProxySpecTrustedCA trustedCA;
+    private ConfigMapNameReference trustedCA;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -81,7 +81,7 @@ public class ProxySpec implements Editable<ProxySpecBuilder> , KubernetesResourc
     public ProxySpec() {
     }
 
-    public ProxySpec(String httpProxy, String httpsProxy, String noProxy, List<String> readinessEndpoints, ProxySpecTrustedCA trustedCA) {
+    public ProxySpec(String httpProxy, String httpsProxy, String noProxy, List<String> readinessEndpoints, ConfigMapNameReference trustedCA) {
         super();
         this.httpProxy = httpProxy;
         this.httpsProxy = httpsProxy;
@@ -132,12 +132,12 @@ public class ProxySpec implements Editable<ProxySpecBuilder> , KubernetesResourc
     }
 
     @JsonProperty("trustedCA")
-    public ProxySpecTrustedCA getTrustedCA() {
+    public ConfigMapNameReference getTrustedCA() {
         return trustedCA;
     }
 
     @JsonProperty("trustedCA")
-    public void setTrustedCA(ProxySpecTrustedCA trustedCA) {
+    public void setTrustedCA(ConfigMapNameReference trustedCA) {
         this.trustedCA = trustedCA;
     }
 

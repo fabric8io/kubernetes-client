@@ -61,16 +61,16 @@ public class ClusterOperatorStatus implements Editable<ClusterOperatorStatusBuil
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ClusterOperatorStatusConditions> conditions = new ArrayList<>();
+    private List<ClusterOperatorStatusCondition> conditions = new ArrayList<>();
     @JsonProperty("extension")
     @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
     private Object extension;
     @JsonProperty("relatedObjects")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ClusterOperatorStatusRelatedObjects> relatedObjects = new ArrayList<>();
+    private List<ObjectReference> relatedObjects = new ArrayList<>();
     @JsonProperty("versions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ClusterOperatorStatusVersions> versions = new ArrayList<>();
+    private List<OperandVersion> versions = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -81,7 +81,7 @@ public class ClusterOperatorStatus implements Editable<ClusterOperatorStatusBuil
     public ClusterOperatorStatus() {
     }
 
-    public ClusterOperatorStatus(List<ClusterOperatorStatusConditions> conditions, Object extension, List<ClusterOperatorStatusRelatedObjects> relatedObjects, List<ClusterOperatorStatusVersions> versions) {
+    public ClusterOperatorStatus(List<ClusterOperatorStatusCondition> conditions, Object extension, List<ObjectReference> relatedObjects, List<OperandVersion> versions) {
         super();
         this.conditions = conditions;
         this.extension = extension;
@@ -91,12 +91,12 @@ public class ClusterOperatorStatus implements Editable<ClusterOperatorStatusBuil
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<ClusterOperatorStatusConditions> getConditions() {
+    public List<ClusterOperatorStatusCondition> getConditions() {
         return conditions;
     }
 
     @JsonProperty("conditions")
-    public void setConditions(List<ClusterOperatorStatusConditions> conditions) {
+    public void setConditions(List<ClusterOperatorStatusCondition> conditions) {
         this.conditions = conditions;
     }
 
@@ -113,23 +113,23 @@ public class ClusterOperatorStatus implements Editable<ClusterOperatorStatusBuil
 
     @JsonProperty("relatedObjects")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<ClusterOperatorStatusRelatedObjects> getRelatedObjects() {
+    public List<ObjectReference> getRelatedObjects() {
         return relatedObjects;
     }
 
     @JsonProperty("relatedObjects")
-    public void setRelatedObjects(List<ClusterOperatorStatusRelatedObjects> relatedObjects) {
+    public void setRelatedObjects(List<ObjectReference> relatedObjects) {
         this.relatedObjects = relatedObjects;
     }
 
     @JsonProperty("versions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<ClusterOperatorStatusVersions> getVersions() {
+    public List<OperandVersion> getVersions() {
         return versions;
     }
 
     @JsonProperty("versions")
-    public void setVersions(List<ClusterOperatorStatusVersions> versions) {
+    public void setVersions(List<OperandVersion> versions) {
         this.versions = versions;
     }
 

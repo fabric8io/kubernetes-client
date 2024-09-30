@@ -60,11 +60,11 @@ public class OAuthSpec implements Editable<OAuthSpecBuilder> , KubernetesResourc
 
     @JsonProperty("identityProviders")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<OAuthSpecIdentityProviders> identityProviders = new ArrayList<>();
+    private List<IdentityProvider> identityProviders = new ArrayList<>();
     @JsonProperty("templates")
-    private OAuthSpecTemplates templates;
+    private OAuthTemplates templates;
     @JsonProperty("tokenConfig")
-    private OAuthSpecTokenConfig tokenConfig;
+    private TokenConfig tokenConfig;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -75,7 +75,7 @@ public class OAuthSpec implements Editable<OAuthSpecBuilder> , KubernetesResourc
     public OAuthSpec() {
     }
 
-    public OAuthSpec(List<OAuthSpecIdentityProviders> identityProviders, OAuthSpecTemplates templates, OAuthSpecTokenConfig tokenConfig) {
+    public OAuthSpec(List<IdentityProvider> identityProviders, OAuthTemplates templates, TokenConfig tokenConfig) {
         super();
         this.identityProviders = identityProviders;
         this.templates = templates;
@@ -84,32 +84,32 @@ public class OAuthSpec implements Editable<OAuthSpecBuilder> , KubernetesResourc
 
     @JsonProperty("identityProviders")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<OAuthSpecIdentityProviders> getIdentityProviders() {
+    public List<IdentityProvider> getIdentityProviders() {
         return identityProviders;
     }
 
     @JsonProperty("identityProviders")
-    public void setIdentityProviders(List<OAuthSpecIdentityProviders> identityProviders) {
+    public void setIdentityProviders(List<IdentityProvider> identityProviders) {
         this.identityProviders = identityProviders;
     }
 
     @JsonProperty("templates")
-    public OAuthSpecTemplates getTemplates() {
+    public OAuthTemplates getTemplates() {
         return templates;
     }
 
     @JsonProperty("templates")
-    public void setTemplates(OAuthSpecTemplates templates) {
+    public void setTemplates(OAuthTemplates templates) {
         this.templates = templates;
     }
 
     @JsonProperty("tokenConfig")
-    public OAuthSpecTokenConfig getTokenConfig() {
+    public TokenConfig getTokenConfig() {
         return tokenConfig;
     }
 
     @JsonProperty("tokenConfig")
-    public void setTokenConfig(OAuthSpecTokenConfig tokenConfig) {
+    public void setTokenConfig(TokenConfig tokenConfig) {
         this.tokenConfig = tokenConfig;
     }
 

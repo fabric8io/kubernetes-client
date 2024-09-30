@@ -58,7 +58,7 @@ public class ProjectSpec implements Editable<ProjectSpecBuilder> , KubernetesRes
     @JsonProperty("projectRequestMessage")
     private String projectRequestMessage;
     @JsonProperty("projectRequestTemplate")
-    private ProjectSpecProjectRequestTemplate projectRequestTemplate;
+    private TemplateReference projectRequestTemplate;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -69,7 +69,7 @@ public class ProjectSpec implements Editable<ProjectSpecBuilder> , KubernetesRes
     public ProjectSpec() {
     }
 
-    public ProjectSpec(String projectRequestMessage, ProjectSpecProjectRequestTemplate projectRequestTemplate) {
+    public ProjectSpec(String projectRequestMessage, TemplateReference projectRequestTemplate) {
         super();
         this.projectRequestMessage = projectRequestMessage;
         this.projectRequestTemplate = projectRequestTemplate;
@@ -86,12 +86,12 @@ public class ProjectSpec implements Editable<ProjectSpecBuilder> , KubernetesRes
     }
 
     @JsonProperty("projectRequestTemplate")
-    public ProjectSpecProjectRequestTemplate getProjectRequestTemplate() {
+    public TemplateReference getProjectRequestTemplate() {
         return projectRequestTemplate;
     }
 
     @JsonProperty("projectRequestTemplate")
-    public void setProjectRequestTemplate(ProjectSpecProjectRequestTemplate projectRequestTemplate) {
+    public void setProjectRequestTemplate(TemplateReference projectRequestTemplate) {
         this.projectRequestTemplate = projectRequestTemplate;
     }
 

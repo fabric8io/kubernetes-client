@@ -24,7 +24,7 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.openshift.api.model.config.v1.InfrastructureStatusPSNutanixLoadBalancer;
+import io.fabric8.openshift.api.model.config.v1.NutanixPlatformLoadBalancer;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -81,7 +81,7 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> ingressVIPs = new ArrayList<>();
     @JsonProperty("loadBalancer")
-    private InfrastructureStatusPSNutanixLoadBalancer loadBalancer;
+    private NutanixPlatformLoadBalancer loadBalancer;
     @JsonProperty("prismCentral")
     private PrismCentral prismCentral;
     @JsonProperty("prismElements")
@@ -100,7 +100,7 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     public Platform() {
     }
 
-    public Platform(String apiVIP, List<String> apiVIPs, String clusterOSImage, MachinePool defaultMachinePlatform, String ingressVIP, List<String> ingressVIPs, InfrastructureStatusPSNutanixLoadBalancer loadBalancer, PrismCentral prismCentral, List<PrismElement> prismElements, List<String> subnetUUIDs) {
+    public Platform(String apiVIP, List<String> apiVIPs, String clusterOSImage, MachinePool defaultMachinePlatform, String ingressVIP, List<String> ingressVIPs, NutanixPlatformLoadBalancer loadBalancer, PrismCentral prismCentral, List<PrismElement> prismElements, List<String> subnetUUIDs) {
         super();
         this.apiVIP = apiVIP;
         this.apiVIPs = apiVIPs;
@@ -177,12 +177,12 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     }
 
     @JsonProperty("loadBalancer")
-    public InfrastructureStatusPSNutanixLoadBalancer getLoadBalancer() {
+    public NutanixPlatformLoadBalancer getLoadBalancer() {
         return loadBalancer;
     }
 
     @JsonProperty("loadBalancer")
-    public void setLoadBalancer(InfrastructureStatusPSNutanixLoadBalancer loadBalancer) {
+    public void setLoadBalancer(NutanixPlatformLoadBalancer loadBalancer) {
         this.loadBalancer = loadBalancer;
     }
 

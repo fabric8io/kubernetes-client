@@ -86,8 +86,7 @@ public class Scheduler implements Editable<SchedulerBuilder> , HasMetadata
     @JsonProperty("spec")
     private SchedulerSpec spec;
     @JsonProperty("status")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
-    private Object status;
+    private SchedulerStatus status;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -98,7 +97,7 @@ public class Scheduler implements Editable<SchedulerBuilder> , HasMetadata
     public Scheduler() {
     }
 
-    public Scheduler(String apiVersion, String kind, ObjectMeta metadata, SchedulerSpec spec, Object status) {
+    public Scheduler(String apiVersion, String kind, ObjectMeta metadata, SchedulerSpec spec, SchedulerStatus status) {
         super();
         this.apiVersion = apiVersion;
         this.kind = kind;
@@ -168,13 +167,12 @@ public class Scheduler implements Editable<SchedulerBuilder> , HasMetadata
     }
 
     @JsonProperty("status")
-    public Object getStatus() {
+    public SchedulerStatus getStatus() {
         return status;
     }
 
     @JsonProperty("status")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
-    public void setStatus(Object status) {
+    public void setStatus(SchedulerStatus status) {
         this.status = status;
     }
 

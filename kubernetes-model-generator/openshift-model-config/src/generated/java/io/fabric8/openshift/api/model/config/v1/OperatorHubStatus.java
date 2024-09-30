@@ -58,7 +58,7 @@ public class OperatorHubStatus implements Editable<OperatorHubStatusBuilder> , K
 
     @JsonProperty("sources")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<OperatorHubStatusSources> sources = new ArrayList<>();
+    private List<HubSourceStatus> sources = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -69,19 +69,19 @@ public class OperatorHubStatus implements Editable<OperatorHubStatusBuilder> , K
     public OperatorHubStatus() {
     }
 
-    public OperatorHubStatus(List<OperatorHubStatusSources> sources) {
+    public OperatorHubStatus(List<HubSourceStatus> sources) {
         super();
         this.sources = sources;
     }
 
     @JsonProperty("sources")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<OperatorHubStatusSources> getSources() {
+    public List<HubSourceStatus> getSources() {
         return sources;
     }
 
     @JsonProperty("sources")
-    public void setSources(List<OperatorHubStatusSources> sources) {
+    public void setSources(List<HubSourceStatus> sources) {
         this.sources = sources;
     }
 
