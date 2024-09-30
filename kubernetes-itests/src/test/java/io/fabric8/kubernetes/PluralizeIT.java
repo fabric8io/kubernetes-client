@@ -29,6 +29,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Stream;
@@ -38,6 +39,10 @@ import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 @RequireK8sVersionAtLeast(majorVersion = 1, minorVersion = 16)
 class PluralizeIT {
+
+  // This might be a mistake in OpenShift Aggregated Discovery API,
+  // The resource kind is ResourceAccessReview, and it's singularName is set as localresourceaccessreview
+  private static final String[] EXCEPTIONAL_SINGULAR_NAME = new String[] { "localresourceaccessreview" };
 
   @DisplayName("toPlural, should return argument's plural")
   @ParameterizedTest(name = "{index} {0}: ''{1}'' plural is ''{2}''")
@@ -66,7 +71,9 @@ class PluralizeIT {
         .map(ar -> arguments(
             ar.getKind(),
             // So far singularName field is always blank, we fall back to lower-cased kind
-            Utils.isNullOrEmpty(ar.getSingularName()) ? ar.getKind().toLowerCase(Locale.ROOT) : ar.getSingularName(),
+            Utils.isNullOrEmpty(ar.getSingularName()) || Arrays.asList(EXCEPTIONAL_SINGULAR_NAME).contains(ar.getSingularName())
+                ? ar.getKind().toLowerCase(Locale.ROOT)
+                : ar.getSingularName(),
             ar.getName()));
   }
 }

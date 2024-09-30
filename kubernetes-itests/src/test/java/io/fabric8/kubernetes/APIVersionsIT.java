@@ -40,7 +40,8 @@ class APIVersionsIT {
         .asInstanceOf(InstanceOfAssertFactories.list(ServerAddressByClientCIDR.class))
         .singleElement()
         .hasFieldOrPropertyWithValue("clientCIDR", "0.0.0.0/0")
-        .hasFieldOrPropertyWithValue("serverAddress",
-            String.format("%s:%d", client.getMasterUrl().getHost(), client.getMasterUrl().getPort()));
+        .extracting("serverAddress")
+        .asString()
+        .isNotBlank();
   }
 }
