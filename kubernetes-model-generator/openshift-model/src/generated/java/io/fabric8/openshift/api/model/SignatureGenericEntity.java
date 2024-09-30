@@ -1,9 +1,7 @@
 
 package io.fabric8.openshift.api.model;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -33,7 +31,8 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "matchExpressions"
+    "commonName",
+    "organization"
 })
 @ToString
 @EqualsAndHashCode
@@ -53,12 +52,13 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ClusterResourceQuotaSpecQScopeSelector implements Editable<ClusterResourceQuotaSpecQScopeSelectorBuilder> , KubernetesResource
+public class SignatureGenericEntity implements Editable<SignatureGenericEntityBuilder> , KubernetesResource
 {
 
-    @JsonProperty("matchExpressions")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ClusterResourceQuotaSpecQSSMatchExpressions> matchExpressions = new ArrayList<>();
+    @JsonProperty("commonName")
+    private String commonName;
+    @JsonProperty("organization")
+    private String organization;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -66,32 +66,42 @@ public class ClusterResourceQuotaSpecQScopeSelector implements Editable<ClusterR
      * No args constructor for use in serialization
      * 
      */
-    public ClusterResourceQuotaSpecQScopeSelector() {
+    public SignatureGenericEntity() {
     }
 
-    public ClusterResourceQuotaSpecQScopeSelector(List<ClusterResourceQuotaSpecQSSMatchExpressions> matchExpressions) {
+    public SignatureGenericEntity(String commonName, String organization) {
         super();
-        this.matchExpressions = matchExpressions;
+        this.commonName = commonName;
+        this.organization = organization;
     }
 
-    @JsonProperty("matchExpressions")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<ClusterResourceQuotaSpecQSSMatchExpressions> getMatchExpressions() {
-        return matchExpressions;
+    @JsonProperty("commonName")
+    public String getCommonName() {
+        return commonName;
     }
 
-    @JsonProperty("matchExpressions")
-    public void setMatchExpressions(List<ClusterResourceQuotaSpecQSSMatchExpressions> matchExpressions) {
-        this.matchExpressions = matchExpressions;
+    @JsonProperty("commonName")
+    public void setCommonName(String commonName) {
+        this.commonName = commonName;
+    }
+
+    @JsonProperty("organization")
+    public String getOrganization() {
+        return organization;
+    }
+
+    @JsonProperty("organization")
+    public void setOrganization(String organization) {
+        this.organization = organization;
     }
 
     @JsonIgnore
-    public ClusterResourceQuotaSpecQScopeSelectorBuilder edit() {
-        return new ClusterResourceQuotaSpecQScopeSelectorBuilder(this);
+    public SignatureGenericEntityBuilder edit() {
+        return new SignatureGenericEntityBuilder(this);
     }
 
     @JsonIgnore
-    public ClusterResourceQuotaSpecQScopeSelectorBuilder toBuilder() {
+    public SignatureGenericEntityBuilder toBuilder() {
         return edit();
     }
 

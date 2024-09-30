@@ -1,9 +1,7 @@
 
 package io.fabric8.openshift.api.model;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -23,7 +21,6 @@ import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
-import io.fabric8.kubernetes.api.model.ResourceQuotaStatus;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
@@ -34,8 +31,9 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "namespaces",
-    "total"
+    "httpProxy",
+    "httpsProxy",
+    "noProxy"
 })
 @ToString
 @EqualsAndHashCode
@@ -55,14 +53,15 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ClusterResourceQuotaStatus implements Editable<ClusterResourceQuotaStatusBuilder> , KubernetesResource
+public class ProxyConfig implements Editable<ProxyConfigBuilder> , KubernetesResource
 {
 
-    @JsonProperty("namespaces")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ResourceQuotaStatusByNamespace> namespaces = new ArrayList<>();
-    @JsonProperty("total")
-    private ResourceQuotaStatus total;
+    @JsonProperty("httpProxy")
+    private String httpProxy;
+    @JsonProperty("httpsProxy")
+    private String httpsProxy;
+    @JsonProperty("noProxy")
+    private String noProxy;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -70,43 +69,53 @@ public class ClusterResourceQuotaStatus implements Editable<ClusterResourceQuota
      * No args constructor for use in serialization
      * 
      */
-    public ClusterResourceQuotaStatus() {
+    public ProxyConfig() {
     }
 
-    public ClusterResourceQuotaStatus(List<ResourceQuotaStatusByNamespace> namespaces, ResourceQuotaStatus total) {
+    public ProxyConfig(String httpProxy, String httpsProxy, String noProxy) {
         super();
-        this.namespaces = namespaces;
-        this.total = total;
+        this.httpProxy = httpProxy;
+        this.httpsProxy = httpsProxy;
+        this.noProxy = noProxy;
     }
 
-    @JsonProperty("namespaces")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<ResourceQuotaStatusByNamespace> getNamespaces() {
-        return namespaces;
+    @JsonProperty("httpProxy")
+    public String getHttpProxy() {
+        return httpProxy;
     }
 
-    @JsonProperty("namespaces")
-    public void setNamespaces(List<ResourceQuotaStatusByNamespace> namespaces) {
-        this.namespaces = namespaces;
+    @JsonProperty("httpProxy")
+    public void setHttpProxy(String httpProxy) {
+        this.httpProxy = httpProxy;
     }
 
-    @JsonProperty("total")
-    public ResourceQuotaStatus getTotal() {
-        return total;
+    @JsonProperty("httpsProxy")
+    public String getHttpsProxy() {
+        return httpsProxy;
     }
 
-    @JsonProperty("total")
-    public void setTotal(ResourceQuotaStatus total) {
-        this.total = total;
+    @JsonProperty("httpsProxy")
+    public void setHttpsProxy(String httpsProxy) {
+        this.httpsProxy = httpsProxy;
+    }
+
+    @JsonProperty("noProxy")
+    public String getNoProxy() {
+        return noProxy;
+    }
+
+    @JsonProperty("noProxy")
+    public void setNoProxy(String noProxy) {
+        this.noProxy = noProxy;
     }
 
     @JsonIgnore
-    public ClusterResourceQuotaStatusBuilder edit() {
-        return new ClusterResourceQuotaStatusBuilder(this);
+    public ProxyConfigBuilder edit() {
+        return new ProxyConfigBuilder(this);
     }
 
     @JsonIgnore
-    public ClusterResourceQuotaStatusBuilder toBuilder() {
+    public ProxyConfigBuilder toBuilder() {
         return edit();
     }
 

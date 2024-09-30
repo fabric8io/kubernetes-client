@@ -1,9 +1,7 @@
 
 package io.fabric8.openshift.api.model;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -33,9 +31,8 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "operator",
-    "scopeName",
-    "values"
+    "name",
+    "role"
 })
 @ToString
 @EqualsAndHashCode
@@ -55,16 +52,13 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ClusterResourceQuotaSpecQSSMatchExpressions implements Editable<ClusterResourceQuotaSpecQSSMatchExpressionsBuilder> , KubernetesResource
+public class NamedClusterRole implements Editable<NamedClusterRoleBuilder> , KubernetesResource
 {
 
-    @JsonProperty("operator")
-    private String operator;
-    @JsonProperty("scopeName")
-    private String scopeName;
-    @JsonProperty("values")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> values = new ArrayList<>();
+    @JsonProperty("name")
+    private String name;
+    @JsonProperty("role")
+    private ClusterRole role;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -72,54 +66,42 @@ public class ClusterResourceQuotaSpecQSSMatchExpressions implements Editable<Clu
      * No args constructor for use in serialization
      * 
      */
-    public ClusterResourceQuotaSpecQSSMatchExpressions() {
+    public NamedClusterRole() {
     }
 
-    public ClusterResourceQuotaSpecQSSMatchExpressions(String operator, String scopeName, List<String> values) {
+    public NamedClusterRole(String name, ClusterRole role) {
         super();
-        this.operator = operator;
-        this.scopeName = scopeName;
-        this.values = values;
+        this.name = name;
+        this.role = role;
     }
 
-    @JsonProperty("operator")
-    public String getOperator() {
-        return operator;
+    @JsonProperty("name")
+    public String getName() {
+        return name;
     }
 
-    @JsonProperty("operator")
-    public void setOperator(String operator) {
-        this.operator = operator;
+    @JsonProperty("name")
+    public void setName(String name) {
+        this.name = name;
     }
 
-    @JsonProperty("scopeName")
-    public String getScopeName() {
-        return scopeName;
+    @JsonProperty("role")
+    public ClusterRole getRole() {
+        return role;
     }
 
-    @JsonProperty("scopeName")
-    public void setScopeName(String scopeName) {
-        this.scopeName = scopeName;
-    }
-
-    @JsonProperty("values")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<String> getValues() {
-        return values;
-    }
-
-    @JsonProperty("values")
-    public void setValues(List<String> values) {
-        this.values = values;
+    @JsonProperty("role")
+    public void setRole(ClusterRole role) {
+        this.role = role;
     }
 
     @JsonIgnore
-    public ClusterResourceQuotaSpecQSSMatchExpressionsBuilder edit() {
-        return new ClusterResourceQuotaSpecQSSMatchExpressionsBuilder(this);
+    public NamedClusterRoleBuilder edit() {
+        return new NamedClusterRoleBuilder(this);
     }
 
     @JsonIgnore
-    public ClusterResourceQuotaSpecQSSMatchExpressionsBuilder toBuilder() {
+    public NamedClusterRoleBuilder toBuilder() {
         return edit();
     }
 

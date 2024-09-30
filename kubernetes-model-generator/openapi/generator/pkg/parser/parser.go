@@ -26,7 +26,8 @@ const genClient = "+genclient"
 const genClientPrefix = genClient + ":"
 const groupNamePrefix = "+groupName="
 
-var listType = types.ParseFullyQualifiedName("k8s.io/apimachinery/pkg/apis/meta/v1.ListMeta")
+var listMeta = types.ParseFullyQualifiedName("k8s.io/apimachinery/pkg/apis/meta/v1.ListMeta")
+var typeMeta = types.ParseFullyQualifiedName("k8s.io/apimachinery/pkg/apis/meta/v1.TypeMeta")
 
 type Module struct {
 	Name     string
@@ -111,17 +112,31 @@ func groupName(pkg *types.Package) string {
 }
 
 func resolveType(typ *types.Type) string {
-	// Check if the type is a top-level type (Object)
+	// types with a genClient annotation are always objects
+	// types with a listType are always lists
+	// types with metaType are always lists or objects
 	for _, c := range append(typ.CommentLines, typ.SecondClosestCommentLines...) {
 		if strings.TrimSpace(c) == genClient {
 			return "object"
 		}
 	}
-	// Check if the type is a list
+	isList := false
+	isObject := false
 	for _, m := range typ.Members {
-		if m.Type.Name == listType {
-			return "list"
+		if m.Type.Name == listMeta {
+			isList = true
+			// stop iterating, if it's a list then it's not an object
+			break
+		} else if m.Type.Name == typeMeta {
+			isObject = true
+			// keep iterating, maybe it's a list
 		}
+	}
+	if isList {
+		return "list"
+	}
+	if isObject {
+		return "object"
 	}
 	return "nested"
 }

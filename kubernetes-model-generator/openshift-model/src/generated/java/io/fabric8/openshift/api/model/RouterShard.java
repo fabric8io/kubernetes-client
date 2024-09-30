@@ -31,8 +31,8 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "annotations",
-    "labels"
+    "dnsSuffix",
+    "shardName"
 })
 @ToString
 @EqualsAndHashCode
@@ -52,15 +52,13 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ClusterResourceQuotaSpecSelector implements Editable<ClusterResourceQuotaSpecSelectorBuilder> , KubernetesResource
+public class RouterShard implements Editable<RouterShardBuilder> , KubernetesResource
 {
 
-    @JsonProperty("annotations")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
-    private Object annotations;
-    @JsonProperty("labels")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
-    private Object labels;
+    @JsonProperty("dnsSuffix")
+    private String dnsSuffix;
+    @JsonProperty("shardName")
+    private String shardName;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -68,44 +66,42 @@ public class ClusterResourceQuotaSpecSelector implements Editable<ClusterResourc
      * No args constructor for use in serialization
      * 
      */
-    public ClusterResourceQuotaSpecSelector() {
+    public RouterShard() {
     }
 
-    public ClusterResourceQuotaSpecSelector(Object annotations, Object labels) {
+    public RouterShard(String dnsSuffix, String shardName) {
         super();
-        this.annotations = annotations;
-        this.labels = labels;
+        this.dnsSuffix = dnsSuffix;
+        this.shardName = shardName;
     }
 
-    @JsonProperty("annotations")
-    public Object getAnnotations() {
-        return annotations;
+    @JsonProperty("dnsSuffix")
+    public String getDnsSuffix() {
+        return dnsSuffix;
     }
 
-    @JsonProperty("annotations")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
-    public void setAnnotations(Object annotations) {
-        this.annotations = annotations;
+    @JsonProperty("dnsSuffix")
+    public void setDnsSuffix(String dnsSuffix) {
+        this.dnsSuffix = dnsSuffix;
     }
 
-    @JsonProperty("labels")
-    public Object getLabels() {
-        return labels;
+    @JsonProperty("shardName")
+    public String getShardName() {
+        return shardName;
     }
 
-    @JsonProperty("labels")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
-    public void setLabels(Object labels) {
-        this.labels = labels;
-    }
-
-    @JsonIgnore
-    public ClusterResourceQuotaSpecSelectorBuilder edit() {
-        return new ClusterResourceQuotaSpecSelectorBuilder(this);
+    @JsonProperty("shardName")
+    public void setShardName(String shardName) {
+        this.shardName = shardName;
     }
 
     @JsonIgnore
-    public ClusterResourceQuotaSpecSelectorBuilder toBuilder() {
+    public RouterShardBuilder edit() {
+        return new RouterShardBuilder(this);
+    }
+
+    @JsonIgnore
+    public RouterShardBuilder toBuilder() {
         return edit();
     }
 

@@ -50,6 +50,8 @@ It is no longer published, the `io.fabric8:kubernetes-client-api` or `io.fabric8
 
 Some of the types and packages have been moved to more suiting modules and package names.
 
+- `io.openshift.helm` API group is now part of the `openshift-model-miscellaneus` module.
+
 ### Service Catalog removed (operator.openshift.io) <a href="#service-catalog-removed" id="service-catalog-removed"/>
 
 The operator.openshift.io APIs have been deprecated since OpenShift 4.1.

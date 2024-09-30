@@ -37,8 +37,6 @@ import io.fabric8.openshift.client.OpenShiftClient;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import java.util.Collections;
-
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -167,8 +165,9 @@ class OpenShiftAuthorizationIT {
     RoleBindingRestriction roleBindingRestriction = new RoleBindingRestrictionBuilder()
         .withNewMetadata().withName(name).endMetadata()
         .withNewSpec()
-        .withGrouprestriction(
-            Collections.singletonMap("groups", Collections.singletonList("groups-rolebindingrestriction")))
+        .withNewGrouprestriction()
+        .addToGroups("groups-rolebindingrestriction")
+        .endGrouprestriction()
         .endSpec()
         .build();
 
