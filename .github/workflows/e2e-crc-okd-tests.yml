@@ -1,0 +1,98 @@
+#
+# Copyright (C) 2015 Red Hat, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#         http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+name: KubernetesClient E2E Tests (CRC-OKD)
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths-ignore:
+      - 'doc/**'
+      - 'ide-config/**'
+      - '**.md'
+  schedule:
+    - cron: '0 4 * * *' # Every day at 4am
+
+concurrency:
+  group: single-instance-for-crc-okd-cluster
+  cancel-in-progress: true
+
+env:
+  IT_MODULE: kubernetes-itests
+  MAVEN_ARGS: -B -C -V -ntp -Dhttp.keepAlive=false -e
+  SHELL: /bin/bash
+
+jobs:
+  openshift-kubernetes-distribution:
+    name: CRC ${{ matrix.crc }} / OKD ${{ matrix.okd }}
+    runs-on: ubuntu-24.04
+    if: github.repository == 'fabric8io/kubernetes-client'
+    strategy:
+      fail-fast: false
+      matrix:
+        # There is some problem with latest version of crc configured with okd preset. I
+        # wasn't able to run tests successfully on latest version of crc. See linked issue:
+        # https://github.com/crc-org/crc/issues/4382
+        # TODO: Update CRC version to latest when aforementioned issue gets resolved
+        # https://github.com/fabric8io/kubernetes-client/issues/6415
+        okd: [ v4.14.0 ]
+        crc: [ 2.32.0 ]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Java 11
+        uses: actions/setup-java@v4
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+      - name: Install required virtualization software
+        run: |
+          sudo apt-get update
+          sudo apt install qemu-kvm libvirt-daemon libvirt-daemon-system
+          # This package may not be present depending on Ubuntu version
+          sudo apt install virtiofsd || true
+          sudo adduser $USER libvirt
+          sudo adduser $USER kvm
+          sudo usermod -a -G libvirt $USER
+      - name: Remove unwanted stuff to free up disk image
+        run: |
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /opt/ghc
+          sudo rm -rf "/usr/local/share/boost"
+          sudo rm -rf /opt/hostedtoolcache/CodeQL
+
+          sudo docker image prune --all --force
+
+          sudo swapoff -a
+          sudo rm -f /mnt/swapfile
+      - name: Download CRC
+        run: |
+          wget https://developers.redhat.com/content-gateway/file/pub/openshift-v4/clients/crc/${{ matrix.crc }}/crc-linux-amd64.tar.xz
+          tar -xJf crc-linux-amd64.tar.xz
+          sudo cp crc-linux-${{ matrix.crc }}-amd64/crc /usr/local/bin/crc
+      - name: Set the crc config
+        run: |
+          crc config set preset okd
+          crc config set network-mode user
+      - name: Setup the crc
+        run: sudo -su $USER crc setup
+      - name: Start the crc
+        run: sudo -su $USER crc start
+      - name: Install Kubernetes Client
+        run: make quickly 
+      - name: Install and Run Integration Tests
+        run: sudo -su $USER ./mvnw ${MAVEN_ARGS} -Pitests -pl $IT_MODULE verify 
