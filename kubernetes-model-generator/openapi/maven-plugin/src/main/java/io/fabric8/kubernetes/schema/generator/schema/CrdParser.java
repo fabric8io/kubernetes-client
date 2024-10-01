@@ -47,6 +47,7 @@ import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class CrdParser {
@@ -106,6 +107,9 @@ public class CrdParser {
       }
     }
     final File tempOpenApi = Files.createTempFile("openapi", ".json").toFile();
+    Objects.requireNonNull(tempOpenApi.setReadable(true, true) ? true : null, "Unable to set readable");
+    Objects.requireNonNull(tempOpenApi.setWritable(true, true) ? true : null, "Unable to set writeable");
+    Objects.requireNonNull(tempOpenApi.setExecutable(true, true) ? true : null, "Unable to set executable");
     tempOpenApi.deleteOnExit();
     // Writing to a file and parsing it fixes any issue with the computed OpenAPI values, this step is necessary
     Json31.pretty().writeValue(tempOpenApi, openAPI);

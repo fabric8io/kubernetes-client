@@ -82,6 +82,7 @@
     <!-- Contains Paths. Retrieve from a real cluster -->
     <openapi.schema.openshift-latest>${project.parent.basedir}/openapi/schemas/openshift-4.17.0.json</openapi.schema.openshift-latest>
     <openapi.schema.openshift-generated>${project.parent.basedir}/openapi/schemas/openshift-generated.json</openapi.schema.openshift-generated>
+    <openapi.openshift-version>4.17</openapi.openshift-version>
     <osgi.require-capability>
       osgi.extender;
       filter:="(osgi.extender=osgi.serviceloader.registrar)"
