@@ -29,9 +29,7 @@ import io.swagger.v3.oas.models.media.DateTimeSchema;
 import io.swagger.v3.oas.models.media.MapSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
-import io.swagger.v3.parser.OpenAPIV3Parser;
 
-import java.io.File;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -413,15 +411,6 @@ public class SchemaUtils {
       ret.put("isEmpty", true);
     }
     return ret;
-  }
-
-  public static OpenAPI parse(File schema) {
-    if (schema == null || !schema.exists()) {
-      throw new IllegalArgumentException("Schema file not found: " + schema);
-    }
-    final OpenAPI openApi = new OpenAPIV3Parser().read(schema.getAbsolutePath());
-    SchemaFlattener.flatten(openApi);
-    return openApi;
   }
 
   public static OpenAPI mergeSchemas(Collection<OpenAPI> schemas) {

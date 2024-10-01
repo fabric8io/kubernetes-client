@@ -16,7 +16,6 @@
 // Ported from https://github.com/manusa/yakc/blob/9272d649bfe05cd536d417fec64dcf679877bd14/buildSrc/src/main/java/com/marcnuri/yakc/schema/GeneratorSettings.java
 package io.fabric8.kubernetes.schema.generator;
 
-import io.fabric8.kubernetes.schema.generator.schema.SchemaUtils;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.PathItem;
@@ -29,6 +28,7 @@ import lombok.NoArgsConstructor;
 import lombok.Singular;
 
 import java.io.File;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -55,6 +55,8 @@ public class GeneratorSettings {
   private Logger logger;
   @Singular
   private List<File> schemas;
+  @Singular
+  private List<String> urls;
   private OpenAPI openAPI;
   private Map<String, ApiVersion> apiVersions;
   private File outputDirectory;
@@ -116,7 +118,8 @@ public class GeneratorSettings {
     synchronized (this) {
       if (openAPI == null) {
         final List<OpenAPI> openApis = new ArrayList<>();
-        schemas.stream().map(SchemaUtils::parse).forEach(openApis::add);
+        schemas.stream().map(GeneratorUtils::parse).forEach(openApis::add);
+        urls.stream().map(URI::create).map(GeneratorUtils::parse).forEach(openApis::add);
         openAPI = mergeSchemas(openApis);
       }
     }

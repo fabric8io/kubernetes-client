@@ -16,13 +16,17 @@
 // Ported from https://github.com/manusa/yakc/blob/9272d649bfe05cd536d417fec64dcf679877bd14/buildSrc/src/main/java/com/marcnuri/yakc/schema/GeneratorUtils.java
 package io.fabric8.kubernetes.schema.generator;
 
+import io.fabric8.kubernetes.schema.generator.schema.SchemaFlattener;
 import io.fabric8.kubernetes.schema.generator.schema.SchemaUtils;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.parser.OpenAPIV3Parser;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -30,6 +34,8 @@ import java.nio.file.StandardOpenOption;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Predicate;
+
+import static io.fabric8.kubernetes.schema.generator.schema.CrdParser.crdToOpenApi;
 
 public class GeneratorUtils {
 
@@ -84,5 +90,28 @@ public class GeneratorUtils {
     } catch (IOException ex) {
       throw new GeneratorException("Can't clean existent generated sources");
     }
+  }
+
+  public static OpenAPI parse(File schema) {
+    if (schema == null || !schema.exists()) {
+      throw new IllegalArgumentException("Schema file not found: " + schema);
+    }
+    return parse(schema.toURI());
+  }
+
+  public static OpenAPI parse(URI uri) {
+    Objects.requireNonNull(uri, "A valid URL is required for OpenAPI parsing");
+    final OpenAPI openApi;
+    if (uri.getPath().toLowerCase().matches(".+\\.ya?ml$")) {
+      try {
+        openApi = crdToOpenApi(uri);
+      } catch (IOException e) {
+        throw new IllegalArgumentException("Error parsing CRD file: " + uri, e);
+      }
+    } else {
+      openApi = new OpenAPIV3Parser().read(uri.toString());
+    }
+    SchemaFlattener.flatten(openApi);
+    return openApi;
   }
 }
