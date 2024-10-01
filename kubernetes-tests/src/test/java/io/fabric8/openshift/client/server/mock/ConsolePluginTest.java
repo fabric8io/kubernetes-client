@@ -15,10 +15,10 @@
  */
 package io.fabric8.openshift.client.server.mock;
 
-import io.fabric8.openshift.api.model.console.v1alpha1.ConsolePlugin;
-import io.fabric8.openshift.api.model.console.v1alpha1.ConsolePluginBuilder;
-import io.fabric8.openshift.api.model.console.v1alpha1.ConsolePluginList;
-import io.fabric8.openshift.api.model.console.v1alpha1.ConsolePluginListBuilder;
+import io.fabric8.openshift.api.model.console.v1.ConsolePlugin;
+import io.fabric8.openshift.api.model.console.v1.ConsolePluginBuilder;
+import io.fabric8.openshift.api.model.console.v1.ConsolePluginList;
+import io.fabric8.openshift.api.model.console.v1.ConsolePluginListBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.junit.jupiter.api.Test;
 
@@ -34,7 +34,7 @@ class ConsolePluginTest {
   @Test
   void get() {
     // Given
-    server.expect().get().withPath("/apis/console.openshift.io/v1alpha1/consoleplugins/test-get")
+    server.expect().get().withPath("/apis/console.openshift.io/v1/consoleplugins/test-get")
         .andReturn(HttpURLConnection.HTTP_OK, createNewConsolePlugin("test-get"))
         .once();
 
@@ -50,7 +50,7 @@ class ConsolePluginTest {
   @Test
   void list() {
     // Given
-    server.expect().get().withPath("/apis/console.openshift.io/v1alpha1/consoleplugins")
+    server.expect().get().withPath("/apis/console.openshift.io/v1/consoleplugins")
         .andReturn(HttpURLConnection.HTTP_OK, new ConsolePluginListBuilder()
             .addToItems(createNewConsolePlugin("test-list"))
             .build())
@@ -69,7 +69,7 @@ class ConsolePluginTest {
   @Test
   void delete() {
     // Given
-    server.expect().delete().withPath("/apis/console.openshift.io/v1alpha1/consoleplugins/cluster")
+    server.expect().delete().withPath("/apis/console.openshift.io/v1/consoleplugins/cluster")
         .andReturn(HttpURLConnection.HTTP_OK, createNewConsolePlugin("cluster"))
         .once();
 
@@ -85,12 +85,14 @@ class ConsolePluginTest {
         .withNewMetadata().withName(name).endMetadata()
         .withNewSpec()
         .withDisplayName("Dev Sandbox Console Plugin")
+        .withNewBackend()
         .withNewService()
         .withBasePath("/")
         .withName("dev-sandbox-console-plugin")
         .withNamespace("dev-sandbox-console-plugin")
         .withPort(9001)
         .endService()
+        .endBackend()
         .endSpec()
         .build();
   }

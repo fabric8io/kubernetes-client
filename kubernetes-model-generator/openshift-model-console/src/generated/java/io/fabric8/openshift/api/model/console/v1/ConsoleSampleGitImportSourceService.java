@@ -1,5 +1,5 @@
 
-package io.fabric8.openshift.api.model.console.v1alpha1;
+package io.fabric8.openshift.api.model.console.v1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -13,8 +13,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
+import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
@@ -22,12 +22,8 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.kubernetes.model.annotation.Group;
-import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import io.sundr.transform.annotations.TemplateTransformation;
-import io.sundr.transform.annotations.TemplateTransformations;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
@@ -35,10 +31,7 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "apiVersion",
-    "kind",
-    "metadata",
-    "spec"
+    "targetPort"
 })
 @ToString
 @EqualsAndHashCode
@@ -57,33 +50,12 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
-@TemplateTransformations({
-    @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true)
-})
-@Version("v1alpha1")
-@Group("console.openshift.io")
 @Generated("jsonschema2pojo")
-public class ConsolePlugin implements Editable<ConsolePluginBuilder> , HasMetadata
+public class ConsoleSampleGitImportSourceService implements Editable<ConsoleSampleGitImportSourceServiceBuilder> , KubernetesResource
 {
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("apiVersion")
-    private String apiVersion = "console.openshift.io/v1alpha1";
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("kind")
-    private String kind = "ConsolePlugin";
-    @JsonProperty("metadata")
-    private ObjectMeta metadata;
-    @JsonProperty("spec")
-    private ConsolePluginSpec spec;
+    @JsonProperty("targetPort")
+    private Integer targetPort;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -91,84 +63,31 @@ public class ConsolePlugin implements Editable<ConsolePluginBuilder> , HasMetada
      * No args constructor for use in serialization
      * 
      */
-    public ConsolePlugin() {
+    public ConsoleSampleGitImportSourceService() {
     }
 
-    public ConsolePlugin(String apiVersion, String kind, ObjectMeta metadata, ConsolePluginSpec spec) {
+    public ConsoleSampleGitImportSourceService(Integer targetPort) {
         super();
-        this.apiVersion = apiVersion;
-        this.kind = kind;
-        this.metadata = metadata;
-        this.spec = spec;
+        this.targetPort = targetPort;
     }
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("apiVersion")
-    public String getApiVersion() {
-        return apiVersion;
+    @JsonProperty("targetPort")
+    public Integer getTargetPort() {
+        return targetPort;
     }
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("apiVersion")
-    public void setApiVersion(String apiVersion) {
-        this.apiVersion = apiVersion;
-    }
-
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("kind")
-    public String getKind() {
-        return kind;
-    }
-
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("kind")
-    public void setKind(String kind) {
-        this.kind = kind;
-    }
-
-    @JsonProperty("metadata")
-    public ObjectMeta getMetadata() {
-        return metadata;
-    }
-
-    @JsonProperty("metadata")
-    public void setMetadata(ObjectMeta metadata) {
-        this.metadata = metadata;
-    }
-
-    @JsonProperty("spec")
-    public ConsolePluginSpec getSpec() {
-        return spec;
-    }
-
-    @JsonProperty("spec")
-    public void setSpec(ConsolePluginSpec spec) {
-        this.spec = spec;
+    @JsonProperty("targetPort")
+    public void setTargetPort(Integer targetPort) {
+        this.targetPort = targetPort;
     }
 
     @JsonIgnore
-    public ConsolePluginBuilder edit() {
-        return new ConsolePluginBuilder(this);
+    public ConsoleSampleGitImportSourceServiceBuilder edit() {
+        return new ConsoleSampleGitImportSourceServiceBuilder(this);
     }
 
     @JsonIgnore
-    public ConsolePluginBuilder toBuilder() {
+    public ConsoleSampleGitImportSourceServiceBuilder toBuilder() {
         return edit();
     }
 

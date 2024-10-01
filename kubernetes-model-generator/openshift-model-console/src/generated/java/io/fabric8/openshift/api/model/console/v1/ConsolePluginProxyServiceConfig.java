@@ -1,5 +1,5 @@
 
-package io.fabric8.openshift.api.model.console.v1alpha1;
+package io.fabric8.openshift.api.model.console.v1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -53,7 +53,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ConsolePluginSpecPService implements Editable<ConsolePluginSpecPServiceBuilder> , KubernetesResource
+public class ConsolePluginProxyServiceConfig implements Editable<ConsolePluginProxyServiceConfigBuilder> , KubernetesResource
 {
 
     @JsonProperty("name")
@@ -69,10 +69,10 @@ public class ConsolePluginSpecPService implements Editable<ConsolePluginSpecPSer
      * No args constructor for use in serialization
      * 
      */
-    public ConsolePluginSpecPService() {
+    public ConsolePluginProxyServiceConfig() {
     }
 
-    public ConsolePluginSpecPService(String name, String namespace, Integer port) {
+    public ConsolePluginProxyServiceConfig(String name, String namespace, Integer port) {
         super();
         this.name = name;
         this.namespace = namespace;
@@ -110,12 +110,12 @@ public class ConsolePluginSpecPService implements Editable<ConsolePluginSpecPSer
     }
 
     @JsonIgnore
-    public ConsolePluginSpecPServiceBuilder edit() {
-        return new ConsolePluginSpecPServiceBuilder(this);
+    public ConsolePluginProxyServiceConfigBuilder edit() {
+        return new ConsolePluginProxyServiceConfigBuilder(this);
     }
 
     @JsonIgnore
-    public ConsolePluginSpecPServiceBuilder toBuilder() {
+    public ConsolePluginProxyServiceConfigBuilder toBuilder() {
         return edit();
     }
 

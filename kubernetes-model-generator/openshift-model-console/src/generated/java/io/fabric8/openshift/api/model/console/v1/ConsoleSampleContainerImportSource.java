@@ -31,8 +31,8 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "service",
-    "type"
+    "image",
+    "service"
 })
 @ToString
 @EqualsAndHashCode
@@ -52,13 +52,13 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ConsolePluginSpecBackend implements Editable<ConsolePluginSpecBackendBuilder> , KubernetesResource
+public class ConsoleSampleContainerImportSource implements Editable<ConsoleSampleContainerImportSourceBuilder> , KubernetesResource
 {
 
+    @JsonProperty("image")
+    private String image;
     @JsonProperty("service")
-    private ConsolePluginSpecBService service;
-    @JsonProperty("type")
-    private String type;
+    private ConsoleSampleContainerImportSourceService service;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -66,42 +66,42 @@ public class ConsolePluginSpecBackend implements Editable<ConsolePluginSpecBacke
      * No args constructor for use in serialization
      * 
      */
-    public ConsolePluginSpecBackend() {
+    public ConsoleSampleContainerImportSource() {
     }
 
-    public ConsolePluginSpecBackend(ConsolePluginSpecBService service, String type) {
+    public ConsoleSampleContainerImportSource(String image, ConsoleSampleContainerImportSourceService service) {
         super();
+        this.image = image;
         this.service = service;
-        this.type = type;
+    }
+
+    @JsonProperty("image")
+    public String getImage() {
+        return image;
+    }
+
+    @JsonProperty("image")
+    public void setImage(String image) {
+        this.image = image;
     }
 
     @JsonProperty("service")
-    public ConsolePluginSpecBService getService() {
+    public ConsoleSampleContainerImportSourceService getService() {
         return service;
     }
 
     @JsonProperty("service")
-    public void setService(ConsolePluginSpecBService service) {
+    public void setService(ConsoleSampleContainerImportSourceService service) {
         this.service = service;
     }
 
-    @JsonProperty("type")
-    public String getType() {
-        return type;
-    }
-
-    @JsonProperty("type")
-    public void setType(String type) {
-        this.type = type;
+    @JsonIgnore
+    public ConsoleSampleContainerImportSourceBuilder edit() {
+        return new ConsoleSampleContainerImportSourceBuilder(this);
     }
 
     @JsonIgnore
-    public ConsolePluginSpecBackendBuilder edit() {
-        return new ConsolePluginSpecBackendBuilder(this);
-    }
-
-    @JsonIgnore
-    public ConsolePluginSpecBackendBuilder toBuilder() {
+    public ConsoleSampleContainerImportSourceBuilder toBuilder() {
         return edit();
     }
 

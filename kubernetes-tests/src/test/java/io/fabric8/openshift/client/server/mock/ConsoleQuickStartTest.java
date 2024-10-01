@@ -19,7 +19,7 @@ import io.fabric8.openshift.api.model.console.v1.ConsoleQuickStart;
 import io.fabric8.openshift.api.model.console.v1.ConsoleQuickStartBuilder;
 import io.fabric8.openshift.api.model.console.v1.ConsoleQuickStartList;
 import io.fabric8.openshift.api.model.console.v1.ConsoleQuickStartListBuilder;
-import io.fabric8.openshift.api.model.console.v1.ConsoleQuickStartSpecTasksBuilder;
+import io.fabric8.openshift.api.model.console.v1.ConsoleQuickStartTaskBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.junit.jupiter.api.Test;
 
@@ -89,7 +89,7 @@ class ConsoleQuickStartTest {
         .withDescription("Now that you’ve created a sample application and added health checks,\n" +
             "    let’s monitor your application.")
         .withDisplayName("Test Monitor your application")
-        .withTasks(new ConsoleQuickStartSpecTasksBuilder()
+        .withTasks(new ConsoleQuickStartTaskBuilder()
             .withDescription("Console Quickstart task")
             .withTitle("test console quickstart")
             .build())

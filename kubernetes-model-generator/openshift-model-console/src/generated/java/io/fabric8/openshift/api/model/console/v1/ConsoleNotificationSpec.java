@@ -63,7 +63,7 @@ public class ConsoleNotificationSpec implements Editable<ConsoleNotificationSpec
     @JsonProperty("color")
     private String color;
     @JsonProperty("link")
-    private ConsoleNotificationSpecLink link;
+    private Link link;
     @JsonProperty("location")
     private String location;
     @JsonProperty("text")
@@ -78,7 +78,7 @@ public class ConsoleNotificationSpec implements Editable<ConsoleNotificationSpec
     public ConsoleNotificationSpec() {
     }
 
-    public ConsoleNotificationSpec(String backgroundColor, String color, ConsoleNotificationSpecLink link, String location, String text) {
+    public ConsoleNotificationSpec(String backgroundColor, String color, Link link, String location, String text) {
         super();
         this.backgroundColor = backgroundColor;
         this.color = color;
@@ -108,12 +108,12 @@ public class ConsoleNotificationSpec implements Editable<ConsoleNotificationSpec
     }
 
     @JsonProperty("link")
-    public ConsoleNotificationSpecLink getLink() {
+    public Link getLink() {
         return link;
     }
 
     @JsonProperty("link")
-    public void setLink(ConsoleNotificationSpecLink link) {
+    public void setLink(Link link) {
         this.link = link;
     }
 

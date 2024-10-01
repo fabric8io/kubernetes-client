@@ -1,9 +1,7 @@
 
-package io.fabric8.openshift.api.model.console.v1alpha1;
+package io.fabric8.openshift.api.model.console.v1;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -33,9 +31,8 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "displayName",
-    "proxy",
-    "service"
+    "service",
+    "type"
 })
 @ToString
 @EqualsAndHashCode
@@ -55,16 +52,13 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ConsolePluginSpec implements Editable<ConsolePluginSpecBuilder> , KubernetesResource
+public class ConsolePluginProxyEndpoint implements Editable<ConsolePluginProxyEndpointBuilder> , KubernetesResource
 {
 
-    @JsonProperty("displayName")
-    private String displayName;
-    @JsonProperty("proxy")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ConsolePluginSpecProxy> proxy = new ArrayList<>();
     @JsonProperty("service")
-    private ConsolePluginSpecService service;
+    private ConsolePluginProxyServiceConfig service;
+    @JsonProperty("type")
+    private String type;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -72,54 +66,42 @@ public class ConsolePluginSpec implements Editable<ConsolePluginSpecBuilder> , K
      * No args constructor for use in serialization
      * 
      */
-    public ConsolePluginSpec() {
+    public ConsolePluginProxyEndpoint() {
     }
 
-    public ConsolePluginSpec(String displayName, List<ConsolePluginSpecProxy> proxy, ConsolePluginSpecService service) {
+    public ConsolePluginProxyEndpoint(ConsolePluginProxyServiceConfig service, String type) {
         super();
-        this.displayName = displayName;
-        this.proxy = proxy;
         this.service = service;
-    }
-
-    @JsonProperty("displayName")
-    public String getDisplayName() {
-        return displayName;
-    }
-
-    @JsonProperty("displayName")
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
-    }
-
-    @JsonProperty("proxy")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<ConsolePluginSpecProxy> getProxy() {
-        return proxy;
-    }
-
-    @JsonProperty("proxy")
-    public void setProxy(List<ConsolePluginSpecProxy> proxy) {
-        this.proxy = proxy;
+        this.type = type;
     }
 
     @JsonProperty("service")
-    public ConsolePluginSpecService getService() {
+    public ConsolePluginProxyServiceConfig getService() {
         return service;
     }
 
     @JsonProperty("service")
-    public void setService(ConsolePluginSpecService service) {
+    public void setService(ConsolePluginProxyServiceConfig service) {
         this.service = service;
     }
 
-    @JsonIgnore
-    public ConsolePluginSpecBuilder edit() {
-        return new ConsolePluginSpecBuilder(this);
+    @JsonProperty("type")
+    public String getType() {
+        return type;
+    }
+
+    @JsonProperty("type")
+    public void setType(String type) {
+        this.type = type;
     }
 
     @JsonIgnore
-    public ConsolePluginSpecBuilder toBuilder() {
+    public ConsolePluginProxyEndpointBuilder edit() {
+        return new ConsolePluginProxyEndpointBuilder(this);
+    }
+
+    @JsonIgnore
+    public ConsolePluginProxyEndpointBuilder toBuilder() {
         return edit();
     }
 

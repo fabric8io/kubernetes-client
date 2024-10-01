@@ -26,12 +26,12 @@ import io.fabric8.openshift.api.model.console.v1.ConsoleLink;
 import io.fabric8.openshift.api.model.console.v1.ConsoleLinkList;
 import io.fabric8.openshift.api.model.console.v1.ConsoleNotification;
 import io.fabric8.openshift.api.model.console.v1.ConsoleNotificationList;
+import io.fabric8.openshift.api.model.console.v1.ConsolePlugin;
+import io.fabric8.openshift.api.model.console.v1.ConsolePluginList;
 import io.fabric8.openshift.api.model.console.v1.ConsoleQuickStart;
 import io.fabric8.openshift.api.model.console.v1.ConsoleQuickStartList;
 import io.fabric8.openshift.api.model.console.v1.ConsoleYAMLSample;
 import io.fabric8.openshift.api.model.console.v1.ConsoleYAMLSampleList;
-import io.fabric8.openshift.api.model.console.v1alpha1.ConsolePlugin;
-import io.fabric8.openshift.api.model.console.v1alpha1.ConsolePluginList;
 
 public interface OpenShiftConsoleAPIGroupDSL extends Client {
   /**
@@ -77,7 +77,7 @@ public interface OpenShiftConsoleAPIGroupDSL extends Client {
   NonNamespaceOperation<ConsoleQuickStart, ConsoleQuickStartList, Resource<ConsoleQuickStart>> consoleQuickStarts();
 
   /**
-   * DSL entrypoint for ConsolePlugin (console.openshift.io/v1alpha1
+   * DSL entrypoint for ConsolePlugin (console.openshift.io/v1
    *
    * @return NonNamespaceOperation object for ConsolePlugin
    */

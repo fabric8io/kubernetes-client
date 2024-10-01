@@ -31,8 +31,10 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "repository",
-    "service"
+    "basePath",
+    "name",
+    "namespace",
+    "port"
 })
 @ToString
 @EqualsAndHashCode
@@ -52,13 +54,17 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ConsoleSampleSpecSGitImport implements Editable<ConsoleSampleSpecSGitImportBuilder> , KubernetesResource
+public class ConsolePluginService implements Editable<ConsolePluginServiceBuilder> , KubernetesResource
 {
 
-    @JsonProperty("repository")
-    private ConsoleSampleSpecSGIRepository repository;
-    @JsonProperty("service")
-    private ConsoleSampleSpecSGIService service;
+    @JsonProperty("basePath")
+    private String basePath;
+    @JsonProperty("name")
+    private String name;
+    @JsonProperty("namespace")
+    private String namespace;
+    @JsonProperty("port")
+    private Integer port;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -66,42 +72,64 @@ public class ConsoleSampleSpecSGitImport implements Editable<ConsoleSampleSpecSG
      * No args constructor for use in serialization
      * 
      */
-    public ConsoleSampleSpecSGitImport() {
+    public ConsolePluginService() {
     }
 
-    public ConsoleSampleSpecSGitImport(ConsoleSampleSpecSGIRepository repository, ConsoleSampleSpecSGIService service) {
+    public ConsolePluginService(String basePath, String name, String namespace, Integer port) {
         super();
-        this.repository = repository;
-        this.service = service;
+        this.basePath = basePath;
+        this.name = name;
+        this.namespace = namespace;
+        this.port = port;
     }
 
-    @JsonProperty("repository")
-    public ConsoleSampleSpecSGIRepository getRepository() {
-        return repository;
+    @JsonProperty("basePath")
+    public String getBasePath() {
+        return basePath;
     }
 
-    @JsonProperty("repository")
-    public void setRepository(ConsoleSampleSpecSGIRepository repository) {
-        this.repository = repository;
+    @JsonProperty("basePath")
+    public void setBasePath(String basePath) {
+        this.basePath = basePath;
     }
 
-    @JsonProperty("service")
-    public ConsoleSampleSpecSGIService getService() {
-        return service;
+    @JsonProperty("name")
+    public String getName() {
+        return name;
     }
 
-    @JsonProperty("service")
-    public void setService(ConsoleSampleSpecSGIService service) {
-        this.service = service;
+    @JsonProperty("name")
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @JsonProperty("namespace")
+    public String getNamespace() {
+        return namespace;
+    }
+
+    @JsonProperty("namespace")
+    public void setNamespace(String namespace) {
+        this.namespace = namespace;
+    }
+
+    @JsonProperty("port")
+    public Integer getPort() {
+        return port;
+    }
+
+    @JsonProperty("port")
+    public void setPort(Integer port) {
+        this.port = port;
     }
 
     @JsonIgnore
-    public ConsoleSampleSpecSGitImportBuilder edit() {
-        return new ConsoleSampleSpecSGitImportBuilder(this);
+    public ConsolePluginServiceBuilder edit() {
+        return new ConsolePluginServiceBuilder(this);
     }
 
     @JsonIgnore
-    public ConsoleSampleSpecSGitImportBuilder toBuilder() {
+    public ConsolePluginServiceBuilder toBuilder() {
         return edit();
     }
 

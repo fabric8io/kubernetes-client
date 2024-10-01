@@ -31,8 +31,9 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "href",
-    "text"
+    "containerImport",
+    "gitImport",
+    "type"
 })
 @ToString
 @EqualsAndHashCode
@@ -52,13 +53,15 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ConsoleNotificationSpecLink implements Editable<ConsoleNotificationSpecLinkBuilder> , KubernetesResource
+public class ConsoleSampleSource implements Editable<ConsoleSampleSourceBuilder> , KubernetesResource
 {
 
-    @JsonProperty("href")
-    private String href;
-    @JsonProperty("text")
-    private String text;
+    @JsonProperty("containerImport")
+    private ConsoleSampleContainerImportSource containerImport;
+    @JsonProperty("gitImport")
+    private ConsoleSampleGitImportSource gitImport;
+    @JsonProperty("type")
+    private String type;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -66,42 +69,53 @@ public class ConsoleNotificationSpecLink implements Editable<ConsoleNotification
      * No args constructor for use in serialization
      * 
      */
-    public ConsoleNotificationSpecLink() {
+    public ConsoleSampleSource() {
     }
 
-    public ConsoleNotificationSpecLink(String href, String text) {
+    public ConsoleSampleSource(ConsoleSampleContainerImportSource containerImport, ConsoleSampleGitImportSource gitImport, String type) {
         super();
-        this.href = href;
-        this.text = text;
+        this.containerImport = containerImport;
+        this.gitImport = gitImport;
+        this.type = type;
     }
 
-    @JsonProperty("href")
-    public String getHref() {
-        return href;
+    @JsonProperty("containerImport")
+    public ConsoleSampleContainerImportSource getContainerImport() {
+        return containerImport;
     }
 
-    @JsonProperty("href")
-    public void setHref(String href) {
-        this.href = href;
+    @JsonProperty("containerImport")
+    public void setContainerImport(ConsoleSampleContainerImportSource containerImport) {
+        this.containerImport = containerImport;
     }
 
-    @JsonProperty("text")
-    public String getText() {
-        return text;
+    @JsonProperty("gitImport")
+    public ConsoleSampleGitImportSource getGitImport() {
+        return gitImport;
     }
 
-    @JsonProperty("text")
-    public void setText(String text) {
-        this.text = text;
+    @JsonProperty("gitImport")
+    public void setGitImport(ConsoleSampleGitImportSource gitImport) {
+        this.gitImport = gitImport;
+    }
+
+    @JsonProperty("type")
+    public String getType() {
+        return type;
+    }
+
+    @JsonProperty("type")
+    public void setType(String type) {
+        this.type = type;
     }
 
     @JsonIgnore
-    public ConsoleNotificationSpecLinkBuilder edit() {
-        return new ConsoleNotificationSpecLinkBuilder(this);
+    public ConsoleSampleSourceBuilder edit() {
+        return new ConsoleSampleSourceBuilder(this);
     }
 
     @JsonIgnore
-    public ConsoleNotificationSpecLinkBuilder toBuilder() {
+    public ConsoleSampleSourceBuilder toBuilder() {
         return edit();
     }
 

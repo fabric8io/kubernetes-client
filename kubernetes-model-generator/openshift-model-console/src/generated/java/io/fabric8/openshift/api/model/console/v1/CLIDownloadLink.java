@@ -31,9 +31,8 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "contextDir",
-    "revision",
-    "url"
+    "href",
+    "text"
 })
 @ToString
 @EqualsAndHashCode
@@ -53,15 +52,13 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ConsoleSampleSpecSGIRepository implements Editable<ConsoleSampleSpecSGIRepositoryBuilder> , KubernetesResource
+public class CLIDownloadLink implements Editable<CLIDownloadLinkBuilder> , KubernetesResource
 {
 
-    @JsonProperty("contextDir")
-    private String contextDir;
-    @JsonProperty("revision")
-    private String revision;
-    @JsonProperty("url")
-    private String url;
+    @JsonProperty("href")
+    private String href;
+    @JsonProperty("text")
+    private String text;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -69,53 +66,42 @@ public class ConsoleSampleSpecSGIRepository implements Editable<ConsoleSampleSpe
      * No args constructor for use in serialization
      * 
      */
-    public ConsoleSampleSpecSGIRepository() {
+    public CLIDownloadLink() {
     }
 
-    public ConsoleSampleSpecSGIRepository(String contextDir, String revision, String url) {
+    public CLIDownloadLink(String href, String text) {
         super();
-        this.contextDir = contextDir;
-        this.revision = revision;
-        this.url = url;
+        this.href = href;
+        this.text = text;
     }
 
-    @JsonProperty("contextDir")
-    public String getContextDir() {
-        return contextDir;
+    @JsonProperty("href")
+    public String getHref() {
+        return href;
     }
 
-    @JsonProperty("contextDir")
-    public void setContextDir(String contextDir) {
-        this.contextDir = contextDir;
+    @JsonProperty("href")
+    public void setHref(String href) {
+        this.href = href;
     }
 
-    @JsonProperty("revision")
-    public String getRevision() {
-        return revision;
+    @JsonProperty("text")
+    public String getText() {
+        return text;
     }
 
-    @JsonProperty("revision")
-    public void setRevision(String revision) {
-        this.revision = revision;
-    }
-
-    @JsonProperty("url")
-    public String getUrl() {
-        return url;
-    }
-
-    @JsonProperty("url")
-    public void setUrl(String url) {
-        this.url = url;
+    @JsonProperty("text")
+    public void setText(String text) {
+        this.text = text;
     }
 
     @JsonIgnore
-    public ConsoleSampleSpecSGIRepositoryBuilder edit() {
-        return new ConsoleSampleSpecSGIRepositoryBuilder(this);
+    public CLIDownloadLinkBuilder edit() {
+        return new CLIDownloadLinkBuilder(this);
     }
 
     @JsonIgnore
-    public ConsoleSampleSpecSGIRepositoryBuilder toBuilder() {
+    public CLIDownloadLinkBuilder toBuilder() {
         return edit();
     }
 
