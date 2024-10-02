@@ -17,7 +17,6 @@ package main
 
 import (
 	"github.com/getkin/kin-openapi/openapi3"
-	openshiftclusternetworkoperatorv1 "github.com/openshift/cluster-network-operator/pkg/apis/network/v1"
 	"github.com/spf13/cobra"
 	admissionV1 "k8s.io/api/admission/v1"
 	admissionV1Beta1 "k8s.io/api/admission/v1beta1"
@@ -118,11 +117,6 @@ var reflectionRun = func(cmd *cobra.Command, args []string) {
 			reflect.TypeOf(metricsV1Beta1.PodMetricsList{}):  {true, metricsV1Beta1.SchemeGroupVersion.String(), "pods", true},
 			reflect.TypeOf(metricsV1Beta1.PodMetrics{}):      {false, metricsV1Beta1.SchemeGroupVersion.String(), "pods", true},
 		}, "metrics"),
-		// OperatorPKI specs are not included in OpenApi
-		NewPathSchema(map[reflect.Type]ApiVersion{
-			reflect.TypeOf(openshiftclusternetworkoperatorv1.OperatorPKIList{}): {true, openshiftclusternetworkoperatorv1.GroupVersion.String(), "operatorpkis", true},
-			reflect.TypeOf(openshiftclusternetworkoperatorv1.OperatorPKI{}):     {false, openshiftclusternetworkoperatorv1.GroupVersion.String(), "operatorpkis", true},
-		}, "openshift-cluster-network-operator"),
 	}
 	generate(schemas, targetDirectory)
 }

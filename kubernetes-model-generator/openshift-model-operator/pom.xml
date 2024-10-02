@@ -66,14 +66,9 @@
               <settings combine.self="append">
                 <schemas>
                   <schema>${openapi.schema.openshift-generated}</schema>
-                  <schema>${project.basedir}/../openapi/schemas/openshift-cluster-network-operator.json</schema>
                 </schemas>
-                <packageMappings combine.self="append">
-                  <com.github.openshift.cluster-network-operator.pkg.apis.network>io.fabric8.openshift.api.model.operator.network</com.github.openshift.cluster-network-operator.pkg.apis.network>
-                </packageMappings>
                 <includeGenerationRegexes>
                   <includeGenerationRegex>^io\.openshift\.operator\..*$</includeGenerationRegex>
-                  <includeGenerationRegex>^com\.github\.openshift\.cluster-network-operator\..*$</includeGenerationRegex>
                 </includeGenerationRegexes>
                 <skipGenerationRegexes>
                   <skipGenerationRegex>^io\.openshift\.operator\.samples\..*$</skipGenerationRegex>
