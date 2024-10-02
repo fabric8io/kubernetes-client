@@ -41,18 +41,6 @@ hs_err_pid*
 .idea/
 # if you remove the above rule, at least ignore the following:
 
-# User-specific stuff:
-# .idea/workspace.xml
-# .idea/tasks.xml
-# .idea/dictionaries
-
-# Sensitive or high-churn files:
-# .idea/dataSources.ids
-# .idea/dataSources.xml
-# .idea/sqlDataSources.xml
-# .idea/dynamic.xml
-# .idea/uiDesigner.xml
-
 # Gradle:
 .gradle
 # .idea/gradle.xml
@@ -81,11 +69,13 @@ com_crashlytics_export_strings.xml
 crashlytics.properties
 crashlytics-build.properties
 
-# Ignore generator binary output file and vendor directory
+# Ignore generator binary output file, vendor directory, and generated files
 kubernetes-model-generator/openapi/generator/generator
 kubernetes-model-generator/openapi/generator/vendor
 kubernetes-model-generator/*/generate
 extensions/*/generator/generate
+zz_generated.openapi.go
+zz_generated.openapi.go.report.txt
 
 # Formatter and Impsort cache directory
 .cache

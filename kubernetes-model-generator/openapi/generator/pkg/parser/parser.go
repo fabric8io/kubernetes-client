@@ -17,6 +17,7 @@ package parser
 
 import (
 	"fmt"
+	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/pkg/kubernetes"
 	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/pkg/openapi"
 	"k8s.io/gengo/v2/parser"
 	"k8s.io/gengo/v2/types"
@@ -27,11 +28,8 @@ const genClient = "+genclient"
 const genClientPrefix = genClient + ":"
 const groupNamePrefix = "+groupName="
 
-var listMeta = types.ParseFullyQualifiedName("k8s.io/apimachinery/pkg/apis/meta/v1.ListMeta")
-var typeMeta = types.ParseFullyQualifiedName("k8s.io/apimachinery/pkg/apis/meta/v1.TypeMeta")
-
 type Module struct {
-	Name     string
+	patterns []string
 	parser   *parser.Parser
 	universe *types.Universe
 }
@@ -45,9 +43,9 @@ type Fabric8Info struct {
 	Scope   string
 }
 
-func NewModule(name string) *Module {
+func NewModule(patterns ...string) *Module {
 	p := parser.New()
-	err := p.LoadPackages(name)
+	err := p.LoadPackages(patterns...)
 	if err != nil {
 		panic(fmt.Sprintf("error loading packages: %v", err))
 	}
@@ -56,7 +54,7 @@ func NewModule(name string) *Module {
 		panic(fmt.Sprintf("error creating universe: %v", err))
 	}
 	return &Module{
-		Name:     name,
+		patterns: patterns,
 		parser:   p,
 		universe: &universe,
 	}
@@ -75,14 +73,18 @@ func (oam *Module) ExtractInfo(definitionName string) *Fabric8Info {
 }
 
 func (oam *Module) ApiName(definitionName string) string {
-	if strings.Index(definitionName, oam.Name) != 0 {
+	// Don't treat k8s.io types, json is expected to contain the full Go definition name instead of the group/version
+	if strings.HasPrefix(definitionName, "k8s.io/") {
 		return openapi.FriendlyName(definitionName)
 	}
 	lastSeparator := strings.LastIndex(definitionName, ".")
 	typeName := definitionName[lastSeparator+1:]
 	pkg := oam.resolvePackage(definitionName)
-	groupName := groupName(pkg)
-	groupParts := strings.Split(groupName, ".")
+	gn := groupName(pkg)
+	if gn == "" {
+		return openapi.FriendlyName(definitionName)
+	}
+	groupParts := strings.Split(gn, ".")
 	for i, j := 0, len(groupParts)-1; i < j; i, j = i+1, j-1 {
 		groupParts[i], groupParts[j] = groupParts[j], groupParts[i]
 	}
@@ -92,13 +94,12 @@ func (oam *Module) ApiName(definitionName string) string {
 func (oam *Module) resolvePackage(definitionName string) *types.Package {
 	lastSeparator := strings.LastIndex(definitionName, ".")
 	packageName := definitionName[:lastSeparator]
-	_, err := oam.parser.LoadPackagesTo(oam.universe, packageName)
-	if err != nil {
-		panic(fmt.Sprintf("error loading packages: %v", err))
-	}
 	pkg := oam.universe.Package(packageName)
-	if pkg == nil {
-		panic(fmt.Sprintf("package %s not found", packageName))
+	if pkg == nil || pkg.Name == "" {
+		_, err := oam.parser.LoadPackagesTo(oam.universe, packageName)
+		if err != nil {
+			panic(fmt.Sprintf("error loading packages: %v", err))
+		}
 	}
 	return pkg
 }
@@ -124,11 +125,11 @@ func resolveType(typ *types.Type) string {
 	isList := false
 	isObject := false
 	for _, m := range typ.Members {
-		if m.Embedded == true && m.Type.Name == listMeta {
+		if m.Embedded == true && m.Type.Name == kubernetes.ListMeta {
 			isList = true
 			// stop iterating, if it's a list then it's not an object
 			break
-		} else if m.Embedded == true && m.Type.Name == typeMeta {
+		} else if m.Embedded == true && m.Type.Name == kubernetes.TypeMeta {
 			isObject = true
 			// keep iterating, maybe it's a list
 		}

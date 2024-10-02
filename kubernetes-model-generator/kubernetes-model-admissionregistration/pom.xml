@@ -69,7 +69,6 @@
                   <schema>${project.basedir}/../openapi/schemas/admission-registration.json</schema>
                 </schemas>
                 <packageMappings combine.self="append">
-                  <io.k8s.api>io.fabric8.kubernetes.api.model</io.k8s.api>
                   <io.k8s.api.authentication.v1>io.fabric8.kubernetes.api.model.authentication</io.k8s.api.authentication.v1>
                 </packageMappings>
                 <includeGenerationRegexes>
