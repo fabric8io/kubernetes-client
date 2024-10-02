@@ -746,7 +746,6 @@
         <groupId>io.sundr</groupId>
         <artifactId>builder-annotations</artifactId>
         <version>${sundrio.version}</version>
-        <scope>provided</scope>
         <exclusions>
           <exclusion>
             <groupId>com.sun</groupId>
