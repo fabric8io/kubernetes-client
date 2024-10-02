@@ -22,6 +22,8 @@ import (
 	"fmt"
 	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/pkg/openapi"
 	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/pkg/openshift"
+	//openshiftbaremetaloperatorv1alpha1 "github.com/metal3-io/baremetal-operator/apis/metal3.io/v1alpha1"
+	openshiftcloudcredentialoperatorv1 "github.com/openshift/cloud-credential-operator/pkg/apis/cloudcredential/v1"
 	openshiftclusternetworkoperatorv1 "github.com/openshift/cluster-network-operator/pkg/apis/network/v1"
 	operatorframeworkv1 "github.com/operator-framework/api/pkg/operators/v1"
 	operatorframeworkv1alpha1 "github.com/operator-framework/api/pkg/operators/v1alpha1"
@@ -36,7 +38,9 @@ func main() {
 		// Force imports so that modules are present in go.mod
 		operatorframeworkv1alpha1.SchemeGroupVersion.String(),
 		operatorframeworkv1.GroupVersion.String(),
+		//openshiftbaremetaloperatorv1alpha1.GroupVersion.String(),
 		openshiftclusternetworkoperatorv1.GroupVersion.String(),
+		openshiftcloudcredentialoperatorv1.GroupVersion.String(),
 		olm.SchemeGroupVersion.String(),
 	})
 	err := (&openapi.GoGenerator{
