@@ -21,6 +21,7 @@ import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
+import io.fabric8.kubernetes.api.model.Quantity;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
@@ -31,11 +32,11 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "custom",
-    "intermediate",
-    "modern",
-    "old",
-    "type"
+    "defaultRuntime",
+    "logLevel",
+    "logSizeMax",
+    "overlaySize",
+    "pidsLimit"
 })
 @ToString
 @EqualsAndHashCode
@@ -55,23 +56,19 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class KubeletConfigSpecTlsSecurityProfile implements Editable<KubeletConfigSpecTlsSecurityProfileBuilder> , KubernetesResource
+public class ContainerRuntimeConfiguration implements Editable<ContainerRuntimeConfigurationBuilder> , KubernetesResource
 {
 
-    @JsonProperty("custom")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
-    private Object custom;
-    @JsonProperty("intermediate")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
-    private Object intermediate;
-    @JsonProperty("modern")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
-    private Object modern;
-    @JsonProperty("old")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
-    private Object old;
-    @JsonProperty("type")
-    private String type;
+    @JsonProperty("defaultRuntime")
+    private String defaultRuntime;
+    @JsonProperty("logLevel")
+    private String logLevel;
+    @JsonProperty("logSizeMax")
+    private Quantity logSizeMax;
+    @JsonProperty("overlaySize")
+    private Quantity overlaySize;
+    @JsonProperty("pidsLimit")
+    private Long pidsLimit;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -79,79 +76,75 @@ public class KubeletConfigSpecTlsSecurityProfile implements Editable<KubeletConf
      * No args constructor for use in serialization
      * 
      */
-    public KubeletConfigSpecTlsSecurityProfile() {
+    public ContainerRuntimeConfiguration() {
     }
 
-    public KubeletConfigSpecTlsSecurityProfile(Object custom, Object intermediate, Object modern, Object old, String type) {
+    public ContainerRuntimeConfiguration(String defaultRuntime, String logLevel, Quantity logSizeMax, Quantity overlaySize, Long pidsLimit) {
         super();
-        this.custom = custom;
-        this.intermediate = intermediate;
-        this.modern = modern;
-        this.old = old;
-        this.type = type;
+        this.defaultRuntime = defaultRuntime;
+        this.logLevel = logLevel;
+        this.logSizeMax = logSizeMax;
+        this.overlaySize = overlaySize;
+        this.pidsLimit = pidsLimit;
     }
 
-    @JsonProperty("custom")
-    public Object getCustom() {
-        return custom;
+    @JsonProperty("defaultRuntime")
+    public String getDefaultRuntime() {
+        return defaultRuntime;
     }
 
-    @JsonProperty("custom")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
-    public void setCustom(Object custom) {
-        this.custom = custom;
+    @JsonProperty("defaultRuntime")
+    public void setDefaultRuntime(String defaultRuntime) {
+        this.defaultRuntime = defaultRuntime;
     }
 
-    @JsonProperty("intermediate")
-    public Object getIntermediate() {
-        return intermediate;
+    @JsonProperty("logLevel")
+    public String getLogLevel() {
+        return logLevel;
     }
 
-    @JsonProperty("intermediate")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
-    public void setIntermediate(Object intermediate) {
-        this.intermediate = intermediate;
+    @JsonProperty("logLevel")
+    public void setLogLevel(String logLevel) {
+        this.logLevel = logLevel;
     }
 
-    @JsonProperty("modern")
-    public Object getModern() {
-        return modern;
+    @JsonProperty("logSizeMax")
+    public Quantity getLogSizeMax() {
+        return logSizeMax;
     }
 
-    @JsonProperty("modern")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
-    public void setModern(Object modern) {
-        this.modern = modern;
+    @JsonProperty("logSizeMax")
+    public void setLogSizeMax(Quantity logSizeMax) {
+        this.logSizeMax = logSizeMax;
     }
 
-    @JsonProperty("old")
-    public Object getOld() {
-        return old;
+    @JsonProperty("overlaySize")
+    public Quantity getOverlaySize() {
+        return overlaySize;
     }
 
-    @JsonProperty("old")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
-    public void setOld(Object old) {
-        this.old = old;
+    @JsonProperty("overlaySize")
+    public void setOverlaySize(Quantity overlaySize) {
+        this.overlaySize = overlaySize;
     }
 
-    @JsonProperty("type")
-    public String getType() {
-        return type;
+    @JsonProperty("pidsLimit")
+    public Long getPidsLimit() {
+        return pidsLimit;
     }
 
-    @JsonProperty("type")
-    public void setType(String type) {
-        this.type = type;
+    @JsonProperty("pidsLimit")
+    public void setPidsLimit(Long pidsLimit) {
+        this.pidsLimit = pidsLimit;
     }
 
     @JsonIgnore
-    public KubeletConfigSpecTlsSecurityProfileBuilder edit() {
-        return new KubeletConfigSpecTlsSecurityProfileBuilder(this);
+    public ContainerRuntimeConfigurationBuilder edit() {
+        return new ContainerRuntimeConfigurationBuilder(this);
     }
 
     @JsonIgnore
-    public KubeletConfigSpecTlsSecurityProfileBuilder toBuilder() {
+    public ContainerRuntimeConfigurationBuilder toBuilder() {
         return edit();
     }
 

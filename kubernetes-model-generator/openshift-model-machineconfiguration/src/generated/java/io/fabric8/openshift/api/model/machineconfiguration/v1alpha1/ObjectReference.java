@@ -1,5 +1,5 @@
 
-package io.fabric8.openshift.api.model.machineconfiguration.v1;
+package io.fabric8.openshift.api.model.machineconfiguration.v1alpha1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -18,7 +18,6 @@ import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
-import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
@@ -31,13 +30,10 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "apiVersion",
-    "kind",
-    "fieldPath",
+    "group",
     "name",
     "namespace",
-    "resourceVersion",
-    "uid"
+    "resource"
 })
 @ToString
 @EqualsAndHashCode
@@ -52,28 +48,22 @@ import lombok.experimental.Accessors;
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
-    @BuildableReference(ObjectReference.class),
+    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ControllerConfigSpecPullSecret implements Editable<ControllerConfigSpecPullSecretBuilder> , KubernetesResource
+public class ObjectReference implements Editable<ObjectReferenceBuilder> , KubernetesResource
 {
 
-    @JsonProperty("apiVersion")
-    private String apiVersion;
-    @JsonProperty("fieldPath")
-    private String fieldPath;
-    @JsonProperty("kind")
-    private String kind;
+    @JsonProperty("group")
+    private String group;
     @JsonProperty("name")
     private String name;
     @JsonProperty("namespace")
     private String namespace;
-    @JsonProperty("resourceVersion")
-    private String resourceVersion;
-    @JsonProperty("uid")
-    private String uid;
+    @JsonProperty("resource")
+    private String resource;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -81,48 +71,25 @@ public class ControllerConfigSpecPullSecret implements Editable<ControllerConfig
      * No args constructor for use in serialization
      * 
      */
-    public ControllerConfigSpecPullSecret() {
+    public ObjectReference() {
     }
 
-    public ControllerConfigSpecPullSecret(String apiVersion, String fieldPath, String kind, String name, String namespace, String resourceVersion, String uid) {
+    public ObjectReference(String group, String name, String namespace, String resource) {
         super();
-        this.apiVersion = apiVersion;
-        this.fieldPath = fieldPath;
-        this.kind = kind;
+        this.group = group;
         this.name = name;
         this.namespace = namespace;
-        this.resourceVersion = resourceVersion;
-        this.uid = uid;
+        this.resource = resource;
     }
 
-    @JsonProperty("apiVersion")
-    public String getApiVersion() {
-        return apiVersion;
+    @JsonProperty("group")
+    public String getGroup() {
+        return group;
     }
 
-    @JsonProperty("apiVersion")
-    public void setApiVersion(String apiVersion) {
-        this.apiVersion = apiVersion;
-    }
-
-    @JsonProperty("fieldPath")
-    public String getFieldPath() {
-        return fieldPath;
-    }
-
-    @JsonProperty("fieldPath")
-    public void setFieldPath(String fieldPath) {
-        this.fieldPath = fieldPath;
-    }
-
-    @JsonProperty("kind")
-    public String getKind() {
-        return kind;
-    }
-
-    @JsonProperty("kind")
-    public void setKind(String kind) {
-        this.kind = kind;
+    @JsonProperty("group")
+    public void setGroup(String group) {
+        this.group = group;
     }
 
     @JsonProperty("name")
@@ -145,33 +112,23 @@ public class ControllerConfigSpecPullSecret implements Editable<ControllerConfig
         this.namespace = namespace;
     }
 
-    @JsonProperty("resourceVersion")
-    public String getResourceVersion() {
-        return resourceVersion;
+    @JsonProperty("resource")
+    public String getResource() {
+        return resource;
     }
 
-    @JsonProperty("resourceVersion")
-    public void setResourceVersion(String resourceVersion) {
-        this.resourceVersion = resourceVersion;
-    }
-
-    @JsonProperty("uid")
-    public String getUid() {
-        return uid;
-    }
-
-    @JsonProperty("uid")
-    public void setUid(String uid) {
-        this.uid = uid;
+    @JsonProperty("resource")
+    public void setResource(String resource) {
+        this.resource = resource;
     }
 
     @JsonIgnore
-    public ControllerConfigSpecPullSecretBuilder edit() {
-        return new ControllerConfigSpecPullSecretBuilder(this);
+    public ObjectReferenceBuilder edit() {
+        return new ObjectReferenceBuilder(this);
     }
 
     @JsonIgnore
-    public ControllerConfigSpecPullSecretBuilder toBuilder() {
+    public ObjectReferenceBuilder toBuilder() {
         return edit();
     }
 

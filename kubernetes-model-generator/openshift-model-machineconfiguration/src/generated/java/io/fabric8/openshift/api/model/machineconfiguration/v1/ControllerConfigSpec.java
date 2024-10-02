@@ -24,6 +24,9 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
+import io.fabric8.openshift.api.model.config.v1.DNS;
+import io.fabric8.openshift.api.model.config.v1.Infrastructure;
+import io.fabric8.openshift.api.model.config.v1.ProxyStatus;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -79,44 +82,40 @@ public class ControllerConfigSpec implements Editable<ControllerConfigSpecBuilde
 {
 
     @JsonProperty("additionalTrustBundle")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
-    private Object additionalTrustBundle;
+    private String additionalTrustBundle;
     @JsonProperty("baseOSContainerImage")
     private String baseOSContainerImage;
     @JsonProperty("baseOSExtensionsContainerImage")
     private String baseOSExtensionsContainerImage;
     @JsonProperty("cloudProviderCAData")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
-    private Object cloudProviderCAData;
+    private String cloudProviderCAData;
     @JsonProperty("cloudProviderConfig")
     private String cloudProviderConfig;
     @JsonProperty("clusterDNSIP")
     private String clusterDNSIP;
     @JsonProperty("dns")
-    private ControllerConfigSpecDns dns;
+    private DNS dns;
     @JsonProperty("etcdDiscoveryDomain")
     private String etcdDiscoveryDomain;
     @JsonProperty("imageRegistryBundleData")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ControllerConfigSpecImageRegistryBundleData> imageRegistryBundleData = new ArrayList<>();
+    private List<ImageRegistryBundle> imageRegistryBundleData = new ArrayList<>();
     @JsonProperty("imageRegistryBundleUserData")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ControllerConfigSpecImageRegistryBundleUserData> imageRegistryBundleUserData = new ArrayList<>();
+    private List<ImageRegistryBundle> imageRegistryBundleUserData = new ArrayList<>();
     @JsonProperty("images")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> images = new LinkedHashMap<>();
     @JsonProperty("infra")
-    private ControllerConfigSpecInfra infra;
+    private Infrastructure infra;
     @JsonProperty("internalRegistryPullSecret")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
-    private Object internalRegistryPullSecret;
+    private String internalRegistryPullSecret;
     @JsonProperty("ipFamilies")
     private String ipFamilies;
     @JsonProperty("kubeAPIServerServingCAData")
     private String kubeAPIServerServingCAData;
     @JsonProperty("network")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
-    private Object network;
+    private NetworkInfo network;
     @JsonProperty("networkType")
     private String networkType;
     @JsonProperty("osImageURL")
@@ -124,10 +123,9 @@ public class ControllerConfigSpec implements Editable<ControllerConfigSpecBuilde
     @JsonProperty("platform")
     private String platform;
     @JsonProperty("proxy")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
-    private Object proxy;
+    private ProxyStatus proxy;
     @JsonProperty("pullSecret")
-    private ControllerConfigSpecPullSecret pullSecret;
+    private ObjectReference pullSecret;
     @JsonProperty("releaseImage")
     private String releaseImage;
     @JsonProperty("rootCAData")
@@ -142,7 +140,7 @@ public class ControllerConfigSpec implements Editable<ControllerConfigSpecBuilde
     public ControllerConfigSpec() {
     }
 
-    public ControllerConfigSpec(Object additionalTrustBundle, String baseOSContainerImage, String baseOSExtensionsContainerImage, Object cloudProviderCAData, String cloudProviderConfig, String clusterDNSIP, ControllerConfigSpecDns dns, String etcdDiscoveryDomain, List<ControllerConfigSpecImageRegistryBundleData> imageRegistryBundleData, List<ControllerConfigSpecImageRegistryBundleUserData> imageRegistryBundleUserData, Map<String, String> images, ControllerConfigSpecInfra infra, Object internalRegistryPullSecret, String ipFamilies, String kubeAPIServerServingCAData, Object network, String networkType, String osImageURL, String platform, Object proxy, ControllerConfigSpecPullSecret pullSecret, String releaseImage, String rootCAData) {
+    public ControllerConfigSpec(String additionalTrustBundle, String baseOSContainerImage, String baseOSExtensionsContainerImage, String cloudProviderCAData, String cloudProviderConfig, String clusterDNSIP, DNS dns, String etcdDiscoveryDomain, List<ImageRegistryBundle> imageRegistryBundleData, List<ImageRegistryBundle> imageRegistryBundleUserData, Map<String, String> images, Infrastructure infra, String internalRegistryPullSecret, String ipFamilies, String kubeAPIServerServingCAData, NetworkInfo network, String networkType, String osImageURL, String platform, ProxyStatus proxy, ObjectReference pullSecret, String releaseImage, String rootCAData) {
         super();
         this.additionalTrustBundle = additionalTrustBundle;
         this.baseOSContainerImage = baseOSContainerImage;
@@ -170,13 +168,12 @@ public class ControllerConfigSpec implements Editable<ControllerConfigSpecBuilde
     }
 
     @JsonProperty("additionalTrustBundle")
-    public Object getAdditionalTrustBundle() {
+    public String getAdditionalTrustBundle() {
         return additionalTrustBundle;
     }
 
     @JsonProperty("additionalTrustBundle")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
-    public void setAdditionalTrustBundle(Object additionalTrustBundle) {
+    public void setAdditionalTrustBundle(String additionalTrustBundle) {
         this.additionalTrustBundle = additionalTrustBundle;
     }
 
@@ -201,13 +198,12 @@ public class ControllerConfigSpec implements Editable<ControllerConfigSpecBuilde
     }
 
     @JsonProperty("cloudProviderCAData")
-    public Object getCloudProviderCAData() {
+    public String getCloudProviderCAData() {
         return cloudProviderCAData;
     }
 
     @JsonProperty("cloudProviderCAData")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
-    public void setCloudProviderCAData(Object cloudProviderCAData) {
+    public void setCloudProviderCAData(String cloudProviderCAData) {
         this.cloudProviderCAData = cloudProviderCAData;
     }
 
@@ -232,12 +228,12 @@ public class ControllerConfigSpec implements Editable<ControllerConfigSpecBuilde
     }
 
     @JsonProperty("dns")
-    public ControllerConfigSpecDns getDns() {
+    public DNS getDns() {
         return dns;
     }
 
     @JsonProperty("dns")
-    public void setDns(ControllerConfigSpecDns dns) {
+    public void setDns(DNS dns) {
         this.dns = dns;
     }
 
@@ -253,23 +249,23 @@ public class ControllerConfigSpec implements Editable<ControllerConfigSpecBuilde
 
     @JsonProperty("imageRegistryBundleData")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<ControllerConfigSpecImageRegistryBundleData> getImageRegistryBundleData() {
+    public List<ImageRegistryBundle> getImageRegistryBundleData() {
         return imageRegistryBundleData;
     }
 
     @JsonProperty("imageRegistryBundleData")
-    public void setImageRegistryBundleData(List<ControllerConfigSpecImageRegistryBundleData> imageRegistryBundleData) {
+    public void setImageRegistryBundleData(List<ImageRegistryBundle> imageRegistryBundleData) {
         this.imageRegistryBundleData = imageRegistryBundleData;
     }
 
     @JsonProperty("imageRegistryBundleUserData")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<ControllerConfigSpecImageRegistryBundleUserData> getImageRegistryBundleUserData() {
+    public List<ImageRegistryBundle> getImageRegistryBundleUserData() {
         return imageRegistryBundleUserData;
     }
 
     @JsonProperty("imageRegistryBundleUserData")
-    public void setImageRegistryBundleUserData(List<ControllerConfigSpecImageRegistryBundleUserData> imageRegistryBundleUserData) {
+    public void setImageRegistryBundleUserData(List<ImageRegistryBundle> imageRegistryBundleUserData) {
         this.imageRegistryBundleUserData = imageRegistryBundleUserData;
     }
 
@@ -285,23 +281,22 @@ public class ControllerConfigSpec implements Editable<ControllerConfigSpecBuilde
     }
 
     @JsonProperty("infra")
-    public ControllerConfigSpecInfra getInfra() {
+    public Infrastructure getInfra() {
         return infra;
     }
 
     @JsonProperty("infra")
-    public void setInfra(ControllerConfigSpecInfra infra) {
+    public void setInfra(Infrastructure infra) {
         this.infra = infra;
     }
 
     @JsonProperty("internalRegistryPullSecret")
-    public Object getInternalRegistryPullSecret() {
+    public String getInternalRegistryPullSecret() {
         return internalRegistryPullSecret;
     }
 
     @JsonProperty("internalRegistryPullSecret")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
-    public void setInternalRegistryPullSecret(Object internalRegistryPullSecret) {
+    public void setInternalRegistryPullSecret(String internalRegistryPullSecret) {
         this.internalRegistryPullSecret = internalRegistryPullSecret;
     }
 
@@ -326,13 +321,12 @@ public class ControllerConfigSpec implements Editable<ControllerConfigSpecBuilde
     }
 
     @JsonProperty("network")
-    public Object getNetwork() {
+    public NetworkInfo getNetwork() {
         return network;
     }
 
     @JsonProperty("network")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
-    public void setNetwork(Object network) {
+    public void setNetwork(NetworkInfo network) {
         this.network = network;
     }
 
@@ -367,23 +361,22 @@ public class ControllerConfigSpec implements Editable<ControllerConfigSpecBuilde
     }
 
     @JsonProperty("proxy")
-    public Object getProxy() {
+    public ProxyStatus getProxy() {
         return proxy;
     }
 
     @JsonProperty("proxy")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
-    public void setProxy(Object proxy) {
+    public void setProxy(ProxyStatus proxy) {
         this.proxy = proxy;
     }
 
     @JsonProperty("pullSecret")
-    public ControllerConfigSpecPullSecret getPullSecret() {
+    public ObjectReference getPullSecret() {
         return pullSecret;
     }
 
     @JsonProperty("pullSecret")
-    public void setPullSecret(ControllerConfigSpecPullSecret pullSecret) {
+    public void setPullSecret(ObjectReference pullSecret) {
         this.pullSecret = pullSecret;
     }
 

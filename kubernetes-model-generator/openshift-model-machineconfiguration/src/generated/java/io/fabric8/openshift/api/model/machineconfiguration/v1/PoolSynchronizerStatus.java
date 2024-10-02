@@ -1,9 +1,7 @@
 
 package io.fabric8.openshift.api.model.machineconfiguration.v1;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -33,13 +31,10 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "certExpirys",
-    "conditions",
-    "configuration",
-    "degradedMachineCount",
+    "availableMachineCount",
     "machineCount",
     "observedGeneration",
-    "poolSynchronizersStatus",
+    "poolSynchronizerType",
     "readyMachineCount",
     "unavailableMachineCount",
     "updatedMachineCount"
@@ -62,32 +57,23 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class MachineConfigPoolStatus implements Editable<MachineConfigPoolStatusBuilder> , KubernetesResource
+public class PoolSynchronizerStatus implements Editable<PoolSynchronizerStatusBuilder> , KubernetesResource
 {
 
-    @JsonProperty("certExpirys")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<CertExpiry> certExpirys = new ArrayList<>();
-    @JsonProperty("conditions")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<MachineConfigPoolCondition> conditions = new ArrayList<>();
-    @JsonProperty("configuration")
-    private MachineConfigPoolStatusConfiguration configuration;
-    @JsonProperty("degradedMachineCount")
-    private Integer degradedMachineCount;
+    @JsonProperty("availableMachineCount")
+    private Long availableMachineCount;
     @JsonProperty("machineCount")
-    private Integer machineCount;
+    private Long machineCount;
     @JsonProperty("observedGeneration")
     private Long observedGeneration;
-    @JsonProperty("poolSynchronizersStatus")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<PoolSynchronizerStatus> poolSynchronizersStatus = new ArrayList<>();
+    @JsonProperty("poolSynchronizerType")
+    private String poolSynchronizerType;
     @JsonProperty("readyMachineCount")
-    private Integer readyMachineCount;
+    private Long readyMachineCount;
     @JsonProperty("unavailableMachineCount")
-    private Integer unavailableMachineCount;
+    private Long unavailableMachineCount;
     @JsonProperty("updatedMachineCount")
-    private Integer updatedMachineCount;
+    private Long updatedMachineCount;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -95,72 +81,37 @@ public class MachineConfigPoolStatus implements Editable<MachineConfigPoolStatus
      * No args constructor for use in serialization
      * 
      */
-    public MachineConfigPoolStatus() {
+    public PoolSynchronizerStatus() {
     }
 
-    public MachineConfigPoolStatus(List<CertExpiry> certExpirys, List<MachineConfigPoolCondition> conditions, MachineConfigPoolStatusConfiguration configuration, Integer degradedMachineCount, Integer machineCount, Long observedGeneration, List<PoolSynchronizerStatus> poolSynchronizersStatus, Integer readyMachineCount, Integer unavailableMachineCount, Integer updatedMachineCount) {
+    public PoolSynchronizerStatus(Long availableMachineCount, Long machineCount, Long observedGeneration, String poolSynchronizerType, Long readyMachineCount, Long unavailableMachineCount, Long updatedMachineCount) {
         super();
-        this.certExpirys = certExpirys;
-        this.conditions = conditions;
-        this.configuration = configuration;
-        this.degradedMachineCount = degradedMachineCount;
+        this.availableMachineCount = availableMachineCount;
         this.machineCount = machineCount;
         this.observedGeneration = observedGeneration;
-        this.poolSynchronizersStatus = poolSynchronizersStatus;
+        this.poolSynchronizerType = poolSynchronizerType;
         this.readyMachineCount = readyMachineCount;
         this.unavailableMachineCount = unavailableMachineCount;
         this.updatedMachineCount = updatedMachineCount;
     }
 
-    @JsonProperty("certExpirys")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<CertExpiry> getCertExpirys() {
-        return certExpirys;
+    @JsonProperty("availableMachineCount")
+    public Long getAvailableMachineCount() {
+        return availableMachineCount;
     }
 
-    @JsonProperty("certExpirys")
-    public void setCertExpirys(List<CertExpiry> certExpirys) {
-        this.certExpirys = certExpirys;
-    }
-
-    @JsonProperty("conditions")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<MachineConfigPoolCondition> getConditions() {
-        return conditions;
-    }
-
-    @JsonProperty("conditions")
-    public void setConditions(List<MachineConfigPoolCondition> conditions) {
-        this.conditions = conditions;
-    }
-
-    @JsonProperty("configuration")
-    public MachineConfigPoolStatusConfiguration getConfiguration() {
-        return configuration;
-    }
-
-    @JsonProperty("configuration")
-    public void setConfiguration(MachineConfigPoolStatusConfiguration configuration) {
-        this.configuration = configuration;
-    }
-
-    @JsonProperty("degradedMachineCount")
-    public Integer getDegradedMachineCount() {
-        return degradedMachineCount;
-    }
-
-    @JsonProperty("degradedMachineCount")
-    public void setDegradedMachineCount(Integer degradedMachineCount) {
-        this.degradedMachineCount = degradedMachineCount;
+    @JsonProperty("availableMachineCount")
+    public void setAvailableMachineCount(Long availableMachineCount) {
+        this.availableMachineCount = availableMachineCount;
     }
 
     @JsonProperty("machineCount")
-    public Integer getMachineCount() {
+    public Long getMachineCount() {
         return machineCount;
     }
 
     @JsonProperty("machineCount")
-    public void setMachineCount(Integer machineCount) {
+    public void setMachineCount(Long machineCount) {
         this.machineCount = machineCount;
     }
 
@@ -174,54 +125,53 @@ public class MachineConfigPoolStatus implements Editable<MachineConfigPoolStatus
         this.observedGeneration = observedGeneration;
     }
 
-    @JsonProperty("poolSynchronizersStatus")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<PoolSynchronizerStatus> getPoolSynchronizersStatus() {
-        return poolSynchronizersStatus;
+    @JsonProperty("poolSynchronizerType")
+    public String getPoolSynchronizerType() {
+        return poolSynchronizerType;
     }
 
-    @JsonProperty("poolSynchronizersStatus")
-    public void setPoolSynchronizersStatus(List<PoolSynchronizerStatus> poolSynchronizersStatus) {
-        this.poolSynchronizersStatus = poolSynchronizersStatus;
+    @JsonProperty("poolSynchronizerType")
+    public void setPoolSynchronizerType(String poolSynchronizerType) {
+        this.poolSynchronizerType = poolSynchronizerType;
     }
 
     @JsonProperty("readyMachineCount")
-    public Integer getReadyMachineCount() {
+    public Long getReadyMachineCount() {
         return readyMachineCount;
     }
 
     @JsonProperty("readyMachineCount")
-    public void setReadyMachineCount(Integer readyMachineCount) {
+    public void setReadyMachineCount(Long readyMachineCount) {
         this.readyMachineCount = readyMachineCount;
     }
 
     @JsonProperty("unavailableMachineCount")
-    public Integer getUnavailableMachineCount() {
+    public Long getUnavailableMachineCount() {
         return unavailableMachineCount;
     }
 
     @JsonProperty("unavailableMachineCount")
-    public void setUnavailableMachineCount(Integer unavailableMachineCount) {
+    public void setUnavailableMachineCount(Long unavailableMachineCount) {
         this.unavailableMachineCount = unavailableMachineCount;
     }
 
     @JsonProperty("updatedMachineCount")
-    public Integer getUpdatedMachineCount() {
+    public Long getUpdatedMachineCount() {
         return updatedMachineCount;
     }
 
     @JsonProperty("updatedMachineCount")
-    public void setUpdatedMachineCount(Integer updatedMachineCount) {
+    public void setUpdatedMachineCount(Long updatedMachineCount) {
         this.updatedMachineCount = updatedMachineCount;
     }
 
     @JsonIgnore
-    public MachineConfigPoolStatusBuilder edit() {
-        return new MachineConfigPoolStatusBuilder(this);
+    public PoolSynchronizerStatusBuilder edit() {
+        return new PoolSynchronizerStatusBuilder(this);
     }
 
     @JsonIgnore
-    public MachineConfigPoolStatusBuilder toBuilder() {
+    public PoolSynchronizerStatusBuilder toBuilder() {
         return edit();
     }
 

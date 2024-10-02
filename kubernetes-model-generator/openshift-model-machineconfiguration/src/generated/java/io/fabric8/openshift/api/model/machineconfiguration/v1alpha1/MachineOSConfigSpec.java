@@ -1,5 +1,5 @@
 
-package io.fabric8.openshift.api.model.machineconfiguration.v1;
+package io.fabric8.openshift.api.model.machineconfiguration.v1alpha1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -31,8 +31,9 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "data",
-    "file"
+    "buildInputs",
+    "buildOutputs",
+    "machineConfigPool"
 })
 @ToString
 @EqualsAndHashCode
@@ -52,13 +53,15 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ControllerConfigSpecImageRegistryBundleData implements Editable<ControllerConfigSpecImageRegistryBundleDataBuilder> , KubernetesResource
+public class MachineOSConfigSpec implements Editable<MachineOSConfigSpecBuilder> , KubernetesResource
 {
 
-    @JsonProperty("data")
-    private String data;
-    @JsonProperty("file")
-    private String file;
+    @JsonProperty("buildInputs")
+    private BuildInputs buildInputs;
+    @JsonProperty("buildOutputs")
+    private BuildOutputs buildOutputs;
+    @JsonProperty("machineConfigPool")
+    private MachineConfigPoolReference machineConfigPool;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -66,42 +69,53 @@ public class ControllerConfigSpecImageRegistryBundleData implements Editable<Con
      * No args constructor for use in serialization
      * 
      */
-    public ControllerConfigSpecImageRegistryBundleData() {
+    public MachineOSConfigSpec() {
     }
 
-    public ControllerConfigSpecImageRegistryBundleData(String data, String file) {
+    public MachineOSConfigSpec(BuildInputs buildInputs, BuildOutputs buildOutputs, MachineConfigPoolReference machineConfigPool) {
         super();
-        this.data = data;
-        this.file = file;
+        this.buildInputs = buildInputs;
+        this.buildOutputs = buildOutputs;
+        this.machineConfigPool = machineConfigPool;
     }
 
-    @JsonProperty("data")
-    public String getData() {
-        return data;
+    @JsonProperty("buildInputs")
+    public BuildInputs getBuildInputs() {
+        return buildInputs;
     }
 
-    @JsonProperty("data")
-    public void setData(String data) {
-        this.data = data;
+    @JsonProperty("buildInputs")
+    public void setBuildInputs(BuildInputs buildInputs) {
+        this.buildInputs = buildInputs;
     }
 
-    @JsonProperty("file")
-    public String getFile() {
-        return file;
+    @JsonProperty("buildOutputs")
+    public BuildOutputs getBuildOutputs() {
+        return buildOutputs;
     }
 
-    @JsonProperty("file")
-    public void setFile(String file) {
-        this.file = file;
+    @JsonProperty("buildOutputs")
+    public void setBuildOutputs(BuildOutputs buildOutputs) {
+        this.buildOutputs = buildOutputs;
+    }
+
+    @JsonProperty("machineConfigPool")
+    public MachineConfigPoolReference getMachineConfigPool() {
+        return machineConfigPool;
+    }
+
+    @JsonProperty("machineConfigPool")
+    public void setMachineConfigPool(MachineConfigPoolReference machineConfigPool) {
+        this.machineConfigPool = machineConfigPool;
     }
 
     @JsonIgnore
-    public ControllerConfigSpecImageRegistryBundleDataBuilder edit() {
-        return new ControllerConfigSpecImageRegistryBundleDataBuilder(this);
+    public MachineOSConfigSpecBuilder edit() {
+        return new MachineOSConfigSpecBuilder(this);
     }
 
     @JsonIgnore
-    public ControllerConfigSpecImageRegistryBundleDataBuilder toBuilder() {
+    public MachineOSConfigSpecBuilder toBuilder() {
         return edit();
     }
 

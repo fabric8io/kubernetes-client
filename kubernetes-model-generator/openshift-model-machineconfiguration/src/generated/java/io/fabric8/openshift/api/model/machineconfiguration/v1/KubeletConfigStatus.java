@@ -59,7 +59,7 @@ public class KubeletConfigStatus implements Editable<KubeletConfigStatusBuilder>
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<KubeletConfigStatusConditions> conditions = new ArrayList<>();
+    private List<KubeletConfigCondition> conditions = new ArrayList<>();
     @JsonProperty("observedGeneration")
     private Long observedGeneration;
     @JsonIgnore
@@ -72,7 +72,7 @@ public class KubeletConfigStatus implements Editable<KubeletConfigStatusBuilder>
     public KubeletConfigStatus() {
     }
 
-    public KubeletConfigStatus(List<KubeletConfigStatusConditions> conditions, Long observedGeneration) {
+    public KubeletConfigStatus(List<KubeletConfigCondition> conditions, Long observedGeneration) {
         super();
         this.conditions = conditions;
         this.observedGeneration = observedGeneration;
@@ -80,12 +80,12 @@ public class KubeletConfigStatus implements Editable<KubeletConfigStatusBuilder>
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<KubeletConfigStatusConditions> getConditions() {
+    public List<KubeletConfigCondition> getConditions() {
         return conditions;
     }
 
     @JsonProperty("conditions")
-    public void setConditions(List<KubeletConfigStatusConditions> conditions) {
+    public void setConditions(List<KubeletConfigCondition> conditions) {
         this.conditions = conditions;
     }
 

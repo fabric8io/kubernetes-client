@@ -1,5 +1,5 @@
 
-package io.fabric8.openshift.api.model.machineconfiguration.v1;
+package io.fabric8.openshift.api.model.machineconfiguration.v1alpha1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -31,11 +31,11 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "lastTransitionTime",
-    "message",
-    "reason",
-    "status",
-    "type"
+    "configGeneration",
+    "desiredConfig",
+    "machineOSConfig",
+    "renderedImagePushspec",
+    "version"
 })
 @ToString
 @EqualsAndHashCode
@@ -55,20 +55,19 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ControllerConfigStatusConditions implements Editable<ControllerConfigStatusConditionsBuilder> , KubernetesResource
+public class MachineOSBuildSpec implements Editable<MachineOSBuildSpecBuilder> , KubernetesResource
 {
 
-    @JsonProperty("lastTransitionTime")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
-    private Object lastTransitionTime;
-    @JsonProperty("message")
-    private String message;
-    @JsonProperty("reason")
-    private String reason;
-    @JsonProperty("status")
-    private String status;
-    @JsonProperty("type")
-    private String type;
+    @JsonProperty("configGeneration")
+    private Long configGeneration;
+    @JsonProperty("desiredConfig")
+    private RenderedMachineConfigReference desiredConfig;
+    @JsonProperty("machineOSConfig")
+    private MachineOSConfigReference machineOSConfig;
+    @JsonProperty("renderedImagePushspec")
+    private String renderedImagePushspec;
+    @JsonProperty("version")
+    private Long version;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -76,76 +75,75 @@ public class ControllerConfigStatusConditions implements Editable<ControllerConf
      * No args constructor for use in serialization
      * 
      */
-    public ControllerConfigStatusConditions() {
+    public MachineOSBuildSpec() {
     }
 
-    public ControllerConfigStatusConditions(Object lastTransitionTime, String message, String reason, String status, String type) {
+    public MachineOSBuildSpec(Long configGeneration, RenderedMachineConfigReference desiredConfig, MachineOSConfigReference machineOSConfig, String renderedImagePushspec, Long version) {
         super();
-        this.lastTransitionTime = lastTransitionTime;
-        this.message = message;
-        this.reason = reason;
-        this.status = status;
-        this.type = type;
+        this.configGeneration = configGeneration;
+        this.desiredConfig = desiredConfig;
+        this.machineOSConfig = machineOSConfig;
+        this.renderedImagePushspec = renderedImagePushspec;
+        this.version = version;
     }
 
-    @JsonProperty("lastTransitionTime")
-    public Object getLastTransitionTime() {
-        return lastTransitionTime;
+    @JsonProperty("configGeneration")
+    public Long getConfigGeneration() {
+        return configGeneration;
     }
 
-    @JsonProperty("lastTransitionTime")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
-    public void setLastTransitionTime(Object lastTransitionTime) {
-        this.lastTransitionTime = lastTransitionTime;
+    @JsonProperty("configGeneration")
+    public void setConfigGeneration(Long configGeneration) {
+        this.configGeneration = configGeneration;
     }
 
-    @JsonProperty("message")
-    public String getMessage() {
-        return message;
+    @JsonProperty("desiredConfig")
+    public RenderedMachineConfigReference getDesiredConfig() {
+        return desiredConfig;
     }
 
-    @JsonProperty("message")
-    public void setMessage(String message) {
-        this.message = message;
+    @JsonProperty("desiredConfig")
+    public void setDesiredConfig(RenderedMachineConfigReference desiredConfig) {
+        this.desiredConfig = desiredConfig;
     }
 
-    @JsonProperty("reason")
-    public String getReason() {
-        return reason;
+    @JsonProperty("machineOSConfig")
+    public MachineOSConfigReference getMachineOSConfig() {
+        return machineOSConfig;
     }
 
-    @JsonProperty("reason")
-    public void setReason(String reason) {
-        this.reason = reason;
+    @JsonProperty("machineOSConfig")
+    public void setMachineOSConfig(MachineOSConfigReference machineOSConfig) {
+        this.machineOSConfig = machineOSConfig;
     }
 
-    @JsonProperty("status")
-    public String getStatus() {
-        return status;
+    @JsonProperty("renderedImagePushspec")
+    public String getRenderedImagePushspec() {
+        return renderedImagePushspec;
     }
 
-    @JsonProperty("status")
-    public void setStatus(String status) {
-        this.status = status;
+    @JsonProperty("renderedImagePushspec")
+    public void setRenderedImagePushspec(String renderedImagePushspec) {
+        this.renderedImagePushspec = renderedImagePushspec;
     }
 
-    @JsonProperty("type")
-    public String getType() {
-        return type;
+    @JsonProperty("version")
+    public Long getVersion() {
+        return version;
     }
 
-    @JsonProperty("type")
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    @JsonIgnore
-    public ControllerConfigStatusConditionsBuilder edit() {
-        return new ControllerConfigStatusConditionsBuilder(this);
+    @JsonProperty("version")
+    public void setVersion(Long version) {
+        this.version = version;
     }
 
     @JsonIgnore
-    public ControllerConfigStatusConditionsBuilder toBuilder() {
+    public MachineOSBuildSpecBuilder edit() {
+        return new MachineOSBuildSpecBuilder(this);
+    }
+
+    @JsonIgnore
+    public MachineOSBuildSpecBuilder toBuilder() {
         return edit();
     }
 

@@ -1,5 +1,5 @@
 
-package io.fabric8.openshift.api.model.machineconfiguration.v1;
+package io.fabric8.openshift.api.model.machineconfiguration.v1alpha1;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -18,7 +18,6 @@ import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
-import io.fabric8.kubernetes.api.model.LabelSelectorRequirement;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
@@ -34,8 +33,7 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "matchExpressions",
-    "matchLabels"
+    "pinnedImages"
 })
 @ToString
 @EqualsAndHashCode
@@ -55,15 +53,12 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class KubeletConfigSpecMachineConfigPoolSelector implements Editable<KubeletConfigSpecMachineConfigPoolSelectorBuilder> , KubernetesResource
+public class PinnedImageSetSpec implements Editable<PinnedImageSetSpecBuilder> , KubernetesResource
 {
 
-    @JsonProperty("matchExpressions")
+    @JsonProperty("pinnedImages")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<LabelSelectorRequirement> matchExpressions = new ArrayList<>();
-    @JsonProperty("matchLabels")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> matchLabels = new LinkedHashMap<>();
+    private List<PinnedImageRef> pinnedImages = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -71,44 +66,32 @@ public class KubeletConfigSpecMachineConfigPoolSelector implements Editable<Kube
      * No args constructor for use in serialization
      * 
      */
-    public KubeletConfigSpecMachineConfigPoolSelector() {
+    public PinnedImageSetSpec() {
     }
 
-    public KubeletConfigSpecMachineConfigPoolSelector(List<LabelSelectorRequirement> matchExpressions, Map<String, String> matchLabels) {
+    public PinnedImageSetSpec(List<PinnedImageRef> pinnedImages) {
         super();
-        this.matchExpressions = matchExpressions;
-        this.matchLabels = matchLabels;
+        this.pinnedImages = pinnedImages;
     }
 
-    @JsonProperty("matchExpressions")
+    @JsonProperty("pinnedImages")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<LabelSelectorRequirement> getMatchExpressions() {
-        return matchExpressions;
+    public List<PinnedImageRef> getPinnedImages() {
+        return pinnedImages;
     }
 
-    @JsonProperty("matchExpressions")
-    public void setMatchExpressions(List<LabelSelectorRequirement> matchExpressions) {
-        this.matchExpressions = matchExpressions;
-    }
-
-    @JsonProperty("matchLabels")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Map<String, String> getMatchLabels() {
-        return matchLabels;
-    }
-
-    @JsonProperty("matchLabels")
-    public void setMatchLabels(Map<String, String> matchLabels) {
-        this.matchLabels = matchLabels;
+    @JsonProperty("pinnedImages")
+    public void setPinnedImages(List<PinnedImageRef> pinnedImages) {
+        this.pinnedImages = pinnedImages;
     }
 
     @JsonIgnore
-    public KubeletConfigSpecMachineConfigPoolSelectorBuilder edit() {
-        return new KubeletConfigSpecMachineConfigPoolSelectorBuilder(this);
+    public PinnedImageSetSpecBuilder edit() {
+        return new PinnedImageSetSpecBuilder(this);
     }
 
     @JsonIgnore
-    public KubeletConfigSpecMachineConfigPoolSelectorBuilder toBuilder() {
+    public PinnedImageSetSpecBuilder toBuilder() {
         return edit();
     }
 

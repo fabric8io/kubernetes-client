@@ -1,7 +1,9 @@
 
-package io.fabric8.openshift.api.model.machineconfiguration.v1;
+package io.fabric8.openshift.api.model.machineconfiguration.v1alpha1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -22,7 +24,6 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.openshift.api.model.config.v1.TLSSecurityProfile;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -32,11 +33,10 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "autoSizingReserved",
-    "kubeletConfig",
-    "logLevel",
-    "machineConfigPoolSelector",
-    "tlsSecurityProfile"
+    "configVersion",
+    "node",
+    "pinnedImageSets",
+    "pool"
 })
 @ToString
 @EqualsAndHashCode
@@ -56,20 +56,18 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class KubeletConfigSpec implements Editable<KubeletConfigSpecBuilder> , KubernetesResource
+public class MachineConfigNodeSpec implements Editable<MachineConfigNodeSpecBuilder> , KubernetesResource
 {
 
-    @JsonProperty("autoSizingReserved")
-    private Boolean autoSizingReserved;
-    @JsonProperty("kubeletConfig")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
-    private Object kubeletConfig;
-    @JsonProperty("logLevel")
-    private Integer logLevel;
-    @JsonProperty("machineConfigPoolSelector")
-    private LabelSelector machineConfigPoolSelector;
-    @JsonProperty("tlsSecurityProfile")
-    private TLSSecurityProfile tlsSecurityProfile;
+    @JsonProperty("configVersion")
+    private MachineConfigNodeSpecMachineConfigVersion configVersion;
+    @JsonProperty("node")
+    private MCOObjectReference node;
+    @JsonProperty("pinnedImageSets")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<MachineConfigNodeSpecPinnedImageSet> pinnedImageSets = new ArrayList<>();
+    @JsonProperty("pool")
+    private MCOObjectReference pool;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -77,76 +75,65 @@ public class KubeletConfigSpec implements Editable<KubeletConfigSpecBuilder> , K
      * No args constructor for use in serialization
      * 
      */
-    public KubeletConfigSpec() {
+    public MachineConfigNodeSpec() {
     }
 
-    public KubeletConfigSpec(Boolean autoSizingReserved, Object kubeletConfig, Integer logLevel, LabelSelector machineConfigPoolSelector, TLSSecurityProfile tlsSecurityProfile) {
+    public MachineConfigNodeSpec(MachineConfigNodeSpecMachineConfigVersion configVersion, MCOObjectReference node, List<MachineConfigNodeSpecPinnedImageSet> pinnedImageSets, MCOObjectReference pool) {
         super();
-        this.autoSizingReserved = autoSizingReserved;
-        this.kubeletConfig = kubeletConfig;
-        this.logLevel = logLevel;
-        this.machineConfigPoolSelector = machineConfigPoolSelector;
-        this.tlsSecurityProfile = tlsSecurityProfile;
+        this.configVersion = configVersion;
+        this.node = node;
+        this.pinnedImageSets = pinnedImageSets;
+        this.pool = pool;
     }
 
-    @JsonProperty("autoSizingReserved")
-    public Boolean getAutoSizingReserved() {
-        return autoSizingReserved;
+    @JsonProperty("configVersion")
+    public MachineConfigNodeSpecMachineConfigVersion getConfigVersion() {
+        return configVersion;
     }
 
-    @JsonProperty("autoSizingReserved")
-    public void setAutoSizingReserved(Boolean autoSizingReserved) {
-        this.autoSizingReserved = autoSizingReserved;
+    @JsonProperty("configVersion")
+    public void setConfigVersion(MachineConfigNodeSpecMachineConfigVersion configVersion) {
+        this.configVersion = configVersion;
     }
 
-    @JsonProperty("kubeletConfig")
-    public Object getKubeletConfig() {
-        return kubeletConfig;
+    @JsonProperty("node")
+    public MCOObjectReference getNode() {
+        return node;
     }
 
-    @JsonProperty("kubeletConfig")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
-    public void setKubeletConfig(Object kubeletConfig) {
-        this.kubeletConfig = kubeletConfig;
+    @JsonProperty("node")
+    public void setNode(MCOObjectReference node) {
+        this.node = node;
     }
 
-    @JsonProperty("logLevel")
-    public Integer getLogLevel() {
-        return logLevel;
+    @JsonProperty("pinnedImageSets")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<MachineConfigNodeSpecPinnedImageSet> getPinnedImageSets() {
+        return pinnedImageSets;
     }
 
-    @JsonProperty("logLevel")
-    public void setLogLevel(Integer logLevel) {
-        this.logLevel = logLevel;
+    @JsonProperty("pinnedImageSets")
+    public void setPinnedImageSets(List<MachineConfigNodeSpecPinnedImageSet> pinnedImageSets) {
+        this.pinnedImageSets = pinnedImageSets;
     }
 
-    @JsonProperty("machineConfigPoolSelector")
-    public LabelSelector getMachineConfigPoolSelector() {
-        return machineConfigPoolSelector;
+    @JsonProperty("pool")
+    public MCOObjectReference getPool() {
+        return pool;
     }
 
-    @JsonProperty("machineConfigPoolSelector")
-    public void setMachineConfigPoolSelector(LabelSelector machineConfigPoolSelector) {
-        this.machineConfigPoolSelector = machineConfigPoolSelector;
-    }
-
-    @JsonProperty("tlsSecurityProfile")
-    public TLSSecurityProfile getTlsSecurityProfile() {
-        return tlsSecurityProfile;
-    }
-
-    @JsonProperty("tlsSecurityProfile")
-    public void setTlsSecurityProfile(TLSSecurityProfile tlsSecurityProfile) {
-        this.tlsSecurityProfile = tlsSecurityProfile;
+    @JsonProperty("pool")
+    public void setPool(MCOObjectReference pool) {
+        this.pool = pool;
     }
 
     @JsonIgnore
-    public KubeletConfigSpecBuilder edit() {
-        return new KubeletConfigSpecBuilder(this);
+    public MachineConfigNodeSpecBuilder edit() {
+        return new MachineConfigNodeSpecBuilder(this);
     }
 
     @JsonIgnore
-    public KubeletConfigSpecBuilder toBuilder() {
+    public MachineConfigNodeSpecBuilder toBuilder() {
         return edit();
     }
 

@@ -1,5 +1,5 @@
 
-package io.fabric8.openshift.api.model.machineconfiguration.v1;
+package io.fabric8.openshift.api.model.machineconfiguration.v1alpha1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -31,11 +31,7 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "defaultRuntime",
-    "logLevel",
-    "logSizeMax",
-    "overlaySize",
-    "pidsLimit"
+    "name"
 })
 @ToString
 @EqualsAndHashCode
@@ -55,21 +51,11 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ContainerRuntimeConfigSpecContainerRuntimeConfig implements Editable<ContainerRuntimeConfigSpecContainerRuntimeConfigBuilder> , KubernetesResource
+public class PinnedImageRef implements Editable<PinnedImageRefBuilder> , KubernetesResource
 {
 
-    @JsonProperty("defaultRuntime")
-    private String defaultRuntime;
-    @JsonProperty("logLevel")
-    private String logLevel;
-    @JsonProperty("logSizeMax")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
-    private Object logSizeMax;
-    @JsonProperty("overlaySize")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
-    private Object overlaySize;
-    @JsonProperty("pidsLimit")
-    private Long pidsLimit;
+    @JsonProperty("name")
+    private String name;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -77,77 +63,31 @@ public class ContainerRuntimeConfigSpecContainerRuntimeConfig implements Editabl
      * No args constructor for use in serialization
      * 
      */
-    public ContainerRuntimeConfigSpecContainerRuntimeConfig() {
+    public PinnedImageRef() {
     }
 
-    public ContainerRuntimeConfigSpecContainerRuntimeConfig(String defaultRuntime, String logLevel, Object logSizeMax, Object overlaySize, Long pidsLimit) {
+    public PinnedImageRef(String name) {
         super();
-        this.defaultRuntime = defaultRuntime;
-        this.logLevel = logLevel;
-        this.logSizeMax = logSizeMax;
-        this.overlaySize = overlaySize;
-        this.pidsLimit = pidsLimit;
+        this.name = name;
     }
 
-    @JsonProperty("defaultRuntime")
-    public String getDefaultRuntime() {
-        return defaultRuntime;
+    @JsonProperty("name")
+    public String getName() {
+        return name;
     }
 
-    @JsonProperty("defaultRuntime")
-    public void setDefaultRuntime(String defaultRuntime) {
-        this.defaultRuntime = defaultRuntime;
-    }
-
-    @JsonProperty("logLevel")
-    public String getLogLevel() {
-        return logLevel;
-    }
-
-    @JsonProperty("logLevel")
-    public void setLogLevel(String logLevel) {
-        this.logLevel = logLevel;
-    }
-
-    @JsonProperty("logSizeMax")
-    public Object getLogSizeMax() {
-        return logSizeMax;
-    }
-
-    @JsonProperty("logSizeMax")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
-    public void setLogSizeMax(Object logSizeMax) {
-        this.logSizeMax = logSizeMax;
-    }
-
-    @JsonProperty("overlaySize")
-    public Object getOverlaySize() {
-        return overlaySize;
-    }
-
-    @JsonProperty("overlaySize")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
-    public void setOverlaySize(Object overlaySize) {
-        this.overlaySize = overlaySize;
-    }
-
-    @JsonProperty("pidsLimit")
-    public Long getPidsLimit() {
-        return pidsLimit;
-    }
-
-    @JsonProperty("pidsLimit")
-    public void setPidsLimit(Long pidsLimit) {
-        this.pidsLimit = pidsLimit;
+    @JsonProperty("name")
+    public void setName(String name) {
+        this.name = name;
     }
 
     @JsonIgnore
-    public ContainerRuntimeConfigSpecContainerRuntimeConfigBuilder edit() {
-        return new ContainerRuntimeConfigSpecContainerRuntimeConfigBuilder(this);
+    public PinnedImageRefBuilder edit() {
+        return new PinnedImageRefBuilder(this);
     }
 
     @JsonIgnore
-    public ContainerRuntimeConfigSpecContainerRuntimeConfigBuilder toBuilder() {
+    public PinnedImageRefBuilder toBuilder() {
         return edit();
     }
 

@@ -22,7 +22,6 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.openshift.api.model.config.v1.TLSSecurityProfile;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -32,11 +31,11 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "autoSizingReserved",
-    "kubeletConfig",
-    "logLevel",
-    "machineConfigPoolSelector",
-    "tlsSecurityProfile"
+    "bundleFile",
+    "notAfter",
+    "notBefore",
+    "signer",
+    "subject"
 })
 @ToString
 @EqualsAndHashCode
@@ -56,20 +55,19 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class KubeletConfigSpec implements Editable<KubeletConfigSpecBuilder> , KubernetesResource
+public class ControllerCertificate implements Editable<ControllerCertificateBuilder> , KubernetesResource
 {
 
-    @JsonProperty("autoSizingReserved")
-    private Boolean autoSizingReserved;
-    @JsonProperty("kubeletConfig")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
-    private Object kubeletConfig;
-    @JsonProperty("logLevel")
-    private Integer logLevel;
-    @JsonProperty("machineConfigPoolSelector")
-    private LabelSelector machineConfigPoolSelector;
-    @JsonProperty("tlsSecurityProfile")
-    private TLSSecurityProfile tlsSecurityProfile;
+    @JsonProperty("bundleFile")
+    private String bundleFile;
+    @JsonProperty("notAfter")
+    private String notAfter;
+    @JsonProperty("notBefore")
+    private String notBefore;
+    @JsonProperty("signer")
+    private String signer;
+    @JsonProperty("subject")
+    private String subject;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -77,76 +75,75 @@ public class KubeletConfigSpec implements Editable<KubeletConfigSpecBuilder> , K
      * No args constructor for use in serialization
      * 
      */
-    public KubeletConfigSpec() {
+    public ControllerCertificate() {
     }
 
-    public KubeletConfigSpec(Boolean autoSizingReserved, Object kubeletConfig, Integer logLevel, LabelSelector machineConfigPoolSelector, TLSSecurityProfile tlsSecurityProfile) {
+    public ControllerCertificate(String bundleFile, String notAfter, String notBefore, String signer, String subject) {
         super();
-        this.autoSizingReserved = autoSizingReserved;
-        this.kubeletConfig = kubeletConfig;
-        this.logLevel = logLevel;
-        this.machineConfigPoolSelector = machineConfigPoolSelector;
-        this.tlsSecurityProfile = tlsSecurityProfile;
+        this.bundleFile = bundleFile;
+        this.notAfter = notAfter;
+        this.notBefore = notBefore;
+        this.signer = signer;
+        this.subject = subject;
     }
 
-    @JsonProperty("autoSizingReserved")
-    public Boolean getAutoSizingReserved() {
-        return autoSizingReserved;
+    @JsonProperty("bundleFile")
+    public String getBundleFile() {
+        return bundleFile;
     }
 
-    @JsonProperty("autoSizingReserved")
-    public void setAutoSizingReserved(Boolean autoSizingReserved) {
-        this.autoSizingReserved = autoSizingReserved;
+    @JsonProperty("bundleFile")
+    public void setBundleFile(String bundleFile) {
+        this.bundleFile = bundleFile;
     }
 
-    @JsonProperty("kubeletConfig")
-    public Object getKubeletConfig() {
-        return kubeletConfig;
+    @JsonProperty("notAfter")
+    public String getNotAfter() {
+        return notAfter;
     }
 
-    @JsonProperty("kubeletConfig")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
-    public void setKubeletConfig(Object kubeletConfig) {
-        this.kubeletConfig = kubeletConfig;
+    @JsonProperty("notAfter")
+    public void setNotAfter(String notAfter) {
+        this.notAfter = notAfter;
     }
 
-    @JsonProperty("logLevel")
-    public Integer getLogLevel() {
-        return logLevel;
+    @JsonProperty("notBefore")
+    public String getNotBefore() {
+        return notBefore;
     }
 
-    @JsonProperty("logLevel")
-    public void setLogLevel(Integer logLevel) {
-        this.logLevel = logLevel;
+    @JsonProperty("notBefore")
+    public void setNotBefore(String notBefore) {
+        this.notBefore = notBefore;
     }
 
-    @JsonProperty("machineConfigPoolSelector")
-    public LabelSelector getMachineConfigPoolSelector() {
-        return machineConfigPoolSelector;
+    @JsonProperty("signer")
+    public String getSigner() {
+        return signer;
     }
 
-    @JsonProperty("machineConfigPoolSelector")
-    public void setMachineConfigPoolSelector(LabelSelector machineConfigPoolSelector) {
-        this.machineConfigPoolSelector = machineConfigPoolSelector;
+    @JsonProperty("signer")
+    public void setSigner(String signer) {
+        this.signer = signer;
     }
 
-    @JsonProperty("tlsSecurityProfile")
-    public TLSSecurityProfile getTlsSecurityProfile() {
-        return tlsSecurityProfile;
+    @JsonProperty("subject")
+    public String getSubject() {
+        return subject;
     }
 
-    @JsonProperty("tlsSecurityProfile")
-    public void setTlsSecurityProfile(TLSSecurityProfile tlsSecurityProfile) {
-        this.tlsSecurityProfile = tlsSecurityProfile;
-    }
-
-    @JsonIgnore
-    public KubeletConfigSpecBuilder edit() {
-        return new KubeletConfigSpecBuilder(this);
+    @JsonProperty("subject")
+    public void setSubject(String subject) {
+        this.subject = subject;
     }
 
     @JsonIgnore
-    public KubeletConfigSpecBuilder toBuilder() {
+    public ControllerCertificateBuilder edit() {
+        return new ControllerCertificateBuilder(this);
+    }
+
+    @JsonIgnore
+    public ControllerCertificateBuilder toBuilder() {
         return edit();
     }
 

@@ -60,10 +60,10 @@ public class ControllerConfigStatus implements Editable<ControllerConfigStatusBu
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ControllerConfigStatusConditions> conditions = new ArrayList<>();
+    private List<ControllerConfigStatusCondition> conditions = new ArrayList<>();
     @JsonProperty("controllerCertificates")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ControllerConfigStatusControllerCertificates> controllerCertificates = new ArrayList<>();
+    private List<ControllerCertificate> controllerCertificates = new ArrayList<>();
     @JsonProperty("observedGeneration")
     private Long observedGeneration;
     @JsonIgnore
@@ -76,7 +76,7 @@ public class ControllerConfigStatus implements Editable<ControllerConfigStatusBu
     public ControllerConfigStatus() {
     }
 
-    public ControllerConfigStatus(List<ControllerConfigStatusConditions> conditions, List<ControllerConfigStatusControllerCertificates> controllerCertificates, Long observedGeneration) {
+    public ControllerConfigStatus(List<ControllerConfigStatusCondition> conditions, List<ControllerCertificate> controllerCertificates, Long observedGeneration) {
         super();
         this.conditions = conditions;
         this.controllerCertificates = controllerCertificates;
@@ -85,23 +85,23 @@ public class ControllerConfigStatus implements Editable<ControllerConfigStatusBu
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<ControllerConfigStatusConditions> getConditions() {
+    public List<ControllerConfigStatusCondition> getConditions() {
         return conditions;
     }
 
     @JsonProperty("conditions")
-    public void setConditions(List<ControllerConfigStatusConditions> conditions) {
+    public void setConditions(List<ControllerConfigStatusCondition> conditions) {
         this.conditions = conditions;
     }
 
     @JsonProperty("controllerCertificates")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<ControllerConfigStatusControllerCertificates> getControllerCertificates() {
+    public List<ControllerCertificate> getControllerCertificates() {
         return controllerCertificates;
     }
 
     @JsonProperty("controllerCertificates")
-    public void setControllerCertificates(List<ControllerConfigStatusControllerCertificates> controllerCertificates) {
+    public void setControllerCertificates(List<ControllerCertificate> controllerCertificates) {
         this.controllerCertificates = controllerCertificates;
     }
 

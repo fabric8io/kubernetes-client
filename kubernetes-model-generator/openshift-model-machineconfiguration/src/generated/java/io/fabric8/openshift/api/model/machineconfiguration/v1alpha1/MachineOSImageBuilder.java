@@ -1,9 +1,7 @@
 
-package io.fabric8.openshift.api.model.machineconfiguration.v1;
+package io.fabric8.openshift.api.model.machineconfiguration.v1alpha1;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -18,7 +16,6 @@ import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
-import io.fabric8.kubernetes.api.model.LabelSelectorRequirement;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
@@ -34,8 +31,7 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "matchExpressions",
-    "matchLabels"
+    "imageBuilderType"
 })
 @ToString
 @EqualsAndHashCode
@@ -55,15 +51,11 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ContainerRuntimeConfigSpecMachineConfigPoolSelector implements Editable<ContainerRuntimeConfigSpecMachineConfigPoolSelectorBuilder> , KubernetesResource
+public class MachineOSImageBuilder implements Editable<MachineOSImageBuilderBuilder> , KubernetesResource
 {
 
-    @JsonProperty("matchExpressions")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<LabelSelectorRequirement> matchExpressions = new ArrayList<>();
-    @JsonProperty("matchLabels")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> matchLabels = new LinkedHashMap<>();
+    @JsonProperty("imageBuilderType")
+    private String imageBuilderType;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -71,44 +63,31 @@ public class ContainerRuntimeConfigSpecMachineConfigPoolSelector implements Edit
      * No args constructor for use in serialization
      * 
      */
-    public ContainerRuntimeConfigSpecMachineConfigPoolSelector() {
+    public MachineOSImageBuilder() {
     }
 
-    public ContainerRuntimeConfigSpecMachineConfigPoolSelector(List<LabelSelectorRequirement> matchExpressions, Map<String, String> matchLabels) {
+    public MachineOSImageBuilder(String imageBuilderType) {
         super();
-        this.matchExpressions = matchExpressions;
-        this.matchLabels = matchLabels;
+        this.imageBuilderType = imageBuilderType;
     }
 
-    @JsonProperty("matchExpressions")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<LabelSelectorRequirement> getMatchExpressions() {
-        return matchExpressions;
+    @JsonProperty("imageBuilderType")
+    public String getImageBuilderType() {
+        return imageBuilderType;
     }
 
-    @JsonProperty("matchExpressions")
-    public void setMatchExpressions(List<LabelSelectorRequirement> matchExpressions) {
-        this.matchExpressions = matchExpressions;
-    }
-
-    @JsonProperty("matchLabels")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Map<String, String> getMatchLabels() {
-        return matchLabels;
-    }
-
-    @JsonProperty("matchLabels")
-    public void setMatchLabels(Map<String, String> matchLabels) {
-        this.matchLabels = matchLabels;
+    @JsonProperty("imageBuilderType")
+    public void setImageBuilderType(String imageBuilderType) {
+        this.imageBuilderType = imageBuilderType;
     }
 
     @JsonIgnore
-    public ContainerRuntimeConfigSpecMachineConfigPoolSelectorBuilder edit() {
-        return new ContainerRuntimeConfigSpecMachineConfigPoolSelectorBuilder(this);
+    public MachineOSImageBuilderBuilder edit() {
+        return new MachineOSImageBuilderBuilder(this);
     }
 
     @JsonIgnore
-    public ContainerRuntimeConfigSpecMachineConfigPoolSelectorBuilder toBuilder() {
+    public MachineOSImageBuilderBuilder toBuilder() {
         return edit();
     }
 

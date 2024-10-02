@@ -1,7 +1,9 @@
 
-package io.fabric8.openshift.api.model.machineconfiguration.v1;
+package io.fabric8.openshift.api.model.machineconfiguration.v1alpha1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -12,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
+import io.fabric8.kubernetes.api.model.Condition;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -31,8 +34,7 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "data",
-    "file"
+    "conditions"
 })
 @ToString
 @EqualsAndHashCode
@@ -52,13 +54,12 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ControllerConfigSpecImageRegistryBundleUserData implements Editable<ControllerConfigSpecImageRegistryBundleUserDataBuilder> , KubernetesResource
+public class PinnedImageSetStatus implements Editable<PinnedImageSetStatusBuilder> , KubernetesResource
 {
 
-    @JsonProperty("data")
-    private String data;
-    @JsonProperty("file")
-    private String file;
+    @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<Condition> conditions = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -66,42 +67,32 @@ public class ControllerConfigSpecImageRegistryBundleUserData implements Editable
      * No args constructor for use in serialization
      * 
      */
-    public ControllerConfigSpecImageRegistryBundleUserData() {
+    public PinnedImageSetStatus() {
     }
 
-    public ControllerConfigSpecImageRegistryBundleUserData(String data, String file) {
+    public PinnedImageSetStatus(List<Condition> conditions) {
         super();
-        this.data = data;
-        this.file = file;
+        this.conditions = conditions;
     }
 
-    @JsonProperty("data")
-    public String getData() {
-        return data;
+    @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<Condition> getConditions() {
+        return conditions;
     }
 
-    @JsonProperty("data")
-    public void setData(String data) {
-        this.data = data;
-    }
-
-    @JsonProperty("file")
-    public String getFile() {
-        return file;
-    }
-
-    @JsonProperty("file")
-    public void setFile(String file) {
-        this.file = file;
+    @JsonProperty("conditions")
+    public void setConditions(List<Condition> conditions) {
+        this.conditions = conditions;
     }
 
     @JsonIgnore
-    public ControllerConfigSpecImageRegistryBundleUserDataBuilder edit() {
-        return new ControllerConfigSpecImageRegistryBundleUserDataBuilder(this);
+    public PinnedImageSetStatusBuilder edit() {
+        return new PinnedImageSetStatusBuilder(this);
     }
 
     @JsonIgnore
-    public ControllerConfigSpecImageRegistryBundleUserDataBuilder toBuilder() {
+    public PinnedImageSetStatusBuilder toBuilder() {
         return edit();
     }
 

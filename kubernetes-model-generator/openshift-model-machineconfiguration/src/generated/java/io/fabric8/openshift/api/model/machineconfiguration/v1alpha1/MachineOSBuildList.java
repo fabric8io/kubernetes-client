@@ -1,5 +1,5 @@
 
-package io.fabric8.openshift.api.model.machineconfiguration.v1;
+package io.fabric8.openshift.api.model.machineconfiguration.v1alpha1;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -17,15 +17,21 @@ import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
+import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.LabelSelector;
+import io.fabric8.kubernetes.api.model.ListMeta;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
+import io.fabric8.kubernetes.model.annotation.Group;
+import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
+import io.sundr.transform.annotations.TemplateTransformation;
+import io.sundr.transform.annotations.TemplateTransformations;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
@@ -33,8 +39,10 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "conditions",
-    "observedGeneration"
+    "apiVersion",
+    "kind",
+    "metadata",
+    "items"
 })
 @ToString
 @EqualsAndHashCode
@@ -53,15 +61,34 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@TemplateTransformations({
+    @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true)
+})
+@Version("v1alpha1")
+@Group("machineconfiguration.openshift.io")
 @Generated("jsonschema2pojo")
-public class ContainerRuntimeConfigStatus implements Editable<ContainerRuntimeConfigStatusBuilder> , KubernetesResource
+public class MachineOSBuildList implements Editable<MachineOSBuildListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.machineconfiguration.v1alpha1.MachineOSBuild>
 {
 
-    @JsonProperty("conditions")
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("apiVersion")
+    private String apiVersion = "machineconfiguration.openshift.io/v1alpha1";
+    @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ContainerRuntimeConfigCondition> conditions = new ArrayList<>();
-    @JsonProperty("observedGeneration")
-    private Long observedGeneration;
+    private List<io.fabric8.openshift.api.model.machineconfiguration.v1alpha1.MachineOSBuild> items = new ArrayList<>();
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("kind")
+    private String kind = "MachineOSBuildList";
+    @JsonProperty("metadata")
+    private ListMeta metadata;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -69,43 +96,85 @@ public class ContainerRuntimeConfigStatus implements Editable<ContainerRuntimeCo
      * No args constructor for use in serialization
      * 
      */
-    public ContainerRuntimeConfigStatus() {
+    public MachineOSBuildList() {
     }
 
-    public ContainerRuntimeConfigStatus(List<ContainerRuntimeConfigCondition> conditions, Long observedGeneration) {
+    public MachineOSBuildList(String apiVersion, List<io.fabric8.openshift.api.model.machineconfiguration.v1alpha1.MachineOSBuild> items, String kind, ListMeta metadata) {
         super();
-        this.conditions = conditions;
-        this.observedGeneration = observedGeneration;
+        this.apiVersion = apiVersion;
+        this.items = items;
+        this.kind = kind;
+        this.metadata = metadata;
     }
 
-    @JsonProperty("conditions")
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("apiVersion")
+    public String getApiVersion() {
+        return apiVersion;
+    }
+
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("apiVersion")
+    public void setApiVersion(String apiVersion) {
+        this.apiVersion = apiVersion;
+    }
+
+    @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<ContainerRuntimeConfigCondition> getConditions() {
-        return conditions;
+    public List<io.fabric8.openshift.api.model.machineconfiguration.v1alpha1.MachineOSBuild> getItems() {
+        return items;
     }
 
-    @JsonProperty("conditions")
-    public void setConditions(List<ContainerRuntimeConfigCondition> conditions) {
-        this.conditions = conditions;
+    @JsonProperty("items")
+    public void setItems(List<io.fabric8.openshift.api.model.machineconfiguration.v1alpha1.MachineOSBuild> items) {
+        this.items = items;
     }
 
-    @JsonProperty("observedGeneration")
-    public Long getObservedGeneration() {
-        return observedGeneration;
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("kind")
+    public String getKind() {
+        return kind;
     }
 
-    @JsonProperty("observedGeneration")
-    public void setObservedGeneration(Long observedGeneration) {
-        this.observedGeneration = observedGeneration;
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("kind")
+    public void setKind(String kind) {
+        this.kind = kind;
+    }
+
+    @JsonProperty("metadata")
+    public ListMeta getMetadata() {
+        return metadata;
+    }
+
+    @JsonProperty("metadata")
+    public void setMetadata(ListMeta metadata) {
+        this.metadata = metadata;
     }
 
     @JsonIgnore
-    public ContainerRuntimeConfigStatusBuilder edit() {
-        return new ContainerRuntimeConfigStatusBuilder(this);
+    public MachineOSBuildListBuilder edit() {
+        return new MachineOSBuildListBuilder(this);
     }
 
     @JsonIgnore
-    public ContainerRuntimeConfigStatusBuilder toBuilder() {
+    public MachineOSBuildListBuilder toBuilder() {
         return edit();
     }
 

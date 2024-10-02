@@ -1,5 +1,5 @@
 
-package io.fabric8.openshift.api.model.machineconfiguration.v1;
+package io.fabric8.openshift.api.model.machineconfiguration.v1alpha1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -31,13 +31,7 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "apiVersion",
-    "kind",
-    "fieldPath",
-    "name",
-    "namespace",
-    "resourceVersion",
-    "uid"
+    "currentImagePullSecret"
 })
 @ToString
 @EqualsAndHashCode
@@ -57,23 +51,11 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class MachineConfigPoolSpecCSource implements Editable<MachineConfigPoolSpecCSourceBuilder> , KubernetesResource
+public class BuildOutputs implements Editable<BuildOutputsBuilder> , KubernetesResource
 {
 
-    @JsonProperty("apiVersion")
-    private String apiVersion;
-    @JsonProperty("fieldPath")
-    private String fieldPath;
-    @JsonProperty("kind")
-    private String kind;
-    @JsonProperty("name")
-    private String name;
-    @JsonProperty("namespace")
-    private String namespace;
-    @JsonProperty("resourceVersion")
-    private String resourceVersion;
-    @JsonProperty("uid")
-    private String uid;
+    @JsonProperty("currentImagePullSecret")
+    private ImageSecretObjectReference currentImagePullSecret;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -81,97 +63,31 @@ public class MachineConfigPoolSpecCSource implements Editable<MachineConfigPoolS
      * No args constructor for use in serialization
      * 
      */
-    public MachineConfigPoolSpecCSource() {
+    public BuildOutputs() {
     }
 
-    public MachineConfigPoolSpecCSource(String apiVersion, String fieldPath, String kind, String name, String namespace, String resourceVersion, String uid) {
+    public BuildOutputs(ImageSecretObjectReference currentImagePullSecret) {
         super();
-        this.apiVersion = apiVersion;
-        this.fieldPath = fieldPath;
-        this.kind = kind;
-        this.name = name;
-        this.namespace = namespace;
-        this.resourceVersion = resourceVersion;
-        this.uid = uid;
+        this.currentImagePullSecret = currentImagePullSecret;
     }
 
-    @JsonProperty("apiVersion")
-    public String getApiVersion() {
-        return apiVersion;
+    @JsonProperty("currentImagePullSecret")
+    public ImageSecretObjectReference getCurrentImagePullSecret() {
+        return currentImagePullSecret;
     }
 
-    @JsonProperty("apiVersion")
-    public void setApiVersion(String apiVersion) {
-        this.apiVersion = apiVersion;
-    }
-
-    @JsonProperty("fieldPath")
-    public String getFieldPath() {
-        return fieldPath;
-    }
-
-    @JsonProperty("fieldPath")
-    public void setFieldPath(String fieldPath) {
-        this.fieldPath = fieldPath;
-    }
-
-    @JsonProperty("kind")
-    public String getKind() {
-        return kind;
-    }
-
-    @JsonProperty("kind")
-    public void setKind(String kind) {
-        this.kind = kind;
-    }
-
-    @JsonProperty("name")
-    public String getName() {
-        return name;
-    }
-
-    @JsonProperty("name")
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @JsonProperty("namespace")
-    public String getNamespace() {
-        return namespace;
-    }
-
-    @JsonProperty("namespace")
-    public void setNamespace(String namespace) {
-        this.namespace = namespace;
-    }
-
-    @JsonProperty("resourceVersion")
-    public String getResourceVersion() {
-        return resourceVersion;
-    }
-
-    @JsonProperty("resourceVersion")
-    public void setResourceVersion(String resourceVersion) {
-        this.resourceVersion = resourceVersion;
-    }
-
-    @JsonProperty("uid")
-    public String getUid() {
-        return uid;
-    }
-
-    @JsonProperty("uid")
-    public void setUid(String uid) {
-        this.uid = uid;
+    @JsonProperty("currentImagePullSecret")
+    public void setCurrentImagePullSecret(ImageSecretObjectReference currentImagePullSecret) {
+        this.currentImagePullSecret = currentImagePullSecret;
     }
 
     @JsonIgnore
-    public MachineConfigPoolSpecCSourceBuilder edit() {
-        return new MachineConfigPoolSpecCSourceBuilder(this);
+    public BuildOutputsBuilder edit() {
+        return new BuildOutputsBuilder(this);
     }
 
     @JsonIgnore
-    public MachineConfigPoolSpecCSourceBuilder toBuilder() {
+    public BuildOutputsBuilder toBuilder() {
         return edit();
     }
 

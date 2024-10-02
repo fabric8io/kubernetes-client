@@ -22,7 +22,6 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.openshift.api.model.config.v1.TLSSecurityProfile;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -32,11 +31,8 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "autoSizingReserved",
-    "kubeletConfig",
-    "logLevel",
-    "machineConfigPoolSelector",
-    "tlsSecurityProfile"
+    "data",
+    "file"
 })
 @ToString
 @EqualsAndHashCode
@@ -56,20 +52,13 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class KubeletConfigSpec implements Editable<KubeletConfigSpecBuilder> , KubernetesResource
+public class ImageRegistryBundle implements Editable<ImageRegistryBundleBuilder> , KubernetesResource
 {
 
-    @JsonProperty("autoSizingReserved")
-    private Boolean autoSizingReserved;
-    @JsonProperty("kubeletConfig")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
-    private Object kubeletConfig;
-    @JsonProperty("logLevel")
-    private Integer logLevel;
-    @JsonProperty("machineConfigPoolSelector")
-    private LabelSelector machineConfigPoolSelector;
-    @JsonProperty("tlsSecurityProfile")
-    private TLSSecurityProfile tlsSecurityProfile;
+    @JsonProperty("data")
+    private String data;
+    @JsonProperty("file")
+    private String file;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -77,76 +66,42 @@ public class KubeletConfigSpec implements Editable<KubeletConfigSpecBuilder> , K
      * No args constructor for use in serialization
      * 
      */
-    public KubeletConfigSpec() {
+    public ImageRegistryBundle() {
     }
 
-    public KubeletConfigSpec(Boolean autoSizingReserved, Object kubeletConfig, Integer logLevel, LabelSelector machineConfigPoolSelector, TLSSecurityProfile tlsSecurityProfile) {
+    public ImageRegistryBundle(String data, String file) {
         super();
-        this.autoSizingReserved = autoSizingReserved;
-        this.kubeletConfig = kubeletConfig;
-        this.logLevel = logLevel;
-        this.machineConfigPoolSelector = machineConfigPoolSelector;
-        this.tlsSecurityProfile = tlsSecurityProfile;
+        this.data = data;
+        this.file = file;
     }
 
-    @JsonProperty("autoSizingReserved")
-    public Boolean getAutoSizingReserved() {
-        return autoSizingReserved;
+    @JsonProperty("data")
+    public String getData() {
+        return data;
     }
 
-    @JsonProperty("autoSizingReserved")
-    public void setAutoSizingReserved(Boolean autoSizingReserved) {
-        this.autoSizingReserved = autoSizingReserved;
+    @JsonProperty("data")
+    public void setData(String data) {
+        this.data = data;
     }
 
-    @JsonProperty("kubeletConfig")
-    public Object getKubeletConfig() {
-        return kubeletConfig;
+    @JsonProperty("file")
+    public String getFile() {
+        return file;
     }
 
-    @JsonProperty("kubeletConfig")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
-    public void setKubeletConfig(Object kubeletConfig) {
-        this.kubeletConfig = kubeletConfig;
-    }
-
-    @JsonProperty("logLevel")
-    public Integer getLogLevel() {
-        return logLevel;
-    }
-
-    @JsonProperty("logLevel")
-    public void setLogLevel(Integer logLevel) {
-        this.logLevel = logLevel;
-    }
-
-    @JsonProperty("machineConfigPoolSelector")
-    public LabelSelector getMachineConfigPoolSelector() {
-        return machineConfigPoolSelector;
-    }
-
-    @JsonProperty("machineConfigPoolSelector")
-    public void setMachineConfigPoolSelector(LabelSelector machineConfigPoolSelector) {
-        this.machineConfigPoolSelector = machineConfigPoolSelector;
-    }
-
-    @JsonProperty("tlsSecurityProfile")
-    public TLSSecurityProfile getTlsSecurityProfile() {
-        return tlsSecurityProfile;
-    }
-
-    @JsonProperty("tlsSecurityProfile")
-    public void setTlsSecurityProfile(TLSSecurityProfile tlsSecurityProfile) {
-        this.tlsSecurityProfile = tlsSecurityProfile;
+    @JsonProperty("file")
+    public void setFile(String file) {
+        this.file = file;
     }
 
     @JsonIgnore
-    public KubeletConfigSpecBuilder edit() {
-        return new KubeletConfigSpecBuilder(this);
+    public ImageRegistryBundleBuilder edit() {
+        return new ImageRegistryBundleBuilder(this);
     }
 
     @JsonIgnore
-    public KubeletConfigSpecBuilder toBuilder() {
+    public ImageRegistryBundleBuilder toBuilder() {
         return edit();
     }
 

@@ -1,5 +1,5 @@
 
-package io.fabric8.openshift.api.model.machineconfiguration.v1;
+package io.fabric8.openshift.api.model.machineconfiguration.v1alpha1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -31,8 +31,8 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "containerRuntimeConfig",
-    "machineConfigPoolSelector"
+    "buildPod",
+    "imageBuilderType"
 })
 @ToString
 @EqualsAndHashCode
@@ -52,13 +52,13 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ContainerRuntimeConfigSpec implements Editable<ContainerRuntimeConfigSpecBuilder> , KubernetesResource
+public class MachineOSBuilderReference implements Editable<MachineOSBuilderReferenceBuilder> , KubernetesResource
 {
 
-    @JsonProperty("containerRuntimeConfig")
-    private ContainerRuntimeConfiguration containerRuntimeConfig;
-    @JsonProperty("machineConfigPoolSelector")
-    private LabelSelector machineConfigPoolSelector;
+    @JsonProperty("buildPod")
+    private ObjectReference buildPod;
+    @JsonProperty("imageBuilderType")
+    private String imageBuilderType;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -66,42 +66,42 @@ public class ContainerRuntimeConfigSpec implements Editable<ContainerRuntimeConf
      * No args constructor for use in serialization
      * 
      */
-    public ContainerRuntimeConfigSpec() {
+    public MachineOSBuilderReference() {
     }
 
-    public ContainerRuntimeConfigSpec(ContainerRuntimeConfiguration containerRuntimeConfig, LabelSelector machineConfigPoolSelector) {
+    public MachineOSBuilderReference(ObjectReference buildPod, String imageBuilderType) {
         super();
-        this.containerRuntimeConfig = containerRuntimeConfig;
-        this.machineConfigPoolSelector = machineConfigPoolSelector;
+        this.buildPod = buildPod;
+        this.imageBuilderType = imageBuilderType;
     }
 
-    @JsonProperty("containerRuntimeConfig")
-    public ContainerRuntimeConfiguration getContainerRuntimeConfig() {
-        return containerRuntimeConfig;
+    @JsonProperty("buildPod")
+    public ObjectReference getBuildPod() {
+        return buildPod;
     }
 
-    @JsonProperty("containerRuntimeConfig")
-    public void setContainerRuntimeConfig(ContainerRuntimeConfiguration containerRuntimeConfig) {
-        this.containerRuntimeConfig = containerRuntimeConfig;
+    @JsonProperty("buildPod")
+    public void setBuildPod(ObjectReference buildPod) {
+        this.buildPod = buildPod;
     }
 
-    @JsonProperty("machineConfigPoolSelector")
-    public LabelSelector getMachineConfigPoolSelector() {
-        return machineConfigPoolSelector;
+    @JsonProperty("imageBuilderType")
+    public String getImageBuilderType() {
+        return imageBuilderType;
     }
 
-    @JsonProperty("machineConfigPoolSelector")
-    public void setMachineConfigPoolSelector(LabelSelector machineConfigPoolSelector) {
-        this.machineConfigPoolSelector = machineConfigPoolSelector;
-    }
-
-    @JsonIgnore
-    public ContainerRuntimeConfigSpecBuilder edit() {
-        return new ContainerRuntimeConfigSpecBuilder(this);
+    @JsonProperty("imageBuilderType")
+    public void setImageBuilderType(String imageBuilderType) {
+        this.imageBuilderType = imageBuilderType;
     }
 
     @JsonIgnore
-    public ContainerRuntimeConfigSpecBuilder toBuilder() {
+    public MachineOSBuilderReferenceBuilder edit() {
+        return new MachineOSBuilderReferenceBuilder(this);
+    }
+
+    @JsonIgnore
+    public MachineOSBuilderReferenceBuilder toBuilder() {
         return edit();
     }
 

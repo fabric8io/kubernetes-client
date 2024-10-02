@@ -1,9 +1,7 @@
 
-package io.fabric8.openshift.api.model.machineconfiguration.v1;
+package io.fabric8.openshift.api.model.machineconfiguration.v1alpha1;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -15,8 +13,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
+import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
-import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
@@ -24,8 +22,12 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
+import io.fabric8.kubernetes.model.annotation.Group;
+import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
+import io.sundr.transform.annotations.TemplateTransformation;
+import io.sundr.transform.annotations.TemplateTransformations;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
@@ -35,12 +37,9 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "apiVersion",
     "kind",
-    "fieldPath",
-    "name",
-    "namespace",
-    "resourceVersion",
-    "source",
-    "uid"
+    "metadata",
+    "spec",
+    "status"
 })
 @ToString
 @EqualsAndHashCode
@@ -59,27 +58,35 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@TemplateTransformations({
+    @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true)
+})
+@Version("v1alpha1")
+@Group("machineconfiguration.openshift.io")
 @Generated("jsonschema2pojo")
-public class MachineConfigPoolStatusConfiguration implements Editable<MachineConfigPoolStatusConfigurationBuilder> , KubernetesResource
+public class PinnedImageSet implements Editable<PinnedImageSetBuilder> , HasMetadata
 {
 
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @JsonProperty("apiVersion")
-    private String apiVersion;
-    @JsonProperty("fieldPath")
-    private String fieldPath;
+    private String apiVersion = "machineconfiguration.openshift.io/v1alpha1";
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @JsonProperty("kind")
-    private String kind;
-    @JsonProperty("name")
-    private String name;
-    @JsonProperty("namespace")
-    private String namespace;
-    @JsonProperty("resourceVersion")
-    private String resourceVersion;
-    @JsonProperty("source")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ObjectReference> source = new ArrayList<>();
-    @JsonProperty("uid")
-    private String uid;
+    private String kind = "PinnedImageSet";
+    @JsonProperty("metadata")
+    private ObjectMeta metadata;
+    @JsonProperty("spec")
+    private PinnedImageSetSpec spec;
+    @JsonProperty("status")
+    private PinnedImageSetStatus status;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -87,109 +94,95 @@ public class MachineConfigPoolStatusConfiguration implements Editable<MachineCon
      * No args constructor for use in serialization
      * 
      */
-    public MachineConfigPoolStatusConfiguration() {
+    public PinnedImageSet() {
     }
 
-    public MachineConfigPoolStatusConfiguration(String apiVersion, String fieldPath, String kind, String name, String namespace, String resourceVersion, List<ObjectReference> source, String uid) {
+    public PinnedImageSet(String apiVersion, String kind, ObjectMeta metadata, PinnedImageSetSpec spec, PinnedImageSetStatus status) {
         super();
         this.apiVersion = apiVersion;
-        this.fieldPath = fieldPath;
         this.kind = kind;
-        this.name = name;
-        this.namespace = namespace;
-        this.resourceVersion = resourceVersion;
-        this.source = source;
-        this.uid = uid;
+        this.metadata = metadata;
+        this.spec = spec;
+        this.status = status;
     }
 
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
         return apiVersion;
     }
 
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
-    @JsonProperty("fieldPath")
-    public String getFieldPath() {
-        return fieldPath;
-    }
-
-    @JsonProperty("fieldPath")
-    public void setFieldPath(String fieldPath) {
-        this.fieldPath = fieldPath;
-    }
-
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @JsonProperty("kind")
     public String getKind() {
         return kind;
     }
 
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
-    @JsonProperty("name")
-    public String getName() {
-        return name;
+    @JsonProperty("metadata")
+    public ObjectMeta getMetadata() {
+        return metadata;
     }
 
-    @JsonProperty("name")
-    public void setName(String name) {
-        this.name = name;
+    @JsonProperty("metadata")
+    public void setMetadata(ObjectMeta metadata) {
+        this.metadata = metadata;
     }
 
-    @JsonProperty("namespace")
-    public String getNamespace() {
-        return namespace;
+    @JsonProperty("spec")
+    public PinnedImageSetSpec getSpec() {
+        return spec;
     }
 
-    @JsonProperty("namespace")
-    public void setNamespace(String namespace) {
-        this.namespace = namespace;
+    @JsonProperty("spec")
+    public void setSpec(PinnedImageSetSpec spec) {
+        this.spec = spec;
     }
 
-    @JsonProperty("resourceVersion")
-    public String getResourceVersion() {
-        return resourceVersion;
+    @JsonProperty("status")
+    public PinnedImageSetStatus getStatus() {
+        return status;
     }
 
-    @JsonProperty("resourceVersion")
-    public void setResourceVersion(String resourceVersion) {
-        this.resourceVersion = resourceVersion;
-    }
-
-    @JsonProperty("source")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<ObjectReference> getSource() {
-        return source;
-    }
-
-    @JsonProperty("source")
-    public void setSource(List<ObjectReference> source) {
-        this.source = source;
-    }
-
-    @JsonProperty("uid")
-    public String getUid() {
-        return uid;
-    }
-
-    @JsonProperty("uid")
-    public void setUid(String uid) {
-        this.uid = uid;
+    @JsonProperty("status")
+    public void setStatus(PinnedImageSetStatus status) {
+        this.status = status;
     }
 
     @JsonIgnore
-    public MachineConfigPoolStatusConfigurationBuilder edit() {
-        return new MachineConfigPoolStatusConfigurationBuilder(this);
+    public PinnedImageSetBuilder edit() {
+        return new PinnedImageSetBuilder(this);
     }
 
     @JsonIgnore
-    public MachineConfigPoolStatusConfigurationBuilder toBuilder() {
+    public PinnedImageSetBuilder toBuilder() {
         return edit();
     }
 
