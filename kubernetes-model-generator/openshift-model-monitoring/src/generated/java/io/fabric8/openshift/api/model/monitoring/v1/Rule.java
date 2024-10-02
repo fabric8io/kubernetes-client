@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
+import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
@@ -50,7 +51,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Container.class),
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.IntOrString.class),
+    @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
@@ -65,11 +66,11 @@ public class Rule implements Editable<RuleBuilder> , KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> annotations = new LinkedHashMap<>();
     @JsonProperty("expr")
-    private io.fabric8.kubernetes.api.model.IntOrString expr;
+    private IntOrString expr;
     @JsonProperty("for")
     private String _for;
     @JsonProperty("keep_firing_for")
-    private String keepFiringFor;
+    private String keep_firing_for;
     @JsonProperty("labels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> labels = new LinkedHashMap<>();
@@ -85,13 +86,13 @@ public class Rule implements Editable<RuleBuilder> , KubernetesResource
     public Rule() {
     }
 
-    public Rule(String alert, Map<String, String> annotations, io.fabric8.kubernetes.api.model.IntOrString expr, String _for, String keepFiringFor, Map<String, String> labels, String record) {
+    public Rule(String alert, Map<String, String> annotations, IntOrString expr, String _for, String keep_firing_for, Map<String, String> labels, String record) {
         super();
         this.alert = alert;
         this.annotations = annotations;
         this.expr = expr;
         this._for = _for;
-        this.keepFiringFor = keepFiringFor;
+        this.keep_firing_for = keep_firing_for;
         this.labels = labels;
         this.record = record;
     }
@@ -118,12 +119,12 @@ public class Rule implements Editable<RuleBuilder> , KubernetesResource
     }
 
     @JsonProperty("expr")
-    public io.fabric8.kubernetes.api.model.IntOrString getExpr() {
+    public IntOrString getExpr() {
         return expr;
     }
 
     @JsonProperty("expr")
-    public void setExpr(io.fabric8.kubernetes.api.model.IntOrString expr) {
+    public void setExpr(IntOrString expr) {
         this.expr = expr;
     }
 
@@ -138,13 +139,13 @@ public class Rule implements Editable<RuleBuilder> , KubernetesResource
     }
 
     @JsonProperty("keep_firing_for")
-    public String getKeepFiringFor() {
-        return keepFiringFor;
+    public String getKeep_firing_for() {
+        return keep_firing_for;
     }
 
     @JsonProperty("keep_firing_for")
-    public void setKeepFiringFor(String keepFiringFor) {
-        this.keepFiringFor = keepFiringFor;
+    public void setKeep_firing_for(String keep_firing_for) {
+        this.keep_firing_for = keep_firing_for;
     }
 
     @JsonProperty("labels")

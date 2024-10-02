@@ -58,11 +58,11 @@ public class AlertmanagerWebSpec implements Editable<AlertmanagerWebSpecBuilder>
 {
 
     @JsonProperty("getConcurrency")
-    private Integer getConcurrency;
+    private Long getConcurrency;
     @JsonProperty("httpConfig")
     private WebHTTPConfig httpConfig;
     @JsonProperty("timeout")
-    private Integer timeout;
+    private Long timeout;
     @JsonProperty("tlsConfig")
     private WebTLSConfig tlsConfig;
     @JsonIgnore
@@ -75,7 +75,7 @@ public class AlertmanagerWebSpec implements Editable<AlertmanagerWebSpecBuilder>
     public AlertmanagerWebSpec() {
     }
 
-    public AlertmanagerWebSpec(Integer getConcurrency, WebHTTPConfig httpConfig, Integer timeout, WebTLSConfig tlsConfig) {
+    public AlertmanagerWebSpec(Long getConcurrency, WebHTTPConfig httpConfig, Long timeout, WebTLSConfig tlsConfig) {
         super();
         this.getConcurrency = getConcurrency;
         this.httpConfig = httpConfig;
@@ -84,12 +84,12 @@ public class AlertmanagerWebSpec implements Editable<AlertmanagerWebSpecBuilder>
     }
 
     @JsonProperty("getConcurrency")
-    public Integer getGetConcurrency() {
+    public Long getGetConcurrency() {
         return getConcurrency;
     }
 
     @JsonProperty("getConcurrency")
-    public void setGetConcurrency(Integer getConcurrency) {
+    public void setGetConcurrency(Long getConcurrency) {
         this.getConcurrency = getConcurrency;
     }
 
@@ -104,12 +104,12 @@ public class AlertmanagerWebSpec implements Editable<AlertmanagerWebSpecBuilder>
     }
 
     @JsonProperty("timeout")
-    public Integer getTimeout() {
+    public Long getTimeout() {
         return timeout;
     }
 
     @JsonProperty("timeout")
-    public void setTimeout(Integer timeout) {
+    public void setTimeout(Long timeout) {
         this.timeout = timeout;
     }
 

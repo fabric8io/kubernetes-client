@@ -291,6 +291,10 @@ class ModelGenerator {
           if (templateContext.getClassSimpleName().equals(referenceSimpleClass)) {
             return r;
           }
+          // Don't add import if there's an import for a class with the same name e.g. ObjectReference in k8s core and monitoring
+          if (!templateContext.getImports().contains(r) && templateContext.hasSimpleClassName(referenceSimpleClass)) {
+            return r;
+          }
           templateContext.addImport(r);
           return referenceSimpleClass;
         })

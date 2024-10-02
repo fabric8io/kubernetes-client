@@ -15,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
+import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
@@ -53,7 +54,8 @@ import lombok.experimental.Accessors;
     "scheme",
     "scrapeTimeout",
     "targetPort",
-    "tlsConfig"
+    "tlsConfig",
+    "trackTimestampsStaleness"
 })
 @ToString
 @EqualsAndHashCode
@@ -67,7 +69,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Container.class),
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.IntOrString.class),
+    @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
@@ -118,9 +120,11 @@ public class Endpoint implements Editable<EndpointBuilder> , KubernetesResource
     @JsonProperty("scrapeTimeout")
     private String scrapeTimeout;
     @JsonProperty("targetPort")
-    private io.fabric8.kubernetes.api.model.IntOrString targetPort;
+    private IntOrString targetPort;
     @JsonProperty("tlsConfig")
     private TLSConfig tlsConfig;
+    @JsonProperty("trackTimestampsStaleness")
+    private Boolean trackTimestampsStaleness;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -131,7 +135,7 @@ public class Endpoint implements Editable<EndpointBuilder> , KubernetesResource
     public Endpoint() {
     }
 
-    public Endpoint(SafeAuthorization authorization, BasicAuth basicAuth, String bearerTokenFile, SecretKeySelector bearerTokenSecret, Boolean enableHttp2, Boolean filterRunning, Boolean followRedirects, Boolean honorLabels, Boolean honorTimestamps, String interval, List<RelabelConfig> metricRelabelings, OAuth2 oauth2, Map<String, List<String>> params, String path, String port, String proxyUrl, List<RelabelConfig> relabelings, String scheme, String scrapeTimeout, io.fabric8.kubernetes.api.model.IntOrString targetPort, TLSConfig tlsConfig) {
+    public Endpoint(SafeAuthorization authorization, BasicAuth basicAuth, String bearerTokenFile, SecretKeySelector bearerTokenSecret, Boolean enableHttp2, Boolean filterRunning, Boolean followRedirects, Boolean honorLabels, Boolean honorTimestamps, String interval, List<RelabelConfig> metricRelabelings, OAuth2 oauth2, Map<String, List<String>> params, String path, String port, String proxyUrl, List<RelabelConfig> relabelings, String scheme, String scrapeTimeout, IntOrString targetPort, TLSConfig tlsConfig, Boolean trackTimestampsStaleness) {
         super();
         this.authorization = authorization;
         this.basicAuth = basicAuth;
@@ -154,6 +158,7 @@ public class Endpoint implements Editable<EndpointBuilder> , KubernetesResource
         this.scrapeTimeout = scrapeTimeout;
         this.targetPort = targetPort;
         this.tlsConfig = tlsConfig;
+        this.trackTimestampsStaleness = trackTimestampsStaleness;
     }
 
     @JsonProperty("authorization")
@@ -350,12 +355,12 @@ public class Endpoint implements Editable<EndpointBuilder> , KubernetesResource
     }
 
     @JsonProperty("targetPort")
-    public io.fabric8.kubernetes.api.model.IntOrString getTargetPort() {
+    public IntOrString getTargetPort() {
         return targetPort;
     }
 
     @JsonProperty("targetPort")
-    public void setTargetPort(io.fabric8.kubernetes.api.model.IntOrString targetPort) {
+    public void setTargetPort(IntOrString targetPort) {
         this.targetPort = targetPort;
     }
 
@@ -367,6 +372,16 @@ public class Endpoint implements Editable<EndpointBuilder> , KubernetesResource
     @JsonProperty("tlsConfig")
     public void setTlsConfig(TLSConfig tlsConfig) {
         this.tlsConfig = tlsConfig;
+    }
+
+    @JsonProperty("trackTimestampsStaleness")
+    public Boolean getTrackTimestampsStaleness() {
+        return trackTimestampsStaleness;
+    }
+
+    @JsonProperty("trackTimestampsStaleness")
+    public void setTrackTimestampsStaleness(Boolean trackTimestampsStaleness) {
+        this.trackTimestampsStaleness = trackTimestampsStaleness;
     }
 
     @JsonIgnore

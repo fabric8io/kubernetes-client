@@ -156,6 +156,7 @@
               <addBuildableReferences>true</addBuildableReferences>
               <generateJavadoc>false</generateJavadoc>
               <packageMappings>
+                <com.coreos.monitoring>io.fabric8.openshift.api.model.monitoring</com.coreos.monitoring>
                 <io.k8s.api.core.v1>io.fabric8.kubernetes.api.model</io.k8s.api.core.v1>
                 <io.k8s.apimachinery.pkg>io.fabric8.kubernetes.api.model</io.k8s.apimachinery.pkg>
                 <io.k8s.apimachinery.pkg.apis.meta.v1>io.fabric8.kubernetes.api.model</io.k8s.apimachinery.pkg.apis.meta.v1>
@@ -163,10 +164,14 @@
                 <io.k8s.api.apps.v1>io.fabric8.kubernetes.api.model.apps</io.k8s.api.apps.v1>
                 <io.k8s.api.rbac.v1>io.fabric8.kubernetes.api.model.rbac</io.k8s.api.rbac.v1>
                 <io.openshift>io.fabric8.openshift.api.model</io.openshift>
+                <io.openshift.apiserver>io.fabric8.openshift.api.model.miscellaneous.apiserver</io.openshift.apiserver>
                 <io.openshift.apps.v1>io.fabric8.openshift.api.model</io.openshift.apps.v1>
                 <io.openshift.authorization.v1>io.fabric8.openshift.api.model</io.openshift.authorization.v1>
                 <io.openshift.build.v1>io.fabric8.openshift.api.model</io.openshift.build.v1>
+                <io.openshift.cloudcredential>io.fabric8.openshift.api.model.miscellaneous.cloudcredential</io.openshift.cloudcredential>
+                <io.openshift.helm>io.fabric8.openshift.api.model.miscellaneous.helm</io.openshift.helm>
                 <io.openshift.image.v1>io.fabric8.openshift.api.model</io.openshift.image.v1>
+                <io.openshift.network>io.fabric8.openshift.api.model.miscellaneous.network</io.openshift.network>
                 <io.openshift.oauth.v1>io.fabric8.openshift.api.model</io.openshift.oauth.v1>
                 <io.openshift.project.v1>io.fabric8.openshift.api.model</io.openshift.project.v1>
                 <io.openshift.quota.v1>io.fabric8.openshift.api.model</io.openshift.quota.v1>

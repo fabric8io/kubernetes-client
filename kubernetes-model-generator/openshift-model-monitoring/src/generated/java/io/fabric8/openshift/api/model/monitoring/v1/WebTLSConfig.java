@@ -35,10 +35,13 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "cert",
+    "certFile",
     "cipherSuites",
     "clientAuthType",
+    "clientCAFile",
     "client_ca",
     "curvePreferences",
+    "keyFile",
     "keySecret",
     "maxVersion",
     "minVersion",
@@ -67,16 +70,22 @@ public class WebTLSConfig implements Editable<WebTLSConfigBuilder> , KubernetesR
 
     @JsonProperty("cert")
     private SecretOrConfigMap cert;
+    @JsonProperty("certFile")
+    private String certFile;
     @JsonProperty("cipherSuites")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> cipherSuites = new ArrayList<>();
     @JsonProperty("clientAuthType")
     private String clientAuthType;
+    @JsonProperty("clientCAFile")
+    private String clientCAFile;
     @JsonProperty("client_ca")
-    private SecretOrConfigMap clientCa;
+    private SecretOrConfigMap client_ca;
     @JsonProperty("curvePreferences")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> curvePreferences = new ArrayList<>();
+    @JsonProperty("keyFile")
+    private String keyFile;
     @JsonProperty("keySecret")
     private SecretKeySelector keySecret;
     @JsonProperty("maxVersion")
@@ -95,13 +104,16 @@ public class WebTLSConfig implements Editable<WebTLSConfigBuilder> , KubernetesR
     public WebTLSConfig() {
     }
 
-    public WebTLSConfig(SecretOrConfigMap cert, List<String> cipherSuites, String clientAuthType, SecretOrConfigMap clientCa, List<String> curvePreferences, SecretKeySelector keySecret, String maxVersion, String minVersion, Boolean preferServerCipherSuites) {
+    public WebTLSConfig(SecretOrConfigMap cert, String certFile, List<String> cipherSuites, String clientAuthType, String clientCAFile, SecretOrConfigMap client_ca, List<String> curvePreferences, String keyFile, SecretKeySelector keySecret, String maxVersion, String minVersion, Boolean preferServerCipherSuites) {
         super();
         this.cert = cert;
+        this.certFile = certFile;
         this.cipherSuites = cipherSuites;
         this.clientAuthType = clientAuthType;
-        this.clientCa = clientCa;
+        this.clientCAFile = clientCAFile;
+        this.client_ca = client_ca;
         this.curvePreferences = curvePreferences;
+        this.keyFile = keyFile;
         this.keySecret = keySecret;
         this.maxVersion = maxVersion;
         this.minVersion = minVersion;
@@ -116,6 +128,16 @@ public class WebTLSConfig implements Editable<WebTLSConfigBuilder> , KubernetesR
     @JsonProperty("cert")
     public void setCert(SecretOrConfigMap cert) {
         this.cert = cert;
+    }
+
+    @JsonProperty("certFile")
+    public String getCertFile() {
+        return certFile;
+    }
+
+    @JsonProperty("certFile")
+    public void setCertFile(String certFile) {
+        this.certFile = certFile;
     }
 
     @JsonProperty("cipherSuites")
@@ -139,14 +161,24 @@ public class WebTLSConfig implements Editable<WebTLSConfigBuilder> , KubernetesR
         this.clientAuthType = clientAuthType;
     }
 
-    @JsonProperty("client_ca")
-    public SecretOrConfigMap getClientCa() {
-        return clientCa;
+    @JsonProperty("clientCAFile")
+    public String getClientCAFile() {
+        return clientCAFile;
+    }
+
+    @JsonProperty("clientCAFile")
+    public void setClientCAFile(String clientCAFile) {
+        this.clientCAFile = clientCAFile;
     }
 
     @JsonProperty("client_ca")
-    public void setClientCa(SecretOrConfigMap clientCa) {
-        this.clientCa = clientCa;
+    public SecretOrConfigMap getClient_ca() {
+        return client_ca;
+    }
+
+    @JsonProperty("client_ca")
+    public void setClient_ca(SecretOrConfigMap client_ca) {
+        this.client_ca = client_ca;
     }
 
     @JsonProperty("curvePreferences")
@@ -158,6 +190,16 @@ public class WebTLSConfig implements Editable<WebTLSConfigBuilder> , KubernetesR
     @JsonProperty("curvePreferences")
     public void setCurvePreferences(List<String> curvePreferences) {
         this.curvePreferences = curvePreferences;
+    }
+
+    @JsonProperty("keyFile")
+    public String getKeyFile() {
+        return keyFile;
+    }
+
+    @JsonProperty("keyFile")
+    public void setKeyFile(String keyFile) {
+        this.keyFile = keyFile;
     }
 
     @JsonProperty("keySecret")

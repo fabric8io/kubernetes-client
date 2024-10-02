@@ -1,7 +1,9 @@
 
 package io.fabric8.openshift.api.model.monitoring.v1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -13,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
+import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
@@ -31,6 +34,7 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "apiVersion",
+    "alertRelabelings",
     "authorization",
     "basicAuth",
     "bearerTokenFile",
@@ -39,7 +43,9 @@ import lombok.experimental.Accessors;
     "namespace",
     "pathPrefix",
     "port",
+    "relabelings",
     "scheme",
+    "sigv4",
     "timeout",
     "tlsConfig"
 })
@@ -55,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Container.class),
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.IntOrString.class),
+    @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
@@ -64,6 +70,9 @@ import lombok.experimental.Accessors;
 public class AlertmanagerEndpoints implements Editable<AlertmanagerEndpointsBuilder> , KubernetesResource
 {
 
+    @JsonProperty("alertRelabelings")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<RelabelConfig> alertRelabelings = new ArrayList<>();
     @JsonProperty("apiVersion")
     private String apiVersion;
     @JsonProperty("authorization")
@@ -81,9 +90,14 @@ public class AlertmanagerEndpoints implements Editable<AlertmanagerEndpointsBuil
     @JsonProperty("pathPrefix")
     private String pathPrefix;
     @JsonProperty("port")
-    private io.fabric8.kubernetes.api.model.IntOrString port;
+    private IntOrString port;
+    @JsonProperty("relabelings")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<RelabelConfig> relabelings = new ArrayList<>();
     @JsonProperty("scheme")
     private String scheme;
+    @JsonProperty("sigv4")
+    private Sigv4 sigv4;
     @JsonProperty("timeout")
     private String timeout;
     @JsonProperty("tlsConfig")
@@ -98,8 +112,9 @@ public class AlertmanagerEndpoints implements Editable<AlertmanagerEndpointsBuil
     public AlertmanagerEndpoints() {
     }
 
-    public AlertmanagerEndpoints(String apiVersion, SafeAuthorization authorization, BasicAuth basicAuth, String bearerTokenFile, Boolean enableHttp2, String name, String namespace, String pathPrefix, io.fabric8.kubernetes.api.model.IntOrString port, String scheme, String timeout, TLSConfig tlsConfig) {
+    public AlertmanagerEndpoints(List<RelabelConfig> alertRelabelings, String apiVersion, SafeAuthorization authorization, BasicAuth basicAuth, String bearerTokenFile, Boolean enableHttp2, String name, String namespace, String pathPrefix, IntOrString port, List<RelabelConfig> relabelings, String scheme, Sigv4 sigv4, String timeout, TLSConfig tlsConfig) {
         super();
+        this.alertRelabelings = alertRelabelings;
         this.apiVersion = apiVersion;
         this.authorization = authorization;
         this.basicAuth = basicAuth;
@@ -109,9 +124,22 @@ public class AlertmanagerEndpoints implements Editable<AlertmanagerEndpointsBuil
         this.namespace = namespace;
         this.pathPrefix = pathPrefix;
         this.port = port;
+        this.relabelings = relabelings;
         this.scheme = scheme;
+        this.sigv4 = sigv4;
         this.timeout = timeout;
         this.tlsConfig = tlsConfig;
+    }
+
+    @JsonProperty("alertRelabelings")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<RelabelConfig> getAlertRelabelings() {
+        return alertRelabelings;
+    }
+
+    @JsonProperty("alertRelabelings")
+    public void setAlertRelabelings(List<RelabelConfig> alertRelabelings) {
+        this.alertRelabelings = alertRelabelings;
     }
 
     @JsonProperty("apiVersion")
@@ -195,13 +223,24 @@ public class AlertmanagerEndpoints implements Editable<AlertmanagerEndpointsBuil
     }
 
     @JsonProperty("port")
-    public io.fabric8.kubernetes.api.model.IntOrString getPort() {
+    public IntOrString getPort() {
         return port;
     }
 
     @JsonProperty("port")
-    public void setPort(io.fabric8.kubernetes.api.model.IntOrString port) {
+    public void setPort(IntOrString port) {
         this.port = port;
+    }
+
+    @JsonProperty("relabelings")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<RelabelConfig> getRelabelings() {
+        return relabelings;
+    }
+
+    @JsonProperty("relabelings")
+    public void setRelabelings(List<RelabelConfig> relabelings) {
+        this.relabelings = relabelings;
     }
 
     @JsonProperty("scheme")
@@ -212,6 +251,16 @@ public class AlertmanagerEndpoints implements Editable<AlertmanagerEndpointsBuil
     @JsonProperty("scheme")
     public void setScheme(String scheme) {
         this.scheme = scheme;
+    }
+
+    @JsonProperty("sigv4")
+    public Sigv4 getSigv4() {
+        return sigv4;
+    }
+
+    @JsonProperty("sigv4")
+    public void setSigv4(Sigv4 sigv4) {
+        this.sigv4 = sigv4;
     }
 
     @JsonProperty("timeout")

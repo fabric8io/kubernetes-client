@@ -37,6 +37,7 @@ import lombok.experimental.Accessors;
     "conditions",
     "paused",
     "replicas",
+    "selector",
     "unavailableReplicas",
     "updatedReplicas"
 })
@@ -70,6 +71,8 @@ public class AlertmanagerStatus implements Editable<AlertmanagerStatusBuilder> ,
     private Boolean paused;
     @JsonProperty("replicas")
     private Integer replicas;
+    @JsonProperty("selector")
+    private String selector;
     @JsonProperty("unavailableReplicas")
     private Integer unavailableReplicas;
     @JsonProperty("updatedReplicas")
@@ -84,12 +87,13 @@ public class AlertmanagerStatus implements Editable<AlertmanagerStatusBuilder> ,
     public AlertmanagerStatus() {
     }
 
-    public AlertmanagerStatus(Integer availableReplicas, List<Condition> conditions, Boolean paused, Integer replicas, Integer unavailableReplicas, Integer updatedReplicas) {
+    public AlertmanagerStatus(Integer availableReplicas, List<Condition> conditions, Boolean paused, Integer replicas, String selector, Integer unavailableReplicas, Integer updatedReplicas) {
         super();
         this.availableReplicas = availableReplicas;
         this.conditions = conditions;
         this.paused = paused;
         this.replicas = replicas;
+        this.selector = selector;
         this.unavailableReplicas = unavailableReplicas;
         this.updatedReplicas = updatedReplicas;
     }
@@ -133,6 +137,16 @@ public class AlertmanagerStatus implements Editable<AlertmanagerStatusBuilder> ,
     @JsonProperty("replicas")
     public void setReplicas(Integer replicas) {
         this.replicas = replicas;
+    }
+
+    @JsonProperty("selector")
+    public String getSelector() {
+        return selector;
+    }
+
+    @JsonProperty("selector")
+    public void setSelector(String selector) {
+        this.selector = selector;
     }
 
     @JsonProperty("unavailableReplicas")

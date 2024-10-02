@@ -2,6 +2,7 @@
 package io.fabric8.openshift.api.model.monitoring.v1;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -22,6 +23,7 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
+import io.fabric8.kubernetes.api.model.SecretKeySelector;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -39,7 +41,10 @@ import lombok.experimental.Accessors;
     "followRedirects",
     "headers",
     "name",
+    "noProxy",
     "oauth2",
+    "proxyConnectHeader",
+    "proxyFromEnvironment",
     "proxyUrl",
     "readRecent",
     "remoteTimeout",
@@ -85,8 +90,15 @@ public class RemoteReadSpec implements Editable<RemoteReadSpecBuilder> , Kuberne
     private Map<String, String> headers = new LinkedHashMap<>();
     @JsonProperty("name")
     private String name;
+    @JsonProperty("noProxy")
+    private String noProxy;
     @JsonProperty("oauth2")
     private OAuth2 oauth2;
+    @JsonProperty("proxyConnectHeader")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, List<SecretKeySelector>> proxyConnectHeader = new LinkedHashMap<>();
+    @JsonProperty("proxyFromEnvironment")
+    private Boolean proxyFromEnvironment;
     @JsonProperty("proxyUrl")
     private String proxyUrl;
     @JsonProperty("readRecent")
@@ -110,7 +122,7 @@ public class RemoteReadSpec implements Editable<RemoteReadSpecBuilder> , Kuberne
     public RemoteReadSpec() {
     }
 
-    public RemoteReadSpec(Authorization authorization, BasicAuth basicAuth, String bearerToken, String bearerTokenFile, Boolean filterExternalLabels, Boolean followRedirects, Map<String, String> headers, String name, OAuth2 oauth2, String proxyUrl, Boolean readRecent, String remoteTimeout, Map<String, String> requiredMatchers, TLSConfig tlsConfig, String url) {
+    public RemoteReadSpec(Authorization authorization, BasicAuth basicAuth, String bearerToken, String bearerTokenFile, Boolean filterExternalLabels, Boolean followRedirects, Map<String, String> headers, String name, String noProxy, OAuth2 oauth2, Map<String, List<SecretKeySelector>> proxyConnectHeader, Boolean proxyFromEnvironment, String proxyUrl, Boolean readRecent, String remoteTimeout, Map<String, String> requiredMatchers, TLSConfig tlsConfig, String url) {
         super();
         this.authorization = authorization;
         this.basicAuth = basicAuth;
@@ -120,7 +132,10 @@ public class RemoteReadSpec implements Editable<RemoteReadSpecBuilder> , Kuberne
         this.followRedirects = followRedirects;
         this.headers = headers;
         this.name = name;
+        this.noProxy = noProxy;
         this.oauth2 = oauth2;
+        this.proxyConnectHeader = proxyConnectHeader;
+        this.proxyFromEnvironment = proxyFromEnvironment;
         this.proxyUrl = proxyUrl;
         this.readRecent = readRecent;
         this.remoteTimeout = remoteTimeout;
@@ -210,6 +225,16 @@ public class RemoteReadSpec implements Editable<RemoteReadSpecBuilder> , Kuberne
         this.name = name;
     }
 
+    @JsonProperty("noProxy")
+    public String getNoProxy() {
+        return noProxy;
+    }
+
+    @JsonProperty("noProxy")
+    public void setNoProxy(String noProxy) {
+        this.noProxy = noProxy;
+    }
+
     @JsonProperty("oauth2")
     public OAuth2 getOauth2() {
         return oauth2;
@@ -218,6 +243,27 @@ public class RemoteReadSpec implements Editable<RemoteReadSpecBuilder> , Kuberne
     @JsonProperty("oauth2")
     public void setOauth2(OAuth2 oauth2) {
         this.oauth2 = oauth2;
+    }
+
+    @JsonProperty("proxyConnectHeader")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public Map<String, List<SecretKeySelector>> getProxyConnectHeader() {
+        return proxyConnectHeader;
+    }
+
+    @JsonProperty("proxyConnectHeader")
+    public void setProxyConnectHeader(Map<String, List<SecretKeySelector>> proxyConnectHeader) {
+        this.proxyConnectHeader = proxyConnectHeader;
+    }
+
+    @JsonProperty("proxyFromEnvironment")
+    public Boolean getProxyFromEnvironment() {
+        return proxyFromEnvironment;
+    }
+
+    @JsonProperty("proxyFromEnvironment")
+    public void setProxyFromEnvironment(Boolean proxyFromEnvironment) {
+        this.proxyFromEnvironment = proxyFromEnvironment;
     }
 
     @JsonProperty("proxyUrl")
