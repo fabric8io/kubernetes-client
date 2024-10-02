@@ -48,7 +48,7 @@ github.com/containers/ocicrypt v1.2.0 h1:X14EgRK3xNFvJEfI5O4Qn4T3E25ANudSOZz/sir
 github.com/containers/ocicrypt v1.2.0/go.mod h1:ZNviigQajtdlxIZGibvblVuIFBKIuUI2M0QM12SD31U=
 github.com/containers/storage v1.55.0 h1:wTWZ3YpcQf1F+dSP4KxG9iqDfpQY1otaUXjPpffuhgg=
 github.com/containers/storage v1.55.0/go.mod h1:28cB81IDk+y7ok60Of6u52RbCeBRucbFOeLunhER1RQ=
-github.com/coreos/go-systemd v0.0.0-20190719114852-fd7a80b32e1f h1:JOrtw2xFKzlg+cbHpyrpLDmnN1HqhBfnX7WDiW7eG2c=
+github.com/coreos/go-systemd v0.0.0-20191104093116-d3cd4ed1dbcf h1:iW4rZ826su+pqaw19uhpSCzhj44qo35pNgKFGqzDKkU=
 github.com/coreos/go-systemd/v22 v22.5.0 h1:RrqgGjYQKalulkV8NGVIfkXQf6YYmOyiJKk8iXXhfZs=
 github.com/coreos/go-systemd/v22 v22.5.0/go.mod h1:Y58oyj3AT4RCenI/lSvhwexgC+NSVTIJ3seZv2GcEnc=
 github.com/cpuguy83/go-md2man/v2 v2.0.4/go.mod h1:tgQtvFlXSQOSOSIRvRPT7W67SCa46tRHOmNcaadrF8o=
@@ -98,6 +98,7 @@ github.com/go-openapi/jsonreference v0.21.0 h1:Rs+Y7hSXT83Jacb7kFyjn4ijOuVGSvOdF
 github.com/go-openapi/jsonreference v0.21.0/go.mod h1:LmZmgsrTkVg9LG4EaHeY8cBDslNPMo06cago5JNLkm4=
 github.com/go-openapi/swag v0.23.0 h1:vsEVJDUo2hPJ2tu0/Xc+4noaxyEffXNIs3cOULZ+GrE=
 github.com/go-openapi/swag v0.23.0/go.mod h1:esZ8ITTYEsH1V2trKHjAN8Ai7xHb8RV+YSZ577vPjgQ=
+github.com/go-task/slim-sprig v0.0.0-20230315185526-52ccab3ef572 h1:tfuBGBXKqDEevZMzYi5KSi8KkcZtzBcTgAUUtapy0OI=
 github.com/go-task/slim-sprig/v3 v3.0.0 h1:sUs3vkvUymDpBKi3qH1YSqBQk9+9D/8M2mN1vB6EwHI=
 github.com/go-task/slim-sprig/v3 v3.0.0/go.mod h1:W848ghGpv3Qj3dhTPRyJypKRiqCdHZiAzKg9hl15HA8=
 github.com/go-test/deep v1.1.1 h1:0r/53hagsehfO4bzD2Pgr/+RgHqhmf+k1Bpse2cTu1U=
@@ -200,6 +201,8 @@ github.com/openshift/cloud-credential-operator v0.0.0-20240910052617-d668c182b0e
 github.com/openshift/cloud-credential-operator v0.0.0-20240910052617-d668c182b0e3/go.mod h1:4AWWBNPuWzPtT77xDONlObrazPlBCKXd+16lupnIrQc=
 github.com/openshift/cluster-network-operator v0.0.0-20240912134426-a3188633549d h1:9Xf/80gDpRc33FwCEJ6L2/DF1yU/4L6QjoYxKexDzvo=
 github.com/openshift/cluster-network-operator v0.0.0-20240912134426-a3188633549d/go.mod h1:qeN8u3CfzClFoykTdlvn0kKngBuVmb3VvWHA51UxiOI=
+github.com/openshift/cluster-node-tuning-operator v0.0.0-20241001165112-1685a8fc1376 h1:XOj/kwz+iOCasKM2Y+cDSbb3bRaaIFcJxXb/qYZhKhU=
+github.com/openshift/cluster-node-tuning-operator v0.0.0-20241001165112-1685a8fc1376/go.mod h1:rXqYaoIJhAbETKVgBxsz7bBstuhPgA3MPvWYMUFMOF8=
 github.com/operator-framework/operator-registry v1.47.0 h1:Imr7X/W6FmXczwpIOXfnX8d6Snr1dzwWxkMG+lLAfhg=
 github.com/operator-framework/operator-registry v1.47.0/go.mod h1:CJ3KcP8uRxtC8l9caM1RsV7r7jYlKAd452tcxcgXyTQ=
 github.com/otiai10/copy v1.14.0 h1:dCI/t1iTdYGtkvCuBG2BgR6KZa83PTclw4U5n2wAllU=

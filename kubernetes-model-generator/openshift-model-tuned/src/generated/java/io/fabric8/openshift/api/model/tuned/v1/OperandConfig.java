@@ -32,7 +32,8 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "debug",
-    "tunedConfig"
+    "tunedConfig",
+    "verbosity"
 })
 @ToString
 @EqualsAndHashCode
@@ -59,6 +60,8 @@ public class OperandConfig implements Editable<OperandConfigBuilder> , Kubernete
     private Boolean debug;
     @JsonProperty("tunedConfig")
     private TuneDConfig tunedConfig;
+    @JsonProperty("verbosity")
+    private Integer verbosity;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -69,10 +72,11 @@ public class OperandConfig implements Editable<OperandConfigBuilder> , Kubernete
     public OperandConfig() {
     }
 
-    public OperandConfig(Boolean debug, TuneDConfig tunedConfig) {
+    public OperandConfig(Boolean debug, TuneDConfig tunedConfig, Integer verbosity) {
         super();
         this.debug = debug;
         this.tunedConfig = tunedConfig;
+        this.verbosity = verbosity;
     }
 
     @JsonProperty("debug")
@@ -93,6 +97,16 @@ public class OperandConfig implements Editable<OperandConfigBuilder> , Kubernete
     @JsonProperty("tunedConfig")
     public void setTunedConfig(TuneDConfig tunedConfig) {
         this.tunedConfig = tunedConfig;
+    }
+
+    @JsonProperty("verbosity")
+    public Integer getVerbosity() {
+        return verbosity;
+    }
+
+    @JsonProperty("verbosity")
+    public void setVerbosity(Integer verbosity) {
+        this.verbosity = verbosity;
     }
 
     @JsonIgnore

@@ -10,8 +10,10 @@ require (
 	github.com/openshift/api v3.9.0+incompatible
 	github.com/openshift/cloud-credential-operator v0.0.0-20240910052617-d668c182b0e3
 	github.com/openshift/cluster-network-operator v0.0.0-20240912134426-a3188633549d
+	github.com/openshift/cluster-node-tuning-operator v0.0.0-20241001165112-1685a8fc1376
 	github.com/operator-framework/api v0.27.0
 	github.com/operator-framework/operator-lifecycle-manager v0.0.0-00010101000000-000000000000
+	github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.77.1
 	github.com/spf13/cobra v1.8.1
 	k8s.io/api v0.31.1
 	k8s.io/apiextensions-apiserver v0.31.1
@@ -33,7 +35,14 @@ replace github.com/operator-framework/api => github.com/marcnuri-forks/operator-
 // TODO: WIP while this gets merged or fixed https://github.com/operator-framework/operator-lifecycle-manager/pull/3406
 replace github.com/operator-framework/operator-lifecycle-manager => github.com/marcnuri-forks/operator-lifecycle-manager v0.0.0-20241002090802-7539192fbf96
 
-require github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.77.1
+// Required by some openshift operator dependencies, update to latest Kuberentes Version
+replace k8s.io/cloud-provider => k8s.io/cloud-provider v0.31.1
+
+replace k8s.io/csi-translation-lib => k8s.io/csi-translation-lib v0.31.1
+
+replace k8s.io/kube-scheduler => k8s.io/kube-scheduler v0.31.1
+
+replace k8s.io/mount-utils => k8s.io/mount-utils v0.31.1
 
 require (
 	github.com/antlr4-go/antlr/v4 v4.13.0 // indirect

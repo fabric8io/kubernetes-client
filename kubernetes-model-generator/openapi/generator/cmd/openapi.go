@@ -26,6 +26,7 @@ import (
 	openshiftconfigv1 "github.com/openshift/api/config/v1"
 	openshiftcloudcredentialoperatorv1 "github.com/openshift/cloud-credential-operator/pkg/apis/cloudcredential/v1"
 	openshiftclusternetworkoperatorv1 "github.com/openshift/cluster-network-operator/pkg/apis/network/v1"
+	openshiftclusternodetuningoperatorv1 "github.com/openshift/cluster-node-tuning-operator/pkg/apis/tuned/v1"
 	operatorframeworkv1 "github.com/operator-framework/api/pkg/operators/v1"
 	operatorframeworkv1alpha1 "github.com/operator-framework/api/pkg/operators/v1alpha1"
 	olm "github.com/operator-framework/operator-lifecycle-manager/pkg/package-server/apis/operators/v1"
@@ -54,8 +55,9 @@ var openApiRun = func(cobraCmd *cobra.Command, args []string) {
 		//openshiftbaremetaloperatorv1alpha1.GroupVersion.String(),
 		operatorframeworkv1alpha1.SchemeGroupVersion.String(),
 		operatorframeworkv1.GroupVersion.String(),
-		openshiftclusternetworkoperatorv1.GroupVersion.String(),
 		openshiftcloudcredentialoperatorv1.GroupVersion.String(),
+		openshiftclusternetworkoperatorv1.GroupVersion.String(),
+		openshiftclusternodetuningoperatorv1.SchemeGroupVersion.String(),
 		olm.SchemeGroupVersion.String(),
 		prometheusoperatorv1.SchemeGroupVersion.String(),
 	})

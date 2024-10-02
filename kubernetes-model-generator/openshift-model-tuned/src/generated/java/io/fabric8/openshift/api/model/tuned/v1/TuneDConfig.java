@@ -55,7 +55,7 @@ public class TuneDConfig implements Editable<TuneDConfigBuilder> , KubernetesRes
 {
 
     @JsonProperty("reapply_sysctl")
-    private Boolean reapplySysctl;
+    private Boolean reapply_sysctl;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -66,19 +66,19 @@ public class TuneDConfig implements Editable<TuneDConfigBuilder> , KubernetesRes
     public TuneDConfig() {
     }
 
-    public TuneDConfig(Boolean reapplySysctl) {
+    public TuneDConfig(Boolean reapply_sysctl) {
         super();
-        this.reapplySysctl = reapplySysctl;
+        this.reapply_sysctl = reapply_sysctl;
     }
 
     @JsonProperty("reapply_sysctl")
-    public Boolean getReapplySysctl() {
-        return reapplySysctl;
+    public Boolean getReapply_sysctl() {
+        return reapply_sysctl;
     }
 
     @JsonProperty("reapply_sysctl")
-    public void setReapplySysctl(Boolean reapplySysctl) {
-        this.reapplySysctl = reapplySysctl;
+    public void setReapply_sysctl(Boolean reapply_sysctl) {
+        this.reapply_sysctl = reapply_sysctl;
     }
 
     @JsonIgnore
