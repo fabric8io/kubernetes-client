@@ -14,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
+import io.fabric8.kubernetes.api.model.Condition;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -63,7 +64,7 @@ public class OperatorConditionSpec implements Editable<OperatorConditionSpecBuil
     private List<String> deployments = new ArrayList<>();
     @JsonProperty("overrides")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<OperatorConditionSpecOverrides> overrides = new ArrayList<>();
+    private List<Condition> overrides = new ArrayList<>();
     @JsonProperty("serviceAccounts")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> serviceAccounts = new ArrayList<>();
@@ -77,7 +78,7 @@ public class OperatorConditionSpec implements Editable<OperatorConditionSpecBuil
     public OperatorConditionSpec() {
     }
 
-    public OperatorConditionSpec(List<String> deployments, List<OperatorConditionSpecOverrides> overrides, List<String> serviceAccounts) {
+    public OperatorConditionSpec(List<String> deployments, List<Condition> overrides, List<String> serviceAccounts) {
         super();
         this.deployments = deployments;
         this.overrides = overrides;
@@ -97,12 +98,12 @@ public class OperatorConditionSpec implements Editable<OperatorConditionSpecBuil
 
     @JsonProperty("overrides")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<OperatorConditionSpecOverrides> getOverrides() {
+    public List<Condition> getOverrides() {
         return overrides;
     }
 
     @JsonProperty("overrides")
-    public void setOverrides(List<OperatorConditionSpecOverrides> overrides) {
+    public void setOverrides(List<Condition> overrides) {
         this.overrides = overrides;
     }
 

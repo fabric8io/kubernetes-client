@@ -44,6 +44,18 @@
       <artifactId>kubernetes-model-core</artifactId>
     </dependency>
     <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>kubernetes-model-admissionregistration</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>kubernetes-model-apps</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>kubernetes-model-rbac</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
       <scope>test</scope>
@@ -58,22 +70,16 @@
           <plugin>
             <groupId>io.fabric8</groupId>
             <artifactId>openapi-model-generator-maven-plugin</artifactId>
-            <configuration >
+            <configuration>
               <settings combine.self="append">
                 <schemas>
-                  <schema>${openapi.schema.openshift-latest}</schema>
+                  <schema>${openapi.schema.openshift-generated}</schema>
                 </schemas>
                 <packageMappings combine.self="append">
-                  <io.k8s.api>io.fabric8.kubernetes.api.model</io.k8s.api>
-                  <io.openshift.operatorhub>io.fabric8.openshift.api.model.operatorhub</io.openshift.operatorhub>
                   <com.coreos.operators>io.fabric8.openshift.api.model.operatorhub</com.coreos.operators>
-                  <com.github.operator-framework.api.pkg.operators>io.fabric8.openshift.api.model.operatorhub</com.github.operator-framework.api.pkg.operators>
-                  <com.github.operator-framework.operator-lifecycle-manager.pkg.package-server.apis.operators>io.fabric8.openshift.api.model.operatorhub.lifecyclemanager</com.github.operator-framework.operator-lifecycle-manager.pkg.package-server.apis.operators>
                 </packageMappings>
                 <includeGenerationRegexes>
                   <includeGenerationRegex>^com\.coreos\.operators\..*$</includeGenerationRegex>
-                  <includeGenerationRegex>^com\.github\.operator-framework\.api\.pkg\.operators\.v1alpha1\..*$</includeGenerationRegex>
-                  <includeGenerationRegex>^com\.github\.operator-framework\.operator-lifecycle-manager\.pkg\.package-server\.apis\.operators\..*$</includeGenerationRegex>
                 </includeGenerationRegexes>
               </settings>
             </configuration>

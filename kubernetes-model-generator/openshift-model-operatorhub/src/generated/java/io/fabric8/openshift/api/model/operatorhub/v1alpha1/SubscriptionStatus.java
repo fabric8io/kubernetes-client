@@ -67,20 +67,20 @@ public class SubscriptionStatus implements Editable<SubscriptionStatusBuilder> ,
 
     @JsonProperty("catalogHealth")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<SubscriptionStatusCatalogHealth> catalogHealth = new ArrayList<>();
+    private List<SubscriptionCatalogHealth> catalogHealth = new ArrayList<>();
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<SubscriptionStatusConditions> conditions = new ArrayList<>();
+    private List<SubscriptionCondition> conditions = new ArrayList<>();
     @JsonProperty("currentCSV")
     private String currentCSV;
     @JsonProperty("installPlanGeneration")
     private Integer installPlanGeneration;
     @JsonProperty("installPlanRef")
-    private SubscriptionStatusInstallPlanRef installPlanRef;
+    private ObjectReference installPlanRef;
     @JsonProperty("installedCSV")
     private String installedCSV;
     @JsonProperty("installplan")
-    private SubscriptionStatusInstallplan installplan;
+    private InstallPlanReference installplan;
     @JsonProperty("lastUpdated")
     private String lastUpdated;
     @JsonProperty("reason")
@@ -97,7 +97,7 @@ public class SubscriptionStatus implements Editable<SubscriptionStatusBuilder> ,
     public SubscriptionStatus() {
     }
 
-    public SubscriptionStatus(List<SubscriptionStatusCatalogHealth> catalogHealth, List<SubscriptionStatusConditions> conditions, String currentCSV, Integer installPlanGeneration, SubscriptionStatusInstallPlanRef installPlanRef, String installedCSV, SubscriptionStatusInstallplan installplan, String lastUpdated, String reason, String state) {
+    public SubscriptionStatus(List<SubscriptionCatalogHealth> catalogHealth, List<SubscriptionCondition> conditions, String currentCSV, Integer installPlanGeneration, ObjectReference installPlanRef, String installedCSV, InstallPlanReference installplan, String lastUpdated, String reason, String state) {
         super();
         this.catalogHealth = catalogHealth;
         this.conditions = conditions;
@@ -113,23 +113,23 @@ public class SubscriptionStatus implements Editable<SubscriptionStatusBuilder> ,
 
     @JsonProperty("catalogHealth")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<SubscriptionStatusCatalogHealth> getCatalogHealth() {
+    public List<SubscriptionCatalogHealth> getCatalogHealth() {
         return catalogHealth;
     }
 
     @JsonProperty("catalogHealth")
-    public void setCatalogHealth(List<SubscriptionStatusCatalogHealth> catalogHealth) {
+    public void setCatalogHealth(List<SubscriptionCatalogHealth> catalogHealth) {
         this.catalogHealth = catalogHealth;
     }
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<SubscriptionStatusConditions> getConditions() {
+    public List<SubscriptionCondition> getConditions() {
         return conditions;
     }
 
     @JsonProperty("conditions")
-    public void setConditions(List<SubscriptionStatusConditions> conditions) {
+    public void setConditions(List<SubscriptionCondition> conditions) {
         this.conditions = conditions;
     }
 
@@ -154,12 +154,12 @@ public class SubscriptionStatus implements Editable<SubscriptionStatusBuilder> ,
     }
 
     @JsonProperty("installPlanRef")
-    public SubscriptionStatusInstallPlanRef getInstallPlanRef() {
+    public ObjectReference getInstallPlanRef() {
         return installPlanRef;
     }
 
     @JsonProperty("installPlanRef")
-    public void setInstallPlanRef(SubscriptionStatusInstallPlanRef installPlanRef) {
+    public void setInstallPlanRef(ObjectReference installPlanRef) {
         this.installPlanRef = installPlanRef;
     }
 
@@ -174,12 +174,12 @@ public class SubscriptionStatus implements Editable<SubscriptionStatusBuilder> ,
     }
 
     @JsonProperty("installplan")
-    public SubscriptionStatusInstallplan getInstallplan() {
+    public InstallPlanReference getInstallplan() {
         return installplan;
     }
 
     @JsonProperty("installplan")
-    public void setInstallplan(SubscriptionStatusInstallplan installplan) {
+    public void setInstallplan(InstallPlanReference installplan) {
         this.installplan = installplan;
     }
 

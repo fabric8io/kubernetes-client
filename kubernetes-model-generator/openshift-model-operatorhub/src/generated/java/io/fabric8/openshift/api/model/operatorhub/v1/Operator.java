@@ -84,8 +84,7 @@ public class Operator implements Editable<OperatorBuilder> , HasMetadata
     @JsonProperty("metadata")
     private ObjectMeta metadata;
     @JsonProperty("spec")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
-    private Object spec;
+    private OperatorSpec spec;
     @JsonProperty("status")
     private OperatorStatus status;
     @JsonIgnore
@@ -98,7 +97,7 @@ public class Operator implements Editable<OperatorBuilder> , HasMetadata
     public Operator() {
     }
 
-    public Operator(String apiVersion, String kind, ObjectMeta metadata, Object spec, OperatorStatus status) {
+    public Operator(String apiVersion, String kind, ObjectMeta metadata, OperatorSpec spec, OperatorStatus status) {
         super();
         this.apiVersion = apiVersion;
         this.kind = kind;
@@ -158,13 +157,12 @@ public class Operator implements Editable<OperatorBuilder> , HasMetadata
     }
 
     @JsonProperty("spec")
-    public Object getSpec() {
+    public OperatorSpec getSpec() {
         return spec;
     }
 
     @JsonProperty("spec")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
-    public void setSpec(Object spec) {
+    public void setSpec(OperatorSpec spec) {
         this.spec = spec;
     }
 

@@ -19,11 +19,13 @@ package openshift
 
 // PackagePatterns are the patterns required for OpenShift GO and JSON OpenAPI generation
 var PackagePatterns = []string{
-	"github.com/openshift/api/.../v...",
-	// CRDs don't provide info for reused types
-	"github.com/operator-framework/api/pkg/operators/v...",
-	"github.com/openshift/cluster-network-operator/pkg/apis/.../v...",
 	// Always import Kubernetes base packages as they are required by the rest of APIs
 	"k8s.io/apimachinery/pkg/apis/meta/v...",
 	"k8s.io/api/.../v...",
+	// OpenShift APIs
+	"github.com/openshift/api/.../v...",
+	// CRDs don't provide info for reused types
+	"github.com/operator-framework/api/pkg/operators/v...",
+	"github.com/operator-framework/operator-lifecycle-manager/pkg/package-server/apis/operators/v...",
+	"github.com/openshift/cluster-network-operator/pkg/apis/.../v...",
 }

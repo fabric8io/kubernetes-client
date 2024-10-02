@@ -24,6 +24,7 @@ import (
 	openshiftclusternetworkoperatorv1 "github.com/openshift/cluster-network-operator/pkg/apis/network/v1"
 	operatorframeworkv1 "github.com/operator-framework/api/pkg/operators/v1"
 	operatorframeworkv1alpha1 "github.com/operator-framework/api/pkg/operators/v1alpha1"
+	olm "github.com/operator-framework/operator-lifecycle-manager/pkg/package-server/apis/operators/v1"
 	"k8s.io/kube-openapi/cmd/openapi-gen/args"
 	"time"
 )
@@ -35,6 +36,7 @@ func main() {
 		operatorframeworkv1alpha1.SchemeGroupVersion.String(),
 		operatorframeworkv1.GroupVersion.String(),
 		openshiftclusternetworkoperatorv1.GroupVersion.String(),
+		olm.SchemeGroupVersion.String(),
 	})
 	err := (&openapi.GoGenerator{
 		Args: args.Args{

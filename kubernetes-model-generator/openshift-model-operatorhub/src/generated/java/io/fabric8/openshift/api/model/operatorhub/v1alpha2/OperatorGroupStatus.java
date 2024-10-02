@@ -64,7 +64,7 @@ public class OperatorGroupStatus implements Editable<OperatorGroupStatusBuilder>
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> namespaces = new ArrayList<>();
     @JsonProperty("serviceAccountRef")
-    private OperatorGroupStatusServiceAccountRef serviceAccountRef;
+    private ObjectReference serviceAccountRef;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -75,7 +75,7 @@ public class OperatorGroupStatus implements Editable<OperatorGroupStatusBuilder>
     public OperatorGroupStatus() {
     }
 
-    public OperatorGroupStatus(String lastUpdated, List<String> namespaces, OperatorGroupStatusServiceAccountRef serviceAccountRef) {
+    public OperatorGroupStatus(String lastUpdated, List<String> namespaces, ObjectReference serviceAccountRef) {
         super();
         this.lastUpdated = lastUpdated;
         this.namespaces = namespaces;
@@ -104,12 +104,12 @@ public class OperatorGroupStatus implements Editable<OperatorGroupStatusBuilder>
     }
 
     @JsonProperty("serviceAccountRef")
-    public OperatorGroupStatusServiceAccountRef getServiceAccountRef() {
+    public ObjectReference getServiceAccountRef() {
         return serviceAccountRef;
     }
 
     @JsonProperty("serviceAccountRef")
-    public void setServiceAccountRef(OperatorGroupStatusServiceAccountRef serviceAccountRef) {
+    public void setServiceAccountRef(ObjectReference serviceAccountRef) {
         this.serviceAccountRef = serviceAccountRef;
     }
 

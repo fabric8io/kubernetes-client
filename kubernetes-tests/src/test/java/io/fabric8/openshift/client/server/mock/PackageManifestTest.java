@@ -15,10 +15,10 @@
  */
 package io.fabric8.openshift.client.server.mock;
 
-import io.fabric8.openshift.api.model.operatorhub.lifecyclemanager.v1.PackageManifest;
-import io.fabric8.openshift.api.model.operatorhub.lifecyclemanager.v1.PackageManifestBuilder;
-import io.fabric8.openshift.api.model.operatorhub.lifecyclemanager.v1.PackageManifestList;
-import io.fabric8.openshift.api.model.operatorhub.lifecyclemanager.v1.PackageManifestListBuilder;
+import io.fabric8.openshift.api.model.operatorhub.packages.v1.PackageManifest;
+import io.fabric8.openshift.api.model.operatorhub.packages.v1.PackageManifestBuilder;
+import io.fabric8.openshift.api.model.operatorhub.packages.v1.PackageManifestList;
+import io.fabric8.openshift.api.model.operatorhub.packages.v1.PackageManifestListBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.junit.jupiter.api.Test;
 

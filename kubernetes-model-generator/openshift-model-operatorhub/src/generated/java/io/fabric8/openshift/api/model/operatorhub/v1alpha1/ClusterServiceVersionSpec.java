@@ -15,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
+import io.fabric8.kubernetes.api.model.GroupVersionKind;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
@@ -82,23 +83,23 @@ public class ClusterServiceVersionSpec implements Editable<ClusterServiceVersion
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> annotations = new LinkedHashMap<>();
     @JsonProperty("apiservicedefinitions")
-    private ClusterServiceVersionSpecApiservicedefinitions apiservicedefinitions;
+    private APIServiceDefinitions apiservicedefinitions;
     @JsonProperty("cleanup")
-    private ClusterServiceVersionSpecCleanup cleanup;
+    private CleanupSpec cleanup;
     @JsonProperty("customresourcedefinitions")
-    private ClusterServiceVersionSpecCustomresourcedefinitions customresourcedefinitions;
+    private CustomResourceDefinitions customresourcedefinitions;
     @JsonProperty("description")
     private String description;
     @JsonProperty("displayName")
     private String displayName;
     @JsonProperty("icon")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ClusterServiceVersionSpecIcon> icon = new ArrayList<>();
+    private List<Icon> icon = new ArrayList<>();
     @JsonProperty("install")
-    private ClusterServiceVersionSpecInstall install;
+    private NamedInstallStrategy install;
     @JsonProperty("installModes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ClusterServiceVersionSpecInstallModes> installModes = new ArrayList<>();
+    private List<InstallMode> installModes = new ArrayList<>();
     @JsonProperty("keywords")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> keywords = new ArrayList<>();
@@ -107,26 +108,26 @@ public class ClusterServiceVersionSpec implements Editable<ClusterServiceVersion
     private Map<String, String> labels = new LinkedHashMap<>();
     @JsonProperty("links")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ClusterServiceVersionSpecLinks> links = new ArrayList<>();
+    private List<AppLink> links = new ArrayList<>();
     @JsonProperty("maintainers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ClusterServiceVersionSpecMaintainers> maintainers = new ArrayList<>();
+    private List<Maintainer> maintainers = new ArrayList<>();
     @JsonProperty("maturity")
     private String maturity;
     @JsonProperty("minKubeVersion")
     private String minKubeVersion;
     @JsonProperty("nativeAPIs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ClusterServiceVersionSpecNativeAPIs> nativeAPIs = new ArrayList<>();
+    private List<GroupVersionKind> nativeAPIs = new ArrayList<>();
     @JsonProperty("provider")
-    private ClusterServiceVersionSpecProvider provider;
+    private AppLink provider;
     @JsonProperty("relatedImages")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ClusterServiceVersionSpecRelatedImages> relatedImages = new ArrayList<>();
+    private List<RelatedImage> relatedImages = new ArrayList<>();
     @JsonProperty("replaces")
     private String replaces;
     @JsonProperty("selector")
-    private ClusterServiceVersionSpecSelector selector;
+    private LabelSelector selector;
     @JsonProperty("skips")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> skips = new ArrayList<>();
@@ -134,7 +135,7 @@ public class ClusterServiceVersionSpec implements Editable<ClusterServiceVersion
     private String version;
     @JsonProperty("webhookdefinitions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ClusterServiceVersionSpecWebhookdefinitions> webhookdefinitions = new ArrayList<>();
+    private List<WebhookDescription> webhookdefinitions = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -145,7 +146,7 @@ public class ClusterServiceVersionSpec implements Editable<ClusterServiceVersion
     public ClusterServiceVersionSpec() {
     }
 
-    public ClusterServiceVersionSpec(Map<String, String> annotations, ClusterServiceVersionSpecApiservicedefinitions apiservicedefinitions, ClusterServiceVersionSpecCleanup cleanup, ClusterServiceVersionSpecCustomresourcedefinitions customresourcedefinitions, String description, String displayName, List<ClusterServiceVersionSpecIcon> icon, ClusterServiceVersionSpecInstall install, List<ClusterServiceVersionSpecInstallModes> installModes, List<String> keywords, Map<String, String> labels, List<ClusterServiceVersionSpecLinks> links, List<ClusterServiceVersionSpecMaintainers> maintainers, String maturity, String minKubeVersion, List<ClusterServiceVersionSpecNativeAPIs> nativeAPIs, ClusterServiceVersionSpecProvider provider, List<ClusterServiceVersionSpecRelatedImages> relatedImages, String replaces, ClusterServiceVersionSpecSelector selector, List<String> skips, String version, List<ClusterServiceVersionSpecWebhookdefinitions> webhookdefinitions) {
+    public ClusterServiceVersionSpec(Map<String, String> annotations, APIServiceDefinitions apiservicedefinitions, CleanupSpec cleanup, CustomResourceDefinitions customresourcedefinitions, String description, String displayName, List<Icon> icon, NamedInstallStrategy install, List<InstallMode> installModes, List<String> keywords, Map<String, String> labels, List<AppLink> links, List<Maintainer> maintainers, String maturity, String minKubeVersion, List<GroupVersionKind> nativeAPIs, AppLink provider, List<RelatedImage> relatedImages, String replaces, LabelSelector selector, List<String> skips, String version, List<WebhookDescription> webhookdefinitions) {
         super();
         this.annotations = annotations;
         this.apiservicedefinitions = apiservicedefinitions;
@@ -184,32 +185,32 @@ public class ClusterServiceVersionSpec implements Editable<ClusterServiceVersion
     }
 
     @JsonProperty("apiservicedefinitions")
-    public ClusterServiceVersionSpecApiservicedefinitions getApiservicedefinitions() {
+    public APIServiceDefinitions getApiservicedefinitions() {
         return apiservicedefinitions;
     }
 
     @JsonProperty("apiservicedefinitions")
-    public void setApiservicedefinitions(ClusterServiceVersionSpecApiservicedefinitions apiservicedefinitions) {
+    public void setApiservicedefinitions(APIServiceDefinitions apiservicedefinitions) {
         this.apiservicedefinitions = apiservicedefinitions;
     }
 
     @JsonProperty("cleanup")
-    public ClusterServiceVersionSpecCleanup getCleanup() {
+    public CleanupSpec getCleanup() {
         return cleanup;
     }
 
     @JsonProperty("cleanup")
-    public void setCleanup(ClusterServiceVersionSpecCleanup cleanup) {
+    public void setCleanup(CleanupSpec cleanup) {
         this.cleanup = cleanup;
     }
 
     @JsonProperty("customresourcedefinitions")
-    public ClusterServiceVersionSpecCustomresourcedefinitions getCustomresourcedefinitions() {
+    public CustomResourceDefinitions getCustomresourcedefinitions() {
         return customresourcedefinitions;
     }
 
     @JsonProperty("customresourcedefinitions")
-    public void setCustomresourcedefinitions(ClusterServiceVersionSpecCustomresourcedefinitions customresourcedefinitions) {
+    public void setCustomresourcedefinitions(CustomResourceDefinitions customresourcedefinitions) {
         this.customresourcedefinitions = customresourcedefinitions;
     }
 
@@ -235,33 +236,33 @@ public class ClusterServiceVersionSpec implements Editable<ClusterServiceVersion
 
     @JsonProperty("icon")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<ClusterServiceVersionSpecIcon> getIcon() {
+    public List<Icon> getIcon() {
         return icon;
     }
 
     @JsonProperty("icon")
-    public void setIcon(List<ClusterServiceVersionSpecIcon> icon) {
+    public void setIcon(List<Icon> icon) {
         this.icon = icon;
     }
 
     @JsonProperty("install")
-    public ClusterServiceVersionSpecInstall getInstall() {
+    public NamedInstallStrategy getInstall() {
         return install;
     }
 
     @JsonProperty("install")
-    public void setInstall(ClusterServiceVersionSpecInstall install) {
+    public void setInstall(NamedInstallStrategy install) {
         this.install = install;
     }
 
     @JsonProperty("installModes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<ClusterServiceVersionSpecInstallModes> getInstallModes() {
+    public List<InstallMode> getInstallModes() {
         return installModes;
     }
 
     @JsonProperty("installModes")
-    public void setInstallModes(List<ClusterServiceVersionSpecInstallModes> installModes) {
+    public void setInstallModes(List<InstallMode> installModes) {
         this.installModes = installModes;
     }
 
@@ -289,23 +290,23 @@ public class ClusterServiceVersionSpec implements Editable<ClusterServiceVersion
 
     @JsonProperty("links")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<ClusterServiceVersionSpecLinks> getLinks() {
+    public List<AppLink> getLinks() {
         return links;
     }
 
     @JsonProperty("links")
-    public void setLinks(List<ClusterServiceVersionSpecLinks> links) {
+    public void setLinks(List<AppLink> links) {
         this.links = links;
     }
 
     @JsonProperty("maintainers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<ClusterServiceVersionSpecMaintainers> getMaintainers() {
+    public List<Maintainer> getMaintainers() {
         return maintainers;
     }
 
     @JsonProperty("maintainers")
-    public void setMaintainers(List<ClusterServiceVersionSpecMaintainers> maintainers) {
+    public void setMaintainers(List<Maintainer> maintainers) {
         this.maintainers = maintainers;
     }
 
@@ -331,33 +332,33 @@ public class ClusterServiceVersionSpec implements Editable<ClusterServiceVersion
 
     @JsonProperty("nativeAPIs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<ClusterServiceVersionSpecNativeAPIs> getNativeAPIs() {
+    public List<GroupVersionKind> getNativeAPIs() {
         return nativeAPIs;
     }
 
     @JsonProperty("nativeAPIs")
-    public void setNativeAPIs(List<ClusterServiceVersionSpecNativeAPIs> nativeAPIs) {
+    public void setNativeAPIs(List<GroupVersionKind> nativeAPIs) {
         this.nativeAPIs = nativeAPIs;
     }
 
     @JsonProperty("provider")
-    public ClusterServiceVersionSpecProvider getProvider() {
+    public AppLink getProvider() {
         return provider;
     }
 
     @JsonProperty("provider")
-    public void setProvider(ClusterServiceVersionSpecProvider provider) {
+    public void setProvider(AppLink provider) {
         this.provider = provider;
     }
 
     @JsonProperty("relatedImages")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<ClusterServiceVersionSpecRelatedImages> getRelatedImages() {
+    public List<RelatedImage> getRelatedImages() {
         return relatedImages;
     }
 
     @JsonProperty("relatedImages")
-    public void setRelatedImages(List<ClusterServiceVersionSpecRelatedImages> relatedImages) {
+    public void setRelatedImages(List<RelatedImage> relatedImages) {
         this.relatedImages = relatedImages;
     }
 
@@ -372,12 +373,12 @@ public class ClusterServiceVersionSpec implements Editable<ClusterServiceVersion
     }
 
     @JsonProperty("selector")
-    public ClusterServiceVersionSpecSelector getSelector() {
+    public LabelSelector getSelector() {
         return selector;
     }
 
     @JsonProperty("selector")
-    public void setSelector(ClusterServiceVersionSpecSelector selector) {
+    public void setSelector(LabelSelector selector) {
         this.selector = selector;
     }
 
@@ -404,12 +405,12 @@ public class ClusterServiceVersionSpec implements Editable<ClusterServiceVersion
 
     @JsonProperty("webhookdefinitions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<ClusterServiceVersionSpecWebhookdefinitions> getWebhookdefinitions() {
+    public List<WebhookDescription> getWebhookdefinitions() {
         return webhookdefinitions;
     }
 
     @JsonProperty("webhookdefinitions")
-    public void setWebhookdefinitions(List<ClusterServiceVersionSpecWebhookdefinitions> webhookdefinitions) {
+    public void setWebhookdefinitions(List<WebhookDescription> webhookdefinitions) {
         this.webhookdefinitions = webhookdefinitions;
     }
 
