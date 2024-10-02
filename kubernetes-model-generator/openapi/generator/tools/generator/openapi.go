@@ -1,5 +1,6 @@
-////go:build ignore
-//// +build ignore
+//go:build ignore
+// +build ignore
+
 /**
  * Copyright (C) 2015 Red Hat, Inc.
  *

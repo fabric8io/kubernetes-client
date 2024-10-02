@@ -53,7 +53,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class MachineConfigPoolStatusCertExpirys implements Editable<MachineConfigPoolStatusCertExpirysBuilder> , KubernetesResource
+public class CertExpiry implements Editable<CertExpiryBuilder> , KubernetesResource
 {
 
     @JsonProperty("bundle")
@@ -69,10 +69,10 @@ public class MachineConfigPoolStatusCertExpirys implements Editable<MachineConfi
      * No args constructor for use in serialization
      * 
      */
-    public MachineConfigPoolStatusCertExpirys() {
+    public CertExpiry() {
     }
 
-    public MachineConfigPoolStatusCertExpirys(String bundle, String expiry, String subject) {
+    public CertExpiry(String bundle, String expiry, String subject) {
         super();
         this.bundle = bundle;
         this.expiry = expiry;
@@ -110,12 +110,12 @@ public class MachineConfigPoolStatusCertExpirys implements Editable<MachineConfi
     }
 
     @JsonIgnore
-    public MachineConfigPoolStatusCertExpirysBuilder edit() {
-        return new MachineConfigPoolStatusCertExpirysBuilder(this);
+    public CertExpiryBuilder edit() {
+        return new CertExpiryBuilder(this);
     }
 
     @JsonIgnore
-    public MachineConfigPoolStatusCertExpirysBuilder toBuilder() {
+    public CertExpiryBuilder toBuilder() {
         return edit();
     }
 

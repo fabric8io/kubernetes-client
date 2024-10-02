@@ -1,5 +1,5 @@
 
-package io.fabric8.openshift.api.model.machineconfiguration.v1;
+package io.fabric8.openshift.api.model.machineconfiguration.v1alpha1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -31,11 +31,7 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "lastTransitionTime",
-    "message",
-    "reason",
-    "status",
-    "type"
+    "name"
 })
 @ToString
 @EqualsAndHashCode
@@ -55,20 +51,11 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class MachineConfigPoolStatusConditions implements Editable<MachineConfigPoolStatusConditionsBuilder> , KubernetesResource
+public class RenderedMachineConfigReference implements Editable<RenderedMachineConfigReferenceBuilder> , KubernetesResource
 {
 
-    @JsonProperty("lastTransitionTime")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
-    private Object lastTransitionTime;
-    @JsonProperty("message")
-    private String message;
-    @JsonProperty("reason")
-    private String reason;
-    @JsonProperty("status")
-    private String status;
-    @JsonProperty("type")
-    private String type;
+    @JsonProperty("name")
+    private String name;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -76,76 +63,31 @@ public class MachineConfigPoolStatusConditions implements Editable<MachineConfig
      * No args constructor for use in serialization
      * 
      */
-    public MachineConfigPoolStatusConditions() {
+    public RenderedMachineConfigReference() {
     }
 
-    public MachineConfigPoolStatusConditions(Object lastTransitionTime, String message, String reason, String status, String type) {
+    public RenderedMachineConfigReference(String name) {
         super();
-        this.lastTransitionTime = lastTransitionTime;
-        this.message = message;
-        this.reason = reason;
-        this.status = status;
-        this.type = type;
+        this.name = name;
     }
 
-    @JsonProperty("lastTransitionTime")
-    public Object getLastTransitionTime() {
-        return lastTransitionTime;
+    @JsonProperty("name")
+    public String getName() {
+        return name;
     }
 
-    @JsonProperty("lastTransitionTime")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
-    public void setLastTransitionTime(Object lastTransitionTime) {
-        this.lastTransitionTime = lastTransitionTime;
-    }
-
-    @JsonProperty("message")
-    public String getMessage() {
-        return message;
-    }
-
-    @JsonProperty("message")
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    @JsonProperty("reason")
-    public String getReason() {
-        return reason;
-    }
-
-    @JsonProperty("reason")
-    public void setReason(String reason) {
-        this.reason = reason;
-    }
-
-    @JsonProperty("status")
-    public String getStatus() {
-        return status;
-    }
-
-    @JsonProperty("status")
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    @JsonProperty("type")
-    public String getType() {
-        return type;
-    }
-
-    @JsonProperty("type")
-    public void setType(String type) {
-        this.type = type;
+    @JsonProperty("name")
+    public void setName(String name) {
+        this.name = name;
     }
 
     @JsonIgnore
-    public MachineConfigPoolStatusConditionsBuilder edit() {
-        return new MachineConfigPoolStatusConditionsBuilder(this);
+    public RenderedMachineConfigReferenceBuilder edit() {
+        return new RenderedMachineConfigReferenceBuilder(this);
     }
 
     @JsonIgnore
-    public MachineConfigPoolStatusConditionsBuilder toBuilder() {
+    public RenderedMachineConfigReferenceBuilder toBuilder() {
         return edit();
     }
 

@@ -1,5 +1,5 @@
 
-package io.fabric8.openshift.api.model.machineconfiguration.v1;
+package io.fabric8.openshift.api.model.machineconfiguration.v1alpha1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -31,8 +31,8 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "containerRuntimeConfig",
-    "machineConfigPoolSelector"
+    "containerfileArch",
+    "content"
 })
 @ToString
 @EqualsAndHashCode
@@ -52,13 +52,13 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ContainerRuntimeConfigSpec implements Editable<ContainerRuntimeConfigSpecBuilder> , KubernetesResource
+public class MachineOSContainerfile implements Editable<MachineOSContainerfileBuilder> , KubernetesResource
 {
 
-    @JsonProperty("containerRuntimeConfig")
-    private ContainerRuntimeConfiguration containerRuntimeConfig;
-    @JsonProperty("machineConfigPoolSelector")
-    private LabelSelector machineConfigPoolSelector;
+    @JsonProperty("containerfileArch")
+    private String containerfileArch;
+    @JsonProperty("content")
+    private String content;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -66,42 +66,42 @@ public class ContainerRuntimeConfigSpec implements Editable<ContainerRuntimeConf
      * No args constructor for use in serialization
      * 
      */
-    public ContainerRuntimeConfigSpec() {
+    public MachineOSContainerfile() {
     }
 
-    public ContainerRuntimeConfigSpec(ContainerRuntimeConfiguration containerRuntimeConfig, LabelSelector machineConfigPoolSelector) {
+    public MachineOSContainerfile(String containerfileArch, String content) {
         super();
-        this.containerRuntimeConfig = containerRuntimeConfig;
-        this.machineConfigPoolSelector = machineConfigPoolSelector;
+        this.containerfileArch = containerfileArch;
+        this.content = content;
     }
 
-    @JsonProperty("containerRuntimeConfig")
-    public ContainerRuntimeConfiguration getContainerRuntimeConfig() {
-        return containerRuntimeConfig;
+    @JsonProperty("containerfileArch")
+    public String getContainerfileArch() {
+        return containerfileArch;
     }
 
-    @JsonProperty("containerRuntimeConfig")
-    public void setContainerRuntimeConfig(ContainerRuntimeConfiguration containerRuntimeConfig) {
-        this.containerRuntimeConfig = containerRuntimeConfig;
+    @JsonProperty("containerfileArch")
+    public void setContainerfileArch(String containerfileArch) {
+        this.containerfileArch = containerfileArch;
     }
 
-    @JsonProperty("machineConfigPoolSelector")
-    public LabelSelector getMachineConfigPoolSelector() {
-        return machineConfigPoolSelector;
+    @JsonProperty("content")
+    public String getContent() {
+        return content;
     }
 
-    @JsonProperty("machineConfigPoolSelector")
-    public void setMachineConfigPoolSelector(LabelSelector machineConfigPoolSelector) {
-        this.machineConfigPoolSelector = machineConfigPoolSelector;
-    }
-
-    @JsonIgnore
-    public ContainerRuntimeConfigSpecBuilder edit() {
-        return new ContainerRuntimeConfigSpecBuilder(this);
+    @JsonProperty("content")
+    public void setContent(String content) {
+        this.content = content;
     }
 
     @JsonIgnore
-    public ContainerRuntimeConfigSpecBuilder toBuilder() {
+    public MachineOSContainerfileBuilder edit() {
+        return new MachineOSContainerfileBuilder(this);
+    }
+
+    @JsonIgnore
+    public MachineOSContainerfileBuilder toBuilder() {
         return edit();
     }
 

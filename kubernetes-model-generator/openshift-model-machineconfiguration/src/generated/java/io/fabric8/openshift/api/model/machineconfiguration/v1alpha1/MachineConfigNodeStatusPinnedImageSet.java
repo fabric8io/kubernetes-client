@@ -1,7 +1,9 @@
 
-package io.fabric8.openshift.api.model.machineconfiguration.v1;
+package io.fabric8.openshift.api.model.machineconfiguration.v1alpha1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -31,13 +33,11 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "apiVersion",
-    "kind",
-    "fieldPath",
-    "name",
-    "namespace",
-    "resourceVersion",
-    "uid"
+    "currentGeneration",
+    "desiredGeneration",
+    "lastFailedGeneration",
+    "lastFailedGenerationErrors",
+    "name"
 })
 @ToString
 @EqualsAndHashCode
@@ -57,23 +57,20 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class MachineConfigPoolStatusCSource implements Editable<MachineConfigPoolStatusCSourceBuilder> , KubernetesResource
+public class MachineConfigNodeStatusPinnedImageSet implements Editable<MachineConfigNodeStatusPinnedImageSetBuilder> , KubernetesResource
 {
 
-    @JsonProperty("apiVersion")
-    private String apiVersion;
-    @JsonProperty("fieldPath")
-    private String fieldPath;
-    @JsonProperty("kind")
-    private String kind;
+    @JsonProperty("currentGeneration")
+    private Integer currentGeneration;
+    @JsonProperty("desiredGeneration")
+    private Integer desiredGeneration;
+    @JsonProperty("lastFailedGeneration")
+    private Integer lastFailedGeneration;
+    @JsonProperty("lastFailedGenerationErrors")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> lastFailedGenerationErrors = new ArrayList<>();
     @JsonProperty("name")
     private String name;
-    @JsonProperty("namespace")
-    private String namespace;
-    @JsonProperty("resourceVersion")
-    private String resourceVersion;
-    @JsonProperty("uid")
-    private String uid;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -81,48 +78,57 @@ public class MachineConfigPoolStatusCSource implements Editable<MachineConfigPoo
      * No args constructor for use in serialization
      * 
      */
-    public MachineConfigPoolStatusCSource() {
+    public MachineConfigNodeStatusPinnedImageSet() {
     }
 
-    public MachineConfigPoolStatusCSource(String apiVersion, String fieldPath, String kind, String name, String namespace, String resourceVersion, String uid) {
+    public MachineConfigNodeStatusPinnedImageSet(Integer currentGeneration, Integer desiredGeneration, Integer lastFailedGeneration, List<String> lastFailedGenerationErrors, String name) {
         super();
-        this.apiVersion = apiVersion;
-        this.fieldPath = fieldPath;
-        this.kind = kind;
+        this.currentGeneration = currentGeneration;
+        this.desiredGeneration = desiredGeneration;
+        this.lastFailedGeneration = lastFailedGeneration;
+        this.lastFailedGenerationErrors = lastFailedGenerationErrors;
         this.name = name;
-        this.namespace = namespace;
-        this.resourceVersion = resourceVersion;
-        this.uid = uid;
     }
 
-    @JsonProperty("apiVersion")
-    public String getApiVersion() {
-        return apiVersion;
+    @JsonProperty("currentGeneration")
+    public Integer getCurrentGeneration() {
+        return currentGeneration;
     }
 
-    @JsonProperty("apiVersion")
-    public void setApiVersion(String apiVersion) {
-        this.apiVersion = apiVersion;
+    @JsonProperty("currentGeneration")
+    public void setCurrentGeneration(Integer currentGeneration) {
+        this.currentGeneration = currentGeneration;
     }
 
-    @JsonProperty("fieldPath")
-    public String getFieldPath() {
-        return fieldPath;
+    @JsonProperty("desiredGeneration")
+    public Integer getDesiredGeneration() {
+        return desiredGeneration;
     }
 
-    @JsonProperty("fieldPath")
-    public void setFieldPath(String fieldPath) {
-        this.fieldPath = fieldPath;
+    @JsonProperty("desiredGeneration")
+    public void setDesiredGeneration(Integer desiredGeneration) {
+        this.desiredGeneration = desiredGeneration;
     }
 
-    @JsonProperty("kind")
-    public String getKind() {
-        return kind;
+    @JsonProperty("lastFailedGeneration")
+    public Integer getLastFailedGeneration() {
+        return lastFailedGeneration;
     }
 
-    @JsonProperty("kind")
-    public void setKind(String kind) {
-        this.kind = kind;
+    @JsonProperty("lastFailedGeneration")
+    public void setLastFailedGeneration(Integer lastFailedGeneration) {
+        this.lastFailedGeneration = lastFailedGeneration;
+    }
+
+    @JsonProperty("lastFailedGenerationErrors")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<String> getLastFailedGenerationErrors() {
+        return lastFailedGenerationErrors;
+    }
+
+    @JsonProperty("lastFailedGenerationErrors")
+    public void setLastFailedGenerationErrors(List<String> lastFailedGenerationErrors) {
+        this.lastFailedGenerationErrors = lastFailedGenerationErrors;
     }
 
     @JsonProperty("name")
@@ -135,43 +141,13 @@ public class MachineConfigPoolStatusCSource implements Editable<MachineConfigPoo
         this.name = name;
     }
 
-    @JsonProperty("namespace")
-    public String getNamespace() {
-        return namespace;
-    }
-
-    @JsonProperty("namespace")
-    public void setNamespace(String namespace) {
-        this.namespace = namespace;
-    }
-
-    @JsonProperty("resourceVersion")
-    public String getResourceVersion() {
-        return resourceVersion;
-    }
-
-    @JsonProperty("resourceVersion")
-    public void setResourceVersion(String resourceVersion) {
-        this.resourceVersion = resourceVersion;
-    }
-
-    @JsonProperty("uid")
-    public String getUid() {
-        return uid;
-    }
-
-    @JsonProperty("uid")
-    public void setUid(String uid) {
-        this.uid = uid;
+    @JsonIgnore
+    public MachineConfigNodeStatusPinnedImageSetBuilder edit() {
+        return new MachineConfigNodeStatusPinnedImageSetBuilder(this);
     }
 
     @JsonIgnore
-    public MachineConfigPoolStatusCSourceBuilder edit() {
-        return new MachineConfigPoolStatusCSourceBuilder(this);
-    }
-
-    @JsonIgnore
-    public MachineConfigPoolStatusCSourceBuilder toBuilder() {
+    public MachineConfigNodeStatusPinnedImageSetBuilder toBuilder() {
         return edit();
     }
 

@@ -22,6 +22,7 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
+import io.fabric8.openshift.api.model.config.v1.MTUMigration;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -31,9 +32,7 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "apiVersion",
-    "kind",
-    "metadata"
+    "mtuMigration"
 })
 @ToString
 @EqualsAndHashCode
@@ -53,15 +52,11 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ControllerConfigSpecInfra implements Editable<ControllerConfigSpecInfraBuilder> , KubernetesResource
+public class NetworkInfo implements Editable<NetworkInfoBuilder> , KubernetesResource
 {
 
-    @JsonProperty("apiVersion")
-    private String apiVersion;
-    @JsonProperty("kind")
-    private String kind;
-    @JsonProperty("metadata")
-    private ObjectMeta metadata;
+    @JsonProperty("mtuMigration")
+    private MTUMigration mtuMigration;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -69,53 +64,31 @@ public class ControllerConfigSpecInfra implements Editable<ControllerConfigSpecI
      * No args constructor for use in serialization
      * 
      */
-    public ControllerConfigSpecInfra() {
+    public NetworkInfo() {
     }
 
-    public ControllerConfigSpecInfra(String apiVersion, String kind, ObjectMeta metadata) {
+    public NetworkInfo(MTUMigration mtuMigration) {
         super();
-        this.apiVersion = apiVersion;
-        this.kind = kind;
-        this.metadata = metadata;
+        this.mtuMigration = mtuMigration;
     }
 
-    @JsonProperty("apiVersion")
-    public String getApiVersion() {
-        return apiVersion;
+    @JsonProperty("mtuMigration")
+    public MTUMigration getMtuMigration() {
+        return mtuMigration;
     }
 
-    @JsonProperty("apiVersion")
-    public void setApiVersion(String apiVersion) {
-        this.apiVersion = apiVersion;
-    }
-
-    @JsonProperty("kind")
-    public String getKind() {
-        return kind;
-    }
-
-    @JsonProperty("kind")
-    public void setKind(String kind) {
-        this.kind = kind;
-    }
-
-    @JsonProperty("metadata")
-    public ObjectMeta getMetadata() {
-        return metadata;
-    }
-
-    @JsonProperty("metadata")
-    public void setMetadata(ObjectMeta metadata) {
-        this.metadata = metadata;
+    @JsonProperty("mtuMigration")
+    public void setMtuMigration(MTUMigration mtuMigration) {
+        this.mtuMigration = mtuMigration;
     }
 
     @JsonIgnore
-    public ControllerConfigSpecInfraBuilder edit() {
-        return new ControllerConfigSpecInfraBuilder(this);
+    public NetworkInfoBuilder edit() {
+        return new NetworkInfoBuilder(this);
     }
 
     @JsonIgnore
-    public ControllerConfigSpecInfraBuilder toBuilder() {
+    public NetworkInfoBuilder toBuilder() {
         return edit();
     }
 

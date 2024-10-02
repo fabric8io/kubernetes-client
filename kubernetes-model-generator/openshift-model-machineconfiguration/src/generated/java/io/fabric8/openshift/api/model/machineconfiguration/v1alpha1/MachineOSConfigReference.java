@@ -1,5 +1,5 @@
 
-package io.fabric8.openshift.api.model.machineconfiguration.v1;
+package io.fabric8.openshift.api.model.machineconfiguration.v1alpha1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -31,11 +31,7 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "bundleFile",
-    "notAfter",
-    "notBefore",
-    "signer",
-    "subject"
+    "name"
 })
 @ToString
 @EqualsAndHashCode
@@ -55,19 +51,11 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ControllerConfigStatusControllerCertificates implements Editable<ControllerConfigStatusControllerCertificatesBuilder> , KubernetesResource
+public class MachineOSConfigReference implements Editable<MachineOSConfigReferenceBuilder> , KubernetesResource
 {
 
-    @JsonProperty("bundleFile")
-    private String bundleFile;
-    @JsonProperty("notAfter")
-    private String notAfter;
-    @JsonProperty("notBefore")
-    private String notBefore;
-    @JsonProperty("signer")
-    private String signer;
-    @JsonProperty("subject")
-    private String subject;
+    @JsonProperty("name")
+    private String name;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -75,75 +63,31 @@ public class ControllerConfigStatusControllerCertificates implements Editable<Co
      * No args constructor for use in serialization
      * 
      */
-    public ControllerConfigStatusControllerCertificates() {
+    public MachineOSConfigReference() {
     }
 
-    public ControllerConfigStatusControllerCertificates(String bundleFile, String notAfter, String notBefore, String signer, String subject) {
+    public MachineOSConfigReference(String name) {
         super();
-        this.bundleFile = bundleFile;
-        this.notAfter = notAfter;
-        this.notBefore = notBefore;
-        this.signer = signer;
-        this.subject = subject;
+        this.name = name;
     }
 
-    @JsonProperty("bundleFile")
-    public String getBundleFile() {
-        return bundleFile;
+    @JsonProperty("name")
+    public String getName() {
+        return name;
     }
 
-    @JsonProperty("bundleFile")
-    public void setBundleFile(String bundleFile) {
-        this.bundleFile = bundleFile;
-    }
-
-    @JsonProperty("notAfter")
-    public String getNotAfter() {
-        return notAfter;
-    }
-
-    @JsonProperty("notAfter")
-    public void setNotAfter(String notAfter) {
-        this.notAfter = notAfter;
-    }
-
-    @JsonProperty("notBefore")
-    public String getNotBefore() {
-        return notBefore;
-    }
-
-    @JsonProperty("notBefore")
-    public void setNotBefore(String notBefore) {
-        this.notBefore = notBefore;
-    }
-
-    @JsonProperty("signer")
-    public String getSigner() {
-        return signer;
-    }
-
-    @JsonProperty("signer")
-    public void setSigner(String signer) {
-        this.signer = signer;
-    }
-
-    @JsonProperty("subject")
-    public String getSubject() {
-        return subject;
-    }
-
-    @JsonProperty("subject")
-    public void setSubject(String subject) {
-        this.subject = subject;
+    @JsonProperty("name")
+    public void setName(String name) {
+        this.name = name;
     }
 
     @JsonIgnore
-    public ControllerConfigStatusControllerCertificatesBuilder edit() {
-        return new ControllerConfigStatusControllerCertificatesBuilder(this);
+    public MachineOSConfigReferenceBuilder edit() {
+        return new MachineOSConfigReferenceBuilder(this);
     }
 
     @JsonIgnore
-    public ControllerConfigStatusControllerCertificatesBuilder toBuilder() {
+    public MachineOSConfigReferenceBuilder toBuilder() {
         return edit();
     }
 

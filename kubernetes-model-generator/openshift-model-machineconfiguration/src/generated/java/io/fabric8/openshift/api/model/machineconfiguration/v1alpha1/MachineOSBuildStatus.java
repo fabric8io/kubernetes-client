@@ -1,5 +1,5 @@
 
-package io.fabric8.openshift.api.model.machineconfiguration.v1;
+package io.fabric8.openshift.api.model.machineconfiguration.v1alpha1;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -14,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
+import io.fabric8.kubernetes.api.model.Condition;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -33,12 +34,12 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "configuration",
-    "machineConfigSelector",
-    "maxUnavailable",
-    "nodeSelector",
-    "paused",
-    "pinnedImageSets"
+    "buildEnd",
+    "buildStart",
+    "builderReference",
+    "conditions",
+    "finalImagePullspec",
+    "relatedObjects"
 })
 @ToString
 @EqualsAndHashCode
@@ -58,22 +59,23 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class MachineConfigPoolSpec implements Editable<MachineConfigPoolSpecBuilder> , KubernetesResource
+public class MachineOSBuildStatus implements Editable<MachineOSBuildStatusBuilder> , KubernetesResource
 {
 
-    @JsonProperty("configuration")
-    private MachineConfigPoolStatusConfiguration configuration;
-    @JsonProperty("machineConfigSelector")
-    private LabelSelector machineConfigSelector;
-    @JsonProperty("maxUnavailable")
-    private IntOrString maxUnavailable;
-    @JsonProperty("nodeSelector")
-    private LabelSelector nodeSelector;
-    @JsonProperty("paused")
-    private Boolean paused;
-    @JsonProperty("pinnedImageSets")
+    @JsonProperty("buildEnd")
+    private String buildEnd;
+    @JsonProperty("buildStart")
+    private String buildStart;
+    @JsonProperty("builderReference")
+    private MachineOSBuilderReference builderReference;
+    @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<PinnedImageSetRef> pinnedImageSets = new ArrayList<>();
+    private List<Condition> conditions = new ArrayList<>();
+    @JsonProperty("finalImagePullspec")
+    private String finalImagePullspec;
+    @JsonProperty("relatedObjects")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<ObjectReference> relatedObjects = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -81,87 +83,88 @@ public class MachineConfigPoolSpec implements Editable<MachineConfigPoolSpecBuil
      * No args constructor for use in serialization
      * 
      */
-    public MachineConfigPoolSpec() {
+    public MachineOSBuildStatus() {
     }
 
-    public MachineConfigPoolSpec(MachineConfigPoolStatusConfiguration configuration, LabelSelector machineConfigSelector, IntOrString maxUnavailable, LabelSelector nodeSelector, Boolean paused, List<PinnedImageSetRef> pinnedImageSets) {
+    public MachineOSBuildStatus(String buildEnd, String buildStart, MachineOSBuilderReference builderReference, List<Condition> conditions, String finalImagePullspec, List<ObjectReference> relatedObjects) {
         super();
-        this.configuration = configuration;
-        this.machineConfigSelector = machineConfigSelector;
-        this.maxUnavailable = maxUnavailable;
-        this.nodeSelector = nodeSelector;
-        this.paused = paused;
-        this.pinnedImageSets = pinnedImageSets;
+        this.buildEnd = buildEnd;
+        this.buildStart = buildStart;
+        this.builderReference = builderReference;
+        this.conditions = conditions;
+        this.finalImagePullspec = finalImagePullspec;
+        this.relatedObjects = relatedObjects;
     }
 
-    @JsonProperty("configuration")
-    public MachineConfigPoolStatusConfiguration getConfiguration() {
-        return configuration;
+    @JsonProperty("buildEnd")
+    public String getBuildEnd() {
+        return buildEnd;
     }
 
-    @JsonProperty("configuration")
-    public void setConfiguration(MachineConfigPoolStatusConfiguration configuration) {
-        this.configuration = configuration;
+    @JsonProperty("buildEnd")
+    public void setBuildEnd(String buildEnd) {
+        this.buildEnd = buildEnd;
     }
 
-    @JsonProperty("machineConfigSelector")
-    public LabelSelector getMachineConfigSelector() {
-        return machineConfigSelector;
+    @JsonProperty("buildStart")
+    public String getBuildStart() {
+        return buildStart;
     }
 
-    @JsonProperty("machineConfigSelector")
-    public void setMachineConfigSelector(LabelSelector machineConfigSelector) {
-        this.machineConfigSelector = machineConfigSelector;
+    @JsonProperty("buildStart")
+    public void setBuildStart(String buildStart) {
+        this.buildStart = buildStart;
     }
 
-    @JsonProperty("maxUnavailable")
-    public IntOrString getMaxUnavailable() {
-        return maxUnavailable;
+    @JsonProperty("builderReference")
+    public MachineOSBuilderReference getBuilderReference() {
+        return builderReference;
     }
 
-    @JsonProperty("maxUnavailable")
-    public void setMaxUnavailable(IntOrString maxUnavailable) {
-        this.maxUnavailable = maxUnavailable;
+    @JsonProperty("builderReference")
+    public void setBuilderReference(MachineOSBuilderReference builderReference) {
+        this.builderReference = builderReference;
     }
 
-    @JsonProperty("nodeSelector")
-    public LabelSelector getNodeSelector() {
-        return nodeSelector;
-    }
-
-    @JsonProperty("nodeSelector")
-    public void setNodeSelector(LabelSelector nodeSelector) {
-        this.nodeSelector = nodeSelector;
-    }
-
-    @JsonProperty("paused")
-    public Boolean getPaused() {
-        return paused;
-    }
-
-    @JsonProperty("paused")
-    public void setPaused(Boolean paused) {
-        this.paused = paused;
-    }
-
-    @JsonProperty("pinnedImageSets")
+    @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<PinnedImageSetRef> getPinnedImageSets() {
-        return pinnedImageSets;
+    public List<Condition> getConditions() {
+        return conditions;
     }
 
-    @JsonProperty("pinnedImageSets")
-    public void setPinnedImageSets(List<PinnedImageSetRef> pinnedImageSets) {
-        this.pinnedImageSets = pinnedImageSets;
+    @JsonProperty("conditions")
+    public void setConditions(List<Condition> conditions) {
+        this.conditions = conditions;
+    }
+
+    @JsonProperty("finalImagePullspec")
+    public String getFinalImagePullspec() {
+        return finalImagePullspec;
+    }
+
+    @JsonProperty("finalImagePullspec")
+    public void setFinalImagePullspec(String finalImagePullspec) {
+        this.finalImagePullspec = finalImagePullspec;
+    }
+
+    @JsonProperty("relatedObjects")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<ObjectReference> getRelatedObjects() {
+        return relatedObjects;
+    }
+
+    @JsonProperty("relatedObjects")
+    public void setRelatedObjects(List<ObjectReference> relatedObjects) {
+        this.relatedObjects = relatedObjects;
     }
 
     @JsonIgnore
-    public MachineConfigPoolSpecBuilder edit() {
-        return new MachineConfigPoolSpecBuilder(this);
+    public MachineOSBuildStatusBuilder edit() {
+        return new MachineOSBuildStatusBuilder(this);
     }
 
     @JsonIgnore
-    public MachineConfigPoolSpecBuilder toBuilder() {
+    public MachineOSBuildStatusBuilder toBuilder() {
         return edit();
     }
 

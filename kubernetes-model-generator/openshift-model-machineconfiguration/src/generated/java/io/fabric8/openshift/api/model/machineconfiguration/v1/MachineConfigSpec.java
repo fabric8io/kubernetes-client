@@ -73,8 +73,8 @@ public class MachineConfigSpec implements Editable<MachineConfigSpecBuilder> , K
     @JsonProperty("fips")
     private Boolean fips;
     @JsonProperty("kernelArguments")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
-    private Object kernelArguments;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> kernelArguments = new ArrayList<>();
     @JsonProperty("kernelType")
     private String kernelType;
     @JsonProperty("osImageURL")
@@ -89,7 +89,7 @@ public class MachineConfigSpec implements Editable<MachineConfigSpecBuilder> , K
     public MachineConfigSpec() {
     }
 
-    public MachineConfigSpec(String baseOSExtensionsContainerImage, Object config, List<String> extensions, Boolean fips, Object kernelArguments, String kernelType, String osImageURL) {
+    public MachineConfigSpec(String baseOSExtensionsContainerImage, Object config, List<String> extensions, Boolean fips, List<String> kernelArguments, String kernelType, String osImageURL) {
         super();
         this.baseOSExtensionsContainerImage = baseOSExtensionsContainerImage;
         this.config = config;
@@ -143,13 +143,13 @@ public class MachineConfigSpec implements Editable<MachineConfigSpecBuilder> , K
     }
 
     @JsonProperty("kernelArguments")
-    public Object getKernelArguments() {
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<String> getKernelArguments() {
         return kernelArguments;
     }
 
     @JsonProperty("kernelArguments")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
-    public void setKernelArguments(Object kernelArguments) {
+    public void setKernelArguments(List<String> kernelArguments) {
         this.kernelArguments = kernelArguments;
     }
 

@@ -43,6 +43,10 @@
       <groupId>io.fabric8</groupId>
       <artifactId>kubernetes-model-core</artifactId>
     </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>openshift-model-config</artifactId>
+    </dependency>
   </dependencies>
 
   <profiles>
@@ -56,18 +60,11 @@
             <configuration >
               <settings combine.self="append">
                 <schemas>
-                  <schema>${openapi.schema.openshift-latest}</schema>
+                  <schema>${openapi.schema.openshift-generated}</schema>
                 </schemas>
-                <packageMappings combine.self="append">
-                  <io.k8s.api>io.fabric8.kubernetes.api.model</io.k8s.api>
-                  <io.openshift.machineconfiguration>io.fabric8.openshift.api.model.machineconfiguration</io.openshift.machineconfiguration>
-                </packageMappings>
                 <includeGenerationRegexes>
                   <includeGenerationRegex>^io\.openshift\.machineconfiguration\..*$</includeGenerationRegex>
                 </includeGenerationRegexes>
-                <refToJavaTypeMappings>
-                  <io.k8s.apimachinery.pkg.apis.meta.v1.LabelSelectorRequirement_v2>io.fabric8.kubernetes.api.model.LabelSelectorRequirement</io.k8s.apimachinery.pkg.apis.meta.v1.LabelSelectorRequirement_v2>
-                </refToJavaTypeMappings>
               </settings>
             </configuration>
           </plugin>

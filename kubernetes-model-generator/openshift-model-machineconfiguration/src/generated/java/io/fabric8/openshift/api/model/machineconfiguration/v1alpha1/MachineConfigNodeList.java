@@ -1,5 +1,5 @@
 
-package io.fabric8.openshift.api.model.machineconfiguration.v1;
+package io.fabric8.openshift.api.model.machineconfiguration.v1alpha1;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -17,15 +17,21 @@ import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
+import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.LabelSelector;
+import io.fabric8.kubernetes.api.model.ListMeta;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
+import io.fabric8.kubernetes.model.annotation.Group;
+import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
+import io.sundr.transform.annotations.TemplateTransformation;
+import io.sundr.transform.annotations.TemplateTransformations;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
@@ -35,12 +41,8 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "apiVersion",
     "kind",
-    "fieldPath",
-    "name",
-    "namespace",
-    "resourceVersion",
-    "source",
-    "uid"
+    "metadata",
+    "items"
 })
 @ToString
 @EqualsAndHashCode
@@ -59,27 +61,34 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@TemplateTransformations({
+    @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true)
+})
+@Version("v1alpha1")
+@Group("machineconfiguration.openshift.io")
 @Generated("jsonschema2pojo")
-public class MachineConfigPoolSpecConfiguration implements Editable<MachineConfigPoolSpecConfigurationBuilder> , KubernetesResource
+public class MachineConfigNodeList implements Editable<MachineConfigNodeListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.machineconfiguration.v1alpha1.MachineConfigNode>
 {
 
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @JsonProperty("apiVersion")
-    private String apiVersion;
-    @JsonProperty("fieldPath")
-    private String fieldPath;
-    @JsonProperty("kind")
-    private String kind;
-    @JsonProperty("name")
-    private String name;
-    @JsonProperty("namespace")
-    private String namespace;
-    @JsonProperty("resourceVersion")
-    private String resourceVersion;
-    @JsonProperty("source")
+    private String apiVersion = "machineconfiguration.openshift.io/v1alpha1";
+    @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<MachineConfigPoolSpecCSource> source = new ArrayList<>();
-    @JsonProperty("uid")
-    private String uid;
+    private List<io.fabric8.openshift.api.model.machineconfiguration.v1alpha1.MachineConfigNode> items = new ArrayList<>();
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("kind")
+    private String kind = "MachineConfigNodeList";
+    @JsonProperty("metadata")
+    private ListMeta metadata;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -87,109 +96,85 @@ public class MachineConfigPoolSpecConfiguration implements Editable<MachineConfi
      * No args constructor for use in serialization
      * 
      */
-    public MachineConfigPoolSpecConfiguration() {
+    public MachineConfigNodeList() {
     }
 
-    public MachineConfigPoolSpecConfiguration(String apiVersion, String fieldPath, String kind, String name, String namespace, String resourceVersion, List<MachineConfigPoolSpecCSource> source, String uid) {
+    public MachineConfigNodeList(String apiVersion, List<io.fabric8.openshift.api.model.machineconfiguration.v1alpha1.MachineConfigNode> items, String kind, ListMeta metadata) {
         super();
         this.apiVersion = apiVersion;
-        this.fieldPath = fieldPath;
+        this.items = items;
         this.kind = kind;
-        this.name = name;
-        this.namespace = namespace;
-        this.resourceVersion = resourceVersion;
-        this.source = source;
-        this.uid = uid;
+        this.metadata = metadata;
     }
 
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
         return apiVersion;
     }
 
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
-    @JsonProperty("fieldPath")
-    public String getFieldPath() {
-        return fieldPath;
+    @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<io.fabric8.openshift.api.model.machineconfiguration.v1alpha1.MachineConfigNode> getItems() {
+        return items;
     }
 
-    @JsonProperty("fieldPath")
-    public void setFieldPath(String fieldPath) {
-        this.fieldPath = fieldPath;
+    @JsonProperty("items")
+    public void setItems(List<io.fabric8.openshift.api.model.machineconfiguration.v1alpha1.MachineConfigNode> items) {
+        this.items = items;
     }
 
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @JsonProperty("kind")
     public String getKind() {
         return kind;
     }
 
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
-    @JsonProperty("name")
-    public String getName() {
-        return name;
+    @JsonProperty("metadata")
+    public ListMeta getMetadata() {
+        return metadata;
     }
 
-    @JsonProperty("name")
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @JsonProperty("namespace")
-    public String getNamespace() {
-        return namespace;
-    }
-
-    @JsonProperty("namespace")
-    public void setNamespace(String namespace) {
-        this.namespace = namespace;
-    }
-
-    @JsonProperty("resourceVersion")
-    public String getResourceVersion() {
-        return resourceVersion;
-    }
-
-    @JsonProperty("resourceVersion")
-    public void setResourceVersion(String resourceVersion) {
-        this.resourceVersion = resourceVersion;
-    }
-
-    @JsonProperty("source")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<MachineConfigPoolSpecCSource> getSource() {
-        return source;
-    }
-
-    @JsonProperty("source")
-    public void setSource(List<MachineConfigPoolSpecCSource> source) {
-        this.source = source;
-    }
-
-    @JsonProperty("uid")
-    public String getUid() {
-        return uid;
-    }
-
-    @JsonProperty("uid")
-    public void setUid(String uid) {
-        this.uid = uid;
+    @JsonProperty("metadata")
+    public void setMetadata(ListMeta metadata) {
+        this.metadata = metadata;
     }
 
     @JsonIgnore
-    public MachineConfigPoolSpecConfigurationBuilder edit() {
-        return new MachineConfigPoolSpecConfigurationBuilder(this);
+    public MachineConfigNodeListBuilder edit() {
+        return new MachineConfigNodeListBuilder(this);
     }
 
     @JsonIgnore
-    public MachineConfigPoolSpecConfigurationBuilder toBuilder() {
+    public MachineConfigNodeListBuilder toBuilder() {
         return edit();
     }
 

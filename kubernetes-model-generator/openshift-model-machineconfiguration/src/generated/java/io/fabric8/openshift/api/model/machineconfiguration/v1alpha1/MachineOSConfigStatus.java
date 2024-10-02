@@ -1,7 +1,9 @@
 
-package io.fabric8.openshift.api.model.machineconfiguration.v1;
+package io.fabric8.openshift.api.model.machineconfiguration.v1alpha1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -12,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
+import io.fabric8.kubernetes.api.model.Condition;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -31,8 +34,9 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "containerRuntimeConfig",
-    "machineConfigPoolSelector"
+    "conditions",
+    "currentImagePullspec",
+    "observedGeneration"
 })
 @ToString
 @EqualsAndHashCode
@@ -52,13 +56,16 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ContainerRuntimeConfigSpec implements Editable<ContainerRuntimeConfigSpecBuilder> , KubernetesResource
+public class MachineOSConfigStatus implements Editable<MachineOSConfigStatusBuilder> , KubernetesResource
 {
 
-    @JsonProperty("containerRuntimeConfig")
-    private ContainerRuntimeConfiguration containerRuntimeConfig;
-    @JsonProperty("machineConfigPoolSelector")
-    private LabelSelector machineConfigPoolSelector;
+    @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<Condition> conditions = new ArrayList<>();
+    @JsonProperty("currentImagePullspec")
+    private String currentImagePullspec;
+    @JsonProperty("observedGeneration")
+    private Long observedGeneration;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -66,42 +73,54 @@ public class ContainerRuntimeConfigSpec implements Editable<ContainerRuntimeConf
      * No args constructor for use in serialization
      * 
      */
-    public ContainerRuntimeConfigSpec() {
+    public MachineOSConfigStatus() {
     }
 
-    public ContainerRuntimeConfigSpec(ContainerRuntimeConfiguration containerRuntimeConfig, LabelSelector machineConfigPoolSelector) {
+    public MachineOSConfigStatus(List<Condition> conditions, String currentImagePullspec, Long observedGeneration) {
         super();
-        this.containerRuntimeConfig = containerRuntimeConfig;
-        this.machineConfigPoolSelector = machineConfigPoolSelector;
+        this.conditions = conditions;
+        this.currentImagePullspec = currentImagePullspec;
+        this.observedGeneration = observedGeneration;
     }
 
-    @JsonProperty("containerRuntimeConfig")
-    public ContainerRuntimeConfiguration getContainerRuntimeConfig() {
-        return containerRuntimeConfig;
+    @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<Condition> getConditions() {
+        return conditions;
     }
 
-    @JsonProperty("containerRuntimeConfig")
-    public void setContainerRuntimeConfig(ContainerRuntimeConfiguration containerRuntimeConfig) {
-        this.containerRuntimeConfig = containerRuntimeConfig;
+    @JsonProperty("conditions")
+    public void setConditions(List<Condition> conditions) {
+        this.conditions = conditions;
     }
 
-    @JsonProperty("machineConfigPoolSelector")
-    public LabelSelector getMachineConfigPoolSelector() {
-        return machineConfigPoolSelector;
+    @JsonProperty("currentImagePullspec")
+    public String getCurrentImagePullspec() {
+        return currentImagePullspec;
     }
 
-    @JsonProperty("machineConfigPoolSelector")
-    public void setMachineConfigPoolSelector(LabelSelector machineConfigPoolSelector) {
-        this.machineConfigPoolSelector = machineConfigPoolSelector;
+    @JsonProperty("currentImagePullspec")
+    public void setCurrentImagePullspec(String currentImagePullspec) {
+        this.currentImagePullspec = currentImagePullspec;
+    }
+
+    @JsonProperty("observedGeneration")
+    public Long getObservedGeneration() {
+        return observedGeneration;
+    }
+
+    @JsonProperty("observedGeneration")
+    public void setObservedGeneration(Long observedGeneration) {
+        this.observedGeneration = observedGeneration;
     }
 
     @JsonIgnore
-    public ContainerRuntimeConfigSpecBuilder edit() {
-        return new ContainerRuntimeConfigSpecBuilder(this);
+    public MachineOSConfigStatusBuilder edit() {
+        return new MachineOSConfigStatusBuilder(this);
     }
 
     @JsonIgnore
-    public ContainerRuntimeConfigSpecBuilder toBuilder() {
+    public MachineOSConfigStatusBuilder toBuilder() {
         return edit();
     }
 
