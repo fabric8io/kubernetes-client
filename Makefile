@@ -28,15 +28,16 @@ clean-java:
 .PHONY: clean
 clean: clean-java
 
-.PHONY: generate-openapi
-generate-openapi:
+.PHONY: openapi-generate-schema
+openapi-generate-schema:
+	cd $(OPENAPI_GENERATOR_DIR) && go generate ./...
 	cd $(OPENAPI_GENERATOR_DIR) && go build -o $(OPENAPI_GENERATOR_BINARY_NAME) ./cmd
 	$(OPENAPI_GENERATOR_BINARY) reflection $(OPENAPI_SCHEMAS_DIR)
   # To be able to access the go sources and mod information must be run from the root of the (Go) project
 	cd $(OPENAPI_GENERATOR_DIR) && ./$(OPENAPI_GENERATOR_BINARY_NAME) open-api $(OPENAPI_SCHEMAS_DIR)
 
-.PHONY: generate-openapi-classes
-generate-openapi-classes:
+.PHONY: openapi-generate-java-classes
+openapi-generate-java-classes:
 # TODO: Do for all modules once they've all been migrated
 #	cd kubernetes-model-generator && mvn -Pgenerate clean install
 	cd kubernetes-model-generator/kubernetes-model-common && mvn clean install
@@ -79,7 +80,7 @@ generate-model-legacy:
 	cd kubernetes-model-generator && ./generateModel.sh
 
 .PHONY: generate-model
-generate-model: generate-openapi generate-openapi-classes generate-model-legacy
+generate-model: openapi-generate-schema openapi-generate-java-classes generate-model-legacy
 
 .PHONY: sonar
 sonar:

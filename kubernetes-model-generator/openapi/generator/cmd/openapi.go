@@ -1,3 +1,4 @@
+//go:generate go run ../tools/generator/openapi.go
 /**
  * Copyright (C) 2015 Red Hat, Inc.
  *
@@ -17,9 +18,13 @@ package main
 
 import (
 	"fmt"
+	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/cmd/generated_openapi"
 	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/pkg/openapi"
+	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/pkg/openshift"
 	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/pkg/parser"
-	"github.com/openshift/api/openapi/generated_openapi"
+	"time"
+
+	//"github.com/openshift/api/openapi/generated_openapi"
 	"github.com/spf13/cobra"
 	"k8s.io/kube-openapi/pkg/common"
 	"k8s.io/kube-openapi/pkg/validation/spec"
@@ -36,6 +41,8 @@ func init() {
 }
 
 var openApiRun = func(cobraCmd *cobra.Command, args []string) {
+	startTime := time.Now()
+	fmt.Printf("OpenAPI JSON schema generation started...\n")
 	var targetDirectory string
 	if len(args) > 0 {
 		targetDirectory = args[0]
@@ -43,7 +50,7 @@ var openApiRun = func(cobraCmd *cobra.Command, args []string) {
 		targetDirectory = "."
 	}
 	openApiGenerator := openapi.NewGenerator(targetDirectory, "openshift-generated")
-	openShiftModule := parser.NewModule("github.com/openshift/api")
+	openShiftModule := parser.NewModule(openshift.PackagePatterns...)
 	/////////////////////////////////////////////////////////////////////////////////
 	// Ported from github.com/openshift/api/openapi/cmd/models-schema/main.go
 	refFunc := func(name string) spec.Ref {
@@ -71,8 +78,8 @@ var openApiRun = func(cobraCmd *cobra.Command, args []string) {
 		}
 		openApiGenerator.PutDefinition(openShiftModule.ApiName(k), v.Schema)
 	}
-
 	if err := openApiGenerator.WriteDefinitions(); err != nil {
 		panic(fmt.Errorf("error writing OpenAPI schema: %w", err))
 	}
+	fmt.Printf("OpenAPI JSON schema generation completed in %v\n", time.Since(startTime))
 }
