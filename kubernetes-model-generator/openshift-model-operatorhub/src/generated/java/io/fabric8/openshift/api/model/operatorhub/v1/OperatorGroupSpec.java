@@ -61,7 +61,7 @@ public class OperatorGroupSpec implements Editable<OperatorGroupSpecBuilder> , K
 {
 
     @JsonProperty("selector")
-    private OperatorGroupSpecSelector selector;
+    private LabelSelector selector;
     @JsonProperty("serviceAccountName")
     private String serviceAccountName;
     @JsonProperty("staticProvidedAPIs")
@@ -81,7 +81,7 @@ public class OperatorGroupSpec implements Editable<OperatorGroupSpecBuilder> , K
     public OperatorGroupSpec() {
     }
 
-    public OperatorGroupSpec(OperatorGroupSpecSelector selector, String serviceAccountName, Boolean staticProvidedAPIs, List<String> targetNamespaces, String upgradeStrategy) {
+    public OperatorGroupSpec(LabelSelector selector, String serviceAccountName, Boolean staticProvidedAPIs, List<String> targetNamespaces, String upgradeStrategy) {
         super();
         this.selector = selector;
         this.serviceAccountName = serviceAccountName;
@@ -91,12 +91,12 @@ public class OperatorGroupSpec implements Editable<OperatorGroupSpecBuilder> , K
     }
 
     @JsonProperty("selector")
-    public OperatorGroupSpecSelector getSelector() {
+    public LabelSelector getSelector() {
         return selector;
     }
 
     @JsonProperty("selector")
-    public void setSelector(OperatorGroupSpecSelector selector) {
+    public void setSelector(LabelSelector selector) {
         this.selector = selector;
     }
 

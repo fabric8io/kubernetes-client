@@ -64,23 +64,23 @@ public class InstallPlanStatus implements Editable<InstallPlanStatusBuilder> , K
 {
 
     @JsonProperty("attenuatedServiceAccountRef")
-    private InstallPlanStatusAttenuatedServiceAccountRef attenuatedServiceAccountRef;
+    private ObjectReference attenuatedServiceAccountRef;
     @JsonProperty("bundleLookups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<InstallPlanStatusBundleLookups> bundleLookups = new ArrayList<>();
+    private List<BundleLookup> bundleLookups = new ArrayList<>();
     @JsonProperty("catalogSources")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> catalogSources = new ArrayList<>();
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<InstallPlanStatusConditions> conditions = new ArrayList<>();
+    private List<InstallPlanCondition> conditions = new ArrayList<>();
     @JsonProperty("message")
     private String message;
     @JsonProperty("phase")
     private String phase;
     @JsonProperty("plan")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<InstallPlanStatusPlan> plan = new ArrayList<>();
+    private List<Step> plan = new ArrayList<>();
     @JsonProperty("startTime")
     private String startTime;
     @JsonIgnore
@@ -93,7 +93,7 @@ public class InstallPlanStatus implements Editable<InstallPlanStatusBuilder> , K
     public InstallPlanStatus() {
     }
 
-    public InstallPlanStatus(InstallPlanStatusAttenuatedServiceAccountRef attenuatedServiceAccountRef, List<InstallPlanStatusBundleLookups> bundleLookups, List<String> catalogSources, List<InstallPlanStatusConditions> conditions, String message, String phase, List<InstallPlanStatusPlan> plan, String startTime) {
+    public InstallPlanStatus(ObjectReference attenuatedServiceAccountRef, List<BundleLookup> bundleLookups, List<String> catalogSources, List<InstallPlanCondition> conditions, String message, String phase, List<Step> plan, String startTime) {
         super();
         this.attenuatedServiceAccountRef = attenuatedServiceAccountRef;
         this.bundleLookups = bundleLookups;
@@ -106,23 +106,23 @@ public class InstallPlanStatus implements Editable<InstallPlanStatusBuilder> , K
     }
 
     @JsonProperty("attenuatedServiceAccountRef")
-    public InstallPlanStatusAttenuatedServiceAccountRef getAttenuatedServiceAccountRef() {
+    public ObjectReference getAttenuatedServiceAccountRef() {
         return attenuatedServiceAccountRef;
     }
 
     @JsonProperty("attenuatedServiceAccountRef")
-    public void setAttenuatedServiceAccountRef(InstallPlanStatusAttenuatedServiceAccountRef attenuatedServiceAccountRef) {
+    public void setAttenuatedServiceAccountRef(ObjectReference attenuatedServiceAccountRef) {
         this.attenuatedServiceAccountRef = attenuatedServiceAccountRef;
     }
 
     @JsonProperty("bundleLookups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<InstallPlanStatusBundleLookups> getBundleLookups() {
+    public List<BundleLookup> getBundleLookups() {
         return bundleLookups;
     }
 
     @JsonProperty("bundleLookups")
-    public void setBundleLookups(List<InstallPlanStatusBundleLookups> bundleLookups) {
+    public void setBundleLookups(List<BundleLookup> bundleLookups) {
         this.bundleLookups = bundleLookups;
     }
 
@@ -139,12 +139,12 @@ public class InstallPlanStatus implements Editable<InstallPlanStatusBuilder> , K
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<InstallPlanStatusConditions> getConditions() {
+    public List<InstallPlanCondition> getConditions() {
         return conditions;
     }
 
     @JsonProperty("conditions")
-    public void setConditions(List<InstallPlanStatusConditions> conditions) {
+    public void setConditions(List<InstallPlanCondition> conditions) {
         this.conditions = conditions;
     }
 
@@ -170,12 +170,12 @@ public class InstallPlanStatus implements Editable<InstallPlanStatusBuilder> , K
 
     @JsonProperty("plan")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<InstallPlanStatusPlan> getPlan() {
+    public List<Step> getPlan() {
         return plan;
     }
 
     @JsonProperty("plan")
-    public void setPlan(List<InstallPlanStatusPlan> plan) {
+    public void setPlan(List<Step> plan) {
         this.plan = plan;
     }
 

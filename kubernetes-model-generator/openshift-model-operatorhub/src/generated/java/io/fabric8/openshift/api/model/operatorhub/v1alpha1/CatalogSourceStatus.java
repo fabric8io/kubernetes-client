@@ -14,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
+import io.fabric8.kubernetes.api.model.Condition;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -64,11 +65,11 @@ public class CatalogSourceStatus implements Editable<CatalogSourceStatusBuilder>
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<CatalogSourceStatusConditions> conditions = new ArrayList<>();
+    private List<Condition> conditions = new ArrayList<>();
     @JsonProperty("configMapReference")
-    private CatalogSourceStatusConfigMapReference configMapReference;
+    private ConfigMapResourceReference configMapReference;
     @JsonProperty("connectionState")
-    private CatalogSourceStatusConnectionState connectionState;
+    private GRPCConnectionState connectionState;
     @JsonProperty("latestImageRegistryPoll")
     private String latestImageRegistryPoll;
     @JsonProperty("message")
@@ -76,7 +77,7 @@ public class CatalogSourceStatus implements Editable<CatalogSourceStatusBuilder>
     @JsonProperty("reason")
     private String reason;
     @JsonProperty("registryService")
-    private CatalogSourceStatusRegistryService registryService;
+    private RegistryServiceStatus registryService;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -87,7 +88,7 @@ public class CatalogSourceStatus implements Editable<CatalogSourceStatusBuilder>
     public CatalogSourceStatus() {
     }
 
-    public CatalogSourceStatus(List<CatalogSourceStatusConditions> conditions, CatalogSourceStatusConfigMapReference configMapReference, CatalogSourceStatusConnectionState connectionState, String latestImageRegistryPoll, String message, String reason, CatalogSourceStatusRegistryService registryService) {
+    public CatalogSourceStatus(List<Condition> conditions, ConfigMapResourceReference configMapReference, GRPCConnectionState connectionState, String latestImageRegistryPoll, String message, String reason, RegistryServiceStatus registryService) {
         super();
         this.conditions = conditions;
         this.configMapReference = configMapReference;
@@ -100,32 +101,32 @@ public class CatalogSourceStatus implements Editable<CatalogSourceStatusBuilder>
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<CatalogSourceStatusConditions> getConditions() {
+    public List<Condition> getConditions() {
         return conditions;
     }
 
     @JsonProperty("conditions")
-    public void setConditions(List<CatalogSourceStatusConditions> conditions) {
+    public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
     }
 
     @JsonProperty("configMapReference")
-    public CatalogSourceStatusConfigMapReference getConfigMapReference() {
+    public ConfigMapResourceReference getConfigMapReference() {
         return configMapReference;
     }
 
     @JsonProperty("configMapReference")
-    public void setConfigMapReference(CatalogSourceStatusConfigMapReference configMapReference) {
+    public void setConfigMapReference(ConfigMapResourceReference configMapReference) {
         this.configMapReference = configMapReference;
     }
 
     @JsonProperty("connectionState")
-    public CatalogSourceStatusConnectionState getConnectionState() {
+    public GRPCConnectionState getConnectionState() {
         return connectionState;
     }
 
     @JsonProperty("connectionState")
-    public void setConnectionState(CatalogSourceStatusConnectionState connectionState) {
+    public void setConnectionState(GRPCConnectionState connectionState) {
         this.connectionState = connectionState;
     }
 
@@ -160,12 +161,12 @@ public class CatalogSourceStatus implements Editable<CatalogSourceStatusBuilder>
     }
 
     @JsonProperty("registryService")
-    public CatalogSourceStatusRegistryService getRegistryService() {
+    public RegistryServiceStatus getRegistryService() {
         return registryService;
     }
 
     @JsonProperty("registryService")
-    public void setRegistryService(CatalogSourceStatusRegistryService registryService) {
+    public void setRegistryService(RegistryServiceStatus registryService) {
         this.registryService = registryService;
     }
 

@@ -42,7 +42,6 @@ import lombok.experimental.Accessors;
     "image",
     "priority",
     "publisher",
-    "runAsRoot",
     "secrets",
     "sourceType",
     "updateStrategy"
@@ -77,24 +76,22 @@ public class CatalogSourceSpec implements Editable<CatalogSourceSpecBuilder> , K
     @JsonProperty("displayName")
     private String displayName;
     @JsonProperty("grpcPodConfig")
-    private CatalogSourceSpecGrpcPodConfig grpcPodConfig;
+    private GrpcPodConfig grpcPodConfig;
     @JsonProperty("icon")
-    private CatalogSourceSpecIcon icon;
+    private Icon icon;
     @JsonProperty("image")
     private String image;
     @JsonProperty("priority")
     private Integer priority;
     @JsonProperty("publisher")
     private String publisher;
-    @JsonProperty("runAsRoot")
-    private Boolean runAsRoot;
     @JsonProperty("secrets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> secrets = new ArrayList<>();
     @JsonProperty("sourceType")
     private String sourceType;
     @JsonProperty("updateStrategy")
-    private CatalogSourceSpecUpdateStrategy updateStrategy;
+    private UpdateStrategy updateStrategy;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -105,7 +102,7 @@ public class CatalogSourceSpec implements Editable<CatalogSourceSpecBuilder> , K
     public CatalogSourceSpec() {
     }
 
-    public CatalogSourceSpec(String address, String configMap, String description, String displayName, CatalogSourceSpecGrpcPodConfig grpcPodConfig, CatalogSourceSpecIcon icon, String image, Integer priority, String publisher, Boolean runAsRoot, List<String> secrets, String sourceType, CatalogSourceSpecUpdateStrategy updateStrategy) {
+    public CatalogSourceSpec(String address, String configMap, String description, String displayName, GrpcPodConfig grpcPodConfig, Icon icon, String image, Integer priority, String publisher, List<String> secrets, String sourceType, UpdateStrategy updateStrategy) {
         super();
         this.address = address;
         this.configMap = configMap;
@@ -116,7 +113,6 @@ public class CatalogSourceSpec implements Editable<CatalogSourceSpecBuilder> , K
         this.image = image;
         this.priority = priority;
         this.publisher = publisher;
-        this.runAsRoot = runAsRoot;
         this.secrets = secrets;
         this.sourceType = sourceType;
         this.updateStrategy = updateStrategy;
@@ -163,22 +159,22 @@ public class CatalogSourceSpec implements Editable<CatalogSourceSpecBuilder> , K
     }
 
     @JsonProperty("grpcPodConfig")
-    public CatalogSourceSpecGrpcPodConfig getGrpcPodConfig() {
+    public GrpcPodConfig getGrpcPodConfig() {
         return grpcPodConfig;
     }
 
     @JsonProperty("grpcPodConfig")
-    public void setGrpcPodConfig(CatalogSourceSpecGrpcPodConfig grpcPodConfig) {
+    public void setGrpcPodConfig(GrpcPodConfig grpcPodConfig) {
         this.grpcPodConfig = grpcPodConfig;
     }
 
     @JsonProperty("icon")
-    public CatalogSourceSpecIcon getIcon() {
+    public Icon getIcon() {
         return icon;
     }
 
     @JsonProperty("icon")
-    public void setIcon(CatalogSourceSpecIcon icon) {
+    public void setIcon(Icon icon) {
         this.icon = icon;
     }
 
@@ -212,16 +208,6 @@ public class CatalogSourceSpec implements Editable<CatalogSourceSpecBuilder> , K
         this.publisher = publisher;
     }
 
-    @JsonProperty("runAsRoot")
-    public Boolean getRunAsRoot() {
-        return runAsRoot;
-    }
-
-    @JsonProperty("runAsRoot")
-    public void setRunAsRoot(Boolean runAsRoot) {
-        this.runAsRoot = runAsRoot;
-    }
-
     @JsonProperty("secrets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getSecrets() {
@@ -244,12 +230,12 @@ public class CatalogSourceSpec implements Editable<CatalogSourceSpecBuilder> , K
     }
 
     @JsonProperty("updateStrategy")
-    public CatalogSourceSpecUpdateStrategy getUpdateStrategy() {
+    public UpdateStrategy getUpdateStrategy() {
         return updateStrategy;
     }
 
     @JsonProperty("updateStrategy")
-    public void setUpdateStrategy(CatalogSourceSpecUpdateStrategy updateStrategy) {
+    public void setUpdateStrategy(UpdateStrategy updateStrategy) {
         this.updateStrategy = updateStrategy;
     }
 

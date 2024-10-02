@@ -44,6 +44,9 @@ func (g *GoGenerator) Generate() error {
 	)
 }
 
+// KubernetesTargets wrapper function around kube-openapi's generators.GetTargets function.
+//
+// Allows to override the default kube-openapi generators.apiTypeFilterFunc with our own (see KubernetesFilterFunc).
 func (g *GoGenerator) KubernetesTargets(context *generator.Context) []generator.Target {
 	// Create a map of all the input packages for performance (queried later on)
 	g.inputPkgs = make(map[string]bool)
@@ -59,8 +62,16 @@ func (g *GoGenerator) KubernetesTargets(context *generator.Context) []generator.
 	return openApiGenTargets
 }
 
-// KubernetesFilterFunc
+// KubernetesFilterFunc function to filter out types that are not Kubernetes Objects,
+// Lists, or nested structs within those.
+//
 // Adaptation of https://github.com/kubernetes/kube-openapi/blob/9e1beecbcb384a484fb5cbd41024f316d51fdfac/pkg/generators/openapi.go#L106
+//
+// The original function only takes into account those structs that have been tagged with +k8s:openapi-gen=true
+// or that belong to a package that has been tagged with +k8s:openapi-gen=true
+//
+// The default behavior is fine for most packages, however, some of them lack these annotations.
+// While the upstream projects are fixed, we need to provide a workaround to generate the complete OpenAPI definitions.
 func (g *GoGenerator) KubernetesFilterFunc(c *generator.Context, t *types.Type) bool {
 	// Skip types that are not structs
 	if t.Kind != types.Struct {

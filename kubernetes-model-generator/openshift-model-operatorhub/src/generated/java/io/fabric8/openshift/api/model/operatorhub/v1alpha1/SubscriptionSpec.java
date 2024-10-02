@@ -63,7 +63,7 @@ public class SubscriptionSpec implements Editable<SubscriptionSpecBuilder> , Kub
     @JsonProperty("channel")
     private String channel;
     @JsonProperty("config")
-    private SubscriptionSpecConfig config;
+    private SubscriptionConfig config;
     @JsonProperty("installPlanApproval")
     private String installPlanApproval;
     @JsonProperty("name")
@@ -84,7 +84,7 @@ public class SubscriptionSpec implements Editable<SubscriptionSpecBuilder> , Kub
     public SubscriptionSpec() {
     }
 
-    public SubscriptionSpec(String channel, SubscriptionSpecConfig config, String installPlanApproval, String name, String source, String sourceNamespace, String startingCSV) {
+    public SubscriptionSpec(String channel, SubscriptionConfig config, String installPlanApproval, String name, String source, String sourceNamespace, String startingCSV) {
         super();
         this.channel = channel;
         this.config = config;
@@ -106,12 +106,12 @@ public class SubscriptionSpec implements Editable<SubscriptionSpecBuilder> , Kub
     }
 
     @JsonProperty("config")
-    public SubscriptionSpecConfig getConfig() {
+    public SubscriptionConfig getConfig() {
         return config;
     }
 
     @JsonProperty("config")
-    public void setConfig(SubscriptionSpecConfig config) {
+    public void setConfig(SubscriptionConfig config) {
         this.config = config;
     }
 
