@@ -8,9 +8,10 @@ require (
 	github.com/getkin/kin-openapi v0.125.0
 	// Match latest commit in the version branch (e.g. release-4.17)
 	github.com/openshift/api v3.9.0+incompatible
+	github.com/openshift/cloud-credential-operator v0.0.0-20240910052617-d668c182b0e3
 	github.com/openshift/cluster-network-operator v0.0.0-20240912134426-a3188633549d
 	github.com/operator-framework/api v0.27.0
-	github.com/operator-framework/operator-lifecycle-manager v0.22.0
+	github.com/operator-framework/operator-lifecycle-manager v0.0.0-00010101000000-000000000000
 	github.com/spf13/cobra v1.8.1
 	k8s.io/api v0.31.1
 	k8s.io/apiextensions-apiserver v0.31.1
