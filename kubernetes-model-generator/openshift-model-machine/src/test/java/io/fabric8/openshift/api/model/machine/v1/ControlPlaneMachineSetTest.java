@@ -20,6 +20,8 @@ import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.model.util.Helper;
 import io.fabric8.openshift.api.model.machine.v1alpha1.OpenstackProviderSpec;
 import io.fabric8.openshift.api.model.machine.v1alpha1.OpenstackProviderSpecBuilder;
+import io.fabric8.openshift.api.model.machine.v1beta1.MachineSpec;
+import io.fabric8.openshift.api.model.machine.v1beta1.ProviderSpec;
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.Test;
 
@@ -56,9 +58,9 @@ class ControlPlaneMachineSetTest {
         .hasFieldOrPropertyWithValue("state", "Active")
         .extracting(ControlPlaneMachineSetSpec::getTemplate)
         .hasFieldOrPropertyWithValue("machineType", "machines_v1beta1_machine_openshift_io")
-        .extracting(ControlPlaneMachineSetSpecTemplate::getMachines_v1beta1_machine_openshift_io)
+        .extracting(ControlPlaneMachineSetTemplate::getMachines_v1beta1_machine_openshift_io)
         .hasFieldOrPropertyWithValue("failureDomains.openstack",
-            Collections.singletonList(new ControlPlaneMachineSetSpecTMFDOpenstackBuilder()
+            Collections.singletonList(new OpenStackFailureDomainBuilder()
                 .withAvailabilityZone("nova-one")
                 .withNewRootVolume()
                 .withAvailabilityZone("cinder-one")
@@ -66,9 +68,9 @@ class ControlPlaneMachineSetTest {
                 .build()))
         .hasFieldOrPropertyWithValue("metadata.labels",
             Collections.singletonMap("machine.openshift.io/cluster-api-machine-type", "master"))
-        .extracting(ControlPlaneMachineSetSpecTMachines_v1beta1_machine_openshift_io::getSpec)
-        .extracting(ControlPlaneMachineSetSpecTMSpec::getProviderSpec)
-        .extracting(ControlPlaneMachineSetSpecTMSpecProviderSpec::getValue)
+        .extracting(OpenShiftMachineV1Beta1MachineTemplate::getSpec)
+        .extracting(MachineSpec::getProviderSpec)
+        .extracting(ProviderSpec::getValue)
         .hasFieldOrPropertyWithValue("apiVersion",
             "machine.openshift.io/v1alpha1")
         .hasFieldOrPropertyWithValue("kind",
@@ -174,18 +176,18 @@ class ControlPlaneMachineSetTest {
         .hasFieldOrPropertyWithValue("state", "Active")
         .hasFieldOrPropertyWithValue("template.machineType", "machines_v1beta1_machine_openshift_io")
         .extracting(ControlPlaneMachineSetSpec::getTemplate)
-        .extracting(ControlPlaneMachineSetSpecTemplate::getMachines_v1beta1_machine_openshift_io)
+        .extracting(ControlPlaneMachineSetTemplate::getMachines_v1beta1_machine_openshift_io)
         .hasFieldOrPropertyWithValue("failureDomains.openstack",
-            Collections.singletonList(new ControlPlaneMachineSetSpecTMFDOpenstackBuilder()
+            Collections.singletonList(new OpenStackFailureDomainBuilder()
                 .withAvailabilityZone("nova-one")
                 .withNewRootVolume()
                 .withAvailabilityZone("cinder-one")
                 .endRootVolume()
                 .build()))
         .hasFieldOrPropertyWithValue("metadata.labels", matchLabels)
-        .extracting(ControlPlaneMachineSetSpecTMachines_v1beta1_machine_openshift_io::getSpec)
-        .extracting(ControlPlaneMachineSetSpecTMSpec::getProviderSpec)
-        .extracting(ControlPlaneMachineSetSpecTMSpecProviderSpec::getValue)
+        .extracting(OpenShiftMachineV1Beta1MachineTemplate::getSpec)
+        .extracting(MachineSpec::getProviderSpec)
+        .extracting(ProviderSpec::getValue)
         .hasFieldOrPropertyWithValue("apiVersion",
             "machine.openshift.io/v1alpha1")
         .hasFieldOrPropertyWithValue("kind", "OpenstackProviderSpec")

@@ -1,7 +1,9 @@
 
 package io.fabric8.openshift.api.model.machine.v1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -31,11 +33,10 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "replicas",
-    "selector",
-    "state",
-    "strategy",
-    "template"
+    "id",
+    "name",
+    "tags",
+    "type"
 })
 @ToString
 @EqualsAndHashCode
@@ -55,19 +56,18 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ControlPlaneMachineSetSpec implements Editable<ControlPlaneMachineSetSpecBuilder> , KubernetesResource
+public class AlibabaResourceReference implements Editable<AlibabaResourceReferenceBuilder> , KubernetesResource
 {
 
-    @JsonProperty("replicas")
-    private Integer replicas;
-    @JsonProperty("selector")
-    private LabelSelector selector;
-    @JsonProperty("state")
-    private String state;
-    @JsonProperty("strategy")
-    private ControlPlaneMachineSetStrategy strategy;
-    @JsonProperty("template")
-    private ControlPlaneMachineSetTemplate template;
+    @JsonProperty("id")
+    private String id;
+    @JsonProperty("name")
+    private String name;
+    @JsonProperty("tags")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<Tag> tags = new ArrayList<>();
+    @JsonProperty("type")
+    private String type;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -75,75 +75,65 @@ public class ControlPlaneMachineSetSpec implements Editable<ControlPlaneMachineS
      * No args constructor for use in serialization
      * 
      */
-    public ControlPlaneMachineSetSpec() {
+    public AlibabaResourceReference() {
     }
 
-    public ControlPlaneMachineSetSpec(Integer replicas, LabelSelector selector, String state, ControlPlaneMachineSetStrategy strategy, ControlPlaneMachineSetTemplate template) {
+    public AlibabaResourceReference(String id, String name, List<Tag> tags, String type) {
         super();
-        this.replicas = replicas;
-        this.selector = selector;
-        this.state = state;
-        this.strategy = strategy;
-        this.template = template;
+        this.id = id;
+        this.name = name;
+        this.tags = tags;
+        this.type = type;
     }
 
-    @JsonProperty("replicas")
-    public Integer getReplicas() {
-        return replicas;
+    @JsonProperty("id")
+    public String getId() {
+        return id;
     }
 
-    @JsonProperty("replicas")
-    public void setReplicas(Integer replicas) {
-        this.replicas = replicas;
+    @JsonProperty("id")
+    public void setId(String id) {
+        this.id = id;
     }
 
-    @JsonProperty("selector")
-    public LabelSelector getSelector() {
-        return selector;
+    @JsonProperty("name")
+    public String getName() {
+        return name;
     }
 
-    @JsonProperty("selector")
-    public void setSelector(LabelSelector selector) {
-        this.selector = selector;
+    @JsonProperty("name")
+    public void setName(String name) {
+        this.name = name;
     }
 
-    @JsonProperty("state")
-    public String getState() {
-        return state;
+    @JsonProperty("tags")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<Tag> getTags() {
+        return tags;
     }
 
-    @JsonProperty("state")
-    public void setState(String state) {
-        this.state = state;
+    @JsonProperty("tags")
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
     }
 
-    @JsonProperty("strategy")
-    public ControlPlaneMachineSetStrategy getStrategy() {
-        return strategy;
+    @JsonProperty("type")
+    public String getType() {
+        return type;
     }
 
-    @JsonProperty("strategy")
-    public void setStrategy(ControlPlaneMachineSetStrategy strategy) {
-        this.strategy = strategy;
-    }
-
-    @JsonProperty("template")
-    public ControlPlaneMachineSetTemplate getTemplate() {
-        return template;
-    }
-
-    @JsonProperty("template")
-    public void setTemplate(ControlPlaneMachineSetTemplate template) {
-        this.template = template;
+    @JsonProperty("type")
+    public void setType(String type) {
+        this.type = type;
     }
 
     @JsonIgnore
-    public ControlPlaneMachineSetSpecBuilder edit() {
-        return new ControlPlaneMachineSetSpecBuilder(this);
+    public AlibabaResourceReferenceBuilder edit() {
+        return new AlibabaResourceReferenceBuilder(this);
     }
 
     @JsonIgnore
-    public ControlPlaneMachineSetSpecBuilder toBuilder() {
+    public AlibabaResourceReferenceBuilder toBuilder() {
         return edit();
     }
 

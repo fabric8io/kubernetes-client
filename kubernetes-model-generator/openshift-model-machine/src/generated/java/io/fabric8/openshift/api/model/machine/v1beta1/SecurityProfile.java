@@ -1,5 +1,5 @@
 
-package io.fabric8.openshift.api.model.machine.v1;
+package io.fabric8.openshift.api.model.machine.v1beta1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -31,11 +31,8 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "replicas",
-    "selector",
-    "state",
-    "strategy",
-    "template"
+    "encryptionAtHost",
+    "settings"
 })
 @ToString
 @EqualsAndHashCode
@@ -55,19 +52,13 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ControlPlaneMachineSetSpec implements Editable<ControlPlaneMachineSetSpecBuilder> , KubernetesResource
+public class SecurityProfile implements Editable<SecurityProfileBuilder> , KubernetesResource
 {
 
-    @JsonProperty("replicas")
-    private Integer replicas;
-    @JsonProperty("selector")
-    private LabelSelector selector;
-    @JsonProperty("state")
-    private String state;
-    @JsonProperty("strategy")
-    private ControlPlaneMachineSetStrategy strategy;
-    @JsonProperty("template")
-    private ControlPlaneMachineSetTemplate template;
+    @JsonProperty("encryptionAtHost")
+    private Boolean encryptionAtHost;
+    @JsonProperty("settings")
+    private SecuritySettings settings;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -75,75 +66,42 @@ public class ControlPlaneMachineSetSpec implements Editable<ControlPlaneMachineS
      * No args constructor for use in serialization
      * 
      */
-    public ControlPlaneMachineSetSpec() {
+    public SecurityProfile() {
     }
 
-    public ControlPlaneMachineSetSpec(Integer replicas, LabelSelector selector, String state, ControlPlaneMachineSetStrategy strategy, ControlPlaneMachineSetTemplate template) {
+    public SecurityProfile(Boolean encryptionAtHost, SecuritySettings settings) {
         super();
-        this.replicas = replicas;
-        this.selector = selector;
-        this.state = state;
-        this.strategy = strategy;
-        this.template = template;
+        this.encryptionAtHost = encryptionAtHost;
+        this.settings = settings;
     }
 
-    @JsonProperty("replicas")
-    public Integer getReplicas() {
-        return replicas;
+    @JsonProperty("encryptionAtHost")
+    public Boolean getEncryptionAtHost() {
+        return encryptionAtHost;
     }
 
-    @JsonProperty("replicas")
-    public void setReplicas(Integer replicas) {
-        this.replicas = replicas;
+    @JsonProperty("encryptionAtHost")
+    public void setEncryptionAtHost(Boolean encryptionAtHost) {
+        this.encryptionAtHost = encryptionAtHost;
     }
 
-    @JsonProperty("selector")
-    public LabelSelector getSelector() {
-        return selector;
+    @JsonProperty("settings")
+    public SecuritySettings getSettings() {
+        return settings;
     }
 
-    @JsonProperty("selector")
-    public void setSelector(LabelSelector selector) {
-        this.selector = selector;
-    }
-
-    @JsonProperty("state")
-    public String getState() {
-        return state;
-    }
-
-    @JsonProperty("state")
-    public void setState(String state) {
-        this.state = state;
-    }
-
-    @JsonProperty("strategy")
-    public ControlPlaneMachineSetStrategy getStrategy() {
-        return strategy;
-    }
-
-    @JsonProperty("strategy")
-    public void setStrategy(ControlPlaneMachineSetStrategy strategy) {
-        this.strategy = strategy;
-    }
-
-    @JsonProperty("template")
-    public ControlPlaneMachineSetTemplate getTemplate() {
-        return template;
-    }
-
-    @JsonProperty("template")
-    public void setTemplate(ControlPlaneMachineSetTemplate template) {
-        this.template = template;
+    @JsonProperty("settings")
+    public void setSettings(SecuritySettings settings) {
+        this.settings = settings;
     }
 
     @JsonIgnore
-    public ControlPlaneMachineSetSpecBuilder edit() {
-        return new ControlPlaneMachineSetSpecBuilder(this);
+    public SecurityProfileBuilder edit() {
+        return new SecurityProfileBuilder(this);
     }
 
     @JsonIgnore
-    public ControlPlaneMachineSetSpecBuilder toBuilder() {
+    public SecurityProfileBuilder toBuilder() {
         return edit();
     }
 

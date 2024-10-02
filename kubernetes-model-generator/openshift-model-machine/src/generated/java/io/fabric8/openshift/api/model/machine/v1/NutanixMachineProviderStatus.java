@@ -1,7 +1,9 @@
 
 package io.fabric8.openshift.api.model.machine.v1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -12,18 +14,24 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
+import io.fabric8.kubernetes.api.model.Condition;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
+import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
+import io.fabric8.kubernetes.model.annotation.Group;
+import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
+import io.sundr.transform.annotations.TemplateTransformation;
+import io.sundr.transform.annotations.TemplateTransformations;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
@@ -31,11 +39,10 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "replicas",
-    "selector",
-    "state",
-    "strategy",
-    "template"
+    "apiVersion",
+    "kind",
+    "conditions",
+    "vmUUID"
 })
 @ToString
 @EqualsAndHashCode
@@ -54,20 +61,34 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@TemplateTransformations({
+    @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true)
+})
+@Version("v1")
+@Group("machine.openshift.io")
 @Generated("jsonschema2pojo")
-public class ControlPlaneMachineSetSpec implements Editable<ControlPlaneMachineSetSpecBuilder> , KubernetesResource
+public class NutanixMachineProviderStatus implements Editable<NutanixMachineProviderStatusBuilder> , KubernetesResource, Namespaced
 {
 
-    @JsonProperty("replicas")
-    private Integer replicas;
-    @JsonProperty("selector")
-    private LabelSelector selector;
-    @JsonProperty("state")
-    private String state;
-    @JsonProperty("strategy")
-    private ControlPlaneMachineSetStrategy strategy;
-    @JsonProperty("template")
-    private ControlPlaneMachineSetTemplate template;
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("apiVersion")
+    private String apiVersion = "machine.openshift.io/v1";
+    @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<Condition> conditions = new ArrayList<>();
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("kind")
+    private String kind = "NutanixMachineProviderStatus";
+    @JsonProperty("vmUUID")
+    private String vmUUID;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -75,75 +96,85 @@ public class ControlPlaneMachineSetSpec implements Editable<ControlPlaneMachineS
      * No args constructor for use in serialization
      * 
      */
-    public ControlPlaneMachineSetSpec() {
+    public NutanixMachineProviderStatus() {
     }
 
-    public ControlPlaneMachineSetSpec(Integer replicas, LabelSelector selector, String state, ControlPlaneMachineSetStrategy strategy, ControlPlaneMachineSetTemplate template) {
+    public NutanixMachineProviderStatus(String apiVersion, List<Condition> conditions, String kind, String vmUUID) {
         super();
-        this.replicas = replicas;
-        this.selector = selector;
-        this.state = state;
-        this.strategy = strategy;
-        this.template = template;
+        this.apiVersion = apiVersion;
+        this.conditions = conditions;
+        this.kind = kind;
+        this.vmUUID = vmUUID;
     }
 
-    @JsonProperty("replicas")
-    public Integer getReplicas() {
-        return replicas;
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("apiVersion")
+    public String getApiVersion() {
+        return apiVersion;
     }
 
-    @JsonProperty("replicas")
-    public void setReplicas(Integer replicas) {
-        this.replicas = replicas;
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("apiVersion")
+    public void setApiVersion(String apiVersion) {
+        this.apiVersion = apiVersion;
     }
 
-    @JsonProperty("selector")
-    public LabelSelector getSelector() {
-        return selector;
+    @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<Condition> getConditions() {
+        return conditions;
     }
 
-    @JsonProperty("selector")
-    public void setSelector(LabelSelector selector) {
-        this.selector = selector;
+    @JsonProperty("conditions")
+    public void setConditions(List<Condition> conditions) {
+        this.conditions = conditions;
     }
 
-    @JsonProperty("state")
-    public String getState() {
-        return state;
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("kind")
+    public String getKind() {
+        return kind;
     }
 
-    @JsonProperty("state")
-    public void setState(String state) {
-        this.state = state;
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("kind")
+    public void setKind(String kind) {
+        this.kind = kind;
     }
 
-    @JsonProperty("strategy")
-    public ControlPlaneMachineSetStrategy getStrategy() {
-        return strategy;
+    @JsonProperty("vmUUID")
+    public String getVmUUID() {
+        return vmUUID;
     }
 
-    @JsonProperty("strategy")
-    public void setStrategy(ControlPlaneMachineSetStrategy strategy) {
-        this.strategy = strategy;
-    }
-
-    @JsonProperty("template")
-    public ControlPlaneMachineSetTemplate getTemplate() {
-        return template;
-    }
-
-    @JsonProperty("template")
-    public void setTemplate(ControlPlaneMachineSetTemplate template) {
-        this.template = template;
+    @JsonProperty("vmUUID")
+    public void setVmUUID(String vmUUID) {
+        this.vmUUID = vmUUID;
     }
 
     @JsonIgnore
-    public ControlPlaneMachineSetSpecBuilder edit() {
-        return new ControlPlaneMachineSetSpecBuilder(this);
+    public NutanixMachineProviderStatusBuilder edit() {
+        return new NutanixMachineProviderStatusBuilder(this);
     }
 
     @JsonIgnore
-    public ControlPlaneMachineSetSpecBuilder toBuilder() {
+    public NutanixMachineProviderStatusBuilder toBuilder() {
         return edit();
     }
 

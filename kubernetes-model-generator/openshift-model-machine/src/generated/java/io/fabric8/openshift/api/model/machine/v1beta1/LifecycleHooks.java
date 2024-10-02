@@ -1,7 +1,9 @@
 
-package io.fabric8.openshift.api.model.machine.v1;
+package io.fabric8.openshift.api.model.machine.v1beta1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -31,11 +33,8 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "replicas",
-    "selector",
-    "state",
-    "strategy",
-    "template"
+    "preDrain",
+    "preTerminate"
 })
 @ToString
 @EqualsAndHashCode
@@ -55,19 +54,15 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ControlPlaneMachineSetSpec implements Editable<ControlPlaneMachineSetSpecBuilder> , KubernetesResource
+public class LifecycleHooks implements Editable<LifecycleHooksBuilder> , KubernetesResource
 {
 
-    @JsonProperty("replicas")
-    private Integer replicas;
-    @JsonProperty("selector")
-    private LabelSelector selector;
-    @JsonProperty("state")
-    private String state;
-    @JsonProperty("strategy")
-    private ControlPlaneMachineSetStrategy strategy;
-    @JsonProperty("template")
-    private ControlPlaneMachineSetTemplate template;
+    @JsonProperty("preDrain")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<LifecycleHook> preDrain = new ArrayList<>();
+    @JsonProperty("preTerminate")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<LifecycleHook> preTerminate = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -75,75 +70,44 @@ public class ControlPlaneMachineSetSpec implements Editable<ControlPlaneMachineS
      * No args constructor for use in serialization
      * 
      */
-    public ControlPlaneMachineSetSpec() {
+    public LifecycleHooks() {
     }
 
-    public ControlPlaneMachineSetSpec(Integer replicas, LabelSelector selector, String state, ControlPlaneMachineSetStrategy strategy, ControlPlaneMachineSetTemplate template) {
+    public LifecycleHooks(List<LifecycleHook> preDrain, List<LifecycleHook> preTerminate) {
         super();
-        this.replicas = replicas;
-        this.selector = selector;
-        this.state = state;
-        this.strategy = strategy;
-        this.template = template;
+        this.preDrain = preDrain;
+        this.preTerminate = preTerminate;
     }
 
-    @JsonProperty("replicas")
-    public Integer getReplicas() {
-        return replicas;
+    @JsonProperty("preDrain")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<LifecycleHook> getPreDrain() {
+        return preDrain;
     }
 
-    @JsonProperty("replicas")
-    public void setReplicas(Integer replicas) {
-        this.replicas = replicas;
+    @JsonProperty("preDrain")
+    public void setPreDrain(List<LifecycleHook> preDrain) {
+        this.preDrain = preDrain;
     }
 
-    @JsonProperty("selector")
-    public LabelSelector getSelector() {
-        return selector;
+    @JsonProperty("preTerminate")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<LifecycleHook> getPreTerminate() {
+        return preTerminate;
     }
 
-    @JsonProperty("selector")
-    public void setSelector(LabelSelector selector) {
-        this.selector = selector;
-    }
-
-    @JsonProperty("state")
-    public String getState() {
-        return state;
-    }
-
-    @JsonProperty("state")
-    public void setState(String state) {
-        this.state = state;
-    }
-
-    @JsonProperty("strategy")
-    public ControlPlaneMachineSetStrategy getStrategy() {
-        return strategy;
-    }
-
-    @JsonProperty("strategy")
-    public void setStrategy(ControlPlaneMachineSetStrategy strategy) {
-        this.strategy = strategy;
-    }
-
-    @JsonProperty("template")
-    public ControlPlaneMachineSetTemplate getTemplate() {
-        return template;
-    }
-
-    @JsonProperty("template")
-    public void setTemplate(ControlPlaneMachineSetTemplate template) {
-        this.template = template;
+    @JsonProperty("preTerminate")
+    public void setPreTerminate(List<LifecycleHook> preTerminate) {
+        this.preTerminate = preTerminate;
     }
 
     @JsonIgnore
-    public ControlPlaneMachineSetSpecBuilder edit() {
-        return new ControlPlaneMachineSetSpecBuilder(this);
+    public LifecycleHooksBuilder edit() {
+        return new LifecycleHooksBuilder(this);
     }
 
     @JsonIgnore
-    public ControlPlaneMachineSetSpecBuilder toBuilder() {
+    public LifecycleHooksBuilder toBuilder() {
         return edit();
     }
 

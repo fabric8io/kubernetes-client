@@ -1,5 +1,5 @@
 
-package io.fabric8.openshift.api.model.machine.v1;
+package io.fabric8.openshift.api.model.machine.v1beta1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -31,11 +31,13 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "replicas",
-    "selector",
-    "state",
-    "strategy",
-    "template"
+    "autoDelete",
+    "boot",
+    "encryptionKey",
+    "image",
+    "labels",
+    "sizeGb",
+    "type"
 })
 @ToString
 @EqualsAndHashCode
@@ -55,19 +57,24 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ControlPlaneMachineSetSpec implements Editable<ControlPlaneMachineSetSpecBuilder> , KubernetesResource
+public class GCPDisk implements Editable<GCPDiskBuilder> , KubernetesResource
 {
 
-    @JsonProperty("replicas")
-    private Integer replicas;
-    @JsonProperty("selector")
-    private LabelSelector selector;
-    @JsonProperty("state")
-    private String state;
-    @JsonProperty("strategy")
-    private ControlPlaneMachineSetStrategy strategy;
-    @JsonProperty("template")
-    private ControlPlaneMachineSetTemplate template;
+    @JsonProperty("autoDelete")
+    private Boolean autoDelete;
+    @JsonProperty("boot")
+    private Boolean boot;
+    @JsonProperty("encryptionKey")
+    private GCPEncryptionKeyReference encryptionKey;
+    @JsonProperty("image")
+    private String image;
+    @JsonProperty("labels")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> labels = new LinkedHashMap<>();
+    @JsonProperty("sizeGb")
+    private Long sizeGb;
+    @JsonProperty("type")
+    private String type;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -75,75 +82,98 @@ public class ControlPlaneMachineSetSpec implements Editable<ControlPlaneMachineS
      * No args constructor for use in serialization
      * 
      */
-    public ControlPlaneMachineSetSpec() {
+    public GCPDisk() {
     }
 
-    public ControlPlaneMachineSetSpec(Integer replicas, LabelSelector selector, String state, ControlPlaneMachineSetStrategy strategy, ControlPlaneMachineSetTemplate template) {
+    public GCPDisk(Boolean autoDelete, Boolean boot, GCPEncryptionKeyReference encryptionKey, String image, Map<String, String> labels, Long sizeGb, String type) {
         super();
-        this.replicas = replicas;
-        this.selector = selector;
-        this.state = state;
-        this.strategy = strategy;
-        this.template = template;
+        this.autoDelete = autoDelete;
+        this.boot = boot;
+        this.encryptionKey = encryptionKey;
+        this.image = image;
+        this.labels = labels;
+        this.sizeGb = sizeGb;
+        this.type = type;
     }
 
-    @JsonProperty("replicas")
-    public Integer getReplicas() {
-        return replicas;
+    @JsonProperty("autoDelete")
+    public Boolean getAutoDelete() {
+        return autoDelete;
     }
 
-    @JsonProperty("replicas")
-    public void setReplicas(Integer replicas) {
-        this.replicas = replicas;
+    @JsonProperty("autoDelete")
+    public void setAutoDelete(Boolean autoDelete) {
+        this.autoDelete = autoDelete;
     }
 
-    @JsonProperty("selector")
-    public LabelSelector getSelector() {
-        return selector;
+    @JsonProperty("boot")
+    public Boolean getBoot() {
+        return boot;
     }
 
-    @JsonProperty("selector")
-    public void setSelector(LabelSelector selector) {
-        this.selector = selector;
+    @JsonProperty("boot")
+    public void setBoot(Boolean boot) {
+        this.boot = boot;
     }
 
-    @JsonProperty("state")
-    public String getState() {
-        return state;
+    @JsonProperty("encryptionKey")
+    public GCPEncryptionKeyReference getEncryptionKey() {
+        return encryptionKey;
     }
 
-    @JsonProperty("state")
-    public void setState(String state) {
-        this.state = state;
+    @JsonProperty("encryptionKey")
+    public void setEncryptionKey(GCPEncryptionKeyReference encryptionKey) {
+        this.encryptionKey = encryptionKey;
     }
 
-    @JsonProperty("strategy")
-    public ControlPlaneMachineSetStrategy getStrategy() {
-        return strategy;
+    @JsonProperty("image")
+    public String getImage() {
+        return image;
     }
 
-    @JsonProperty("strategy")
-    public void setStrategy(ControlPlaneMachineSetStrategy strategy) {
-        this.strategy = strategy;
+    @JsonProperty("image")
+    public void setImage(String image) {
+        this.image = image;
     }
 
-    @JsonProperty("template")
-    public ControlPlaneMachineSetTemplate getTemplate() {
-        return template;
+    @JsonProperty("labels")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public Map<String, String> getLabels() {
+        return labels;
     }
 
-    @JsonProperty("template")
-    public void setTemplate(ControlPlaneMachineSetTemplate template) {
-        this.template = template;
+    @JsonProperty("labels")
+    public void setLabels(Map<String, String> labels) {
+        this.labels = labels;
+    }
+
+    @JsonProperty("sizeGb")
+    public Long getSizeGb() {
+        return sizeGb;
+    }
+
+    @JsonProperty("sizeGb")
+    public void setSizeGb(Long sizeGb) {
+        this.sizeGb = sizeGb;
+    }
+
+    @JsonProperty("type")
+    public String getType() {
+        return type;
+    }
+
+    @JsonProperty("type")
+    public void setType(String type) {
+        this.type = type;
     }
 
     @JsonIgnore
-    public ControlPlaneMachineSetSpecBuilder edit() {
-        return new ControlPlaneMachineSetSpecBuilder(this);
+    public GCPDiskBuilder edit() {
+        return new GCPDiskBuilder(this);
     }
 
     @JsonIgnore
-    public ControlPlaneMachineSetSpecBuilder toBuilder() {
+    public GCPDiskBuilder toBuilder() {
         return edit();
     }
 

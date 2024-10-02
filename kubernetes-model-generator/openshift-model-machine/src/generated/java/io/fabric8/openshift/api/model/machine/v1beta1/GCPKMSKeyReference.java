@@ -1,5 +1,5 @@
 
-package io.fabric8.openshift.api.model.machine.v1;
+package io.fabric8.openshift.api.model.machine.v1beta1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -31,11 +31,10 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "replicas",
-    "selector",
-    "state",
-    "strategy",
-    "template"
+    "keyRing",
+    "location",
+    "name",
+    "projectID"
 })
 @ToString
 @EqualsAndHashCode
@@ -55,19 +54,17 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ControlPlaneMachineSetSpec implements Editable<ControlPlaneMachineSetSpecBuilder> , KubernetesResource
+public class GCPKMSKeyReference implements Editable<GCPKMSKeyReferenceBuilder> , KubernetesResource
 {
 
-    @JsonProperty("replicas")
-    private Integer replicas;
-    @JsonProperty("selector")
-    private LabelSelector selector;
-    @JsonProperty("state")
-    private String state;
-    @JsonProperty("strategy")
-    private ControlPlaneMachineSetStrategy strategy;
-    @JsonProperty("template")
-    private ControlPlaneMachineSetTemplate template;
+    @JsonProperty("keyRing")
+    private String keyRing;
+    @JsonProperty("location")
+    private String location;
+    @JsonProperty("name")
+    private String name;
+    @JsonProperty("projectID")
+    private String projectID;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -75,75 +72,64 @@ public class ControlPlaneMachineSetSpec implements Editable<ControlPlaneMachineS
      * No args constructor for use in serialization
      * 
      */
-    public ControlPlaneMachineSetSpec() {
+    public GCPKMSKeyReference() {
     }
 
-    public ControlPlaneMachineSetSpec(Integer replicas, LabelSelector selector, String state, ControlPlaneMachineSetStrategy strategy, ControlPlaneMachineSetTemplate template) {
+    public GCPKMSKeyReference(String keyRing, String location, String name, String projectID) {
         super();
-        this.replicas = replicas;
-        this.selector = selector;
-        this.state = state;
-        this.strategy = strategy;
-        this.template = template;
+        this.keyRing = keyRing;
+        this.location = location;
+        this.name = name;
+        this.projectID = projectID;
     }
 
-    @JsonProperty("replicas")
-    public Integer getReplicas() {
-        return replicas;
+    @JsonProperty("keyRing")
+    public String getKeyRing() {
+        return keyRing;
     }
 
-    @JsonProperty("replicas")
-    public void setReplicas(Integer replicas) {
-        this.replicas = replicas;
+    @JsonProperty("keyRing")
+    public void setKeyRing(String keyRing) {
+        this.keyRing = keyRing;
     }
 
-    @JsonProperty("selector")
-    public LabelSelector getSelector() {
-        return selector;
+    @JsonProperty("location")
+    public String getLocation() {
+        return location;
     }
 
-    @JsonProperty("selector")
-    public void setSelector(LabelSelector selector) {
-        this.selector = selector;
+    @JsonProperty("location")
+    public void setLocation(String location) {
+        this.location = location;
     }
 
-    @JsonProperty("state")
-    public String getState() {
-        return state;
+    @JsonProperty("name")
+    public String getName() {
+        return name;
     }
 
-    @JsonProperty("state")
-    public void setState(String state) {
-        this.state = state;
+    @JsonProperty("name")
+    public void setName(String name) {
+        this.name = name;
     }
 
-    @JsonProperty("strategy")
-    public ControlPlaneMachineSetStrategy getStrategy() {
-        return strategy;
+    @JsonProperty("projectID")
+    public String getProjectID() {
+        return projectID;
     }
 
-    @JsonProperty("strategy")
-    public void setStrategy(ControlPlaneMachineSetStrategy strategy) {
-        this.strategy = strategy;
-    }
-
-    @JsonProperty("template")
-    public ControlPlaneMachineSetTemplate getTemplate() {
-        return template;
-    }
-
-    @JsonProperty("template")
-    public void setTemplate(ControlPlaneMachineSetTemplate template) {
-        this.template = template;
+    @JsonProperty("projectID")
+    public void setProjectID(String projectID) {
+        this.projectID = projectID;
     }
 
     @JsonIgnore
-    public ControlPlaneMachineSetSpecBuilder edit() {
-        return new ControlPlaneMachineSetSpecBuilder(this);
+    public GCPKMSKeyReferenceBuilder edit() {
+        return new GCPKMSKeyReferenceBuilder(this);
     }
 
     @JsonIgnore
-    public ControlPlaneMachineSetSpecBuilder toBuilder() {
+    public GCPKMSKeyReferenceBuilder toBuilder() {
         return edit();
     }
 

@@ -33,6 +33,7 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "authoritativeAPI",
     "availableReplicas",
     "conditions",
     "errorMessage",
@@ -40,7 +41,8 @@ import lombok.experimental.Accessors;
     "fullyLabeledReplicas",
     "observedGeneration",
     "readyReplicas",
-    "replicas"
+    "replicas",
+    "synchronizedGeneration"
 })
 @ToString
 @EqualsAndHashCode
@@ -63,11 +65,13 @@ import lombok.experimental.Accessors;
 public class MachineSetStatus implements Editable<MachineSetStatusBuilder> , KubernetesResource
 {
 
+    @JsonProperty("authoritativeAPI")
+    private String authoritativeAPI;
     @JsonProperty("availableReplicas")
     private Integer availableReplicas;
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<MachineSetStatusConditions> conditions = new ArrayList<>();
+    private List<Condition> conditions = new ArrayList<>();
     @JsonProperty("errorMessage")
     private String errorMessage;
     @JsonProperty("errorReason")
@@ -80,6 +84,8 @@ public class MachineSetStatus implements Editable<MachineSetStatusBuilder> , Kub
     private Integer readyReplicas;
     @JsonProperty("replicas")
     private Integer replicas;
+    @JsonProperty("synchronizedGeneration")
+    private Long synchronizedGeneration;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -90,8 +96,9 @@ public class MachineSetStatus implements Editable<MachineSetStatusBuilder> , Kub
     public MachineSetStatus() {
     }
 
-    public MachineSetStatus(Integer availableReplicas, List<MachineSetStatusConditions> conditions, String errorMessage, String errorReason, Integer fullyLabeledReplicas, Long observedGeneration, Integer readyReplicas, Integer replicas) {
+    public MachineSetStatus(String authoritativeAPI, Integer availableReplicas, List<Condition> conditions, String errorMessage, String errorReason, Integer fullyLabeledReplicas, Long observedGeneration, Integer readyReplicas, Integer replicas, Long synchronizedGeneration) {
         super();
+        this.authoritativeAPI = authoritativeAPI;
         this.availableReplicas = availableReplicas;
         this.conditions = conditions;
         this.errorMessage = errorMessage;
@@ -100,6 +107,17 @@ public class MachineSetStatus implements Editable<MachineSetStatusBuilder> , Kub
         this.observedGeneration = observedGeneration;
         this.readyReplicas = readyReplicas;
         this.replicas = replicas;
+        this.synchronizedGeneration = synchronizedGeneration;
+    }
+
+    @JsonProperty("authoritativeAPI")
+    public String getAuthoritativeAPI() {
+        return authoritativeAPI;
+    }
+
+    @JsonProperty("authoritativeAPI")
+    public void setAuthoritativeAPI(String authoritativeAPI) {
+        this.authoritativeAPI = authoritativeAPI;
     }
 
     @JsonProperty("availableReplicas")
@@ -114,12 +132,12 @@ public class MachineSetStatus implements Editable<MachineSetStatusBuilder> , Kub
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<MachineSetStatusConditions> getConditions() {
+    public List<Condition> getConditions() {
         return conditions;
     }
 
     @JsonProperty("conditions")
-    public void setConditions(List<MachineSetStatusConditions> conditions) {
+    public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
     }
 
@@ -181,6 +199,16 @@ public class MachineSetStatus implements Editable<MachineSetStatusBuilder> , Kub
     @JsonProperty("replicas")
     public void setReplicas(Integer replicas) {
         this.replicas = replicas;
+    }
+
+    @JsonProperty("synchronizedGeneration")
+    public Long getSynchronizedGeneration() {
+        return synchronizedGeneration;
+    }
+
+    @JsonProperty("synchronizedGeneration")
+    public void setSynchronizedGeneration(Long synchronizedGeneration) {
+        this.synchronizedGeneration = synchronizedGeneration;
     }
 
     @JsonIgnore
