@@ -15,13 +15,17 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Affinity;
+import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
+import io.fabric8.kubernetes.api.model.LabelSelector;
+import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodSecurityContext;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
+import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.Toleration;
 import io.fabric8.kubernetes.api.model.TopologySpreadConstraint;
 import io.fabric8.kubernetes.api.model.Volume;
@@ -45,11 +49,13 @@ import lombok.experimental.Accessors;
     "baseImage",
     "clusterAdvertiseAddress",
     "clusterGossipInterval",
+    "clusterLabel",
     "clusterPeerTimeout",
     "clusterPushpullInterval",
     "configMaps",
     "configSecret",
     "containers",
+    "enableFeatures",
     "externalUrl",
     "forceEnableClusterMode",
     "hostAliases",
@@ -91,13 +97,13 @@ import lombok.experimental.Accessors;
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.LabelSelector.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.Container.class),
+    @BuildableReference(LabelSelector.class),
+    @BuildableReference(Container.class),
     @BuildableReference(PodTemplateSpec.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.ResourceRequirements.class),
+    @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
+    @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
@@ -112,9 +118,9 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder> , Kub
     @JsonProperty("alertmanagerConfigMatcherStrategy")
     private AlertmanagerConfigMatcherStrategy alertmanagerConfigMatcherStrategy;
     @JsonProperty("alertmanagerConfigNamespaceSelector")
-    private io.fabric8.kubernetes.api.model.LabelSelector alertmanagerConfigNamespaceSelector;
+    private LabelSelector alertmanagerConfigNamespaceSelector;
     @JsonProperty("alertmanagerConfigSelector")
-    private io.fabric8.kubernetes.api.model.LabelSelector alertmanagerConfigSelector;
+    private LabelSelector alertmanagerConfigSelector;
     @JsonProperty("alertmanagerConfiguration")
     private AlertmanagerConfiguration alertmanagerConfiguration;
     @JsonProperty("automountServiceAccountToken")
@@ -125,6 +131,8 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder> , Kub
     private String clusterAdvertiseAddress;
     @JsonProperty("clusterGossipInterval")
     private String clusterGossipInterval;
+    @JsonProperty("clusterLabel")
+    private String clusterLabel;
     @JsonProperty("clusterPeerTimeout")
     private String clusterPeerTimeout;
     @JsonProperty("clusterPushpullInterval")
@@ -136,7 +144,10 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder> , Kub
     private String configSecret;
     @JsonProperty("containers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.Container> containers = new ArrayList<>();
+    private List<Container> containers = new ArrayList<>();
+    @JsonProperty("enableFeatures")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> enableFeatures = new ArrayList<>();
     @JsonProperty("externalUrl")
     private String externalUrl;
     @JsonProperty("forceEnableClusterMode")
@@ -150,10 +161,10 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder> , Kub
     private String imagePullPolicy;
     @JsonProperty("imagePullSecrets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.LocalObjectReference> imagePullSecrets = new ArrayList<>();
+    private List<LocalObjectReference> imagePullSecrets = new ArrayList<>();
     @JsonProperty("initContainers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.Container> initContainers = new ArrayList<>();
+    private List<Container> initContainers = new ArrayList<>();
     @JsonProperty("listenLocal")
     private Boolean listenLocal;
     @JsonProperty("logFormat")
@@ -161,7 +172,7 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder> , Kub
     @JsonProperty("logLevel")
     private String logLevel;
     @JsonProperty("minReadySeconds")
-    private Integer minReadySeconds;
+    private Long minReadySeconds;
     @JsonProperty("nodeSelector")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> nodeSelector = new LinkedHashMap<>();
@@ -176,7 +187,7 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder> , Kub
     @JsonProperty("replicas")
     private Integer replicas;
     @JsonProperty("resources")
-    private io.fabric8.kubernetes.api.model.ResourceRequirements resources;
+    private ResourceRequirements resources;
     @JsonProperty("retention")
     private String retention;
     @JsonProperty("routePrefix")
@@ -220,7 +231,7 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder> , Kub
     public AlertmanagerSpec() {
     }
 
-    public AlertmanagerSpec(List<String> additionalPeers, Affinity affinity, AlertmanagerConfigMatcherStrategy alertmanagerConfigMatcherStrategy, io.fabric8.kubernetes.api.model.LabelSelector alertmanagerConfigNamespaceSelector, io.fabric8.kubernetes.api.model.LabelSelector alertmanagerConfigSelector, AlertmanagerConfiguration alertmanagerConfiguration, Boolean automountServiceAccountToken, String baseImage, String clusterAdvertiseAddress, String clusterGossipInterval, String clusterPeerTimeout, String clusterPushpullInterval, List<String> configMaps, String configSecret, List<io.fabric8.kubernetes.api.model.Container> containers, String externalUrl, Boolean forceEnableClusterMode, List<HostAlias> hostAliases, String image, String imagePullPolicy, List<io.fabric8.kubernetes.api.model.LocalObjectReference> imagePullSecrets, List<io.fabric8.kubernetes.api.model.Container> initContainers, Boolean listenLocal, String logFormat, String logLevel, Integer minReadySeconds, Map<String, String> nodeSelector, Boolean paused, EmbeddedObjectMetadata podMetadata, String portName, String priorityClassName, Integer replicas, io.fabric8.kubernetes.api.model.ResourceRequirements resources, String retention, String routePrefix, List<String> secrets, PodSecurityContext securityContext, String serviceAccountName, String sha, StorageSpec storage, String tag, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, String version, List<VolumeMount> volumeMounts, List<Volume> volumes, AlertmanagerWebSpec web) {
+    public AlertmanagerSpec(List<String> additionalPeers, Affinity affinity, AlertmanagerConfigMatcherStrategy alertmanagerConfigMatcherStrategy, LabelSelector alertmanagerConfigNamespaceSelector, LabelSelector alertmanagerConfigSelector, AlertmanagerConfiguration alertmanagerConfiguration, Boolean automountServiceAccountToken, String baseImage, String clusterAdvertiseAddress, String clusterGossipInterval, String clusterLabel, String clusterPeerTimeout, String clusterPushpullInterval, List<String> configMaps, String configSecret, List<Container> containers, List<String> enableFeatures, String externalUrl, Boolean forceEnableClusterMode, List<HostAlias> hostAliases, String image, String imagePullPolicy, List<LocalObjectReference> imagePullSecrets, List<Container> initContainers, Boolean listenLocal, String logFormat, String logLevel, Long minReadySeconds, Map<String, String> nodeSelector, Boolean paused, EmbeddedObjectMetadata podMetadata, String portName, String priorityClassName, Integer replicas, ResourceRequirements resources, String retention, String routePrefix, List<String> secrets, PodSecurityContext securityContext, String serviceAccountName, String sha, StorageSpec storage, String tag, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, String version, List<VolumeMount> volumeMounts, List<Volume> volumes, AlertmanagerWebSpec web) {
         super();
         this.additionalPeers = additionalPeers;
         this.affinity = affinity;
@@ -232,11 +243,13 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder> , Kub
         this.baseImage = baseImage;
         this.clusterAdvertiseAddress = clusterAdvertiseAddress;
         this.clusterGossipInterval = clusterGossipInterval;
+        this.clusterLabel = clusterLabel;
         this.clusterPeerTimeout = clusterPeerTimeout;
         this.clusterPushpullInterval = clusterPushpullInterval;
         this.configMaps = configMaps;
         this.configSecret = configSecret;
         this.containers = containers;
+        this.enableFeatures = enableFeatures;
         this.externalUrl = externalUrl;
         this.forceEnableClusterMode = forceEnableClusterMode;
         this.hostAliases = hostAliases;
@@ -303,22 +316,22 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder> , Kub
     }
 
     @JsonProperty("alertmanagerConfigNamespaceSelector")
-    public io.fabric8.kubernetes.api.model.LabelSelector getAlertmanagerConfigNamespaceSelector() {
+    public LabelSelector getAlertmanagerConfigNamespaceSelector() {
         return alertmanagerConfigNamespaceSelector;
     }
 
     @JsonProperty("alertmanagerConfigNamespaceSelector")
-    public void setAlertmanagerConfigNamespaceSelector(io.fabric8.kubernetes.api.model.LabelSelector alertmanagerConfigNamespaceSelector) {
+    public void setAlertmanagerConfigNamespaceSelector(LabelSelector alertmanagerConfigNamespaceSelector) {
         this.alertmanagerConfigNamespaceSelector = alertmanagerConfigNamespaceSelector;
     }
 
     @JsonProperty("alertmanagerConfigSelector")
-    public io.fabric8.kubernetes.api.model.LabelSelector getAlertmanagerConfigSelector() {
+    public LabelSelector getAlertmanagerConfigSelector() {
         return alertmanagerConfigSelector;
     }
 
     @JsonProperty("alertmanagerConfigSelector")
-    public void setAlertmanagerConfigSelector(io.fabric8.kubernetes.api.model.LabelSelector alertmanagerConfigSelector) {
+    public void setAlertmanagerConfigSelector(LabelSelector alertmanagerConfigSelector) {
         this.alertmanagerConfigSelector = alertmanagerConfigSelector;
     }
 
@@ -372,6 +385,16 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder> , Kub
         this.clusterGossipInterval = clusterGossipInterval;
     }
 
+    @JsonProperty("clusterLabel")
+    public String getClusterLabel() {
+        return clusterLabel;
+    }
+
+    @JsonProperty("clusterLabel")
+    public void setClusterLabel(String clusterLabel) {
+        this.clusterLabel = clusterLabel;
+    }
+
     @JsonProperty("clusterPeerTimeout")
     public String getClusterPeerTimeout() {
         return clusterPeerTimeout;
@@ -415,13 +438,24 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder> , Kub
 
     @JsonProperty("containers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<io.fabric8.kubernetes.api.model.Container> getContainers() {
+    public List<Container> getContainers() {
         return containers;
     }
 
     @JsonProperty("containers")
-    public void setContainers(List<io.fabric8.kubernetes.api.model.Container> containers) {
+    public void setContainers(List<Container> containers) {
         this.containers = containers;
+    }
+
+    @JsonProperty("enableFeatures")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<String> getEnableFeatures() {
+        return enableFeatures;
+    }
+
+    @JsonProperty("enableFeatures")
+    public void setEnableFeatures(List<String> enableFeatures) {
+        this.enableFeatures = enableFeatures;
     }
 
     @JsonProperty("externalUrl")
@@ -477,23 +511,23 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder> , Kub
 
     @JsonProperty("imagePullSecrets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<io.fabric8.kubernetes.api.model.LocalObjectReference> getImagePullSecrets() {
+    public List<LocalObjectReference> getImagePullSecrets() {
         return imagePullSecrets;
     }
 
     @JsonProperty("imagePullSecrets")
-    public void setImagePullSecrets(List<io.fabric8.kubernetes.api.model.LocalObjectReference> imagePullSecrets) {
+    public void setImagePullSecrets(List<LocalObjectReference> imagePullSecrets) {
         this.imagePullSecrets = imagePullSecrets;
     }
 
     @JsonProperty("initContainers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<io.fabric8.kubernetes.api.model.Container> getInitContainers() {
+    public List<Container> getInitContainers() {
         return initContainers;
     }
 
     @JsonProperty("initContainers")
-    public void setInitContainers(List<io.fabric8.kubernetes.api.model.Container> initContainers) {
+    public void setInitContainers(List<Container> initContainers) {
         this.initContainers = initContainers;
     }
 
@@ -528,12 +562,12 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder> , Kub
     }
 
     @JsonProperty("minReadySeconds")
-    public Integer getMinReadySeconds() {
+    public Long getMinReadySeconds() {
         return minReadySeconds;
     }
 
     @JsonProperty("minReadySeconds")
-    public void setMinReadySeconds(Integer minReadySeconds) {
+    public void setMinReadySeconds(Long minReadySeconds) {
         this.minReadySeconds = minReadySeconds;
     }
 
@@ -599,12 +633,12 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder> , Kub
     }
 
     @JsonProperty("resources")
-    public io.fabric8.kubernetes.api.model.ResourceRequirements getResources() {
+    public ResourceRequirements getResources() {
         return resources;
     }
 
     @JsonProperty("resources")
-    public void setResources(io.fabric8.kubernetes.api.model.ResourceRequirements resources) {
+    public void setResources(ResourceRequirements resources) {
         this.resources = resources;
     }
 

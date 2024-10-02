@@ -17,6 +17,7 @@ import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
+import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
@@ -33,6 +34,7 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "attachMetadata",
+    "bodySizeLimit",
     "jobLabel",
     "keepDroppedTargets",
     "labelLimit",
@@ -42,6 +44,8 @@ import lombok.experimental.Accessors;
     "podMetricsEndpoints",
     "podTargetLabels",
     "sampleLimit",
+    "scrapeClass",
+    "scrapeProtocols",
     "selector",
     "targetLimit"
 })
@@ -53,7 +57,7 @@ import lombok.experimental.Accessors;
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.LabelSelector.class),
+    @BuildableReference(LabelSelector.class),
     @BuildableReference(Container.class),
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
@@ -68,6 +72,8 @@ public class PodMonitorSpec implements Editable<PodMonitorSpecBuilder> , Kuberne
 
     @JsonProperty("attachMetadata")
     private AttachMetadata attachMetadata;
+    @JsonProperty("bodySizeLimit")
+    private String bodySizeLimit;
     @JsonProperty("jobLabel")
     private String jobLabel;
     @JsonProperty("keepDroppedTargets")
@@ -88,8 +94,13 @@ public class PodMonitorSpec implements Editable<PodMonitorSpecBuilder> , Kuberne
     private List<String> podTargetLabels = new ArrayList<>();
     @JsonProperty("sampleLimit")
     private Long sampleLimit;
+    @JsonProperty("scrapeClass")
+    private String scrapeClass;
+    @JsonProperty("scrapeProtocols")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> scrapeProtocols = new ArrayList<>();
     @JsonProperty("selector")
-    private io.fabric8.kubernetes.api.model.LabelSelector selector;
+    private LabelSelector selector;
     @JsonProperty("targetLimit")
     private Long targetLimit;
     @JsonIgnore
@@ -102,9 +113,10 @@ public class PodMonitorSpec implements Editable<PodMonitorSpecBuilder> , Kuberne
     public PodMonitorSpec() {
     }
 
-    public PodMonitorSpec(AttachMetadata attachMetadata, String jobLabel, Long keepDroppedTargets, Long labelLimit, Long labelNameLengthLimit, Long labelValueLengthLimit, NamespaceSelector namespaceSelector, List<PodMetricsEndpoint> podMetricsEndpoints, List<String> podTargetLabels, Long sampleLimit, io.fabric8.kubernetes.api.model.LabelSelector selector, Long targetLimit) {
+    public PodMonitorSpec(AttachMetadata attachMetadata, String bodySizeLimit, String jobLabel, Long keepDroppedTargets, Long labelLimit, Long labelNameLengthLimit, Long labelValueLengthLimit, NamespaceSelector namespaceSelector, List<PodMetricsEndpoint> podMetricsEndpoints, List<String> podTargetLabels, Long sampleLimit, String scrapeClass, List<String> scrapeProtocols, LabelSelector selector, Long targetLimit) {
         super();
         this.attachMetadata = attachMetadata;
+        this.bodySizeLimit = bodySizeLimit;
         this.jobLabel = jobLabel;
         this.keepDroppedTargets = keepDroppedTargets;
         this.labelLimit = labelLimit;
@@ -114,6 +126,8 @@ public class PodMonitorSpec implements Editable<PodMonitorSpecBuilder> , Kuberne
         this.podMetricsEndpoints = podMetricsEndpoints;
         this.podTargetLabels = podTargetLabels;
         this.sampleLimit = sampleLimit;
+        this.scrapeClass = scrapeClass;
+        this.scrapeProtocols = scrapeProtocols;
         this.selector = selector;
         this.targetLimit = targetLimit;
     }
@@ -126,6 +140,16 @@ public class PodMonitorSpec implements Editable<PodMonitorSpecBuilder> , Kuberne
     @JsonProperty("attachMetadata")
     public void setAttachMetadata(AttachMetadata attachMetadata) {
         this.attachMetadata = attachMetadata;
+    }
+
+    @JsonProperty("bodySizeLimit")
+    public String getBodySizeLimit() {
+        return bodySizeLimit;
+    }
+
+    @JsonProperty("bodySizeLimit")
+    public void setBodySizeLimit(String bodySizeLimit) {
+        this.bodySizeLimit = bodySizeLimit;
     }
 
     @JsonProperty("jobLabel")
@@ -220,13 +244,34 @@ public class PodMonitorSpec implements Editable<PodMonitorSpecBuilder> , Kuberne
         this.sampleLimit = sampleLimit;
     }
 
+    @JsonProperty("scrapeClass")
+    public String getScrapeClass() {
+        return scrapeClass;
+    }
+
+    @JsonProperty("scrapeClass")
+    public void setScrapeClass(String scrapeClass) {
+        this.scrapeClass = scrapeClass;
+    }
+
+    @JsonProperty("scrapeProtocols")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<String> getScrapeProtocols() {
+        return scrapeProtocols;
+    }
+
+    @JsonProperty("scrapeProtocols")
+    public void setScrapeProtocols(List<String> scrapeProtocols) {
+        this.scrapeProtocols = scrapeProtocols;
+    }
+
     @JsonProperty("selector")
-    public io.fabric8.kubernetes.api.model.LabelSelector getSelector() {
+    public LabelSelector getSelector() {
         return selector;
     }
 
     @JsonProperty("selector")
-    public void setSelector(io.fabric8.kubernetes.api.model.LabelSelector selector) {
+    public void setSelector(LabelSelector selector) {
         this.selector = selector;
     }
 

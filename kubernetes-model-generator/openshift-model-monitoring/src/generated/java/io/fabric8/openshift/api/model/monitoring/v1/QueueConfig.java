@@ -39,7 +39,8 @@ import lombok.experimental.Accessors;
     "maxShards",
     "minBackoff",
     "minShards",
-    "retryOnRateLimit"
+    "retryOnRateLimit",
+    "sampleAgeLimit"
 })
 @ToString
 @EqualsAndHashCode
@@ -80,6 +81,8 @@ public class QueueConfig implements Editable<QueueConfigBuilder> , KubernetesRes
     private Integer minShards;
     @JsonProperty("retryOnRateLimit")
     private Boolean retryOnRateLimit;
+    @JsonProperty("sampleAgeLimit")
+    private String sampleAgeLimit;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -90,7 +93,7 @@ public class QueueConfig implements Editable<QueueConfigBuilder> , KubernetesRes
     public QueueConfig() {
     }
 
-    public QueueConfig(String batchSendDeadline, Integer capacity, String maxBackoff, Integer maxRetries, Integer maxSamplesPerSend, Integer maxShards, String minBackoff, Integer minShards, Boolean retryOnRateLimit) {
+    public QueueConfig(String batchSendDeadline, Integer capacity, String maxBackoff, Integer maxRetries, Integer maxSamplesPerSend, Integer maxShards, String minBackoff, Integer minShards, Boolean retryOnRateLimit, String sampleAgeLimit) {
         super();
         this.batchSendDeadline = batchSendDeadline;
         this.capacity = capacity;
@@ -101,6 +104,7 @@ public class QueueConfig implements Editable<QueueConfigBuilder> , KubernetesRes
         this.minBackoff = minBackoff;
         this.minShards = minShards;
         this.retryOnRateLimit = retryOnRateLimit;
+        this.sampleAgeLimit = sampleAgeLimit;
     }
 
     @JsonProperty("batchSendDeadline")
@@ -191,6 +195,16 @@ public class QueueConfig implements Editable<QueueConfigBuilder> , KubernetesRes
     @JsonProperty("retryOnRateLimit")
     public void setRetryOnRateLimit(Boolean retryOnRateLimit) {
         this.retryOnRateLimit = retryOnRateLimit;
+    }
+
+    @JsonProperty("sampleAgeLimit")
+    public String getSampleAgeLimit() {
+        return sampleAgeLimit;
+    }
+
+    @JsonProperty("sampleAgeLimit")
+    public void setSampleAgeLimit(String sampleAgeLimit) {
+        this.sampleAgeLimit = sampleAgeLimit;
     }
 
     @JsonIgnore

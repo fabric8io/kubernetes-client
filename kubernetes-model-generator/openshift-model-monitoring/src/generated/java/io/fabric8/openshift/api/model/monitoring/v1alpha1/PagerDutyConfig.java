@@ -48,6 +48,7 @@ import lombok.experimental.Accessors;
     "sendResolved",
     "serviceKey",
     "severity",
+    "source",
     "url"
 })
 @ToString
@@ -102,6 +103,8 @@ public class PagerDutyConfig implements Editable<PagerDutyConfigBuilder> , Kuber
     private SecretKeySelector serviceKey;
     @JsonProperty("severity")
     private String severity;
+    @JsonProperty("source")
+    private String source;
     @JsonProperty("url")
     private String url;
     @JsonIgnore
@@ -114,7 +117,7 @@ public class PagerDutyConfig implements Editable<PagerDutyConfigBuilder> , Kuber
     public PagerDutyConfig() {
     }
 
-    public PagerDutyConfig(String className, String client, String clientURL, String component, String description, List<KeyValue> details, String group, HTTPConfig httpConfig, List<PagerDutyImageConfig> pagerDutyImageConfigs, List<PagerDutyLinkConfig> pagerDutyLinkConfigs, SecretKeySelector routingKey, Boolean sendResolved, SecretKeySelector serviceKey, String severity, String url) {
+    public PagerDutyConfig(String className, String client, String clientURL, String component, String description, List<KeyValue> details, String group, HTTPConfig httpConfig, List<PagerDutyImageConfig> pagerDutyImageConfigs, List<PagerDutyLinkConfig> pagerDutyLinkConfigs, SecretKeySelector routingKey, Boolean sendResolved, SecretKeySelector serviceKey, String severity, String source, String url) {
         super();
         this.className = className;
         this.client = client;
@@ -130,6 +133,7 @@ public class PagerDutyConfig implements Editable<PagerDutyConfigBuilder> , Kuber
         this.sendResolved = sendResolved;
         this.serviceKey = serviceKey;
         this.severity = severity;
+        this.source = source;
         this.url = url;
     }
 
@@ -274,6 +278,16 @@ public class PagerDutyConfig implements Editable<PagerDutyConfigBuilder> , Kuber
     @JsonProperty("severity")
     public void setSeverity(String severity) {
         this.severity = severity;
+    }
+
+    @JsonProperty("source")
+    public String getSource() {
+        return source;
+    }
+
+    @JsonProperty("source")
+    public void setSource(String source) {
+        this.source = source;
     }
 
     @JsonProperty("url")

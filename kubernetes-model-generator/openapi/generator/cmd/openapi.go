@@ -23,17 +23,17 @@ import (
 	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/pkg/openshift"
 	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/pkg/parser"
 	//openshiftbaremetaloperatorv1alpha1 "github.com/metal3-io/baremetal-operator/apis/metal3.io/v1alpha1"
+	openshiftconfigv1 "github.com/openshift/api/config/v1"
 	openshiftcloudcredentialoperatorv1 "github.com/openshift/cloud-credential-operator/pkg/apis/cloudcredential/v1"
 	openshiftclusternetworkoperatorv1 "github.com/openshift/cluster-network-operator/pkg/apis/network/v1"
 	operatorframeworkv1 "github.com/operator-framework/api/pkg/operators/v1"
 	operatorframeworkv1alpha1 "github.com/operator-framework/api/pkg/operators/v1alpha1"
 	olm "github.com/operator-framework/operator-lifecycle-manager/pkg/package-server/apis/operators/v1"
-	"time"
-
-	openshiftconfigv1 "github.com/openshift/api/config/v1"
+	prometheusoperatorv1 "github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring/v1"
 	"github.com/spf13/cobra"
 	"k8s.io/kube-openapi/pkg/common"
 	"k8s.io/kube-openapi/pkg/validation/spec"
+	"time"
 )
 
 var openApi = &cobra.Command{
@@ -57,6 +57,7 @@ var openApiRun = func(cobraCmd *cobra.Command, args []string) {
 		openshiftclusternetworkoperatorv1.GroupVersion.String(),
 		openshiftcloudcredentialoperatorv1.GroupVersion.String(),
 		olm.SchemeGroupVersion.String(),
+		prometheusoperatorv1.SchemeGroupVersion.String(),
 	})
 	var targetDirectory string
 	if len(args) > 0 {

@@ -67,7 +67,7 @@ public class RuleGroup implements Editable<RuleGroupBuilder> , KubernetesResourc
     @JsonProperty("name")
     private String name;
     @JsonProperty("partial_response_strategy")
-    private String partialResponseStrategy;
+    private String partial_response_strategy;
     @JsonProperty("rules")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Rule> rules = new ArrayList<>();
@@ -81,12 +81,12 @@ public class RuleGroup implements Editable<RuleGroupBuilder> , KubernetesResourc
     public RuleGroup() {
     }
 
-    public RuleGroup(String interval, Integer limit, String name, String partialResponseStrategy, List<Rule> rules) {
+    public RuleGroup(String interval, Integer limit, String name, String partial_response_strategy, List<Rule> rules) {
         super();
         this.interval = interval;
         this.limit = limit;
         this.name = name;
-        this.partialResponseStrategy = partialResponseStrategy;
+        this.partial_response_strategy = partial_response_strategy;
         this.rules = rules;
     }
 
@@ -121,13 +121,13 @@ public class RuleGroup implements Editable<RuleGroupBuilder> , KubernetesResourc
     }
 
     @JsonProperty("partial_response_strategy")
-    public String getPartialResponseStrategy() {
-        return partialResponseStrategy;
+    public String getPartial_response_strategy() {
+        return partial_response_strategy;
     }
 
     @JsonProperty("partial_response_strategy")
-    public void setPartialResponseStrategy(String partialResponseStrategy) {
-        this.partialResponseStrategy = partialResponseStrategy;
+    public void setPartial_response_strategy(String partial_response_strategy) {
+        this.partial_response_strategy = partial_response_strategy;
     }
 
     @JsonProperty("rules")

@@ -32,6 +32,7 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "device",
     "expire",
     "html",
     "httpConfig",
@@ -42,9 +43,12 @@ import lombok.experimental.Accessors;
     "sound",
     "title",
     "token",
+    "tokenFile",
+    "ttl",
     "url",
     "urlTitle",
-    "userKey"
+    "userKey",
+    "userKeyFile"
 })
 @ToString
 @EqualsAndHashCode
@@ -67,6 +71,8 @@ import lombok.experimental.Accessors;
 public class PushoverConfig implements Editable<PushoverConfigBuilder> , KubernetesResource
 {
 
+    @JsonProperty("device")
+    private String device;
     @JsonProperty("expire")
     private String expire;
     @JsonProperty("html")
@@ -87,12 +93,18 @@ public class PushoverConfig implements Editable<PushoverConfigBuilder> , Kuberne
     private String title;
     @JsonProperty("token")
     private SecretKeySelector token;
+    @JsonProperty("tokenFile")
+    private String tokenFile;
+    @JsonProperty("ttl")
+    private String ttl;
     @JsonProperty("url")
     private String url;
     @JsonProperty("urlTitle")
     private String urlTitle;
     @JsonProperty("userKey")
     private SecretKeySelector userKey;
+    @JsonProperty("userKeyFile")
+    private String userKeyFile;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -103,8 +115,9 @@ public class PushoverConfig implements Editable<PushoverConfigBuilder> , Kuberne
     public PushoverConfig() {
     }
 
-    public PushoverConfig(String expire, Boolean html, HTTPConfig httpConfig, String message, String priority, String retry, Boolean sendResolved, String sound, String title, SecretKeySelector token, String url, String urlTitle, SecretKeySelector userKey) {
+    public PushoverConfig(String device, String expire, Boolean html, HTTPConfig httpConfig, String message, String priority, String retry, Boolean sendResolved, String sound, String title, SecretKeySelector token, String tokenFile, String ttl, String url, String urlTitle, SecretKeySelector userKey, String userKeyFile) {
         super();
+        this.device = device;
         this.expire = expire;
         this.html = html;
         this.httpConfig = httpConfig;
@@ -115,9 +128,22 @@ public class PushoverConfig implements Editable<PushoverConfigBuilder> , Kuberne
         this.sound = sound;
         this.title = title;
         this.token = token;
+        this.tokenFile = tokenFile;
+        this.ttl = ttl;
         this.url = url;
         this.urlTitle = urlTitle;
         this.userKey = userKey;
+        this.userKeyFile = userKeyFile;
+    }
+
+    @JsonProperty("device")
+    public String getDevice() {
+        return device;
+    }
+
+    @JsonProperty("device")
+    public void setDevice(String device) {
+        this.device = device;
     }
 
     @JsonProperty("expire")
@@ -220,6 +246,26 @@ public class PushoverConfig implements Editable<PushoverConfigBuilder> , Kuberne
         this.token = token;
     }
 
+    @JsonProperty("tokenFile")
+    public String getTokenFile() {
+        return tokenFile;
+    }
+
+    @JsonProperty("tokenFile")
+    public void setTokenFile(String tokenFile) {
+        this.tokenFile = tokenFile;
+    }
+
+    @JsonProperty("ttl")
+    public String getTtl() {
+        return ttl;
+    }
+
+    @JsonProperty("ttl")
+    public void setTtl(String ttl) {
+        this.ttl = ttl;
+    }
+
     @JsonProperty("url")
     public String getUrl() {
         return url;
@@ -248,6 +294,16 @@ public class PushoverConfig implements Editable<PushoverConfigBuilder> , Kuberne
     @JsonProperty("userKey")
     public void setUserKey(SecretKeySelector userKey) {
         this.userKey = userKey;
+    }
+
+    @JsonProperty("userKeyFile")
+    public String getUserKeyFile() {
+        return userKeyFile;
+    }
+
+    @JsonProperty("userKeyFile")
+    public void setUserKeyFile(String userKeyFile) {
+        this.userKeyFile = userKeyFile;
     }
 
     @JsonIgnore

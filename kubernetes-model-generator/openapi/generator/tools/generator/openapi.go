@@ -28,6 +28,7 @@ import (
 	operatorframeworkv1 "github.com/operator-framework/api/pkg/operators/v1"
 	operatorframeworkv1alpha1 "github.com/operator-framework/api/pkg/operators/v1alpha1"
 	olm "github.com/operator-framework/operator-lifecycle-manager/pkg/package-server/apis/operators/v1"
+	prometheusoperatorv1 "github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring/v1"
 	"k8s.io/kube-openapi/cmd/openapi-gen/args"
 	"time"
 )
@@ -42,6 +43,7 @@ func main() {
 		openshiftclusternetworkoperatorv1.GroupVersion.String(),
 		openshiftcloudcredentialoperatorv1.GroupVersion.String(),
 		olm.SchemeGroupVersion.String(),
+		prometheusoperatorv1.SchemeGroupVersion.String(),
 	})
 	err := (&openapi.GoGenerator{
 		Args: args.Args{

@@ -15,17 +15,22 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Affinity;
+import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
+import io.fabric8.kubernetes.api.model.LabelSelector;
+import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodSecurityContext;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
+import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.SecretKeySelector;
 import io.fabric8.kubernetes.api.model.Toleration;
-import io.fabric8.kubernetes.api.model.TopologySpreadConstraint;
 import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
+import io.fabric8.kubernetes.api.model.apps.StatefulSetPersistentVolumeClaimRetentionPolicy;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -44,6 +49,7 @@ import lombok.experimental.Accessors;
     "allowOverlappingBlocks",
     "apiserverConfig",
     "arbitraryFSAccessThroughSMs",
+    "automountServiceAccountToken",
     "baseImage",
     "bodySizeLimit",
     "configMaps",
@@ -79,11 +85,14 @@ import lombok.experimental.Accessors;
     "listenLocal",
     "logFormat",
     "logLevel",
+    "maximumStartupDurationSeconds",
     "minReadySeconds",
     "nodeSelector",
+    "otlp",
     "overrideHonorLabels",
     "overrideHonorTimestamps",
     "paused",
+    "persistentVolumeClaimRetentionPolicy",
     "podMetadata",
     "podMonitorNamespaceSelector",
     "podMonitorSelector",
@@ -96,6 +105,7 @@ import lombok.experimental.Accessors;
     "prometheusRulesExcludedFromEnforce",
     "query",
     "queryLogFile",
+    "reloadStrategy",
     "remoteRead",
     "remoteWrite",
     "replicaExternalLabelName",
@@ -108,13 +118,16 @@ import lombok.experimental.Accessors;
     "ruleSelector",
     "rules",
     "sampleLimit",
+    "scrapeClasses",
     "scrapeConfigNamespaceSelector",
     "scrapeConfigSelector",
     "scrapeInterval",
+    "scrapeProtocols",
     "scrapeTimeout",
     "secrets",
     "securityContext",
     "serviceAccountName",
+    "serviceDiscoveryRole",
     "serviceMonitorNamespaceSelector",
     "serviceMonitorSelector",
     "sha",
@@ -141,13 +154,13 @@ import lombok.experimental.Accessors;
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.LabelSelector.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.Container.class),
+    @BuildableReference(LabelSelector.class),
+    @BuildableReference(Container.class),
     @BuildableReference(PodTemplateSpec.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.ResourceRequirements.class),
+    @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
+    @BuildableReference(ObjectReference.class),
+    @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
@@ -173,6 +186,8 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder> , Kuberne
     private APIServerConfig apiserverConfig;
     @JsonProperty("arbitraryFSAccessThroughSMs")
     private ArbitraryFSAccessThroughSMsConfig arbitraryFSAccessThroughSMs;
+    @JsonProperty("automountServiceAccountToken")
+    private Boolean automountServiceAccountToken;
     @JsonProperty("baseImage")
     private String baseImage;
     @JsonProperty("bodySizeLimit")
@@ -182,7 +197,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder> , Kuberne
     private List<String> configMaps = new ArrayList<>();
     @JsonProperty("containers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.Container> containers = new ArrayList<>();
+    private List<Container> containers = new ArrayList<>();
     @JsonProperty("disableCompaction")
     private Boolean disableCompaction;
     @JsonProperty("enableAdminAPI")
@@ -212,7 +227,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder> , Kuberne
     private String evaluationInterval;
     @JsonProperty("excludedFromEnforcement")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.openshift.api.model.monitoring.v1.ObjectReference> excludedFromEnforcement = new ArrayList<>();
+    private List<ObjectReference> excludedFromEnforcement = new ArrayList<>();
     @JsonProperty("exemplars")
     private Exemplars exemplars;
     @JsonProperty("externalLabels")
@@ -233,10 +248,10 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder> , Kuberne
     private String imagePullPolicy;
     @JsonProperty("imagePullSecrets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.LocalObjectReference> imagePullSecrets = new ArrayList<>();
+    private List<LocalObjectReference> imagePullSecrets = new ArrayList<>();
     @JsonProperty("initContainers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.Container> initContainers = new ArrayList<>();
+    private List<Container> initContainers = new ArrayList<>();
     @JsonProperty("keepDroppedTargets")
     private Long keepDroppedTargets;
     @JsonProperty("labelLimit")
@@ -251,23 +266,29 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder> , Kuberne
     private String logFormat;
     @JsonProperty("logLevel")
     private String logLevel;
+    @JsonProperty("maximumStartupDurationSeconds")
+    private Integer maximumStartupDurationSeconds;
     @JsonProperty("minReadySeconds")
-    private Integer minReadySeconds;
+    private Long minReadySeconds;
     @JsonProperty("nodeSelector")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> nodeSelector = new LinkedHashMap<>();
+    @JsonProperty("otlp")
+    private OTLPConfig otlp;
     @JsonProperty("overrideHonorLabels")
     private Boolean overrideHonorLabels;
     @JsonProperty("overrideHonorTimestamps")
     private Boolean overrideHonorTimestamps;
     @JsonProperty("paused")
     private Boolean paused;
+    @JsonProperty("persistentVolumeClaimRetentionPolicy")
+    private StatefulSetPersistentVolumeClaimRetentionPolicy persistentVolumeClaimRetentionPolicy;
     @JsonProperty("podMetadata")
     private EmbeddedObjectMetadata podMetadata;
     @JsonProperty("podMonitorNamespaceSelector")
-    private io.fabric8.kubernetes.api.model.LabelSelector podMonitorNamespaceSelector;
+    private LabelSelector podMonitorNamespaceSelector;
     @JsonProperty("podMonitorSelector")
-    private io.fabric8.kubernetes.api.model.LabelSelector podMonitorSelector;
+    private LabelSelector podMonitorSelector;
     @JsonProperty("podTargetLabels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> podTargetLabels = new ArrayList<>();
@@ -276,9 +297,9 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder> , Kuberne
     @JsonProperty("priorityClassName")
     private String priorityClassName;
     @JsonProperty("probeNamespaceSelector")
-    private io.fabric8.kubernetes.api.model.LabelSelector probeNamespaceSelector;
+    private LabelSelector probeNamespaceSelector;
     @JsonProperty("probeSelector")
-    private io.fabric8.kubernetes.api.model.LabelSelector probeSelector;
+    private LabelSelector probeSelector;
     @JsonProperty("prometheusExternalLabelName")
     private String prometheusExternalLabelName;
     @JsonProperty("prometheusRulesExcludedFromEnforce")
@@ -288,6 +309,8 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder> , Kuberne
     private QuerySpec query;
     @JsonProperty("queryLogFile")
     private String queryLogFile;
+    @JsonProperty("reloadStrategy")
+    private String reloadStrategy;
     @JsonProperty("remoteRead")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<RemoteReadSpec> remoteRead = new ArrayList<>();
@@ -299,7 +322,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder> , Kuberne
     @JsonProperty("replicas")
     private Integer replicas;
     @JsonProperty("resources")
-    private io.fabric8.kubernetes.api.model.ResourceRequirements resources;
+    private ResourceRequirements resources;
     @JsonProperty("retention")
     private String retention;
     @JsonProperty("retentionSize")
@@ -307,19 +330,25 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder> , Kuberne
     @JsonProperty("routePrefix")
     private String routePrefix;
     @JsonProperty("ruleNamespaceSelector")
-    private io.fabric8.kubernetes.api.model.LabelSelector ruleNamespaceSelector;
+    private LabelSelector ruleNamespaceSelector;
     @JsonProperty("ruleSelector")
-    private io.fabric8.kubernetes.api.model.LabelSelector ruleSelector;
+    private LabelSelector ruleSelector;
     @JsonProperty("rules")
     private Rules rules;
     @JsonProperty("sampleLimit")
     private Long sampleLimit;
+    @JsonProperty("scrapeClasses")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<ScrapeClass> scrapeClasses = new ArrayList<>();
     @JsonProperty("scrapeConfigNamespaceSelector")
-    private io.fabric8.kubernetes.api.model.LabelSelector scrapeConfigNamespaceSelector;
+    private LabelSelector scrapeConfigNamespaceSelector;
     @JsonProperty("scrapeConfigSelector")
-    private io.fabric8.kubernetes.api.model.LabelSelector scrapeConfigSelector;
+    private LabelSelector scrapeConfigSelector;
     @JsonProperty("scrapeInterval")
     private String scrapeInterval;
+    @JsonProperty("scrapeProtocols")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> scrapeProtocols = new ArrayList<>();
     @JsonProperty("scrapeTimeout")
     private String scrapeTimeout;
     @JsonProperty("secrets")
@@ -329,10 +358,12 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder> , Kuberne
     private PodSecurityContext securityContext;
     @JsonProperty("serviceAccountName")
     private String serviceAccountName;
+    @JsonProperty("serviceDiscoveryRole")
+    private String serviceDiscoveryRole;
     @JsonProperty("serviceMonitorNamespaceSelector")
-    private io.fabric8.kubernetes.api.model.LabelSelector serviceMonitorNamespaceSelector;
+    private LabelSelector serviceMonitorNamespaceSelector;
     @JsonProperty("serviceMonitorSelector")
-    private io.fabric8.kubernetes.api.model.LabelSelector serviceMonitorSelector;
+    private LabelSelector serviceMonitorSelector;
     @JsonProperty("sha")
     private String sha;
     @JsonProperty("shards")
@@ -377,7 +408,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder> , Kuberne
     public PrometheusSpec() {
     }
 
-    public PrometheusSpec(SecretKeySelector additionalAlertManagerConfigs, SecretKeySelector additionalAlertRelabelConfigs, List<Argument> additionalArgs, SecretKeySelector additionalScrapeConfigs, Affinity affinity, AlertingSpec alerting, Boolean allowOverlappingBlocks, APIServerConfig apiserverConfig, ArbitraryFSAccessThroughSMsConfig arbitraryFSAccessThroughSMs, String baseImage, String bodySizeLimit, List<String> configMaps, List<io.fabric8.kubernetes.api.model.Container> containers, Boolean disableCompaction, Boolean enableAdminAPI, List<String> enableFeatures, Boolean enableRemoteWriteReceiver, String enforcedBodySizeLimit, Long enforcedKeepDroppedTargets, Long enforcedLabelLimit, Long enforcedLabelNameLengthLimit, Long enforcedLabelValueLengthLimit, String enforcedNamespaceLabel, Long enforcedSampleLimit, Long enforcedTargetLimit, String evaluationInterval, List<io.fabric8.openshift.api.model.monitoring.v1.ObjectReference> excludedFromEnforcement, Exemplars exemplars, Map<String, String> externalLabels, String externalUrl, List<HostAlias> hostAliases, Boolean hostNetwork, Boolean ignoreNamespaceSelectors, String image, String imagePullPolicy, List<io.fabric8.kubernetes.api.model.LocalObjectReference> imagePullSecrets, List<io.fabric8.kubernetes.api.model.Container> initContainers, Long keepDroppedTargets, Long labelLimit, Long labelNameLengthLimit, Long labelValueLengthLimit, Boolean listenLocal, String logFormat, String logLevel, Integer minReadySeconds, Map<String, String> nodeSelector, Boolean overrideHonorLabels, Boolean overrideHonorTimestamps, Boolean paused, EmbeddedObjectMetadata podMetadata, io.fabric8.kubernetes.api.model.LabelSelector podMonitorNamespaceSelector, io.fabric8.kubernetes.api.model.LabelSelector podMonitorSelector, List<String> podTargetLabels, String portName, String priorityClassName, io.fabric8.kubernetes.api.model.LabelSelector probeNamespaceSelector, io.fabric8.kubernetes.api.model.LabelSelector probeSelector, String prometheusExternalLabelName, List<PrometheusRuleExcludeConfig> prometheusRulesExcludedFromEnforce, QuerySpec query, String queryLogFile, List<RemoteReadSpec> remoteRead, List<RemoteWriteSpec> remoteWrite, String replicaExternalLabelName, Integer replicas, io.fabric8.kubernetes.api.model.ResourceRequirements resources, String retention, String retentionSize, String routePrefix, io.fabric8.kubernetes.api.model.LabelSelector ruleNamespaceSelector, io.fabric8.kubernetes.api.model.LabelSelector ruleSelector, Rules rules, Long sampleLimit, io.fabric8.kubernetes.api.model.LabelSelector scrapeConfigNamespaceSelector, io.fabric8.kubernetes.api.model.LabelSelector scrapeConfigSelector, String scrapeInterval, String scrapeTimeout, List<String> secrets, PodSecurityContext securityContext, String serviceAccountName, io.fabric8.kubernetes.api.model.LabelSelector serviceMonitorNamespaceSelector, io.fabric8.kubernetes.api.model.LabelSelector serviceMonitorSelector, String sha, Integer shards, StorageSpec storage, String tag, Long targetLimit, ThanosSpec thanos, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, PrometheusTracingConfig tracingConfig, TSDBSpec tsdb, String version, List<VolumeMount> volumeMounts, List<Volume> volumes, Boolean walCompression, PrometheusWebSpec web) {
+    public PrometheusSpec(SecretKeySelector additionalAlertManagerConfigs, SecretKeySelector additionalAlertRelabelConfigs, List<Argument> additionalArgs, SecretKeySelector additionalScrapeConfigs, Affinity affinity, AlertingSpec alerting, Boolean allowOverlappingBlocks, APIServerConfig apiserverConfig, ArbitraryFSAccessThroughSMsConfig arbitraryFSAccessThroughSMs, Boolean automountServiceAccountToken, String baseImage, String bodySizeLimit, List<String> configMaps, List<Container> containers, Boolean disableCompaction, Boolean enableAdminAPI, List<String> enableFeatures, Boolean enableRemoteWriteReceiver, String enforcedBodySizeLimit, Long enforcedKeepDroppedTargets, Long enforcedLabelLimit, Long enforcedLabelNameLengthLimit, Long enforcedLabelValueLengthLimit, String enforcedNamespaceLabel, Long enforcedSampleLimit, Long enforcedTargetLimit, String evaluationInterval, List<ObjectReference> excludedFromEnforcement, Exemplars exemplars, Map<String, String> externalLabels, String externalUrl, List<HostAlias> hostAliases, Boolean hostNetwork, Boolean ignoreNamespaceSelectors, String image, String imagePullPolicy, List<LocalObjectReference> imagePullSecrets, List<Container> initContainers, Long keepDroppedTargets, Long labelLimit, Long labelNameLengthLimit, Long labelValueLengthLimit, Boolean listenLocal, String logFormat, String logLevel, Integer maximumStartupDurationSeconds, Long minReadySeconds, Map<String, String> nodeSelector, OTLPConfig otlp, Boolean overrideHonorLabels, Boolean overrideHonorTimestamps, Boolean paused, StatefulSetPersistentVolumeClaimRetentionPolicy persistentVolumeClaimRetentionPolicy, EmbeddedObjectMetadata podMetadata, LabelSelector podMonitorNamespaceSelector, LabelSelector podMonitorSelector, List<String> podTargetLabels, String portName, String priorityClassName, LabelSelector probeNamespaceSelector, LabelSelector probeSelector, String prometheusExternalLabelName, List<PrometheusRuleExcludeConfig> prometheusRulesExcludedFromEnforce, QuerySpec query, String queryLogFile, String reloadStrategy, List<RemoteReadSpec> remoteRead, List<RemoteWriteSpec> remoteWrite, String replicaExternalLabelName, Integer replicas, ResourceRequirements resources, String retention, String retentionSize, String routePrefix, LabelSelector ruleNamespaceSelector, LabelSelector ruleSelector, Rules rules, Long sampleLimit, List<ScrapeClass> scrapeClasses, LabelSelector scrapeConfigNamespaceSelector, LabelSelector scrapeConfigSelector, String scrapeInterval, List<String> scrapeProtocols, String scrapeTimeout, List<String> secrets, PodSecurityContext securityContext, String serviceAccountName, String serviceDiscoveryRole, LabelSelector serviceMonitorNamespaceSelector, LabelSelector serviceMonitorSelector, String sha, Integer shards, StorageSpec storage, String tag, Long targetLimit, ThanosSpec thanos, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, PrometheusTracingConfig tracingConfig, TSDBSpec tsdb, String version, List<VolumeMount> volumeMounts, List<Volume> volumes, Boolean walCompression, PrometheusWebSpec web) {
         super();
         this.additionalAlertManagerConfigs = additionalAlertManagerConfigs;
         this.additionalAlertRelabelConfigs = additionalAlertRelabelConfigs;
@@ -388,6 +419,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder> , Kuberne
         this.allowOverlappingBlocks = allowOverlappingBlocks;
         this.apiserverConfig = apiserverConfig;
         this.arbitraryFSAccessThroughSMs = arbitraryFSAccessThroughSMs;
+        this.automountServiceAccountToken = automountServiceAccountToken;
         this.baseImage = baseImage;
         this.bodySizeLimit = bodySizeLimit;
         this.configMaps = configMaps;
@@ -423,11 +455,14 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder> , Kuberne
         this.listenLocal = listenLocal;
         this.logFormat = logFormat;
         this.logLevel = logLevel;
+        this.maximumStartupDurationSeconds = maximumStartupDurationSeconds;
         this.minReadySeconds = minReadySeconds;
         this.nodeSelector = nodeSelector;
+        this.otlp = otlp;
         this.overrideHonorLabels = overrideHonorLabels;
         this.overrideHonorTimestamps = overrideHonorTimestamps;
         this.paused = paused;
+        this.persistentVolumeClaimRetentionPolicy = persistentVolumeClaimRetentionPolicy;
         this.podMetadata = podMetadata;
         this.podMonitorNamespaceSelector = podMonitorNamespaceSelector;
         this.podMonitorSelector = podMonitorSelector;
@@ -440,6 +475,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder> , Kuberne
         this.prometheusRulesExcludedFromEnforce = prometheusRulesExcludedFromEnforce;
         this.query = query;
         this.queryLogFile = queryLogFile;
+        this.reloadStrategy = reloadStrategy;
         this.remoteRead = remoteRead;
         this.remoteWrite = remoteWrite;
         this.replicaExternalLabelName = replicaExternalLabelName;
@@ -452,13 +488,16 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder> , Kuberne
         this.ruleSelector = ruleSelector;
         this.rules = rules;
         this.sampleLimit = sampleLimit;
+        this.scrapeClasses = scrapeClasses;
         this.scrapeConfigNamespaceSelector = scrapeConfigNamespaceSelector;
         this.scrapeConfigSelector = scrapeConfigSelector;
         this.scrapeInterval = scrapeInterval;
+        this.scrapeProtocols = scrapeProtocols;
         this.scrapeTimeout = scrapeTimeout;
         this.secrets = secrets;
         this.securityContext = securityContext;
         this.serviceAccountName = serviceAccountName;
+        this.serviceDiscoveryRole = serviceDiscoveryRole;
         this.serviceMonitorNamespaceSelector = serviceMonitorNamespaceSelector;
         this.serviceMonitorSelector = serviceMonitorSelector;
         this.sha = sha;
@@ -569,6 +608,16 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder> , Kuberne
         this.arbitraryFSAccessThroughSMs = arbitraryFSAccessThroughSMs;
     }
 
+    @JsonProperty("automountServiceAccountToken")
+    public Boolean getAutomountServiceAccountToken() {
+        return automountServiceAccountToken;
+    }
+
+    @JsonProperty("automountServiceAccountToken")
+    public void setAutomountServiceAccountToken(Boolean automountServiceAccountToken) {
+        this.automountServiceAccountToken = automountServiceAccountToken;
+    }
+
     @JsonProperty("baseImage")
     public String getBaseImage() {
         return baseImage;
@@ -602,12 +651,12 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder> , Kuberne
 
     @JsonProperty("containers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<io.fabric8.kubernetes.api.model.Container> getContainers() {
+    public List<Container> getContainers() {
         return containers;
     }
 
     @JsonProperty("containers")
-    public void setContainers(List<io.fabric8.kubernetes.api.model.Container> containers) {
+    public void setContainers(List<Container> containers) {
         this.containers = containers;
     }
 
@@ -744,12 +793,12 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder> , Kuberne
 
     @JsonProperty("excludedFromEnforcement")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<io.fabric8.openshift.api.model.monitoring.v1.ObjectReference> getExcludedFromEnforcement() {
+    public List<ObjectReference> getExcludedFromEnforcement() {
         return excludedFromEnforcement;
     }
 
     @JsonProperty("excludedFromEnforcement")
-    public void setExcludedFromEnforcement(List<io.fabric8.openshift.api.model.monitoring.v1.ObjectReference> excludedFromEnforcement) {
+    public void setExcludedFromEnforcement(List<ObjectReference> excludedFromEnforcement) {
         this.excludedFromEnforcement = excludedFromEnforcement;
     }
 
@@ -837,23 +886,23 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder> , Kuberne
 
     @JsonProperty("imagePullSecrets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<io.fabric8.kubernetes.api.model.LocalObjectReference> getImagePullSecrets() {
+    public List<LocalObjectReference> getImagePullSecrets() {
         return imagePullSecrets;
     }
 
     @JsonProperty("imagePullSecrets")
-    public void setImagePullSecrets(List<io.fabric8.kubernetes.api.model.LocalObjectReference> imagePullSecrets) {
+    public void setImagePullSecrets(List<LocalObjectReference> imagePullSecrets) {
         this.imagePullSecrets = imagePullSecrets;
     }
 
     @JsonProperty("initContainers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<io.fabric8.kubernetes.api.model.Container> getInitContainers() {
+    public List<Container> getInitContainers() {
         return initContainers;
     }
 
     @JsonProperty("initContainers")
-    public void setInitContainers(List<io.fabric8.kubernetes.api.model.Container> initContainers) {
+    public void setInitContainers(List<Container> initContainers) {
         this.initContainers = initContainers;
     }
 
@@ -927,13 +976,23 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder> , Kuberne
         this.logLevel = logLevel;
     }
 
+    @JsonProperty("maximumStartupDurationSeconds")
+    public Integer getMaximumStartupDurationSeconds() {
+        return maximumStartupDurationSeconds;
+    }
+
+    @JsonProperty("maximumStartupDurationSeconds")
+    public void setMaximumStartupDurationSeconds(Integer maximumStartupDurationSeconds) {
+        this.maximumStartupDurationSeconds = maximumStartupDurationSeconds;
+    }
+
     @JsonProperty("minReadySeconds")
-    public Integer getMinReadySeconds() {
+    public Long getMinReadySeconds() {
         return minReadySeconds;
     }
 
     @JsonProperty("minReadySeconds")
-    public void setMinReadySeconds(Integer minReadySeconds) {
+    public void setMinReadySeconds(Long minReadySeconds) {
         this.minReadySeconds = minReadySeconds;
     }
 
@@ -946,6 +1005,16 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder> , Kuberne
     @JsonProperty("nodeSelector")
     public void setNodeSelector(Map<String, String> nodeSelector) {
         this.nodeSelector = nodeSelector;
+    }
+
+    @JsonProperty("otlp")
+    public OTLPConfig getOtlp() {
+        return otlp;
+    }
+
+    @JsonProperty("otlp")
+    public void setOtlp(OTLPConfig otlp) {
+        this.otlp = otlp;
     }
 
     @JsonProperty("overrideHonorLabels")
@@ -978,6 +1047,16 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder> , Kuberne
         this.paused = paused;
     }
 
+    @JsonProperty("persistentVolumeClaimRetentionPolicy")
+    public StatefulSetPersistentVolumeClaimRetentionPolicy getPersistentVolumeClaimRetentionPolicy() {
+        return persistentVolumeClaimRetentionPolicy;
+    }
+
+    @JsonProperty("persistentVolumeClaimRetentionPolicy")
+    public void setPersistentVolumeClaimRetentionPolicy(StatefulSetPersistentVolumeClaimRetentionPolicy persistentVolumeClaimRetentionPolicy) {
+        this.persistentVolumeClaimRetentionPolicy = persistentVolumeClaimRetentionPolicy;
+    }
+
     @JsonProperty("podMetadata")
     public EmbeddedObjectMetadata getPodMetadata() {
         return podMetadata;
@@ -989,22 +1068,22 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder> , Kuberne
     }
 
     @JsonProperty("podMonitorNamespaceSelector")
-    public io.fabric8.kubernetes.api.model.LabelSelector getPodMonitorNamespaceSelector() {
+    public LabelSelector getPodMonitorNamespaceSelector() {
         return podMonitorNamespaceSelector;
     }
 
     @JsonProperty("podMonitorNamespaceSelector")
-    public void setPodMonitorNamespaceSelector(io.fabric8.kubernetes.api.model.LabelSelector podMonitorNamespaceSelector) {
+    public void setPodMonitorNamespaceSelector(LabelSelector podMonitorNamespaceSelector) {
         this.podMonitorNamespaceSelector = podMonitorNamespaceSelector;
     }
 
     @JsonProperty("podMonitorSelector")
-    public io.fabric8.kubernetes.api.model.LabelSelector getPodMonitorSelector() {
+    public LabelSelector getPodMonitorSelector() {
         return podMonitorSelector;
     }
 
     @JsonProperty("podMonitorSelector")
-    public void setPodMonitorSelector(io.fabric8.kubernetes.api.model.LabelSelector podMonitorSelector) {
+    public void setPodMonitorSelector(LabelSelector podMonitorSelector) {
         this.podMonitorSelector = podMonitorSelector;
     }
 
@@ -1040,22 +1119,22 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder> , Kuberne
     }
 
     @JsonProperty("probeNamespaceSelector")
-    public io.fabric8.kubernetes.api.model.LabelSelector getProbeNamespaceSelector() {
+    public LabelSelector getProbeNamespaceSelector() {
         return probeNamespaceSelector;
     }
 
     @JsonProperty("probeNamespaceSelector")
-    public void setProbeNamespaceSelector(io.fabric8.kubernetes.api.model.LabelSelector probeNamespaceSelector) {
+    public void setProbeNamespaceSelector(LabelSelector probeNamespaceSelector) {
         this.probeNamespaceSelector = probeNamespaceSelector;
     }
 
     @JsonProperty("probeSelector")
-    public io.fabric8.kubernetes.api.model.LabelSelector getProbeSelector() {
+    public LabelSelector getProbeSelector() {
         return probeSelector;
     }
 
     @JsonProperty("probeSelector")
-    public void setProbeSelector(io.fabric8.kubernetes.api.model.LabelSelector probeSelector) {
+    public void setProbeSelector(LabelSelector probeSelector) {
         this.probeSelector = probeSelector;
     }
 
@@ -1098,6 +1177,16 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder> , Kuberne
     @JsonProperty("queryLogFile")
     public void setQueryLogFile(String queryLogFile) {
         this.queryLogFile = queryLogFile;
+    }
+
+    @JsonProperty("reloadStrategy")
+    public String getReloadStrategy() {
+        return reloadStrategy;
+    }
+
+    @JsonProperty("reloadStrategy")
+    public void setReloadStrategy(String reloadStrategy) {
+        this.reloadStrategy = reloadStrategy;
     }
 
     @JsonProperty("remoteRead")
@@ -1143,12 +1232,12 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder> , Kuberne
     }
 
     @JsonProperty("resources")
-    public io.fabric8.kubernetes.api.model.ResourceRequirements getResources() {
+    public ResourceRequirements getResources() {
         return resources;
     }
 
     @JsonProperty("resources")
-    public void setResources(io.fabric8.kubernetes.api.model.ResourceRequirements resources) {
+    public void setResources(ResourceRequirements resources) {
         this.resources = resources;
     }
 
@@ -1183,22 +1272,22 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder> , Kuberne
     }
 
     @JsonProperty("ruleNamespaceSelector")
-    public io.fabric8.kubernetes.api.model.LabelSelector getRuleNamespaceSelector() {
+    public LabelSelector getRuleNamespaceSelector() {
         return ruleNamespaceSelector;
     }
 
     @JsonProperty("ruleNamespaceSelector")
-    public void setRuleNamespaceSelector(io.fabric8.kubernetes.api.model.LabelSelector ruleNamespaceSelector) {
+    public void setRuleNamespaceSelector(LabelSelector ruleNamespaceSelector) {
         this.ruleNamespaceSelector = ruleNamespaceSelector;
     }
 
     @JsonProperty("ruleSelector")
-    public io.fabric8.kubernetes.api.model.LabelSelector getRuleSelector() {
+    public LabelSelector getRuleSelector() {
         return ruleSelector;
     }
 
     @JsonProperty("ruleSelector")
-    public void setRuleSelector(io.fabric8.kubernetes.api.model.LabelSelector ruleSelector) {
+    public void setRuleSelector(LabelSelector ruleSelector) {
         this.ruleSelector = ruleSelector;
     }
 
@@ -1222,23 +1311,34 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder> , Kuberne
         this.sampleLimit = sampleLimit;
     }
 
+    @JsonProperty("scrapeClasses")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<ScrapeClass> getScrapeClasses() {
+        return scrapeClasses;
+    }
+
+    @JsonProperty("scrapeClasses")
+    public void setScrapeClasses(List<ScrapeClass> scrapeClasses) {
+        this.scrapeClasses = scrapeClasses;
+    }
+
     @JsonProperty("scrapeConfigNamespaceSelector")
-    public io.fabric8.kubernetes.api.model.LabelSelector getScrapeConfigNamespaceSelector() {
+    public LabelSelector getScrapeConfigNamespaceSelector() {
         return scrapeConfigNamespaceSelector;
     }
 
     @JsonProperty("scrapeConfigNamespaceSelector")
-    public void setScrapeConfigNamespaceSelector(io.fabric8.kubernetes.api.model.LabelSelector scrapeConfigNamespaceSelector) {
+    public void setScrapeConfigNamespaceSelector(LabelSelector scrapeConfigNamespaceSelector) {
         this.scrapeConfigNamespaceSelector = scrapeConfigNamespaceSelector;
     }
 
     @JsonProperty("scrapeConfigSelector")
-    public io.fabric8.kubernetes.api.model.LabelSelector getScrapeConfigSelector() {
+    public LabelSelector getScrapeConfigSelector() {
         return scrapeConfigSelector;
     }
 
     @JsonProperty("scrapeConfigSelector")
-    public void setScrapeConfigSelector(io.fabric8.kubernetes.api.model.LabelSelector scrapeConfigSelector) {
+    public void setScrapeConfigSelector(LabelSelector scrapeConfigSelector) {
         this.scrapeConfigSelector = scrapeConfigSelector;
     }
 
@@ -1250,6 +1350,17 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder> , Kuberne
     @JsonProperty("scrapeInterval")
     public void setScrapeInterval(String scrapeInterval) {
         this.scrapeInterval = scrapeInterval;
+    }
+
+    @JsonProperty("scrapeProtocols")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<String> getScrapeProtocols() {
+        return scrapeProtocols;
+    }
+
+    @JsonProperty("scrapeProtocols")
+    public void setScrapeProtocols(List<String> scrapeProtocols) {
+        this.scrapeProtocols = scrapeProtocols;
     }
 
     @JsonProperty("scrapeTimeout")
@@ -1293,23 +1404,33 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder> , Kuberne
         this.serviceAccountName = serviceAccountName;
     }
 
+    @JsonProperty("serviceDiscoveryRole")
+    public String getServiceDiscoveryRole() {
+        return serviceDiscoveryRole;
+    }
+
+    @JsonProperty("serviceDiscoveryRole")
+    public void setServiceDiscoveryRole(String serviceDiscoveryRole) {
+        this.serviceDiscoveryRole = serviceDiscoveryRole;
+    }
+
     @JsonProperty("serviceMonitorNamespaceSelector")
-    public io.fabric8.kubernetes.api.model.LabelSelector getServiceMonitorNamespaceSelector() {
+    public LabelSelector getServiceMonitorNamespaceSelector() {
         return serviceMonitorNamespaceSelector;
     }
 
     @JsonProperty("serviceMonitorNamespaceSelector")
-    public void setServiceMonitorNamespaceSelector(io.fabric8.kubernetes.api.model.LabelSelector serviceMonitorNamespaceSelector) {
+    public void setServiceMonitorNamespaceSelector(LabelSelector serviceMonitorNamespaceSelector) {
         this.serviceMonitorNamespaceSelector = serviceMonitorNamespaceSelector;
     }
 
     @JsonProperty("serviceMonitorSelector")
-    public io.fabric8.kubernetes.api.model.LabelSelector getServiceMonitorSelector() {
+    public LabelSelector getServiceMonitorSelector() {
         return serviceMonitorSelector;
     }
 
     @JsonProperty("serviceMonitorSelector")
-    public void setServiceMonitorSelector(io.fabric8.kubernetes.api.model.LabelSelector serviceMonitorSelector) {
+    public void setServiceMonitorSelector(LabelSelector serviceMonitorSelector) {
         this.serviceMonitorSelector = serviceMonitorSelector;
     }
 

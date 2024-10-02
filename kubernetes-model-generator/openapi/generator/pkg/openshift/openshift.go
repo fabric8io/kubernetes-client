@@ -26,8 +26,9 @@ var PackagePatterns = []string{
 	"github.com/openshift/api/.../v...",
 	// CRDs don't provide info for reused types
 	//"github.com/metal3-io/baremetal-operator/apis/metal3.io/v...",
-	"github.com/operator-framework/api/pkg/operators/v...",
-	"github.com/operator-framework/operator-lifecycle-manager/pkg/package-server/apis/operators/v...",
 	"github.com/openshift/cluster-network-operator/pkg/apis/.../v...",
 	"github.com/openshift/cloud-credential-operator/pkg/apis/.../v...",
+	"github.com/operator-framework/api/pkg/operators/v...",
+	"github.com/operator-framework/operator-lifecycle-manager/pkg/package-server/apis/operators/v...",
+	"github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring/v...",
 }

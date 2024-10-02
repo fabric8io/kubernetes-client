@@ -37,7 +37,12 @@ import lombok.experimental.Accessors;
     "clientId",
     "clientSecret",
     "endpointParams",
+    "noProxy",
+    "proxyConnectHeader",
+    "proxyFromEnvironment",
+    "proxyUrl",
     "scopes",
+    "tlsConfig",
     "tokenUrl"
 })
 @ToString
@@ -68,9 +73,20 @@ public class OAuth2 implements Editable<OAuth2Builder> , KubernetesResource
     @JsonProperty("endpointParams")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> endpointParams = new LinkedHashMap<>();
+    @JsonProperty("noProxy")
+    private String noProxy;
+    @JsonProperty("proxyConnectHeader")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, List<SecretKeySelector>> proxyConnectHeader = new LinkedHashMap<>();
+    @JsonProperty("proxyFromEnvironment")
+    private Boolean proxyFromEnvironment;
+    @JsonProperty("proxyUrl")
+    private String proxyUrl;
     @JsonProperty("scopes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> scopes = new ArrayList<>();
+    @JsonProperty("tlsConfig")
+    private SafeTLSConfig tlsConfig;
     @JsonProperty("tokenUrl")
     private String tokenUrl;
     @JsonIgnore
@@ -83,12 +99,17 @@ public class OAuth2 implements Editable<OAuth2Builder> , KubernetesResource
     public OAuth2() {
     }
 
-    public OAuth2(SecretOrConfigMap clientId, SecretKeySelector clientSecret, Map<String, String> endpointParams, List<String> scopes, String tokenUrl) {
+    public OAuth2(SecretOrConfigMap clientId, SecretKeySelector clientSecret, Map<String, String> endpointParams, String noProxy, Map<String, List<SecretKeySelector>> proxyConnectHeader, Boolean proxyFromEnvironment, String proxyUrl, List<String> scopes, SafeTLSConfig tlsConfig, String tokenUrl) {
         super();
         this.clientId = clientId;
         this.clientSecret = clientSecret;
         this.endpointParams = endpointParams;
+        this.noProxy = noProxy;
+        this.proxyConnectHeader = proxyConnectHeader;
+        this.proxyFromEnvironment = proxyFromEnvironment;
+        this.proxyUrl = proxyUrl;
         this.scopes = scopes;
+        this.tlsConfig = tlsConfig;
         this.tokenUrl = tokenUrl;
     }
 
@@ -123,6 +144,47 @@ public class OAuth2 implements Editable<OAuth2Builder> , KubernetesResource
         this.endpointParams = endpointParams;
     }
 
+    @JsonProperty("noProxy")
+    public String getNoProxy() {
+        return noProxy;
+    }
+
+    @JsonProperty("noProxy")
+    public void setNoProxy(String noProxy) {
+        this.noProxy = noProxy;
+    }
+
+    @JsonProperty("proxyConnectHeader")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public Map<String, List<SecretKeySelector>> getProxyConnectHeader() {
+        return proxyConnectHeader;
+    }
+
+    @JsonProperty("proxyConnectHeader")
+    public void setProxyConnectHeader(Map<String, List<SecretKeySelector>> proxyConnectHeader) {
+        this.proxyConnectHeader = proxyConnectHeader;
+    }
+
+    @JsonProperty("proxyFromEnvironment")
+    public Boolean getProxyFromEnvironment() {
+        return proxyFromEnvironment;
+    }
+
+    @JsonProperty("proxyFromEnvironment")
+    public void setProxyFromEnvironment(Boolean proxyFromEnvironment) {
+        this.proxyFromEnvironment = proxyFromEnvironment;
+    }
+
+    @JsonProperty("proxyUrl")
+    public String getProxyUrl() {
+        return proxyUrl;
+    }
+
+    @JsonProperty("proxyUrl")
+    public void setProxyUrl(String proxyUrl) {
+        this.proxyUrl = proxyUrl;
+    }
+
     @JsonProperty("scopes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getScopes() {
@@ -132,6 +194,16 @@ public class OAuth2 implements Editable<OAuth2Builder> , KubernetesResource
     @JsonProperty("scopes")
     public void setScopes(List<String> scopes) {
         this.scopes = scopes;
+    }
+
+    @JsonProperty("tlsConfig")
+    public SafeTLSConfig getTlsConfig() {
+        return tlsConfig;
+    }
+
+    @JsonProperty("tlsConfig")
+    public void setTlsConfig(SafeTLSConfig tlsConfig) {
+        this.tlsConfig = tlsConfig;
     }
 
     @JsonProperty("tokenUrl")

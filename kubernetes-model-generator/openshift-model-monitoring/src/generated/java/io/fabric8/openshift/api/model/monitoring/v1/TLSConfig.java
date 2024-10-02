@@ -39,6 +39,8 @@ import lombok.experimental.Accessors;
     "insecureSkipVerify",
     "keyFile",
     "keySecret",
+    "maxVersion",
+    "minVersion",
     "serverName"
 })
 @ToString
@@ -76,6 +78,10 @@ public class TLSConfig implements Editable<TLSConfigBuilder> , KubernetesResourc
     private String keyFile;
     @JsonProperty("keySecret")
     private SecretKeySelector keySecret;
+    @JsonProperty("maxVersion")
+    private String maxVersion;
+    @JsonProperty("minVersion")
+    private String minVersion;
     @JsonProperty("serverName")
     private String serverName;
     @JsonIgnore
@@ -88,7 +94,7 @@ public class TLSConfig implements Editable<TLSConfigBuilder> , KubernetesResourc
     public TLSConfig() {
     }
 
-    public TLSConfig(SecretOrConfigMap ca, String caFile, SecretOrConfigMap cert, String certFile, Boolean insecureSkipVerify, String keyFile, SecretKeySelector keySecret, String serverName) {
+    public TLSConfig(SecretOrConfigMap ca, String caFile, SecretOrConfigMap cert, String certFile, Boolean insecureSkipVerify, String keyFile, SecretKeySelector keySecret, String maxVersion, String minVersion, String serverName) {
         super();
         this.ca = ca;
         this.caFile = caFile;
@@ -97,6 +103,8 @@ public class TLSConfig implements Editable<TLSConfigBuilder> , KubernetesResourc
         this.insecureSkipVerify = insecureSkipVerify;
         this.keyFile = keyFile;
         this.keySecret = keySecret;
+        this.maxVersion = maxVersion;
+        this.minVersion = minVersion;
         this.serverName = serverName;
     }
 
@@ -168,6 +176,26 @@ public class TLSConfig implements Editable<TLSConfigBuilder> , KubernetesResourc
     @JsonProperty("keySecret")
     public void setKeySecret(SecretKeySelector keySecret) {
         this.keySecret = keySecret;
+    }
+
+    @JsonProperty("maxVersion")
+    public String getMaxVersion() {
+        return maxVersion;
+    }
+
+    @JsonProperty("maxVersion")
+    public void setMaxVersion(String maxVersion) {
+        this.maxVersion = maxVersion;
+    }
+
+    @JsonProperty("minVersion")
+    public String getMinVersion() {
+        return minVersion;
+    }
+
+    @JsonProperty("minVersion")
+    public void setMinVersion(String minVersion) {
+        this.minVersion = minVersion;
     }
 
     @JsonProperty("serverName")

@@ -48,6 +48,8 @@ import lombok.experimental.Accessors;
     "oauth2",
     "prober",
     "sampleLimit",
+    "scrapeClass",
+    "scrapeProtocols",
     "scrapeTimeout",
     "targetLimit",
     "targets",
@@ -103,6 +105,11 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder> , KubernetesResourc
     private ProberSpec prober;
     @JsonProperty("sampleLimit")
     private Long sampleLimit;
+    @JsonProperty("scrapeClass")
+    private String scrapeClass;
+    @JsonProperty("scrapeProtocols")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> scrapeProtocols = new ArrayList<>();
     @JsonProperty("scrapeTimeout")
     private String scrapeTimeout;
     @JsonProperty("targetLimit")
@@ -110,7 +117,7 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder> , KubernetesResourc
     @JsonProperty("targets")
     private ProbeTargets targets;
     @JsonProperty("tlsConfig")
-    private ProbeTLSConfig tlsConfig;
+    private SafeTLSConfig tlsConfig;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -121,7 +128,7 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder> , KubernetesResourc
     public ProbeSpec() {
     }
 
-    public ProbeSpec(SafeAuthorization authorization, BasicAuth basicAuth, SecretKeySelector bearerTokenSecret, String interval, String jobName, Long keepDroppedTargets, Long labelLimit, Long labelNameLengthLimit, Long labelValueLengthLimit, List<RelabelConfig> metricRelabelings, String module, OAuth2 oauth2, ProberSpec prober, Long sampleLimit, String scrapeTimeout, Long targetLimit, ProbeTargets targets, ProbeTLSConfig tlsConfig) {
+    public ProbeSpec(SafeAuthorization authorization, BasicAuth basicAuth, SecretKeySelector bearerTokenSecret, String interval, String jobName, Long keepDroppedTargets, Long labelLimit, Long labelNameLengthLimit, Long labelValueLengthLimit, List<RelabelConfig> metricRelabelings, String module, OAuth2 oauth2, ProberSpec prober, Long sampleLimit, String scrapeClass, List<String> scrapeProtocols, String scrapeTimeout, Long targetLimit, ProbeTargets targets, SafeTLSConfig tlsConfig) {
         super();
         this.authorization = authorization;
         this.basicAuth = basicAuth;
@@ -137,6 +144,8 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder> , KubernetesResourc
         this.oauth2 = oauth2;
         this.prober = prober;
         this.sampleLimit = sampleLimit;
+        this.scrapeClass = scrapeClass;
+        this.scrapeProtocols = scrapeProtocols;
         this.scrapeTimeout = scrapeTimeout;
         this.targetLimit = targetLimit;
         this.targets = targets;
@@ -284,6 +293,27 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder> , KubernetesResourc
         this.sampleLimit = sampleLimit;
     }
 
+    @JsonProperty("scrapeClass")
+    public String getScrapeClass() {
+        return scrapeClass;
+    }
+
+    @JsonProperty("scrapeClass")
+    public void setScrapeClass(String scrapeClass) {
+        this.scrapeClass = scrapeClass;
+    }
+
+    @JsonProperty("scrapeProtocols")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<String> getScrapeProtocols() {
+        return scrapeProtocols;
+    }
+
+    @JsonProperty("scrapeProtocols")
+    public void setScrapeProtocols(List<String> scrapeProtocols) {
+        this.scrapeProtocols = scrapeProtocols;
+    }
+
     @JsonProperty("scrapeTimeout")
     public String getScrapeTimeout() {
         return scrapeTimeout;
@@ -315,12 +345,12 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder> , KubernetesResourc
     }
 
     @JsonProperty("tlsConfig")
-    public ProbeTLSConfig getTlsConfig() {
+    public SafeTLSConfig getTlsConfig() {
         return tlsConfig;
     }
 
     @JsonProperty("tlsConfig")
-    public void setTlsConfig(ProbeTLSConfig tlsConfig) {
+    public void setTlsConfig(SafeTLSConfig tlsConfig) {
         this.tlsConfig = tlsConfig;
     }
 

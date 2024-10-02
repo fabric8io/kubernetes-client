@@ -24,6 +24,7 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
+import io.fabric8.kubernetes.api.model.SecretKeySelector;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -34,13 +35,19 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "authorization",
+    "azureAd",
     "basicAuth",
     "bearerToken",
     "bearerTokenFile",
+    "enableHTTP2",
+    "followRedirects",
     "headers",
     "metadataConfig",
     "name",
+    "noProxy",
     "oauth2",
+    "proxyConnectHeader",
+    "proxyFromEnvironment",
     "proxyUrl",
     "queueConfig",
     "remoteTimeout",
@@ -74,12 +81,18 @@ public class RemoteWriteSpec implements Editable<RemoteWriteSpecBuilder> , Kuber
 
     @JsonProperty("authorization")
     private Authorization authorization;
+    @JsonProperty("azureAd")
+    private AzureAD azureAd;
     @JsonProperty("basicAuth")
     private BasicAuth basicAuth;
     @JsonProperty("bearerToken")
     private String bearerToken;
     @JsonProperty("bearerTokenFile")
     private String bearerTokenFile;
+    @JsonProperty("enableHTTP2")
+    private Boolean enableHTTP2;
+    @JsonProperty("followRedirects")
+    private Boolean followRedirects;
     @JsonProperty("headers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> headers = new LinkedHashMap<>();
@@ -87,8 +100,15 @@ public class RemoteWriteSpec implements Editable<RemoteWriteSpecBuilder> , Kuber
     private MetadataConfig metadataConfig;
     @JsonProperty("name")
     private String name;
+    @JsonProperty("noProxy")
+    private String noProxy;
     @JsonProperty("oauth2")
     private OAuth2 oauth2;
+    @JsonProperty("proxyConnectHeader")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, List<SecretKeySelector>> proxyConnectHeader = new LinkedHashMap<>();
+    @JsonProperty("proxyFromEnvironment")
+    private Boolean proxyFromEnvironment;
     @JsonProperty("proxyUrl")
     private String proxyUrl;
     @JsonProperty("queueConfig")
@@ -118,16 +138,22 @@ public class RemoteWriteSpec implements Editable<RemoteWriteSpecBuilder> , Kuber
     public RemoteWriteSpec() {
     }
 
-    public RemoteWriteSpec(Authorization authorization, BasicAuth basicAuth, String bearerToken, String bearerTokenFile, Map<String, String> headers, MetadataConfig metadataConfig, String name, OAuth2 oauth2, String proxyUrl, QueueConfig queueConfig, String remoteTimeout, Boolean sendExemplars, Boolean sendNativeHistograms, Sigv4 sigv4, TLSConfig tlsConfig, String url, List<RelabelConfig> writeRelabelConfigs) {
+    public RemoteWriteSpec(Authorization authorization, AzureAD azureAd, BasicAuth basicAuth, String bearerToken, String bearerTokenFile, Boolean enableHTTP2, Boolean followRedirects, Map<String, String> headers, MetadataConfig metadataConfig, String name, String noProxy, OAuth2 oauth2, Map<String, List<SecretKeySelector>> proxyConnectHeader, Boolean proxyFromEnvironment, String proxyUrl, QueueConfig queueConfig, String remoteTimeout, Boolean sendExemplars, Boolean sendNativeHistograms, Sigv4 sigv4, TLSConfig tlsConfig, String url, List<RelabelConfig> writeRelabelConfigs) {
         super();
         this.authorization = authorization;
+        this.azureAd = azureAd;
         this.basicAuth = basicAuth;
         this.bearerToken = bearerToken;
         this.bearerTokenFile = bearerTokenFile;
+        this.enableHTTP2 = enableHTTP2;
+        this.followRedirects = followRedirects;
         this.headers = headers;
         this.metadataConfig = metadataConfig;
         this.name = name;
+        this.noProxy = noProxy;
         this.oauth2 = oauth2;
+        this.proxyConnectHeader = proxyConnectHeader;
+        this.proxyFromEnvironment = proxyFromEnvironment;
         this.proxyUrl = proxyUrl;
         this.queueConfig = queueConfig;
         this.remoteTimeout = remoteTimeout;
@@ -147,6 +173,16 @@ public class RemoteWriteSpec implements Editable<RemoteWriteSpecBuilder> , Kuber
     @JsonProperty("authorization")
     public void setAuthorization(Authorization authorization) {
         this.authorization = authorization;
+    }
+
+    @JsonProperty("azureAd")
+    public AzureAD getAzureAd() {
+        return azureAd;
+    }
+
+    @JsonProperty("azureAd")
+    public void setAzureAd(AzureAD azureAd) {
+        this.azureAd = azureAd;
     }
 
     @JsonProperty("basicAuth")
@@ -177,6 +213,26 @@ public class RemoteWriteSpec implements Editable<RemoteWriteSpecBuilder> , Kuber
     @JsonProperty("bearerTokenFile")
     public void setBearerTokenFile(String bearerTokenFile) {
         this.bearerTokenFile = bearerTokenFile;
+    }
+
+    @JsonProperty("enableHTTP2")
+    public Boolean getEnableHTTP2() {
+        return enableHTTP2;
+    }
+
+    @JsonProperty("enableHTTP2")
+    public void setEnableHTTP2(Boolean enableHTTP2) {
+        this.enableHTTP2 = enableHTTP2;
+    }
+
+    @JsonProperty("followRedirects")
+    public Boolean getFollowRedirects() {
+        return followRedirects;
+    }
+
+    @JsonProperty("followRedirects")
+    public void setFollowRedirects(Boolean followRedirects) {
+        this.followRedirects = followRedirects;
     }
 
     @JsonProperty("headers")
@@ -210,6 +266,16 @@ public class RemoteWriteSpec implements Editable<RemoteWriteSpecBuilder> , Kuber
         this.name = name;
     }
 
+    @JsonProperty("noProxy")
+    public String getNoProxy() {
+        return noProxy;
+    }
+
+    @JsonProperty("noProxy")
+    public void setNoProxy(String noProxy) {
+        this.noProxy = noProxy;
+    }
+
     @JsonProperty("oauth2")
     public OAuth2 getOauth2() {
         return oauth2;
@@ -218,6 +284,27 @@ public class RemoteWriteSpec implements Editable<RemoteWriteSpecBuilder> , Kuber
     @JsonProperty("oauth2")
     public void setOauth2(OAuth2 oauth2) {
         this.oauth2 = oauth2;
+    }
+
+    @JsonProperty("proxyConnectHeader")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public Map<String, List<SecretKeySelector>> getProxyConnectHeader() {
+        return proxyConnectHeader;
+    }
+
+    @JsonProperty("proxyConnectHeader")
+    public void setProxyConnectHeader(Map<String, List<SecretKeySelector>> proxyConnectHeader) {
+        this.proxyConnectHeader = proxyConnectHeader;
+    }
+
+    @JsonProperty("proxyFromEnvironment")
+    public Boolean getProxyFromEnvironment() {
+        return proxyFromEnvironment;
+    }
+
+    @JsonProperty("proxyFromEnvironment")
+    public void setProxyFromEnvironment(Boolean proxyFromEnvironment) {
+        this.proxyFromEnvironment = proxyFromEnvironment;
     }
 
     @JsonProperty("proxyUrl")

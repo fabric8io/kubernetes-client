@@ -35,6 +35,7 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "discordConfigs",
     "emailConfigs",
+    "msteamsConfigs",
     "name",
     "opsgenieConfigs",
     "pagerdutyConfigs",
@@ -74,6 +75,9 @@ public class Receiver implements Editable<ReceiverBuilder> , KubernetesResource
     @JsonProperty("emailConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<EmailConfig> emailConfigs = new ArrayList<>();
+    @JsonProperty("msteamsConfigs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<MSTeamsConfig> msteamsConfigs = new ArrayList<>();
     @JsonProperty("name")
     private String name;
     @JsonProperty("opsgenieConfigs")
@@ -116,10 +120,11 @@ public class Receiver implements Editable<ReceiverBuilder> , KubernetesResource
     public Receiver() {
     }
 
-    public Receiver(List<DiscordConfig> discordConfigs, List<EmailConfig> emailConfigs, String name, List<OpsGenieConfig> opsgenieConfigs, List<PagerDutyConfig> pagerdutyConfigs, List<PushoverConfig> pushoverConfigs, List<SlackConfig> slackConfigs, List<SNSConfig> snsConfigs, List<TelegramConfig> telegramConfigs, List<VictorOpsConfig> victoropsConfigs, List<WebexConfig> webexConfigs, List<WebhookConfig> webhookConfigs, List<WeChatConfig> wechatConfigs) {
+    public Receiver(List<DiscordConfig> discordConfigs, List<EmailConfig> emailConfigs, List<MSTeamsConfig> msteamsConfigs, String name, List<OpsGenieConfig> opsgenieConfigs, List<PagerDutyConfig> pagerdutyConfigs, List<PushoverConfig> pushoverConfigs, List<SlackConfig> slackConfigs, List<SNSConfig> snsConfigs, List<TelegramConfig> telegramConfigs, List<VictorOpsConfig> victoropsConfigs, List<WebexConfig> webexConfigs, List<WebhookConfig> webhookConfigs, List<WeChatConfig> wechatConfigs) {
         super();
         this.discordConfigs = discordConfigs;
         this.emailConfigs = emailConfigs;
+        this.msteamsConfigs = msteamsConfigs;
         this.name = name;
         this.opsgenieConfigs = opsgenieConfigs;
         this.pagerdutyConfigs = pagerdutyConfigs;
@@ -153,6 +158,17 @@ public class Receiver implements Editable<ReceiverBuilder> , KubernetesResource
     @JsonProperty("emailConfigs")
     public void setEmailConfigs(List<EmailConfig> emailConfigs) {
         this.emailConfigs = emailConfigs;
+    }
+
+    @JsonProperty("msteamsConfigs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<MSTeamsConfig> getMsteamsConfigs() {
+        return msteamsConfigs;
+    }
+
+    @JsonProperty("msteamsConfigs")
+    public void setMsteamsConfigs(List<MSTeamsConfig> msteamsConfigs) {
+        this.msteamsConfigs = msteamsConfigs;
     }
 
     @JsonProperty("name")
