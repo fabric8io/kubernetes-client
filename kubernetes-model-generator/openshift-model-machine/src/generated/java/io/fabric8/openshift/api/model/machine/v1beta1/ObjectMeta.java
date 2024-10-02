@@ -19,12 +19,11 @@ import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
-import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
+import io.fabric8.kubernetes.api.model.OwnerReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.kubernetes.api.model.Taint;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -34,12 +33,12 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "metadata",
-    "authoritativeAPI",
-    "lifecycleHooks",
-    "providerID",
-    "providerSpec",
-    "taints"
+    "annotations",
+    "generateName",
+    "labels",
+    "name",
+    "namespace",
+    "ownerReferences"
 })
 @ToString
 @EqualsAndHashCode
@@ -48,7 +47,7 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
-    @BuildableReference(ObjectMeta.class),
+    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
     @BuildableReference(LabelSelector.class),
     @BuildableReference(Container.class),
     @BuildableReference(PodTemplateSpec.class),
@@ -59,22 +58,24 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class MachineSpec implements Editable<MachineSpecBuilder> , KubernetesResource
+public class ObjectMeta implements Editable<ObjectMetaBuilder> , KubernetesResource
 {
 
-    @JsonProperty("authoritativeAPI")
-    private String authoritativeAPI;
-    @JsonProperty("lifecycleHooks")
-    private LifecycleHooks lifecycleHooks;
-    @JsonProperty("metadata")
-    private ObjectMeta metadata;
-    @JsonProperty("providerID")
-    private String providerID;
-    @JsonProperty("providerSpec")
-    private ProviderSpec providerSpec;
-    @JsonProperty("taints")
+    @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Taint> taints = new ArrayList<>();
+    private Map<String, String> annotations = new LinkedHashMap<>();
+    @JsonProperty("generateName")
+    private String generateName;
+    @JsonProperty("labels")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> labels = new LinkedHashMap<>();
+    @JsonProperty("name")
+    private String name;
+    @JsonProperty("namespace")
+    private String namespace;
+    @JsonProperty("ownerReferences")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<OwnerReference> ownerReferences = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -82,87 +83,89 @@ public class MachineSpec implements Editable<MachineSpecBuilder> , KubernetesRes
      * No args constructor for use in serialization
      * 
      */
-    public MachineSpec() {
+    public ObjectMeta() {
     }
 
-    public MachineSpec(String authoritativeAPI, LifecycleHooks lifecycleHooks, ObjectMeta metadata, String providerID, ProviderSpec providerSpec, List<Taint> taints) {
+    public ObjectMeta(Map<String, String> annotations, String generateName, Map<String, String> labels, String name, String namespace, List<OwnerReference> ownerReferences) {
         super();
-        this.authoritativeAPI = authoritativeAPI;
-        this.lifecycleHooks = lifecycleHooks;
-        this.metadata = metadata;
-        this.providerID = providerID;
-        this.providerSpec = providerSpec;
-        this.taints = taints;
+        this.annotations = annotations;
+        this.generateName = generateName;
+        this.labels = labels;
+        this.name = name;
+        this.namespace = namespace;
+        this.ownerReferences = ownerReferences;
     }
 
-    @JsonProperty("authoritativeAPI")
-    public String getAuthoritativeAPI() {
-        return authoritativeAPI;
-    }
-
-    @JsonProperty("authoritativeAPI")
-    public void setAuthoritativeAPI(String authoritativeAPI) {
-        this.authoritativeAPI = authoritativeAPI;
-    }
-
-    @JsonProperty("lifecycleHooks")
-    public LifecycleHooks getLifecycleHooks() {
-        return lifecycleHooks;
-    }
-
-    @JsonProperty("lifecycleHooks")
-    public void setLifecycleHooks(LifecycleHooks lifecycleHooks) {
-        this.lifecycleHooks = lifecycleHooks;
-    }
-
-    @JsonProperty("metadata")
-    public ObjectMeta getMetadata() {
-        return metadata;
-    }
-
-    @JsonProperty("metadata")
-    public void setMetadata(ObjectMeta metadata) {
-        this.metadata = metadata;
-    }
-
-    @JsonProperty("providerID")
-    public String getProviderID() {
-        return providerID;
-    }
-
-    @JsonProperty("providerID")
-    public void setProviderID(String providerID) {
-        this.providerID = providerID;
-    }
-
-    @JsonProperty("providerSpec")
-    public ProviderSpec getProviderSpec() {
-        return providerSpec;
-    }
-
-    @JsonProperty("providerSpec")
-    public void setProviderSpec(ProviderSpec providerSpec) {
-        this.providerSpec = providerSpec;
-    }
-
-    @JsonProperty("taints")
+    @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<Taint> getTaints() {
-        return taints;
+    public Map<String, String> getAnnotations() {
+        return annotations;
     }
 
-    @JsonProperty("taints")
-    public void setTaints(List<Taint> taints) {
-        this.taints = taints;
+    @JsonProperty("annotations")
+    public void setAnnotations(Map<String, String> annotations) {
+        this.annotations = annotations;
+    }
+
+    @JsonProperty("generateName")
+    public String getGenerateName() {
+        return generateName;
+    }
+
+    @JsonProperty("generateName")
+    public void setGenerateName(String generateName) {
+        this.generateName = generateName;
+    }
+
+    @JsonProperty("labels")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public Map<String, String> getLabels() {
+        return labels;
+    }
+
+    @JsonProperty("labels")
+    public void setLabels(Map<String, String> labels) {
+        this.labels = labels;
+    }
+
+    @JsonProperty("name")
+    public String getName() {
+        return name;
+    }
+
+    @JsonProperty("name")
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @JsonProperty("namespace")
+    public String getNamespace() {
+        return namespace;
+    }
+
+    @JsonProperty("namespace")
+    public void setNamespace(String namespace) {
+        this.namespace = namespace;
+    }
+
+    @JsonProperty("ownerReferences")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<OwnerReference> getOwnerReferences() {
+        return ownerReferences;
+    }
+
+    @JsonProperty("ownerReferences")
+    public void setOwnerReferences(List<OwnerReference> ownerReferences) {
+        this.ownerReferences = ownerReferences;
     }
 
     @JsonIgnore
-    public MachineSpecBuilder edit() {
-        return new MachineSpecBuilder(this);
+    public ObjectMetaBuilder edit() {
+        return new ObjectMetaBuilder(this);
     }
 
     @JsonIgnore
-    public MachineSpecBuilder toBuilder() {
+    public ObjectMetaBuilder toBuilder() {
         return edit();
     }
 

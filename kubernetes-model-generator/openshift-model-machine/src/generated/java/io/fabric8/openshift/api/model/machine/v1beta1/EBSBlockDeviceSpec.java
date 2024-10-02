@@ -1,5 +1,5 @@
 
-package io.fabric8.openshift.api.model.machine.v1;
+package io.fabric8.openshift.api.model.machine.v1beta1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -31,11 +31,12 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "replicas",
-    "selector",
-    "state",
-    "strategy",
-    "template"
+    "deleteOnTermination",
+    "encrypted",
+    "iops",
+    "kmsKey",
+    "volumeSize",
+    "volumeType"
 })
 @ToString
 @EqualsAndHashCode
@@ -55,19 +56,21 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ControlPlaneMachineSetSpec implements Editable<ControlPlaneMachineSetSpecBuilder> , KubernetesResource
+public class EBSBlockDeviceSpec implements Editable<EBSBlockDeviceSpecBuilder> , KubernetesResource
 {
 
-    @JsonProperty("replicas")
-    private Integer replicas;
-    @JsonProperty("selector")
-    private LabelSelector selector;
-    @JsonProperty("state")
-    private String state;
-    @JsonProperty("strategy")
-    private ControlPlaneMachineSetStrategy strategy;
-    @JsonProperty("template")
-    private ControlPlaneMachineSetTemplate template;
+    @JsonProperty("deleteOnTermination")
+    private Boolean deleteOnTermination;
+    @JsonProperty("encrypted")
+    private Boolean encrypted;
+    @JsonProperty("iops")
+    private Long iops;
+    @JsonProperty("kmsKey")
+    private AWSResourceReference kmsKey;
+    @JsonProperty("volumeSize")
+    private Long volumeSize;
+    @JsonProperty("volumeType")
+    private String volumeType;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -75,75 +78,86 @@ public class ControlPlaneMachineSetSpec implements Editable<ControlPlaneMachineS
      * No args constructor for use in serialization
      * 
      */
-    public ControlPlaneMachineSetSpec() {
+    public EBSBlockDeviceSpec() {
     }
 
-    public ControlPlaneMachineSetSpec(Integer replicas, LabelSelector selector, String state, ControlPlaneMachineSetStrategy strategy, ControlPlaneMachineSetTemplate template) {
+    public EBSBlockDeviceSpec(Boolean deleteOnTermination, Boolean encrypted, Long iops, AWSResourceReference kmsKey, Long volumeSize, String volumeType) {
         super();
-        this.replicas = replicas;
-        this.selector = selector;
-        this.state = state;
-        this.strategy = strategy;
-        this.template = template;
+        this.deleteOnTermination = deleteOnTermination;
+        this.encrypted = encrypted;
+        this.iops = iops;
+        this.kmsKey = kmsKey;
+        this.volumeSize = volumeSize;
+        this.volumeType = volumeType;
     }
 
-    @JsonProperty("replicas")
-    public Integer getReplicas() {
-        return replicas;
+    @JsonProperty("deleteOnTermination")
+    public Boolean getDeleteOnTermination() {
+        return deleteOnTermination;
     }
 
-    @JsonProperty("replicas")
-    public void setReplicas(Integer replicas) {
-        this.replicas = replicas;
+    @JsonProperty("deleteOnTermination")
+    public void setDeleteOnTermination(Boolean deleteOnTermination) {
+        this.deleteOnTermination = deleteOnTermination;
     }
 
-    @JsonProperty("selector")
-    public LabelSelector getSelector() {
-        return selector;
+    @JsonProperty("encrypted")
+    public Boolean getEncrypted() {
+        return encrypted;
     }
 
-    @JsonProperty("selector")
-    public void setSelector(LabelSelector selector) {
-        this.selector = selector;
+    @JsonProperty("encrypted")
+    public void setEncrypted(Boolean encrypted) {
+        this.encrypted = encrypted;
     }
 
-    @JsonProperty("state")
-    public String getState() {
-        return state;
+    @JsonProperty("iops")
+    public Long getIops() {
+        return iops;
     }
 
-    @JsonProperty("state")
-    public void setState(String state) {
-        this.state = state;
+    @JsonProperty("iops")
+    public void setIops(Long iops) {
+        this.iops = iops;
     }
 
-    @JsonProperty("strategy")
-    public ControlPlaneMachineSetStrategy getStrategy() {
-        return strategy;
+    @JsonProperty("kmsKey")
+    public AWSResourceReference getKmsKey() {
+        return kmsKey;
     }
 
-    @JsonProperty("strategy")
-    public void setStrategy(ControlPlaneMachineSetStrategy strategy) {
-        this.strategy = strategy;
+    @JsonProperty("kmsKey")
+    public void setKmsKey(AWSResourceReference kmsKey) {
+        this.kmsKey = kmsKey;
     }
 
-    @JsonProperty("template")
-    public ControlPlaneMachineSetTemplate getTemplate() {
-        return template;
+    @JsonProperty("volumeSize")
+    public Long getVolumeSize() {
+        return volumeSize;
     }
 
-    @JsonProperty("template")
-    public void setTemplate(ControlPlaneMachineSetTemplate template) {
-        this.template = template;
+    @JsonProperty("volumeSize")
+    public void setVolumeSize(Long volumeSize) {
+        this.volumeSize = volumeSize;
+    }
+
+    @JsonProperty("volumeType")
+    public String getVolumeType() {
+        return volumeType;
+    }
+
+    @JsonProperty("volumeType")
+    public void setVolumeType(String volumeType) {
+        this.volumeType = volumeType;
     }
 
     @JsonIgnore
-    public ControlPlaneMachineSetSpecBuilder edit() {
-        return new ControlPlaneMachineSetSpecBuilder(this);
+    public EBSBlockDeviceSpecBuilder edit() {
+        return new EBSBlockDeviceSpecBuilder(this);
     }
 
     @JsonIgnore
-    public ControlPlaneMachineSetSpecBuilder toBuilder() {
+    public EBSBlockDeviceSpecBuilder toBuilder() {
         return edit();
     }
 

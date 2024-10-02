@@ -1,5 +1,5 @@
 
-package io.fabric8.openshift.api.model.machine.v1;
+package io.fabric8.openshift.api.model.machine.v1beta1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -31,11 +31,11 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "replicas",
-    "selector",
-    "state",
-    "strategy",
-    "template"
+    "cachingType",
+    "diskSettings",
+    "diskSizeGB",
+    "managedDisk",
+    "osType"
 })
 @ToString
 @EqualsAndHashCode
@@ -55,19 +55,19 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ControlPlaneMachineSetSpec implements Editable<ControlPlaneMachineSetSpecBuilder> , KubernetesResource
+public class OSDisk implements Editable<OSDiskBuilder> , KubernetesResource
 {
 
-    @JsonProperty("replicas")
-    private Integer replicas;
-    @JsonProperty("selector")
-    private LabelSelector selector;
-    @JsonProperty("state")
-    private String state;
-    @JsonProperty("strategy")
-    private ControlPlaneMachineSetStrategy strategy;
-    @JsonProperty("template")
-    private ControlPlaneMachineSetTemplate template;
+    @JsonProperty("cachingType")
+    private String cachingType;
+    @JsonProperty("diskSettings")
+    private DiskSettings diskSettings;
+    @JsonProperty("diskSizeGB")
+    private Integer diskSizeGB;
+    @JsonProperty("managedDisk")
+    private OSDiskManagedDiskParameters managedDisk;
+    @JsonProperty("osType")
+    private String osType;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -75,75 +75,75 @@ public class ControlPlaneMachineSetSpec implements Editable<ControlPlaneMachineS
      * No args constructor for use in serialization
      * 
      */
-    public ControlPlaneMachineSetSpec() {
+    public OSDisk() {
     }
 
-    public ControlPlaneMachineSetSpec(Integer replicas, LabelSelector selector, String state, ControlPlaneMachineSetStrategy strategy, ControlPlaneMachineSetTemplate template) {
+    public OSDisk(String cachingType, DiskSettings diskSettings, Integer diskSizeGB, OSDiskManagedDiskParameters managedDisk, String osType) {
         super();
-        this.replicas = replicas;
-        this.selector = selector;
-        this.state = state;
-        this.strategy = strategy;
-        this.template = template;
+        this.cachingType = cachingType;
+        this.diskSettings = diskSettings;
+        this.diskSizeGB = diskSizeGB;
+        this.managedDisk = managedDisk;
+        this.osType = osType;
     }
 
-    @JsonProperty("replicas")
-    public Integer getReplicas() {
-        return replicas;
+    @JsonProperty("cachingType")
+    public String getCachingType() {
+        return cachingType;
     }
 
-    @JsonProperty("replicas")
-    public void setReplicas(Integer replicas) {
-        this.replicas = replicas;
+    @JsonProperty("cachingType")
+    public void setCachingType(String cachingType) {
+        this.cachingType = cachingType;
     }
 
-    @JsonProperty("selector")
-    public LabelSelector getSelector() {
-        return selector;
+    @JsonProperty("diskSettings")
+    public DiskSettings getDiskSettings() {
+        return diskSettings;
     }
 
-    @JsonProperty("selector")
-    public void setSelector(LabelSelector selector) {
-        this.selector = selector;
+    @JsonProperty("diskSettings")
+    public void setDiskSettings(DiskSettings diskSettings) {
+        this.diskSettings = diskSettings;
     }
 
-    @JsonProperty("state")
-    public String getState() {
-        return state;
+    @JsonProperty("diskSizeGB")
+    public Integer getDiskSizeGB() {
+        return diskSizeGB;
     }
 
-    @JsonProperty("state")
-    public void setState(String state) {
-        this.state = state;
+    @JsonProperty("diskSizeGB")
+    public void setDiskSizeGB(Integer diskSizeGB) {
+        this.diskSizeGB = diskSizeGB;
     }
 
-    @JsonProperty("strategy")
-    public ControlPlaneMachineSetStrategy getStrategy() {
-        return strategy;
+    @JsonProperty("managedDisk")
+    public OSDiskManagedDiskParameters getManagedDisk() {
+        return managedDisk;
     }
 
-    @JsonProperty("strategy")
-    public void setStrategy(ControlPlaneMachineSetStrategy strategy) {
-        this.strategy = strategy;
+    @JsonProperty("managedDisk")
+    public void setManagedDisk(OSDiskManagedDiskParameters managedDisk) {
+        this.managedDisk = managedDisk;
     }
 
-    @JsonProperty("template")
-    public ControlPlaneMachineSetTemplate getTemplate() {
-        return template;
+    @JsonProperty("osType")
+    public String getOsType() {
+        return osType;
     }
 
-    @JsonProperty("template")
-    public void setTemplate(ControlPlaneMachineSetTemplate template) {
-        this.template = template;
-    }
-
-    @JsonIgnore
-    public ControlPlaneMachineSetSpecBuilder edit() {
-        return new ControlPlaneMachineSetSpecBuilder(this);
+    @JsonProperty("osType")
+    public void setOsType(String osType) {
+        this.osType = osType;
     }
 
     @JsonIgnore
-    public ControlPlaneMachineSetSpecBuilder toBuilder() {
+    public OSDiskBuilder edit() {
+        return new OSDiskBuilder(this);
+    }
+
+    @JsonIgnore
+    public OSDiskBuilder toBuilder() {
         return edit();
     }
 

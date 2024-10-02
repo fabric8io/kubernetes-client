@@ -35,6 +35,7 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "addresses",
+    "authoritativeAPI",
     "conditions",
     "errorMessage",
     "errorReason",
@@ -42,7 +43,8 @@ import lombok.experimental.Accessors;
     "lastUpdated",
     "nodeRef",
     "phase",
-    "providerStatus"
+    "providerStatus",
+    "synchronizedGeneration"
 })
 @ToString
 @EqualsAndHashCode
@@ -68,24 +70,28 @@ public class MachineStatus implements Editable<MachineStatusBuilder> , Kubernete
     @JsonProperty("addresses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<NodeAddress> addresses = new ArrayList<>();
+    @JsonProperty("authoritativeAPI")
+    private String authoritativeAPI;
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<MachineStatusConditions> conditions = new ArrayList<>();
+    private List<Condition> conditions = new ArrayList<>();
     @JsonProperty("errorMessage")
     private String errorMessage;
     @JsonProperty("errorReason")
     private String errorReason;
     @JsonProperty("lastOperation")
-    private MachineStatusLastOperation lastOperation;
+    private LastOperation lastOperation;
     @JsonProperty("lastUpdated")
     private String lastUpdated;
     @JsonProperty("nodeRef")
-    private MachineStatusNodeRef nodeRef;
+    private ObjectReference nodeRef;
     @JsonProperty("phase")
     private String phase;
     @JsonProperty("providerStatus")
     @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
     private Object providerStatus;
+    @JsonProperty("synchronizedGeneration")
+    private Long synchronizedGeneration;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -96,9 +102,10 @@ public class MachineStatus implements Editable<MachineStatusBuilder> , Kubernete
     public MachineStatus() {
     }
 
-    public MachineStatus(List<NodeAddress> addresses, List<MachineStatusConditions> conditions, String errorMessage, String errorReason, MachineStatusLastOperation lastOperation, String lastUpdated, MachineStatusNodeRef nodeRef, String phase, Object providerStatus) {
+    public MachineStatus(List<NodeAddress> addresses, String authoritativeAPI, List<Condition> conditions, String errorMessage, String errorReason, LastOperation lastOperation, String lastUpdated, ObjectReference nodeRef, String phase, Object providerStatus, Long synchronizedGeneration) {
         super();
         this.addresses = addresses;
+        this.authoritativeAPI = authoritativeAPI;
         this.conditions = conditions;
         this.errorMessage = errorMessage;
         this.errorReason = errorReason;
@@ -107,6 +114,7 @@ public class MachineStatus implements Editable<MachineStatusBuilder> , Kubernete
         this.nodeRef = nodeRef;
         this.phase = phase;
         this.providerStatus = providerStatus;
+        this.synchronizedGeneration = synchronizedGeneration;
     }
 
     @JsonProperty("addresses")
@@ -120,14 +128,24 @@ public class MachineStatus implements Editable<MachineStatusBuilder> , Kubernete
         this.addresses = addresses;
     }
 
+    @JsonProperty("authoritativeAPI")
+    public String getAuthoritativeAPI() {
+        return authoritativeAPI;
+    }
+
+    @JsonProperty("authoritativeAPI")
+    public void setAuthoritativeAPI(String authoritativeAPI) {
+        this.authoritativeAPI = authoritativeAPI;
+    }
+
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<MachineStatusConditions> getConditions() {
+    public List<Condition> getConditions() {
         return conditions;
     }
 
     @JsonProperty("conditions")
-    public void setConditions(List<MachineStatusConditions> conditions) {
+    public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
     }
 
@@ -152,12 +170,12 @@ public class MachineStatus implements Editable<MachineStatusBuilder> , Kubernete
     }
 
     @JsonProperty("lastOperation")
-    public MachineStatusLastOperation getLastOperation() {
+    public LastOperation getLastOperation() {
         return lastOperation;
     }
 
     @JsonProperty("lastOperation")
-    public void setLastOperation(MachineStatusLastOperation lastOperation) {
+    public void setLastOperation(LastOperation lastOperation) {
         this.lastOperation = lastOperation;
     }
 
@@ -172,12 +190,12 @@ public class MachineStatus implements Editable<MachineStatusBuilder> , Kubernete
     }
 
     @JsonProperty("nodeRef")
-    public MachineStatusNodeRef getNodeRef() {
+    public ObjectReference getNodeRef() {
         return nodeRef;
     }
 
     @JsonProperty("nodeRef")
-    public void setNodeRef(MachineStatusNodeRef nodeRef) {
+    public void setNodeRef(ObjectReference nodeRef) {
         this.nodeRef = nodeRef;
     }
 
@@ -200,6 +218,16 @@ public class MachineStatus implements Editable<MachineStatusBuilder> , Kubernete
     @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
     public void setProviderStatus(Object providerStatus) {
         this.providerStatus = providerStatus;
+    }
+
+    @JsonProperty("synchronizedGeneration")
+    public Long getSynchronizedGeneration() {
+        return synchronizedGeneration;
+    }
+
+    @JsonProperty("synchronizedGeneration")
+    public void setSynchronizedGeneration(Long synchronizedGeneration) {
+        this.synchronizedGeneration = synchronizedGeneration;
     }
 
     @JsonIgnore

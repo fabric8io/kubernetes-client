@@ -61,17 +61,16 @@ public class MachineHealthCheckSpec implements Editable<MachineHealthCheckSpecBu
 {
 
     @JsonProperty("maxUnhealthy")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
-    private Object maxUnhealthy;
+    private IntOrString maxUnhealthy;
     @JsonProperty("nodeStartupTimeout")
     private String nodeStartupTimeout;
     @JsonProperty("remediationTemplate")
-    private MachineHealthCheckSpecRemediationTemplate remediationTemplate;
+    private ObjectReference remediationTemplate;
     @JsonProperty("selector")
-    private MachineHealthCheckSpecSelector selector;
+    private LabelSelector selector;
     @JsonProperty("unhealthyConditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<MachineHealthCheckSpecUnhealthyConditions> unhealthyConditions = new ArrayList<>();
+    private List<UnhealthyCondition> unhealthyConditions = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -82,7 +81,7 @@ public class MachineHealthCheckSpec implements Editable<MachineHealthCheckSpecBu
     public MachineHealthCheckSpec() {
     }
 
-    public MachineHealthCheckSpec(Object maxUnhealthy, String nodeStartupTimeout, MachineHealthCheckSpecRemediationTemplate remediationTemplate, MachineHealthCheckSpecSelector selector, List<MachineHealthCheckSpecUnhealthyConditions> unhealthyConditions) {
+    public MachineHealthCheckSpec(IntOrString maxUnhealthy, String nodeStartupTimeout, ObjectReference remediationTemplate, LabelSelector selector, List<UnhealthyCondition> unhealthyConditions) {
         super();
         this.maxUnhealthy = maxUnhealthy;
         this.nodeStartupTimeout = nodeStartupTimeout;
@@ -92,13 +91,12 @@ public class MachineHealthCheckSpec implements Editable<MachineHealthCheckSpecBu
     }
 
     @JsonProperty("maxUnhealthy")
-    public Object getMaxUnhealthy() {
+    public IntOrString getMaxUnhealthy() {
         return maxUnhealthy;
     }
 
     @JsonProperty("maxUnhealthy")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
-    public void setMaxUnhealthy(Object maxUnhealthy) {
+    public void setMaxUnhealthy(IntOrString maxUnhealthy) {
         this.maxUnhealthy = maxUnhealthy;
     }
 
@@ -113,33 +111,33 @@ public class MachineHealthCheckSpec implements Editable<MachineHealthCheckSpecBu
     }
 
     @JsonProperty("remediationTemplate")
-    public MachineHealthCheckSpecRemediationTemplate getRemediationTemplate() {
+    public ObjectReference getRemediationTemplate() {
         return remediationTemplate;
     }
 
     @JsonProperty("remediationTemplate")
-    public void setRemediationTemplate(MachineHealthCheckSpecRemediationTemplate remediationTemplate) {
+    public void setRemediationTemplate(ObjectReference remediationTemplate) {
         this.remediationTemplate = remediationTemplate;
     }
 
     @JsonProperty("selector")
-    public MachineHealthCheckSpecSelector getSelector() {
+    public LabelSelector getSelector() {
         return selector;
     }
 
     @JsonProperty("selector")
-    public void setSelector(MachineHealthCheckSpecSelector selector) {
+    public void setSelector(LabelSelector selector) {
         this.selector = selector;
     }
 
     @JsonProperty("unhealthyConditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<MachineHealthCheckSpecUnhealthyConditions> getUnhealthyConditions() {
+    public List<UnhealthyCondition> getUnhealthyConditions() {
         return unhealthyConditions;
     }
 
     @JsonProperty("unhealthyConditions")
-    public void setUnhealthyConditions(List<MachineHealthCheckSpecUnhealthyConditions> unhealthyConditions) {
+    public void setUnhealthyConditions(List<UnhealthyCondition> unhealthyConditions) {
         this.unhealthyConditions = unhealthyConditions;
     }
 

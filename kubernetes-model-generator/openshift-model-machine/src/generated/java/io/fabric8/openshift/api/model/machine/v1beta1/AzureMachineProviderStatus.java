@@ -14,19 +14,24 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
+import io.fabric8.kubernetes.api.model.Condition;
 import io.fabric8.kubernetes.api.model.Container;
+import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
-import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
+import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.kubernetes.api.model.Taint;
+import io.fabric8.kubernetes.model.annotation.Group;
+import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
+import io.sundr.transform.annotations.TemplateTransformation;
+import io.sundr.transform.annotations.TemplateTransformations;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
@@ -34,12 +39,12 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "apiVersion",
+    "kind",
     "metadata",
-    "authoritativeAPI",
-    "lifecycleHooks",
-    "providerID",
-    "providerSpec",
-    "taints"
+    "conditions",
+    "vmId",
+    "vmState"
 })
 @ToString
 @EqualsAndHashCode
@@ -58,23 +63,38 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@TemplateTransformations({
+    @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true)
+})
+@Version("v1beta1")
+@Group("machine.openshift.io")
 @Generated("jsonschema2pojo")
-public class MachineSpec implements Editable<MachineSpecBuilder> , KubernetesResource
+public class AzureMachineProviderStatus implements Editable<AzureMachineProviderStatusBuilder> , HasMetadata, Namespaced
 {
 
-    @JsonProperty("authoritativeAPI")
-    private String authoritativeAPI;
-    @JsonProperty("lifecycleHooks")
-    private LifecycleHooks lifecycleHooks;
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("apiVersion")
+    private String apiVersion = "machine.openshift.io/v1beta1";
+    @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<Condition> conditions = new ArrayList<>();
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("kind")
+    private String kind = "AzureMachineProviderStatus";
     @JsonProperty("metadata")
     private ObjectMeta metadata;
-    @JsonProperty("providerID")
-    private String providerID;
-    @JsonProperty("providerSpec")
-    private ProviderSpec providerSpec;
-    @JsonProperty("taints")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Taint> taints = new ArrayList<>();
+    @JsonProperty("vmId")
+    private String vmId;
+    @JsonProperty("vmState")
+    private String vmState;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -82,37 +102,68 @@ public class MachineSpec implements Editable<MachineSpecBuilder> , KubernetesRes
      * No args constructor for use in serialization
      * 
      */
-    public MachineSpec() {
+    public AzureMachineProviderStatus() {
     }
 
-    public MachineSpec(String authoritativeAPI, LifecycleHooks lifecycleHooks, ObjectMeta metadata, String providerID, ProviderSpec providerSpec, List<Taint> taints) {
+    public AzureMachineProviderStatus(String apiVersion, List<Condition> conditions, String kind, ObjectMeta metadata, String vmId, String vmState) {
         super();
-        this.authoritativeAPI = authoritativeAPI;
-        this.lifecycleHooks = lifecycleHooks;
+        this.apiVersion = apiVersion;
+        this.conditions = conditions;
+        this.kind = kind;
         this.metadata = metadata;
-        this.providerID = providerID;
-        this.providerSpec = providerSpec;
-        this.taints = taints;
+        this.vmId = vmId;
+        this.vmState = vmState;
     }
 
-    @JsonProperty("authoritativeAPI")
-    public String getAuthoritativeAPI() {
-        return authoritativeAPI;
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("apiVersion")
+    public String getApiVersion() {
+        return apiVersion;
     }
 
-    @JsonProperty("authoritativeAPI")
-    public void setAuthoritativeAPI(String authoritativeAPI) {
-        this.authoritativeAPI = authoritativeAPI;
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("apiVersion")
+    public void setApiVersion(String apiVersion) {
+        this.apiVersion = apiVersion;
     }
 
-    @JsonProperty("lifecycleHooks")
-    public LifecycleHooks getLifecycleHooks() {
-        return lifecycleHooks;
+    @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<Condition> getConditions() {
+        return conditions;
     }
 
-    @JsonProperty("lifecycleHooks")
-    public void setLifecycleHooks(LifecycleHooks lifecycleHooks) {
-        this.lifecycleHooks = lifecycleHooks;
+    @JsonProperty("conditions")
+    public void setConditions(List<Condition> conditions) {
+        this.conditions = conditions;
+    }
+
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("kind")
+    public String getKind() {
+        return kind;
+    }
+
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("kind")
+    public void setKind(String kind) {
+        this.kind = kind;
     }
 
     @JsonProperty("metadata")
@@ -125,44 +176,33 @@ public class MachineSpec implements Editable<MachineSpecBuilder> , KubernetesRes
         this.metadata = metadata;
     }
 
-    @JsonProperty("providerID")
-    public String getProviderID() {
-        return providerID;
+    @JsonProperty("vmId")
+    public String getVmId() {
+        return vmId;
     }
 
-    @JsonProperty("providerID")
-    public void setProviderID(String providerID) {
-        this.providerID = providerID;
+    @JsonProperty("vmId")
+    public void setVmId(String vmId) {
+        this.vmId = vmId;
     }
 
-    @JsonProperty("providerSpec")
-    public ProviderSpec getProviderSpec() {
-        return providerSpec;
+    @JsonProperty("vmState")
+    public String getVmState() {
+        return vmState;
     }
 
-    @JsonProperty("providerSpec")
-    public void setProviderSpec(ProviderSpec providerSpec) {
-        this.providerSpec = providerSpec;
-    }
-
-    @JsonProperty("taints")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<Taint> getTaints() {
-        return taints;
-    }
-
-    @JsonProperty("taints")
-    public void setTaints(List<Taint> taints) {
-        this.taints = taints;
+    @JsonProperty("vmState")
+    public void setVmState(String vmState) {
+        this.vmState = vmState;
     }
 
     @JsonIgnore
-    public MachineSpecBuilder edit() {
-        return new MachineSpecBuilder(this);
+    public AzureMachineProviderStatusBuilder edit() {
+        return new AzureMachineProviderStatusBuilder(this);
     }
 
     @JsonIgnore
-    public MachineSpecBuilder toBuilder() {
+    public AzureMachineProviderStatusBuilder toBuilder() {
         return edit();
     }
 

@@ -61,17 +61,10 @@
             <configuration >
               <settings combine.self="append">
                 <schemas>
-                  <schema>${openapi.schema.openshift-latest}</schema>
-                  <schema>${project.basedir}/../openapi/schemas/openshift-machine.json</schema>
+                  <schema>${openapi.schema.openshift-generated}</schema>
                 </schemas>
-                <packageMappings combine.self="append">
-                  <io.k8s.api>io.fabric8.kubernetes.api.model</io.k8s.api>
-                  <io.openshift.machine>io.fabric8.openshift.api.model.machine</io.openshift.machine>
-                  <com.github.openshift.api.machine>io.fabric8.openshift.api.model.machine</com.github.openshift.api.machine>
-                </packageMappings>
                 <includeGenerationRegexes>
                   <includeGenerationRegex>^io\.openshift\.machine\..*$</includeGenerationRegex>
-                  <includeGenerationRegex>^com\.github\.openshift\.api\.machine\..*$</includeGenerationRegex>
                 </includeGenerationRegexes>
               </settings>
             </configuration>

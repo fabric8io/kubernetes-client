@@ -1,5 +1,5 @@
 
-package io.fabric8.openshift.api.model.machine.v1;
+package io.fabric8.openshift.api.model.machine.v1beta1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -31,11 +31,12 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "replicas",
-    "selector",
-    "state",
-    "strategy",
-    "template"
+    "cachingType",
+    "deletionPolicy",
+    "diskSizeGB",
+    "lun",
+    "managedDisk",
+    "nameSuffix"
 })
 @ToString
 @EqualsAndHashCode
@@ -55,19 +56,21 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ControlPlaneMachineSetSpec implements Editable<ControlPlaneMachineSetSpecBuilder> , KubernetesResource
+public class DataDisk implements Editable<DataDiskBuilder> , KubernetesResource
 {
 
-    @JsonProperty("replicas")
-    private Integer replicas;
-    @JsonProperty("selector")
-    private LabelSelector selector;
-    @JsonProperty("state")
-    private String state;
-    @JsonProperty("strategy")
-    private ControlPlaneMachineSetStrategy strategy;
-    @JsonProperty("template")
-    private ControlPlaneMachineSetTemplate template;
+    @JsonProperty("cachingType")
+    private String cachingType;
+    @JsonProperty("deletionPolicy")
+    private String deletionPolicy;
+    @JsonProperty("diskSizeGB")
+    private Integer diskSizeGB;
+    @JsonProperty("lun")
+    private Integer lun;
+    @JsonProperty("managedDisk")
+    private DataDiskManagedDiskParameters managedDisk;
+    @JsonProperty("nameSuffix")
+    private String nameSuffix;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -75,75 +78,86 @@ public class ControlPlaneMachineSetSpec implements Editable<ControlPlaneMachineS
      * No args constructor for use in serialization
      * 
      */
-    public ControlPlaneMachineSetSpec() {
+    public DataDisk() {
     }
 
-    public ControlPlaneMachineSetSpec(Integer replicas, LabelSelector selector, String state, ControlPlaneMachineSetStrategy strategy, ControlPlaneMachineSetTemplate template) {
+    public DataDisk(String cachingType, String deletionPolicy, Integer diskSizeGB, Integer lun, DataDiskManagedDiskParameters managedDisk, String nameSuffix) {
         super();
-        this.replicas = replicas;
-        this.selector = selector;
-        this.state = state;
-        this.strategy = strategy;
-        this.template = template;
+        this.cachingType = cachingType;
+        this.deletionPolicy = deletionPolicy;
+        this.diskSizeGB = diskSizeGB;
+        this.lun = lun;
+        this.managedDisk = managedDisk;
+        this.nameSuffix = nameSuffix;
     }
 
-    @JsonProperty("replicas")
-    public Integer getReplicas() {
-        return replicas;
+    @JsonProperty("cachingType")
+    public String getCachingType() {
+        return cachingType;
     }
 
-    @JsonProperty("replicas")
-    public void setReplicas(Integer replicas) {
-        this.replicas = replicas;
+    @JsonProperty("cachingType")
+    public void setCachingType(String cachingType) {
+        this.cachingType = cachingType;
     }
 
-    @JsonProperty("selector")
-    public LabelSelector getSelector() {
-        return selector;
+    @JsonProperty("deletionPolicy")
+    public String getDeletionPolicy() {
+        return deletionPolicy;
     }
 
-    @JsonProperty("selector")
-    public void setSelector(LabelSelector selector) {
-        this.selector = selector;
+    @JsonProperty("deletionPolicy")
+    public void setDeletionPolicy(String deletionPolicy) {
+        this.deletionPolicy = deletionPolicy;
     }
 
-    @JsonProperty("state")
-    public String getState() {
-        return state;
+    @JsonProperty("diskSizeGB")
+    public Integer getDiskSizeGB() {
+        return diskSizeGB;
     }
 
-    @JsonProperty("state")
-    public void setState(String state) {
-        this.state = state;
+    @JsonProperty("diskSizeGB")
+    public void setDiskSizeGB(Integer diskSizeGB) {
+        this.diskSizeGB = diskSizeGB;
     }
 
-    @JsonProperty("strategy")
-    public ControlPlaneMachineSetStrategy getStrategy() {
-        return strategy;
+    @JsonProperty("lun")
+    public Integer getLun() {
+        return lun;
     }
 
-    @JsonProperty("strategy")
-    public void setStrategy(ControlPlaneMachineSetStrategy strategy) {
-        this.strategy = strategy;
+    @JsonProperty("lun")
+    public void setLun(Integer lun) {
+        this.lun = lun;
     }
 
-    @JsonProperty("template")
-    public ControlPlaneMachineSetTemplate getTemplate() {
-        return template;
+    @JsonProperty("managedDisk")
+    public DataDiskManagedDiskParameters getManagedDisk() {
+        return managedDisk;
     }
 
-    @JsonProperty("template")
-    public void setTemplate(ControlPlaneMachineSetTemplate template) {
-        this.template = template;
+    @JsonProperty("managedDisk")
+    public void setManagedDisk(DataDiskManagedDiskParameters managedDisk) {
+        this.managedDisk = managedDisk;
+    }
+
+    @JsonProperty("nameSuffix")
+    public String getNameSuffix() {
+        return nameSuffix;
+    }
+
+    @JsonProperty("nameSuffix")
+    public void setNameSuffix(String nameSuffix) {
+        this.nameSuffix = nameSuffix;
     }
 
     @JsonIgnore
-    public ControlPlaneMachineSetSpecBuilder edit() {
-        return new ControlPlaneMachineSetSpecBuilder(this);
+    public DataDiskBuilder edit() {
+        return new DataDiskBuilder(this);
     }
 
     @JsonIgnore
-    public ControlPlaneMachineSetSpecBuilder toBuilder() {
+    public DataDiskBuilder toBuilder() {
         return edit();
     }
 

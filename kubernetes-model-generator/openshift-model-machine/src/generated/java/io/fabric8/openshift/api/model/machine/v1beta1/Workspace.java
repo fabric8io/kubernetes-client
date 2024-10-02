@@ -1,5 +1,5 @@
 
-package io.fabric8.openshift.api.model.machine.v1;
+package io.fabric8.openshift.api.model.machine.v1beta1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -31,11 +31,11 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "replicas",
-    "selector",
-    "state",
-    "strategy",
-    "template"
+    "datacenter",
+    "datastore",
+    "folder",
+    "resourcePool",
+    "server"
 })
 @ToString
 @EqualsAndHashCode
@@ -55,19 +55,19 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class ControlPlaneMachineSetSpec implements Editable<ControlPlaneMachineSetSpecBuilder> , KubernetesResource
+public class Workspace implements Editable<WorkspaceBuilder> , KubernetesResource
 {
 
-    @JsonProperty("replicas")
-    private Integer replicas;
-    @JsonProperty("selector")
-    private LabelSelector selector;
-    @JsonProperty("state")
-    private String state;
-    @JsonProperty("strategy")
-    private ControlPlaneMachineSetStrategy strategy;
-    @JsonProperty("template")
-    private ControlPlaneMachineSetTemplate template;
+    @JsonProperty("datacenter")
+    private String datacenter;
+    @JsonProperty("datastore")
+    private String datastore;
+    @JsonProperty("folder")
+    private String folder;
+    @JsonProperty("resourcePool")
+    private String resourcePool;
+    @JsonProperty("server")
+    private String server;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -75,75 +75,75 @@ public class ControlPlaneMachineSetSpec implements Editable<ControlPlaneMachineS
      * No args constructor for use in serialization
      * 
      */
-    public ControlPlaneMachineSetSpec() {
+    public Workspace() {
     }
 
-    public ControlPlaneMachineSetSpec(Integer replicas, LabelSelector selector, String state, ControlPlaneMachineSetStrategy strategy, ControlPlaneMachineSetTemplate template) {
+    public Workspace(String datacenter, String datastore, String folder, String resourcePool, String server) {
         super();
-        this.replicas = replicas;
-        this.selector = selector;
-        this.state = state;
-        this.strategy = strategy;
-        this.template = template;
+        this.datacenter = datacenter;
+        this.datastore = datastore;
+        this.folder = folder;
+        this.resourcePool = resourcePool;
+        this.server = server;
     }
 
-    @JsonProperty("replicas")
-    public Integer getReplicas() {
-        return replicas;
+    @JsonProperty("datacenter")
+    public String getDatacenter() {
+        return datacenter;
     }
 
-    @JsonProperty("replicas")
-    public void setReplicas(Integer replicas) {
-        this.replicas = replicas;
+    @JsonProperty("datacenter")
+    public void setDatacenter(String datacenter) {
+        this.datacenter = datacenter;
     }
 
-    @JsonProperty("selector")
-    public LabelSelector getSelector() {
-        return selector;
+    @JsonProperty("datastore")
+    public String getDatastore() {
+        return datastore;
     }
 
-    @JsonProperty("selector")
-    public void setSelector(LabelSelector selector) {
-        this.selector = selector;
+    @JsonProperty("datastore")
+    public void setDatastore(String datastore) {
+        this.datastore = datastore;
     }
 
-    @JsonProperty("state")
-    public String getState() {
-        return state;
+    @JsonProperty("folder")
+    public String getFolder() {
+        return folder;
     }
 
-    @JsonProperty("state")
-    public void setState(String state) {
-        this.state = state;
+    @JsonProperty("folder")
+    public void setFolder(String folder) {
+        this.folder = folder;
     }
 
-    @JsonProperty("strategy")
-    public ControlPlaneMachineSetStrategy getStrategy() {
-        return strategy;
+    @JsonProperty("resourcePool")
+    public String getResourcePool() {
+        return resourcePool;
     }
 
-    @JsonProperty("strategy")
-    public void setStrategy(ControlPlaneMachineSetStrategy strategy) {
-        this.strategy = strategy;
+    @JsonProperty("resourcePool")
+    public void setResourcePool(String resourcePool) {
+        this.resourcePool = resourcePool;
     }
 
-    @JsonProperty("template")
-    public ControlPlaneMachineSetTemplate getTemplate() {
-        return template;
+    @JsonProperty("server")
+    public String getServer() {
+        return server;
     }
 
-    @JsonProperty("template")
-    public void setTemplate(ControlPlaneMachineSetTemplate template) {
-        this.template = template;
-    }
-
-    @JsonIgnore
-    public ControlPlaneMachineSetSpecBuilder edit() {
-        return new ControlPlaneMachineSetSpecBuilder(this);
+    @JsonProperty("server")
+    public void setServer(String server) {
+        this.server = server;
     }
 
     @JsonIgnore
-    public ControlPlaneMachineSetSpecBuilder toBuilder() {
+    public WorkspaceBuilder edit() {
+        return new WorkspaceBuilder(this);
+    }
+
+    @JsonIgnore
+    public WorkspaceBuilder toBuilder() {
         return edit();
     }
 

@@ -17,16 +17,21 @@ import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
+import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.LabelSelector;
+import io.fabric8.kubernetes.api.model.ListMeta;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.kubernetes.api.model.Taint;
+import io.fabric8.kubernetes.model.annotation.Group;
+import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
+import io.sundr.transform.annotations.TemplateTransformation;
+import io.sundr.transform.annotations.TemplateTransformations;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
@@ -34,12 +39,10 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "apiVersion",
+    "kind",
     "metadata",
-    "authoritativeAPI",
-    "lifecycleHooks",
-    "providerID",
-    "providerSpec",
-    "taints"
+    "items"
 })
 @ToString
 @EqualsAndHashCode
@@ -58,23 +61,34 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@TemplateTransformations({
+    @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true)
+})
+@Version("v1beta1")
+@Group("machine.openshift.io")
 @Generated("jsonschema2pojo")
-public class MachineSpec implements Editable<MachineSpecBuilder> , KubernetesResource
+public class AWSMachineProviderConfigList implements Editable<AWSMachineProviderConfigListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.machine.v1beta1.AWSMachineProviderConfig>
 {
 
-    @JsonProperty("authoritativeAPI")
-    private String authoritativeAPI;
-    @JsonProperty("lifecycleHooks")
-    private LifecycleHooks lifecycleHooks;
-    @JsonProperty("metadata")
-    private ObjectMeta metadata;
-    @JsonProperty("providerID")
-    private String providerID;
-    @JsonProperty("providerSpec")
-    private ProviderSpec providerSpec;
-    @JsonProperty("taints")
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("apiVersion")
+    private String apiVersion = "machine.openshift.io/v1beta1";
+    @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Taint> taints = new ArrayList<>();
+    private List<io.fabric8.openshift.api.model.machine.v1beta1.AWSMachineProviderConfig> items = new ArrayList<>();
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("kind")
+    private String kind = "AWSMachineProviderConfigList";
+    @JsonProperty("metadata")
+    private ListMeta metadata;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -82,87 +96,85 @@ public class MachineSpec implements Editable<MachineSpecBuilder> , KubernetesRes
      * No args constructor for use in serialization
      * 
      */
-    public MachineSpec() {
+    public AWSMachineProviderConfigList() {
     }
 
-    public MachineSpec(String authoritativeAPI, LifecycleHooks lifecycleHooks, ObjectMeta metadata, String providerID, ProviderSpec providerSpec, List<Taint> taints) {
+    public AWSMachineProviderConfigList(String apiVersion, List<io.fabric8.openshift.api.model.machine.v1beta1.AWSMachineProviderConfig> items, String kind, ListMeta metadata) {
         super();
-        this.authoritativeAPI = authoritativeAPI;
-        this.lifecycleHooks = lifecycleHooks;
+        this.apiVersion = apiVersion;
+        this.items = items;
+        this.kind = kind;
         this.metadata = metadata;
-        this.providerID = providerID;
-        this.providerSpec = providerSpec;
-        this.taints = taints;
     }
 
-    @JsonProperty("authoritativeAPI")
-    public String getAuthoritativeAPI() {
-        return authoritativeAPI;
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("apiVersion")
+    public String getApiVersion() {
+        return apiVersion;
     }
 
-    @JsonProperty("authoritativeAPI")
-    public void setAuthoritativeAPI(String authoritativeAPI) {
-        this.authoritativeAPI = authoritativeAPI;
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("apiVersion")
+    public void setApiVersion(String apiVersion) {
+        this.apiVersion = apiVersion;
     }
 
-    @JsonProperty("lifecycleHooks")
-    public LifecycleHooks getLifecycleHooks() {
-        return lifecycleHooks;
+    @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<io.fabric8.openshift.api.model.machine.v1beta1.AWSMachineProviderConfig> getItems() {
+        return items;
     }
 
-    @JsonProperty("lifecycleHooks")
-    public void setLifecycleHooks(LifecycleHooks lifecycleHooks) {
-        this.lifecycleHooks = lifecycleHooks;
+    @JsonProperty("items")
+    public void setItems(List<io.fabric8.openshift.api.model.machine.v1beta1.AWSMachineProviderConfig> items) {
+        this.items = items;
+    }
+
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("kind")
+    public String getKind() {
+        return kind;
+    }
+
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("kind")
+    public void setKind(String kind) {
+        this.kind = kind;
     }
 
     @JsonProperty("metadata")
-    public ObjectMeta getMetadata() {
+    public ListMeta getMetadata() {
         return metadata;
     }
 
     @JsonProperty("metadata")
-    public void setMetadata(ObjectMeta metadata) {
+    public void setMetadata(ListMeta metadata) {
         this.metadata = metadata;
     }
 
-    @JsonProperty("providerID")
-    public String getProviderID() {
-        return providerID;
-    }
-
-    @JsonProperty("providerID")
-    public void setProviderID(String providerID) {
-        this.providerID = providerID;
-    }
-
-    @JsonProperty("providerSpec")
-    public ProviderSpec getProviderSpec() {
-        return providerSpec;
-    }
-
-    @JsonProperty("providerSpec")
-    public void setProviderSpec(ProviderSpec providerSpec) {
-        this.providerSpec = providerSpec;
-    }
-
-    @JsonProperty("taints")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<Taint> getTaints() {
-        return taints;
-    }
-
-    @JsonProperty("taints")
-    public void setTaints(List<Taint> taints) {
-        this.taints = taints;
+    @JsonIgnore
+    public AWSMachineProviderConfigListBuilder edit() {
+        return new AWSMachineProviderConfigListBuilder(this);
     }
 
     @JsonIgnore
-    public MachineSpecBuilder edit() {
-        return new MachineSpecBuilder(this);
-    }
-
-    @JsonIgnore
-    public MachineSpecBuilder toBuilder() {
+    public AWSMachineProviderConfigListBuilder toBuilder() {
         return edit();
     }
 

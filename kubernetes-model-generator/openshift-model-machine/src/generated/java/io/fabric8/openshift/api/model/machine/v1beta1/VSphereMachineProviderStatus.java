@@ -14,18 +14,24 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
+import io.fabric8.kubernetes.api.model.Condition;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
+import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
+import io.fabric8.kubernetes.model.annotation.Group;
+import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
+import io.sundr.transform.annotations.TemplateTransformation;
+import io.sundr.transform.annotations.TemplateTransformations;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
@@ -33,10 +39,12 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "apiVersion",
+    "kind",
     "conditions",
-    "currentHealthy",
-    "expectedMachines",
-    "remediationsAllowed"
+    "instanceId",
+    "instanceState",
+    "taskRef"
 })
 @ToString
 @EqualsAndHashCode
@@ -55,19 +63,38 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
+@TemplateTransformations({
+    @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true)
+})
+@Version("v1beta1")
+@Group("machine.openshift.io")
 @Generated("jsonschema2pojo")
-public class MachineHealthCheckStatus implements Editable<MachineHealthCheckStatusBuilder> , KubernetesResource
+public class VSphereMachineProviderStatus implements Editable<VSphereMachineProviderStatusBuilder> , KubernetesResource, Namespaced
 {
 
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("apiVersion")
+    private String apiVersion = "machine.openshift.io/v1beta1";
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Condition> conditions = new ArrayList<>();
-    @JsonProperty("currentHealthy")
-    private Integer currentHealthy;
-    @JsonProperty("expectedMachines")
-    private Integer expectedMachines;
-    @JsonProperty("remediationsAllowed")
-    private Integer remediationsAllowed;
+    @JsonProperty("instanceId")
+    private String instanceId;
+    @JsonProperty("instanceState")
+    private String instanceState;
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("kind")
+    private String kind = "VSphereMachineProviderStatus";
+    @JsonProperty("taskRef")
+    private String taskRef;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -75,15 +102,37 @@ public class MachineHealthCheckStatus implements Editable<MachineHealthCheckStat
      * No args constructor for use in serialization
      * 
      */
-    public MachineHealthCheckStatus() {
+    public VSphereMachineProviderStatus() {
     }
 
-    public MachineHealthCheckStatus(List<Condition> conditions, Integer currentHealthy, Integer expectedMachines, Integer remediationsAllowed) {
+    public VSphereMachineProviderStatus(String apiVersion, List<Condition> conditions, String instanceId, String instanceState, String kind, String taskRef) {
         super();
+        this.apiVersion = apiVersion;
         this.conditions = conditions;
-        this.currentHealthy = currentHealthy;
-        this.expectedMachines = expectedMachines;
-        this.remediationsAllowed = remediationsAllowed;
+        this.instanceId = instanceId;
+        this.instanceState = instanceState;
+        this.kind = kind;
+        this.taskRef = taskRef;
+    }
+
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("apiVersion")
+    public String getApiVersion() {
+        return apiVersion;
+    }
+
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("apiVersion")
+    public void setApiVersion(String apiVersion) {
+        this.apiVersion = apiVersion;
     }
 
     @JsonProperty("conditions")
@@ -97,43 +146,63 @@ public class MachineHealthCheckStatus implements Editable<MachineHealthCheckStat
         this.conditions = conditions;
     }
 
-    @JsonProperty("currentHealthy")
-    public Integer getCurrentHealthy() {
-        return currentHealthy;
+    @JsonProperty("instanceId")
+    public String getInstanceId() {
+        return instanceId;
     }
 
-    @JsonProperty("currentHealthy")
-    public void setCurrentHealthy(Integer currentHealthy) {
-        this.currentHealthy = currentHealthy;
+    @JsonProperty("instanceId")
+    public void setInstanceId(String instanceId) {
+        this.instanceId = instanceId;
     }
 
-    @JsonProperty("expectedMachines")
-    public Integer getExpectedMachines() {
-        return expectedMachines;
+    @JsonProperty("instanceState")
+    public String getInstanceState() {
+        return instanceState;
     }
 
-    @JsonProperty("expectedMachines")
-    public void setExpectedMachines(Integer expectedMachines) {
-        this.expectedMachines = expectedMachines;
+    @JsonProperty("instanceState")
+    public void setInstanceState(String instanceState) {
+        this.instanceState = instanceState;
     }
 
-    @JsonProperty("remediationsAllowed")
-    public Integer getRemediationsAllowed() {
-        return remediationsAllowed;
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("kind")
+    public String getKind() {
+        return kind;
     }
 
-    @JsonProperty("remediationsAllowed")
-    public void setRemediationsAllowed(Integer remediationsAllowed) {
-        this.remediationsAllowed = remediationsAllowed;
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("kind")
+    public void setKind(String kind) {
+        this.kind = kind;
+    }
+
+    @JsonProperty("taskRef")
+    public String getTaskRef() {
+        return taskRef;
+    }
+
+    @JsonProperty("taskRef")
+    public void setTaskRef(String taskRef) {
+        this.taskRef = taskRef;
     }
 
     @JsonIgnore
-    public MachineHealthCheckStatusBuilder edit() {
-        return new MachineHealthCheckStatusBuilder(this);
+    public VSphereMachineProviderStatusBuilder edit() {
+        return new VSphereMachineProviderStatusBuilder(this);
     }
 
     @JsonIgnore
-    public MachineHealthCheckStatusBuilder toBuilder() {
+    public VSphereMachineProviderStatusBuilder toBuilder() {
         return edit();
     }
 

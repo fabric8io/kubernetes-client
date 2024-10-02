@@ -31,6 +31,7 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "authoritativeAPI",
     "deletePolicy",
     "minReadySeconds",
     "replicas",
@@ -58,6 +59,8 @@ import lombok.experimental.Accessors;
 public class MachineSetSpec implements Editable<MachineSetSpecBuilder> , KubernetesResource
 {
 
+    @JsonProperty("authoritativeAPI")
+    private String authoritativeAPI;
     @JsonProperty("deletePolicy")
     private String deletePolicy;
     @JsonProperty("minReadySeconds")
@@ -65,9 +68,9 @@ public class MachineSetSpec implements Editable<MachineSetSpecBuilder> , Kuberne
     @JsonProperty("replicas")
     private Integer replicas;
     @JsonProperty("selector")
-    private MachineSetSpecSelector selector;
+    private LabelSelector selector;
     @JsonProperty("template")
-    private MachineSetSpecTemplate template;
+    private MachineTemplateSpec template;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -78,13 +81,24 @@ public class MachineSetSpec implements Editable<MachineSetSpecBuilder> , Kuberne
     public MachineSetSpec() {
     }
 
-    public MachineSetSpec(String deletePolicy, Integer minReadySeconds, Integer replicas, MachineSetSpecSelector selector, MachineSetSpecTemplate template) {
+    public MachineSetSpec(String authoritativeAPI, String deletePolicy, Integer minReadySeconds, Integer replicas, LabelSelector selector, MachineTemplateSpec template) {
         super();
+        this.authoritativeAPI = authoritativeAPI;
         this.deletePolicy = deletePolicy;
         this.minReadySeconds = minReadySeconds;
         this.replicas = replicas;
         this.selector = selector;
         this.template = template;
+    }
+
+    @JsonProperty("authoritativeAPI")
+    public String getAuthoritativeAPI() {
+        return authoritativeAPI;
+    }
+
+    @JsonProperty("authoritativeAPI")
+    public void setAuthoritativeAPI(String authoritativeAPI) {
+        this.authoritativeAPI = authoritativeAPI;
     }
 
     @JsonProperty("deletePolicy")
@@ -118,22 +132,22 @@ public class MachineSetSpec implements Editable<MachineSetSpecBuilder> , Kuberne
     }
 
     @JsonProperty("selector")
-    public MachineSetSpecSelector getSelector() {
+    public LabelSelector getSelector() {
         return selector;
     }
 
     @JsonProperty("selector")
-    public void setSelector(MachineSetSpecSelector selector) {
+    public void setSelector(LabelSelector selector) {
         this.selector = selector;
     }
 
     @JsonProperty("template")
-    public MachineSetSpecTemplate getTemplate() {
+    public MachineTemplateSpec getTemplate() {
         return template;
     }
 
     @JsonProperty("template")
-    public void setTemplate(MachineSetSpecTemplate template) {
+    public void setTemplate(MachineTemplateSpec template) {
         this.template = template;
     }
 
