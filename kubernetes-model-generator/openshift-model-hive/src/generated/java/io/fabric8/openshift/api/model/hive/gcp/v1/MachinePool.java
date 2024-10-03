@@ -34,8 +34,12 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "networkProjectID",
+    "onHostMaintenance",
     "osDisk",
+    "secureBoot",
+    "serviceAccount",
     "type",
+    "userTags",
     "zones"
 })
 @ToString
@@ -61,10 +65,19 @@ public class MachinePool implements Editable<MachinePoolBuilder> , KubernetesRes
 
     @JsonProperty("networkProjectID")
     private String networkProjectID;
+    @JsonProperty("onHostMaintenance")
+    private String onHostMaintenance;
     @JsonProperty("osDisk")
     private OSDisk osDisk;
+    @JsonProperty("secureBoot")
+    private String secureBoot;
+    @JsonProperty("serviceAccount")
+    private String serviceAccount;
     @JsonProperty("type")
     private String type;
+    @JsonProperty("userTags")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<UserTag> userTags = new ArrayList<>();
     @JsonProperty("zones")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> zones = new ArrayList<>();
@@ -78,11 +91,15 @@ public class MachinePool implements Editable<MachinePoolBuilder> , KubernetesRes
     public MachinePool() {
     }
 
-    public MachinePool(String networkProjectID, OSDisk osDisk, String type, List<String> zones) {
+    public MachinePool(String networkProjectID, String onHostMaintenance, OSDisk osDisk, String secureBoot, String serviceAccount, String type, List<UserTag> userTags, List<String> zones) {
         super();
         this.networkProjectID = networkProjectID;
+        this.onHostMaintenance = onHostMaintenance;
         this.osDisk = osDisk;
+        this.secureBoot = secureBoot;
+        this.serviceAccount = serviceAccount;
         this.type = type;
+        this.userTags = userTags;
         this.zones = zones;
     }
 
@@ -96,6 +113,16 @@ public class MachinePool implements Editable<MachinePoolBuilder> , KubernetesRes
         this.networkProjectID = networkProjectID;
     }
 
+    @JsonProperty("onHostMaintenance")
+    public String getOnHostMaintenance() {
+        return onHostMaintenance;
+    }
+
+    @JsonProperty("onHostMaintenance")
+    public void setOnHostMaintenance(String onHostMaintenance) {
+        this.onHostMaintenance = onHostMaintenance;
+    }
+
     @JsonProperty("osDisk")
     public OSDisk getOsDisk() {
         return osDisk;
@@ -106,6 +133,26 @@ public class MachinePool implements Editable<MachinePoolBuilder> , KubernetesRes
         this.osDisk = osDisk;
     }
 
+    @JsonProperty("secureBoot")
+    public String getSecureBoot() {
+        return secureBoot;
+    }
+
+    @JsonProperty("secureBoot")
+    public void setSecureBoot(String secureBoot) {
+        this.secureBoot = secureBoot;
+    }
+
+    @JsonProperty("serviceAccount")
+    public String getServiceAccount() {
+        return serviceAccount;
+    }
+
+    @JsonProperty("serviceAccount")
+    public void setServiceAccount(String serviceAccount) {
+        this.serviceAccount = serviceAccount;
+    }
+
     @JsonProperty("type")
     public String getType() {
         return type;
@@ -114,6 +161,17 @@ public class MachinePool implements Editable<MachinePoolBuilder> , KubernetesRes
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;
+    }
+
+    @JsonProperty("userTags")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<UserTag> getUserTags() {
+        return userTags;
+    }
+
+    @JsonProperty("userTags")
+    public void setUserTags(List<UserTag> userTags) {
+        this.userTags = userTags;
     }
 
     @JsonProperty("zones")

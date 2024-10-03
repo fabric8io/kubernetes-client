@@ -1,9 +1,7 @@
 
-package io.fabric8.openshift.api.model.hive.alibabacloud.v1;
+package io.fabric8.openshift.api.model.hive.gcp.v1;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -33,11 +31,7 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "imageID",
-    "instanceType",
-    "systemDiskCategory",
-    "systemDiskSize",
-    "zones"
+    "networkProjectID"
 })
 @ToString
 @EqualsAndHashCode
@@ -57,20 +51,11 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class MachinePool implements Editable<MachinePoolBuilder> , KubernetesResource
+public class Metadata implements Editable<MetadataBuilder> , KubernetesResource
 {
 
-    @JsonProperty("imageID")
-    private String imageID;
-    @JsonProperty("instanceType")
-    private String instanceType;
-    @JsonProperty("systemDiskCategory")
-    private String systemDiskCategory;
-    @JsonProperty("systemDiskSize")
-    private Integer systemDiskSize;
-    @JsonProperty("zones")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> zones = new ArrayList<>();
+    @JsonProperty("networkProjectID")
+    private String networkProjectID;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -78,76 +63,31 @@ public class MachinePool implements Editable<MachinePoolBuilder> , KubernetesRes
      * No args constructor for use in serialization
      * 
      */
-    public MachinePool() {
+    public Metadata() {
     }
 
-    public MachinePool(String imageID, String instanceType, String systemDiskCategory, Integer systemDiskSize, List<String> zones) {
+    public Metadata(String networkProjectID) {
         super();
-        this.imageID = imageID;
-        this.instanceType = instanceType;
-        this.systemDiskCategory = systemDiskCategory;
-        this.systemDiskSize = systemDiskSize;
-        this.zones = zones;
+        this.networkProjectID = networkProjectID;
     }
 
-    @JsonProperty("imageID")
-    public String getImageID() {
-        return imageID;
+    @JsonProperty("networkProjectID")
+    public String getNetworkProjectID() {
+        return networkProjectID;
     }
 
-    @JsonProperty("imageID")
-    public void setImageID(String imageID) {
-        this.imageID = imageID;
-    }
-
-    @JsonProperty("instanceType")
-    public String getInstanceType() {
-        return instanceType;
-    }
-
-    @JsonProperty("instanceType")
-    public void setInstanceType(String instanceType) {
-        this.instanceType = instanceType;
-    }
-
-    @JsonProperty("systemDiskCategory")
-    public String getSystemDiskCategory() {
-        return systemDiskCategory;
-    }
-
-    @JsonProperty("systemDiskCategory")
-    public void setSystemDiskCategory(String systemDiskCategory) {
-        this.systemDiskCategory = systemDiskCategory;
-    }
-
-    @JsonProperty("systemDiskSize")
-    public Integer getSystemDiskSize() {
-        return systemDiskSize;
-    }
-
-    @JsonProperty("systemDiskSize")
-    public void setSystemDiskSize(Integer systemDiskSize) {
-        this.systemDiskSize = systemDiskSize;
-    }
-
-    @JsonProperty("zones")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<String> getZones() {
-        return zones;
-    }
-
-    @JsonProperty("zones")
-    public void setZones(List<String> zones) {
-        this.zones = zones;
+    @JsonProperty("networkProjectID")
+    public void setNetworkProjectID(String networkProjectID) {
+        this.networkProjectID = networkProjectID;
     }
 
     @JsonIgnore
-    public MachinePoolBuilder edit() {
-        return new MachinePoolBuilder(this);
+    public MetadataBuilder edit() {
+        return new MetadataBuilder(this);
     }
 
     @JsonIgnore
-    public MachinePoolBuilder toBuilder() {
+    public MetadataBuilder toBuilder() {
         return edit();
     }
 

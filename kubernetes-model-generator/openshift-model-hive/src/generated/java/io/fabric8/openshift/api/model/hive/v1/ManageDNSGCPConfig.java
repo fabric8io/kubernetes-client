@@ -16,6 +16,7 @@ import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
+import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
@@ -46,7 +47,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
+    @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
@@ -54,7 +55,7 @@ public class ManageDNSGCPConfig implements Editable<ManageDNSGCPConfigBuilder> ,
 {
 
     @JsonProperty("credentialsSecretRef")
-    private io.fabric8.kubernetes.api.model.LocalObjectReference credentialsSecretRef;
+    private LocalObjectReference credentialsSecretRef;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -65,18 +66,18 @@ public class ManageDNSGCPConfig implements Editable<ManageDNSGCPConfigBuilder> ,
     public ManageDNSGCPConfig() {
     }
 
-    public ManageDNSGCPConfig(io.fabric8.kubernetes.api.model.LocalObjectReference credentialsSecretRef) {
+    public ManageDNSGCPConfig(LocalObjectReference credentialsSecretRef) {
         super();
         this.credentialsSecretRef = credentialsSecretRef;
     }
 
     @JsonProperty("credentialsSecretRef")
-    public io.fabric8.kubernetes.api.model.LocalObjectReference getCredentialsSecretRef() {
+    public LocalObjectReference getCredentialsSecretRef() {
         return credentialsSecretRef;
     }
 
     @JsonProperty("credentialsSecretRef")
-    public void setCredentialsSecretRef(io.fabric8.kubernetes.api.model.LocalObjectReference credentialsSecretRef) {
+    public void setCredentialsSecretRef(LocalObjectReference credentialsSecretRef) {
         this.credentialsSecretRef = credentialsSecretRef;
     }
 

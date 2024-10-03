@@ -16,6 +16,7 @@ import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
+import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
@@ -53,7 +54,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
+    @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
@@ -61,11 +62,11 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
 {
 
     @JsonProperty("certificatesSecretRef")
-    private io.fabric8.kubernetes.api.model.LocalObjectReference certificatesSecretRef;
+    private LocalObjectReference certificatesSecretRef;
     @JsonProperty("cluster")
     private String cluster;
     @JsonProperty("credentialsSecretRef")
-    private io.fabric8.kubernetes.api.model.LocalObjectReference credentialsSecretRef;
+    private LocalObjectReference credentialsSecretRef;
     @JsonProperty("datacenter")
     private String datacenter;
     @JsonProperty("defaultDatastore")
@@ -86,7 +87,7 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     public Platform() {
     }
 
-    public Platform(io.fabric8.kubernetes.api.model.LocalObjectReference certificatesSecretRef, String cluster, io.fabric8.kubernetes.api.model.LocalObjectReference credentialsSecretRef, String datacenter, String defaultDatastore, String folder, String network, String vCenter) {
+    public Platform(LocalObjectReference certificatesSecretRef, String cluster, LocalObjectReference credentialsSecretRef, String datacenter, String defaultDatastore, String folder, String network, String vCenter) {
         super();
         this.certificatesSecretRef = certificatesSecretRef;
         this.cluster = cluster;
@@ -99,12 +100,12 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     }
 
     @JsonProperty("certificatesSecretRef")
-    public io.fabric8.kubernetes.api.model.LocalObjectReference getCertificatesSecretRef() {
+    public LocalObjectReference getCertificatesSecretRef() {
         return certificatesSecretRef;
     }
 
     @JsonProperty("certificatesSecretRef")
-    public void setCertificatesSecretRef(io.fabric8.kubernetes.api.model.LocalObjectReference certificatesSecretRef) {
+    public void setCertificatesSecretRef(LocalObjectReference certificatesSecretRef) {
         this.certificatesSecretRef = certificatesSecretRef;
     }
 
@@ -119,12 +120,12 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     }
 
     @JsonProperty("credentialsSecretRef")
-    public io.fabric8.kubernetes.api.model.LocalObjectReference getCredentialsSecretRef() {
+    public LocalObjectReference getCredentialsSecretRef() {
         return credentialsSecretRef;
     }
 
     @JsonProperty("credentialsSecretRef")
-    public void setCredentialsSecretRef(io.fabric8.kubernetes.api.model.LocalObjectReference credentialsSecretRef) {
+    public void setCredentialsSecretRef(LocalObjectReference credentialsSecretRef) {
         this.credentialsSecretRef = credentialsSecretRef;
     }
 

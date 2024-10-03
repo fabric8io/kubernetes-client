@@ -18,6 +18,7 @@ import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
+import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
@@ -36,6 +37,7 @@ import lombok.experimental.Accessors;
     "autoscaling",
     "clusterDeploymentRef",
     "labels",
+    "machineLabels",
     "name",
     "platform",
     "replicas",
@@ -55,7 +57,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
+    @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
@@ -65,10 +67,13 @@ public class MachinePoolSpec implements Editable<MachinePoolSpecBuilder> , Kuber
     @JsonProperty("autoscaling")
     private MachinePoolAutoscaling autoscaling;
     @JsonProperty("clusterDeploymentRef")
-    private io.fabric8.kubernetes.api.model.LocalObjectReference clusterDeploymentRef;
+    private LocalObjectReference clusterDeploymentRef;
     @JsonProperty("labels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> labels = new LinkedHashMap<>();
+    @JsonProperty("machineLabels")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> machineLabels = new LinkedHashMap<>();
     @JsonProperty("name")
     private String name;
     @JsonProperty("platform")
@@ -88,11 +93,12 @@ public class MachinePoolSpec implements Editable<MachinePoolSpecBuilder> , Kuber
     public MachinePoolSpec() {
     }
 
-    public MachinePoolSpec(MachinePoolAutoscaling autoscaling, io.fabric8.kubernetes.api.model.LocalObjectReference clusterDeploymentRef, Map<String, String> labels, String name, MachinePoolPlatform platform, Long replicas, List<Taint> taints) {
+    public MachinePoolSpec(MachinePoolAutoscaling autoscaling, LocalObjectReference clusterDeploymentRef, Map<String, String> labels, Map<String, String> machineLabels, String name, MachinePoolPlatform platform, Long replicas, List<Taint> taints) {
         super();
         this.autoscaling = autoscaling;
         this.clusterDeploymentRef = clusterDeploymentRef;
         this.labels = labels;
+        this.machineLabels = machineLabels;
         this.name = name;
         this.platform = platform;
         this.replicas = replicas;
@@ -110,12 +116,12 @@ public class MachinePoolSpec implements Editable<MachinePoolSpecBuilder> , Kuber
     }
 
     @JsonProperty("clusterDeploymentRef")
-    public io.fabric8.kubernetes.api.model.LocalObjectReference getClusterDeploymentRef() {
+    public LocalObjectReference getClusterDeploymentRef() {
         return clusterDeploymentRef;
     }
 
     @JsonProperty("clusterDeploymentRef")
-    public void setClusterDeploymentRef(io.fabric8.kubernetes.api.model.LocalObjectReference clusterDeploymentRef) {
+    public void setClusterDeploymentRef(LocalObjectReference clusterDeploymentRef) {
         this.clusterDeploymentRef = clusterDeploymentRef;
     }
 
@@ -128,6 +134,17 @@ public class MachinePoolSpec implements Editable<MachinePoolSpecBuilder> , Kuber
     @JsonProperty("labels")
     public void setLabels(Map<String, String> labels) {
         this.labels = labels;
+    }
+
+    @JsonProperty("machineLabels")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public Map<String, String> getMachineLabels() {
+        return machineLabels;
+    }
+
+    @JsonProperty("machineLabels")
+    public void setMachineLabels(Map<String, String> machineLabels) {
+        this.machineLabels = machineLabels;
     }
 
     @JsonProperty("name")

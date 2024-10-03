@@ -18,6 +18,7 @@ import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
+import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
@@ -60,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
+    @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
@@ -92,7 +93,7 @@ public class ClusterDeploymentStatus implements Editable<ClusterDeploymentStatus
     @JsonProperty("powerState")
     private String powerState;
     @JsonProperty("provisionRef")
-    private io.fabric8.kubernetes.api.model.LocalObjectReference provisionRef;
+    private LocalObjectReference provisionRef;
     @JsonProperty("webConsoleURL")
     private String webConsoleURL;
     @JsonIgnore
@@ -105,7 +106,7 @@ public class ClusterDeploymentStatus implements Editable<ClusterDeploymentStatus
     public ClusterDeploymentStatus() {
     }
 
-    public ClusterDeploymentStatus(String apiURL, List<CertificateBundleStatus> certificateBundles, String cliImage, List<ClusterDeploymentCondition> conditions, Integer installRestarts, String installStartedTimestamp, String installVersion, String installedTimestamp, String installerImage, PlatformStatus platformStatus, String powerState, io.fabric8.kubernetes.api.model.LocalObjectReference provisionRef, String webConsoleURL) {
+    public ClusterDeploymentStatus(String apiURL, List<CertificateBundleStatus> certificateBundles, String cliImage, List<ClusterDeploymentCondition> conditions, Integer installRestarts, String installStartedTimestamp, String installVersion, String installedTimestamp, String installerImage, PlatformStatus platformStatus, String powerState, LocalObjectReference provisionRef, String webConsoleURL) {
         super();
         this.apiURL = apiURL;
         this.certificateBundles = certificateBundles;
@@ -235,12 +236,12 @@ public class ClusterDeploymentStatus implements Editable<ClusterDeploymentStatus
     }
 
     @JsonProperty("provisionRef")
-    public io.fabric8.kubernetes.api.model.LocalObjectReference getProvisionRef() {
+    public LocalObjectReference getProvisionRef() {
         return provisionRef;
     }
 
     @JsonProperty("provisionRef")
-    public void setProvisionRef(io.fabric8.kubernetes.api.model.LocalObjectReference provisionRef) {
+    public void setProvisionRef(LocalObjectReference provisionRef) {
         this.provisionRef = provisionRef;
     }
 

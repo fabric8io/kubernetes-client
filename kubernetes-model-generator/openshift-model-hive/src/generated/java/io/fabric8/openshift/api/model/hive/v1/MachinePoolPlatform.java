@@ -22,6 +22,7 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
+import io.fabric8.openshift.api.model.hive.azure.v1.MachinePool;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -31,7 +32,6 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "alibabacloud",
     "aws",
     "azure",
     "gcp",
@@ -61,12 +61,10 @@ import lombok.experimental.Accessors;
 public class MachinePoolPlatform implements Editable<MachinePoolPlatformBuilder> , KubernetesResource
 {
 
-    @JsonProperty("alibabacloud")
-    private io.fabric8.openshift.api.model.hive.alibabacloud.v1.MachinePool alibabacloud;
     @JsonProperty("aws")
     private io.fabric8.openshift.api.model.hive.aws.v1.MachinePoolPlatform aws;
     @JsonProperty("azure")
-    private io.fabric8.openshift.api.model.hive.azure.v1.MachinePool azure;
+    private MachinePool azure;
     @JsonProperty("gcp")
     private io.fabric8.openshift.api.model.hive.gcp.v1.MachinePool gcp;
     @JsonProperty("ibmcloud")
@@ -87,9 +85,8 @@ public class MachinePoolPlatform implements Editable<MachinePoolPlatformBuilder>
     public MachinePoolPlatform() {
     }
 
-    public MachinePoolPlatform(io.fabric8.openshift.api.model.hive.alibabacloud.v1.MachinePool alibabacloud, io.fabric8.openshift.api.model.hive.aws.v1.MachinePoolPlatform aws, io.fabric8.openshift.api.model.hive.azure.v1.MachinePool azure, io.fabric8.openshift.api.model.hive.gcp.v1.MachinePool gcp, io.fabric8.openshift.api.model.hive.ibmcloud.v1.MachinePool ibmcloud, io.fabric8.openshift.api.model.hive.openstack.v1.MachinePool openstack, io.fabric8.openshift.api.model.hive.ovirt.v1.MachinePool ovirt, io.fabric8.openshift.api.model.hive.vsphere.v1.MachinePool vsphere) {
+    public MachinePoolPlatform(io.fabric8.openshift.api.model.hive.aws.v1.MachinePoolPlatform aws, MachinePool azure, io.fabric8.openshift.api.model.hive.gcp.v1.MachinePool gcp, io.fabric8.openshift.api.model.hive.ibmcloud.v1.MachinePool ibmcloud, io.fabric8.openshift.api.model.hive.openstack.v1.MachinePool openstack, io.fabric8.openshift.api.model.hive.ovirt.v1.MachinePool ovirt, io.fabric8.openshift.api.model.hive.vsphere.v1.MachinePool vsphere) {
         super();
-        this.alibabacloud = alibabacloud;
         this.aws = aws;
         this.azure = azure;
         this.gcp = gcp;
@@ -97,16 +94,6 @@ public class MachinePoolPlatform implements Editable<MachinePoolPlatformBuilder>
         this.openstack = openstack;
         this.ovirt = ovirt;
         this.vsphere = vsphere;
-    }
-
-    @JsonProperty("alibabacloud")
-    public io.fabric8.openshift.api.model.hive.alibabacloud.v1.MachinePool getAlibabacloud() {
-        return alibabacloud;
-    }
-
-    @JsonProperty("alibabacloud")
-    public void setAlibabacloud(io.fabric8.openshift.api.model.hive.alibabacloud.v1.MachinePool alibabacloud) {
-        this.alibabacloud = alibabacloud;
     }
 
     @JsonProperty("aws")
@@ -120,12 +107,12 @@ public class MachinePoolPlatform implements Editable<MachinePoolPlatformBuilder>
     }
 
     @JsonProperty("azure")
-    public io.fabric8.openshift.api.model.hive.azure.v1.MachinePool getAzure() {
+    public MachinePool getAzure() {
         return azure;
     }
 
     @JsonProperty("azure")
-    public void setAzure(io.fabric8.openshift.api.model.hive.azure.v1.MachinePool azure) {
+    public void setAzure(MachinePool azure) {
         this.azure = azure;
     }
 

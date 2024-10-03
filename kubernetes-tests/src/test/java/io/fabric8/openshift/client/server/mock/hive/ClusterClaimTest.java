@@ -15,7 +15,6 @@
  */
 package io.fabric8.openshift.client.server.mock.hive;
 
-import io.fabric8.kubernetes.api.model.Duration;
 import io.fabric8.openshift.api.model.hive.v1.ClusterClaim;
 import io.fabric8.openshift.api.model.hive.v1.ClusterClaimBuilder;
 import io.fabric8.openshift.api.model.hive.v1.ClusterClaimList;
@@ -91,7 +90,7 @@ class ClusterClaimTest {
         .endMetadata()
         .withNewSpec()
         .withClusterPoolName("openshift-46-aws-us-east-1")
-        .withLifetime(Duration.parse("8h"))
+        .withLifetime("8h")
         .withNamespace("openshift-46-aws-us-east-1-j495p")
         .endSpec()
         .build();

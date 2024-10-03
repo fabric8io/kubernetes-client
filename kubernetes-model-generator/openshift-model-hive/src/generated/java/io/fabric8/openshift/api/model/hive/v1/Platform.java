@@ -23,8 +23,6 @@ import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.openshift.api.model.hive.agent.v1.BareMetalPlatform;
-import io.fabric8.openshift.api.model.hive.aws.v1.AwsPlatform;
-import io.fabric8.openshift.api.model.hive.azure.v1.AzurePlatform;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -35,7 +33,6 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "agentBareMetal",
-    "alibabacloud",
     "aws",
     "azure",
     "baremetal",
@@ -69,12 +66,10 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
 
     @JsonProperty("agentBareMetal")
     private BareMetalPlatform agentBareMetal;
-    @JsonProperty("alibabacloud")
-    private io.fabric8.openshift.api.model.hive.alibabacloud.v1.Platform alibabacloud;
     @JsonProperty("aws")
-    private AwsPlatform aws;
+    private io.fabric8.openshift.api.model.hive.aws.v1.Platform aws;
     @JsonProperty("azure")
-    private AzurePlatform azure;
+    private io.fabric8.openshift.api.model.hive.azure.v1.Platform azure;
     @JsonProperty("baremetal")
     private io.fabric8.openshift.api.model.hive.baremetal.v1.Platform baremetal;
     @JsonProperty("gcp")
@@ -99,10 +94,9 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     public Platform() {
     }
 
-    public Platform(BareMetalPlatform agentBareMetal, io.fabric8.openshift.api.model.hive.alibabacloud.v1.Platform alibabacloud, AwsPlatform aws, AzurePlatform azure, io.fabric8.openshift.api.model.hive.baremetal.v1.Platform baremetal, io.fabric8.openshift.api.model.hive.gcp.v1.Platform gcp, io.fabric8.openshift.api.model.hive.ibmcloud.v1.Platform ibmcloud, io.fabric8.openshift.api.model.hive.none.v1.Platform none, io.fabric8.openshift.api.model.hive.openstack.v1.Platform openstack, io.fabric8.openshift.api.model.hive.ovirt.v1.Platform ovirt, io.fabric8.openshift.api.model.hive.vsphere.v1.Platform vsphere) {
+    public Platform(BareMetalPlatform agentBareMetal, io.fabric8.openshift.api.model.hive.aws.v1.Platform aws, io.fabric8.openshift.api.model.hive.azure.v1.Platform azure, io.fabric8.openshift.api.model.hive.baremetal.v1.Platform baremetal, io.fabric8.openshift.api.model.hive.gcp.v1.Platform gcp, io.fabric8.openshift.api.model.hive.ibmcloud.v1.Platform ibmcloud, io.fabric8.openshift.api.model.hive.none.v1.Platform none, io.fabric8.openshift.api.model.hive.openstack.v1.Platform openstack, io.fabric8.openshift.api.model.hive.ovirt.v1.Platform ovirt, io.fabric8.openshift.api.model.hive.vsphere.v1.Platform vsphere) {
         super();
         this.agentBareMetal = agentBareMetal;
-        this.alibabacloud = alibabacloud;
         this.aws = aws;
         this.azure = azure;
         this.baremetal = baremetal;
@@ -124,33 +118,23 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
         this.agentBareMetal = agentBareMetal;
     }
 
-    @JsonProperty("alibabacloud")
-    public io.fabric8.openshift.api.model.hive.alibabacloud.v1.Platform getAlibabacloud() {
-        return alibabacloud;
-    }
-
-    @JsonProperty("alibabacloud")
-    public void setAlibabacloud(io.fabric8.openshift.api.model.hive.alibabacloud.v1.Platform alibabacloud) {
-        this.alibabacloud = alibabacloud;
-    }
-
     @JsonProperty("aws")
-    public AwsPlatform getAws() {
+    public io.fabric8.openshift.api.model.hive.aws.v1.Platform getAws() {
         return aws;
     }
 
     @JsonProperty("aws")
-    public void setAws(AwsPlatform aws) {
+    public void setAws(io.fabric8.openshift.api.model.hive.aws.v1.Platform aws) {
         this.aws = aws;
     }
 
     @JsonProperty("azure")
-    public AzurePlatform getAzure() {
+    public io.fabric8.openshift.api.model.hive.azure.v1.Platform getAzure() {
         return azure;
     }
 
     @JsonProperty("azure")
-    public void setAzure(AzurePlatform azure) {
+    public void setAzure(io.fabric8.openshift.api.model.hive.azure.v1.Platform azure) {
         this.azure = azure;
     }
 

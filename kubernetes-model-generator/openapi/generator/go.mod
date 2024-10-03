@@ -18,7 +18,7 @@ require (
 	k8s.io/api v0.31.1
 	k8s.io/apiextensions-apiserver v0.31.1
 	k8s.io/apimachinery v0.31.1
-	k8s.io/client-go v0.31.1
+	k8s.io/client-go v12.0.0+incompatible
 	k8s.io/gengo/v2 v2.0.0-20240911193312-2b36238f13e9
 	k8s.io/kube-openapi v0.0.0-20240903163716-9e1beecbcb38
 	k8s.io/metrics v0.30.2
@@ -26,23 +26,28 @@ require (
 	sigs.k8s.io/kustomize/api v0.17.2
 )
 
-// TODO: WIP while this gets merged or fixed https://github.com/openshift/api/pull/2050
-replace github.com/openshift/api => github.com/marcnuri-forks/api v0.0.0-20240930125604-62d5277244a4
+// Required by some openshift operator dependencies
+// Force usage of latest Kuberentes Version
+replace (
+	github.com/openshift/hive => github.com/openshift/hive v1.1.17-0.20240930213556-2d25383963db // Latest Master
+	k8s.io/client-go => k8s.io/client-go v0.31.1
+	k8s.io/cloud-provider => k8s.io/cloud-provider v0.31.1
+	k8s.io/csi-translation-lib => k8s.io/csi-translation-lib v0.31.1
+	k8s.io/kube-scheduler => k8s.io/kube-scheduler v0.31.1
+	k8s.io/mount-utils => k8s.io/mount-utils v0.31.1
 
-// TODO: WIP while this gets merged or fixed https://github.com/operator-framework/api/pull/365
-replace github.com/operator-framework/api => github.com/marcnuri-forks/operator-framework-api v0.0.0-20241001140003-cf4aa8da1ffa
+)
 
-// TODO: WIP while this gets merged or fixed https://github.com/operator-framework/operator-lifecycle-manager/pull/3406
-replace github.com/operator-framework/operator-lifecycle-manager => github.com/marcnuri-forks/operator-lifecycle-manager v0.0.0-20241002090802-7539192fbf96
+replace (
+	// TODO: WIP while this gets merged or fixed https://github.com/openshift/api/pull/2050
+	github.com/openshift/api => github.com/marcnuri-forks/api v0.0.0-20240930125604-62d5277244a4
+	// TODO: WIP while this gets merged or fixed https://github.com/operator-framework/api/pull/365
+	github.com/operator-framework/api => github.com/marcnuri-forks/operator-framework-api v0.0.0-20241001140003-cf4aa8da1ffa
+	// TODO: WIP while this gets merged or fixed https://github.com/operator-framework/operator-lifecycle-manager/pull/3406
+	github.com/operator-framework/operator-lifecycle-manager => github.com/marcnuri-forks/operator-lifecycle-manager v0.0.0-20241002090802-7539192fbf96
+)
 
-// Required by some openshift operator dependencies, update to latest Kuberentes Version
-replace k8s.io/cloud-provider => k8s.io/cloud-provider v0.31.1
-
-replace k8s.io/csi-translation-lib => k8s.io/csi-translation-lib v0.31.1
-
-replace k8s.io/kube-scheduler => k8s.io/kube-scheduler v0.31.1
-
-replace k8s.io/mount-utils => k8s.io/mount-utils v0.31.1
+require github.com/openshift/hive/apis v0.0.0-20240930213556-2d25383963db
 
 require (
 	github.com/antlr4-go/antlr/v4 v4.13.0 // indirect
@@ -58,9 +63,8 @@ require (
 	github.com/go-test/deep v1.1.1 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
-	github.com/golang/protobuf v1.5.4 // indirect
 	github.com/google/cel-go v0.20.1 // indirect
-	github.com/google/gnostic-models v0.6.8 // indirect
+	github.com/google/gnostic-models v0.6.9-0.20230804172637-c7be7c783f49 // indirect
 	github.com/google/gofuzz v1.2.0 // indirect
 	github.com/h2non/filetype v1.1.3 // indirect
 	github.com/h2non/go-is-svg v0.0.0-20160927212452-35e8c4b0612c // indirect
@@ -73,6 +77,7 @@ require (
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/mohae/deepcopy v0.0.0-20170929034955-c48cc78d4826 // indirect
 	github.com/onsi/gomega v1.34.2 // indirect
+	github.com/openshift/custom-resource-status v1.1.3-0.20220503160415-f2fdb4999d87 // indirect
 	github.com/operator-framework/operator-registry v1.47.0 // indirect
 	github.com/perimeterx/marshmallow v1.1.5 // indirect
 	github.com/sirupsen/logrus v1.9.3 // indirect
@@ -89,8 +94,8 @@ require (
 	golang.org/x/text v0.18.0 // indirect
 	golang.org/x/time v0.6.0 // indirect
 	golang.org/x/tools v0.25.0 // indirect
-	google.golang.org/genproto/googleapis/api v0.0.0-20240604185151-ef581f913117 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20240701130421-f6361c86f094 // indirect
+	google.golang.org/genproto/googleapis/api v0.0.0-20240711142825-46eb208f015d // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20240722135656-d784300faade // indirect
 	google.golang.org/grpc v1.66.0 // indirect
 	google.golang.org/protobuf v1.34.2 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect

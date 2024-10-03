@@ -77,6 +77,7 @@ openapi-generate-java-classes:
 	cd kubernetes-model-generator/openshift-model-tuned && mvn -Pgenerate clean install
 	cd kubernetes-model-generator/openshift-model-whereabouts && mvn -Pgenerate clean install
 	cd kubernetes-model-generator/openshift-model-storageversionmigrator && mvn -Pgenerate clean install
+	cd kubernetes-model-generator/openshift-model-hive && mvn -Pgenerate clean install
 
 # Legacy generation of the model: TODO: remove
 .PHONY: generate-model-legacy

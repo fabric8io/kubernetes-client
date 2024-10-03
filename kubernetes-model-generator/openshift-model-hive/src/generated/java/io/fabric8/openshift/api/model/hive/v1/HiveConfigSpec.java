@@ -18,6 +18,7 @@ import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
+import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
@@ -37,6 +38,7 @@ import lombok.experimental.Accessors;
     "argoCDConfig",
     "awsPrivateLink",
     "backup",
+    "clusterVersionPollInterval",
     "controllersConfig",
     "deleteProtection",
     "deploymentConfig",
@@ -47,9 +49,11 @@ import lombok.experimental.Accessors;
     "featureGates",
     "globalPullSecretRef",
     "logLevel",
+    "machinePoolPollInterval",
     "maintenanceMode",
     "managedDomains",
     "metricsConfig",
+    "privateLink",
     "releaseImageVerificationConfigMapRef",
     "serviceProviderCredentialsConfig",
     "syncSetReapplyInterval",
@@ -69,7 +73,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
+    @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
@@ -78,13 +82,15 @@ public class HiveConfigSpec implements Editable<HiveConfigSpecBuilder> , Kuberne
 
     @JsonProperty("additionalCertificateAuthoritiesSecretRef")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.LocalObjectReference> additionalCertificateAuthoritiesSecretRef = new ArrayList<>();
+    private List<LocalObjectReference> additionalCertificateAuthoritiesSecretRef = new ArrayList<>();
     @JsonProperty("argoCDConfig")
     private ArgoCDConfig argoCDConfig;
     @JsonProperty("awsPrivateLink")
     private AWSPrivateLinkConfig awsPrivateLink;
     @JsonProperty("backup")
     private BackupConfig backup;
+    @JsonProperty("clusterVersionPollInterval")
+    private String clusterVersionPollInterval;
     @JsonProperty("controllersConfig")
     private ControllersConfig controllersConfig;
     @JsonProperty("deleteProtection")
@@ -104,9 +110,11 @@ public class HiveConfigSpec implements Editable<HiveConfigSpecBuilder> , Kuberne
     @JsonProperty("featureGates")
     private FeatureGateSelection featureGates;
     @JsonProperty("globalPullSecretRef")
-    private io.fabric8.kubernetes.api.model.LocalObjectReference globalPullSecretRef;
+    private LocalObjectReference globalPullSecretRef;
     @JsonProperty("logLevel")
     private String logLevel;
+    @JsonProperty("machinePoolPollInterval")
+    private String machinePoolPollInterval;
     @JsonProperty("maintenanceMode")
     private Boolean maintenanceMode;
     @JsonProperty("managedDomains")
@@ -114,6 +122,8 @@ public class HiveConfigSpec implements Editable<HiveConfigSpecBuilder> , Kuberne
     private List<ManageDNSConfig> managedDomains = new ArrayList<>();
     @JsonProperty("metricsConfig")
     private MetricsConfig metricsConfig;
+    @JsonProperty("privateLink")
+    private PrivateLinkConfig privateLink;
     @JsonProperty("releaseImageVerificationConfigMapRef")
     private ReleaseImageVerificationConfigMapReference releaseImageVerificationConfigMapRef;
     @JsonProperty("serviceProviderCredentialsConfig")
@@ -132,12 +142,13 @@ public class HiveConfigSpec implements Editable<HiveConfigSpecBuilder> , Kuberne
     public HiveConfigSpec() {
     }
 
-    public HiveConfigSpec(List<io.fabric8.kubernetes.api.model.LocalObjectReference> additionalCertificateAuthoritiesSecretRef, ArgoCDConfig argoCDConfig, AWSPrivateLinkConfig awsPrivateLink, BackupConfig backup, ControllersConfig controllersConfig, String deleteProtection, List<DeploymentConfig> deploymentConfig, Boolean deprovisionsDisabled, List<String> disabledControllers, Boolean exportMetrics, FailedProvisionConfig failedProvisionConfig, FeatureGateSelection featureGates, io.fabric8.kubernetes.api.model.LocalObjectReference globalPullSecretRef, String logLevel, Boolean maintenanceMode, List<ManageDNSConfig> managedDomains, MetricsConfig metricsConfig, ReleaseImageVerificationConfigMapReference releaseImageVerificationConfigMapRef, ServiceProviderCredentials serviceProviderCredentialsConfig, String syncSetReapplyInterval, String targetNamespace) {
+    public HiveConfigSpec(List<LocalObjectReference> additionalCertificateAuthoritiesSecretRef, ArgoCDConfig argoCDConfig, AWSPrivateLinkConfig awsPrivateLink, BackupConfig backup, String clusterVersionPollInterval, ControllersConfig controllersConfig, String deleteProtection, List<DeploymentConfig> deploymentConfig, Boolean deprovisionsDisabled, List<String> disabledControllers, Boolean exportMetrics, FailedProvisionConfig failedProvisionConfig, FeatureGateSelection featureGates, LocalObjectReference globalPullSecretRef, String logLevel, String machinePoolPollInterval, Boolean maintenanceMode, List<ManageDNSConfig> managedDomains, MetricsConfig metricsConfig, PrivateLinkConfig privateLink, ReleaseImageVerificationConfigMapReference releaseImageVerificationConfigMapRef, ServiceProviderCredentials serviceProviderCredentialsConfig, String syncSetReapplyInterval, String targetNamespace) {
         super();
         this.additionalCertificateAuthoritiesSecretRef = additionalCertificateAuthoritiesSecretRef;
         this.argoCDConfig = argoCDConfig;
         this.awsPrivateLink = awsPrivateLink;
         this.backup = backup;
+        this.clusterVersionPollInterval = clusterVersionPollInterval;
         this.controllersConfig = controllersConfig;
         this.deleteProtection = deleteProtection;
         this.deploymentConfig = deploymentConfig;
@@ -148,9 +159,11 @@ public class HiveConfigSpec implements Editable<HiveConfigSpecBuilder> , Kuberne
         this.featureGates = featureGates;
         this.globalPullSecretRef = globalPullSecretRef;
         this.logLevel = logLevel;
+        this.machinePoolPollInterval = machinePoolPollInterval;
         this.maintenanceMode = maintenanceMode;
         this.managedDomains = managedDomains;
         this.metricsConfig = metricsConfig;
+        this.privateLink = privateLink;
         this.releaseImageVerificationConfigMapRef = releaseImageVerificationConfigMapRef;
         this.serviceProviderCredentialsConfig = serviceProviderCredentialsConfig;
         this.syncSetReapplyInterval = syncSetReapplyInterval;
@@ -159,12 +172,12 @@ public class HiveConfigSpec implements Editable<HiveConfigSpecBuilder> , Kuberne
 
     @JsonProperty("additionalCertificateAuthoritiesSecretRef")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<io.fabric8.kubernetes.api.model.LocalObjectReference> getAdditionalCertificateAuthoritiesSecretRef() {
+    public List<LocalObjectReference> getAdditionalCertificateAuthoritiesSecretRef() {
         return additionalCertificateAuthoritiesSecretRef;
     }
 
     @JsonProperty("additionalCertificateAuthoritiesSecretRef")
-    public void setAdditionalCertificateAuthoritiesSecretRef(List<io.fabric8.kubernetes.api.model.LocalObjectReference> additionalCertificateAuthoritiesSecretRef) {
+    public void setAdditionalCertificateAuthoritiesSecretRef(List<LocalObjectReference> additionalCertificateAuthoritiesSecretRef) {
         this.additionalCertificateAuthoritiesSecretRef = additionalCertificateAuthoritiesSecretRef;
     }
 
@@ -196,6 +209,16 @@ public class HiveConfigSpec implements Editable<HiveConfigSpecBuilder> , Kuberne
     @JsonProperty("backup")
     public void setBackup(BackupConfig backup) {
         this.backup = backup;
+    }
+
+    @JsonProperty("clusterVersionPollInterval")
+    public String getClusterVersionPollInterval() {
+        return clusterVersionPollInterval;
+    }
+
+    @JsonProperty("clusterVersionPollInterval")
+    public void setClusterVersionPollInterval(String clusterVersionPollInterval) {
+        this.clusterVersionPollInterval = clusterVersionPollInterval;
     }
 
     @JsonProperty("controllersConfig")
@@ -281,12 +304,12 @@ public class HiveConfigSpec implements Editable<HiveConfigSpecBuilder> , Kuberne
     }
 
     @JsonProperty("globalPullSecretRef")
-    public io.fabric8.kubernetes.api.model.LocalObjectReference getGlobalPullSecretRef() {
+    public LocalObjectReference getGlobalPullSecretRef() {
         return globalPullSecretRef;
     }
 
     @JsonProperty("globalPullSecretRef")
-    public void setGlobalPullSecretRef(io.fabric8.kubernetes.api.model.LocalObjectReference globalPullSecretRef) {
+    public void setGlobalPullSecretRef(LocalObjectReference globalPullSecretRef) {
         this.globalPullSecretRef = globalPullSecretRef;
     }
 
@@ -298,6 +321,16 @@ public class HiveConfigSpec implements Editable<HiveConfigSpecBuilder> , Kuberne
     @JsonProperty("logLevel")
     public void setLogLevel(String logLevel) {
         this.logLevel = logLevel;
+    }
+
+    @JsonProperty("machinePoolPollInterval")
+    public String getMachinePoolPollInterval() {
+        return machinePoolPollInterval;
+    }
+
+    @JsonProperty("machinePoolPollInterval")
+    public void setMachinePoolPollInterval(String machinePoolPollInterval) {
+        this.machinePoolPollInterval = machinePoolPollInterval;
     }
 
     @JsonProperty("maintenanceMode")
@@ -329,6 +362,16 @@ public class HiveConfigSpec implements Editable<HiveConfigSpecBuilder> , Kuberne
     @JsonProperty("metricsConfig")
     public void setMetricsConfig(MetricsConfig metricsConfig) {
         this.metricsConfig = metricsConfig;
+    }
+
+    @JsonProperty("privateLink")
+    public PrivateLinkConfig getPrivateLink() {
+        return privateLink;
+    }
+
+    @JsonProperty("privateLink")
+    public void setPrivateLink(PrivateLinkConfig privateLink) {
+        this.privateLink = privateLink;
     }
 
     @JsonProperty("releaseImageVerificationConfigMapRef")

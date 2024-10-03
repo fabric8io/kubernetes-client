@@ -15,6 +15,7 @@ import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
+import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
@@ -41,7 +42,7 @@ import lombok.experimental.Accessors;
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.LabelSelector.class),
+    @BuildableReference(LabelSelector.class),
     @BuildableReference(Container.class),
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
@@ -55,7 +56,7 @@ public class ClusterRelocateSpec implements Editable<ClusterRelocateSpecBuilder>
 {
 
     @JsonProperty("clusterDeploymentSelector")
-    private io.fabric8.kubernetes.api.model.LabelSelector clusterDeploymentSelector;
+    private LabelSelector clusterDeploymentSelector;
     @JsonProperty("kubeconfigSecretRef")
     private KubeconfigSecretReference kubeconfigSecretRef;
     @JsonIgnore
@@ -68,19 +69,19 @@ public class ClusterRelocateSpec implements Editable<ClusterRelocateSpecBuilder>
     public ClusterRelocateSpec() {
     }
 
-    public ClusterRelocateSpec(io.fabric8.kubernetes.api.model.LabelSelector clusterDeploymentSelector, KubeconfigSecretReference kubeconfigSecretRef) {
+    public ClusterRelocateSpec(LabelSelector clusterDeploymentSelector, KubeconfigSecretReference kubeconfigSecretRef) {
         super();
         this.clusterDeploymentSelector = clusterDeploymentSelector;
         this.kubeconfigSecretRef = kubeconfigSecretRef;
     }
 
     @JsonProperty("clusterDeploymentSelector")
-    public io.fabric8.kubernetes.api.model.LabelSelector getClusterDeploymentSelector() {
+    public LabelSelector getClusterDeploymentSelector() {
         return clusterDeploymentSelector;
     }
 
     @JsonProperty("clusterDeploymentSelector")
-    public void setClusterDeploymentSelector(io.fabric8.kubernetes.api.model.LabelSelector clusterDeploymentSelector) {
+    public void setClusterDeploymentSelector(LabelSelector clusterDeploymentSelector) {
         this.clusterDeploymentSelector = clusterDeploymentSelector;
     }
 

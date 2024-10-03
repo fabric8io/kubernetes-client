@@ -16,6 +16,7 @@ import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
+import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
@@ -60,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
+    @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
@@ -68,36 +69,36 @@ public class ClusterProvisionSpec implements Editable<ClusterProvisionSpecBuilde
 {
 
     @JsonProperty("adminKubeconfigSecretRef")
-    private io.fabric8.kubernetes.api.model.LocalObjectReference adminKubeconfigSecretRef;
+    private LocalObjectReference adminKubeconfigSecretRef;
     @JsonProperty("adminPasswordSecretRef")
-    private io.fabric8.kubernetes.api.model.LocalObjectReference adminPasswordSecretRef;
+    private LocalObjectReference adminPasswordSecretRef;
     @JsonProperty("attempt")
     private Integer attempt;
     @JsonProperty("clusterDeploymentRef")
-    private io.fabric8.kubernetes.api.model.LocalObjectReference clusterDeploymentRef;
+    private LocalObjectReference clusterDeploymentRef;
     @JsonProperty("clusterID")
-    private java.lang.String clusterID;
+    private String clusterID;
     @JsonProperty("infraID")
-    private java.lang.String infraID;
+    private String infraID;
     @JsonProperty("installLog")
-    private java.lang.String installLog;
+    private String installLog;
     @JsonProperty("metadata")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Object> metadata = new LinkedHashMap<>();
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
+    private Object metadata;
     @JsonProperty("metadataJSON")
-    private java.lang.String metadataJSON;
+    private String metadataJSON;
     @JsonProperty("podSpec")
     private PodSpec podSpec;
     @JsonProperty("prevClusterID")
-    private java.lang.String prevClusterID;
+    private String prevClusterID;
     @JsonProperty("prevInfraID")
-    private java.lang.String prevInfraID;
+    private String prevInfraID;
     @JsonProperty("prevProvisionName")
-    private java.lang.String prevProvisionName;
+    private String prevProvisionName;
     @JsonProperty("stage")
-    private java.lang.String stage;
+    private String stage;
     @JsonIgnore
-    private Map<java.lang.String, java.lang.Object> additionalProperties = new LinkedHashMap<java.lang.String, java.lang.Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -106,7 +107,7 @@ public class ClusterProvisionSpec implements Editable<ClusterProvisionSpecBuilde
     public ClusterProvisionSpec() {
     }
 
-    public ClusterProvisionSpec(io.fabric8.kubernetes.api.model.LocalObjectReference adminKubeconfigSecretRef, io.fabric8.kubernetes.api.model.LocalObjectReference adminPasswordSecretRef, Integer attempt, io.fabric8.kubernetes.api.model.LocalObjectReference clusterDeploymentRef, java.lang.String clusterID, java.lang.String infraID, java.lang.String installLog, Map<String, Object> metadata, java.lang.String metadataJSON, PodSpec podSpec, java.lang.String prevClusterID, java.lang.String prevInfraID, java.lang.String prevProvisionName, java.lang.String stage) {
+    public ClusterProvisionSpec(LocalObjectReference adminKubeconfigSecretRef, LocalObjectReference adminPasswordSecretRef, Integer attempt, LocalObjectReference clusterDeploymentRef, String clusterID, String infraID, String installLog, Object metadata, String metadataJSON, PodSpec podSpec, String prevClusterID, String prevInfraID, String prevProvisionName, String stage) {
         super();
         this.adminKubeconfigSecretRef = adminKubeconfigSecretRef;
         this.adminPasswordSecretRef = adminPasswordSecretRef;
@@ -125,22 +126,22 @@ public class ClusterProvisionSpec implements Editable<ClusterProvisionSpecBuilde
     }
 
     @JsonProperty("adminKubeconfigSecretRef")
-    public io.fabric8.kubernetes.api.model.LocalObjectReference getAdminKubeconfigSecretRef() {
+    public LocalObjectReference getAdminKubeconfigSecretRef() {
         return adminKubeconfigSecretRef;
     }
 
     @JsonProperty("adminKubeconfigSecretRef")
-    public void setAdminKubeconfigSecretRef(io.fabric8.kubernetes.api.model.LocalObjectReference adminKubeconfigSecretRef) {
+    public void setAdminKubeconfigSecretRef(LocalObjectReference adminKubeconfigSecretRef) {
         this.adminKubeconfigSecretRef = adminKubeconfigSecretRef;
     }
 
     @JsonProperty("adminPasswordSecretRef")
-    public io.fabric8.kubernetes.api.model.LocalObjectReference getAdminPasswordSecretRef() {
+    public LocalObjectReference getAdminPasswordSecretRef() {
         return adminPasswordSecretRef;
     }
 
     @JsonProperty("adminPasswordSecretRef")
-    public void setAdminPasswordSecretRef(io.fabric8.kubernetes.api.model.LocalObjectReference adminPasswordSecretRef) {
+    public void setAdminPasswordSecretRef(LocalObjectReference adminPasswordSecretRef) {
         this.adminPasswordSecretRef = adminPasswordSecretRef;
     }
 
@@ -155,63 +156,63 @@ public class ClusterProvisionSpec implements Editable<ClusterProvisionSpecBuilde
     }
 
     @JsonProperty("clusterDeploymentRef")
-    public io.fabric8.kubernetes.api.model.LocalObjectReference getClusterDeploymentRef() {
+    public LocalObjectReference getClusterDeploymentRef() {
         return clusterDeploymentRef;
     }
 
     @JsonProperty("clusterDeploymentRef")
-    public void setClusterDeploymentRef(io.fabric8.kubernetes.api.model.LocalObjectReference clusterDeploymentRef) {
+    public void setClusterDeploymentRef(LocalObjectReference clusterDeploymentRef) {
         this.clusterDeploymentRef = clusterDeploymentRef;
     }
 
     @JsonProperty("clusterID")
-    public java.lang.String getClusterID() {
+    public String getClusterID() {
         return clusterID;
     }
 
     @JsonProperty("clusterID")
-    public void setClusterID(java.lang.String clusterID) {
+    public void setClusterID(String clusterID) {
         this.clusterID = clusterID;
     }
 
     @JsonProperty("infraID")
-    public java.lang.String getInfraID() {
+    public String getInfraID() {
         return infraID;
     }
 
     @JsonProperty("infraID")
-    public void setInfraID(java.lang.String infraID) {
+    public void setInfraID(String infraID) {
         this.infraID = infraID;
     }
 
     @JsonProperty("installLog")
-    public java.lang.String getInstallLog() {
+    public String getInstallLog() {
         return installLog;
     }
 
     @JsonProperty("installLog")
-    public void setInstallLog(java.lang.String installLog) {
+    public void setInstallLog(String installLog) {
         this.installLog = installLog;
     }
 
     @JsonProperty("metadata")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Map<String, Object> getMetadata() {
+    public Object getMetadata() {
         return metadata;
     }
 
     @JsonProperty("metadata")
-    public void setMetadata(Map<String, Object> metadata) {
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
+    public void setMetadata(Object metadata) {
         this.metadata = metadata;
     }
 
     @JsonProperty("metadataJSON")
-    public java.lang.String getMetadataJSON() {
+    public String getMetadataJSON() {
         return metadataJSON;
     }
 
     @JsonProperty("metadataJSON")
-    public void setMetadataJSON(java.lang.String metadataJSON) {
+    public void setMetadataJSON(String metadataJSON) {
         this.metadataJSON = metadataJSON;
     }
 
@@ -226,42 +227,42 @@ public class ClusterProvisionSpec implements Editable<ClusterProvisionSpecBuilde
     }
 
     @JsonProperty("prevClusterID")
-    public java.lang.String getPrevClusterID() {
+    public String getPrevClusterID() {
         return prevClusterID;
     }
 
     @JsonProperty("prevClusterID")
-    public void setPrevClusterID(java.lang.String prevClusterID) {
+    public void setPrevClusterID(String prevClusterID) {
         this.prevClusterID = prevClusterID;
     }
 
     @JsonProperty("prevInfraID")
-    public java.lang.String getPrevInfraID() {
+    public String getPrevInfraID() {
         return prevInfraID;
     }
 
     @JsonProperty("prevInfraID")
-    public void setPrevInfraID(java.lang.String prevInfraID) {
+    public void setPrevInfraID(String prevInfraID) {
         this.prevInfraID = prevInfraID;
     }
 
     @JsonProperty("prevProvisionName")
-    public java.lang.String getPrevProvisionName() {
+    public String getPrevProvisionName() {
         return prevProvisionName;
     }
 
     @JsonProperty("prevProvisionName")
-    public void setPrevProvisionName(java.lang.String prevProvisionName) {
+    public void setPrevProvisionName(String prevProvisionName) {
         this.prevProvisionName = prevProvisionName;
     }
 
     @JsonProperty("stage")
-    public java.lang.String getStage() {
+    public String getStage() {
         return stage;
     }
 
     @JsonProperty("stage")
-    public void setStage(java.lang.String stage) {
+    public void setStage(String stage) {
         this.stage = stage;
     }
 
@@ -276,16 +277,16 @@ public class ClusterProvisionSpec implements Editable<ClusterProvisionSpecBuilde
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, java.lang.Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, java.lang.Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, java.lang.Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 

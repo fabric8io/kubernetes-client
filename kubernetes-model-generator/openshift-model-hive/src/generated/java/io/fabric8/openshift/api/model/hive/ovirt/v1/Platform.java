@@ -16,6 +16,7 @@ import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
+import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
@@ -50,7 +51,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
+    @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
@@ -58,15 +59,15 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
 {
 
     @JsonProperty("certificatesSecretRef")
-    private io.fabric8.kubernetes.api.model.LocalObjectReference certificatesSecretRef;
+    private LocalObjectReference certificatesSecretRef;
     @JsonProperty("credentialsSecretRef")
-    private io.fabric8.kubernetes.api.model.LocalObjectReference credentialsSecretRef;
+    private LocalObjectReference credentialsSecretRef;
     @JsonProperty("ovirt_cluster_id")
-    private String ovirtClusterId;
+    private String ovirt_cluster_id;
     @JsonProperty("ovirt_network_name")
-    private String ovirtNetworkName;
+    private String ovirt_network_name;
     @JsonProperty("storage_domain_id")
-    private String storageDomainId;
+    private String storage_domain_id;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -77,63 +78,63 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     public Platform() {
     }
 
-    public Platform(io.fabric8.kubernetes.api.model.LocalObjectReference certificatesSecretRef, io.fabric8.kubernetes.api.model.LocalObjectReference credentialsSecretRef, String ovirtClusterId, String ovirtNetworkName, String storageDomainId) {
+    public Platform(LocalObjectReference certificatesSecretRef, LocalObjectReference credentialsSecretRef, String ovirt_cluster_id, String ovirt_network_name, String storage_domain_id) {
         super();
         this.certificatesSecretRef = certificatesSecretRef;
         this.credentialsSecretRef = credentialsSecretRef;
-        this.ovirtClusterId = ovirtClusterId;
-        this.ovirtNetworkName = ovirtNetworkName;
-        this.storageDomainId = storageDomainId;
+        this.ovirt_cluster_id = ovirt_cluster_id;
+        this.ovirt_network_name = ovirt_network_name;
+        this.storage_domain_id = storage_domain_id;
     }
 
     @JsonProperty("certificatesSecretRef")
-    public io.fabric8.kubernetes.api.model.LocalObjectReference getCertificatesSecretRef() {
+    public LocalObjectReference getCertificatesSecretRef() {
         return certificatesSecretRef;
     }
 
     @JsonProperty("certificatesSecretRef")
-    public void setCertificatesSecretRef(io.fabric8.kubernetes.api.model.LocalObjectReference certificatesSecretRef) {
+    public void setCertificatesSecretRef(LocalObjectReference certificatesSecretRef) {
         this.certificatesSecretRef = certificatesSecretRef;
     }
 
     @JsonProperty("credentialsSecretRef")
-    public io.fabric8.kubernetes.api.model.LocalObjectReference getCredentialsSecretRef() {
+    public LocalObjectReference getCredentialsSecretRef() {
         return credentialsSecretRef;
     }
 
     @JsonProperty("credentialsSecretRef")
-    public void setCredentialsSecretRef(io.fabric8.kubernetes.api.model.LocalObjectReference credentialsSecretRef) {
+    public void setCredentialsSecretRef(LocalObjectReference credentialsSecretRef) {
         this.credentialsSecretRef = credentialsSecretRef;
     }
 
     @JsonProperty("ovirt_cluster_id")
-    public String getOvirtClusterId() {
-        return ovirtClusterId;
+    public String getOvirt_cluster_id() {
+        return ovirt_cluster_id;
     }
 
     @JsonProperty("ovirt_cluster_id")
-    public void setOvirtClusterId(String ovirtClusterId) {
-        this.ovirtClusterId = ovirtClusterId;
+    public void setOvirt_cluster_id(String ovirt_cluster_id) {
+        this.ovirt_cluster_id = ovirt_cluster_id;
     }
 
     @JsonProperty("ovirt_network_name")
-    public String getOvirtNetworkName() {
-        return ovirtNetworkName;
+    public String getOvirt_network_name() {
+        return ovirt_network_name;
     }
 
     @JsonProperty("ovirt_network_name")
-    public void setOvirtNetworkName(String ovirtNetworkName) {
-        this.ovirtNetworkName = ovirtNetworkName;
+    public void setOvirt_network_name(String ovirt_network_name) {
+        this.ovirt_network_name = ovirt_network_name;
     }
 
     @JsonProperty("storage_domain_id")
-    public String getStorageDomainId() {
-        return storageDomainId;
+    public String getStorage_domain_id() {
+        return storage_domain_id;
     }
 
     @JsonProperty("storage_domain_id")
-    public void setStorageDomainId(String storageDomainId) {
-        this.storageDomainId = storageDomainId;
+    public void setStorage_domain_id(String storage_domain_id) {
+        this.storage_domain_id = storage_domain_id;
     }
 
     @JsonIgnore

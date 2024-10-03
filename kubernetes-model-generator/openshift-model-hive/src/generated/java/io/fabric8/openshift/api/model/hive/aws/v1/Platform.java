@@ -31,7 +31,11 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "privateLink"
+    "credentialsAssumeRole",
+    "credentialsSecretRef",
+    "privateLink",
+    "region",
+    "userTags"
 })
 @ToString
 @EqualsAndHashCode
@@ -51,11 +55,20 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class AwsPlatformStatus implements Editable<AwsPlatformStatusBuilder> , KubernetesResource
+public class Platform implements Editable<PlatformBuilder> , KubernetesResource
 {
 
+    @JsonProperty("credentialsAssumeRole")
+    private AssumeRole credentialsAssumeRole;
+    @JsonProperty("credentialsSecretRef")
+    private LocalObjectReference credentialsSecretRef;
     @JsonProperty("privateLink")
-    private PrivateLinkAccessStatus privateLink;
+    private PrivateLinkAccess privateLink;
+    @JsonProperty("region")
+    private String region;
+    @JsonProperty("userTags")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> userTags = new LinkedHashMap<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -63,31 +76,76 @@ public class AwsPlatformStatus implements Editable<AwsPlatformStatusBuilder> , K
      * No args constructor for use in serialization
      * 
      */
-    public AwsPlatformStatus() {
+    public Platform() {
     }
 
-    public AwsPlatformStatus(PrivateLinkAccessStatus privateLink) {
+    public Platform(AssumeRole credentialsAssumeRole, LocalObjectReference credentialsSecretRef, PrivateLinkAccess privateLink, String region, Map<String, String> userTags) {
         super();
+        this.credentialsAssumeRole = credentialsAssumeRole;
+        this.credentialsSecretRef = credentialsSecretRef;
         this.privateLink = privateLink;
+        this.region = region;
+        this.userTags = userTags;
+    }
+
+    @JsonProperty("credentialsAssumeRole")
+    public AssumeRole getCredentialsAssumeRole() {
+        return credentialsAssumeRole;
+    }
+
+    @JsonProperty("credentialsAssumeRole")
+    public void setCredentialsAssumeRole(AssumeRole credentialsAssumeRole) {
+        this.credentialsAssumeRole = credentialsAssumeRole;
+    }
+
+    @JsonProperty("credentialsSecretRef")
+    public LocalObjectReference getCredentialsSecretRef() {
+        return credentialsSecretRef;
+    }
+
+    @JsonProperty("credentialsSecretRef")
+    public void setCredentialsSecretRef(LocalObjectReference credentialsSecretRef) {
+        this.credentialsSecretRef = credentialsSecretRef;
     }
 
     @JsonProperty("privateLink")
-    public PrivateLinkAccessStatus getPrivateLink() {
+    public PrivateLinkAccess getPrivateLink() {
         return privateLink;
     }
 
     @JsonProperty("privateLink")
-    public void setPrivateLink(PrivateLinkAccessStatus privateLink) {
+    public void setPrivateLink(PrivateLinkAccess privateLink) {
         this.privateLink = privateLink;
     }
 
-    @JsonIgnore
-    public AwsPlatformStatusBuilder edit() {
-        return new AwsPlatformStatusBuilder(this);
+    @JsonProperty("region")
+    public String getRegion() {
+        return region;
+    }
+
+    @JsonProperty("region")
+    public void setRegion(String region) {
+        this.region = region;
+    }
+
+    @JsonProperty("userTags")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public Map<String, String> getUserTags() {
+        return userTags;
+    }
+
+    @JsonProperty("userTags")
+    public void setUserTags(Map<String, String> userTags) {
+        this.userTags = userTags;
     }
 
     @JsonIgnore
-    public AwsPlatformStatusBuilder toBuilder() {
+    public PlatformBuilder edit() {
+        return new PlatformBuilder(this);
+    }
+
+    @JsonIgnore
+    public PlatformBuilder toBuilder() {
         return edit();
     }
 

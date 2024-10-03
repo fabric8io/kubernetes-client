@@ -16,6 +16,7 @@ import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
+import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
@@ -50,7 +51,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
+    @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
@@ -62,7 +63,7 @@ public class ClusterPoolReference implements Editable<ClusterPoolReferenceBuilde
     @JsonProperty("claimedTimestamp")
     private String claimedTimestamp;
     @JsonProperty("clusterDeploymentCustomization")
-    private io.fabric8.kubernetes.api.model.LocalObjectReference clusterDeploymentCustomization;
+    private LocalObjectReference clusterDeploymentCustomization;
     @JsonProperty("namespace")
     private String namespace;
     @JsonProperty("poolName")
@@ -77,7 +78,7 @@ public class ClusterPoolReference implements Editable<ClusterPoolReferenceBuilde
     public ClusterPoolReference() {
     }
 
-    public ClusterPoolReference(String claimName, String claimedTimestamp, io.fabric8.kubernetes.api.model.LocalObjectReference clusterDeploymentCustomization, String namespace, String poolName) {
+    public ClusterPoolReference(String claimName, String claimedTimestamp, LocalObjectReference clusterDeploymentCustomization, String namespace, String poolName) {
         super();
         this.claimName = claimName;
         this.claimedTimestamp = claimedTimestamp;
@@ -107,12 +108,12 @@ public class ClusterPoolReference implements Editable<ClusterPoolReferenceBuilde
     }
 
     @JsonProperty("clusterDeploymentCustomization")
-    public io.fabric8.kubernetes.api.model.LocalObjectReference getClusterDeploymentCustomization() {
+    public LocalObjectReference getClusterDeploymentCustomization() {
         return clusterDeploymentCustomization;
     }
 
     @JsonProperty("clusterDeploymentCustomization")
-    public void setClusterDeploymentCustomization(io.fabric8.kubernetes.api.model.LocalObjectReference clusterDeploymentCustomization) {
+    public void setClusterDeploymentCustomization(LocalObjectReference clusterDeploymentCustomization) {
         this.clusterDeploymentCustomization = clusterDeploymentCustomization;
     }
 

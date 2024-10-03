@@ -16,6 +16,7 @@ import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
+import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
@@ -31,6 +32,7 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "credentialsSecretRef",
+    "privateServiceConnect",
     "region"
 })
 @ToString
@@ -47,7 +49,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
+    @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
@@ -55,7 +57,9 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
 {
 
     @JsonProperty("credentialsSecretRef")
-    private io.fabric8.kubernetes.api.model.LocalObjectReference credentialsSecretRef;
+    private LocalObjectReference credentialsSecretRef;
+    @JsonProperty("privateServiceConnect")
+    private PrivateServiceConnect privateServiceConnect;
     @JsonProperty("region")
     private String region;
     @JsonIgnore
@@ -68,20 +72,31 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     public Platform() {
     }
 
-    public Platform(io.fabric8.kubernetes.api.model.LocalObjectReference credentialsSecretRef, String region) {
+    public Platform(LocalObjectReference credentialsSecretRef, PrivateServiceConnect privateServiceConnect, String region) {
         super();
         this.credentialsSecretRef = credentialsSecretRef;
+        this.privateServiceConnect = privateServiceConnect;
         this.region = region;
     }
 
     @JsonProperty("credentialsSecretRef")
-    public io.fabric8.kubernetes.api.model.LocalObjectReference getCredentialsSecretRef() {
+    public LocalObjectReference getCredentialsSecretRef() {
         return credentialsSecretRef;
     }
 
     @JsonProperty("credentialsSecretRef")
-    public void setCredentialsSecretRef(io.fabric8.kubernetes.api.model.LocalObjectReference credentialsSecretRef) {
+    public void setCredentialsSecretRef(LocalObjectReference credentialsSecretRef) {
         this.credentialsSecretRef = credentialsSecretRef;
+    }
+
+    @JsonProperty("privateServiceConnect")
+    public PrivateServiceConnect getPrivateServiceConnect() {
+        return privateServiceConnect;
+    }
+
+    @JsonProperty("privateServiceConnect")
+    public void setPrivateServiceConnect(PrivateServiceConnect privateServiceConnect) {
+        this.privateServiceConnect = privateServiceConnect;
     }
 
     @JsonProperty("region")

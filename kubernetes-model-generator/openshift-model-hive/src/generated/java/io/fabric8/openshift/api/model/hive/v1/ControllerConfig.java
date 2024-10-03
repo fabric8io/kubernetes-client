@@ -36,7 +36,8 @@ import lombok.experimental.Accessors;
     "concurrentReconciles",
     "queueBurst",
     "queueQPS",
-    "replicas"
+    "replicas",
+    "resources"
 })
 @ToString
 @EqualsAndHashCode
@@ -71,6 +72,8 @@ public class ControllerConfig implements Editable<ControllerConfigBuilder> , Kub
     private Integer queueQPS;
     @JsonProperty("replicas")
     private Integer replicas;
+    @JsonProperty("resources")
+    private ResourceRequirements resources;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -81,7 +84,7 @@ public class ControllerConfig implements Editable<ControllerConfigBuilder> , Kub
     public ControllerConfig() {
     }
 
-    public ControllerConfig(Integer clientBurst, Integer clientQPS, Integer concurrentReconciles, Integer queueBurst, Integer queueQPS, Integer replicas) {
+    public ControllerConfig(Integer clientBurst, Integer clientQPS, Integer concurrentReconciles, Integer queueBurst, Integer queueQPS, Integer replicas, ResourceRequirements resources) {
         super();
         this.clientBurst = clientBurst;
         this.clientQPS = clientQPS;
@@ -89,6 +92,7 @@ public class ControllerConfig implements Editable<ControllerConfigBuilder> , Kub
         this.queueBurst = queueBurst;
         this.queueQPS = queueQPS;
         this.replicas = replicas;
+        this.resources = resources;
     }
 
     @JsonProperty("clientBurst")
@@ -149,6 +153,16 @@ public class ControllerConfig implements Editable<ControllerConfigBuilder> , Kub
     @JsonProperty("replicas")
     public void setReplicas(Integer replicas) {
         this.replicas = replicas;
+    }
+
+    @JsonProperty("resources")
+    public ResourceRequirements getResources() {
+        return resources;
+    }
+
+    @JsonProperty("resources")
+    public void setResources(ResourceRequirements resources) {
+        this.resources = resources;
     }
 
     @JsonIgnore

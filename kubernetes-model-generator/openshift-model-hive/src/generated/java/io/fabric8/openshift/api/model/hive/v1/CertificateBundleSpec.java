@@ -16,6 +16,7 @@ import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
+import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
@@ -48,7 +49,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
+    @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
@@ -56,7 +57,7 @@ public class CertificateBundleSpec implements Editable<CertificateBundleSpecBuil
 {
 
     @JsonProperty("certificateSecretRef")
-    private io.fabric8.kubernetes.api.model.LocalObjectReference certificateSecretRef;
+    private LocalObjectReference certificateSecretRef;
     @JsonProperty("generate")
     private Boolean generate;
     @JsonProperty("name")
@@ -71,7 +72,7 @@ public class CertificateBundleSpec implements Editable<CertificateBundleSpecBuil
     public CertificateBundleSpec() {
     }
 
-    public CertificateBundleSpec(io.fabric8.kubernetes.api.model.LocalObjectReference certificateSecretRef, Boolean generate, String name) {
+    public CertificateBundleSpec(LocalObjectReference certificateSecretRef, Boolean generate, String name) {
         super();
         this.certificateSecretRef = certificateSecretRef;
         this.generate = generate;
@@ -79,12 +80,12 @@ public class CertificateBundleSpec implements Editable<CertificateBundleSpecBuil
     }
 
     @JsonProperty("certificateSecretRef")
-    public io.fabric8.kubernetes.api.model.LocalObjectReference getCertificateSecretRef() {
+    public LocalObjectReference getCertificateSecretRef() {
         return certificateSecretRef;
     }
 
     @JsonProperty("certificateSecretRef")
-    public void setCertificateSecretRef(io.fabric8.kubernetes.api.model.LocalObjectReference certificateSecretRef) {
+    public void setCertificateSecretRef(LocalObjectReference certificateSecretRef) {
         this.certificateSecretRef = certificateSecretRef;
     }
 

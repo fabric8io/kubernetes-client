@@ -15,10 +15,10 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.Duration;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
+import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
@@ -66,7 +66,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
+    @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
@@ -76,7 +76,7 @@ public class ClusterDeploymentSpec implements Editable<ClusterDeploymentSpecBuil
     @JsonProperty("baseDomain")
     private String baseDomain;
     @JsonProperty("boundServiceAccountSigningKeySecretRef")
-    private io.fabric8.kubernetes.api.model.LocalObjectReference boundServiceAccountSigningKeySecretRef;
+    private LocalObjectReference boundServiceAccountSigningKeySecretRef;
     @JsonProperty("certificateBundles")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<CertificateBundleSpec> certificateBundles = new ArrayList<>();
@@ -91,7 +91,7 @@ public class ClusterDeploymentSpec implements Editable<ClusterDeploymentSpecBuil
     @JsonProperty("controlPlaneConfig")
     private ControlPlaneConfigSpec controlPlaneConfig;
     @JsonProperty("hibernateAfter")
-    private Duration hibernateAfter;
+    private String hibernateAfter;
     @JsonProperty("ingress")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ClusterIngress> ingress = new ArrayList<>();
@@ -110,7 +110,7 @@ public class ClusterDeploymentSpec implements Editable<ClusterDeploymentSpecBuil
     @JsonProperty("provisioning")
     private Provisioning provisioning;
     @JsonProperty("pullSecretRef")
-    private io.fabric8.kubernetes.api.model.LocalObjectReference pullSecretRef;
+    private LocalObjectReference pullSecretRef;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -121,7 +121,7 @@ public class ClusterDeploymentSpec implements Editable<ClusterDeploymentSpecBuil
     public ClusterDeploymentSpec() {
     }
 
-    public ClusterDeploymentSpec(String baseDomain, io.fabric8.kubernetes.api.model.LocalObjectReference boundServiceAccountSigningKeySecretRef, List<CertificateBundleSpec> certificateBundles, ClusterInstallLocalReference clusterInstallRef, ClusterMetadata clusterMetadata, String clusterName, ClusterPoolReference clusterPoolRef, ControlPlaneConfigSpec controlPlaneConfig, Duration hibernateAfter, List<ClusterIngress> ingress, Integer installAttemptsLimit, Boolean installed, Boolean manageDNS, Platform platform, String powerState, Boolean preserveOnDelete, Provisioning provisioning, io.fabric8.kubernetes.api.model.LocalObjectReference pullSecretRef) {
+    public ClusterDeploymentSpec(String baseDomain, LocalObjectReference boundServiceAccountSigningKeySecretRef, List<CertificateBundleSpec> certificateBundles, ClusterInstallLocalReference clusterInstallRef, ClusterMetadata clusterMetadata, String clusterName, ClusterPoolReference clusterPoolRef, ControlPlaneConfigSpec controlPlaneConfig, String hibernateAfter, List<ClusterIngress> ingress, Integer installAttemptsLimit, Boolean installed, Boolean manageDNS, Platform platform, String powerState, Boolean preserveOnDelete, Provisioning provisioning, LocalObjectReference pullSecretRef) {
         super();
         this.baseDomain = baseDomain;
         this.boundServiceAccountSigningKeySecretRef = boundServiceAccountSigningKeySecretRef;
@@ -154,12 +154,12 @@ public class ClusterDeploymentSpec implements Editable<ClusterDeploymentSpecBuil
     }
 
     @JsonProperty("boundServiceAccountSigningKeySecretRef")
-    public io.fabric8.kubernetes.api.model.LocalObjectReference getBoundServiceAccountSigningKeySecretRef() {
+    public LocalObjectReference getBoundServiceAccountSigningKeySecretRef() {
         return boundServiceAccountSigningKeySecretRef;
     }
 
     @JsonProperty("boundServiceAccountSigningKeySecretRef")
-    public void setBoundServiceAccountSigningKeySecretRef(io.fabric8.kubernetes.api.model.LocalObjectReference boundServiceAccountSigningKeySecretRef) {
+    public void setBoundServiceAccountSigningKeySecretRef(LocalObjectReference boundServiceAccountSigningKeySecretRef) {
         this.boundServiceAccountSigningKeySecretRef = boundServiceAccountSigningKeySecretRef;
     }
 
@@ -225,12 +225,12 @@ public class ClusterDeploymentSpec implements Editable<ClusterDeploymentSpecBuil
     }
 
     @JsonProperty("hibernateAfter")
-    public Duration getHibernateAfter() {
+    public String getHibernateAfter() {
         return hibernateAfter;
     }
 
     @JsonProperty("hibernateAfter")
-    public void setHibernateAfter(Duration hibernateAfter) {
+    public void setHibernateAfter(String hibernateAfter) {
         this.hibernateAfter = hibernateAfter;
     }
 
@@ -316,12 +316,12 @@ public class ClusterDeploymentSpec implements Editable<ClusterDeploymentSpecBuil
     }
 
     @JsonProperty("pullSecretRef")
-    public io.fabric8.kubernetes.api.model.LocalObjectReference getPullSecretRef() {
+    public LocalObjectReference getPullSecretRef() {
         return pullSecretRef;
     }
 
     @JsonProperty("pullSecretRef")
-    public void setPullSecretRef(io.fabric8.kubernetes.api.model.LocalObjectReference pullSecretRef) {
+    public void setPullSecretRef(LocalObjectReference pullSecretRef) {
         this.pullSecretRef = pullSecretRef;
     }
 

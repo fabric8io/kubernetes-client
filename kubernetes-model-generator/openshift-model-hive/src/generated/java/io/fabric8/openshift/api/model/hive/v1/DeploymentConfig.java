@@ -21,6 +21,7 @@ import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
+import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -44,7 +45,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(LabelSelector.class),
     @BuildableReference(Container.class),
     @BuildableReference(PodTemplateSpec.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.ResourceRequirements.class),
+    @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
@@ -57,7 +58,7 @@ public class DeploymentConfig implements Editable<DeploymentConfigBuilder> , Kub
     @JsonProperty("deploymentName")
     private String deploymentName;
     @JsonProperty("resources")
-    private io.fabric8.kubernetes.api.model.ResourceRequirements resources;
+    private ResourceRequirements resources;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -68,7 +69,7 @@ public class DeploymentConfig implements Editable<DeploymentConfigBuilder> , Kub
     public DeploymentConfig() {
     }
 
-    public DeploymentConfig(String deploymentName, io.fabric8.kubernetes.api.model.ResourceRequirements resources) {
+    public DeploymentConfig(String deploymentName, ResourceRequirements resources) {
         super();
         this.deploymentName = deploymentName;
         this.resources = resources;
@@ -85,12 +86,12 @@ public class DeploymentConfig implements Editable<DeploymentConfigBuilder> , Kub
     }
 
     @JsonProperty("resources")
-    public io.fabric8.kubernetes.api.model.ResourceRequirements getResources() {
+    public ResourceRequirements getResources() {
         return resources;
     }
 
     @JsonProperty("resources")
-    public void setResources(io.fabric8.kubernetes.api.model.ResourceRequirements resources) {
+    public void setResources(ResourceRequirements resources) {
         this.resources = resources;
     }
 

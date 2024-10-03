@@ -16,6 +16,7 @@ import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
+import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
@@ -46,7 +47,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
+    @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
@@ -54,7 +55,7 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
 {
 
     @JsonProperty("libvirtSSHPrivateKeySecretRef")
-    private io.fabric8.kubernetes.api.model.LocalObjectReference libvirtSSHPrivateKeySecretRef;
+    private LocalObjectReference libvirtSSHPrivateKeySecretRef;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -65,18 +66,18 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     public Platform() {
     }
 
-    public Platform(io.fabric8.kubernetes.api.model.LocalObjectReference libvirtSSHPrivateKeySecretRef) {
+    public Platform(LocalObjectReference libvirtSSHPrivateKeySecretRef) {
         super();
         this.libvirtSSHPrivateKeySecretRef = libvirtSSHPrivateKeySecretRef;
     }
 
     @JsonProperty("libvirtSSHPrivateKeySecretRef")
-    public io.fabric8.kubernetes.api.model.LocalObjectReference getLibvirtSSHPrivateKeySecretRef() {
+    public LocalObjectReference getLibvirtSSHPrivateKeySecretRef() {
         return libvirtSSHPrivateKeySecretRef;
     }
 
     @JsonProperty("libvirtSSHPrivateKeySecretRef")
-    public void setLibvirtSSHPrivateKeySecretRef(io.fabric8.kubernetes.api.model.LocalObjectReference libvirtSSHPrivateKeySecretRef) {
+    public void setLibvirtSSHPrivateKeySecretRef(LocalObjectReference libvirtSSHPrivateKeySecretRef) {
         this.libvirtSSHPrivateKeySecretRef = libvirtSSHPrivateKeySecretRef;
     }
 

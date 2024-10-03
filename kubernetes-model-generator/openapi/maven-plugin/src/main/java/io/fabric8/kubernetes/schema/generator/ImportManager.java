@@ -42,9 +42,26 @@ public interface ImportManager {
    * @return true if the given simple class name is already imported as part of a different package, false otherwise.
    */
   default boolean hasSimpleClassName(String className) {
-    final String simpleClassName = className.substring(className.lastIndexOf('.') + 1);
+    final String simpleClassName = simpleClassName(className);
     return getImports().stream()
         .filter(i -> !Objects.equals(i, className))
         .anyMatch(i -> i.endsWith("." + simpleClassName));
+  }
+
+  /**
+   * Returns the simple class name of the
+   * given fully qualified class name.
+   * <p>
+   * Example:
+   * <pre>
+   *     simpleClassName("io.fabric8.kubernetes.api.model.Pod") -&gt; "Pod"
+   *     simpleClassName("java.lang.String") -&gt; "String"
+   *   </pre>
+   *
+   * @param className the fully qualified class name.
+   * @return the simple class name.
+   */
+  default String simpleClassName(String className) {
+    return className.substring(className.lastIndexOf('.') + 1);
   }
 }

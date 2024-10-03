@@ -22,7 +22,6 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.openshift.api.model.hive.aws.v1.AwsPlatformStatus;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -32,7 +31,8 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "aws"
+    "aws",
+    "gcp"
 })
 @ToString
 @EqualsAndHashCode
@@ -56,7 +56,9 @@ public class PlatformStatus implements Editable<PlatformStatusBuilder> , Kuberne
 {
 
     @JsonProperty("aws")
-    private AwsPlatformStatus aws;
+    private io.fabric8.openshift.api.model.hive.aws.v1.PlatformStatus aws;
+    @JsonProperty("gcp")
+    private io.fabric8.openshift.api.model.hive.gcp.v1.PlatformStatus gcp;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -67,19 +69,30 @@ public class PlatformStatus implements Editable<PlatformStatusBuilder> , Kuberne
     public PlatformStatus() {
     }
 
-    public PlatformStatus(AwsPlatformStatus aws) {
+    public PlatformStatus(io.fabric8.openshift.api.model.hive.aws.v1.PlatformStatus aws, io.fabric8.openshift.api.model.hive.gcp.v1.PlatformStatus gcp) {
         super();
         this.aws = aws;
+        this.gcp = gcp;
     }
 
     @JsonProperty("aws")
-    public AwsPlatformStatus getAws() {
+    public io.fabric8.openshift.api.model.hive.aws.v1.PlatformStatus getAws() {
         return aws;
     }
 
     @JsonProperty("aws")
-    public void setAws(AwsPlatformStatus aws) {
+    public void setAws(io.fabric8.openshift.api.model.hive.aws.v1.PlatformStatus aws) {
         this.aws = aws;
+    }
+
+    @JsonProperty("gcp")
+    public io.fabric8.openshift.api.model.hive.gcp.v1.PlatformStatus getGcp() {
+        return gcp;
+    }
+
+    @JsonProperty("gcp")
+    public void setGcp(io.fabric8.openshift.api.model.hive.gcp.v1.PlatformStatus gcp) {
+        this.gcp = gcp;
     }
 
     @JsonIgnore

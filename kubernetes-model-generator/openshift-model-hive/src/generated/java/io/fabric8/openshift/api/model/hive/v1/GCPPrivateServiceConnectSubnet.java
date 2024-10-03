@@ -1,5 +1,5 @@
 
-package io.fabric8.openshift.api.model.hive.aws.v1;
+package io.fabric8.openshift.api.model.hive.v1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -31,7 +31,8 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "hostedZoneRole"
+    "region",
+    "subnet"
 })
 @ToString
 @EqualsAndHashCode
@@ -51,11 +52,13 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class AwsMetadata implements Editable<AwsMetadataBuilder> , KubernetesResource
+public class GCPPrivateServiceConnectSubnet implements Editable<GCPPrivateServiceConnectSubnetBuilder> , KubernetesResource
 {
 
-    @JsonProperty("hostedZoneRole")
-    private String hostedZoneRole;
+    @JsonProperty("region")
+    private String region;
+    @JsonProperty("subnet")
+    private String subnet;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -63,31 +66,42 @@ public class AwsMetadata implements Editable<AwsMetadataBuilder> , KubernetesRes
      * No args constructor for use in serialization
      * 
      */
-    public AwsMetadata() {
+    public GCPPrivateServiceConnectSubnet() {
     }
 
-    public AwsMetadata(String hostedZoneRole) {
+    public GCPPrivateServiceConnectSubnet(String region, String subnet) {
         super();
-        this.hostedZoneRole = hostedZoneRole;
+        this.region = region;
+        this.subnet = subnet;
     }
 
-    @JsonProperty("hostedZoneRole")
-    public String getHostedZoneRole() {
-        return hostedZoneRole;
+    @JsonProperty("region")
+    public String getRegion() {
+        return region;
     }
 
-    @JsonProperty("hostedZoneRole")
-    public void setHostedZoneRole(String hostedZoneRole) {
-        this.hostedZoneRole = hostedZoneRole;
+    @JsonProperty("region")
+    public void setRegion(String region) {
+        this.region = region;
+    }
+
+    @JsonProperty("subnet")
+    public String getSubnet() {
+        return subnet;
+    }
+
+    @JsonProperty("subnet")
+    public void setSubnet(String subnet) {
+        this.subnet = subnet;
     }
 
     @JsonIgnore
-    public AwsMetadataBuilder edit() {
-        return new AwsMetadataBuilder(this);
+    public GCPPrivateServiceConnectSubnetBuilder edit() {
+        return new GCPPrivateServiceConnectSubnetBuilder(this);
     }
 
     @JsonIgnore
-    public AwsMetadataBuilder toBuilder() {
+    public GCPPrivateServiceConnectSubnetBuilder toBuilder() {
         return edit();
     }
 
