@@ -58,7 +58,7 @@ jobs:
           java-version: '8'
           distribution: 'temurin'
       - name: Install Kubernetes Client
-        run: ./mvnw ${MAVEN_ARGS} clean install -DskipTests -Djacoco.skip=true
+        run: make quickly MAVEN_ARGS="${MAVEN_ARGS}"
 
   minikube_baremetal:
     name: Baremetal K8S

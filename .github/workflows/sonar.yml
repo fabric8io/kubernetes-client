@@ -16,9 +16,6 @@
 
 name: Sonar Scanner
 
-env:
-  MAVEN_OPTIONS: -B -C -V -ntp -Dhttp.keepAlive=false -e
-
 on:
   push:
     branches:
@@ -56,4 +53,4 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
       - name: Sonar
-        run: make clean sonar
+        run: make sonar

@@ -62,7 +62,7 @@ var openApiRun = func(cobraCmd *cobra.Command, args []string) {
 		openshiftclusternetworkoperatorv1.GroupVersion.String(),
 		openshiftclusternodetuningoperatorv1.SchemeGroupVersion.String(),
 		openshifthivev1.SchemeGroupVersion.String(),
-		"install.openshift.io/" + openshiftinstallerv1.InstallConfigVersion + "(" + strings.Join(openshiftinstallerv1.PlatformNames, ",") + ")",
+		"install.openshift.io/" + openshiftinstallerv1.InstallConfigVersion + " (" + strings.Join(openshiftinstallerv1.PlatformNames, ", ") + ")",
 		operatorframeworkv1alpha1.SchemeGroupVersion.String(),
 		operatorframeworkv1.GroupVersion.String(),
 		prometheusoperatorv1.SchemeGroupVersion.String(),
