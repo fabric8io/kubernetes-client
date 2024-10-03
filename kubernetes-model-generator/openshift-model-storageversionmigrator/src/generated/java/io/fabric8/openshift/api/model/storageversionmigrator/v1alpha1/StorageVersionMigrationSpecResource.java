@@ -53,7 +53,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class GroupVersionResource implements Editable<GroupVersionResourceBuilder> , KubernetesResource
+public class StorageVersionMigrationSpecResource implements Editable<StorageVersionMigrationSpecResourceBuilder> , KubernetesResource
 {
 
     @JsonProperty("group")
@@ -69,10 +69,10 @@ public class GroupVersionResource implements Editable<GroupVersionResourceBuilde
      * No args constructor for use in serialization
      * 
      */
-    public GroupVersionResource() {
+    public StorageVersionMigrationSpecResource() {
     }
 
-    public GroupVersionResource(String group, String resource, String version) {
+    public StorageVersionMigrationSpecResource(String group, String resource, String version) {
         super();
         this.group = group;
         this.resource = resource;
@@ -110,12 +110,12 @@ public class GroupVersionResource implements Editable<GroupVersionResourceBuilde
     }
 
     @JsonIgnore
-    public GroupVersionResourceBuilder edit() {
-        return new GroupVersionResourceBuilder(this);
+    public StorageVersionMigrationSpecResourceBuilder edit() {
+        return new StorageVersionMigrationSpecResourceBuilder(this);
     }
 
     @JsonIgnore
-    public GroupVersionResourceBuilder toBuilder() {
+    public StorageVersionMigrationSpecResourceBuilder toBuilder() {
         return edit();
     }
 

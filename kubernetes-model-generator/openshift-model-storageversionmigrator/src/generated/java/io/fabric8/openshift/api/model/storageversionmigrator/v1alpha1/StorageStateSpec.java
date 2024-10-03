@@ -55,7 +55,7 @@ public class StorageStateSpec implements Editable<StorageStateSpecBuilder> , Kub
 {
 
     @JsonProperty("resource")
-    private GroupResource resource;
+    private StorageStateSpecResource resource;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -66,18 +66,18 @@ public class StorageStateSpec implements Editable<StorageStateSpecBuilder> , Kub
     public StorageStateSpec() {
     }
 
-    public StorageStateSpec(GroupResource resource) {
+    public StorageStateSpec(StorageStateSpecResource resource) {
         super();
         this.resource = resource;
     }
 
     @JsonProperty("resource")
-    public GroupResource getResource() {
+    public StorageStateSpecResource getResource() {
         return resource;
     }
 
     @JsonProperty("resource")
-    public void setResource(GroupResource resource) {
+    public void setResource(StorageStateSpecResource resource) {
         this.resource = resource;
     }
 

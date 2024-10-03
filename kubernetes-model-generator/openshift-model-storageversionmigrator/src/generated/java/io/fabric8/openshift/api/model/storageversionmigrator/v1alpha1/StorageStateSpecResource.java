@@ -31,11 +31,8 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "lastUpdateTime",
-    "message",
-    "reason",
-    "status",
-    "type"
+    "group",
+    "resource"
 })
 @ToString
 @EqualsAndHashCode
@@ -55,19 +52,13 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class MigrationCondition implements Editable<MigrationConditionBuilder> , KubernetesResource
+public class StorageStateSpecResource implements Editable<StorageStateSpecResourceBuilder> , KubernetesResource
 {
 
-    @JsonProperty("lastUpdateTime")
-    private String lastUpdateTime;
-    @JsonProperty("message")
-    private String message;
-    @JsonProperty("reason")
-    private String reason;
-    @JsonProperty("status")
-    private String status;
-    @JsonProperty("type")
-    private String type;
+    @JsonProperty("group")
+    private String group;
+    @JsonProperty("resource")
+    private String resource;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -75,75 +66,42 @@ public class MigrationCondition implements Editable<MigrationConditionBuilder> ,
      * No args constructor for use in serialization
      * 
      */
-    public MigrationCondition() {
+    public StorageStateSpecResource() {
     }
 
-    public MigrationCondition(String lastUpdateTime, String message, String reason, String status, String type) {
+    public StorageStateSpecResource(String group, String resource) {
         super();
-        this.lastUpdateTime = lastUpdateTime;
-        this.message = message;
-        this.reason = reason;
-        this.status = status;
-        this.type = type;
+        this.group = group;
+        this.resource = resource;
     }
 
-    @JsonProperty("lastUpdateTime")
-    public String getLastUpdateTime() {
-        return lastUpdateTime;
+    @JsonProperty("group")
+    public String getGroup() {
+        return group;
     }
 
-    @JsonProperty("lastUpdateTime")
-    public void setLastUpdateTime(String lastUpdateTime) {
-        this.lastUpdateTime = lastUpdateTime;
+    @JsonProperty("group")
+    public void setGroup(String group) {
+        this.group = group;
     }
 
-    @JsonProperty("message")
-    public String getMessage() {
-        return message;
+    @JsonProperty("resource")
+    public String getResource() {
+        return resource;
     }
 
-    @JsonProperty("message")
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    @JsonProperty("reason")
-    public String getReason() {
-        return reason;
-    }
-
-    @JsonProperty("reason")
-    public void setReason(String reason) {
-        this.reason = reason;
-    }
-
-    @JsonProperty("status")
-    public String getStatus() {
-        return status;
-    }
-
-    @JsonProperty("status")
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    @JsonProperty("type")
-    public String getType() {
-        return type;
-    }
-
-    @JsonProperty("type")
-    public void setType(String type) {
-        this.type = type;
+    @JsonProperty("resource")
+    public void setResource(String resource) {
+        this.resource = resource;
     }
 
     @JsonIgnore
-    public MigrationConditionBuilder edit() {
-        return new MigrationConditionBuilder(this);
+    public StorageStateSpecResourceBuilder edit() {
+        return new StorageStateSpecResourceBuilder(this);
     }
 
     @JsonIgnore
-    public MigrationConditionBuilder toBuilder() {
+    public StorageStateSpecResourceBuilder toBuilder() {
         return edit();
     }
 

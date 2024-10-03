@@ -43,32 +43,7 @@
       <groupId>io.fabric8</groupId>
       <artifactId>kubernetes-model-core</artifactId>
     </dependency>
-    <dependency>
-      <groupId>io.fabric8</groupId>
-      <artifactId>kubernetes-model-common</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.fabric8</groupId>
-      <artifactId>openshift-model</artifactId>
-    </dependency>
   </dependencies>
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>build-helper-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>attach-artifacts</id>
-            <configuration>
-              <skipAttach>false</skipAttach>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
 
   <profiles>
     <profile>
@@ -76,8 +51,23 @@
       <build>
         <plugins>
           <plugin>
-            <groupId>org.jsonschema2pojo</groupId>
-            <artifactId>jsonschema2pojo-maven-plugin</artifactId>
+            <groupId>io.fabric8</groupId>
+            <artifactId>openapi-model-generator-maven-plugin</artifactId>
+            <configuration >
+              <settings combine.self="append">
+                <urls>
+                  <url>https://raw.githubusercontent.com/kubernetes-sigs/kube-storage-version-migrator/5c8923c5ff96ceb4435f66b986b5aec2dd0cbc22/manifests/storage_migration_crd.yaml</url>
+                  <url>https://raw.githubusercontent.com/kubernetes-sigs/kube-storage-version-migrator/5c8923c5ff96ceb4435f66b986b5aec2dd0cbc22/manifests/storage_state_crd.yaml</url>
+                </urls>
+                <packageMappings combine.self="append">
+                  <io.k8s.migration.storagestates>io.fabric8.openshift.api.model.storageversionmigrator</io.k8s.migration.storagestates>
+                  <io.k8s.migration.storageversionmigrations>io.fabric8.openshift.api.model.storageversionmigrator</io.k8s.migration.storageversionmigrations>
+                </packageMappings>
+                <includeGenerationRegexes>
+                  <includeGenerationRegex>^io\.k8s\.migration\..*$</includeGenerationRegex>
+                </includeGenerationRegexes>
+              </settings>
+            </configuration>
           </plugin>
         </plugins>
       </build>
