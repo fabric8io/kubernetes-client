@@ -32,6 +32,7 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "id",
+    "ifname",
     "podref"
 })
 @ToString
@@ -52,11 +53,13 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class IPAllocation implements Editable<IPAllocationBuilder> , KubernetesResource
+public class IPPoolSpecAllocations implements Editable<IPPoolSpecAllocationsBuilder> , KubernetesResource
 {
 
     @JsonProperty("id")
     private String id;
+    @JsonProperty("ifname")
+    private String ifname;
     @JsonProperty("podref")
     private String podref;
     @JsonIgnore
@@ -66,12 +69,13 @@ public class IPAllocation implements Editable<IPAllocationBuilder> , KubernetesR
      * No args constructor for use in serialization
      * 
      */
-    public IPAllocation() {
+    public IPPoolSpecAllocations() {
     }
 
-    public IPAllocation(String id, String podref) {
+    public IPPoolSpecAllocations(String id, String ifname, String podref) {
         super();
         this.id = id;
+        this.ifname = ifname;
         this.podref = podref;
     }
 
@@ -85,6 +89,16 @@ public class IPAllocation implements Editable<IPAllocationBuilder> , KubernetesR
         this.id = id;
     }
 
+    @JsonProperty("ifname")
+    public String getIfname() {
+        return ifname;
+    }
+
+    @JsonProperty("ifname")
+    public void setIfname(String ifname) {
+        this.ifname = ifname;
+    }
+
     @JsonProperty("podref")
     public String getPodref() {
         return podref;
@@ -96,12 +110,12 @@ public class IPAllocation implements Editable<IPAllocationBuilder> , KubernetesR
     }
 
     @JsonIgnore
-    public IPAllocationBuilder edit() {
-        return new IPAllocationBuilder(this);
+    public IPPoolSpecAllocationsBuilder edit() {
+        return new IPPoolSpecAllocationsBuilder(this);
     }
 
     @JsonIgnore
-    public IPAllocationBuilder toBuilder() {
+    public IPPoolSpecAllocationsBuilder toBuilder() {
         return edit();
     }
 

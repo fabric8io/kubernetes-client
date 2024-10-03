@@ -32,6 +32,7 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "containerid",
+    "ifname",
     "podref"
 })
 @ToString
@@ -57,6 +58,8 @@ public class OverlappingRangeIPReservationSpec implements Editable<OverlappingRa
 
     @JsonProperty("containerid")
     private String containerid;
+    @JsonProperty("ifname")
+    private String ifname;
     @JsonProperty("podref")
     private String podref;
     @JsonIgnore
@@ -69,9 +72,10 @@ public class OverlappingRangeIPReservationSpec implements Editable<OverlappingRa
     public OverlappingRangeIPReservationSpec() {
     }
 
-    public OverlappingRangeIPReservationSpec(String containerid, String podref) {
+    public OverlappingRangeIPReservationSpec(String containerid, String ifname, String podref) {
         super();
         this.containerid = containerid;
+        this.ifname = ifname;
         this.podref = podref;
     }
 
@@ -83,6 +87,16 @@ public class OverlappingRangeIPReservationSpec implements Editable<OverlappingRa
     @JsonProperty("containerid")
     public void setContainerid(String containerid) {
         this.containerid = containerid;
+    }
+
+    @JsonProperty("ifname")
+    public String getIfname() {
+        return ifname;
+    }
+
+    @JsonProperty("ifname")
+    public void setIfname(String ifname) {
+        this.ifname = ifname;
     }
 
     @JsonProperty("podref")

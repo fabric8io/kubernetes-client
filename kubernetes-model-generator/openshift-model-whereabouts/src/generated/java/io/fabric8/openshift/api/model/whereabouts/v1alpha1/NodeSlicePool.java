@@ -39,7 +39,8 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "spec"
+    "spec",
+    "status"
 })
 @ToString
 @EqualsAndHashCode
@@ -64,7 +65,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("whereabouts.cni.cncf.io")
 @Generated("jsonschema2pojo")
-public class OverlappingRangeIPReservation implements Editable<OverlappingRangeIPReservationBuilder> , HasMetadata, Namespaced
+public class NodeSlicePool implements Editable<NodeSlicePoolBuilder> , HasMetadata, Namespaced
 {
 
     /**
@@ -80,11 +81,13 @@ public class OverlappingRangeIPReservation implements Editable<OverlappingRangeI
      * 
      */
     @JsonProperty("kind")
-    private String kind = "OverlappingRangeIPReservation";
+    private String kind = "NodeSlicePool";
     @JsonProperty("metadata")
     private ObjectMeta metadata;
     @JsonProperty("spec")
-    private OverlappingRangeIPReservationSpec spec;
+    private NodeSlicePoolSpec spec;
+    @JsonProperty("status")
+    private NodeSlicePoolStatus status;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -92,15 +95,16 @@ public class OverlappingRangeIPReservation implements Editable<OverlappingRangeI
      * No args constructor for use in serialization
      * 
      */
-    public OverlappingRangeIPReservation() {
+    public NodeSlicePool() {
     }
 
-    public OverlappingRangeIPReservation(String apiVersion, String kind, ObjectMeta metadata, OverlappingRangeIPReservationSpec spec) {
+    public NodeSlicePool(String apiVersion, String kind, ObjectMeta metadata, NodeSlicePoolSpec spec, NodeSlicePoolStatus status) {
         super();
         this.apiVersion = apiVersion;
         this.kind = kind;
         this.metadata = metadata;
         this.spec = spec;
+        this.status = status;
     }
 
     /**
@@ -154,22 +158,32 @@ public class OverlappingRangeIPReservation implements Editable<OverlappingRangeI
     }
 
     @JsonProperty("spec")
-    public OverlappingRangeIPReservationSpec getSpec() {
+    public NodeSlicePoolSpec getSpec() {
         return spec;
     }
 
     @JsonProperty("spec")
-    public void setSpec(OverlappingRangeIPReservationSpec spec) {
+    public void setSpec(NodeSlicePoolSpec spec) {
         this.spec = spec;
     }
 
-    @JsonIgnore
-    public OverlappingRangeIPReservationBuilder edit() {
-        return new OverlappingRangeIPReservationBuilder(this);
+    @JsonProperty("status")
+    public NodeSlicePoolStatus getStatus() {
+        return status;
+    }
+
+    @JsonProperty("status")
+    public void setStatus(NodeSlicePoolStatus status) {
+        this.status = status;
     }
 
     @JsonIgnore
-    public OverlappingRangeIPReservationBuilder toBuilder() {
+    public NodeSlicePoolBuilder edit() {
+        return new NodeSlicePoolBuilder(this);
+    }
+
+    @JsonIgnore
+    public NodeSlicePoolBuilder toBuilder() {
         return edit();
     }
 
