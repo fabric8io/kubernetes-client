@@ -38,7 +38,9 @@ import lombok.experimental.Accessors;
     "datastore",
     "folder",
     "networks",
-    "resourcePool"
+    "resourcePool",
+    "tagIDs",
+    "template"
 })
 @ToString
 @EqualsAndHashCode
@@ -74,6 +76,11 @@ public class Topology implements Editable<TopologyBuilder> , KubernetesResource
     private List<String> networks = new ArrayList<>();
     @JsonProperty("resourcePool")
     private String resourcePool;
+    @JsonProperty("tagIDs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> tagIDs = new ArrayList<>();
+    @JsonProperty("template")
+    private String template;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -84,7 +91,7 @@ public class Topology implements Editable<TopologyBuilder> , KubernetesResource
     public Topology() {
     }
 
-    public Topology(String computeCluster, String datacenter, String datastore, String folder, List<String> networks, String resourcePool) {
+    public Topology(String computeCluster, String datacenter, String datastore, String folder, List<String> networks, String resourcePool, List<String> tagIDs, String template) {
         super();
         this.computeCluster = computeCluster;
         this.datacenter = datacenter;
@@ -92,6 +99,8 @@ public class Topology implements Editable<TopologyBuilder> , KubernetesResource
         this.folder = folder;
         this.networks = networks;
         this.resourcePool = resourcePool;
+        this.tagIDs = tagIDs;
+        this.template = template;
     }
 
     @JsonProperty("computeCluster")
@@ -153,6 +162,27 @@ public class Topology implements Editable<TopologyBuilder> , KubernetesResource
     @JsonProperty("resourcePool")
     public void setResourcePool(String resourcePool) {
         this.resourcePool = resourcePool;
+    }
+
+    @JsonProperty("tagIDs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<String> getTagIDs() {
+        return tagIDs;
+    }
+
+    @JsonProperty("tagIDs")
+    public void setTagIDs(List<String> tagIDs) {
+        this.tagIDs = tagIDs;
+    }
+
+    @JsonProperty("template")
+    public String getTemplate() {
+        return template;
+    }
+
+    @JsonProperty("template")
+    public void setTemplate(String template) {
+        this.template = template;
     }
 
     @JsonIgnore

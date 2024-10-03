@@ -84,6 +84,17 @@ public class GeneratorSettings {
   private final AtomicBoolean packageMappingsProcessed = new AtomicBoolean(false);
   @Builder.Default
   private Properties refToJavaTypeMappings = new Properties();
+  /**
+   * Allows configuring the mapping of specific field names to other names.
+   * <p>
+   * This is currently needed as a workaround for Sundrio's issues when generating builders when a class has two
+   * List or array fields with a plural and singular.
+   * <p>
+   * For example, when a class has both `List<String> items` and `List<String></String> item`, Sundrio generates a
+   * fluent builder with conflicting names such as buildItem(int), buildFirstItem(), and so on.
+   */
+  @Singular
+  private Map<String, String> fieldNameMappings;
   @Singular
   private Set<String> skipGenerationRegexes;
   @Singular

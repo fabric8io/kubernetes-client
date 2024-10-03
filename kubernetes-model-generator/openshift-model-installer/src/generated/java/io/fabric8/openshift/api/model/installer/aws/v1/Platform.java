@@ -34,11 +34,15 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "amiID",
+    "bestEffortDeleteIgnition",
     "defaultMachinePlatform",
     "experimentalPropagateUserTags",
     "hostedZone",
+    "hostedZoneRole",
     "lbType",
+    "preserveBootstrapIgnition",
     "propagateUserTags",
+    "publicIpv4Pool",
     "region",
     "serviceEndpoints",
     "subnets",
@@ -67,16 +71,24 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
 
     @JsonProperty("amiID")
     private String amiID;
+    @JsonProperty("bestEffortDeleteIgnition")
+    private Boolean bestEffortDeleteIgnition;
     @JsonProperty("defaultMachinePlatform")
     private MachinePool defaultMachinePlatform;
     @JsonProperty("experimentalPropagateUserTags")
     private Boolean experimentalPropagateUserTags;
     @JsonProperty("hostedZone")
     private String hostedZone;
+    @JsonProperty("hostedZoneRole")
+    private String hostedZoneRole;
     @JsonProperty("lbType")
     private String lbType;
+    @JsonProperty("preserveBootstrapIgnition")
+    private Boolean preserveBootstrapIgnition;
     @JsonProperty("propagateUserTags")
     private Boolean propagateUserTags;
+    @JsonProperty("publicIpv4Pool")
+    private String publicIpv4Pool;
     @JsonProperty("region")
     private String region;
     @JsonProperty("serviceEndpoints")
@@ -98,14 +110,18 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     public Platform() {
     }
 
-    public Platform(String amiID, MachinePool defaultMachinePlatform, Boolean experimentalPropagateUserTags, String hostedZone, String lbType, Boolean propagateUserTags, String region, List<ServiceEndpoint> serviceEndpoints, List<String> subnets, Map<String, String> userTags) {
+    public Platform(String amiID, Boolean bestEffortDeleteIgnition, MachinePool defaultMachinePlatform, Boolean experimentalPropagateUserTags, String hostedZone, String hostedZoneRole, String lbType, Boolean preserveBootstrapIgnition, Boolean propagateUserTags, String publicIpv4Pool, String region, List<ServiceEndpoint> serviceEndpoints, List<String> subnets, Map<String, String> userTags) {
         super();
         this.amiID = amiID;
+        this.bestEffortDeleteIgnition = bestEffortDeleteIgnition;
         this.defaultMachinePlatform = defaultMachinePlatform;
         this.experimentalPropagateUserTags = experimentalPropagateUserTags;
         this.hostedZone = hostedZone;
+        this.hostedZoneRole = hostedZoneRole;
         this.lbType = lbType;
+        this.preserveBootstrapIgnition = preserveBootstrapIgnition;
         this.propagateUserTags = propagateUserTags;
+        this.publicIpv4Pool = publicIpv4Pool;
         this.region = region;
         this.serviceEndpoints = serviceEndpoints;
         this.subnets = subnets;
@@ -120,6 +136,16 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     @JsonProperty("amiID")
     public void setAmiID(String amiID) {
         this.amiID = amiID;
+    }
+
+    @JsonProperty("bestEffortDeleteIgnition")
+    public Boolean getBestEffortDeleteIgnition() {
+        return bestEffortDeleteIgnition;
+    }
+
+    @JsonProperty("bestEffortDeleteIgnition")
+    public void setBestEffortDeleteIgnition(Boolean bestEffortDeleteIgnition) {
+        this.bestEffortDeleteIgnition = bestEffortDeleteIgnition;
     }
 
     @JsonProperty("defaultMachinePlatform")
@@ -152,6 +178,16 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
         this.hostedZone = hostedZone;
     }
 
+    @JsonProperty("hostedZoneRole")
+    public String getHostedZoneRole() {
+        return hostedZoneRole;
+    }
+
+    @JsonProperty("hostedZoneRole")
+    public void setHostedZoneRole(String hostedZoneRole) {
+        this.hostedZoneRole = hostedZoneRole;
+    }
+
     @JsonProperty("lbType")
     public String getLbType() {
         return lbType;
@@ -162,6 +198,16 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
         this.lbType = lbType;
     }
 
+    @JsonProperty("preserveBootstrapIgnition")
+    public Boolean getPreserveBootstrapIgnition() {
+        return preserveBootstrapIgnition;
+    }
+
+    @JsonProperty("preserveBootstrapIgnition")
+    public void setPreserveBootstrapIgnition(Boolean preserveBootstrapIgnition) {
+        this.preserveBootstrapIgnition = preserveBootstrapIgnition;
+    }
+
     @JsonProperty("propagateUserTags")
     public Boolean getPropagateUserTags() {
         return propagateUserTags;
@@ -170,6 +216,16 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     @JsonProperty("propagateUserTags")
     public void setPropagateUserTags(Boolean propagateUserTags) {
         this.propagateUserTags = propagateUserTags;
+    }
+
+    @JsonProperty("publicIpv4Pool")
+    public String getPublicIpv4Pool() {
+        return publicIpv4Pool;
+    }
+
+    @JsonProperty("publicIpv4Pool")
+    public void setPublicIpv4Pool(String publicIpv4Pool) {
+        this.publicIpv4Pool = publicIpv4Pool;
     }
 
     @JsonProperty("region")

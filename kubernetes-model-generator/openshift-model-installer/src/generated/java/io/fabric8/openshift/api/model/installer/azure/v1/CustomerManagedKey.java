@@ -1,5 +1,5 @@
 
-package io.fabric8.openshift.api.model.installer.libvirt.v1;
+package io.fabric8.openshift.api.model.installer.azure.v1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -31,9 +31,8 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "URI",
-    "defaultMachinePlatform",
-    "network"
+    "keyVault",
+    "userAssignedIdentityKey"
 })
 @ToString
 @EqualsAndHashCode
@@ -53,15 +52,13 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class Platform implements Editable<PlatformBuilder> , KubernetesResource
+public class CustomerManagedKey implements Editable<CustomerManagedKeyBuilder> , KubernetesResource
 {
 
-    @JsonProperty("URI")
-    private String uri;
-    @JsonProperty("defaultMachinePlatform")
-    private MachinePool defaultMachinePlatform;
-    @JsonProperty("network")
-    private Network network;
+    @JsonProperty("keyVault")
+    private KeyVault keyVault;
+    @JsonProperty("userAssignedIdentityKey")
+    private String userAssignedIdentityKey;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -69,53 +66,42 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
      * No args constructor for use in serialization
      * 
      */
-    public Platform() {
+    public CustomerManagedKey() {
     }
 
-    public Platform(String uri, MachinePool defaultMachinePlatform, Network network) {
+    public CustomerManagedKey(KeyVault keyVault, String userAssignedIdentityKey) {
         super();
-        this.uri = uri;
-        this.defaultMachinePlatform = defaultMachinePlatform;
-        this.network = network;
+        this.keyVault = keyVault;
+        this.userAssignedIdentityKey = userAssignedIdentityKey;
     }
 
-    @JsonProperty("URI")
-    public String getUri() {
-        return uri;
+    @JsonProperty("keyVault")
+    public KeyVault getKeyVault() {
+        return keyVault;
     }
 
-    @JsonProperty("URI")
-    public void setUri(String uri) {
-        this.uri = uri;
+    @JsonProperty("keyVault")
+    public void setKeyVault(KeyVault keyVault) {
+        this.keyVault = keyVault;
     }
 
-    @JsonProperty("defaultMachinePlatform")
-    public MachinePool getDefaultMachinePlatform() {
-        return defaultMachinePlatform;
+    @JsonProperty("userAssignedIdentityKey")
+    public String getUserAssignedIdentityKey() {
+        return userAssignedIdentityKey;
     }
 
-    @JsonProperty("defaultMachinePlatform")
-    public void setDefaultMachinePlatform(MachinePool defaultMachinePlatform) {
-        this.defaultMachinePlatform = defaultMachinePlatform;
-    }
-
-    @JsonProperty("network")
-    public Network getNetwork() {
-        return network;
-    }
-
-    @JsonProperty("network")
-    public void setNetwork(Network network) {
-        this.network = network;
+    @JsonProperty("userAssignedIdentityKey")
+    public void setUserAssignedIdentityKey(String userAssignedIdentityKey) {
+        this.userAssignedIdentityKey = userAssignedIdentityKey;
     }
 
     @JsonIgnore
-    public PlatformBuilder edit() {
-        return new PlatformBuilder(this);
+    public CustomerManagedKeyBuilder edit() {
+        return new CustomerManagedKeyBuilder(this);
     }
 
     @JsonIgnore
-    public PlatformBuilder toBuilder() {
+    public CustomerManagedKeyBuilder toBuilder() {
         return edit();
     }
 

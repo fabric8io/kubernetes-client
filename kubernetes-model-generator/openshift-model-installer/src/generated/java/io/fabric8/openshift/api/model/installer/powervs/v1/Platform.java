@@ -24,6 +24,7 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
+import io.fabric8.openshift.api.model.config.v1.PowerVSServiceEndpoint;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -33,13 +34,13 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "cloudConnectionName",
     "clusterOSImage",
     "defaultMachinePlatform",
     "powervsResourceGroup",
-    "pvsNetworkName",
     "region",
-    "serviceInstanceID",
+    "serviceEndpoints",
+    "serviceInstanceGUID",
+    "tgName",
     "userID",
     "vpcName",
     "vpcRegion",
@@ -67,20 +68,21 @@ import lombok.experimental.Accessors;
 public class Platform implements Editable<PlatformBuilder> , KubernetesResource
 {
 
-    @JsonProperty("cloudConnectionName")
-    private String cloudConnectionName;
     @JsonProperty("clusterOSImage")
     private String clusterOSImage;
     @JsonProperty("defaultMachinePlatform")
     private MachinePool defaultMachinePlatform;
     @JsonProperty("powervsResourceGroup")
     private String powervsResourceGroup;
-    @JsonProperty("pvsNetworkName")
-    private String pvsNetworkName;
     @JsonProperty("region")
     private String region;
-    @JsonProperty("serviceInstanceID")
-    private String serviceInstanceID;
+    @JsonProperty("serviceEndpoints")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<PowerVSServiceEndpoint> serviceEndpoints = new ArrayList<>();
+    @JsonProperty("serviceInstanceGUID")
+    private String serviceInstanceGUID;
+    @JsonProperty("tgName")
+    private String tgName;
     @JsonProperty("userID")
     private String userID;
     @JsonProperty("vpcName")
@@ -102,30 +104,20 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     public Platform() {
     }
 
-    public Platform(String cloudConnectionName, String clusterOSImage, MachinePool defaultMachinePlatform, String powervsResourceGroup, String pvsNetworkName, String region, String serviceInstanceID, String userID, String vpcName, String vpcRegion, List<String> vpcSubnets, String zone) {
+    public Platform(String clusterOSImage, MachinePool defaultMachinePlatform, String powervsResourceGroup, String region, List<PowerVSServiceEndpoint> serviceEndpoints, String serviceInstanceGUID, String tgName, String userID, String vpcName, String vpcRegion, List<String> vpcSubnets, String zone) {
         super();
-        this.cloudConnectionName = cloudConnectionName;
         this.clusterOSImage = clusterOSImage;
         this.defaultMachinePlatform = defaultMachinePlatform;
         this.powervsResourceGroup = powervsResourceGroup;
-        this.pvsNetworkName = pvsNetworkName;
         this.region = region;
-        this.serviceInstanceID = serviceInstanceID;
+        this.serviceEndpoints = serviceEndpoints;
+        this.serviceInstanceGUID = serviceInstanceGUID;
+        this.tgName = tgName;
         this.userID = userID;
         this.vpcName = vpcName;
         this.vpcRegion = vpcRegion;
         this.vpcSubnets = vpcSubnets;
         this.zone = zone;
-    }
-
-    @JsonProperty("cloudConnectionName")
-    public String getCloudConnectionName() {
-        return cloudConnectionName;
-    }
-
-    @JsonProperty("cloudConnectionName")
-    public void setCloudConnectionName(String cloudConnectionName) {
-        this.cloudConnectionName = cloudConnectionName;
     }
 
     @JsonProperty("clusterOSImage")
@@ -158,16 +150,6 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
         this.powervsResourceGroup = powervsResourceGroup;
     }
 
-    @JsonProperty("pvsNetworkName")
-    public String getPvsNetworkName() {
-        return pvsNetworkName;
-    }
-
-    @JsonProperty("pvsNetworkName")
-    public void setPvsNetworkName(String pvsNetworkName) {
-        this.pvsNetworkName = pvsNetworkName;
-    }
-
     @JsonProperty("region")
     public String getRegion() {
         return region;
@@ -178,14 +160,35 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
         this.region = region;
     }
 
-    @JsonProperty("serviceInstanceID")
-    public String getServiceInstanceID() {
-        return serviceInstanceID;
+    @JsonProperty("serviceEndpoints")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<PowerVSServiceEndpoint> getServiceEndpoints() {
+        return serviceEndpoints;
     }
 
-    @JsonProperty("serviceInstanceID")
-    public void setServiceInstanceID(String serviceInstanceID) {
-        this.serviceInstanceID = serviceInstanceID;
+    @JsonProperty("serviceEndpoints")
+    public void setServiceEndpoints(List<PowerVSServiceEndpoint> serviceEndpoints) {
+        this.serviceEndpoints = serviceEndpoints;
+    }
+
+    @JsonProperty("serviceInstanceGUID")
+    public String getServiceInstanceGUID() {
+        return serviceInstanceGUID;
+    }
+
+    @JsonProperty("serviceInstanceGUID")
+    public void setServiceInstanceGUID(String serviceInstanceGUID) {
+        this.serviceInstanceGUID = serviceInstanceGUID;
+    }
+
+    @JsonProperty("tgName")
+    public String getTgName() {
+        return tgName;
+    }
+
+    @JsonProperty("tgName")
+    public void setTgName(String tgName) {
+        this.tgName = tgName;
     }
 
     @JsonProperty("userID")

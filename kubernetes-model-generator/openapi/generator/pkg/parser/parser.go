@@ -27,6 +27,7 @@ import (
 const genClient = "+genclient"
 const genClientPrefix = genClient + ":"
 const groupNamePrefix = "+groupName="
+const versionNamePrefix = "+versionName="
 
 type Module struct {
 	patterns []string
@@ -66,7 +67,7 @@ func (oam *Module) ExtractInfo(definitionName string) *Fabric8Info {
 	fabric8Info := &Fabric8Info{}
 	fabric8Info.Type = resolveType(typ)
 	fabric8Info.Group = groupName(pkg)
-	fabric8Info.Version = pkg.Name
+	fabric8Info.Version = versionName(pkg)
 	fabric8Info.Kind = typ.Name.Name
 	fabric8Info.Scope = scope(typ)
 	return fabric8Info
@@ -88,7 +89,7 @@ func (oam *Module) ApiName(definitionName string) string {
 	for i, j := 0, len(groupParts)-1; i < j; i, j = i+1, j-1 {
 		groupParts[i], groupParts[j] = groupParts[j], groupParts[i]
 	}
-	return strings.Join(groupParts, ".") + "." + pkg.Name + "." + typeName
+	return strings.Join(groupParts, ".") + "." + versionName(pkg) + "." + typeName
 }
 
 func (oam *Module) resolvePackage(definitionName string) *types.Package {
@@ -105,9 +106,26 @@ func (oam *Module) resolvePackage(definitionName string) *types.Package {
 }
 
 func groupName(pkg *types.Package) string {
+	return findTag(pkg, groupNamePrefix)
+}
+
+func versionName(pkg *types.Package) string {
+	// Some packages have a versionName tag, but it's not the standard (usually package name is used instead)
+	v := findTag(pkg, versionNamePrefix)
+	if v != "" {
+		return v
+	}
+	return pkg.Name
+}
+
+func findTag(pkg *types.Package, tag string) string {
 	for _, c := range pkg.Comments {
-		if strings.HasPrefix(c, groupNamePrefix) {
-			return strings.TrimPrefix(c, groupNamePrefix)
+		if strings.HasPrefix(c, tag) {
+			t := strings.TrimPrefix(c, tag)
+			// Incredibly 🤦, there are some operators with a badly defined groupName tag:
+			// https://github.com/openshift/installer/blob/66e9daae9dae59c2ec167a6c31f2f2c127382357/pkg/types/doc.go#L1
+			t = strings.ReplaceAll(t, "\"", "")
+			return t
 		}
 	}
 	return ""

@@ -148,6 +148,7 @@ public class SchemaUtils {
       "int",
       "package",
       "private",
+      "public",
       "return",
       "short",
       "static"));
@@ -361,10 +362,11 @@ public class SchemaUtils {
     return sanitized.toString();
   }
 
-  public static String sanitizeVariable(String variable) {
-    final String sanitized = uncapitalize(removeDashes(variable));
+  public String sanitizeFieldName(String fieldName) {
+    final String sanitized = uncapitalize(removeDashes(fieldName));
     final String mapped = MAPPED_WORDS.getOrDefault(sanitized, sanitized);
-    return PROTECTED_WORDS.contains(mapped) ? "_" + mapped : mapped;
+    final String userMapped = settings.getFieldNameMappings().getOrDefault(mapped, mapped);
+    return PROTECTED_WORDS.contains(userMapped) ? "_" + userMapped : userMapped;
   }
 
   public static String getterName(String variable) {

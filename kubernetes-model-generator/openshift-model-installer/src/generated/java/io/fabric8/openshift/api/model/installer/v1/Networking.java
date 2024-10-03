@@ -1,6 +1,7 @@
 
 package io.fabric8.openshift.api.model.installer.v1;
 
+import java.lang.String;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -34,7 +35,8 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "clusterNetwork",
-    "deprecatedClusterNetworks",
+    "clusterNetworkMTU",
+    "clusterNetworks",
     "machineCIDR",
     "machineNetwork",
     "networkType",
@@ -66,9 +68,11 @@ public class Networking implements Editable<NetworkingBuilder> , KubernetesResou
     @JsonProperty("clusterNetwork")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ClusterNetworkEntry> clusterNetwork = new ArrayList<>();
-    @JsonProperty("deprecatedClusterNetworks")
+    @JsonProperty("clusterNetworkMTU")
+    private Long clusterNetworkMTU;
+    @JsonProperty("clusterNetworks")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<ClusterNetworkEntry> deprecatedClusterNetworks = new ArrayList<>();
+    private List<ClusterNetworkEntry> clusterNetworkList = new ArrayList<>();
     @JsonProperty("machineCIDR")
     private String machineCIDR;
     @JsonProperty("machineNetwork")
@@ -93,10 +97,11 @@ public class Networking implements Editable<NetworkingBuilder> , KubernetesResou
     public Networking() {
     }
 
-    public Networking(List<ClusterNetworkEntry> clusterNetwork, List<ClusterNetworkEntry> deprecatedClusterNetworks, String machineCIDR, List<MachineNetworkEntry> machineNetwork, String networkType, String serviceCIDR, List<String> serviceNetwork, String type) {
+    public Networking(List<ClusterNetworkEntry> clusterNetwork, Long clusterNetworkMTU, List<ClusterNetworkEntry> clusterNetworkList, String machineCIDR, List<MachineNetworkEntry> machineNetwork, String networkType, String serviceCIDR, List<String> serviceNetwork, String type) {
         super();
         this.clusterNetwork = clusterNetwork;
-        this.deprecatedClusterNetworks = deprecatedClusterNetworks;
+        this.clusterNetworkMTU = clusterNetworkMTU;
+        this.clusterNetworkList = clusterNetworkList;
         this.machineCIDR = machineCIDR;
         this.machineNetwork = machineNetwork;
         this.networkType = networkType;
@@ -116,15 +121,25 @@ public class Networking implements Editable<NetworkingBuilder> , KubernetesResou
         this.clusterNetwork = clusterNetwork;
     }
 
-    @JsonProperty("deprecatedClusterNetworks")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<ClusterNetworkEntry> getDeprecatedClusterNetworks() {
-        return deprecatedClusterNetworks;
+    @JsonProperty("clusterNetworkMTU")
+    public Long getClusterNetworkMTU() {
+        return clusterNetworkMTU;
     }
 
-    @JsonProperty("deprecatedClusterNetworks")
-    public void setDeprecatedClusterNetworks(List<ClusterNetworkEntry> deprecatedClusterNetworks) {
-        this.deprecatedClusterNetworks = deprecatedClusterNetworks;
+    @JsonProperty("clusterNetworkMTU")
+    public void setClusterNetworkMTU(Long clusterNetworkMTU) {
+        this.clusterNetworkMTU = clusterNetworkMTU;
+    }
+
+    @JsonProperty("clusterNetworks")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<ClusterNetworkEntry> getClusterNetworks() {
+        return clusterNetworkList;
+    }
+
+    @JsonProperty("clusterNetworks")
+    public void setClusterNetworks(List<ClusterNetworkEntry> clusterNetworkList) {
+        this.clusterNetworkList = clusterNetworkList;
     }
 
     @JsonProperty("machineCIDR")

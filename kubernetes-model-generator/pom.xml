@@ -172,6 +172,7 @@
                 <io.openshift.cloudcredential>io.fabric8.openshift.api.model.miscellaneous.cloudcredential</io.openshift.cloudcredential>
                 <io.openshift.helm>io.fabric8.openshift.api.model.miscellaneous.helm</io.openshift.helm>
                 <io.openshift.image.v1>io.fabric8.openshift.api.model</io.openshift.image.v1>
+                <io.openshift.install>io.fabric8.openshift.api.model.installer</io.openshift.install>
                 <io.openshift.network>io.fabric8.openshift.api.model.miscellaneous.network</io.openshift.network>
                 <io.openshift.oauth.v1>io.fabric8.openshift.api.model</io.openshift.oauth.v1>
                 <io.openshift.project.v1>io.fabric8.openshift.api.model</io.openshift.project.v1>

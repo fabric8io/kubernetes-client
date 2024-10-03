@@ -48,23 +48,11 @@
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
-      <artifactId>kubernetes-model-common</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.fabric8</groupId>
-      <artifactId>kubernetes-model-apiextensions</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.fabric8</groupId>
       <artifactId>openshift-model-config</artifactId>
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>openshift-model-machine</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.fabric8</groupId>
-      <artifactId>kubernetes-model-admissionregistration</artifactId>
     </dependency>
     <dependency>
       <groupId>org.assertj</groupId>
@@ -73,31 +61,48 @@
     </dependency>
   </dependencies>
 
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>build-helper-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>attach-artifacts</id>
-            <configuration>
-              <skipAttach>false</skipAttach>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
-
   <profiles>
     <profile>
       <id>generate</id>
       <build>
         <plugins>
           <plugin>
-            <groupId>org.jsonschema2pojo</groupId>
-            <artifactId>jsonschema2pojo-maven-plugin</artifactId>
+            <groupId>io.fabric8</groupId>
+            <artifactId>openapi-model-generator-maven-plugin</artifactId>
+            <configuration >
+              <settings combine.self="append">
+                <schemas>
+                  <schema>${openapi.schema.openshift-generated}</schema>
+                </schemas>
+                <packageMappings combine.self="append">
+                  <com.github.openshift.installer.pkg.types.aws>io.fabric8.openshift.api.model.installer.aws.v1</com.github.openshift.installer.pkg.types.aws>
+                  <com.github.openshift.installer.pkg.types.azure>io.fabric8.openshift.api.model.installer.azure.v1</com.github.openshift.installer.pkg.types.azure>
+                  <com.github.openshift.installer.pkg.types.baremetal>io.fabric8.openshift.api.model.installer.baremetal.v1</com.github.openshift.installer.pkg.types.baremetal>
+                  <com.github.openshift.installer.pkg.types.external>io.fabric8.openshift.api.model.installer.external.v1</com.github.openshift.installer.pkg.types.external>
+                  <com.github.openshift.installer.pkg.types.gcp>io.fabric8.openshift.api.model.installer.gcp.v1</com.github.openshift.installer.pkg.types.gcp>
+                  <com.github.openshift.installer.pkg.types.ibmcloud>io.fabric8.openshift.api.model.installer.ibmcloud.v1</com.github.openshift.installer.pkg.types.ibmcloud>
+                  <com.github.openshift.installer.pkg.types.none>io.fabric8.openshift.api.model.installer.none.v1</com.github.openshift.installer.pkg.types.none>
+                  <com.github.openshift.installer.pkg.types.nutanix>io.fabric8.openshift.api.model.installer.nutanix.v1</com.github.openshift.installer.pkg.types.nutanix>
+                  <com.github.openshift.installer.pkg.types.openstack>io.fabric8.openshift.api.model.installer.openstack.v1</com.github.openshift.installer.pkg.types.openstack>
+                  <com.github.openshift.installer.pkg.types.ovirt>io.fabric8.openshift.api.model.installer.ovirt.v1</com.github.openshift.installer.pkg.types.ovirt>
+                  <com.github.openshift.installer.pkg.types.powervs>io.fabric8.openshift.api.model.installer.powervs.v1</com.github.openshift.installer.pkg.types.powervs>
+                  <com.github.openshift.installer.pkg.types.vsphere>io.fabric8.openshift.api.model.installer.vsphere.v1</com.github.openshift.installer.pkg.types.vsphere>
+                </packageMappings>
+                <includeGenerationRegexes>
+                  <includeGenerationRegex>^io\.openshift\.install\..*$</includeGenerationRegex>
+                  <includeGenerationRegex>^com\.github\.openshift\.installer\..*$</includeGenerationRegex>
+                </includeGenerationRegexes>
+                <fieldNameMappings>
+                  <clusterNetworks>clusterNetworkList</clusterNetworks>
+                </fieldNameMappings>
+                <refToJavaTypeMappings>
+                  <property>
+                    <name>#/components/schemas/com.github.openshift.installer.pkg.ipnet.IPNet</name>
+                    <value>java.lang.String</value>
+                  </property>
+                </refToJavaTypeMappings>
+              </settings>
+            </configuration>
           </plugin>
         </plugins>
       </build>

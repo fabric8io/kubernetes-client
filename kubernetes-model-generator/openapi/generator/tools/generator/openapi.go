@@ -22,11 +22,15 @@ import (
 	"fmt"
 	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/pkg/openapi"
 	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/pkg/openshift"
+	"strings"
+
 	//openshiftbaremetaloperatorv1alpha1 "github.com/metal3-io/baremetal-operator/apis/metal3.io/v1alpha1"
+	openshiftconfigv1 "github.com/openshift/api/config/v1"
 	openshiftcloudcredentialoperatorv1 "github.com/openshift/cloud-credential-operator/pkg/apis/cloudcredential/v1"
 	openshiftclusternetworkoperatorv1 "github.com/openshift/cluster-network-operator/pkg/apis/network/v1"
 	openshiftclusternodetuningoperatorv1 "github.com/openshift/cluster-node-tuning-operator/pkg/apis/tuned/v1"
 	openshifthivev1 "github.com/openshift/hive/apis/hive/v1"
+	openshiftinstallerv1 "github.com/openshift/installer/pkg/types"
 	operatorframeworkv1 "github.com/operator-framework/api/pkg/operators/v1"
 	operatorframeworkv1alpha1 "github.com/operator-framework/api/pkg/operators/v1alpha1"
 	olm "github.com/operator-framework/operator-lifecycle-manager/pkg/package-server/apis/operators/v1"
@@ -37,18 +41,20 @@ import (
 
 func main() {
 	startTime := time.Now()
-	fmt.Printf("OpenAPI code generation started...\n%s\n", []string{
+	fmt.Printf("OpenAPI code generation started...\n%s\n", strings.Join([]string{
 		// Force imports so that modules are present in go.mod
-		operatorframeworkv1alpha1.SchemeGroupVersion.String(),
-		operatorframeworkv1.GroupVersion.String(),
+		openshiftconfigv1.SchemeGroupVersion.String(),
 		//openshiftbaremetaloperatorv1alpha1.GroupVersion.String(),
+		olm.SchemeGroupVersion.String(),
 		openshiftcloudcredentialoperatorv1.GroupVersion.String(),
 		openshiftclusternetworkoperatorv1.GroupVersion.String(),
 		openshiftclusternodetuningoperatorv1.SchemeGroupVersion.String(),
 		openshifthivev1.SchemeGroupVersion.String(),
-		olm.SchemeGroupVersion.String(),
+		"install.openshift.io/" + openshiftinstallerv1.InstallConfigVersion + " (" + strings.Join(openshiftinstallerv1.PlatformNames, ", ") + ")",
+		operatorframeworkv1alpha1.SchemeGroupVersion.String(),
+		operatorframeworkv1.GroupVersion.String(),
 		prometheusoperatorv1.SchemeGroupVersion.String(),
-	})
+	}, "\n"))
 	err := (&openapi.GoGenerator{
 		Args: args.Args{
 			OutputFile: "zz_generated.openapi.go",

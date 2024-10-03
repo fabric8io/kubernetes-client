@@ -33,7 +33,8 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "diskEncryptionSet",
     "diskSizeGB",
-    "diskType"
+    "diskType",
+    "securityProfile"
 })
 @ToString
 @EqualsAndHashCode
@@ -62,6 +63,8 @@ public class OSDisk implements Editable<OSDiskBuilder> , KubernetesResource
     private Integer diskSizeGB;
     @JsonProperty("diskType")
     private String diskType;
+    @JsonProperty("securityProfile")
+    private VMDiskSecurityProfile securityProfile;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -72,11 +75,12 @@ public class OSDisk implements Editable<OSDiskBuilder> , KubernetesResource
     public OSDisk() {
     }
 
-    public OSDisk(DiskEncryptionSet diskEncryptionSet, Integer diskSizeGB, String diskType) {
+    public OSDisk(DiskEncryptionSet diskEncryptionSet, Integer diskSizeGB, String diskType, VMDiskSecurityProfile securityProfile) {
         super();
         this.diskEncryptionSet = diskEncryptionSet;
         this.diskSizeGB = diskSizeGB;
         this.diskType = diskType;
+        this.securityProfile = securityProfile;
     }
 
     @JsonProperty("diskEncryptionSet")
@@ -107,6 +111,16 @@ public class OSDisk implements Editable<OSDiskBuilder> , KubernetesResource
     @JsonProperty("diskType")
     public void setDiskType(String diskType) {
         this.diskType = diskType;
+    }
+
+    @JsonProperty("securityProfile")
+    public VMDiskSecurityProfile getSecurityProfile() {
+        return securityProfile;
+    }
+
+    @JsonProperty("securityProfile")
+    public void setSecurityProfile(VMDiskSecurityProfile securityProfile) {
+        this.securityProfile = securityProfile;
     }
 
     @JsonIgnore

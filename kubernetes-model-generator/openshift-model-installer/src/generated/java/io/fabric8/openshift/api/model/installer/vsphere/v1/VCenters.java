@@ -1,5 +1,5 @@
 
-package io.fabric8.openshift.api.model.installer.libvirt.v1;
+package io.fabric8.openshift.api.model.installer.vsphere.v1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
@@ -30,7 +31,9 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-
+    "password",
+    "username",
+    "vCenter"
 })
 @ToString
 @EqualsAndHashCode
@@ -50,19 +53,69 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class MachinePool implements Editable<MachinePoolBuilder> , KubernetesResource
+public class VCenters implements Editable<VCentersBuilder> , KubernetesResource
 {
 
+    @JsonProperty("password")
+    private String password;
+    @JsonProperty("username")
+    private String username;
+    @JsonProperty("vCenter")
+    private String vCenter;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
-    @JsonIgnore
-    public MachinePoolBuilder edit() {
-        return new MachinePoolBuilder(this);
+    /**
+     * No args constructor for use in serialization
+     * 
+     */
+    public VCenters() {
+    }
+
+    public VCenters(String password, String username, String vCenter) {
+        super();
+        this.password = password;
+        this.username = username;
+        this.vCenter = vCenter;
+    }
+
+    @JsonProperty("password")
+    public String getPassword() {
+        return password;
+    }
+
+    @JsonProperty("password")
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    @JsonProperty("username")
+    public String getUsername() {
+        return username;
+    }
+
+    @JsonProperty("username")
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    @JsonProperty("vCenter")
+    public String getVCenter() {
+        return vCenter;
+    }
+
+    @JsonProperty("vCenter")
+    public void setVCenter(String vCenter) {
+        this.vCenter = vCenter;
     }
 
     @JsonIgnore
-    public MachinePoolBuilder toBuilder() {
+    public VCentersBuilder edit() {
+        return new VCentersBuilder(this);
+    }
+
+    @JsonIgnore
+    public VCentersBuilder toBuilder() {
         return edit();
     }
 

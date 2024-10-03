@@ -36,6 +36,7 @@ import lombok.experimental.Accessors;
     "encryptionAtHost",
     "osDisk",
     "osImage",
+    "settings",
     "type",
     "ultraSSDCapability",
     "vmNetworkingType",
@@ -68,6 +69,8 @@ public class MachinePool implements Editable<MachinePoolBuilder> , KubernetesRes
     private OSDisk osDisk;
     @JsonProperty("osImage")
     private OSImage osImage;
+    @JsonProperty("settings")
+    private SecuritySettings settings;
     @JsonProperty("type")
     private String type;
     @JsonProperty("ultraSSDCapability")
@@ -87,11 +90,12 @@ public class MachinePool implements Editable<MachinePoolBuilder> , KubernetesRes
     public MachinePool() {
     }
 
-    public MachinePool(Boolean encryptionAtHost, OSDisk osDisk, OSImage osImage, String type, String ultraSSDCapability, String vmNetworkingType, List<String> zones) {
+    public MachinePool(Boolean encryptionAtHost, OSDisk osDisk, OSImage osImage, SecuritySettings settings, String type, String ultraSSDCapability, String vmNetworkingType, List<String> zones) {
         super();
         this.encryptionAtHost = encryptionAtHost;
         this.osDisk = osDisk;
         this.osImage = osImage;
+        this.settings = settings;
         this.type = type;
         this.ultraSSDCapability = ultraSSDCapability;
         this.vmNetworkingType = vmNetworkingType;
@@ -126,6 +130,16 @@ public class MachinePool implements Editable<MachinePoolBuilder> , KubernetesRes
     @JsonProperty("osImage")
     public void setOsImage(OSImage osImage) {
         this.osImage = osImage;
+    }
+
+    @JsonProperty("settings")
+    public SecuritySettings getSettings() {
+        return settings;
+    }
+
+    @JsonProperty("settings")
+    public void setSettings(SecuritySettings settings) {
+        this.settings = settings;
     }
 
     @JsonProperty("type")

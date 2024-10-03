@@ -1,9 +1,7 @@
 
-package io.fabric8.openshift.api.model.installer.libvirt.v1;
+package io.fabric8.openshift.api.model.installer.nutanix.v1;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -33,8 +31,8 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "dnsmasqOptions",
-    "if"
+    "diskMode",
+    "storageContainer"
 })
 @ToString
 @EqualsAndHashCode
@@ -54,14 +52,13 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class Network implements Editable<NetworkBuilder> , KubernetesResource
+public class StorageConfig implements Editable<StorageConfigBuilder> , KubernetesResource
 {
 
-    @JsonProperty("dnsmasqOptions")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<DnsmasqOption> dnsmasqOptions = new ArrayList<>();
-    @JsonProperty("if")
-    private String _if;
+    @JsonProperty("diskMode")
+    private String diskMode;
+    @JsonProperty("storageContainer")
+    private StorageResourceReference storageContainer;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -69,43 +66,42 @@ public class Network implements Editable<NetworkBuilder> , KubernetesResource
      * No args constructor for use in serialization
      * 
      */
-    public Network() {
+    public StorageConfig() {
     }
 
-    public Network(List<DnsmasqOption> dnsmasqOptions, String _if) {
+    public StorageConfig(String diskMode, StorageResourceReference storageContainer) {
         super();
-        this.dnsmasqOptions = dnsmasqOptions;
-        this._if = _if;
+        this.diskMode = diskMode;
+        this.storageContainer = storageContainer;
     }
 
-    @JsonProperty("dnsmasqOptions")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<DnsmasqOption> getDnsmasqOptions() {
-        return dnsmasqOptions;
+    @JsonProperty("diskMode")
+    public String getDiskMode() {
+        return diskMode;
     }
 
-    @JsonProperty("dnsmasqOptions")
-    public void setDnsmasqOptions(List<DnsmasqOption> dnsmasqOptions) {
-        this.dnsmasqOptions = dnsmasqOptions;
+    @JsonProperty("diskMode")
+    public void setDiskMode(String diskMode) {
+        this.diskMode = diskMode;
     }
 
-    @JsonProperty("if")
-    public String getIf() {
-        return _if;
+    @JsonProperty("storageContainer")
+    public StorageResourceReference getStorageContainer() {
+        return storageContainer;
     }
 
-    @JsonProperty("if")
-    public void setIf(String _if) {
-        this._if = _if;
-    }
-
-    @JsonIgnore
-    public NetworkBuilder edit() {
-        return new NetworkBuilder(this);
+    @JsonProperty("storageContainer")
+    public void setStorageContainer(StorageResourceReference storageContainer) {
+        this.storageContainer = storageContainer;
     }
 
     @JsonIgnore
-    public NetworkBuilder toBuilder() {
+    public StorageConfigBuilder edit() {
+        return new StorageConfigBuilder(this);
+    }
+
+    @JsonIgnore
+    public StorageConfigBuilder toBuilder() {
         return edit();
     }
 

@@ -1,9 +1,7 @@
 
-package io.fabric8.openshift.api.model.installer.openstack.v1;
+package io.fabric8.openshift.api.model.installer.vsphere.v1;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -33,9 +31,9 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "fixedIPs",
-    "id",
-    "network"
+    "failureDomain",
+    "networkDevice",
+    "role"
 })
 @ToString
 @EqualsAndHashCode
@@ -55,16 +53,15 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class NamedPortTarget implements Editable<NamedPortTargetBuilder> , KubernetesResource
+public class Host implements Editable<HostBuilder> , KubernetesResource
 {
 
-    @JsonProperty("fixedIPs")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<FixedIP> fixedIPs = new ArrayList<>();
-    @JsonProperty("id")
-    private String id;
-    @JsonProperty("network")
-    private NetworkFilter network;
+    @JsonProperty("failureDomain")
+    private String failureDomain;
+    @JsonProperty("networkDevice")
+    private NetworkDeviceSpec networkDevice;
+    @JsonProperty("role")
+    private String role;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -72,54 +69,53 @@ public class NamedPortTarget implements Editable<NamedPortTargetBuilder> , Kuber
      * No args constructor for use in serialization
      * 
      */
-    public NamedPortTarget() {
+    public Host() {
     }
 
-    public NamedPortTarget(List<FixedIP> fixedIPs, String id, NetworkFilter network) {
+    public Host(String failureDomain, NetworkDeviceSpec networkDevice, String role) {
         super();
-        this.fixedIPs = fixedIPs;
-        this.id = id;
-        this.network = network;
+        this.failureDomain = failureDomain;
+        this.networkDevice = networkDevice;
+        this.role = role;
     }
 
-    @JsonProperty("fixedIPs")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<FixedIP> getFixedIPs() {
-        return fixedIPs;
+    @JsonProperty("failureDomain")
+    public String getFailureDomain() {
+        return failureDomain;
     }
 
-    @JsonProperty("fixedIPs")
-    public void setFixedIPs(List<FixedIP> fixedIPs) {
-        this.fixedIPs = fixedIPs;
+    @JsonProperty("failureDomain")
+    public void setFailureDomain(String failureDomain) {
+        this.failureDomain = failureDomain;
     }
 
-    @JsonProperty("id")
-    public String getId() {
-        return id;
+    @JsonProperty("networkDevice")
+    public NetworkDeviceSpec getNetworkDevice() {
+        return networkDevice;
     }
 
-    @JsonProperty("id")
-    public void setId(String id) {
-        this.id = id;
+    @JsonProperty("networkDevice")
+    public void setNetworkDevice(NetworkDeviceSpec networkDevice) {
+        this.networkDevice = networkDevice;
     }
 
-    @JsonProperty("network")
-    public NetworkFilter getNetwork() {
-        return network;
+    @JsonProperty("role")
+    public String getRole() {
+        return role;
     }
 
-    @JsonProperty("network")
-    public void setNetwork(NetworkFilter network) {
-        this.network = network;
-    }
-
-    @JsonIgnore
-    public NamedPortTargetBuilder edit() {
-        return new NamedPortTargetBuilder(this);
+    @JsonProperty("role")
+    public void setRole(String role) {
+        this.role = role;
     }
 
     @JsonIgnore
-    public NamedPortTargetBuilder toBuilder() {
+    public HostBuilder edit() {
+        return new HostBuilder(this);
+    }
+
+    @JsonIgnore
+    public HostBuilder toBuilder() {
         return edit();
     }
 

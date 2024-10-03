@@ -25,6 +25,7 @@ import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.openshift.api.model.config.v1.VSpherePlatformLoadBalancer;
+import io.fabric8.openshift.api.model.config.v1.VSpherePlatformNodeNetworking;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -44,10 +45,12 @@ import lombok.experimental.Accessors;
     "diskType",
     "failureDomains",
     "folder",
+    "hosts",
     "ingressVIP",
     "ingressVIPs",
     "loadBalancer",
     "network",
+    "nodeNetworking",
     "password",
     "resourcePool",
     "username",
@@ -97,6 +100,9 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     private List<FailureDomain> failureDomains = new ArrayList<>();
     @JsonProperty("folder")
     private String folder;
+    @JsonProperty("hosts")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<Host> hosts = new ArrayList<>();
     @JsonProperty("ingressVIP")
     private String ingressVIP;
     @JsonProperty("ingressVIPs")
@@ -106,6 +112,8 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     private VSpherePlatformLoadBalancer loadBalancer;
     @JsonProperty("network")
     private String network;
+    @JsonProperty("nodeNetworking")
+    private VSpherePlatformNodeNetworking nodeNetworking;
     @JsonProperty("password")
     private String password;
     @JsonProperty("resourcePool")
@@ -127,7 +135,7 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     public Platform() {
     }
 
-    public Platform(String apiVIP, List<String> apiVIPs, String cluster, String clusterOSImage, String datacenter, String defaultDatastore, MachinePool defaultMachinePlatform, String diskType, List<FailureDomain> failureDomains, String folder, String ingressVIP, List<String> ingressVIPs, VSpherePlatformLoadBalancer loadBalancer, String network, String password, String resourcePool, String username, String vCenter, List<VCenter> vcenters) {
+    public Platform(String apiVIP, List<String> apiVIPs, String cluster, String clusterOSImage, String datacenter, String defaultDatastore, MachinePool defaultMachinePlatform, String diskType, List<FailureDomain> failureDomains, String folder, List<Host> hosts, String ingressVIP, List<String> ingressVIPs, VSpherePlatformLoadBalancer loadBalancer, String network, VSpherePlatformNodeNetworking nodeNetworking, String password, String resourcePool, String username, String vCenter, List<VCenter> vcenters) {
         super();
         this.apiVIP = apiVIP;
         this.apiVIPs = apiVIPs;
@@ -139,10 +147,12 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
         this.diskType = diskType;
         this.failureDomains = failureDomains;
         this.folder = folder;
+        this.hosts = hosts;
         this.ingressVIP = ingressVIP;
         this.ingressVIPs = ingressVIPs;
         this.loadBalancer = loadBalancer;
         this.network = network;
+        this.nodeNetworking = nodeNetworking;
         this.password = password;
         this.resourcePool = resourcePool;
         this.username = username;
@@ -252,6 +262,17 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
         this.folder = folder;
     }
 
+    @JsonProperty("hosts")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<Host> getHosts() {
+        return hosts;
+    }
+
+    @JsonProperty("hosts")
+    public void setHosts(List<Host> hosts) {
+        this.hosts = hosts;
+    }
+
     @JsonProperty("ingressVIP")
     public String getIngressVIP() {
         return ingressVIP;
@@ -291,6 +312,16 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     @JsonProperty("network")
     public void setNetwork(String network) {
         this.network = network;
+    }
+
+    @JsonProperty("nodeNetworking")
+    public VSpherePlatformNodeNetworking getNodeNetworking() {
+        return nodeNetworking;
+    }
+
+    @JsonProperty("nodeNetworking")
+    public void setNodeNetworking(VSpherePlatformNodeNetworking nodeNetworking) {
+        this.nodeNetworking = nodeNetworking;
     }
 
     @JsonProperty("password")

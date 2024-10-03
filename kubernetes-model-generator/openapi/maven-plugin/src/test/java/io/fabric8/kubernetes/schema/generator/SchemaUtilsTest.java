@@ -88,10 +88,16 @@ class SchemaUtilsTest {
       "import, _import",
       "return, _return",
       "return-, _return",
-      "--return-, _return"
+      "--return-, _return",
+      "items, itemList",
+      "items--, itemList",
+      "edge--, _private"
   })
-  void sanitizeVariable(String variable, String expected) {
-    assertEquals(expected, SchemaUtils.sanitizeVariable(variable));
+  void sanitizeFieldName(String variable, String expected) {
+    assertEquals(expected, new SchemaUtils(generatorSettingsBuilder
+        .fieldNameMapping("items", "itemList")
+        .fieldNameMapping("edge", "private")
+        .build()).sanitizeFieldName(variable));
   }
 
   @ParameterizedTest

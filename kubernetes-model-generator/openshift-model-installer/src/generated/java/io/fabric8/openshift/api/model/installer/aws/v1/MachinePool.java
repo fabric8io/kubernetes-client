@@ -33,7 +33,9 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "additionalSecurityGroupIDs",
     "amiID",
+    "iamProfile",
     "iamRole",
     "metadataService",
     "rootVolume",
@@ -61,8 +63,13 @@ import lombok.experimental.Accessors;
 public class MachinePool implements Editable<MachinePoolBuilder> , KubernetesResource
 {
 
+    @JsonProperty("additionalSecurityGroupIDs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> additionalSecurityGroupIDs = new ArrayList<>();
     @JsonProperty("amiID")
     private String amiID;
+    @JsonProperty("iamProfile")
+    private String iamProfile;
     @JsonProperty("iamRole")
     private String iamRole;
     @JsonProperty("metadataService")
@@ -84,14 +91,27 @@ public class MachinePool implements Editable<MachinePoolBuilder> , KubernetesRes
     public MachinePool() {
     }
 
-    public MachinePool(String amiID, String iamRole, EC2Metadata metadataService, EC2RootVolume rootVolume, String type, List<String> zones) {
+    public MachinePool(List<String> additionalSecurityGroupIDs, String amiID, String iamProfile, String iamRole, EC2Metadata metadataService, EC2RootVolume rootVolume, String type, List<String> zones) {
         super();
+        this.additionalSecurityGroupIDs = additionalSecurityGroupIDs;
         this.amiID = amiID;
+        this.iamProfile = iamProfile;
         this.iamRole = iamRole;
         this.metadataService = metadataService;
         this.rootVolume = rootVolume;
         this.type = type;
         this.zones = zones;
+    }
+
+    @JsonProperty("additionalSecurityGroupIDs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<String> getAdditionalSecurityGroupIDs() {
+        return additionalSecurityGroupIDs;
+    }
+
+    @JsonProperty("additionalSecurityGroupIDs")
+    public void setAdditionalSecurityGroupIDs(List<String> additionalSecurityGroupIDs) {
+        this.additionalSecurityGroupIDs = additionalSecurityGroupIDs;
     }
 
     @JsonProperty("amiID")
@@ -102,6 +122,16 @@ public class MachinePool implements Editable<MachinePoolBuilder> , KubernetesRes
     @JsonProperty("amiID")
     public void setAmiID(String amiID) {
         this.amiID = amiID;
+    }
+
+    @JsonProperty("iamProfile")
+    public String getIamProfile() {
+        return iamProfile;
+    }
+
+    @JsonProperty("iamProfile")
+    public void setIamProfile(String iamProfile) {
+        this.iamProfile = iamProfile;
     }
 
     @JsonProperty("iamRole")
