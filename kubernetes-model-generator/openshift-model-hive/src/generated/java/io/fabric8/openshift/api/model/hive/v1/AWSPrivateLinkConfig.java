@@ -18,6 +18,7 @@ import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
+import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
@@ -51,7 +52,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
+    @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
@@ -62,7 +63,7 @@ public class AWSPrivateLinkConfig implements Editable<AWSPrivateLinkConfigBuilde
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<AWSAssociatedVPC> associatedVPCs = new ArrayList<>();
     @JsonProperty("credentialsSecretRef")
-    private io.fabric8.kubernetes.api.model.LocalObjectReference credentialsSecretRef;
+    private LocalObjectReference credentialsSecretRef;
     @JsonProperty("dnsRecordType")
     private String dnsRecordType;
     @JsonProperty("endpointVPCInventory")
@@ -78,7 +79,7 @@ public class AWSPrivateLinkConfig implements Editable<AWSPrivateLinkConfigBuilde
     public AWSPrivateLinkConfig() {
     }
 
-    public AWSPrivateLinkConfig(List<AWSAssociatedVPC> associatedVPCs, io.fabric8.kubernetes.api.model.LocalObjectReference credentialsSecretRef, String dnsRecordType, List<AWSPrivateLinkInventory> endpointVPCInventory) {
+    public AWSPrivateLinkConfig(List<AWSAssociatedVPC> associatedVPCs, LocalObjectReference credentialsSecretRef, String dnsRecordType, List<AWSPrivateLinkInventory> endpointVPCInventory) {
         super();
         this.associatedVPCs = associatedVPCs;
         this.credentialsSecretRef = credentialsSecretRef;
@@ -98,12 +99,12 @@ public class AWSPrivateLinkConfig implements Editable<AWSPrivateLinkConfigBuilde
     }
 
     @JsonProperty("credentialsSecretRef")
-    public io.fabric8.kubernetes.api.model.LocalObjectReference getCredentialsSecretRef() {
+    public LocalObjectReference getCredentialsSecretRef() {
         return credentialsSecretRef;
     }
 
     @JsonProperty("credentialsSecretRef")
-    public void setCredentialsSecretRef(io.fabric8.kubernetes.api.model.LocalObjectReference credentialsSecretRef) {
+    public void setCredentialsSecretRef(LocalObjectReference credentialsSecretRef) {
         this.credentialsSecretRef = credentialsSecretRef;
     }
 

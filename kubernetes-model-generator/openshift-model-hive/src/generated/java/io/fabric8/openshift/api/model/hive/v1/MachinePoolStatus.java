@@ -34,8 +34,10 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "conditions",
+    "controlledByReplica",
     "machineSets",
     "ownedLabels",
+    "ownedMachineLabels",
     "ownedTaints",
     "replicas"
 })
@@ -63,12 +65,17 @@ public class MachinePoolStatus implements Editable<MachinePoolStatusBuilder> , K
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<MachinePoolCondition> conditions = new ArrayList<>();
+    @JsonProperty("controlledByReplica")
+    private Long controlledByReplica;
     @JsonProperty("machineSets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<MachineSetStatus> machineSets = new ArrayList<>();
     @JsonProperty("ownedLabels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> ownedLabels = new ArrayList<>();
+    @JsonProperty("ownedMachineLabels")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> ownedMachineLabels = new ArrayList<>();
     @JsonProperty("ownedTaints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<TaintIdentifier> ownedTaints = new ArrayList<>();
@@ -84,11 +91,13 @@ public class MachinePoolStatus implements Editable<MachinePoolStatusBuilder> , K
     public MachinePoolStatus() {
     }
 
-    public MachinePoolStatus(List<MachinePoolCondition> conditions, List<MachineSetStatus> machineSets, List<String> ownedLabels, List<TaintIdentifier> ownedTaints, Integer replicas) {
+    public MachinePoolStatus(List<MachinePoolCondition> conditions, Long controlledByReplica, List<MachineSetStatus> machineSets, List<String> ownedLabels, List<String> ownedMachineLabels, List<TaintIdentifier> ownedTaints, Integer replicas) {
         super();
         this.conditions = conditions;
+        this.controlledByReplica = controlledByReplica;
         this.machineSets = machineSets;
         this.ownedLabels = ownedLabels;
+        this.ownedMachineLabels = ownedMachineLabels;
         this.ownedTaints = ownedTaints;
         this.replicas = replicas;
     }
@@ -102,6 +111,16 @@ public class MachinePoolStatus implements Editable<MachinePoolStatusBuilder> , K
     @JsonProperty("conditions")
     public void setConditions(List<MachinePoolCondition> conditions) {
         this.conditions = conditions;
+    }
+
+    @JsonProperty("controlledByReplica")
+    public Long getControlledByReplica() {
+        return controlledByReplica;
+    }
+
+    @JsonProperty("controlledByReplica")
+    public void setControlledByReplica(Long controlledByReplica) {
+        this.controlledByReplica = controlledByReplica;
     }
 
     @JsonProperty("machineSets")
@@ -124,6 +143,17 @@ public class MachinePoolStatus implements Editable<MachinePoolStatusBuilder> , K
     @JsonProperty("ownedLabels")
     public void setOwnedLabels(List<String> ownedLabels) {
         this.ownedLabels = ownedLabels;
+    }
+
+    @JsonProperty("ownedMachineLabels")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<String> getOwnedMachineLabels() {
+        return ownedMachineLabels;
+    }
+
+    @JsonProperty("ownedMachineLabels")
+    public void setOwnedMachineLabels(List<String> ownedMachineLabels) {
+        this.ownedMachineLabels = ownedMachineLabels;
     }
 
     @JsonProperty("ownedTaints")

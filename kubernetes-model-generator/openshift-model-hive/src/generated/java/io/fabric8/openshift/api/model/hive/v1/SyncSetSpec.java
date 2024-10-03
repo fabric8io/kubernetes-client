@@ -18,6 +18,7 @@ import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
+import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
@@ -34,6 +35,7 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "applyBehavior",
     "clusterDeploymentRefs",
+    "enableResourceTemplates",
     "patches",
     "resourceApplyMode",
     "resources",
@@ -53,7 +55,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
+    @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
@@ -61,23 +63,26 @@ public class SyncSetSpec implements Editable<SyncSetSpecBuilder> , KubernetesRes
 {
 
     @JsonProperty("applyBehavior")
-    private java.lang.String applyBehavior;
+    private String applyBehavior;
     @JsonProperty("clusterDeploymentRefs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.LocalObjectReference> clusterDeploymentRefs = new ArrayList<>();
+    private List<LocalObjectReference> clusterDeploymentRefs = new ArrayList<>();
+    @JsonProperty("enableResourceTemplates")
+    private Boolean enableResourceTemplates;
     @JsonProperty("patches")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<SyncObjectPatch> patches = new ArrayList<>();
     @JsonProperty("resourceApplyMode")
-    private java.lang.String resourceApplyMode;
+    private String resourceApplyMode;
     @JsonProperty("resources")
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializerForList.class)
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Map<String, Object>> resources = new ArrayList<>();
+    private List<Object> resources = new ArrayList<>();
     @JsonProperty("secretMappings")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<SecretMapping> secretMappings = new ArrayList<>();
     @JsonIgnore
-    private Map<java.lang.String, java.lang.Object> additionalProperties = new LinkedHashMap<java.lang.String, java.lang.Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -86,10 +91,11 @@ public class SyncSetSpec implements Editable<SyncSetSpecBuilder> , KubernetesRes
     public SyncSetSpec() {
     }
 
-    public SyncSetSpec(java.lang.String applyBehavior, List<io.fabric8.kubernetes.api.model.LocalObjectReference> clusterDeploymentRefs, List<SyncObjectPatch> patches, java.lang.String resourceApplyMode, List<Map<String, Object>> resources, List<SecretMapping> secretMappings) {
+    public SyncSetSpec(String applyBehavior, List<LocalObjectReference> clusterDeploymentRefs, Boolean enableResourceTemplates, List<SyncObjectPatch> patches, String resourceApplyMode, List<Object> resources, List<SecretMapping> secretMappings) {
         super();
         this.applyBehavior = applyBehavior;
         this.clusterDeploymentRefs = clusterDeploymentRefs;
+        this.enableResourceTemplates = enableResourceTemplates;
         this.patches = patches;
         this.resourceApplyMode = resourceApplyMode;
         this.resources = resources;
@@ -97,24 +103,34 @@ public class SyncSetSpec implements Editable<SyncSetSpecBuilder> , KubernetesRes
     }
 
     @JsonProperty("applyBehavior")
-    public java.lang.String getApplyBehavior() {
+    public String getApplyBehavior() {
         return applyBehavior;
     }
 
     @JsonProperty("applyBehavior")
-    public void setApplyBehavior(java.lang.String applyBehavior) {
+    public void setApplyBehavior(String applyBehavior) {
         this.applyBehavior = applyBehavior;
     }
 
     @JsonProperty("clusterDeploymentRefs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<io.fabric8.kubernetes.api.model.LocalObjectReference> getClusterDeploymentRefs() {
+    public List<LocalObjectReference> getClusterDeploymentRefs() {
         return clusterDeploymentRefs;
     }
 
     @JsonProperty("clusterDeploymentRefs")
-    public void setClusterDeploymentRefs(List<io.fabric8.kubernetes.api.model.LocalObjectReference> clusterDeploymentRefs) {
+    public void setClusterDeploymentRefs(List<LocalObjectReference> clusterDeploymentRefs) {
         this.clusterDeploymentRefs = clusterDeploymentRefs;
+    }
+
+    @JsonProperty("enableResourceTemplates")
+    public Boolean getEnableResourceTemplates() {
+        return enableResourceTemplates;
+    }
+
+    @JsonProperty("enableResourceTemplates")
+    public void setEnableResourceTemplates(Boolean enableResourceTemplates) {
+        this.enableResourceTemplates = enableResourceTemplates;
     }
 
     @JsonProperty("patches")
@@ -129,23 +145,24 @@ public class SyncSetSpec implements Editable<SyncSetSpecBuilder> , KubernetesRes
     }
 
     @JsonProperty("resourceApplyMode")
-    public java.lang.String getResourceApplyMode() {
+    public String getResourceApplyMode() {
         return resourceApplyMode;
     }
 
     @JsonProperty("resourceApplyMode")
-    public void setResourceApplyMode(java.lang.String resourceApplyMode) {
+    public void setResourceApplyMode(String resourceApplyMode) {
         this.resourceApplyMode = resourceApplyMode;
     }
 
     @JsonProperty("resources")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<Map<String, Object>> getResources() {
+    public List<Object> getResources() {
         return resources;
     }
 
     @JsonProperty("resources")
-    public void setResources(List<Map<String, Object>> resources) {
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializerForList.class)
+    public void setResources(List<Object> resources) {
         this.resources = resources;
     }
 
@@ -171,16 +188,16 @@ public class SyncSetSpec implements Editable<SyncSetSpecBuilder> , KubernetesRes
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, java.lang.Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, java.lang.Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, java.lang.Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 

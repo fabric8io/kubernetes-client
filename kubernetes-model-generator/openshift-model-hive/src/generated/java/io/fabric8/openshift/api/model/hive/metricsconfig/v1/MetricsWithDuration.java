@@ -13,7 +13,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.Duration;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
@@ -57,7 +56,7 @@ public class MetricsWithDuration implements Editable<MetricsWithDurationBuilder>
 {
 
     @JsonProperty("duration")
-    private Duration duration;
+    private String duration;
     @JsonProperty("name")
     private String name;
     @JsonIgnore
@@ -70,19 +69,19 @@ public class MetricsWithDuration implements Editable<MetricsWithDurationBuilder>
     public MetricsWithDuration() {
     }
 
-    public MetricsWithDuration(Duration duration, String name) {
+    public MetricsWithDuration(String duration, String name) {
         super();
         this.duration = duration;
         this.name = name;
     }
 
     @JsonProperty("duration")
-    public Duration getDuration() {
+    public String getDuration() {
         return duration;
     }
 
     @JsonProperty("duration")
-    public void setDuration(Duration duration) {
+    public void setDuration(String duration) {
         this.duration = duration;
     }
 

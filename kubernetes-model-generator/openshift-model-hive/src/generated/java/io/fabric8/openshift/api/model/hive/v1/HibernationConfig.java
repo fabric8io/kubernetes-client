@@ -13,7 +13,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.Duration;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
@@ -56,7 +55,7 @@ public class HibernationConfig implements Editable<HibernationConfigBuilder> , K
 {
 
     @JsonProperty("resumeTimeout")
-    private Duration resumeTimeout;
+    private String resumeTimeout;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -67,18 +66,18 @@ public class HibernationConfig implements Editable<HibernationConfigBuilder> , K
     public HibernationConfig() {
     }
 
-    public HibernationConfig(Duration resumeTimeout) {
+    public HibernationConfig(String resumeTimeout) {
         super();
         this.resumeTimeout = resumeTimeout;
     }
 
     @JsonProperty("resumeTimeout")
-    public Duration getResumeTimeout() {
+    public String getResumeTimeout() {
         return resumeTimeout;
     }
 
     @JsonProperty("resumeTimeout")
-    public void setResumeTimeout(Duration resumeTimeout) {
+    public void setResumeTimeout(String resumeTimeout) {
         this.resumeTimeout = resumeTimeout;
     }
 

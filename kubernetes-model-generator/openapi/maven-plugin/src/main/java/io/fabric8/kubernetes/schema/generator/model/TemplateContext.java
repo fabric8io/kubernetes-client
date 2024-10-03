@@ -72,4 +72,13 @@ final class TemplateContext implements ImportManager {
     return getApiVersion() != null && getApiVersion().isNamespaced();
   }
 
+  @Override
+  public boolean hasSimpleClassName(String className) {
+    // If the provided class name matches the current class simple name it means that we'll need the fully
+    // qualified class name to avoid conflicts.
+    if (simpleClassName(className).equals(classSimpleName)) {
+      return true;
+    }
+    return ImportManager.super.hasSimpleClassName(className);
+  }
 }

@@ -29,7 +29,10 @@ var PackagePatterns = []string{
 	"github.com/openshift/cloud-credential-operator/pkg/apis/.../v...",
 	"github.com/openshift/cluster-network-operator/pkg/apis/.../v...",
 	"github.com/openshift/cluster-node-tuning-operator/pkg/apis/tuned/v...",
+	"github.com/openshift/hive/apis/hive/v...",
 	"github.com/operator-framework/api/pkg/operators/v...",
 	"github.com/operator-framework/operator-lifecycle-manager/pkg/package-server/apis/operators/v...",
 	"github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring/v...",
+	// Support types required by some APIs such as (github.com/openshift/hive)
+	"github.com/openshift/custom-resource-status/conditions/v...",
 }

@@ -39,6 +39,7 @@ import lombok.experimental.Accessors;
     "spotMarketOptions",
     "subnets",
     "type",
+    "userTags",
     "zones"
 })
 @ToString
@@ -76,6 +77,9 @@ public class MachinePoolPlatform implements Editable<MachinePoolPlatformBuilder>
     private List<String> subnets = new ArrayList<>();
     @JsonProperty("type")
     private String type;
+    @JsonProperty("userTags")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> userTags = new LinkedHashMap<>();
     @JsonProperty("zones")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> zones = new ArrayList<>();
@@ -89,7 +93,7 @@ public class MachinePoolPlatform implements Editable<MachinePoolPlatformBuilder>
     public MachinePoolPlatform() {
     }
 
-    public MachinePoolPlatform(List<String> additionalSecurityGroupIDs, EC2Metadata metadataService, EC2RootVolume rootVolume, SpotMarketOptions spotMarketOptions, List<String> subnets, String type, List<String> zones) {
+    public MachinePoolPlatform(List<String> additionalSecurityGroupIDs, EC2Metadata metadataService, EC2RootVolume rootVolume, SpotMarketOptions spotMarketOptions, List<String> subnets, String type, Map<String, String> userTags, List<String> zones) {
         super();
         this.additionalSecurityGroupIDs = additionalSecurityGroupIDs;
         this.metadataService = metadataService;
@@ -97,6 +101,7 @@ public class MachinePoolPlatform implements Editable<MachinePoolPlatformBuilder>
         this.spotMarketOptions = spotMarketOptions;
         this.subnets = subnets;
         this.type = type;
+        this.userTags = userTags;
         this.zones = zones;
     }
 
@@ -160,6 +165,17 @@ public class MachinePoolPlatform implements Editable<MachinePoolPlatformBuilder>
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;
+    }
+
+    @JsonProperty("userTags")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public Map<String, String> getUserTags() {
+        return userTags;
+    }
+
+    @JsonProperty("userTags")
+    public void setUserTags(Map<String, String> userTags) {
+        this.userTags = userTags;
     }
 
     @JsonProperty("zones")

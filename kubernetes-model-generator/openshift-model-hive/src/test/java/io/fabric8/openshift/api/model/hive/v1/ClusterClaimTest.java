@@ -16,12 +16,11 @@
 package io.fabric8.openshift.api.model.hive.v1;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.fabric8.kubernetes.api.model.Duration;
+import io.fabric8.kubernetes.model.util.Helper;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.Scanner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -31,9 +30,7 @@ class ClusterClaimTest {
   @Test
   void deserializationAndSerializationShouldWorkAsExpected() throws IOException, ParseException {
     // Given
-    String originalJson = new Scanner(getClass().getResourceAsStream("/valid-clusterclaim.json"))
-        .useDelimiter("\\A")
-        .next();
+    String originalJson = Helper.loadJson("/valid-clusterclaim.json");
 
     // When
     final ClusterClaim clusterClaim = mapper.readValue(originalJson, ClusterClaim.class);
@@ -48,7 +45,7 @@ class ClusterClaimTest {
         .hasFieldOrPropertyWithValue("metadata.name", "foo")
         .hasFieldOrPropertyWithValue("metadata.namespace", "my-project")
         .hasFieldOrPropertyWithValue("spec.clusterPoolName", "openshift-46-aws-us-east-1")
-        .hasFieldOrPropertyWithValue("spec.lifetime", Duration.parse("8h"))
+        .hasFieldOrPropertyWithValue("spec.lifetime", "8h")
         .hasFieldOrPropertyWithValue("spec.namespace", "openshift-46-aws-us-east-1-j495p");
   }
 
@@ -61,7 +58,7 @@ class ClusterClaimTest {
         .endMetadata()
         .withNewSpec()
         .withClusterPoolName("openshift-46-aws-us-east-1")
-        .withLifetime(Duration.parse("8h"))
+        .withLifetime("8h")
         .withNamespace("openshift-46-aws-us-east-1-j495p")
         .endSpec();
 
@@ -73,7 +70,7 @@ class ClusterClaimTest {
         .isNotNull()
         .hasFieldOrPropertyWithValue("metadata.name", "foo")
         .hasFieldOrPropertyWithValue("spec.clusterPoolName", "openshift-46-aws-us-east-1")
-        .hasFieldOrPropertyWithValue("spec.lifetime", Duration.parse("8h"))
+        .hasFieldOrPropertyWithValue("spec.lifetime", "8h")
         .hasFieldOrPropertyWithValue("spec.namespace", "openshift-46-aws-us-east-1-j495p");
   }
 }

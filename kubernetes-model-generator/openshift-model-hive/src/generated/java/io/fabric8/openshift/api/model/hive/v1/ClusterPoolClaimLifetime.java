@@ -13,7 +13,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.Duration;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
@@ -57,9 +56,9 @@ public class ClusterPoolClaimLifetime implements Editable<ClusterPoolClaimLifeti
 {
 
     @JsonProperty("default")
-    private Duration _default;
+    private String _default;
     @JsonProperty("maximum")
-    private Duration maximum;
+    private String maximum;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -70,29 +69,29 @@ public class ClusterPoolClaimLifetime implements Editable<ClusterPoolClaimLifeti
     public ClusterPoolClaimLifetime() {
     }
 
-    public ClusterPoolClaimLifetime(Duration _default, Duration maximum) {
+    public ClusterPoolClaimLifetime(String _default, String maximum) {
         super();
         this._default = _default;
         this.maximum = maximum;
     }
 
     @JsonProperty("default")
-    public Duration getDefault() {
+    public String getDefault() {
         return _default;
     }
 
     @JsonProperty("default")
-    public void setDefault(Duration _default) {
+    public void setDefault(String _default) {
         this._default = _default;
     }
 
     @JsonProperty("maximum")
-    public Duration getMaximum() {
+    public String getMaximum() {
         return maximum;
     }
 
     @JsonProperty("maximum")
-    public void setMaximum(Duration maximum) {
+    public void setMaximum(String maximum) {
         this.maximum = maximum;
     }
 

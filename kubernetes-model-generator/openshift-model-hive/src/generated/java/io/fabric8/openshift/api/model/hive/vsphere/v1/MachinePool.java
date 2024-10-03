@@ -34,7 +34,8 @@ import lombok.experimental.Accessors;
     "coresPerSocket",
     "cpus",
     "memoryMB",
-    "osDisk"
+    "osDisk",
+    "resourcePool"
 })
 @ToString
 @EqualsAndHashCode
@@ -65,6 +66,8 @@ public class MachinePool implements Editable<MachinePoolBuilder> , KubernetesRes
     private Long memoryMB;
     @JsonProperty("osDisk")
     private OSDisk osDisk;
+    @JsonProperty("resourcePool")
+    private String resourcePool;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -75,12 +78,13 @@ public class MachinePool implements Editable<MachinePoolBuilder> , KubernetesRes
     public MachinePool() {
     }
 
-    public MachinePool(Integer coresPerSocket, Integer cpus, Long memoryMB, OSDisk osDisk) {
+    public MachinePool(Integer coresPerSocket, Integer cpus, Long memoryMB, OSDisk osDisk, String resourcePool) {
         super();
         this.coresPerSocket = coresPerSocket;
         this.cpus = cpus;
         this.memoryMB = memoryMB;
         this.osDisk = osDisk;
+        this.resourcePool = resourcePool;
     }
 
     @JsonProperty("coresPerSocket")
@@ -121,6 +125,16 @@ public class MachinePool implements Editable<MachinePoolBuilder> , KubernetesRes
     @JsonProperty("osDisk")
     public void setOsDisk(OSDisk osDisk) {
         this.osDisk = osDisk;
+    }
+
+    @JsonProperty("resourcePool")
+    public String getResourcePool() {
+        return resourcePool;
+    }
+
+    @JsonProperty("resourcePool")
+    public void setResourcePool(String resourcePool) {
+        this.resourcePool = resourcePool;
     }
 
     @JsonIgnore

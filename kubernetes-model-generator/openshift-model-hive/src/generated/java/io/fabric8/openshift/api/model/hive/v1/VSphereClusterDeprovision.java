@@ -16,6 +16,7 @@ import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
+import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
@@ -48,7 +49,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
+    @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
@@ -56,9 +57,9 @@ public class VSphereClusterDeprovision implements Editable<VSphereClusterDeprovi
 {
 
     @JsonProperty("certificatesSecretRef")
-    private io.fabric8.kubernetes.api.model.LocalObjectReference certificatesSecretRef;
+    private LocalObjectReference certificatesSecretRef;
     @JsonProperty("credentialsSecretRef")
-    private io.fabric8.kubernetes.api.model.LocalObjectReference credentialsSecretRef;
+    private LocalObjectReference credentialsSecretRef;
     @JsonProperty("vCenter")
     private String vCenter;
     @JsonIgnore
@@ -71,7 +72,7 @@ public class VSphereClusterDeprovision implements Editable<VSphereClusterDeprovi
     public VSphereClusterDeprovision() {
     }
 
-    public VSphereClusterDeprovision(io.fabric8.kubernetes.api.model.LocalObjectReference certificatesSecretRef, io.fabric8.kubernetes.api.model.LocalObjectReference credentialsSecretRef, String vCenter) {
+    public VSphereClusterDeprovision(LocalObjectReference certificatesSecretRef, LocalObjectReference credentialsSecretRef, String vCenter) {
         super();
         this.certificatesSecretRef = certificatesSecretRef;
         this.credentialsSecretRef = credentialsSecretRef;
@@ -79,22 +80,22 @@ public class VSphereClusterDeprovision implements Editable<VSphereClusterDeprovi
     }
 
     @JsonProperty("certificatesSecretRef")
-    public io.fabric8.kubernetes.api.model.LocalObjectReference getCertificatesSecretRef() {
+    public LocalObjectReference getCertificatesSecretRef() {
         return certificatesSecretRef;
     }
 
     @JsonProperty("certificatesSecretRef")
-    public void setCertificatesSecretRef(io.fabric8.kubernetes.api.model.LocalObjectReference certificatesSecretRef) {
+    public void setCertificatesSecretRef(LocalObjectReference certificatesSecretRef) {
         this.certificatesSecretRef = certificatesSecretRef;
     }
 
     @JsonProperty("credentialsSecretRef")
-    public io.fabric8.kubernetes.api.model.LocalObjectReference getCredentialsSecretRef() {
+    public LocalObjectReference getCredentialsSecretRef() {
         return credentialsSecretRef;
     }
 
     @JsonProperty("credentialsSecretRef")
-    public void setCredentialsSecretRef(io.fabric8.kubernetes.api.model.LocalObjectReference credentialsSecretRef) {
+    public void setCredentialsSecretRef(LocalObjectReference credentialsSecretRef) {
         this.credentialsSecretRef = credentialsSecretRef;
     }
 

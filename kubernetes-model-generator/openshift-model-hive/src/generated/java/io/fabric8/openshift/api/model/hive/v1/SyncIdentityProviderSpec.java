@@ -18,6 +18,7 @@ import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
+import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
@@ -50,7 +51,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
+    @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
@@ -59,7 +60,7 @@ public class SyncIdentityProviderSpec implements Editable<SyncIdentityProviderSp
 
     @JsonProperty("clusterDeploymentRefs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.LocalObjectReference> clusterDeploymentRefs = new ArrayList<>();
+    private List<LocalObjectReference> clusterDeploymentRefs = new ArrayList<>();
     @JsonProperty("identityProviders")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<IdentityProvider> identityProviders = new ArrayList<>();
@@ -73,7 +74,7 @@ public class SyncIdentityProviderSpec implements Editable<SyncIdentityProviderSp
     public SyncIdentityProviderSpec() {
     }
 
-    public SyncIdentityProviderSpec(List<io.fabric8.kubernetes.api.model.LocalObjectReference> clusterDeploymentRefs, List<IdentityProvider> identityProviders) {
+    public SyncIdentityProviderSpec(List<LocalObjectReference> clusterDeploymentRefs, List<IdentityProvider> identityProviders) {
         super();
         this.clusterDeploymentRefs = clusterDeploymentRefs;
         this.identityProviders = identityProviders;
@@ -81,12 +82,12 @@ public class SyncIdentityProviderSpec implements Editable<SyncIdentityProviderSp
 
     @JsonProperty("clusterDeploymentRefs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<io.fabric8.kubernetes.api.model.LocalObjectReference> getClusterDeploymentRefs() {
+    public List<LocalObjectReference> getClusterDeploymentRefs() {
         return clusterDeploymentRefs;
     }
 
     @JsonProperty("clusterDeploymentRefs")
-    public void setClusterDeploymentRefs(List<io.fabric8.kubernetes.api.model.LocalObjectReference> clusterDeploymentRefs) {
+    public void setClusterDeploymentRefs(List<LocalObjectReference> clusterDeploymentRefs) {
         this.clusterDeploymentRefs = clusterDeploymentRefs;
     }
 

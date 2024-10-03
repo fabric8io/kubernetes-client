@@ -63,7 +63,7 @@ public class TunedMatch implements Editable<TunedMatchBuilder> , KubernetesResou
     private String label;
     @JsonProperty("match")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<TunedMatch> match = new ArrayList<>();
+    private List<io.fabric8.openshift.api.model.tuned.v1.TunedMatch> match = new ArrayList<>();
     @JsonProperty("type")
     private String type;
     @JsonProperty("value")
@@ -78,7 +78,7 @@ public class TunedMatch implements Editable<TunedMatchBuilder> , KubernetesResou
     public TunedMatch() {
     }
 
-    public TunedMatch(String label, List<TunedMatch> match, String type, String value) {
+    public TunedMatch(String label, List<io.fabric8.openshift.api.model.tuned.v1.TunedMatch> match, String type, String value) {
         super();
         this.label = label;
         this.match = match;
@@ -98,12 +98,12 @@ public class TunedMatch implements Editable<TunedMatchBuilder> , KubernetesResou
 
     @JsonProperty("match")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<TunedMatch> getMatch() {
+    public List<io.fabric8.openshift.api.model.tuned.v1.TunedMatch> getMatch() {
         return match;
     }
 
     @JsonProperty("match")
-    public void setMatch(List<TunedMatch> match) {
+    public void setMatch(List<io.fabric8.openshift.api.model.tuned.v1.TunedMatch> match) {
         this.match = match;
     }
 

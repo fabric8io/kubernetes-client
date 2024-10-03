@@ -15,10 +15,11 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.Duration;
+import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
+import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
@@ -41,6 +42,7 @@ import lombok.experimental.Accessors;
     "imageSetRef",
     "installAttemptsLimit",
     "installConfigSecretTemplateRef",
+    "installerEnv",
     "inventory",
     "labels",
     "maxConcurrent",
@@ -65,7 +67,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
+    @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
@@ -80,7 +82,7 @@ public class ClusterPoolSpec implements Editable<ClusterPoolSpecBuilder> , Kuber
     @JsonProperty("claimLifetime")
     private ClusterPoolClaimLifetime claimLifetime;
     @JsonProperty("hibernateAfter")
-    private Duration hibernateAfter;
+    private String hibernateAfter;
     @JsonProperty("hibernationConfig")
     private HibernationConfig hibernationConfig;
     @JsonProperty("imageSetRef")
@@ -88,7 +90,10 @@ public class ClusterPoolSpec implements Editable<ClusterPoolSpecBuilder> , Kuber
     @JsonProperty("installAttemptsLimit")
     private Integer installAttemptsLimit;
     @JsonProperty("installConfigSecretTemplateRef")
-    private io.fabric8.kubernetes.api.model.LocalObjectReference installConfigSecretTemplateRef;
+    private LocalObjectReference installConfigSecretTemplateRef;
+    @JsonProperty("installerEnv")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<EnvVar> installerEnv = new ArrayList<>();
     @JsonProperty("inventory")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<InventoryEntry> inventory = new ArrayList<>();
@@ -102,7 +107,7 @@ public class ClusterPoolSpec implements Editable<ClusterPoolSpecBuilder> , Kuber
     @JsonProperty("platform")
     private Platform platform;
     @JsonProperty("pullSecretRef")
-    private io.fabric8.kubernetes.api.model.LocalObjectReference pullSecretRef;
+    private LocalObjectReference pullSecretRef;
     @JsonProperty("runningCount")
     private Integer runningCount;
     @JsonProperty("size")
@@ -119,7 +124,7 @@ public class ClusterPoolSpec implements Editable<ClusterPoolSpecBuilder> , Kuber
     public ClusterPoolSpec() {
     }
 
-    public ClusterPoolSpec(Map<String, String> annotations, String baseDomain, ClusterPoolClaimLifetime claimLifetime, Duration hibernateAfter, HibernationConfig hibernationConfig, ClusterImageSetReference imageSetRef, Integer installAttemptsLimit, io.fabric8.kubernetes.api.model.LocalObjectReference installConfigSecretTemplateRef, List<InventoryEntry> inventory, Map<String, String> labels, Integer maxConcurrent, Integer maxSize, Platform platform, io.fabric8.kubernetes.api.model.LocalObjectReference pullSecretRef, Integer runningCount, Integer size, Boolean skipMachinePools) {
+    public ClusterPoolSpec(Map<String, String> annotations, String baseDomain, ClusterPoolClaimLifetime claimLifetime, String hibernateAfter, HibernationConfig hibernationConfig, ClusterImageSetReference imageSetRef, Integer installAttemptsLimit, LocalObjectReference installConfigSecretTemplateRef, List<EnvVar> installerEnv, List<InventoryEntry> inventory, Map<String, String> labels, Integer maxConcurrent, Integer maxSize, Platform platform, LocalObjectReference pullSecretRef, Integer runningCount, Integer size, Boolean skipMachinePools) {
         super();
         this.annotations = annotations;
         this.baseDomain = baseDomain;
@@ -129,6 +134,7 @@ public class ClusterPoolSpec implements Editable<ClusterPoolSpecBuilder> , Kuber
         this.imageSetRef = imageSetRef;
         this.installAttemptsLimit = installAttemptsLimit;
         this.installConfigSecretTemplateRef = installConfigSecretTemplateRef;
+        this.installerEnv = installerEnv;
         this.inventory = inventory;
         this.labels = labels;
         this.maxConcurrent = maxConcurrent;
@@ -172,12 +178,12 @@ public class ClusterPoolSpec implements Editable<ClusterPoolSpecBuilder> , Kuber
     }
 
     @JsonProperty("hibernateAfter")
-    public Duration getHibernateAfter() {
+    public String getHibernateAfter() {
         return hibernateAfter;
     }
 
     @JsonProperty("hibernateAfter")
-    public void setHibernateAfter(Duration hibernateAfter) {
+    public void setHibernateAfter(String hibernateAfter) {
         this.hibernateAfter = hibernateAfter;
     }
 
@@ -212,13 +218,24 @@ public class ClusterPoolSpec implements Editable<ClusterPoolSpecBuilder> , Kuber
     }
 
     @JsonProperty("installConfigSecretTemplateRef")
-    public io.fabric8.kubernetes.api.model.LocalObjectReference getInstallConfigSecretTemplateRef() {
+    public LocalObjectReference getInstallConfigSecretTemplateRef() {
         return installConfigSecretTemplateRef;
     }
 
     @JsonProperty("installConfigSecretTemplateRef")
-    public void setInstallConfigSecretTemplateRef(io.fabric8.kubernetes.api.model.LocalObjectReference installConfigSecretTemplateRef) {
+    public void setInstallConfigSecretTemplateRef(LocalObjectReference installConfigSecretTemplateRef) {
         this.installConfigSecretTemplateRef = installConfigSecretTemplateRef;
+    }
+
+    @JsonProperty("installerEnv")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<EnvVar> getInstallerEnv() {
+        return installerEnv;
+    }
+
+    @JsonProperty("installerEnv")
+    public void setInstallerEnv(List<EnvVar> installerEnv) {
+        this.installerEnv = installerEnv;
     }
 
     @JsonProperty("inventory")
@@ -274,12 +291,12 @@ public class ClusterPoolSpec implements Editable<ClusterPoolSpecBuilder> , Kuber
     }
 
     @JsonProperty("pullSecretRef")
-    public io.fabric8.kubernetes.api.model.LocalObjectReference getPullSecretRef() {
+    public LocalObjectReference getPullSecretRef() {
         return pullSecretRef;
     }
 
     @JsonProperty("pullSecretRef")
-    public void setPullSecretRef(io.fabric8.kubernetes.api.model.LocalObjectReference pullSecretRef) {
+    public void setPullSecretRef(LocalObjectReference pullSecretRef) {
         this.pullSecretRef = pullSecretRef;
     }
 

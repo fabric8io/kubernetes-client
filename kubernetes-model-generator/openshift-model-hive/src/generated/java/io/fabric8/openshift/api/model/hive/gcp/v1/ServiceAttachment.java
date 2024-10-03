@@ -1,5 +1,5 @@
 
-package io.fabric8.openshift.api.model.hive.alibabacloud.v1;
+package io.fabric8.openshift.api.model.hive.gcp.v1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -16,6 +16,7 @@ import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
+import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
@@ -30,8 +31,7 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "credentialsSecretRef",
-    "region"
+    "subnet"
 })
 @ToString
 @EqualsAndHashCode
@@ -47,17 +47,15 @@ import lombok.experimental.Accessors;
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
+    @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class Platform implements Editable<PlatformBuilder> , KubernetesResource
+public class ServiceAttachment implements Editable<ServiceAttachmentBuilder> , KubernetesResource
 {
 
-    @JsonProperty("credentialsSecretRef")
-    private io.fabric8.kubernetes.api.model.LocalObjectReference credentialsSecretRef;
-    @JsonProperty("region")
-    private String region;
+    @JsonProperty("subnet")
+    private ServiceAttachmentSubnet subnet;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -65,42 +63,31 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
      * No args constructor for use in serialization
      * 
      */
-    public Platform() {
+    public ServiceAttachment() {
     }
 
-    public Platform(io.fabric8.kubernetes.api.model.LocalObjectReference credentialsSecretRef, String region) {
+    public ServiceAttachment(ServiceAttachmentSubnet subnet) {
         super();
-        this.credentialsSecretRef = credentialsSecretRef;
-        this.region = region;
+        this.subnet = subnet;
     }
 
-    @JsonProperty("credentialsSecretRef")
-    public io.fabric8.kubernetes.api.model.LocalObjectReference getCredentialsSecretRef() {
-        return credentialsSecretRef;
+    @JsonProperty("subnet")
+    public ServiceAttachmentSubnet getSubnet() {
+        return subnet;
     }
 
-    @JsonProperty("credentialsSecretRef")
-    public void setCredentialsSecretRef(io.fabric8.kubernetes.api.model.LocalObjectReference credentialsSecretRef) {
-        this.credentialsSecretRef = credentialsSecretRef;
-    }
-
-    @JsonProperty("region")
-    public String getRegion() {
-        return region;
-    }
-
-    @JsonProperty("region")
-    public void setRegion(String region) {
-        this.region = region;
+    @JsonProperty("subnet")
+    public void setSubnet(ServiceAttachmentSubnet subnet) {
+        this.subnet = subnet;
     }
 
     @JsonIgnore
-    public PlatformBuilder edit() {
-        return new PlatformBuilder(this);
+    public ServiceAttachmentBuilder edit() {
+        return new ServiceAttachmentBuilder(this);
     }
 
     @JsonIgnore
-    public PlatformBuilder toBuilder() {
+    public ServiceAttachmentBuilder toBuilder() {
         return edit();
     }
 

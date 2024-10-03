@@ -157,6 +157,7 @@
               <generateJavadoc>false</generateJavadoc>
               <packageMappings>
                 <com.coreos.monitoring>io.fabric8.openshift.api.model.monitoring</com.coreos.monitoring>
+                <com.github.openshift.custom-resource-status>io.fabric8.openshift.api.model.customresourcestatus</com.github.openshift.custom-resource-status>
                 <io.k8s.api.core.v1>io.fabric8.kubernetes.api.model</io.k8s.api.core.v1>
                 <io.k8s.apimachinery.pkg>io.fabric8.kubernetes.api.model</io.k8s.apimachinery.pkg>
                 <io.k8s.apimachinery.pkg.apis.meta.v1>io.fabric8.kubernetes.api.model</io.k8s.apimachinery.pkg.apis.meta.v1>

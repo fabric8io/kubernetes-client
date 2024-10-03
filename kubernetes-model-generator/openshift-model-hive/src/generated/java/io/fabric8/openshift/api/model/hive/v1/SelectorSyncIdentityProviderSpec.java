@@ -17,6 +17,7 @@ import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
+import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
@@ -44,7 +45,7 @@ import lombok.experimental.Accessors;
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.LabelSelector.class),
+    @BuildableReference(LabelSelector.class),
     @BuildableReference(Container.class),
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
@@ -58,7 +59,7 @@ public class SelectorSyncIdentityProviderSpec implements Editable<SelectorSyncId
 {
 
     @JsonProperty("clusterDeploymentSelector")
-    private io.fabric8.kubernetes.api.model.LabelSelector clusterDeploymentSelector;
+    private LabelSelector clusterDeploymentSelector;
     @JsonProperty("identityProviders")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<IdentityProvider> identityProviders = new ArrayList<>();
@@ -72,19 +73,19 @@ public class SelectorSyncIdentityProviderSpec implements Editable<SelectorSyncId
     public SelectorSyncIdentityProviderSpec() {
     }
 
-    public SelectorSyncIdentityProviderSpec(io.fabric8.kubernetes.api.model.LabelSelector clusterDeploymentSelector, List<IdentityProvider> identityProviders) {
+    public SelectorSyncIdentityProviderSpec(LabelSelector clusterDeploymentSelector, List<IdentityProvider> identityProviders) {
         super();
         this.clusterDeploymentSelector = clusterDeploymentSelector;
         this.identityProviders = identityProviders;
     }
 
     @JsonProperty("clusterDeploymentSelector")
-    public io.fabric8.kubernetes.api.model.LabelSelector getClusterDeploymentSelector() {
+    public LabelSelector getClusterDeploymentSelector() {
         return clusterDeploymentSelector;
     }
 
     @JsonProperty("clusterDeploymentSelector")
-    public void setClusterDeploymentSelector(io.fabric8.kubernetes.api.model.LabelSelector clusterDeploymentSelector) {
+    public void setClusterDeploymentSelector(LabelSelector clusterDeploymentSelector) {
         this.clusterDeploymentSelector = clusterDeploymentSelector;
     }
 

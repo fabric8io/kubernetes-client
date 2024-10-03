@@ -36,7 +36,7 @@ class ClusterRelocateTest {
   @Test
   void get() {
     // Given
-    server.expect().get().withPath("/apis/hive.openshift.io/v1/namespaces/ns1/clusterrelocates/test-get")
+    server.expect().get().withPath("/apis/hive.openshift.io/v1/clusterrelocates/test-get")
         .andReturn(HttpURLConnection.HTTP_OK, createNewClusterRelocate("test-get"))
         .once();
 
@@ -52,7 +52,7 @@ class ClusterRelocateTest {
   @Test
   void list() {
     // Given
-    server.expect().get().withPath("/apis/hive.openshift.io/v1/namespaces/ns1/clusterrelocates")
+    server.expect().get().withPath("/apis/hive.openshift.io/v1/clusterrelocates")
         .andReturn(HttpURLConnection.HTTP_OK, new ClusterRelocateListBuilder()
             .addToItems(createNewClusterRelocate("test-list"))
             .build())
@@ -71,7 +71,7 @@ class ClusterRelocateTest {
   @Test
   void delete() {
     // Given
-    server.expect().delete().withPath("/apis/hive.openshift.io/v1/namespaces/ns1/clusterrelocates/clusterrelocate1")
+    server.expect().delete().withPath("/apis/hive.openshift.io/v1/clusterrelocates/clusterrelocate1")
         .andReturn(HttpURLConnection.HTTP_OK, createNewClusterRelocate("clusterrelocate1"))
         .once();
 

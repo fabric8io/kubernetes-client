@@ -19,6 +19,7 @@ import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
+import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
@@ -57,7 +58,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
+    @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
@@ -67,23 +68,23 @@ public class Provisioning implements Editable<ProvisioningBuilder> , KubernetesR
     @JsonProperty("imageSetRef")
     private ClusterImageSetReference imageSetRef;
     @JsonProperty("installConfigSecretRef")
-    private io.fabric8.kubernetes.api.model.LocalObjectReference installConfigSecretRef;
+    private LocalObjectReference installConfigSecretRef;
     @JsonProperty("installerEnv")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<EnvVar> installerEnv = new ArrayList<>();
     @JsonProperty("installerImageOverride")
     private String installerImageOverride;
     @JsonProperty("manifestsConfigMapRef")
-    private io.fabric8.kubernetes.api.model.LocalObjectReference manifestsConfigMapRef;
+    private LocalObjectReference manifestsConfigMapRef;
     @JsonProperty("manifestsSecretRef")
-    private io.fabric8.kubernetes.api.model.LocalObjectReference manifestsSecretRef;
+    private LocalObjectReference manifestsSecretRef;
     @JsonProperty("releaseImage")
     private String releaseImage;
     @JsonProperty("sshKnownHosts")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> sshKnownHosts = new ArrayList<>();
     @JsonProperty("sshPrivateKeySecretRef")
-    private io.fabric8.kubernetes.api.model.LocalObjectReference sshPrivateKeySecretRef;
+    private LocalObjectReference sshPrivateKeySecretRef;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -94,7 +95,7 @@ public class Provisioning implements Editable<ProvisioningBuilder> , KubernetesR
     public Provisioning() {
     }
 
-    public Provisioning(ClusterImageSetReference imageSetRef, io.fabric8.kubernetes.api.model.LocalObjectReference installConfigSecretRef, List<EnvVar> installerEnv, String installerImageOverride, io.fabric8.kubernetes.api.model.LocalObjectReference manifestsConfigMapRef, io.fabric8.kubernetes.api.model.LocalObjectReference manifestsSecretRef, String releaseImage, List<String> sshKnownHosts, io.fabric8.kubernetes.api.model.LocalObjectReference sshPrivateKeySecretRef) {
+    public Provisioning(ClusterImageSetReference imageSetRef, LocalObjectReference installConfigSecretRef, List<EnvVar> installerEnv, String installerImageOverride, LocalObjectReference manifestsConfigMapRef, LocalObjectReference manifestsSecretRef, String releaseImage, List<String> sshKnownHosts, LocalObjectReference sshPrivateKeySecretRef) {
         super();
         this.imageSetRef = imageSetRef;
         this.installConfigSecretRef = installConfigSecretRef;
@@ -118,12 +119,12 @@ public class Provisioning implements Editable<ProvisioningBuilder> , KubernetesR
     }
 
     @JsonProperty("installConfigSecretRef")
-    public io.fabric8.kubernetes.api.model.LocalObjectReference getInstallConfigSecretRef() {
+    public LocalObjectReference getInstallConfigSecretRef() {
         return installConfigSecretRef;
     }
 
     @JsonProperty("installConfigSecretRef")
-    public void setInstallConfigSecretRef(io.fabric8.kubernetes.api.model.LocalObjectReference installConfigSecretRef) {
+    public void setInstallConfigSecretRef(LocalObjectReference installConfigSecretRef) {
         this.installConfigSecretRef = installConfigSecretRef;
     }
 
@@ -149,22 +150,22 @@ public class Provisioning implements Editable<ProvisioningBuilder> , KubernetesR
     }
 
     @JsonProperty("manifestsConfigMapRef")
-    public io.fabric8.kubernetes.api.model.LocalObjectReference getManifestsConfigMapRef() {
+    public LocalObjectReference getManifestsConfigMapRef() {
         return manifestsConfigMapRef;
     }
 
     @JsonProperty("manifestsConfigMapRef")
-    public void setManifestsConfigMapRef(io.fabric8.kubernetes.api.model.LocalObjectReference manifestsConfigMapRef) {
+    public void setManifestsConfigMapRef(LocalObjectReference manifestsConfigMapRef) {
         this.manifestsConfigMapRef = manifestsConfigMapRef;
     }
 
     @JsonProperty("manifestsSecretRef")
-    public io.fabric8.kubernetes.api.model.LocalObjectReference getManifestsSecretRef() {
+    public LocalObjectReference getManifestsSecretRef() {
         return manifestsSecretRef;
     }
 
     @JsonProperty("manifestsSecretRef")
-    public void setManifestsSecretRef(io.fabric8.kubernetes.api.model.LocalObjectReference manifestsSecretRef) {
+    public void setManifestsSecretRef(LocalObjectReference manifestsSecretRef) {
         this.manifestsSecretRef = manifestsSecretRef;
     }
 
@@ -190,12 +191,12 @@ public class Provisioning implements Editable<ProvisioningBuilder> , KubernetesR
     }
 
     @JsonProperty("sshPrivateKeySecretRef")
-    public io.fabric8.kubernetes.api.model.LocalObjectReference getSshPrivateKeySecretRef() {
+    public LocalObjectReference getSshPrivateKeySecretRef() {
         return sshPrivateKeySecretRef;
     }
 
     @JsonProperty("sshPrivateKeySecretRef")
-    public void setSshPrivateKeySecretRef(io.fabric8.kubernetes.api.model.LocalObjectReference sshPrivateKeySecretRef) {
+    public void setSshPrivateKeySecretRef(LocalObjectReference sshPrivateKeySecretRef) {
         this.sshPrivateKeySecretRef = sshPrivateKeySecretRef;
     }
 

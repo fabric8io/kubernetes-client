@@ -1,7 +1,9 @@
 
-package io.fabric8.openshift.api.model.hive.aws.v1;
+package io.fabric8.openshift.api.model.hive.v1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -16,11 +18,13 @@ import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
+import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
+import io.fabric8.openshift.api.model.customresourcestatus.conditions.v1.Condition;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -30,11 +34,10 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "credentialsAssumeRole",
-    "credentialsSecretRef",
-    "privateLink",
-    "region",
-    "userTags"
+    "clusterDeploymentRef",
+    "clusterPoolRef",
+    "conditions",
+    "lastAppliedConfiguration"
 })
 @ToString
 @EqualsAndHashCode
@@ -50,24 +53,22 @@ import lombok.experimental.Accessors;
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
+    @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class AwsPlatform implements Editable<AwsPlatformBuilder> , KubernetesResource
+public class ClusterDeploymentCustomizationStatus implements Editable<ClusterDeploymentCustomizationStatusBuilder> , KubernetesResource
 {
 
-    @JsonProperty("credentialsAssumeRole")
-    private AssumeRole credentialsAssumeRole;
-    @JsonProperty("credentialsSecretRef")
-    private io.fabric8.kubernetes.api.model.LocalObjectReference credentialsSecretRef;
-    @JsonProperty("privateLink")
-    private PrivateLinkAccess privateLink;
-    @JsonProperty("region")
-    private String region;
-    @JsonProperty("userTags")
+    @JsonProperty("clusterDeploymentRef")
+    private LocalObjectReference clusterDeploymentRef;
+    @JsonProperty("clusterPoolRef")
+    private LocalObjectReference clusterPoolRef;
+    @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> userTags = new LinkedHashMap<>();
+    private List<Condition> conditions = new ArrayList<>();
+    @JsonProperty("lastAppliedConfiguration")
+    private String lastAppliedConfiguration;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -75,76 +76,65 @@ public class AwsPlatform implements Editable<AwsPlatformBuilder> , KubernetesRes
      * No args constructor for use in serialization
      * 
      */
-    public AwsPlatform() {
+    public ClusterDeploymentCustomizationStatus() {
     }
 
-    public AwsPlatform(AssumeRole credentialsAssumeRole, io.fabric8.kubernetes.api.model.LocalObjectReference credentialsSecretRef, PrivateLinkAccess privateLink, String region, Map<String, String> userTags) {
+    public ClusterDeploymentCustomizationStatus(LocalObjectReference clusterDeploymentRef, LocalObjectReference clusterPoolRef, List<Condition> conditions, String lastAppliedConfiguration) {
         super();
-        this.credentialsAssumeRole = credentialsAssumeRole;
-        this.credentialsSecretRef = credentialsSecretRef;
-        this.privateLink = privateLink;
-        this.region = region;
-        this.userTags = userTags;
+        this.clusterDeploymentRef = clusterDeploymentRef;
+        this.clusterPoolRef = clusterPoolRef;
+        this.conditions = conditions;
+        this.lastAppliedConfiguration = lastAppliedConfiguration;
     }
 
-    @JsonProperty("credentialsAssumeRole")
-    public AssumeRole getCredentialsAssumeRole() {
-        return credentialsAssumeRole;
+    @JsonProperty("clusterDeploymentRef")
+    public LocalObjectReference getClusterDeploymentRef() {
+        return clusterDeploymentRef;
     }
 
-    @JsonProperty("credentialsAssumeRole")
-    public void setCredentialsAssumeRole(AssumeRole credentialsAssumeRole) {
-        this.credentialsAssumeRole = credentialsAssumeRole;
+    @JsonProperty("clusterDeploymentRef")
+    public void setClusterDeploymentRef(LocalObjectReference clusterDeploymentRef) {
+        this.clusterDeploymentRef = clusterDeploymentRef;
     }
 
-    @JsonProperty("credentialsSecretRef")
-    public io.fabric8.kubernetes.api.model.LocalObjectReference getCredentialsSecretRef() {
-        return credentialsSecretRef;
+    @JsonProperty("clusterPoolRef")
+    public LocalObjectReference getClusterPoolRef() {
+        return clusterPoolRef;
     }
 
-    @JsonProperty("credentialsSecretRef")
-    public void setCredentialsSecretRef(io.fabric8.kubernetes.api.model.LocalObjectReference credentialsSecretRef) {
-        this.credentialsSecretRef = credentialsSecretRef;
+    @JsonProperty("clusterPoolRef")
+    public void setClusterPoolRef(LocalObjectReference clusterPoolRef) {
+        this.clusterPoolRef = clusterPoolRef;
     }
 
-    @JsonProperty("privateLink")
-    public PrivateLinkAccess getPrivateLink() {
-        return privateLink;
-    }
-
-    @JsonProperty("privateLink")
-    public void setPrivateLink(PrivateLinkAccess privateLink) {
-        this.privateLink = privateLink;
-    }
-
-    @JsonProperty("region")
-    public String getRegion() {
-        return region;
-    }
-
-    @JsonProperty("region")
-    public void setRegion(String region) {
-        this.region = region;
-    }
-
-    @JsonProperty("userTags")
+    @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Map<String, String> getUserTags() {
-        return userTags;
+    public List<Condition> getConditions() {
+        return conditions;
     }
 
-    @JsonProperty("userTags")
-    public void setUserTags(Map<String, String> userTags) {
-        this.userTags = userTags;
+    @JsonProperty("conditions")
+    public void setConditions(List<Condition> conditions) {
+        this.conditions = conditions;
+    }
+
+    @JsonProperty("lastAppliedConfiguration")
+    public String getLastAppliedConfiguration() {
+        return lastAppliedConfiguration;
+    }
+
+    @JsonProperty("lastAppliedConfiguration")
+    public void setLastAppliedConfiguration(String lastAppliedConfiguration) {
+        this.lastAppliedConfiguration = lastAppliedConfiguration;
     }
 
     @JsonIgnore
-    public AwsPlatformBuilder edit() {
-        return new AwsPlatformBuilder(this);
+    public ClusterDeploymentCustomizationStatusBuilder edit() {
+        return new ClusterDeploymentCustomizationStatusBuilder(this);
     }
 
     @JsonIgnore
-    public AwsPlatformBuilder toBuilder() {
+    public ClusterDeploymentCustomizationStatusBuilder toBuilder() {
         return edit();
     }
 

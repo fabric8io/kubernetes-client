@@ -15,6 +15,7 @@ import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
+import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
@@ -46,7 +47,7 @@ import lombok.experimental.Accessors;
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.LabelSelector.class),
+    @BuildableReference(LabelSelector.class),
     @BuildableReference(Container.class),
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
@@ -66,9 +67,9 @@ public class ClusterIngress implements Editable<ClusterIngressBuilder> , Kuberne
     @JsonProperty("name")
     private String name;
     @JsonProperty("namespaceSelector")
-    private io.fabric8.kubernetes.api.model.LabelSelector namespaceSelector;
+    private LabelSelector namespaceSelector;
     @JsonProperty("routeSelector")
-    private io.fabric8.kubernetes.api.model.LabelSelector routeSelector;
+    private LabelSelector routeSelector;
     @JsonProperty("servingCertificate")
     private String servingCertificate;
     @JsonIgnore
@@ -81,7 +82,7 @@ public class ClusterIngress implements Editable<ClusterIngressBuilder> , Kuberne
     public ClusterIngress() {
     }
 
-    public ClusterIngress(String domain, ConfigMapNameReference httpErrorCodePages, String name, io.fabric8.kubernetes.api.model.LabelSelector namespaceSelector, io.fabric8.kubernetes.api.model.LabelSelector routeSelector, String servingCertificate) {
+    public ClusterIngress(String domain, ConfigMapNameReference httpErrorCodePages, String name, LabelSelector namespaceSelector, LabelSelector routeSelector, String servingCertificate) {
         super();
         this.domain = domain;
         this.httpErrorCodePages = httpErrorCodePages;
@@ -122,22 +123,22 @@ public class ClusterIngress implements Editable<ClusterIngressBuilder> , Kuberne
     }
 
     @JsonProperty("namespaceSelector")
-    public io.fabric8.kubernetes.api.model.LabelSelector getNamespaceSelector() {
+    public LabelSelector getNamespaceSelector() {
         return namespaceSelector;
     }
 
     @JsonProperty("namespaceSelector")
-    public void setNamespaceSelector(io.fabric8.kubernetes.api.model.LabelSelector namespaceSelector) {
+    public void setNamespaceSelector(LabelSelector namespaceSelector) {
         this.namespaceSelector = namespaceSelector;
     }
 
     @JsonProperty("routeSelector")
-    public io.fabric8.kubernetes.api.model.LabelSelector getRouteSelector() {
+    public LabelSelector getRouteSelector() {
         return routeSelector;
     }
 
     @JsonProperty("routeSelector")
-    public void setRouteSelector(io.fabric8.kubernetes.api.model.LabelSelector routeSelector) {
+    public void setRouteSelector(LabelSelector routeSelector) {
         this.routeSelector = routeSelector;
     }
 

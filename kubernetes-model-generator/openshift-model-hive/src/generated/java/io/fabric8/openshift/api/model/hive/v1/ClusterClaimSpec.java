@@ -15,7 +15,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.Duration;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
@@ -64,7 +63,7 @@ public class ClusterClaimSpec implements Editable<ClusterClaimSpecBuilder> , Kub
     @JsonProperty("clusterPoolName")
     private String clusterPoolName;
     @JsonProperty("lifetime")
-    private Duration lifetime;
+    private String lifetime;
     @JsonProperty("namespace")
     private String namespace;
     @JsonProperty("subjects")
@@ -80,7 +79,7 @@ public class ClusterClaimSpec implements Editable<ClusterClaimSpecBuilder> , Kub
     public ClusterClaimSpec() {
     }
 
-    public ClusterClaimSpec(String clusterPoolName, Duration lifetime, String namespace, List<Subject> subjects) {
+    public ClusterClaimSpec(String clusterPoolName, String lifetime, String namespace, List<Subject> subjects) {
         super();
         this.clusterPoolName = clusterPoolName;
         this.lifetime = lifetime;
@@ -99,12 +98,12 @@ public class ClusterClaimSpec implements Editable<ClusterClaimSpecBuilder> , Kub
     }
 
     @JsonProperty("lifetime")
-    public Duration getLifetime() {
+    public String getLifetime() {
         return lifetime;
     }
 
     @JsonProperty("lifetime")
-    public void setLifetime(Duration lifetime) {
+    public void setLifetime(String lifetime) {
         this.lifetime = lifetime;
     }
 

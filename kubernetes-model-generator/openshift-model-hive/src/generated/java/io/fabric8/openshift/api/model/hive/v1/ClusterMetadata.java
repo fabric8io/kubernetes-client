@@ -16,6 +16,7 @@ import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
+import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
@@ -50,7 +51,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
+    @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
@@ -58,9 +59,9 @@ public class ClusterMetadata implements Editable<ClusterMetadataBuilder> , Kuber
 {
 
     @JsonProperty("adminKubeconfigSecretRef")
-    private io.fabric8.kubernetes.api.model.LocalObjectReference adminKubeconfigSecretRef;
+    private LocalObjectReference adminKubeconfigSecretRef;
     @JsonProperty("adminPasswordSecretRef")
-    private io.fabric8.kubernetes.api.model.LocalObjectReference adminPasswordSecretRef;
+    private LocalObjectReference adminPasswordSecretRef;
     @JsonProperty("clusterID")
     private String clusterID;
     @JsonProperty("infraID")
@@ -77,7 +78,7 @@ public class ClusterMetadata implements Editable<ClusterMetadataBuilder> , Kuber
     public ClusterMetadata() {
     }
 
-    public ClusterMetadata(io.fabric8.kubernetes.api.model.LocalObjectReference adminKubeconfigSecretRef, io.fabric8.kubernetes.api.model.LocalObjectReference adminPasswordSecretRef, String clusterID, String infraID, ClusterPlatformMetadata platform) {
+    public ClusterMetadata(LocalObjectReference adminKubeconfigSecretRef, LocalObjectReference adminPasswordSecretRef, String clusterID, String infraID, ClusterPlatformMetadata platform) {
         super();
         this.adminKubeconfigSecretRef = adminKubeconfigSecretRef;
         this.adminPasswordSecretRef = adminPasswordSecretRef;
@@ -87,22 +88,22 @@ public class ClusterMetadata implements Editable<ClusterMetadataBuilder> , Kuber
     }
 
     @JsonProperty("adminKubeconfigSecretRef")
-    public io.fabric8.kubernetes.api.model.LocalObjectReference getAdminKubeconfigSecretRef() {
+    public LocalObjectReference getAdminKubeconfigSecretRef() {
         return adminKubeconfigSecretRef;
     }
 
     @JsonProperty("adminKubeconfigSecretRef")
-    public void setAdminKubeconfigSecretRef(io.fabric8.kubernetes.api.model.LocalObjectReference adminKubeconfigSecretRef) {
+    public void setAdminKubeconfigSecretRef(LocalObjectReference adminKubeconfigSecretRef) {
         this.adminKubeconfigSecretRef = adminKubeconfigSecretRef;
     }
 
     @JsonProperty("adminPasswordSecretRef")
-    public io.fabric8.kubernetes.api.model.LocalObjectReference getAdminPasswordSecretRef() {
+    public LocalObjectReference getAdminPasswordSecretRef() {
         return adminPasswordSecretRef;
     }
 
     @JsonProperty("adminPasswordSecretRef")
-    public void setAdminPasswordSecretRef(io.fabric8.kubernetes.api.model.LocalObjectReference adminPasswordSecretRef) {
+    public void setAdminPasswordSecretRef(LocalObjectReference adminPasswordSecretRef) {
         this.adminPasswordSecretRef = adminPasswordSecretRef;
     }
 

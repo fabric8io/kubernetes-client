@@ -18,6 +18,7 @@ import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
+import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
@@ -49,7 +50,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
+    @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
@@ -60,7 +61,7 @@ public class ClusterProvisionStatus implements Editable<ClusterProvisionStatusBu
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ClusterProvisionCondition> conditions = new ArrayList<>();
     @JsonProperty("jobRef")
-    private io.fabric8.kubernetes.api.model.LocalObjectReference jobRef;
+    private LocalObjectReference jobRef;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -71,7 +72,7 @@ public class ClusterProvisionStatus implements Editable<ClusterProvisionStatusBu
     public ClusterProvisionStatus() {
     }
 
-    public ClusterProvisionStatus(List<ClusterProvisionCondition> conditions, io.fabric8.kubernetes.api.model.LocalObjectReference jobRef) {
+    public ClusterProvisionStatus(List<ClusterProvisionCondition> conditions, LocalObjectReference jobRef) {
         super();
         this.conditions = conditions;
         this.jobRef = jobRef;
@@ -89,12 +90,12 @@ public class ClusterProvisionStatus implements Editable<ClusterProvisionStatusBu
     }
 
     @JsonProperty("jobRef")
-    public io.fabric8.kubernetes.api.model.LocalObjectReference getJobRef() {
+    public LocalObjectReference getJobRef() {
         return jobRef;
     }
 
     @JsonProperty("jobRef")
-    public void setJobRef(io.fabric8.kubernetes.api.model.LocalObjectReference jobRef) {
+    public void setJobRef(LocalObjectReference jobRef) {
         this.jobRef = jobRef;
     }
 

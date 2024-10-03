@@ -16,6 +16,7 @@ import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
+import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
@@ -30,9 +31,7 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "baseDomain",
-    "credentialsSecretRef",
-    "region"
+    "gcp"
 })
 @ToString
 @EqualsAndHashCode
@@ -48,19 +47,15 @@ import lombok.experimental.Accessors;
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
+    @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class AlibabaCloudClusterDeprovision implements Editable<AlibabaCloudClusterDeprovisionBuilder> , KubernetesResource
+public class PrivateLinkConfig implements Editable<PrivateLinkConfigBuilder> , KubernetesResource
 {
 
-    @JsonProperty("baseDomain")
-    private String baseDomain;
-    @JsonProperty("credentialsSecretRef")
-    private io.fabric8.kubernetes.api.model.LocalObjectReference credentialsSecretRef;
-    @JsonProperty("region")
-    private String region;
+    @JsonProperty("gcp")
+    private GCPPrivateServiceConnectConfig gcp;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -68,53 +63,31 @@ public class AlibabaCloudClusterDeprovision implements Editable<AlibabaCloudClus
      * No args constructor for use in serialization
      * 
      */
-    public AlibabaCloudClusterDeprovision() {
+    public PrivateLinkConfig() {
     }
 
-    public AlibabaCloudClusterDeprovision(String baseDomain, io.fabric8.kubernetes.api.model.LocalObjectReference credentialsSecretRef, String region) {
+    public PrivateLinkConfig(GCPPrivateServiceConnectConfig gcp) {
         super();
-        this.baseDomain = baseDomain;
-        this.credentialsSecretRef = credentialsSecretRef;
-        this.region = region;
+        this.gcp = gcp;
     }
 
-    @JsonProperty("baseDomain")
-    public String getBaseDomain() {
-        return baseDomain;
+    @JsonProperty("gcp")
+    public GCPPrivateServiceConnectConfig getGcp() {
+        return gcp;
     }
 
-    @JsonProperty("baseDomain")
-    public void setBaseDomain(String baseDomain) {
-        this.baseDomain = baseDomain;
-    }
-
-    @JsonProperty("credentialsSecretRef")
-    public io.fabric8.kubernetes.api.model.LocalObjectReference getCredentialsSecretRef() {
-        return credentialsSecretRef;
-    }
-
-    @JsonProperty("credentialsSecretRef")
-    public void setCredentialsSecretRef(io.fabric8.kubernetes.api.model.LocalObjectReference credentialsSecretRef) {
-        this.credentialsSecretRef = credentialsSecretRef;
-    }
-
-    @JsonProperty("region")
-    public String getRegion() {
-        return region;
-    }
-
-    @JsonProperty("region")
-    public void setRegion(String region) {
-        this.region = region;
+    @JsonProperty("gcp")
+    public void setGcp(GCPPrivateServiceConnectConfig gcp) {
+        this.gcp = gcp;
     }
 
     @JsonIgnore
-    public AlibabaCloudClusterDeprovisionBuilder edit() {
-        return new AlibabaCloudClusterDeprovisionBuilder(this);
+    public PrivateLinkConfigBuilder edit() {
+        return new PrivateLinkConfigBuilder(this);
     }
 
     @JsonIgnore
-    public AlibabaCloudClusterDeprovisionBuilder toBuilder() {
+    public PrivateLinkConfigBuilder toBuilder() {
         return edit();
     }
 

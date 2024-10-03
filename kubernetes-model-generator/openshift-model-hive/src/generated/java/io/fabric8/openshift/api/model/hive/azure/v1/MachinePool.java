@@ -33,9 +33,13 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "computeSubnet",
+    "networkResourceGroupName",
     "osDisk",
     "osImage",
     "type",
+    "virtualNetwork",
+    "vmNetworkingType",
     "zones"
 })
 @ToString
@@ -59,12 +63,20 @@ import lombok.experimental.Accessors;
 public class MachinePool implements Editable<MachinePoolBuilder> , KubernetesResource
 {
 
+    @JsonProperty("computeSubnet")
+    private String computeSubnet;
+    @JsonProperty("networkResourceGroupName")
+    private String networkResourceGroupName;
     @JsonProperty("osDisk")
     private OSDisk osDisk;
     @JsonProperty("osImage")
     private OSImage osImage;
     @JsonProperty("type")
     private String type;
+    @JsonProperty("virtualNetwork")
+    private String virtualNetwork;
+    @JsonProperty("vmNetworkingType")
+    private String vmNetworkingType;
     @JsonProperty("zones")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> zones = new ArrayList<>();
@@ -78,12 +90,36 @@ public class MachinePool implements Editable<MachinePoolBuilder> , KubernetesRes
     public MachinePool() {
     }
 
-    public MachinePool(OSDisk osDisk, OSImage osImage, String type, List<String> zones) {
+    public MachinePool(String computeSubnet, String networkResourceGroupName, OSDisk osDisk, OSImage osImage, String type, String virtualNetwork, String vmNetworkingType, List<String> zones) {
         super();
+        this.computeSubnet = computeSubnet;
+        this.networkResourceGroupName = networkResourceGroupName;
         this.osDisk = osDisk;
         this.osImage = osImage;
         this.type = type;
+        this.virtualNetwork = virtualNetwork;
+        this.vmNetworkingType = vmNetworkingType;
         this.zones = zones;
+    }
+
+    @JsonProperty("computeSubnet")
+    public String getComputeSubnet() {
+        return computeSubnet;
+    }
+
+    @JsonProperty("computeSubnet")
+    public void setComputeSubnet(String computeSubnet) {
+        this.computeSubnet = computeSubnet;
+    }
+
+    @JsonProperty("networkResourceGroupName")
+    public String getNetworkResourceGroupName() {
+        return networkResourceGroupName;
+    }
+
+    @JsonProperty("networkResourceGroupName")
+    public void setNetworkResourceGroupName(String networkResourceGroupName) {
+        this.networkResourceGroupName = networkResourceGroupName;
     }
 
     @JsonProperty("osDisk")
@@ -114,6 +150,26 @@ public class MachinePool implements Editable<MachinePoolBuilder> , KubernetesRes
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;
+    }
+
+    @JsonProperty("virtualNetwork")
+    public String getVirtualNetwork() {
+        return virtualNetwork;
+    }
+
+    @JsonProperty("virtualNetwork")
+    public void setVirtualNetwork(String virtualNetwork) {
+        this.virtualNetwork = virtualNetwork;
+    }
+
+    @JsonProperty("vmNetworkingType")
+    public String getVmNetworkingType() {
+        return vmNetworkingType;
+    }
+
+    @JsonProperty("vmNetworkingType")
+    public void setVmNetworkingType(String vmNetworkingType) {
+        this.vmNetworkingType = vmNetworkingType;
     }
 
     @JsonProperty("zones")

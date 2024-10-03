@@ -1,5 +1,5 @@
 
-package io.fabric8.openshift.api.model.hive.azure.v1;
+package io.fabric8.openshift.api.model.hive.v1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -31,7 +31,12 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "resourceGroupName"
+    "lastProbeTime",
+    "lastTransitionTime",
+    "message",
+    "reason",
+    "status",
+    "type"
 })
 @ToString
 @EqualsAndHashCode
@@ -51,11 +56,21 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class AzureMetadata implements Editable<AzureMetadataBuilder> , KubernetesResource
+public class SyncCondition implements Editable<SyncConditionBuilder> , KubernetesResource
 {
 
-    @JsonProperty("resourceGroupName")
-    private String resourceGroupName;
+    @JsonProperty("lastProbeTime")
+    private String lastProbeTime;
+    @JsonProperty("lastTransitionTime")
+    private String lastTransitionTime;
+    @JsonProperty("message")
+    private String message;
+    @JsonProperty("reason")
+    private String reason;
+    @JsonProperty("status")
+    private String status;
+    @JsonProperty("type")
+    private String type;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -63,31 +78,86 @@ public class AzureMetadata implements Editable<AzureMetadataBuilder> , Kubernete
      * No args constructor for use in serialization
      * 
      */
-    public AzureMetadata() {
+    public SyncCondition() {
     }
 
-    public AzureMetadata(String resourceGroupName) {
+    public SyncCondition(String lastProbeTime, String lastTransitionTime, String message, String reason, String status, String type) {
         super();
-        this.resourceGroupName = resourceGroupName;
+        this.lastProbeTime = lastProbeTime;
+        this.lastTransitionTime = lastTransitionTime;
+        this.message = message;
+        this.reason = reason;
+        this.status = status;
+        this.type = type;
     }
 
-    @JsonProperty("resourceGroupName")
-    public String getResourceGroupName() {
-        return resourceGroupName;
+    @JsonProperty("lastProbeTime")
+    public String getLastProbeTime() {
+        return lastProbeTime;
     }
 
-    @JsonProperty("resourceGroupName")
-    public void setResourceGroupName(String resourceGroupName) {
-        this.resourceGroupName = resourceGroupName;
+    @JsonProperty("lastProbeTime")
+    public void setLastProbeTime(String lastProbeTime) {
+        this.lastProbeTime = lastProbeTime;
+    }
+
+    @JsonProperty("lastTransitionTime")
+    public String getLastTransitionTime() {
+        return lastTransitionTime;
+    }
+
+    @JsonProperty("lastTransitionTime")
+    public void setLastTransitionTime(String lastTransitionTime) {
+        this.lastTransitionTime = lastTransitionTime;
+    }
+
+    @JsonProperty("message")
+    public String getMessage() {
+        return message;
+    }
+
+    @JsonProperty("message")
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    @JsonProperty("reason")
+    public String getReason() {
+        return reason;
+    }
+
+    @JsonProperty("reason")
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
+    @JsonProperty("status")
+    public String getStatus() {
+        return status;
+    }
+
+    @JsonProperty("status")
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    @JsonProperty("type")
+    public String getType() {
+        return type;
+    }
+
+    @JsonProperty("type")
+    public void setType(String type) {
+        this.type = type;
     }
 
     @JsonIgnore
-    public AzureMetadataBuilder edit() {
-        return new AzureMetadataBuilder(this);
+    public SyncConditionBuilder edit() {
+        return new SyncConditionBuilder(this);
     }
 
     @JsonIgnore
-    public AzureMetadataBuilder toBuilder() {
+    public SyncConditionBuilder toBuilder() {
         return edit();
     }
 

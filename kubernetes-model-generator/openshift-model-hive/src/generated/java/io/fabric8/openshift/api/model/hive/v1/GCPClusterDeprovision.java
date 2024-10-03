@@ -16,6 +16,7 @@ import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
+import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
@@ -31,6 +32,7 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "credentialsSecretRef",
+    "networkProjectID",
     "region"
 })
 @ToString
@@ -47,7 +49,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
+    @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
@@ -55,7 +57,9 @@ public class GCPClusterDeprovision implements Editable<GCPClusterDeprovisionBuil
 {
 
     @JsonProperty("credentialsSecretRef")
-    private io.fabric8.kubernetes.api.model.LocalObjectReference credentialsSecretRef;
+    private LocalObjectReference credentialsSecretRef;
+    @JsonProperty("networkProjectID")
+    private String networkProjectID;
     @JsonProperty("region")
     private String region;
     @JsonIgnore
@@ -68,20 +72,31 @@ public class GCPClusterDeprovision implements Editable<GCPClusterDeprovisionBuil
     public GCPClusterDeprovision() {
     }
 
-    public GCPClusterDeprovision(io.fabric8.kubernetes.api.model.LocalObjectReference credentialsSecretRef, String region) {
+    public GCPClusterDeprovision(LocalObjectReference credentialsSecretRef, String networkProjectID, String region) {
         super();
         this.credentialsSecretRef = credentialsSecretRef;
+        this.networkProjectID = networkProjectID;
         this.region = region;
     }
 
     @JsonProperty("credentialsSecretRef")
-    public io.fabric8.kubernetes.api.model.LocalObjectReference getCredentialsSecretRef() {
+    public LocalObjectReference getCredentialsSecretRef() {
         return credentialsSecretRef;
     }
 
     @JsonProperty("credentialsSecretRef")
-    public void setCredentialsSecretRef(io.fabric8.kubernetes.api.model.LocalObjectReference credentialsSecretRef) {
+    public void setCredentialsSecretRef(LocalObjectReference credentialsSecretRef) {
         this.credentialsSecretRef = credentialsSecretRef;
+    }
+
+    @JsonProperty("networkProjectID")
+    public String getNetworkProjectID() {
+        return networkProjectID;
+    }
+
+    @JsonProperty("networkProjectID")
+    public void setNetworkProjectID(String networkProjectID) {
+        this.networkProjectID = networkProjectID;
     }
 
     @JsonProperty("region")

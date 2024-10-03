@@ -45,19 +45,7 @@
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
-      <artifactId>kubernetes-model-common</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.fabric8</groupId>
-      <artifactId>kubernetes-model-rbac</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.fabric8</groupId>
       <artifactId>openshift-model</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.fabric8</groupId>
-      <artifactId>openshift-model-config</artifactId>
     </dependency>
     <dependency>
       <groupId>org.assertj</groupId>
@@ -66,31 +54,39 @@
     </dependency>
   </dependencies>
 
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>build-helper-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>attach-artifacts</id>
-            <configuration>
-              <skipAttach>false</skipAttach>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
-
   <profiles>
     <profile>
       <id>generate</id>
       <build>
         <plugins>
           <plugin>
-            <groupId>org.jsonschema2pojo</groupId>
-            <artifactId>jsonschema2pojo-maven-plugin</artifactId>
+            <groupId>io.fabric8</groupId>
+            <artifactId>openapi-model-generator-maven-plugin</artifactId>
+            <configuration >
+              <settings combine.self="append">
+                <schemas>
+                  <schema>${openapi.schema.openshift-generated}</schema>
+                </schemas>
+                <packageMappings combine.self="append">
+                  <com.github.openshift.hive.apis.hive.v1.agent>io.fabric8.openshift.api.model.hive.agent.v1</com.github.openshift.hive.apis.hive.v1.agent>
+                  <com.github.openshift.hive.apis.hive.v1.alibabacloud>io.fabric8.openshift.api.model.hive.alibabacloud.v1</com.github.openshift.hive.apis.hive.v1.alibabacloud>
+                  <com.github.openshift.hive.apis.hive.v1.aws>io.fabric8.openshift.api.model.hive.aws.v1</com.github.openshift.hive.apis.hive.v1.aws>
+                  <com.github.openshift.hive.apis.hive.v1.azure>io.fabric8.openshift.api.model.hive.azure.v1</com.github.openshift.hive.apis.hive.v1.azure>
+                  <com.github.openshift.hive.apis.hive.v1.baremetal>io.fabric8.openshift.api.model.hive.baremetal.v1</com.github.openshift.hive.apis.hive.v1.baremetal>
+                  <com.github.openshift.hive.apis.hive.v1.gcp>io.fabric8.openshift.api.model.hive.gcp.v1</com.github.openshift.hive.apis.hive.v1.gcp>
+                  <com.github.openshift.hive.apis.hive.v1.ibmcloud>io.fabric8.openshift.api.model.hive.ibmcloud.v1</com.github.openshift.hive.apis.hive.v1.ibmcloud>
+                  <com.github.openshift.hive.apis.hive.v1.metricsconfig>io.fabric8.openshift.api.model.hive.metricsconfig.v1</com.github.openshift.hive.apis.hive.v1.metricsconfig>
+                  <com.github.openshift.hive.apis.hive.v1.none>io.fabric8.openshift.api.model.hive.none.v1</com.github.openshift.hive.apis.hive.v1.none>
+                  <com.github.openshift.hive.apis.hive.v1.openstack>io.fabric8.openshift.api.model.hive.openstack.v1</com.github.openshift.hive.apis.hive.v1.openstack>
+                  <com.github.openshift.hive.apis.hive.v1.ovirt>io.fabric8.openshift.api.model.hive.ovirt.v1</com.github.openshift.hive.apis.hive.v1.ovirt>
+                  <com.github.openshift.hive.apis.hive.v1.vsphere>io.fabric8.openshift.api.model.hive.vsphere.v1</com.github.openshift.hive.apis.hive.v1.vsphere>
+                </packageMappings>
+                <includeGenerationRegexes>
+                  <includeGenerationRegex>^io\.openshift\.hive\..*$</includeGenerationRegex>
+                  <includeGenerationRegex>^com\.github\.openshift\.hive\..*$</includeGenerationRegex>
+                </includeGenerationRegexes>
+              </settings>
+            </configuration>
           </plugin>
         </plugins>
       </build>
