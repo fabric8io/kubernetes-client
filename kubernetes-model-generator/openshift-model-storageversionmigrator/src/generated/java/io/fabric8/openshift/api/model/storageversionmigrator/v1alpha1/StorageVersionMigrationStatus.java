@@ -58,7 +58,7 @@ public class StorageVersionMigrationStatus implements Editable<StorageVersionMig
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<MigrationCondition> conditions = new ArrayList<>();
+    private List<StorageVersionMigrationStatusConditions> conditions = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -69,19 +69,19 @@ public class StorageVersionMigrationStatus implements Editable<StorageVersionMig
     public StorageVersionMigrationStatus() {
     }
 
-    public StorageVersionMigrationStatus(List<MigrationCondition> conditions) {
+    public StorageVersionMigrationStatus(List<StorageVersionMigrationStatusConditions> conditions) {
         super();
         this.conditions = conditions;
     }
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<MigrationCondition> getConditions() {
+    public List<StorageVersionMigrationStatusConditions> getConditions() {
         return conditions;
     }
 
     @JsonProperty("conditions")
-    public void setConditions(List<MigrationCondition> conditions) {
+    public void setConditions(List<StorageVersionMigrationStatusConditions> conditions) {
         this.conditions = conditions;
     }
 

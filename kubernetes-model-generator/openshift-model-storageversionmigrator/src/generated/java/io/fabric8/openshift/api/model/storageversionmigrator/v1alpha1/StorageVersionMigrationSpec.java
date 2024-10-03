@@ -58,7 +58,7 @@ public class StorageVersionMigrationSpec implements Editable<StorageVersionMigra
     @JsonProperty("continueToken")
     private String continueToken;
     @JsonProperty("resource")
-    private GroupVersionResource resource;
+    private StorageVersionMigrationSpecResource resource;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -69,7 +69,7 @@ public class StorageVersionMigrationSpec implements Editable<StorageVersionMigra
     public StorageVersionMigrationSpec() {
     }
 
-    public StorageVersionMigrationSpec(String continueToken, GroupVersionResource resource) {
+    public StorageVersionMigrationSpec(String continueToken, StorageVersionMigrationSpecResource resource) {
         super();
         this.continueToken = continueToken;
         this.resource = resource;
@@ -86,12 +86,12 @@ public class StorageVersionMigrationSpec implements Editable<StorageVersionMigra
     }
 
     @JsonProperty("resource")
-    public GroupVersionResource getResource() {
+    public StorageVersionMigrationSpecResource getResource() {
         return resource;
     }
 
     @JsonProperty("resource")
-    public void setResource(GroupVersionResource resource) {
+    public void setResource(StorageVersionMigrationSpecResource resource) {
         this.resource = resource;
     }
 

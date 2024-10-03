@@ -24,7 +24,6 @@ ABSOLUTE_BASEDIR=$(realpath "$BASEDIR")
 declare -a modules=(
     "openshift-model-hive"
     "openshift-model-installer"
-    "openshift-model-storageversionmigrator"
     "../extensions/knative/generator"
     "../extensions/certmanager/generator-v1"
     "../extensions/certmanager/generator-v1alpha2"
