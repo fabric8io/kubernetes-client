@@ -1,7 +1,9 @@
 
 package io.fabric8.openshift.api.model.whereabouts.v1alpha1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -13,22 +15,17 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
+import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
-import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.kubernetes.model.annotation.Group;
-import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import io.sundr.transform.annotations.TemplateTransformation;
-import io.sundr.transform.annotations.TemplateTransformations;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
@@ -36,10 +33,7 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "apiVersion",
-    "kind",
-    "metadata",
-    "spec"
+    "allocations"
 })
 @ToString
 @EqualsAndHashCode
@@ -58,33 +52,13 @@ import lombok.experimental.Accessors;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
-@TemplateTransformations({
-    @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true)
-})
-@Version("v1alpha1")
-@Group("whereabouts.cni.cncf.io")
 @Generated("jsonschema2pojo")
-public class OverlappingRangeIPReservation implements Editable<OverlappingRangeIPReservationBuilder> , HasMetadata, Namespaced
+public class NodeSlicePoolStatus implements Editable<NodeSlicePoolStatusBuilder> , KubernetesResource
 {
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("apiVersion")
-    private String apiVersion = "whereabouts.cni.cncf.io/v1alpha1";
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("kind")
-    private String kind = "OverlappingRangeIPReservation";
-    @JsonProperty("metadata")
-    private ObjectMeta metadata;
-    @JsonProperty("spec")
-    private OverlappingRangeIPReservationSpec spec;
+    @JsonProperty("allocations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<NodeSlicePoolStatusAllocations> allocations = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -92,84 +66,32 @@ public class OverlappingRangeIPReservation implements Editable<OverlappingRangeI
      * No args constructor for use in serialization
      * 
      */
-    public OverlappingRangeIPReservation() {
+    public NodeSlicePoolStatus() {
     }
 
-    public OverlappingRangeIPReservation(String apiVersion, String kind, ObjectMeta metadata, OverlappingRangeIPReservationSpec spec) {
+    public NodeSlicePoolStatus(List<NodeSlicePoolStatusAllocations> allocations) {
         super();
-        this.apiVersion = apiVersion;
-        this.kind = kind;
-        this.metadata = metadata;
-        this.spec = spec;
+        this.allocations = allocations;
     }
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("apiVersion")
-    public String getApiVersion() {
-        return apiVersion;
+    @JsonProperty("allocations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<NodeSlicePoolStatusAllocations> getAllocations() {
+        return allocations;
     }
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("apiVersion")
-    public void setApiVersion(String apiVersion) {
-        this.apiVersion = apiVersion;
-    }
-
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("kind")
-    public String getKind() {
-        return kind;
-    }
-
-    /**
-     * 
-     * (Required)
-     * 
-     */
-    @JsonProperty("kind")
-    public void setKind(String kind) {
-        this.kind = kind;
-    }
-
-    @JsonProperty("metadata")
-    public ObjectMeta getMetadata() {
-        return metadata;
-    }
-
-    @JsonProperty("metadata")
-    public void setMetadata(ObjectMeta metadata) {
-        this.metadata = metadata;
-    }
-
-    @JsonProperty("spec")
-    public OverlappingRangeIPReservationSpec getSpec() {
-        return spec;
-    }
-
-    @JsonProperty("spec")
-    public void setSpec(OverlappingRangeIPReservationSpec spec) {
-        this.spec = spec;
+    @JsonProperty("allocations")
+    public void setAllocations(List<NodeSlicePoolStatusAllocations> allocations) {
+        this.allocations = allocations;
     }
 
     @JsonIgnore
-    public OverlappingRangeIPReservationBuilder edit() {
-        return new OverlappingRangeIPReservationBuilder(this);
+    public NodeSlicePoolStatusBuilder edit() {
+        return new NodeSlicePoolStatusBuilder(this);
     }
 
     @JsonIgnore
-    public OverlappingRangeIPReservationBuilder toBuilder() {
+    public NodeSlicePoolStatusBuilder toBuilder() {
         return edit();
     }
 

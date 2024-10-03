@@ -43,32 +43,7 @@
       <groupId>io.fabric8</groupId>
       <artifactId>kubernetes-model-core</artifactId>
     </dependency>
-    <dependency>
-      <groupId>io.fabric8</groupId>
-      <artifactId>kubernetes-model-common</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.fabric8</groupId>
-      <artifactId>openshift-model</artifactId>
-    </dependency>
   </dependencies>
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>build-helper-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>attach-artifacts</id>
-            <configuration>
-              <skipAttach>false</skipAttach>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
 
   <profiles>
     <profile>
@@ -76,8 +51,25 @@
       <build>
         <plugins>
           <plugin>
-            <groupId>org.jsonschema2pojo</groupId>
-            <artifactId>jsonschema2pojo-maven-plugin</artifactId>
+            <groupId>io.fabric8</groupId>
+            <artifactId>openapi-model-generator-maven-plugin</artifactId>
+            <configuration >
+              <settings combine.self="append">
+                <urls>
+                  <url>https://raw.githubusercontent.com/k8snetworkplumbingwg/whereabouts/5bb9e1542cf987458db181bedee7c051a1538dc1/doc/crds/whereabouts.cni.cncf.io_ippools.yaml</url>
+                  <url>https://raw.githubusercontent.com/k8snetworkplumbingwg/whereabouts/5bb9e1542cf987458db181bedee7c051a1538dc1/doc/crds/whereabouts.cni.cncf.io_nodeslicepools.yaml</url>
+                  <url>https://raw.githubusercontent.com/k8snetworkplumbingwg/whereabouts/5bb9e1542cf987458db181bedee7c051a1538dc1/doc/crds/whereabouts.cni.cncf.io_overlappingrangeipreservations.yaml</url>
+                </urls>
+                <packageMappings combine.self="append">
+                  <io.cncf.cni.whereabouts.ippools>io.fabric8.openshift.api.model.whereabouts</io.cncf.cni.whereabouts.ippools>
+                  <io.cncf.cni.whereabouts.nodeslicepools>io.fabric8.openshift.api.model.whereabouts</io.cncf.cni.whereabouts.nodeslicepools>
+                  <io.cncf.cni.whereabouts.overlappingrangeipreservations>io.fabric8.openshift.api.model.whereabouts</io.cncf.cni.whereabouts.overlappingrangeipreservations>
+                </packageMappings>
+                <includeGenerationRegexes>
+                  <includeGenerationRegex>^io\.cncf\.cni\.whereabouts\..*$</includeGenerationRegex>
+                </includeGenerationRegexes>
+              </settings>
+            </configuration>
           </plugin>
         </plugins>
       </build>

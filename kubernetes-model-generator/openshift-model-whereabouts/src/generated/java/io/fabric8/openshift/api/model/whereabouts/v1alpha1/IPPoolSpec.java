@@ -57,7 +57,7 @@ public class IPPoolSpec implements Editable<IPPoolSpecBuilder> , KubernetesResou
 
     @JsonProperty("allocations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, IPAllocation> allocations = new LinkedHashMap<>();
+    private Map<String, IPPoolSpecAllocations> allocations = new LinkedHashMap<>();
     @JsonProperty("range")
     private String range;
     @JsonIgnore
@@ -70,7 +70,7 @@ public class IPPoolSpec implements Editable<IPPoolSpecBuilder> , KubernetesResou
     public IPPoolSpec() {
     }
 
-    public IPPoolSpec(Map<String, IPAllocation> allocations, String range) {
+    public IPPoolSpec(Map<String, IPPoolSpecAllocations> allocations, String range) {
         super();
         this.allocations = allocations;
         this.range = range;
@@ -78,12 +78,12 @@ public class IPPoolSpec implements Editable<IPPoolSpecBuilder> , KubernetesResou
 
     @JsonProperty("allocations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Map<String, IPAllocation> getAllocations() {
+    public Map<String, IPPoolSpecAllocations> getAllocations() {
         return allocations;
     }
 
     @JsonProperty("allocations")
-    public void setAllocations(Map<String, IPAllocation> allocations) {
+    public void setAllocations(Map<String, IPPoolSpecAllocations> allocations) {
         this.allocations = allocations;
     }
 

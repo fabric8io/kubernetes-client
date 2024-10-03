@@ -15,11 +15,11 @@
  */
 package io.fabric8.openshift.client.server.mock;
 
-import io.fabric8.openshift.api.model.whereabouts.v1alpha1.IPAllocationBuilder;
 import io.fabric8.openshift.api.model.whereabouts.v1alpha1.IPPool;
 import io.fabric8.openshift.api.model.whereabouts.v1alpha1.IPPoolBuilder;
 import io.fabric8.openshift.api.model.whereabouts.v1alpha1.IPPoolList;
 import io.fabric8.openshift.api.model.whereabouts.v1alpha1.IPPoolListBuilder;
+import io.fabric8.openshift.api.model.whereabouts.v1alpha1.IPPoolSpecAllocationsBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.junit.jupiter.api.Test;
 
@@ -85,7 +85,7 @@ class IPPoolTest {
     return new IPPoolBuilder()
         .withNewMetadata().withName(name).endMetadata()
         .withNewSpec()
-        .addToAllocations("key1", new IPAllocationBuilder().withId("id1").build())
+        .addToAllocations("key1", new IPPoolSpecAllocationsBuilder().withId("id1").build())
         .withRange("192.168.12.0/24")
         .endSpec()
         .build();

@@ -1,7 +1,9 @@
 
 package io.fabric8.openshift.api.model.whereabouts.v1alpha1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -13,11 +15,12 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
+import io.fabric8.kubernetes.api.model.KubernetesResource;
+import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.LabelSelector;
+import io.fabric8.kubernetes.api.model.ListMeta;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
-import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
@@ -39,7 +42,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "spec"
+    "items"
 })
 @ToString
 @EqualsAndHashCode
@@ -64,7 +67,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("whereabouts.cni.cncf.io")
 @Generated("jsonschema2pojo")
-public class OverlappingRangeIPReservation implements Editable<OverlappingRangeIPReservationBuilder> , HasMetadata, Namespaced
+public class NodeSlicePoolList implements Editable<NodeSlicePoolListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.whereabouts.v1alpha1.NodeSlicePool>
 {
 
     /**
@@ -74,17 +77,18 @@ public class OverlappingRangeIPReservation implements Editable<OverlappingRangeI
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "whereabouts.cni.cncf.io/v1alpha1";
+    @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<io.fabric8.openshift.api.model.whereabouts.v1alpha1.NodeSlicePool> items = new ArrayList<>();
     /**
      * 
      * (Required)
      * 
      */
     @JsonProperty("kind")
-    private String kind = "OverlappingRangeIPReservation";
+    private String kind = "NodeSlicePoolList";
     @JsonProperty("metadata")
-    private ObjectMeta metadata;
-    @JsonProperty("spec")
-    private OverlappingRangeIPReservationSpec spec;
+    private ListMeta metadata;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -92,15 +96,15 @@ public class OverlappingRangeIPReservation implements Editable<OverlappingRangeI
      * No args constructor for use in serialization
      * 
      */
-    public OverlappingRangeIPReservation() {
+    public NodeSlicePoolList() {
     }
 
-    public OverlappingRangeIPReservation(String apiVersion, String kind, ObjectMeta metadata, OverlappingRangeIPReservationSpec spec) {
+    public NodeSlicePoolList(String apiVersion, List<io.fabric8.openshift.api.model.whereabouts.v1alpha1.NodeSlicePool> items, String kind, ListMeta metadata) {
         super();
         this.apiVersion = apiVersion;
+        this.items = items;
         this.kind = kind;
         this.metadata = metadata;
-        this.spec = spec;
     }
 
     /**
@@ -121,6 +125,17 @@ public class OverlappingRangeIPReservation implements Editable<OverlappingRangeI
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
+    }
+
+    @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<io.fabric8.openshift.api.model.whereabouts.v1alpha1.NodeSlicePool> getItems() {
+        return items;
+    }
+
+    @JsonProperty("items")
+    public void setItems(List<io.fabric8.openshift.api.model.whereabouts.v1alpha1.NodeSlicePool> items) {
+        this.items = items;
     }
 
     /**
@@ -144,32 +159,22 @@ public class OverlappingRangeIPReservation implements Editable<OverlappingRangeI
     }
 
     @JsonProperty("metadata")
-    public ObjectMeta getMetadata() {
+    public ListMeta getMetadata() {
         return metadata;
     }
 
     @JsonProperty("metadata")
-    public void setMetadata(ObjectMeta metadata) {
+    public void setMetadata(ListMeta metadata) {
         this.metadata = metadata;
     }
 
-    @JsonProperty("spec")
-    public OverlappingRangeIPReservationSpec getSpec() {
-        return spec;
-    }
-
-    @JsonProperty("spec")
-    public void setSpec(OverlappingRangeIPReservationSpec spec) {
-        this.spec = spec;
+    @JsonIgnore
+    public NodeSlicePoolListBuilder edit() {
+        return new NodeSlicePoolListBuilder(this);
     }
 
     @JsonIgnore
-    public OverlappingRangeIPReservationBuilder edit() {
-        return new OverlappingRangeIPReservationBuilder(this);
-    }
-
-    @JsonIgnore
-    public OverlappingRangeIPReservationBuilder toBuilder() {
+    public NodeSlicePoolListBuilder toBuilder() {
         return edit();
     }
 
