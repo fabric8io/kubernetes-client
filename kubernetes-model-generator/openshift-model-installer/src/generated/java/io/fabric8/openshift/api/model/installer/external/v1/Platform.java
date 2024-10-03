@@ -1,9 +1,7 @@
 
-package io.fabric8.openshift.api.model.installer.openstack.v1;
+package io.fabric8.openshift.api.model.installer.external.v1;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -33,9 +31,8 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "computeAvailabilityZone",
-    "portTargets",
-    "storageAvailabilityZone"
+    "cloudControllerManager",
+    "platformName"
 })
 @ToString
 @EqualsAndHashCode
@@ -55,16 +52,13 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class FailureDomain implements Editable<FailureDomainBuilder> , KubernetesResource
+public class Platform implements Editable<PlatformBuilder> , KubernetesResource
 {
 
-    @JsonProperty("computeAvailabilityZone")
-    private String computeAvailabilityZone;
-    @JsonProperty("portTargets")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<NamedPortTarget> portTargets = new ArrayList<>();
-    @JsonProperty("storageAvailabilityZone")
-    private String storageAvailabilityZone;
+    @JsonProperty("cloudControllerManager")
+    private String cloudControllerManager;
+    @JsonProperty("platformName")
+    private String platformName;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -72,54 +66,42 @@ public class FailureDomain implements Editable<FailureDomainBuilder> , Kubernete
      * No args constructor for use in serialization
      * 
      */
-    public FailureDomain() {
+    public Platform() {
     }
 
-    public FailureDomain(String computeAvailabilityZone, List<NamedPortTarget> portTargets, String storageAvailabilityZone) {
+    public Platform(String cloudControllerManager, String platformName) {
         super();
-        this.computeAvailabilityZone = computeAvailabilityZone;
-        this.portTargets = portTargets;
-        this.storageAvailabilityZone = storageAvailabilityZone;
+        this.cloudControllerManager = cloudControllerManager;
+        this.platformName = platformName;
     }
 
-    @JsonProperty("computeAvailabilityZone")
-    public String getComputeAvailabilityZone() {
-        return computeAvailabilityZone;
+    @JsonProperty("cloudControllerManager")
+    public String getCloudControllerManager() {
+        return cloudControllerManager;
     }
 
-    @JsonProperty("computeAvailabilityZone")
-    public void setComputeAvailabilityZone(String computeAvailabilityZone) {
-        this.computeAvailabilityZone = computeAvailabilityZone;
+    @JsonProperty("cloudControllerManager")
+    public void setCloudControllerManager(String cloudControllerManager) {
+        this.cloudControllerManager = cloudControllerManager;
     }
 
-    @JsonProperty("portTargets")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<NamedPortTarget> getPortTargets() {
-        return portTargets;
+    @JsonProperty("platformName")
+    public String getPlatformName() {
+        return platformName;
     }
 
-    @JsonProperty("portTargets")
-    public void setPortTargets(List<NamedPortTarget> portTargets) {
-        this.portTargets = portTargets;
-    }
-
-    @JsonProperty("storageAvailabilityZone")
-    public String getStorageAvailabilityZone() {
-        return storageAvailabilityZone;
-    }
-
-    @JsonProperty("storageAvailabilityZone")
-    public void setStorageAvailabilityZone(String storageAvailabilityZone) {
-        this.storageAvailabilityZone = storageAvailabilityZone;
+    @JsonProperty("platformName")
+    public void setPlatformName(String platformName) {
+        this.platformName = platformName;
     }
 
     @JsonIgnore
-    public FailureDomainBuilder edit() {
-        return new FailureDomainBuilder(this);
+    public PlatformBuilder edit() {
+        return new PlatformBuilder(this);
     }
 
     @JsonIgnore
-    public FailureDomainBuilder toBuilder() {
+    public PlatformBuilder toBuilder() {
         return edit();
     }
 

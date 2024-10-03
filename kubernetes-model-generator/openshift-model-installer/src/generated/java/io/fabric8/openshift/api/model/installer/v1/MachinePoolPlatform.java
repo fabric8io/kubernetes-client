@@ -22,6 +22,7 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
+import io.fabric8.openshift.api.model.installer.aws.v1.MachinePool;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -31,13 +32,11 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "alibabacloud",
     "aws",
     "azure",
     "baremetal",
     "gcp",
     "ibmcloud",
-    "libvirt",
     "nutanix",
     "openstack",
     "ovirt",
@@ -65,10 +64,8 @@ import lombok.experimental.Accessors;
 public class MachinePoolPlatform implements Editable<MachinePoolPlatformBuilder> , KubernetesResource
 {
 
-    @JsonProperty("alibabacloud")
-    private io.fabric8.openshift.api.model.installer.alibabacloud.v1.MachinePool alibabacloud;
     @JsonProperty("aws")
-    private io.fabric8.openshift.api.model.installer.aws.v1.MachinePool aws;
+    private MachinePool aws;
     @JsonProperty("azure")
     private io.fabric8.openshift.api.model.installer.azure.v1.MachinePool azure;
     @JsonProperty("baremetal")
@@ -77,8 +74,6 @@ public class MachinePoolPlatform implements Editable<MachinePoolPlatformBuilder>
     private io.fabric8.openshift.api.model.installer.gcp.v1.MachinePool gcp;
     @JsonProperty("ibmcloud")
     private io.fabric8.openshift.api.model.installer.ibmcloud.v1.MachinePool ibmcloud;
-    @JsonProperty("libvirt")
-    private io.fabric8.openshift.api.model.installer.libvirt.v1.MachinePool libvirt;
     @JsonProperty("nutanix")
     private io.fabric8.openshift.api.model.installer.nutanix.v1.MachinePool nutanix;
     @JsonProperty("openstack")
@@ -99,15 +94,13 @@ public class MachinePoolPlatform implements Editable<MachinePoolPlatformBuilder>
     public MachinePoolPlatform() {
     }
 
-    public MachinePoolPlatform(io.fabric8.openshift.api.model.installer.alibabacloud.v1.MachinePool alibabacloud, io.fabric8.openshift.api.model.installer.aws.v1.MachinePool aws, io.fabric8.openshift.api.model.installer.azure.v1.MachinePool azure, io.fabric8.openshift.api.model.installer.baremetal.v1.MachinePool baremetal, io.fabric8.openshift.api.model.installer.gcp.v1.MachinePool gcp, io.fabric8.openshift.api.model.installer.ibmcloud.v1.MachinePool ibmcloud, io.fabric8.openshift.api.model.installer.libvirt.v1.MachinePool libvirt, io.fabric8.openshift.api.model.installer.nutanix.v1.MachinePool nutanix, io.fabric8.openshift.api.model.installer.openstack.v1.MachinePool openstack, io.fabric8.openshift.api.model.installer.ovirt.v1.MachinePool ovirt, io.fabric8.openshift.api.model.installer.powervs.v1.MachinePool powervs, io.fabric8.openshift.api.model.installer.vsphere.v1.MachinePool vsphere) {
+    public MachinePoolPlatform(MachinePool aws, io.fabric8.openshift.api.model.installer.azure.v1.MachinePool azure, io.fabric8.openshift.api.model.installer.baremetal.v1.MachinePool baremetal, io.fabric8.openshift.api.model.installer.gcp.v1.MachinePool gcp, io.fabric8.openshift.api.model.installer.ibmcloud.v1.MachinePool ibmcloud, io.fabric8.openshift.api.model.installer.nutanix.v1.MachinePool nutanix, io.fabric8.openshift.api.model.installer.openstack.v1.MachinePool openstack, io.fabric8.openshift.api.model.installer.ovirt.v1.MachinePool ovirt, io.fabric8.openshift.api.model.installer.powervs.v1.MachinePool powervs, io.fabric8.openshift.api.model.installer.vsphere.v1.MachinePool vsphere) {
         super();
-        this.alibabacloud = alibabacloud;
         this.aws = aws;
         this.azure = azure;
         this.baremetal = baremetal;
         this.gcp = gcp;
         this.ibmcloud = ibmcloud;
-        this.libvirt = libvirt;
         this.nutanix = nutanix;
         this.openstack = openstack;
         this.ovirt = ovirt;
@@ -115,23 +108,13 @@ public class MachinePoolPlatform implements Editable<MachinePoolPlatformBuilder>
         this.vsphere = vsphere;
     }
 
-    @JsonProperty("alibabacloud")
-    public io.fabric8.openshift.api.model.installer.alibabacloud.v1.MachinePool getAlibabacloud() {
-        return alibabacloud;
-    }
-
-    @JsonProperty("alibabacloud")
-    public void setAlibabacloud(io.fabric8.openshift.api.model.installer.alibabacloud.v1.MachinePool alibabacloud) {
-        this.alibabacloud = alibabacloud;
-    }
-
     @JsonProperty("aws")
-    public io.fabric8.openshift.api.model.installer.aws.v1.MachinePool getAws() {
+    public MachinePool getAws() {
         return aws;
     }
 
     @JsonProperty("aws")
-    public void setAws(io.fabric8.openshift.api.model.installer.aws.v1.MachinePool aws) {
+    public void setAws(MachinePool aws) {
         this.aws = aws;
     }
 
@@ -173,16 +156,6 @@ public class MachinePoolPlatform implements Editable<MachinePoolPlatformBuilder>
     @JsonProperty("ibmcloud")
     public void setIbmcloud(io.fabric8.openshift.api.model.installer.ibmcloud.v1.MachinePool ibmcloud) {
         this.ibmcloud = ibmcloud;
-    }
-
-    @JsonProperty("libvirt")
-    public io.fabric8.openshift.api.model.installer.libvirt.v1.MachinePool getLibvirt() {
-        return libvirt;
-    }
-
-    @JsonProperty("libvirt")
-    public void setLibvirt(io.fabric8.openshift.api.model.installer.libvirt.v1.MachinePool libvirt) {
-        this.libvirt = libvirt;
     }
 
     @JsonProperty("nutanix")

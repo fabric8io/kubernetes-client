@@ -1,9 +1,7 @@
 
-package io.fabric8.openshift.api.model.installer.alibabacloud.v1;
+package io.fabric8.openshift.api.model.installer.gcp.v1;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -33,11 +31,9 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "imageID",
-    "instanceType",
-    "systemDiskCategory",
-    "systemDiskSize",
-    "zones"
+    "dimensions",
+    "limit",
+    "service"
 })
 @ToString
 @EqualsAndHashCode
@@ -57,20 +53,16 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class MachinePool implements Editable<MachinePoolBuilder> , KubernetesResource
+public class Metric implements Editable<MetricBuilder> , KubernetesResource
 {
 
-    @JsonProperty("imageID")
-    private String imageID;
-    @JsonProperty("instanceType")
-    private String instanceType;
-    @JsonProperty("systemDiskCategory")
-    private String systemDiskCategory;
-    @JsonProperty("systemDiskSize")
-    private Integer systemDiskSize;
-    @JsonProperty("zones")
+    @JsonProperty("dimensions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> zones = new ArrayList<>();
+    private Map<String, String> dimensions = new LinkedHashMap<>();
+    @JsonProperty("limit")
+    private String limit;
+    @JsonProperty("service")
+    private String service;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -78,76 +70,54 @@ public class MachinePool implements Editable<MachinePoolBuilder> , KubernetesRes
      * No args constructor for use in serialization
      * 
      */
-    public MachinePool() {
+    public Metric() {
     }
 
-    public MachinePool(String imageID, String instanceType, String systemDiskCategory, Integer systemDiskSize, List<String> zones) {
+    public Metric(Map<String, String> dimensions, String limit, String service) {
         super();
-        this.imageID = imageID;
-        this.instanceType = instanceType;
-        this.systemDiskCategory = systemDiskCategory;
-        this.systemDiskSize = systemDiskSize;
-        this.zones = zones;
+        this.dimensions = dimensions;
+        this.limit = limit;
+        this.service = service;
     }
 
-    @JsonProperty("imageID")
-    public String getImageID() {
-        return imageID;
-    }
-
-    @JsonProperty("imageID")
-    public void setImageID(String imageID) {
-        this.imageID = imageID;
-    }
-
-    @JsonProperty("instanceType")
-    public String getInstanceType() {
-        return instanceType;
-    }
-
-    @JsonProperty("instanceType")
-    public void setInstanceType(String instanceType) {
-        this.instanceType = instanceType;
-    }
-
-    @JsonProperty("systemDiskCategory")
-    public String getSystemDiskCategory() {
-        return systemDiskCategory;
-    }
-
-    @JsonProperty("systemDiskCategory")
-    public void setSystemDiskCategory(String systemDiskCategory) {
-        this.systemDiskCategory = systemDiskCategory;
-    }
-
-    @JsonProperty("systemDiskSize")
-    public Integer getSystemDiskSize() {
-        return systemDiskSize;
-    }
-
-    @JsonProperty("systemDiskSize")
-    public void setSystemDiskSize(Integer systemDiskSize) {
-        this.systemDiskSize = systemDiskSize;
-    }
-
-    @JsonProperty("zones")
+    @JsonProperty("dimensions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<String> getZones() {
-        return zones;
+    public Map<String, String> getDimensions() {
+        return dimensions;
     }
 
-    @JsonProperty("zones")
-    public void setZones(List<String> zones) {
-        this.zones = zones;
+    @JsonProperty("dimensions")
+    public void setDimensions(Map<String, String> dimensions) {
+        this.dimensions = dimensions;
+    }
+
+    @JsonProperty("limit")
+    public String getLimit() {
+        return limit;
+    }
+
+    @JsonProperty("limit")
+    public void setLimit(String limit) {
+        this.limit = limit;
+    }
+
+    @JsonProperty("service")
+    public String getService() {
+        return service;
+    }
+
+    @JsonProperty("service")
+    public void setService(String service) {
+        this.service = service;
     }
 
     @JsonIgnore
-    public MachinePoolBuilder edit() {
-        return new MachinePoolBuilder(this);
+    public MetricBuilder edit() {
+        return new MetricBuilder(this);
     }
 
     @JsonIgnore
-    public MachinePoolBuilder toBuilder() {
+    public MetricBuilder toBuilder() {
         return edit();
     }
 

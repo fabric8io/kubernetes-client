@@ -36,7 +36,9 @@ import lombok.experimental.Accessors;
     "confidentialCompute",
     "onHostMaintenance",
     "osDisk",
+    "osImage",
     "secureBoot",
+    "serviceAccount",
     "tags",
     "type",
     "zones"
@@ -68,8 +70,12 @@ public class MachinePool implements Editable<MachinePoolBuilder> , KubernetesRes
     private String onHostMaintenance;
     @JsonProperty("osDisk")
     private OSDisk osDisk;
+    @JsonProperty("osImage")
+    private OSImage osImage;
     @JsonProperty("secureBoot")
     private String secureBoot;
+    @JsonProperty("serviceAccount")
+    private String serviceAccount;
     @JsonProperty("tags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> tags = new ArrayList<>();
@@ -88,12 +94,14 @@ public class MachinePool implements Editable<MachinePoolBuilder> , KubernetesRes
     public MachinePool() {
     }
 
-    public MachinePool(String confidentialCompute, String onHostMaintenance, OSDisk osDisk, String secureBoot, List<String> tags, String type, List<String> zones) {
+    public MachinePool(String confidentialCompute, String onHostMaintenance, OSDisk osDisk, OSImage osImage, String secureBoot, String serviceAccount, List<String> tags, String type, List<String> zones) {
         super();
         this.confidentialCompute = confidentialCompute;
         this.onHostMaintenance = onHostMaintenance;
         this.osDisk = osDisk;
+        this.osImage = osImage;
         this.secureBoot = secureBoot;
+        this.serviceAccount = serviceAccount;
         this.tags = tags;
         this.type = type;
         this.zones = zones;
@@ -129,6 +137,16 @@ public class MachinePool implements Editable<MachinePoolBuilder> , KubernetesRes
         this.osDisk = osDisk;
     }
 
+    @JsonProperty("osImage")
+    public OSImage getOsImage() {
+        return osImage;
+    }
+
+    @JsonProperty("osImage")
+    public void setOsImage(OSImage osImage) {
+        this.osImage = osImage;
+    }
+
     @JsonProperty("secureBoot")
     public String getSecureBoot() {
         return secureBoot;
@@ -137,6 +155,16 @@ public class MachinePool implements Editable<MachinePoolBuilder> , KubernetesRes
     @JsonProperty("secureBoot")
     public void setSecureBoot(String secureBoot) {
         this.secureBoot = secureBoot;
+    }
+
+    @JsonProperty("serviceAccount")
+    public String getServiceAccount() {
+        return serviceAccount;
+    }
+
+    @JsonProperty("serviceAccount")
+    public void setServiceAccount(String serviceAccount) {
+        this.serviceAccount = serviceAccount;
     }
 
     @JsonProperty("tags")

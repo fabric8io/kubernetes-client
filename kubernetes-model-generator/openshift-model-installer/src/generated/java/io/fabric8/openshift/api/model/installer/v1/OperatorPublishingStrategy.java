@@ -1,5 +1,5 @@
 
-package io.fabric8.openshift.api.model.installer.libvirt.v1;
+package io.fabric8.openshift.api.model.installer.v1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -31,8 +31,8 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "name",
-    "value"
+    "apiserver",
+    "ingress"
 })
 @ToString
 @EqualsAndHashCode
@@ -52,13 +52,13 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class DnsmasqOption implements Editable<DnsmasqOptionBuilder> , KubernetesResource
+public class OperatorPublishingStrategy implements Editable<OperatorPublishingStrategyBuilder> , KubernetesResource
 {
 
-    @JsonProperty("name")
-    private String name;
-    @JsonProperty("value")
-    private String value;
+    @JsonProperty("apiserver")
+    private String apiserver;
+    @JsonProperty("ingress")
+    private String ingress;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -66,42 +66,42 @@ public class DnsmasqOption implements Editable<DnsmasqOptionBuilder> , Kubernete
      * No args constructor for use in serialization
      * 
      */
-    public DnsmasqOption() {
+    public OperatorPublishingStrategy() {
     }
 
-    public DnsmasqOption(String name, String value) {
+    public OperatorPublishingStrategy(String apiserver, String ingress) {
         super();
-        this.name = name;
-        this.value = value;
+        this.apiserver = apiserver;
+        this.ingress = ingress;
     }
 
-    @JsonProperty("name")
-    public String getName() {
-        return name;
+    @JsonProperty("apiserver")
+    public String getApiserver() {
+        return apiserver;
     }
 
-    @JsonProperty("name")
-    public void setName(String name) {
-        this.name = name;
+    @JsonProperty("apiserver")
+    public void setApiserver(String apiserver) {
+        this.apiserver = apiserver;
     }
 
-    @JsonProperty("value")
-    public String getValue() {
-        return value;
+    @JsonProperty("ingress")
+    public String getIngress() {
+        return ingress;
     }
 
-    @JsonProperty("value")
-    public void setValue(String value) {
-        this.value = value;
-    }
-
-    @JsonIgnore
-    public DnsmasqOptionBuilder edit() {
-        return new DnsmasqOptionBuilder(this);
+    @JsonProperty("ingress")
+    public void setIngress(String ingress) {
+        this.ingress = ingress;
     }
 
     @JsonIgnore
-    public DnsmasqOptionBuilder toBuilder() {
+    public OperatorPublishingStrategyBuilder edit() {
+        return new OperatorPublishingStrategyBuilder(this);
+    }
+
+    @JsonIgnore
+    public OperatorPublishingStrategyBuilder toBuilder() {
         return edit();
     }
 

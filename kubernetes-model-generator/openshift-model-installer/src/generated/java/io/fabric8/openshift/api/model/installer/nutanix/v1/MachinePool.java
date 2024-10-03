@@ -25,6 +25,7 @@ import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.openshift.api.model.machine.v1.NutanixCategory;
+import io.fabric8.openshift.api.model.machine.v1.NutanixGPU;
 import io.fabric8.openshift.api.model.machine.v1.NutanixResourceIdentifier;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
@@ -39,6 +40,9 @@ import lombok.experimental.Accessors;
     "categories",
     "coresPerSocket",
     "cpus",
+    "dataDisks",
+    "failureDomains",
+    "gpus",
     "memoryMiB",
     "osDisk",
     "project"
@@ -73,6 +77,15 @@ public class MachinePool implements Editable<MachinePoolBuilder> , KubernetesRes
     private Long coresPerSocket;
     @JsonProperty("cpus")
     private Long cpus;
+    @JsonProperty("dataDisks")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<DataDisk> dataDisks = new ArrayList<>();
+    @JsonProperty("failureDomains")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> failureDomains = new ArrayList<>();
+    @JsonProperty("gpus")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<NutanixGPU> gpus = new ArrayList<>();
     @JsonProperty("memoryMiB")
     private Long memoryMiB;
     @JsonProperty("osDisk")
@@ -89,12 +102,15 @@ public class MachinePool implements Editable<MachinePoolBuilder> , KubernetesRes
     public MachinePool() {
     }
 
-    public MachinePool(String bootType, List<NutanixCategory> categories, Long coresPerSocket, Long cpus, Long memoryMiB, OSDisk osDisk, NutanixResourceIdentifier project) {
+    public MachinePool(String bootType, List<NutanixCategory> categories, Long coresPerSocket, Long cpus, List<DataDisk> dataDisks, List<String> failureDomains, List<NutanixGPU> gpus, Long memoryMiB, OSDisk osDisk, NutanixResourceIdentifier project) {
         super();
         this.bootType = bootType;
         this.categories = categories;
         this.coresPerSocket = coresPerSocket;
         this.cpus = cpus;
+        this.dataDisks = dataDisks;
+        this.failureDomains = failureDomains;
+        this.gpus = gpus;
         this.memoryMiB = memoryMiB;
         this.osDisk = osDisk;
         this.project = project;
@@ -139,6 +155,39 @@ public class MachinePool implements Editable<MachinePoolBuilder> , KubernetesRes
     @JsonProperty("cpus")
     public void setCpus(Long cpus) {
         this.cpus = cpus;
+    }
+
+    @JsonProperty("dataDisks")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<DataDisk> getDataDisks() {
+        return dataDisks;
+    }
+
+    @JsonProperty("dataDisks")
+    public void setDataDisks(List<DataDisk> dataDisks) {
+        this.dataDisks = dataDisks;
+    }
+
+    @JsonProperty("failureDomains")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<String> getFailureDomains() {
+        return failureDomains;
+    }
+
+    @JsonProperty("failureDomains")
+    public void setFailureDomains(List<String> failureDomains) {
+        this.failureDomains = failureDomains;
+    }
+
+    @JsonProperty("gpus")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<NutanixGPU> getGpus() {
+        return gpus;
+    }
+
+    @JsonProperty("gpus")
+    public void setGpus(List<NutanixGPU> gpus) {
+        this.gpus = gpus;
     }
 
     @JsonProperty("memoryMiB")

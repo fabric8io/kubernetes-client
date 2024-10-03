@@ -38,6 +38,7 @@ import lombok.experimental.Accessors;
     "apiVIPs",
     "clusterOSImage",
     "defaultMachinePlatform",
+    "failureDomains",
     "ingressVIP",
     "ingressVIPs",
     "loadBalancer",
@@ -75,6 +76,9 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     private String clusterOSImage;
     @JsonProperty("defaultMachinePlatform")
     private MachinePool defaultMachinePlatform;
+    @JsonProperty("failureDomains")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<FailureDomain> failureDomains = new ArrayList<>();
     @JsonProperty("ingressVIP")
     private String ingressVIP;
     @JsonProperty("ingressVIPs")
@@ -100,12 +104,13 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     public Platform() {
     }
 
-    public Platform(String apiVIP, List<String> apiVIPs, String clusterOSImage, MachinePool defaultMachinePlatform, String ingressVIP, List<String> ingressVIPs, NutanixPlatformLoadBalancer loadBalancer, PrismCentral prismCentral, List<PrismElement> prismElements, List<String> subnetUUIDs) {
+    public Platform(String apiVIP, List<String> apiVIPs, String clusterOSImage, MachinePool defaultMachinePlatform, List<FailureDomain> failureDomains, String ingressVIP, List<String> ingressVIPs, NutanixPlatformLoadBalancer loadBalancer, PrismCentral prismCentral, List<PrismElement> prismElements, List<String> subnetUUIDs) {
         super();
         this.apiVIP = apiVIP;
         this.apiVIPs = apiVIPs;
         this.clusterOSImage = clusterOSImage;
         this.defaultMachinePlatform = defaultMachinePlatform;
+        this.failureDomains = failureDomains;
         this.ingressVIP = ingressVIP;
         this.ingressVIPs = ingressVIPs;
         this.loadBalancer = loadBalancer;
@@ -153,6 +158,17 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     @JsonProperty("defaultMachinePlatform")
     public void setDefaultMachinePlatform(MachinePool defaultMachinePlatform) {
         this.defaultMachinePlatform = defaultMachinePlatform;
+    }
+
+    @JsonProperty("failureDomains")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<FailureDomain> getFailureDomains() {
+        return failureDomains;
+    }
+
+    @JsonProperty("failureDomains")
+    public void setFailureDomains(List<FailureDomain> failureDomains) {
+        this.failureDomains = failureDomains;
     }
 
     @JsonProperty("ingressVIP")

@@ -31,13 +31,12 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "alibabacloud",
     "aws",
     "azure",
     "baremetal",
+    "external",
     "gcp",
     "ibmcloud",
-    "libvirt",
     "none",
     "nutanix",
     "openstack",
@@ -66,20 +65,18 @@ import lombok.experimental.Accessors;
 public class Platform implements Editable<PlatformBuilder> , KubernetesResource
 {
 
-    @JsonProperty("alibabacloud")
-    private io.fabric8.openshift.api.model.installer.alibabacloud.v1.Platform alibabacloud;
     @JsonProperty("aws")
     private io.fabric8.openshift.api.model.installer.aws.v1.Platform aws;
     @JsonProperty("azure")
     private io.fabric8.openshift.api.model.installer.azure.v1.Platform azure;
     @JsonProperty("baremetal")
     private io.fabric8.openshift.api.model.installer.baremetal.v1.Platform baremetal;
+    @JsonProperty("external")
+    private io.fabric8.openshift.api.model.installer.external.v1.Platform external;
     @JsonProperty("gcp")
     private io.fabric8.openshift.api.model.installer.gcp.v1.Platform gcp;
     @JsonProperty("ibmcloud")
     private io.fabric8.openshift.api.model.installer.ibmcloud.v1.Platform ibmcloud;
-    @JsonProperty("libvirt")
-    private io.fabric8.openshift.api.model.installer.libvirt.v1.Platform libvirt;
     @JsonProperty("none")
     private io.fabric8.openshift.api.model.installer.none.v1.Platform none;
     @JsonProperty("nutanix")
@@ -102,31 +99,20 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     public Platform() {
     }
 
-    public Platform(io.fabric8.openshift.api.model.installer.alibabacloud.v1.Platform alibabacloud, io.fabric8.openshift.api.model.installer.aws.v1.Platform aws, io.fabric8.openshift.api.model.installer.azure.v1.Platform azure, io.fabric8.openshift.api.model.installer.baremetal.v1.Platform baremetal, io.fabric8.openshift.api.model.installer.gcp.v1.Platform gcp, io.fabric8.openshift.api.model.installer.ibmcloud.v1.Platform ibmcloud, io.fabric8.openshift.api.model.installer.libvirt.v1.Platform libvirt, io.fabric8.openshift.api.model.installer.none.v1.Platform none, io.fabric8.openshift.api.model.installer.nutanix.v1.Platform nutanix, io.fabric8.openshift.api.model.installer.openstack.v1.Platform openstack, io.fabric8.openshift.api.model.installer.ovirt.v1.Platform ovirt, io.fabric8.openshift.api.model.installer.powervs.v1.Platform powervs, io.fabric8.openshift.api.model.installer.vsphere.v1.Platform vsphere) {
+    public Platform(io.fabric8.openshift.api.model.installer.aws.v1.Platform aws, io.fabric8.openshift.api.model.installer.azure.v1.Platform azure, io.fabric8.openshift.api.model.installer.baremetal.v1.Platform baremetal, io.fabric8.openshift.api.model.installer.external.v1.Platform external, io.fabric8.openshift.api.model.installer.gcp.v1.Platform gcp, io.fabric8.openshift.api.model.installer.ibmcloud.v1.Platform ibmcloud, io.fabric8.openshift.api.model.installer.none.v1.Platform none, io.fabric8.openshift.api.model.installer.nutanix.v1.Platform nutanix, io.fabric8.openshift.api.model.installer.openstack.v1.Platform openstack, io.fabric8.openshift.api.model.installer.ovirt.v1.Platform ovirt, io.fabric8.openshift.api.model.installer.powervs.v1.Platform powervs, io.fabric8.openshift.api.model.installer.vsphere.v1.Platform vsphere) {
         super();
-        this.alibabacloud = alibabacloud;
         this.aws = aws;
         this.azure = azure;
         this.baremetal = baremetal;
+        this.external = external;
         this.gcp = gcp;
         this.ibmcloud = ibmcloud;
-        this.libvirt = libvirt;
         this.none = none;
         this.nutanix = nutanix;
         this.openstack = openstack;
         this.ovirt = ovirt;
         this.powervs = powervs;
         this.vsphere = vsphere;
-    }
-
-    @JsonProperty("alibabacloud")
-    public io.fabric8.openshift.api.model.installer.alibabacloud.v1.Platform getAlibabacloud() {
-        return alibabacloud;
-    }
-
-    @JsonProperty("alibabacloud")
-    public void setAlibabacloud(io.fabric8.openshift.api.model.installer.alibabacloud.v1.Platform alibabacloud) {
-        this.alibabacloud = alibabacloud;
     }
 
     @JsonProperty("aws")
@@ -159,6 +145,16 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
         this.baremetal = baremetal;
     }
 
+    @JsonProperty("external")
+    public io.fabric8.openshift.api.model.installer.external.v1.Platform getExternal() {
+        return external;
+    }
+
+    @JsonProperty("external")
+    public void setExternal(io.fabric8.openshift.api.model.installer.external.v1.Platform external) {
+        this.external = external;
+    }
+
     @JsonProperty("gcp")
     public io.fabric8.openshift.api.model.installer.gcp.v1.Platform getGcp() {
         return gcp;
@@ -177,16 +173,6 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     @JsonProperty("ibmcloud")
     public void setIbmcloud(io.fabric8.openshift.api.model.installer.ibmcloud.v1.Platform ibmcloud) {
         this.ibmcloud = ibmcloud;
-    }
-
-    @JsonProperty("libvirt")
-    public io.fabric8.openshift.api.model.installer.libvirt.v1.Platform getLibvirt() {
-        return libvirt;
-    }
-
-    @JsonProperty("libvirt")
-    public void setLibvirt(io.fabric8.openshift.api.model.installer.libvirt.v1.Platform libvirt) {
-        this.libvirt = libvirt;
     }
 
     @JsonProperty("none")

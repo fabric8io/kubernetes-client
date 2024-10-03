@@ -52,7 +52,6 @@ import static io.fabric8.kubernetes.schema.generator.schema.SchemaUtils.getterNa
 import static io.fabric8.kubernetes.schema.generator.schema.SchemaUtils.isArray;
 import static io.fabric8.kubernetes.schema.generator.schema.SchemaUtils.isMap;
 import static io.fabric8.kubernetes.schema.generator.schema.SchemaUtils.sanitizeDescription;
-import static io.fabric8.kubernetes.schema.generator.schema.SchemaUtils.sanitizeVariable;
 import static io.fabric8.kubernetes.schema.generator.schema.SchemaUtils.serializerForJavaClass;
 import static io.fabric8.kubernetes.schema.generator.schema.SchemaUtils.serializerForSchema;
 import static io.fabric8.kubernetes.schema.generator.schema.SchemaUtils.setterName;
@@ -164,7 +163,7 @@ class ModelGenerator {
       final String type = utils.schemaToClassName(templateContext, propertySchema);
       templateProp.put("propertyName", property.getKey());
       templateProp.put("type", type);
-      templateProp.put("name", sanitizeVariable(property.getKey()));
+      templateProp.put("name", utils.sanitizeFieldName(property.getKey()));
       templateProp.put("getterName", getterName(property.getKey()));
       templateProp.put("setterName", setterName(property.getKey()));
       if (Optional.ofNullable(templateContext.getClassSchema().getRequired()).orElse(Collections.emptyList())

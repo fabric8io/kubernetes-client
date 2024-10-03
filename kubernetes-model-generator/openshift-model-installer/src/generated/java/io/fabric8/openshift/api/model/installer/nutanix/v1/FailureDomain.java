@@ -1,5 +1,5 @@
 
-package io.fabric8.openshift.api.model.installer.alibabacloud.v1;
+package io.fabric8.openshift.api.model.installer.nutanix.v1;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -33,13 +33,11 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "defaultMachinePlatform",
-    "privateZoneID",
-    "region",
-    "resourceGroupID",
-    "tags",
-    "vpcID",
-    "vswitchIDs"
+    "dataSourceImages",
+    "name",
+    "prismElement",
+    "storageContainers",
+    "subnetUUIDs"
 })
 @ToString
 @EqualsAndHashCode
@@ -59,25 +57,22 @@ import lombok.experimental.Accessors;
     @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
-public class Platform implements Editable<PlatformBuilder> , KubernetesResource
+public class FailureDomain implements Editable<FailureDomainBuilder> , KubernetesResource
 {
 
-    @JsonProperty("defaultMachinePlatform")
-    private MachinePool defaultMachinePlatform;
-    @JsonProperty("privateZoneID")
-    private String privateZoneID;
-    @JsonProperty("region")
-    private String region;
-    @JsonProperty("resourceGroupID")
-    private String resourceGroupID;
-    @JsonProperty("tags")
+    @JsonProperty("dataSourceImages")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> tags = new LinkedHashMap<>();
-    @JsonProperty("vpcID")
-    private String vpcID;
-    @JsonProperty("vswitchIDs")
+    private List<StorageResourceReference> dataSourceImages = new ArrayList<>();
+    @JsonProperty("name")
+    private String name;
+    @JsonProperty("prismElement")
+    private PrismElement prismElement;
+    @JsonProperty("storageContainers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> vswitchIDs = new ArrayList<>();
+    private List<StorageResourceReference> storageContainers = new ArrayList<>();
+    @JsonProperty("subnetUUIDs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> subnetUUIDs = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -85,99 +80,78 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
      * No args constructor for use in serialization
      * 
      */
-    public Platform() {
+    public FailureDomain() {
     }
 
-    public Platform(MachinePool defaultMachinePlatform, String privateZoneID, String region, String resourceGroupID, Map<String, String> tags, String vpcID, List<String> vswitchIDs) {
+    public FailureDomain(List<StorageResourceReference> dataSourceImages, String name, PrismElement prismElement, List<StorageResourceReference> storageContainers, List<String> subnetUUIDs) {
         super();
-        this.defaultMachinePlatform = defaultMachinePlatform;
-        this.privateZoneID = privateZoneID;
-        this.region = region;
-        this.resourceGroupID = resourceGroupID;
-        this.tags = tags;
-        this.vpcID = vpcID;
-        this.vswitchIDs = vswitchIDs;
+        this.dataSourceImages = dataSourceImages;
+        this.name = name;
+        this.prismElement = prismElement;
+        this.storageContainers = storageContainers;
+        this.subnetUUIDs = subnetUUIDs;
     }
 
-    @JsonProperty("defaultMachinePlatform")
-    public MachinePool getDefaultMachinePlatform() {
-        return defaultMachinePlatform;
-    }
-
-    @JsonProperty("defaultMachinePlatform")
-    public void setDefaultMachinePlatform(MachinePool defaultMachinePlatform) {
-        this.defaultMachinePlatform = defaultMachinePlatform;
-    }
-
-    @JsonProperty("privateZoneID")
-    public String getPrivateZoneID() {
-        return privateZoneID;
-    }
-
-    @JsonProperty("privateZoneID")
-    public void setPrivateZoneID(String privateZoneID) {
-        this.privateZoneID = privateZoneID;
-    }
-
-    @JsonProperty("region")
-    public String getRegion() {
-        return region;
-    }
-
-    @JsonProperty("region")
-    public void setRegion(String region) {
-        this.region = region;
-    }
-
-    @JsonProperty("resourceGroupID")
-    public String getResourceGroupID() {
-        return resourceGroupID;
-    }
-
-    @JsonProperty("resourceGroupID")
-    public void setResourceGroupID(String resourceGroupID) {
-        this.resourceGroupID = resourceGroupID;
-    }
-
-    @JsonProperty("tags")
+    @JsonProperty("dataSourceImages")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Map<String, String> getTags() {
-        return tags;
+    public List<StorageResourceReference> getDataSourceImages() {
+        return dataSourceImages;
     }
 
-    @JsonProperty("tags")
-    public void setTags(Map<String, String> tags) {
-        this.tags = tags;
+    @JsonProperty("dataSourceImages")
+    public void setDataSourceImages(List<StorageResourceReference> dataSourceImages) {
+        this.dataSourceImages = dataSourceImages;
     }
 
-    @JsonProperty("vpcID")
-    public String getVpcID() {
-        return vpcID;
+    @JsonProperty("name")
+    public String getName() {
+        return name;
     }
 
-    @JsonProperty("vpcID")
-    public void setVpcID(String vpcID) {
-        this.vpcID = vpcID;
+    @JsonProperty("name")
+    public void setName(String name) {
+        this.name = name;
     }
 
-    @JsonProperty("vswitchIDs")
+    @JsonProperty("prismElement")
+    public PrismElement getPrismElement() {
+        return prismElement;
+    }
+
+    @JsonProperty("prismElement")
+    public void setPrismElement(PrismElement prismElement) {
+        this.prismElement = prismElement;
+    }
+
+    @JsonProperty("storageContainers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<String> getVswitchIDs() {
-        return vswitchIDs;
+    public List<StorageResourceReference> getStorageContainers() {
+        return storageContainers;
     }
 
-    @JsonProperty("vswitchIDs")
-    public void setVswitchIDs(List<String> vswitchIDs) {
-        this.vswitchIDs = vswitchIDs;
+    @JsonProperty("storageContainers")
+    public void setStorageContainers(List<StorageResourceReference> storageContainers) {
+        this.storageContainers = storageContainers;
+    }
+
+    @JsonProperty("subnetUUIDs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<String> getSubnetUUIDs() {
+        return subnetUUIDs;
+    }
+
+    @JsonProperty("subnetUUIDs")
+    public void setSubnetUUIDs(List<String> subnetUUIDs) {
+        this.subnetUUIDs = subnetUUIDs;
     }
 
     @JsonIgnore
-    public PlatformBuilder edit() {
-        return new PlatformBuilder(this);
+    public FailureDomainBuilder edit() {
+        return new FailureDomainBuilder(this);
     }
 
     @JsonIgnore
-    public PlatformBuilder toBuilder() {
+    public FailureDomainBuilder toBuilder() {
         return edit();
     }
 

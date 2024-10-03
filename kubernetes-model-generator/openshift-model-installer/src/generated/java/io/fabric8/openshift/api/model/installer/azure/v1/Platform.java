@@ -37,6 +37,7 @@ import lombok.experimental.Accessors;
     "clusterOSImage",
     "computeSubnet",
     "controlPlaneSubnet",
+    "customerManagedKey",
     "defaultMachinePlatform",
     "networkResourceGroupName",
     "outboundType",
@@ -78,6 +79,8 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     private String computeSubnet;
     @JsonProperty("controlPlaneSubnet")
     private String controlPlaneSubnet;
+    @JsonProperty("customerManagedKey")
+    private CustomerManagedKey customerManagedKey;
     @JsonProperty("defaultMachinePlatform")
     private MachinePool defaultMachinePlatform;
     @JsonProperty("networkResourceGroupName")
@@ -103,7 +106,7 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     public Platform() {
     }
 
-    public Platform(String armEndpoint, String baseDomainResourceGroupName, String cloudName, String clusterOSImage, String computeSubnet, String controlPlaneSubnet, MachinePool defaultMachinePlatform, String networkResourceGroupName, String outboundType, String region, String resourceGroupName, Map<String, String> userTags, String virtualNetwork) {
+    public Platform(String armEndpoint, String baseDomainResourceGroupName, String cloudName, String clusterOSImage, String computeSubnet, String controlPlaneSubnet, CustomerManagedKey customerManagedKey, MachinePool defaultMachinePlatform, String networkResourceGroupName, String outboundType, String region, String resourceGroupName, Map<String, String> userTags, String virtualNetwork) {
         super();
         this.armEndpoint = armEndpoint;
         this.baseDomainResourceGroupName = baseDomainResourceGroupName;
@@ -111,6 +114,7 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
         this.clusterOSImage = clusterOSImage;
         this.computeSubnet = computeSubnet;
         this.controlPlaneSubnet = controlPlaneSubnet;
+        this.customerManagedKey = customerManagedKey;
         this.defaultMachinePlatform = defaultMachinePlatform;
         this.networkResourceGroupName = networkResourceGroupName;
         this.outboundType = outboundType;
@@ -178,6 +182,16 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     @JsonProperty("controlPlaneSubnet")
     public void setControlPlaneSubnet(String controlPlaneSubnet) {
         this.controlPlaneSubnet = controlPlaneSubnet;
+    }
+
+    @JsonProperty("customerManagedKey")
+    public CustomerManagedKey getCustomerManagedKey() {
+        return customerManagedKey;
+    }
+
+    @JsonProperty("customerManagedKey")
+    public void setCustomerManagedKey(CustomerManagedKey customerManagedKey) {
+        this.customerManagedKey = customerManagedKey;
     }
 
     @JsonProperty("defaultMachinePlatform")

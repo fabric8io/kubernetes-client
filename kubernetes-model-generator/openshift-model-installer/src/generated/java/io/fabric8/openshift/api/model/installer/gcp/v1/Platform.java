@@ -36,11 +36,13 @@ import lombok.experimental.Accessors;
     "computeSubnet",
     "controlPlaneSubnet",
     "defaultMachinePlatform",
-    "licenses",
     "network",
     "networkProjectID",
     "projectID",
-    "region"
+    "region",
+    "userLabels",
+    "userProvisionedDNS",
+    "userTags"
 })
 @ToString
 @EqualsAndHashCode
@@ -69,9 +71,6 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     private String controlPlaneSubnet;
     @JsonProperty("defaultMachinePlatform")
     private MachinePool defaultMachinePlatform;
-    @JsonProperty("licenses")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> licenses = new ArrayList<>();
     @JsonProperty("network")
     private String network;
     @JsonProperty("networkProjectID")
@@ -80,6 +79,14 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     private String projectID;
     @JsonProperty("region")
     private String region;
+    @JsonProperty("userLabels")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<UserLabel> userLabels = new ArrayList<>();
+    @JsonProperty("userProvisionedDNS")
+    private String userProvisionedDNS;
+    @JsonProperty("userTags")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<UserTag> userTags = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -90,16 +97,18 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     public Platform() {
     }
 
-    public Platform(String computeSubnet, String controlPlaneSubnet, MachinePool defaultMachinePlatform, List<String> licenses, String network, String networkProjectID, String projectID, String region) {
+    public Platform(String computeSubnet, String controlPlaneSubnet, MachinePool defaultMachinePlatform, String network, String networkProjectID, String projectID, String region, List<UserLabel> userLabels, String userProvisionedDNS, List<UserTag> userTags) {
         super();
         this.computeSubnet = computeSubnet;
         this.controlPlaneSubnet = controlPlaneSubnet;
         this.defaultMachinePlatform = defaultMachinePlatform;
-        this.licenses = licenses;
         this.network = network;
         this.networkProjectID = networkProjectID;
         this.projectID = projectID;
         this.region = region;
+        this.userLabels = userLabels;
+        this.userProvisionedDNS = userProvisionedDNS;
+        this.userTags = userTags;
     }
 
     @JsonProperty("computeSubnet")
@@ -130,17 +139,6 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     @JsonProperty("defaultMachinePlatform")
     public void setDefaultMachinePlatform(MachinePool defaultMachinePlatform) {
         this.defaultMachinePlatform = defaultMachinePlatform;
-    }
-
-    @JsonProperty("licenses")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<String> getLicenses() {
-        return licenses;
-    }
-
-    @JsonProperty("licenses")
-    public void setLicenses(List<String> licenses) {
-        this.licenses = licenses;
     }
 
     @JsonProperty("network")
@@ -181,6 +179,38 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     @JsonProperty("region")
     public void setRegion(String region) {
         this.region = region;
+    }
+
+    @JsonProperty("userLabels")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<UserLabel> getUserLabels() {
+        return userLabels;
+    }
+
+    @JsonProperty("userLabels")
+    public void setUserLabels(List<UserLabel> userLabels) {
+        this.userLabels = userLabels;
+    }
+
+    @JsonProperty("userProvisionedDNS")
+    public String getUserProvisionedDNS() {
+        return userProvisionedDNS;
+    }
+
+    @JsonProperty("userProvisionedDNS")
+    public void setUserProvisionedDNS(String userProvisionedDNS) {
+        this.userProvisionedDNS = userProvisionedDNS;
+    }
+
+    @JsonProperty("userTags")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<UserTag> getUserTags() {
+        return userTags;
+    }
+
+    @JsonProperty("userTags")
+    public void setUserTags(List<UserTag> userTags) {
+        this.userTags = userTags;
     }
 
     @JsonIgnore

@@ -35,6 +35,7 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "size",
     "type",
+    "types",
     "zones"
 })
 @ToString
@@ -62,6 +63,9 @@ public class RootVolume implements Editable<RootVolumeBuilder> , KubernetesResou
     private Integer size;
     @JsonProperty("type")
     private String type;
+    @JsonProperty("types")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> types = new ArrayList<>();
     @JsonProperty("zones")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> zones = new ArrayList<>();
@@ -75,10 +79,11 @@ public class RootVolume implements Editable<RootVolumeBuilder> , KubernetesResou
     public RootVolume() {
     }
 
-    public RootVolume(Integer size, String type, List<String> zones) {
+    public RootVolume(Integer size, String type, List<String> types, List<String> zones) {
         super();
         this.size = size;
         this.type = type;
+        this.types = types;
         this.zones = zones;
     }
 
@@ -100,6 +105,17 @@ public class RootVolume implements Editable<RootVolumeBuilder> , KubernetesResou
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;
+    }
+
+    @JsonProperty("types")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<String> getTypes() {
+        return types;
+    }
+
+    @JsonProperty("types")
+    public void setTypes(List<String> types) {
+        this.types = types;
     }
 
     @JsonProperty("zones")

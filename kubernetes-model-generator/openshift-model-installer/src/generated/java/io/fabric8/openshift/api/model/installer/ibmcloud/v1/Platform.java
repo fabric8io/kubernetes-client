@@ -24,6 +24,7 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
+import io.fabric8.openshift.api.model.config.v1.IBMCloudServiceEndpoint;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -39,6 +40,7 @@ import lombok.experimental.Accessors;
     "networkResourceGroupName",
     "region",
     "resourceGroupName",
+    "serviceEndpoints",
     "vpcName"
 })
 @ToString
@@ -76,6 +78,9 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     private String region;
     @JsonProperty("resourceGroupName")
     private String resourceGroupName;
+    @JsonProperty("serviceEndpoints")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<IBMCloudServiceEndpoint> serviceEndpoints = new ArrayList<>();
     @JsonProperty("vpcName")
     private String vpcName;
     @JsonIgnore
@@ -88,7 +93,7 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     public Platform() {
     }
 
-    public Platform(List<String> computeSubnets, List<String> controlPlaneSubnets, MachinePool defaultMachinePlatform, String networkResourceGroupName, String region, String resourceGroupName, String vpcName) {
+    public Platform(List<String> computeSubnets, List<String> controlPlaneSubnets, MachinePool defaultMachinePlatform, String networkResourceGroupName, String region, String resourceGroupName, List<IBMCloudServiceEndpoint> serviceEndpoints, String vpcName) {
         super();
         this.computeSubnets = computeSubnets;
         this.controlPlaneSubnets = controlPlaneSubnets;
@@ -96,6 +101,7 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
         this.networkResourceGroupName = networkResourceGroupName;
         this.region = region;
         this.resourceGroupName = resourceGroupName;
+        this.serviceEndpoints = serviceEndpoints;
         this.vpcName = vpcName;
     }
 
@@ -159,6 +165,17 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     @JsonProperty("resourceGroupName")
     public void setResourceGroupName(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
+    }
+
+    @JsonProperty("serviceEndpoints")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<IBMCloudServiceEndpoint> getServiceEndpoints() {
+        return serviceEndpoints;
+    }
+
+    @JsonProperty("serviceEndpoints")
+    public void setServiceEndpoints(List<IBMCloudServiceEndpoint> serviceEndpoints) {
+        this.serviceEndpoints = serviceEndpoints;
     }
 
     @JsonProperty("vpcName")

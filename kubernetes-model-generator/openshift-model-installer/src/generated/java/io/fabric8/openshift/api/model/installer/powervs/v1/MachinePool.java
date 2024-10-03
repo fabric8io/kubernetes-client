@@ -15,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
+import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
@@ -35,6 +36,7 @@ import lombok.experimental.Accessors;
     "memoryGiB",
     "procType",
     "processors",
+    "smtLevel",
     "sysType",
     "volumeIDs"
 })
@@ -50,7 +52,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Container.class),
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.IntOrString.class),
+    @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
@@ -64,7 +66,9 @@ public class MachinePool implements Editable<MachinePoolBuilder> , KubernetesRes
     @JsonProperty("procType")
     private String procType;
     @JsonProperty("processors")
-    private io.fabric8.kubernetes.api.model.IntOrString processors;
+    private IntOrString processors;
+    @JsonProperty("smtLevel")
+    private String smtLevel;
     @JsonProperty("sysType")
     private String sysType;
     @JsonProperty("volumeIDs")
@@ -80,11 +84,12 @@ public class MachinePool implements Editable<MachinePoolBuilder> , KubernetesRes
     public MachinePool() {
     }
 
-    public MachinePool(Integer memoryGiB, String procType, io.fabric8.kubernetes.api.model.IntOrString processors, String sysType, List<String> volumeIDs) {
+    public MachinePool(Integer memoryGiB, String procType, IntOrString processors, String smtLevel, String sysType, List<String> volumeIDs) {
         super();
         this.memoryGiB = memoryGiB;
         this.procType = procType;
         this.processors = processors;
+        this.smtLevel = smtLevel;
         this.sysType = sysType;
         this.volumeIDs = volumeIDs;
     }
@@ -110,13 +115,23 @@ public class MachinePool implements Editable<MachinePoolBuilder> , KubernetesRes
     }
 
     @JsonProperty("processors")
-    public io.fabric8.kubernetes.api.model.IntOrString getProcessors() {
+    public IntOrString getProcessors() {
         return processors;
     }
 
     @JsonProperty("processors")
-    public void setProcessors(io.fabric8.kubernetes.api.model.IntOrString processors) {
+    public void setProcessors(IntOrString processors) {
         this.processors = processors;
+    }
+
+    @JsonProperty("smtLevel")
+    public String getSmtLevel() {
+        return smtLevel;
+    }
+
+    @JsonProperty("smtLevel")
+    public void setSmtLevel(String smtLevel) {
+        this.smtLevel = smtLevel;
     }
 
     @JsonProperty("sysType")

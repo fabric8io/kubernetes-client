@@ -32,6 +32,7 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "offer",
+    "plan",
     "publisher",
     "sku",
     "version"
@@ -59,6 +60,8 @@ public class OSImage implements Editable<OSImageBuilder> , KubernetesResource
 
     @JsonProperty("offer")
     private String offer;
+    @JsonProperty("plan")
+    private String plan;
     @JsonProperty("publisher")
     private String publisher;
     @JsonProperty("sku")
@@ -75,9 +78,10 @@ public class OSImage implements Editable<OSImageBuilder> , KubernetesResource
     public OSImage() {
     }
 
-    public OSImage(String offer, String publisher, String sku, String version) {
+    public OSImage(String offer, String plan, String publisher, String sku, String version) {
         super();
         this.offer = offer;
+        this.plan = plan;
         this.publisher = publisher;
         this.sku = sku;
         this.version = version;
@@ -91,6 +95,16 @@ public class OSImage implements Editable<OSImageBuilder> , KubernetesResource
     @JsonProperty("offer")
     public void setOffer(String offer) {
         this.offer = offer;
+    }
+
+    @JsonProperty("plan")
+    public String getPlan() {
+        return plan;
+    }
+
+    @JsonProperty("plan")
+    public void setPlan(String plan) {
+        this.plan = plan;
     }
 
     @JsonProperty("publisher")

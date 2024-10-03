@@ -41,6 +41,7 @@ import lombok.experimental.Accessors;
     "clusterOSImage",
     "clusterOSImageProperties",
     "computeFlavor",
+    "controlPlanePort",
     "defaultMachinePlatform",
     "externalDNS",
     "externalNetwork",
@@ -91,6 +92,8 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     private Map<String, String> clusterOSImageProperties = new LinkedHashMap<>();
     @JsonProperty("computeFlavor")
     private String computeFlavor;
+    @JsonProperty("controlPlanePort")
+    private PortTarget controlPlanePort;
     @JsonProperty("defaultMachinePlatform")
     private MachinePool defaultMachinePlatform;
     @JsonProperty("externalDNS")
@@ -127,7 +130,7 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     public Platform() {
     }
 
-    public Platform(String apiFloatingIP, String apiVIP, List<String> apiVIPs, String cloud, String clusterOSImage, Map<String, String> clusterOSImageProperties, String computeFlavor, MachinePool defaultMachinePlatform, List<String> externalDNS, String externalNetwork, String ingressFloatingIP, String ingressVIP, List<String> ingressVIPs, String lbFloatingIP, OpenStackPlatformLoadBalancer loadBalancer, String machinesSubnet, String octaviaSupport, String region, String trunkSupport) {
+    public Platform(String apiFloatingIP, String apiVIP, List<String> apiVIPs, String cloud, String clusterOSImage, Map<String, String> clusterOSImageProperties, String computeFlavor, PortTarget controlPlanePort, MachinePool defaultMachinePlatform, List<String> externalDNS, String externalNetwork, String ingressFloatingIP, String ingressVIP, List<String> ingressVIPs, String lbFloatingIP, OpenStackPlatformLoadBalancer loadBalancer, String machinesSubnet, String octaviaSupport, String region, String trunkSupport) {
         super();
         this.apiFloatingIP = apiFloatingIP;
         this.apiVIP = apiVIP;
@@ -136,6 +139,7 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
         this.clusterOSImage = clusterOSImage;
         this.clusterOSImageProperties = clusterOSImageProperties;
         this.computeFlavor = computeFlavor;
+        this.controlPlanePort = controlPlanePort;
         this.defaultMachinePlatform = defaultMachinePlatform;
         this.externalDNS = externalDNS;
         this.externalNetwork = externalNetwork;
@@ -220,6 +224,16 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     @JsonProperty("computeFlavor")
     public void setComputeFlavor(String computeFlavor) {
         this.computeFlavor = computeFlavor;
+    }
+
+    @JsonProperty("controlPlanePort")
+    public PortTarget getControlPlanePort() {
+        return controlPlanePort;
+    }
+
+    @JsonProperty("controlPlanePort")
+    public void setControlPlanePort(PortTarget controlPlanePort) {
+        this.controlPlanePort = controlPlanePort;
     }
 
     @JsonProperty("defaultMachinePlatform")

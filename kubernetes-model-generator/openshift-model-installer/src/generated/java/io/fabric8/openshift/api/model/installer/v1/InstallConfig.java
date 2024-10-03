@@ -20,6 +20,7 @@ import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.Namespaced;
+import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
@@ -49,10 +50,13 @@ import lombok.experimental.Accessors;
     "controlPlane",
     "cpuPartitioningMode",
     "credentialsMode",
+    "featureGates",
     "featureSet",
     "fips",
     "imageContentSources",
+    "imageDigestSources",
     "networking",
+    "operatorPublishingStrategy",
     "platform",
     "proxy",
     "publish",
@@ -66,7 +70,7 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
+    @BuildableReference(ObjectMeta.class),
     @BuildableReference(LabelSelector.class),
     @BuildableReference(Container.class),
     @BuildableReference(PodTemplateSpec.class),
@@ -111,6 +115,9 @@ public class InstallConfig implements Editable<InstallConfigBuilder> , HasMetada
     private String cpuPartitioningMode;
     @JsonProperty("credentialsMode")
     private String credentialsMode;
+    @JsonProperty("featureGates")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> featureGates = new ArrayList<>();
     @JsonProperty("featureSet")
     private String featureSet;
     @JsonProperty("fips")
@@ -118,6 +125,9 @@ public class InstallConfig implements Editable<InstallConfigBuilder> , HasMetada
     @JsonProperty("imageContentSources")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ImageContentSource> imageContentSources = new ArrayList<>();
+    @JsonProperty("imageDigestSources")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<ImageDigestSource> imageDigestSources = new ArrayList<>();
     /**
      * 
      * (Required)
@@ -126,9 +136,11 @@ public class InstallConfig implements Editable<InstallConfigBuilder> , HasMetada
     @JsonProperty("kind")
     private String kind = "InstallConfig";
     @JsonProperty("metadata")
-    private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
+    private ObjectMeta metadata;
     @JsonProperty("networking")
     private Networking networking;
+    @JsonProperty("operatorPublishingStrategy")
+    private OperatorPublishingStrategy operatorPublishingStrategy;
     @JsonProperty("platform")
     private Platform platform;
     @JsonProperty("proxy")
@@ -149,7 +161,7 @@ public class InstallConfig implements Editable<InstallConfigBuilder> , HasMetada
     public InstallConfig() {
     }
 
-    public InstallConfig(String additionalTrustBundle, String additionalTrustBundlePolicy, String apiVersion, String baseDomain, BootstrapInPlace bootstrapInPlace, Capabilities capabilities, List<MachinePool> compute, MachinePool controlPlane, String cpuPartitioningMode, String credentialsMode, String featureSet, Boolean fips, List<ImageContentSource> imageContentSources, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, Networking networking, Platform platform, Proxy proxy, String publish, String pullSecret, String sshKey) {
+    public InstallConfig(String additionalTrustBundle, String additionalTrustBundlePolicy, String apiVersion, String baseDomain, BootstrapInPlace bootstrapInPlace, Capabilities capabilities, List<MachinePool> compute, MachinePool controlPlane, String cpuPartitioningMode, String credentialsMode, List<String> featureGates, String featureSet, Boolean fips, List<ImageContentSource> imageContentSources, List<ImageDigestSource> imageDigestSources, String kind, ObjectMeta metadata, Networking networking, OperatorPublishingStrategy operatorPublishingStrategy, Platform platform, Proxy proxy, String publish, String pullSecret, String sshKey) {
         super();
         this.additionalTrustBundle = additionalTrustBundle;
         this.additionalTrustBundlePolicy = additionalTrustBundlePolicy;
@@ -161,12 +173,15 @@ public class InstallConfig implements Editable<InstallConfigBuilder> , HasMetada
         this.controlPlane = controlPlane;
         this.cpuPartitioningMode = cpuPartitioningMode;
         this.credentialsMode = credentialsMode;
+        this.featureGates = featureGates;
         this.featureSet = featureSet;
         this.fips = fips;
         this.imageContentSources = imageContentSources;
+        this.imageDigestSources = imageDigestSources;
         this.kind = kind;
         this.metadata = metadata;
         this.networking = networking;
+        this.operatorPublishingStrategy = operatorPublishingStrategy;
         this.platform = platform;
         this.proxy = proxy;
         this.publish = publish;
@@ -285,6 +300,17 @@ public class InstallConfig implements Editable<InstallConfigBuilder> , HasMetada
         this.credentialsMode = credentialsMode;
     }
 
+    @JsonProperty("featureGates")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<String> getFeatureGates() {
+        return featureGates;
+    }
+
+    @JsonProperty("featureGates")
+    public void setFeatureGates(List<String> featureGates) {
+        this.featureGates = featureGates;
+    }
+
     @JsonProperty("featureSet")
     public String getFeatureSet() {
         return featureSet;
@@ -316,6 +342,17 @@ public class InstallConfig implements Editable<InstallConfigBuilder> , HasMetada
         this.imageContentSources = imageContentSources;
     }
 
+    @JsonProperty("imageDigestSources")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<ImageDigestSource> getImageDigestSources() {
+        return imageDigestSources;
+    }
+
+    @JsonProperty("imageDigestSources")
+    public void setImageDigestSources(List<ImageDigestSource> imageDigestSources) {
+        this.imageDigestSources = imageDigestSources;
+    }
+
     /**
      * 
      * (Required)
@@ -337,12 +374,12 @@ public class InstallConfig implements Editable<InstallConfigBuilder> , HasMetada
     }
 
     @JsonProperty("metadata")
-    public io.fabric8.kubernetes.api.model.ObjectMeta getMetadata() {
+    public ObjectMeta getMetadata() {
         return metadata;
     }
 
     @JsonProperty("metadata")
-    public void setMetadata(io.fabric8.kubernetes.api.model.ObjectMeta metadata) {
+    public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
@@ -354,6 +391,16 @@ public class InstallConfig implements Editable<InstallConfigBuilder> , HasMetada
     @JsonProperty("networking")
     public void setNetworking(Networking networking) {
         this.networking = networking;
+    }
+
+    @JsonProperty("operatorPublishingStrategy")
+    public OperatorPublishingStrategy getOperatorPublishingStrategy() {
+        return operatorPublishingStrategy;
+    }
+
+    @JsonProperty("operatorPublishingStrategy")
+    public void setOperatorPublishingStrategy(OperatorPublishingStrategy operatorPublishingStrategy) {
+        this.operatorPublishingStrategy = operatorPublishingStrategy;
     }
 
     @JsonProperty("platform")

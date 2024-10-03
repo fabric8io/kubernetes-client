@@ -1,6 +1,7 @@
 
 package io.fabric8.openshift.api.model.installer.baremetal.v1;
 
+import java.lang.String;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -36,6 +37,7 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "apiVIP",
     "apiVIPs",
+    "bootstrapExternalStaticDNS",
     "bootstrapExternalStaticGateway",
     "bootstrapExternalStaticIP",
     "bootstrapOSImage",
@@ -85,6 +87,8 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     @JsonProperty("apiVIPs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> apiVIPs = new ArrayList<>();
+    @JsonProperty("bootstrapExternalStaticDNS")
+    private String bootstrapExternalStaticDNS;
     @JsonProperty("bootstrapExternalStaticGateway")
     private String bootstrapExternalStaticGateway;
     @JsonProperty("bootstrapExternalStaticIP")
@@ -141,10 +145,11 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     public Platform() {
     }
 
-    public Platform(String apiVIP, List<String> apiVIPs, String bootstrapExternalStaticGateway, String bootstrapExternalStaticIP, String bootstrapOSImage, String bootstrapProvisioningIP, String clusterOSImage, String clusterProvisioningIP, MachinePool defaultMachinePlatform, String externalBridge, String externalMACAddress, List<Host> hosts, String ingressVIP, List<String> ingressVIPs, String libvirtURI, BareMetalPlatformLoadBalancer loadBalancer, String provisioningBridge, Boolean provisioningDHCPExternal, String provisioningDHCPRange, String provisioningHostIP, String provisioningMACAddress, String provisioningNetwork, String provisioningNetworkCIDR, String provisioningNetworkInterface) {
+    public Platform(String apiVIP, List<String> apiVIPs, String bootstrapExternalStaticDNS, String bootstrapExternalStaticGateway, String bootstrapExternalStaticIP, String bootstrapOSImage, String bootstrapProvisioningIP, String clusterOSImage, String clusterProvisioningIP, MachinePool defaultMachinePlatform, String externalBridge, String externalMACAddress, List<Host> hosts, String ingressVIP, List<String> ingressVIPs, String libvirtURI, BareMetalPlatformLoadBalancer loadBalancer, String provisioningBridge, Boolean provisioningDHCPExternal, String provisioningDHCPRange, String provisioningHostIP, String provisioningMACAddress, String provisioningNetwork, String provisioningNetworkCIDR, String provisioningNetworkInterface) {
         super();
         this.apiVIP = apiVIP;
         this.apiVIPs = apiVIPs;
+        this.bootstrapExternalStaticDNS = bootstrapExternalStaticDNS;
         this.bootstrapExternalStaticGateway = bootstrapExternalStaticGateway;
         this.bootstrapExternalStaticIP = bootstrapExternalStaticIP;
         this.bootstrapOSImage = bootstrapOSImage;
@@ -188,6 +193,16 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     @JsonProperty("apiVIPs")
     public void setApiVIPs(List<String> apiVIPs) {
         this.apiVIPs = apiVIPs;
+    }
+
+    @JsonProperty("bootstrapExternalStaticDNS")
+    public String getBootstrapExternalStaticDNS() {
+        return bootstrapExternalStaticDNS;
+    }
+
+    @JsonProperty("bootstrapExternalStaticDNS")
+    public void setBootstrapExternalStaticDNS(String bootstrapExternalStaticDNS) {
+        this.bootstrapExternalStaticDNS = bootstrapExternalStaticDNS;
     }
 
     @JsonProperty("bootstrapExternalStaticGateway")
