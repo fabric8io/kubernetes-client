@@ -43,32 +43,7 @@
       <groupId>io.fabric8</groupId>
       <artifactId>kubernetes-model-core</artifactId>
     </dependency>
-    <dependency>
-      <groupId>io.fabric8</groupId>
-      <artifactId>kubernetes-model-common</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.fabric8</groupId>
-      <artifactId>openshift-model</artifactId>
-    </dependency>
   </dependencies>
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>build-helper-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>attach-artifacts</id>
-            <configuration>
-              <skipAttach>false</skipAttach>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
 
   <profiles>
     <profile>
@@ -76,8 +51,18 @@
       <build>
         <plugins>
           <plugin>
-            <groupId>org.jsonschema2pojo</groupId>
-            <artifactId>jsonschema2pojo-maven-plugin</artifactId>
+            <groupId>io.fabric8</groupId>
+            <artifactId>openapi-model-generator-maven-plugin</artifactId>
+            <configuration >
+              <settings combine.self="append">
+                <schemas>
+                  <schema>${openapi.schema.openshift-generated}</schema>
+                </schemas>
+                <includeGenerationRegexes>
+                  <includeGenerationRegex>^io\.openshift\.tuned\..*$</includeGenerationRegex>
+                </includeGenerationRegexes>
+              </settings>
+            </configuration>
           </plugin>
         </plugins>
       </build>

@@ -34,7 +34,8 @@ import lombok.experimental.Accessors;
     "debug",
     "providerName",
     "tunedConfig",
-    "tunedProfile"
+    "tunedProfile",
+    "verbosity"
 })
 @ToString
 @EqualsAndHashCode
@@ -65,6 +66,8 @@ public class ProfileConfig implements Editable<ProfileConfigBuilder> , Kubernete
     private TuneDConfig tunedConfig;
     @JsonProperty("tunedProfile")
     private String tunedProfile;
+    @JsonProperty("verbosity")
+    private Integer verbosity;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -75,12 +78,13 @@ public class ProfileConfig implements Editable<ProfileConfigBuilder> , Kubernete
     public ProfileConfig() {
     }
 
-    public ProfileConfig(Boolean debug, String providerName, TuneDConfig tunedConfig, String tunedProfile) {
+    public ProfileConfig(Boolean debug, String providerName, TuneDConfig tunedConfig, String tunedProfile, Integer verbosity) {
         super();
         this.debug = debug;
         this.providerName = providerName;
         this.tunedConfig = tunedConfig;
         this.tunedProfile = tunedProfile;
+        this.verbosity = verbosity;
     }
 
     @JsonProperty("debug")
@@ -121,6 +125,16 @@ public class ProfileConfig implements Editable<ProfileConfigBuilder> , Kubernete
     @JsonProperty("tunedProfile")
     public void setTunedProfile(String tunedProfile) {
         this.tunedProfile = tunedProfile;
+    }
+
+    @JsonProperty("verbosity")
+    public Integer getVerbosity() {
+        return verbosity;
+    }
+
+    @JsonProperty("verbosity")
+    public void setVerbosity(Integer verbosity) {
+        this.verbosity = verbosity;
     }
 
     @JsonIgnore

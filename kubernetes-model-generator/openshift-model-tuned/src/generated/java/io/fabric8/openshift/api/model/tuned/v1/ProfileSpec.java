@@ -1,7 +1,9 @@
 
 package io.fabric8.openshift.api.model.tuned.v1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -31,7 +33,8 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "config"
+    "config",
+    "profile"
 })
 @ToString
 @EqualsAndHashCode
@@ -56,6 +59,9 @@ public class ProfileSpec implements Editable<ProfileSpecBuilder> , KubernetesRes
 
     @JsonProperty("config")
     private ProfileConfig config;
+    @JsonProperty("profile")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<TunedProfile> profile = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -66,9 +72,10 @@ public class ProfileSpec implements Editable<ProfileSpecBuilder> , KubernetesRes
     public ProfileSpec() {
     }
 
-    public ProfileSpec(ProfileConfig config) {
+    public ProfileSpec(ProfileConfig config, List<TunedProfile> profile) {
         super();
         this.config = config;
+        this.profile = profile;
     }
 
     @JsonProperty("config")
@@ -79,6 +86,17 @@ public class ProfileSpec implements Editable<ProfileSpecBuilder> , KubernetesRes
     @JsonProperty("config")
     public void setConfig(ProfileConfig config) {
         this.config = config;
+    }
+
+    @JsonProperty("profile")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<TunedProfile> getProfile() {
+        return profile;
+    }
+
+    @JsonProperty("profile")
+    public void setProfile(List<TunedProfile> profile) {
+        this.profile = profile;
     }
 
     @JsonIgnore

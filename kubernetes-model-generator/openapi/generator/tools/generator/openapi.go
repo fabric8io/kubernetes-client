@@ -25,6 +25,7 @@ import (
 	//openshiftbaremetaloperatorv1alpha1 "github.com/metal3-io/baremetal-operator/apis/metal3.io/v1alpha1"
 	openshiftcloudcredentialoperatorv1 "github.com/openshift/cloud-credential-operator/pkg/apis/cloudcredential/v1"
 	openshiftclusternetworkoperatorv1 "github.com/openshift/cluster-network-operator/pkg/apis/network/v1"
+	openshiftclusternodetuningoperatorv1 "github.com/openshift/cluster-node-tuning-operator/pkg/apis/tuned/v1"
 	operatorframeworkv1 "github.com/operator-framework/api/pkg/operators/v1"
 	operatorframeworkv1alpha1 "github.com/operator-framework/api/pkg/operators/v1alpha1"
 	olm "github.com/operator-framework/operator-lifecycle-manager/pkg/package-server/apis/operators/v1"
@@ -40,8 +41,9 @@ func main() {
 		operatorframeworkv1alpha1.SchemeGroupVersion.String(),
 		operatorframeworkv1.GroupVersion.String(),
 		//openshiftbaremetaloperatorv1alpha1.GroupVersion.String(),
-		openshiftclusternetworkoperatorv1.GroupVersion.String(),
 		openshiftcloudcredentialoperatorv1.GroupVersion.String(),
+		openshiftclusternetworkoperatorv1.GroupVersion.String(),
+		openshiftclusternodetuningoperatorv1.SchemeGroupVersion.String(),
 		olm.SchemeGroupVersion.String(),
 		prometheusoperatorv1.SchemeGroupVersion.String(),
 	})
