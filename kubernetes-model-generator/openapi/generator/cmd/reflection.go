@@ -30,6 +30,7 @@ import (
 	"os"
 	"path/filepath"
 	"reflect"
+	clusterapiv1beta1 "sigs.k8s.io/cluster-api/api/v1beta1"
 	gatewayApiV1 "sigs.k8s.io/gateway-api/apis/v1"
 	gatewayApiV1Beta1 "sigs.k8s.io/gateway-api/apis/v1beta1"
 	kustomize "sigs.k8s.io/kustomize/api/types"
@@ -92,6 +93,10 @@ var reflectionRun = func(cmd *cobra.Command, args []string) {
 			reflect.TypeOf(apiextensionsV1Beta1.SelectableField{}):              {},
 			reflect.TypeOf(apiextensionsV1Beta1.ValidationRule{}):               {},
 		}, "apiextensions"),
+		NewTypeSchema([]reflect.Type{
+			reflect.TypeOf(clusterapiv1beta1.Condition{}),
+			reflect.TypeOf(clusterapiv1beta1.Machine{}),
+		}, "cluster-api"),
 		NewPathSchema(map[reflect.Type]ApiVersion{
 			reflect.TypeOf(gatewayApiV1.GatewayList{}):             {true, gatewayApiV1.GroupVersion.String(), "gateways", true},
 			reflect.TypeOf(gatewayApiV1.Gateway{}):                 {false, gatewayApiV1.GroupVersion.String(), "gateways", true},

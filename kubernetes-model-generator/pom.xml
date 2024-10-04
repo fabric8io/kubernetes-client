@@ -165,6 +165,9 @@
                 <io.k8s.api>io.fabric8.kubernetes.api.model</io.k8s.api>
                 <io.k8s.api.apps.v1>io.fabric8.kubernetes.api.model.apps</io.k8s.api.apps.v1>
                 <io.k8s.api.rbac.v1>io.fabric8.kubernetes.api.model.rbac</io.k8s.api.rbac.v1>
+                <io.k8s.client-go.tools.clientcmd.api.v1>io.fabric8.kubernetes.api.model</io.k8s.client-go.tools.clientcmd.api.v1>
+                <io.k8s.kube-aggregator.pkg.apis.apiregistration.v1>io.fabric8.kubernetes.api.model</io.k8s.kube-aggregator.pkg.apis.apiregistration.v1>
+                <io.k8s.sigs.cluster-api.api>io.fabric8.kubernetes.api.model.clusterapi</io.k8s.sigs.cluster-api.api>
                 <io.openshift>io.fabric8.openshift.api.model</io.openshift>
                 <io.openshift.apiserver>io.fabric8.openshift.api.model.miscellaneous.apiserver</io.openshift.apiserver>
                 <io.openshift.apps.v1>io.fabric8.openshift.api.model</io.openshift.apps.v1>

@@ -87,7 +87,7 @@ public class ProjectHelmChartRepository implements Editable<ProjectHelmChartRepo
     @JsonProperty("spec")
     private ProjectHelmChartRepositorySpec spec;
     @JsonProperty("status")
-    private ProjectHelmChartRepositoryStatus status;
+    private HelmChartRepositoryStatus status;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -98,7 +98,7 @@ public class ProjectHelmChartRepository implements Editable<ProjectHelmChartRepo
     public ProjectHelmChartRepository() {
     }
 
-    public ProjectHelmChartRepository(String apiVersion, String kind, ObjectMeta metadata, ProjectHelmChartRepositorySpec spec, ProjectHelmChartRepositoryStatus status) {
+    public ProjectHelmChartRepository(String apiVersion, String kind, ObjectMeta metadata, ProjectHelmChartRepositorySpec spec, HelmChartRepositoryStatus status) {
         super();
         this.apiVersion = apiVersion;
         this.kind = kind;
@@ -168,12 +168,12 @@ public class ProjectHelmChartRepository implements Editable<ProjectHelmChartRepo
     }
 
     @JsonProperty("status")
-    public ProjectHelmChartRepositoryStatus getStatus() {
+    public HelmChartRepositoryStatus getStatus() {
         return status;
     }
 
     @JsonProperty("status")
-    public void setStatus(ProjectHelmChartRepositoryStatus status) {
+    public void setStatus(HelmChartRepositoryStatus status) {
         this.status = status;
     }
 

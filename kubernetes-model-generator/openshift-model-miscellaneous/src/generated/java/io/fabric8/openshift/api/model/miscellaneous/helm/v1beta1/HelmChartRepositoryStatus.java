@@ -14,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
+import io.fabric8.kubernetes.api.model.Condition;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -58,7 +59,7 @@ public class HelmChartRepositoryStatus implements Editable<HelmChartRepositorySt
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<HelmChartRepositoryStatusConditions> conditions = new ArrayList<>();
+    private List<Condition> conditions = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -69,19 +70,19 @@ public class HelmChartRepositoryStatus implements Editable<HelmChartRepositorySt
     public HelmChartRepositoryStatus() {
     }
 
-    public HelmChartRepositoryStatus(List<HelmChartRepositoryStatusConditions> conditions) {
+    public HelmChartRepositoryStatus(List<Condition> conditions) {
         super();
         this.conditions = conditions;
     }
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<HelmChartRepositoryStatusConditions> getConditions() {
+    public List<Condition> getConditions() {
         return conditions;
     }
 
     @JsonProperty("conditions")
-    public void setConditions(List<HelmChartRepositoryStatusConditions> conditions) {
+    public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
     }
 

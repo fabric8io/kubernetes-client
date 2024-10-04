@@ -65,7 +65,7 @@ public class CredentialsRequestSpec implements Editable<CredentialsRequestSpecBu
     @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
     private Object providerSpec;
     @JsonProperty("secretRef")
-    private CredentialsRequestSpecSecretRef secretRef;
+    private ObjectReference secretRef;
     @JsonProperty("serviceAccountNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> serviceAccountNames = new ArrayList<>();
@@ -79,7 +79,7 @@ public class CredentialsRequestSpec implements Editable<CredentialsRequestSpecBu
     public CredentialsRequestSpec() {
     }
 
-    public CredentialsRequestSpec(String cloudTokenPath, Object providerSpec, CredentialsRequestSpecSecretRef secretRef, List<String> serviceAccountNames) {
+    public CredentialsRequestSpec(String cloudTokenPath, Object providerSpec, ObjectReference secretRef, List<String> serviceAccountNames) {
         super();
         this.cloudTokenPath = cloudTokenPath;
         this.providerSpec = providerSpec;
@@ -109,12 +109,12 @@ public class CredentialsRequestSpec implements Editable<CredentialsRequestSpecBu
     }
 
     @JsonProperty("secretRef")
-    public CredentialsRequestSpecSecretRef getSecretRef() {
+    public ObjectReference getSecretRef() {
         return secretRef;
     }
 
     @JsonProperty("secretRef")
-    public void setSecretRef(CredentialsRequestSpecSecretRef secretRef) {
+    public void setSecretRef(ObjectReference secretRef) {
         this.secretRef = secretRef;
     }
 

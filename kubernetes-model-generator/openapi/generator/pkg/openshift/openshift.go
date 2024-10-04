@@ -25,7 +25,9 @@ var PackagePatterns = []string{
 	// OpenShift APIs
 	"github.com/openshift/api/.../v...",
 	// CRDs don't provide info for reused types
-	//"github.com/metal3-io/baremetal-operator/apis/metal3.io/v...",
+	"github.com/metal3-io/baremetal-operator/apis/metal3.io/v...",
+	"github.com/metal3-io/cluster-api-provider-metal3/api/v...",
+	"github.com/k8snetworkplumbingwg/network-attachment-definition-client/pkg/apis/.../v...",
 	"github.com/openshift/cloud-credential-operator/pkg/apis/.../v...",
 	"github.com/openshift/cluster-network-operator/pkg/apis/.../v...",
 	"github.com/openshift/cluster-node-tuning-operator/pkg/apis/tuned/v...",

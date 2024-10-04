@@ -48,7 +48,7 @@ class Metal3RemediationTemplateTest {
         .hasFieldOrPropertyWithValue("metadata.name", "test-remediation-template")
         .extracting(Metal3RemediationTemplate::getSpec)
         .extracting(Metal3RemediationTemplateSpec::getTemplate)
-        .extracting(Metal3RemediationTemplateSpecTemplate::getSpec)
+        .extracting(Metal3RemediationTemplateResource::getSpec)
         .hasFieldOrPropertyWithValue("strategy.retryLimit", 1)
         .hasFieldOrPropertyWithValue("strategy.timeout", "5m0s")
         .hasFieldOrPropertyWithValue("strategy.type", "Reboot");
@@ -81,7 +81,7 @@ class Metal3RemediationTemplateTest {
         .hasFieldOrPropertyWithValue("metadata.name", "test-remediation-template")
         .extracting(Metal3RemediationTemplate::getSpec)
         .extracting(Metal3RemediationTemplateSpec::getTemplate)
-        .extracting(Metal3RemediationTemplateSpecTemplate::getSpec)
+        .extracting(Metal3RemediationTemplateResource::getSpec)
         .hasFieldOrPropertyWithValue("strategy.retryLimit", 5)
         .hasFieldOrPropertyWithValue("strategy.timeout", "5s")
         .hasFieldOrPropertyWithValue("strategy.type", "Done");

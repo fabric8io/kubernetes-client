@@ -14,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
+import io.fabric8.kubernetes.api.model.Condition;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -66,7 +67,7 @@ public class PreprovisioningImageStatus implements Editable<PreprovisioningImage
     private String architecture;
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<PreprovisioningImageStatusConditions> conditions = new ArrayList<>();
+    private List<Condition> conditions = new ArrayList<>();
     @JsonProperty("extraKernelParams")
     private String extraKernelParams;
     @JsonProperty("format")
@@ -76,7 +77,7 @@ public class PreprovisioningImageStatus implements Editable<PreprovisioningImage
     @JsonProperty("kernelUrl")
     private String kernelUrl;
     @JsonProperty("networkData")
-    private PreprovisioningImageStatusNetworkData networkData;
+    private SecretStatus networkData;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -87,7 +88,7 @@ public class PreprovisioningImageStatus implements Editable<PreprovisioningImage
     public PreprovisioningImageStatus() {
     }
 
-    public PreprovisioningImageStatus(String architecture, List<PreprovisioningImageStatusConditions> conditions, String extraKernelParams, String format, String imageUrl, String kernelUrl, PreprovisioningImageStatusNetworkData networkData) {
+    public PreprovisioningImageStatus(String architecture, List<Condition> conditions, String extraKernelParams, String format, String imageUrl, String kernelUrl, SecretStatus networkData) {
         super();
         this.architecture = architecture;
         this.conditions = conditions;
@@ -110,12 +111,12 @@ public class PreprovisioningImageStatus implements Editable<PreprovisioningImage
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<PreprovisioningImageStatusConditions> getConditions() {
+    public List<Condition> getConditions() {
         return conditions;
     }
 
     @JsonProperty("conditions")
-    public void setConditions(List<PreprovisioningImageStatusConditions> conditions) {
+    public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
     }
 
@@ -160,12 +161,12 @@ public class PreprovisioningImageStatus implements Editable<PreprovisioningImage
     }
 
     @JsonProperty("networkData")
-    public PreprovisioningImageStatusNetworkData getNetworkData() {
+    public SecretStatus getNetworkData() {
         return networkData;
     }
 
     @JsonProperty("networkData")
-    public void setNetworkData(PreprovisioningImageStatusNetworkData networkData) {
+    public void setNetworkData(SecretStatus networkData) {
         this.networkData = networkData;
     }
 

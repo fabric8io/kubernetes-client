@@ -142,15 +142,12 @@
               <settings combine.self="append">
                 <addBuildableReferences>false</addBuildableReferences>
                 <schemas>
+                  <schema>${project.basedir}/../openapi/schemas/cluster-api.json</schema>
                   <schema>${openapi.schema.kubernetes-latest}</schema>
+                  <schema>${project.basedir}/../openapi/schemas/admission-registration.json</schema>
                   <schema>${project.basedir}/../openapi/schemas/api-machinery-extra.json</schema>
                   <schema>${project.basedir}/../openapi/schemas/kubernetes-config.json</schema>
-                  <schema>${project.basedir}/../openapi/schemas/admission-registration.json</schema>
                 </schemas>
-                <packageMappings combine.self="append">
-                  <io.k8s.client-go.tools.clientcmd.api.v1>io.fabric8.kubernetes.api.model</io.k8s.client-go.tools.clientcmd.api.v1>
-                  <io.k8s.kube-aggregator.pkg.apis.apiregistration.v1>io.fabric8.kubernetes.api.model</io.k8s.kube-aggregator.pkg.apis.apiregistration.v1>
-                </packageMappings>
                 <skipGenerationRegexes>
                   <skipGenerationRegex>^io\.k8s\.apimachinery\.pkg\.runtime\.RawExtension$</skipGenerationRegex>
                 </skipGenerationRegexes>
@@ -159,6 +156,7 @@
                   <includeGenerationRegex>^io\.k8s\.apimachinery\..*$</includeGenerationRegex>
                   <includeGenerationRegex>^io\.k8s\.kube-aggregator\.pkg\.apis\.apiregistration\..*$</includeGenerationRegex>
                   <includeGenerationRegex>^io\.k8s\.client-go\.tools\.clientcmd\.api\.v1\..*$</includeGenerationRegex>
+                  <includeGenerationRegex>^io\.k8s\.sigs\.cluster-api\.api\..*$</includeGenerationRegex>
                 </includeGenerationRegexes>
               </settings>
             </configuration>

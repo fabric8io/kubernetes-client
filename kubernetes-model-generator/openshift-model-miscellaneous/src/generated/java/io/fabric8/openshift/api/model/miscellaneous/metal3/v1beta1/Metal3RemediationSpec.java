@@ -55,7 +55,7 @@ public class Metal3RemediationSpec implements Editable<Metal3RemediationSpecBuil
 {
 
     @JsonProperty("strategy")
-    private Metal3RemediationSpecStrategy strategy;
+    private RemediationStrategy strategy;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -66,18 +66,18 @@ public class Metal3RemediationSpec implements Editable<Metal3RemediationSpecBuil
     public Metal3RemediationSpec() {
     }
 
-    public Metal3RemediationSpec(Metal3RemediationSpecStrategy strategy) {
+    public Metal3RemediationSpec(RemediationStrategy strategy) {
         super();
         this.strategy = strategy;
     }
 
     @JsonProperty("strategy")
-    public Metal3RemediationSpecStrategy getStrategy() {
+    public RemediationStrategy getStrategy() {
         return strategy;
     }
 
     @JsonProperty("strategy")
-    public void setStrategy(Metal3RemediationSpecStrategy strategy) {
+    public void setStrategy(RemediationStrategy strategy) {
         this.strategy = strategy;
     }
 

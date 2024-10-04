@@ -6,6 +6,9 @@ toolchain go1.23.1
 
 require (
 	github.com/getkin/kin-openapi v0.125.0
+	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.7.4
+	github.com/metal3-io/baremetal-operator/apis v0.4.0
+	github.com/metal3-io/cluster-api-provider-metal3/api v1.8.2
 	// Match latest commit in the version branch (e.g. release-4.17)
 	github.com/openshift/api v3.9.0+incompatible
 	github.com/openshift/cloud-credential-operator v0.0.0-20240910052617-d668c182b0e3
@@ -13,7 +16,7 @@ require (
 	github.com/openshift/cluster-node-tuning-operator v0.0.0-20241001165112-1685a8fc1376
 	github.com/openshift/hive/apis v0.0.0-20240930213556-2d25383963db
 	github.com/openshift/installer v0.0.0-00010101000000-000000000000
-	github.com/operator-framework/api v0.27.0
+	github.com/operator-framework/api v0.27.1-0.20241002175140-413605f42947
 	github.com/operator-framework/operator-lifecycle-manager v0.0.0-00010101000000-000000000000
 	github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.77.1
 	github.com/spf13/cobra v1.8.1
@@ -23,7 +26,8 @@ require (
 	k8s.io/client-go v12.0.0+incompatible
 	k8s.io/gengo/v2 v2.0.0-20240911193312-2b36238f13e9
 	k8s.io/kube-openapi v0.0.0-20240903163716-9e1beecbcb38
-	k8s.io/metrics v0.30.3
+	k8s.io/metrics v0.31.0
+	sigs.k8s.io/cluster-api v1.8.3
 	sigs.k8s.io/gateway-api v1.1.0
 	sigs.k8s.io/kustomize/api v0.17.2
 )
@@ -36,19 +40,19 @@ replace (
 	github.com/openshift/assisted-service/models => github.com/openshift/assisted-service/models v0.0.0-20241003070528-341f9860c455
 	github.com/openshift/hive => github.com/openshift/hive v1.1.17-0.20240930213556-2d25383963db // Latest Master
 	github.com/openshift/installer => github.com/openshift/installer v0.91.0 // Most up-to-date tag https://issues.redhat.com/browse/OCPBUGS-42448
+	k8s.io/api => k8s.io/api v0.31.1
 	k8s.io/client-go => k8s.io/client-go v0.31.1
 	k8s.io/cloud-provider => k8s.io/cloud-provider v0.31.1
 	k8s.io/csi-translation-lib => k8s.io/csi-translation-lib v0.31.1
 	k8s.io/kube-scheduler => k8s.io/kube-scheduler v0.31.1
 	k8s.io/mount-utils => k8s.io/mount-utils v0.31.1
-
 )
 
 replace (
+	// TODO: WIP while this gets merged or fixed https://github.com/metal3-io/baremetal-operator/pull/1985
+	github.com/metal3-io/baremetal-operator/apis => github.com/marcnuri-forks/baremetal-operator/apis v0.0.0-20241004142039-6b123cc23349
 	// TODO: WIP while this gets merged or fixed https://github.com/openshift/api/pull/2050
 	github.com/openshift/api => github.com/marcnuri-forks/api v0.0.0-20240930125604-62d5277244a4
-	// TODO: WIP while this gets merged or fixed https://github.com/operator-framework/api/pull/365
-	github.com/operator-framework/api => github.com/marcnuri-forks/operator-framework-api v0.0.0-20241001140003-cf4aa8da1ffa
 	// TODO: WIP while this gets merged or fixed https://github.com/operator-framework/operator-lifecycle-manager/pull/3406
 	github.com/operator-framework/operator-lifecycle-manager => github.com/marcnuri-forks/operator-lifecycle-manager v0.0.0-20241002090802-7539192fbf96
 )
@@ -67,6 +71,8 @@ require (
 	github.com/coreos/vcontext v0.0.0-20231102161604-685dc7299dc5 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
 	github.com/emicklei/go-restful/v3 v3.12.1 // indirect
+	github.com/evanphx/json-patch/v5 v5.9.0 // indirect
+	github.com/fsnotify/fsnotify v1.7.0 // indirect
 	github.com/fxamacker/cbor/v2 v2.7.0 // indirect
 	github.com/go-errors/errors v1.4.2 // indirect
 	github.com/go-logr/logr v1.4.2 // indirect
@@ -86,6 +92,7 @@ require (
 	github.com/h2non/filetype v1.1.3 // indirect
 	github.com/h2non/go-is-svg v0.0.0-20160927212452-35e8c4b0612c // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
+	github.com/imdario/mergo v0.3.16 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/invopop/yaml v0.2.0 // indirect
 	github.com/jmespath/go-jmespath v0.4.1-0.20220621161143-b0104c826a24 // indirect
@@ -95,8 +102,8 @@ require (
 	github.com/klauspost/compress v1.17.9 // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/mattn/go-sqlite3 v2.0.3+incompatible // indirect
-	github.com/metal3-io/baremetal-operator/apis v0.4.0 // indirect
-	github.com/metal3-io/baremetal-operator/pkg/hardwareutils v0.4.0 // indirect
+	github.com/metal3-io/baremetal-operator/pkg/hardwareutils v0.5.1 // indirect
+	github.com/metal3-io/ip-address-manager/api v1.8.1 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/mohae/deepcopy v0.0.0-20170929034955-c48cc78d4826 // indirect

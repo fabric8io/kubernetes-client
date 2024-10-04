@@ -24,7 +24,9 @@ import (
 	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/pkg/parser"
 	"strings"
 
-	//openshiftbaremetaloperatorv1alpha1 "github.com/metal3-io/baremetal-operator/apis/metal3.io/v1alpha1"
+	networkattachmentdefinition "github.com/k8snetworkplumbingwg/network-attachment-definition-client/pkg/apis/k8s.cni.cncf.io/v1"
+	openshiftbaremetaloperatorv1alpha1 "github.com/metal3-io/baremetal-operator/apis/metal3.io/v1alpha1"
+	openshiftclusterapiprovidermetal3v1beta1 "github.com/metal3-io/cluster-api-provider-metal3/api/v1beta1"
 	openshiftconfigv1 "github.com/openshift/api/config/v1"
 	openshiftcloudcredentialoperatorv1 "github.com/openshift/cloud-credential-operator/pkg/apis/cloudcredential/v1"
 	openshiftclusternetworkoperatorv1 "github.com/openshift/cluster-network-operator/pkg/apis/network/v1"
@@ -55,14 +57,16 @@ var openApiRun = func(cobraCmd *cobra.Command, args []string) {
 	startTime := time.Now()
 	fmt.Printf("OpenAPI JSON schema generation started...\n%s\n", strings.Join([]string{
 		// Force imports so that modules are present in go.mod
-		openshiftconfigv1.SchemeGroupVersion.String(),
-		//openshiftbaremetaloperatorv1alpha1.GroupVersion.String(),
+		networkattachmentdefinition.SchemeGroupVersion.String(),
 		olm.SchemeGroupVersion.String(),
+		openshiftbaremetaloperatorv1alpha1.GroupVersion.String(),
+		openshiftconfigv1.SchemeGroupVersion.String(),
 		openshiftcloudcredentialoperatorv1.GroupVersion.String(),
+		openshiftclusterapiprovidermetal3v1beta1.GroupVersion.String(),
 		openshiftclusternetworkoperatorv1.GroupVersion.String(),
 		openshiftclusternodetuningoperatorv1.SchemeGroupVersion.String(),
 		openshifthivev1.SchemeGroupVersion.String(),
-		"install.openshift.io/" + openshiftinstallerv1.InstallConfigVersion + "(" + strings.Join(openshiftinstallerv1.PlatformNames, ",") + ")",
+		"install.openshift.io/" + openshiftinstallerv1.InstallConfigVersion + " (" + strings.Join(openshiftinstallerv1.PlatformNames, ", ") + ")",
 		operatorframeworkv1alpha1.SchemeGroupVersion.String(),
 		operatorframeworkv1.GroupVersion.String(),
 		prometheusoperatorv1.SchemeGroupVersion.String(),

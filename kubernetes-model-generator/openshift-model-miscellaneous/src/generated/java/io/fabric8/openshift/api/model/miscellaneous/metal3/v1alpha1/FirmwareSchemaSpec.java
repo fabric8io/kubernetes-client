@@ -62,7 +62,7 @@ public class FirmwareSchemaSpec implements Editable<FirmwareSchemaSpecBuilder> ,
     private String hardwareVendor;
     @JsonProperty("schema")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, FirmwareSchemaSpecSchema> schema = new LinkedHashMap<>();
+    private Map<String, SettingSchema> schema = new LinkedHashMap<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -73,7 +73,7 @@ public class FirmwareSchemaSpec implements Editable<FirmwareSchemaSpecBuilder> ,
     public FirmwareSchemaSpec() {
     }
 
-    public FirmwareSchemaSpec(String hardwareModel, String hardwareVendor, Map<String, FirmwareSchemaSpecSchema> schema) {
+    public FirmwareSchemaSpec(String hardwareModel, String hardwareVendor, Map<String, SettingSchema> schema) {
         super();
         this.hardwareModel = hardwareModel;
         this.hardwareVendor = hardwareVendor;
@@ -102,12 +102,12 @@ public class FirmwareSchemaSpec implements Editable<FirmwareSchemaSpecBuilder> ,
 
     @JsonProperty("schema")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Map<String, FirmwareSchemaSpecSchema> getSchema() {
+    public Map<String, SettingSchema> getSchema() {
         return schema;
     }
 
     @JsonProperty("schema")
-    public void setSchema(Map<String, FirmwareSchemaSpecSchema> schema) {
+    public void setSchema(Map<String, SettingSchema> schema) {
         this.schema = schema;
     }
 

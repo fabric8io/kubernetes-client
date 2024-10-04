@@ -57,9 +57,9 @@ public class DataImageStatus implements Editable<DataImageStatusBuilder> , Kuber
 {
 
     @JsonProperty("attachedImage")
-    private DataImageStatusAttachedImage attachedImage;
+    private AttachedImageReference attachedImage;
     @JsonProperty("error")
-    private DataImageStatusError error;
+    private DataImageError error;
     @JsonProperty("lastReconciled")
     private String lastReconciled;
     @JsonIgnore
@@ -72,7 +72,7 @@ public class DataImageStatus implements Editable<DataImageStatusBuilder> , Kuber
     public DataImageStatus() {
     }
 
-    public DataImageStatus(DataImageStatusAttachedImage attachedImage, DataImageStatusError error, String lastReconciled) {
+    public DataImageStatus(AttachedImageReference attachedImage, DataImageError error, String lastReconciled) {
         super();
         this.attachedImage = attachedImage;
         this.error = error;
@@ -80,22 +80,22 @@ public class DataImageStatus implements Editable<DataImageStatusBuilder> , Kuber
     }
 
     @JsonProperty("attachedImage")
-    public DataImageStatusAttachedImage getAttachedImage() {
+    public AttachedImageReference getAttachedImage() {
         return attachedImage;
     }
 
     @JsonProperty("attachedImage")
-    public void setAttachedImage(DataImageStatusAttachedImage attachedImage) {
+    public void setAttachedImage(AttachedImageReference attachedImage) {
         this.attachedImage = attachedImage;
     }
 
     @JsonProperty("error")
-    public DataImageStatusError getError() {
+    public DataImageError getError() {
         return error;
     }
 
     @JsonProperty("error")
-    public void setError(DataImageStatusError error) {
+    public void setError(DataImageError error) {
         this.error = error;
     }
 

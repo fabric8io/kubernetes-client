@@ -55,7 +55,7 @@ public class HardwareDataSpec implements Editable<HardwareDataSpecBuilder> , Kub
 {
 
     @JsonProperty("hardware")
-    private HardwareDataSpecHardware hardware;
+    private HardwareDetails hardware;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -66,18 +66,18 @@ public class HardwareDataSpec implements Editable<HardwareDataSpecBuilder> , Kub
     public HardwareDataSpec() {
     }
 
-    public HardwareDataSpec(HardwareDataSpecHardware hardware) {
+    public HardwareDataSpec(HardwareDetails hardware) {
         super();
         this.hardware = hardware;
     }
 
     @JsonProperty("hardware")
-    public HardwareDataSpecHardware getHardware() {
+    public HardwareDetails getHardware() {
         return hardware;
     }
 
     @JsonProperty("hardware")
-    public void setHardware(HardwareDataSpecHardware hardware) {
+    public void setHardware(HardwareDetails hardware) {
         this.hardware = hardware;
     }
 
