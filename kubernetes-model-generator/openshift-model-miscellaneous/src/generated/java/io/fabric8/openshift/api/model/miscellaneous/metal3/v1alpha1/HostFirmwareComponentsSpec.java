@@ -58,7 +58,7 @@ public class HostFirmwareComponentsSpec implements Editable<HostFirmwareComponen
 
     @JsonProperty("updates")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<HostFirmwareComponentsSpecUpdates> updates = new ArrayList<>();
+    private List<FirmwareUpdate> updates = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -69,19 +69,19 @@ public class HostFirmwareComponentsSpec implements Editable<HostFirmwareComponen
     public HostFirmwareComponentsSpec() {
     }
 
-    public HostFirmwareComponentsSpec(List<HostFirmwareComponentsSpecUpdates> updates) {
+    public HostFirmwareComponentsSpec(List<FirmwareUpdate> updates) {
         super();
         this.updates = updates;
     }
 
     @JsonProperty("updates")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<HostFirmwareComponentsSpecUpdates> getUpdates() {
+    public List<FirmwareUpdate> getUpdates() {
         return updates;
     }
 
     @JsonProperty("updates")
-    public void setUpdates(List<HostFirmwareComponentsSpecUpdates> updates) {
+    public void setUpdates(List<FirmwareUpdate> updates) {
         this.updates = updates;
     }
 

@@ -55,7 +55,7 @@ public class Metal3RemediationTemplateSpec implements Editable<Metal3Remediation
 {
 
     @JsonProperty("template")
-    private Metal3RemediationTemplateSpecTemplate template;
+    private Metal3RemediationTemplateResource template;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -66,18 +66,18 @@ public class Metal3RemediationTemplateSpec implements Editable<Metal3Remediation
     public Metal3RemediationTemplateSpec() {
     }
 
-    public Metal3RemediationTemplateSpec(Metal3RemediationTemplateSpecTemplate template) {
+    public Metal3RemediationTemplateSpec(Metal3RemediationTemplateResource template) {
         super();
         this.template = template;
     }
 
     @JsonProperty("template")
-    public Metal3RemediationTemplateSpecTemplate getTemplate() {
+    public Metal3RemediationTemplateResource getTemplate() {
         return template;
     }
 
     @JsonProperty("template")
-    public void setTemplate(Metal3RemediationTemplateSpecTemplate template) {
+    public void setTemplate(Metal3RemediationTemplateResource template) {
         this.template = template;
     }
 

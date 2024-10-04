@@ -24,6 +24,8 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
+import io.fabric8.kubernetes.api.model.SecretReference;
+import io.fabric8.kubernetes.api.model.Taint;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -80,42 +82,42 @@ public class BareMetalHostSpec implements Editable<BareMetalHostSpecBuilder> , K
     @JsonProperty("automatedCleaningMode")
     private String automatedCleaningMode;
     @JsonProperty("bmc")
-    private BareMetalHostSpecBmc bmc;
+    private BMCDetails bmc;
     @JsonProperty("bootMACAddress")
     private String bootMACAddress;
     @JsonProperty("bootMode")
     private String bootMode;
     @JsonProperty("consumerRef")
-    private BareMetalHostSpecConsumerRef consumerRef;
+    private ObjectReference consumerRef;
     @JsonProperty("customDeploy")
-    private BareMetalHostSpecCustomDeploy customDeploy;
+    private CustomDeploy customDeploy;
     @JsonProperty("description")
     private String description;
     @JsonProperty("externallyProvisioned")
     private Boolean externallyProvisioned;
     @JsonProperty("firmware")
-    private BareMetalHostSpecFirmware firmware;
+    private FirmwareConfig firmware;
     @JsonProperty("hardwareProfile")
     private String hardwareProfile;
     @JsonProperty("image")
-    private BareMetalHostSpecImage image;
+    private Image image;
     @JsonProperty("metaData")
-    private BareMetalHostSpecMetaData metaData;
+    private SecretReference metaData;
     @JsonProperty("networkData")
-    private BareMetalHostSpecNetworkData networkData;
+    private SecretReference networkData;
     @JsonProperty("online")
     private Boolean online;
     @JsonProperty("preprovisioningNetworkDataName")
     private String preprovisioningNetworkDataName;
     @JsonProperty("raid")
-    private BareMetalHostSpecRaid raid;
+    private RAIDConfig raid;
     @JsonProperty("rootDeviceHints")
-    private BareMetalHostSpecRootDeviceHints rootDeviceHints;
+    private RootDeviceHints rootDeviceHints;
     @JsonProperty("taints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<BareMetalHostSpecTaints> taints = new ArrayList<>();
+    private List<Taint> taints = new ArrayList<>();
     @JsonProperty("userData")
-    private BareMetalHostSpecUserData userData;
+    private SecretReference userData;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -126,7 +128,7 @@ public class BareMetalHostSpec implements Editable<BareMetalHostSpecBuilder> , K
     public BareMetalHostSpec() {
     }
 
-    public BareMetalHostSpec(String architecture, String automatedCleaningMode, BareMetalHostSpecBmc bmc, String bootMACAddress, String bootMode, BareMetalHostSpecConsumerRef consumerRef, BareMetalHostSpecCustomDeploy customDeploy, String description, Boolean externallyProvisioned, BareMetalHostSpecFirmware firmware, String hardwareProfile, BareMetalHostSpecImage image, BareMetalHostSpecMetaData metaData, BareMetalHostSpecNetworkData networkData, Boolean online, String preprovisioningNetworkDataName, BareMetalHostSpecRaid raid, BareMetalHostSpecRootDeviceHints rootDeviceHints, List<BareMetalHostSpecTaints> taints, BareMetalHostSpecUserData userData) {
+    public BareMetalHostSpec(String architecture, String automatedCleaningMode, BMCDetails bmc, String bootMACAddress, String bootMode, ObjectReference consumerRef, CustomDeploy customDeploy, String description, Boolean externallyProvisioned, FirmwareConfig firmware, String hardwareProfile, Image image, SecretReference metaData, SecretReference networkData, Boolean online, String preprovisioningNetworkDataName, RAIDConfig raid, RootDeviceHints rootDeviceHints, List<Taint> taints, SecretReference userData) {
         super();
         this.architecture = architecture;
         this.automatedCleaningMode = automatedCleaningMode;
@@ -171,12 +173,12 @@ public class BareMetalHostSpec implements Editable<BareMetalHostSpecBuilder> , K
     }
 
     @JsonProperty("bmc")
-    public BareMetalHostSpecBmc getBmc() {
+    public BMCDetails getBmc() {
         return bmc;
     }
 
     @JsonProperty("bmc")
-    public void setBmc(BareMetalHostSpecBmc bmc) {
+    public void setBmc(BMCDetails bmc) {
         this.bmc = bmc;
     }
 
@@ -201,22 +203,22 @@ public class BareMetalHostSpec implements Editable<BareMetalHostSpecBuilder> , K
     }
 
     @JsonProperty("consumerRef")
-    public BareMetalHostSpecConsumerRef getConsumerRef() {
+    public ObjectReference getConsumerRef() {
         return consumerRef;
     }
 
     @JsonProperty("consumerRef")
-    public void setConsumerRef(BareMetalHostSpecConsumerRef consumerRef) {
+    public void setConsumerRef(ObjectReference consumerRef) {
         this.consumerRef = consumerRef;
     }
 
     @JsonProperty("customDeploy")
-    public BareMetalHostSpecCustomDeploy getCustomDeploy() {
+    public CustomDeploy getCustomDeploy() {
         return customDeploy;
     }
 
     @JsonProperty("customDeploy")
-    public void setCustomDeploy(BareMetalHostSpecCustomDeploy customDeploy) {
+    public void setCustomDeploy(CustomDeploy customDeploy) {
         this.customDeploy = customDeploy;
     }
 
@@ -241,12 +243,12 @@ public class BareMetalHostSpec implements Editable<BareMetalHostSpecBuilder> , K
     }
 
     @JsonProperty("firmware")
-    public BareMetalHostSpecFirmware getFirmware() {
+    public FirmwareConfig getFirmware() {
         return firmware;
     }
 
     @JsonProperty("firmware")
-    public void setFirmware(BareMetalHostSpecFirmware firmware) {
+    public void setFirmware(FirmwareConfig firmware) {
         this.firmware = firmware;
     }
 
@@ -261,32 +263,32 @@ public class BareMetalHostSpec implements Editable<BareMetalHostSpecBuilder> , K
     }
 
     @JsonProperty("image")
-    public BareMetalHostSpecImage getImage() {
+    public Image getImage() {
         return image;
     }
 
     @JsonProperty("image")
-    public void setImage(BareMetalHostSpecImage image) {
+    public void setImage(Image image) {
         this.image = image;
     }
 
     @JsonProperty("metaData")
-    public BareMetalHostSpecMetaData getMetaData() {
+    public SecretReference getMetaData() {
         return metaData;
     }
 
     @JsonProperty("metaData")
-    public void setMetaData(BareMetalHostSpecMetaData metaData) {
+    public void setMetaData(SecretReference metaData) {
         this.metaData = metaData;
     }
 
     @JsonProperty("networkData")
-    public BareMetalHostSpecNetworkData getNetworkData() {
+    public SecretReference getNetworkData() {
         return networkData;
     }
 
     @JsonProperty("networkData")
-    public void setNetworkData(BareMetalHostSpecNetworkData networkData) {
+    public void setNetworkData(SecretReference networkData) {
         this.networkData = networkData;
     }
 
@@ -311,43 +313,43 @@ public class BareMetalHostSpec implements Editable<BareMetalHostSpecBuilder> , K
     }
 
     @JsonProperty("raid")
-    public BareMetalHostSpecRaid getRaid() {
+    public RAIDConfig getRaid() {
         return raid;
     }
 
     @JsonProperty("raid")
-    public void setRaid(BareMetalHostSpecRaid raid) {
+    public void setRaid(RAIDConfig raid) {
         this.raid = raid;
     }
 
     @JsonProperty("rootDeviceHints")
-    public BareMetalHostSpecRootDeviceHints getRootDeviceHints() {
+    public RootDeviceHints getRootDeviceHints() {
         return rootDeviceHints;
     }
 
     @JsonProperty("rootDeviceHints")
-    public void setRootDeviceHints(BareMetalHostSpecRootDeviceHints rootDeviceHints) {
+    public void setRootDeviceHints(RootDeviceHints rootDeviceHints) {
         this.rootDeviceHints = rootDeviceHints;
     }
 
     @JsonProperty("taints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<BareMetalHostSpecTaints> getTaints() {
+    public List<Taint> getTaints() {
         return taints;
     }
 
     @JsonProperty("taints")
-    public void setTaints(List<BareMetalHostSpecTaints> taints) {
+    public void setTaints(List<Taint> taints) {
         this.taints = taints;
     }
 
     @JsonProperty("userData")
-    public BareMetalHostSpecUserData getUserData() {
+    public SecretReference getUserData() {
         return userData;
     }
 
     @JsonProperty("userData")
-    public void setUserData(BareMetalHostSpecUserData userData) {
+    public void setUserData(SecretReference userData) {
         this.userData = userData;
     }
 

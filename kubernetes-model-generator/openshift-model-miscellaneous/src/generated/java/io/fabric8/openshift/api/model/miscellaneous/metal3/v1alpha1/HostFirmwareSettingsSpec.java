@@ -55,9 +55,8 @@ public class HostFirmwareSettingsSpec implements Editable<HostFirmwareSettingsSp
 {
 
     @JsonProperty("settings")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializerForMap.class)
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Object> settings = new LinkedHashMap<>();
+    private Map<String, IntOrString> settings = new LinkedHashMap<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -68,20 +67,19 @@ public class HostFirmwareSettingsSpec implements Editable<HostFirmwareSettingsSp
     public HostFirmwareSettingsSpec() {
     }
 
-    public HostFirmwareSettingsSpec(Map<String, Object> settings) {
+    public HostFirmwareSettingsSpec(Map<String, IntOrString> settings) {
         super();
         this.settings = settings;
     }
 
     @JsonProperty("settings")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Map<String, Object> getSettings() {
+    public Map<String, IntOrString> getSettings() {
         return settings;
     }
 
     @JsonProperty("settings")
-    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializerForMap.class)
-    public void setSettings(Map<String, Object> settings) {
+    public void setSettings(Map<String, IntOrString> settings) {
         this.settings = settings;
     }
 

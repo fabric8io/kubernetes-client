@@ -146,6 +146,7 @@ public class SchemaUtils {
       "for",
       "import",
       "int",
+      "interface",
       "package",
       "private",
       "public",

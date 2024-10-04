@@ -22,6 +22,7 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
+import io.fabric8.kubernetes.api.model.SecretReference;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -64,7 +65,7 @@ public class BMCEventSubscriptionSpec implements Editable<BMCEventSubscriptionSp
     @JsonProperty("hostName")
     private String hostName;
     @JsonProperty("httpHeadersRef")
-    private BMCEventSubscriptionSpecHttpHeadersRef httpHeadersRef;
+    private SecretReference httpHeadersRef;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -75,7 +76,7 @@ public class BMCEventSubscriptionSpec implements Editable<BMCEventSubscriptionSp
     public BMCEventSubscriptionSpec() {
     }
 
-    public BMCEventSubscriptionSpec(String context, String destination, String hostName, BMCEventSubscriptionSpecHttpHeadersRef httpHeadersRef) {
+    public BMCEventSubscriptionSpec(String context, String destination, String hostName, SecretReference httpHeadersRef) {
         super();
         this.context = context;
         this.destination = destination;
@@ -114,12 +115,12 @@ public class BMCEventSubscriptionSpec implements Editable<BMCEventSubscriptionSp
     }
 
     @JsonProperty("httpHeadersRef")
-    public BMCEventSubscriptionSpecHttpHeadersRef getHttpHeadersRef() {
+    public SecretReference getHttpHeadersRef() {
         return httpHeadersRef;
     }
 
     @JsonProperty("httpHeadersRef")
-    public void setHttpHeadersRef(BMCEventSubscriptionSpecHttpHeadersRef httpHeadersRef) {
+    public void setHttpHeadersRef(SecretReference httpHeadersRef) {
         this.httpHeadersRef = httpHeadersRef;
     }
 

@@ -19,7 +19,7 @@ import io.fabric8.openshift.api.model.miscellaneous.apiserver.v1.APIRequestCount
 import io.fabric8.openshift.api.model.miscellaneous.apiserver.v1.APIRequestCountBuilder;
 import io.fabric8.openshift.api.model.miscellaneous.apiserver.v1.APIRequestCountList;
 import io.fabric8.openshift.api.model.miscellaneous.apiserver.v1.APIRequestCountListBuilder;
-import io.fabric8.openshift.api.model.miscellaneous.apiserver.v1.APIRequestCountStatusLast24hBuilder;
+import io.fabric8.openshift.api.model.miscellaneous.apiserver.v1.PerResourceAPIRequestLogBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.junit.jupiter.api.Test;
 
@@ -88,7 +88,7 @@ class APIRequestCountTest {
         .withNumberOfUsersToReport(10L)
         .endSpec()
         .withNewStatus()
-        .withLast24h(new APIRequestCountStatusLast24hBuilder()
+        .withLast24h(new PerResourceAPIRequestLogBuilder()
             .addNewByNode()
             .withNodeName("192.168.126.10")
             .withRequestCount(0L)

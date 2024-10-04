@@ -14,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
+import io.fabric8.kubernetes.api.model.Condition;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -59,7 +60,7 @@ public class CloudPrivateIPConfigStatus implements Editable<CloudPrivateIPConfig
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<CloudPrivateIPConfigStatusConditions> conditions = new ArrayList<>();
+    private List<Condition> conditions = new ArrayList<>();
     @JsonProperty("node")
     private String node;
     @JsonIgnore
@@ -72,7 +73,7 @@ public class CloudPrivateIPConfigStatus implements Editable<CloudPrivateIPConfig
     public CloudPrivateIPConfigStatus() {
     }
 
-    public CloudPrivateIPConfigStatus(List<CloudPrivateIPConfigStatusConditions> conditions, String node) {
+    public CloudPrivateIPConfigStatus(List<Condition> conditions, String node) {
         super();
         this.conditions = conditions;
         this.node = node;
@@ -80,12 +81,12 @@ public class CloudPrivateIPConfigStatus implements Editable<CloudPrivateIPConfig
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<CloudPrivateIPConfigStatusConditions> getConditions() {
+    public List<Condition> getConditions() {
         return conditions;
     }
 
     @JsonProperty("conditions")
-    public void setConditions(List<CloudPrivateIPConfigStatusConditions> conditions) {
+    public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
     }
 

@@ -48,11 +48,23 @@ func (g *GoGenerator) Generate() error {
 //
 // Allows to override the default kube-openapi generators.apiTypeFilterFunc with our own (see KubernetesFilterFunc).
 func (g *GoGenerator) KubernetesTargets(context *generator.Context) []generator.Target {
+	// Non-deterministic bug-fix
+	// ScopeType is sometimes considered enum and others isn't. Force it to be non enum to avoid issues
+	scopeType := context.Universe.Type(types.Name{Package: "k8s.io/api/admissionregistration/v1", Name: "ScopeType"})
+	originalComments := scopeType.CommentLines
+	scopeType.CommentLines = make([]string, 0)
+	for _, comment := range originalComments {
+		if comment != "+enum" {
+			scopeType.CommentLines = append(scopeType.CommentLines, comment)
+		}
+	}
+
 	// Create a map of all the input packages for performance (queried later on)
 	g.inputPkgs = make(map[string]bool)
 	for _, inputPackage := range context.Inputs {
 		g.inputPkgs[inputPackage] = true
 	}
+
 	// Replace original Filter function with something that includes all Kubernetes Object types regardless of the comment tag
 	openApiGenTargets := generators.GetTargets(context, &g.Args)
 	for _, target := range openApiGenTargets {

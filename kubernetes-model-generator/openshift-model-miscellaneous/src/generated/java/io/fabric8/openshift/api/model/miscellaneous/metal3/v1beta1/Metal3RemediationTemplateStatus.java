@@ -55,7 +55,7 @@ public class Metal3RemediationTemplateStatus implements Editable<Metal3Remediati
 {
 
     @JsonProperty("status")
-    private Metal3RemediationTemplateStatusStatus status;
+    private Metal3RemediationStatus status;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -66,18 +66,18 @@ public class Metal3RemediationTemplateStatus implements Editable<Metal3Remediati
     public Metal3RemediationTemplateStatus() {
     }
 
-    public Metal3RemediationTemplateStatus(Metal3RemediationTemplateStatusStatus status) {
+    public Metal3RemediationTemplateStatus(Metal3RemediationStatus status) {
         super();
         this.status = status;
     }
 
     @JsonProperty("status")
-    public Metal3RemediationTemplateStatusStatus getStatus() {
+    public Metal3RemediationStatus getStatus() {
         return status;
     }
 
     @JsonProperty("status")
-    public void setStatus(Metal3RemediationTemplateStatusStatus status) {
+    public void setStatus(Metal3RemediationStatus status) {
         this.status = status;
     }
 

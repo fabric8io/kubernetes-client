@@ -58,7 +58,7 @@ public class ProjectHelmChartRepositorySpec implements Editable<ProjectHelmChart
 {
 
     @JsonProperty("connectionConfig")
-    private ProjectHelmChartRepositorySpecConnectionConfig connectionConfig;
+    private ConnectionConfigNamespaceScoped connectionConfig;
     @JsonProperty("description")
     private String description;
     @JsonProperty("disabled")
@@ -75,7 +75,7 @@ public class ProjectHelmChartRepositorySpec implements Editable<ProjectHelmChart
     public ProjectHelmChartRepositorySpec() {
     }
 
-    public ProjectHelmChartRepositorySpec(ProjectHelmChartRepositorySpecConnectionConfig connectionConfig, String description, Boolean disabled, String name) {
+    public ProjectHelmChartRepositorySpec(ConnectionConfigNamespaceScoped connectionConfig, String description, Boolean disabled, String name) {
         super();
         this.connectionConfig = connectionConfig;
         this.description = description;
@@ -84,12 +84,12 @@ public class ProjectHelmChartRepositorySpec implements Editable<ProjectHelmChart
     }
 
     @JsonProperty("connectionConfig")
-    public ProjectHelmChartRepositorySpecConnectionConfig getConnectionConfig() {
+    public ConnectionConfigNamespaceScoped getConnectionConfig() {
         return connectionConfig;
     }
 
     @JsonProperty("connectionConfig")
-    public void setConnectionConfig(ProjectHelmChartRepositorySpecConnectionConfig connectionConfig) {
+    public void setConnectionConfig(ConnectionConfigNamespaceScoped connectionConfig) {
         this.connectionConfig = connectionConfig;
     }
 

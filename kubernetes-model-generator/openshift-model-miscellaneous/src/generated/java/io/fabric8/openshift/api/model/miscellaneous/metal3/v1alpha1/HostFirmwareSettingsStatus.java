@@ -14,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
+import io.fabric8.kubernetes.api.model.Condition;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -61,11 +62,11 @@ public class HostFirmwareSettingsStatus implements Editable<HostFirmwareSettings
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<HostFirmwareSettingsStatusConditions> conditions = new ArrayList<>();
+    private List<Condition> conditions = new ArrayList<>();
     @JsonProperty("lastUpdated")
     private String lastUpdated;
     @JsonProperty("schema")
-    private HostFirmwareSettingsStatusSchema schema;
+    private SchemaReference schema;
     @JsonProperty("settings")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> settings = new LinkedHashMap<>();
@@ -79,7 +80,7 @@ public class HostFirmwareSettingsStatus implements Editable<HostFirmwareSettings
     public HostFirmwareSettingsStatus() {
     }
 
-    public HostFirmwareSettingsStatus(List<HostFirmwareSettingsStatusConditions> conditions, String lastUpdated, HostFirmwareSettingsStatusSchema schema, Map<String, String> settings) {
+    public HostFirmwareSettingsStatus(List<Condition> conditions, String lastUpdated, SchemaReference schema, Map<String, String> settings) {
         super();
         this.conditions = conditions;
         this.lastUpdated = lastUpdated;
@@ -89,12 +90,12 @@ public class HostFirmwareSettingsStatus implements Editable<HostFirmwareSettings
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<HostFirmwareSettingsStatusConditions> getConditions() {
+    public List<Condition> getConditions() {
         return conditions;
     }
 
     @JsonProperty("conditions")
-    public void setConditions(List<HostFirmwareSettingsStatusConditions> conditions) {
+    public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
     }
 
@@ -109,12 +110,12 @@ public class HostFirmwareSettingsStatus implements Editable<HostFirmwareSettings
     }
 
     @JsonProperty("schema")
-    public HostFirmwareSettingsStatusSchema getSchema() {
+    public SchemaReference getSchema() {
         return schema;
     }
 
     @JsonProperty("schema")
-    public void setSchema(HostFirmwareSettingsStatusSchema schema) {
+    public void setSchema(SchemaReference schema) {
         this.schema = schema;
     }
 

@@ -63,7 +63,7 @@ public class CredentialsRequestStatus implements Editable<CredentialsRequestStat
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<CredentialsRequestStatusConditions> conditions = new ArrayList<>();
+    private List<CredentialsRequestCondition> conditions = new ArrayList<>();
     @JsonProperty("lastSyncCloudCredsSecretResourceVersion")
     private String lastSyncCloudCredsSecretResourceVersion;
     @JsonProperty("lastSyncGeneration")
@@ -85,7 +85,7 @@ public class CredentialsRequestStatus implements Editable<CredentialsRequestStat
     public CredentialsRequestStatus() {
     }
 
-    public CredentialsRequestStatus(List<CredentialsRequestStatusConditions> conditions, String lastSyncCloudCredsSecretResourceVersion, Long lastSyncGeneration, String lastSyncTimestamp, Object providerStatus, Boolean provisioned) {
+    public CredentialsRequestStatus(List<CredentialsRequestCondition> conditions, String lastSyncCloudCredsSecretResourceVersion, Long lastSyncGeneration, String lastSyncTimestamp, Object providerStatus, Boolean provisioned) {
         super();
         this.conditions = conditions;
         this.lastSyncCloudCredsSecretResourceVersion = lastSyncCloudCredsSecretResourceVersion;
@@ -97,12 +97,12 @@ public class CredentialsRequestStatus implements Editable<CredentialsRequestStat
 
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<CredentialsRequestStatusConditions> getConditions() {
+    public List<CredentialsRequestCondition> getConditions() {
         return conditions;
     }
 
     @JsonProperty("conditions")
-    public void setConditions(List<CredentialsRequestStatusConditions> conditions) {
+    public void setConditions(List<CredentialsRequestCondition> conditions) {
         this.conditions = conditions;
     }
 
