@@ -48,7 +48,7 @@ class CRDGeneratorExecutionExceptionHandler implements CommandLine.IExecutionExc
       return CRDGeneratorExitCode.CR_CLASS_LOADING;
     }
 
-    if (ex instanceof CRDGeneratorCLI.CustomResourceClassNotFoundException) {
+    if (ex instanceof CustomResourceClassNotFoundException) {
       commandLine.getErr().println();
       commandLine.getErr().println("Check JAR files and directories considered to be scanned " +
           "as well as your filters. At least one Custom Resource class " +

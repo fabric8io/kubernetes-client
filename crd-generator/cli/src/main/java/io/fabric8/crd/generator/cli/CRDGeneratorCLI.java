@@ -314,24 +314,4 @@ public class CRDGeneratorCLI implements Runnable {
         .setExecutionExceptionHandler(new CRDGeneratorExecutionExceptionHandler(crdGeneratorCLI));
   }
 
-  /**
-   * Exception to indicate that no custom resource classes
-   * have been retained after scanning and filtering.
-   */
-  static class CustomResourceClassNotFoundException extends CRDGeneratorCliException {
-    CustomResourceClassNotFoundException() {
-      super("No Custom Resource class retained after filtering");
-    }
-  }
-
-  private static class CRDGeneratorCliException extends RuntimeException {
-    CRDGeneratorCliException(String message) {
-      super(message);
-    }
-
-    CRDGeneratorCliException(String message, Throwable cause) {
-      super(message, cause);
-    }
-  }
-
 }
