@@ -21,25 +21,7 @@ import (
 	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/cmd/generated_openapi"
 	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/pkg/openapi"
 	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/pkg/openshift"
-	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/pkg/parser"
-	"strings"
-
-	networkattachmentdefinition "github.com/k8snetworkplumbingwg/network-attachment-definition-client/pkg/apis/k8s.cni.cncf.io/v1"
-	openshiftbaremetaloperatorv1alpha1 "github.com/metal3-io/baremetal-operator/apis/metal3.io/v1alpha1"
-	openshiftclusterapiprovidermetal3v1beta1 "github.com/metal3-io/cluster-api-provider-metal3/api/v1beta1"
-	openshiftconfigv1 "github.com/openshift/api/config/v1"
-	openshiftcloudcredentialoperatorv1 "github.com/openshift/cloud-credential-operator/pkg/apis/cloudcredential/v1"
-	openshiftclusternetworkoperatorv1 "github.com/openshift/cluster-network-operator/pkg/apis/network/v1"
-	openshiftclusternodetuningoperatorv1 "github.com/openshift/cluster-node-tuning-operator/pkg/apis/tuned/v1"
-	openshifthivev1 "github.com/openshift/hive/apis/hive/v1"
-	openshiftinstallerv1 "github.com/openshift/installer/pkg/types"
-	operatorframeworkv1 "github.com/operator-framework/api/pkg/operators/v1"
-	operatorframeworkv1alpha1 "github.com/operator-framework/api/pkg/operators/v1alpha1"
-	olm "github.com/operator-framework/operator-lifecycle-manager/pkg/package-server/apis/operators/v1"
-	prometheusoperatorv1 "github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring/v1"
 	"github.com/spf13/cobra"
-	"k8s.io/kube-openapi/pkg/common"
-	"k8s.io/kube-openapi/pkg/validation/spec"
 	"time"
 )
 
@@ -55,57 +37,19 @@ func init() {
 
 var openApiRun = func(cobraCmd *cobra.Command, args []string) {
 	startTime := time.Now()
-	fmt.Printf("OpenAPI JSON schema generation started...\n%s\n", strings.Join([]string{
-		// Force imports so that modules are present in go.mod
-		networkattachmentdefinition.SchemeGroupVersion.String(),
-		olm.SchemeGroupVersion.String(),
-		openshiftbaremetaloperatorv1alpha1.GroupVersion.String(),
-		openshiftconfigv1.SchemeGroupVersion.String(),
-		openshiftcloudcredentialoperatorv1.GroupVersion.String(),
-		openshiftclusterapiprovidermetal3v1beta1.GroupVersion.String(),
-		openshiftclusternetworkoperatorv1.GroupVersion.String(),
-		openshiftclusternodetuningoperatorv1.SchemeGroupVersion.String(),
-		openshifthivev1.SchemeGroupVersion.String(),
-		"install.openshift.io/" + openshiftinstallerv1.InstallConfigVersion + " (" + strings.Join(openshiftinstallerv1.PlatformNames, ", ") + ")",
-		operatorframeworkv1alpha1.SchemeGroupVersion.String(),
-		operatorframeworkv1.GroupVersion.String(),
-		prometheusoperatorv1.SchemeGroupVersion.String(),
-	}, "\n"))
+	fmt.Println("OpenAPI JSON schema generation started...")
 	var targetDirectory string
 	if len(args) > 0 {
 		targetDirectory = args[0]
 	} else {
 		targetDirectory = "."
 	}
-	openApiGenerator := openapi.NewGenerator(targetDirectory, "openshift-generated")
-	openShiftModule := parser.NewModule(openshift.PackagePatterns...)
-	/////////////////////////////////////////////////////////////////////////////////
-	// Ported from github.com/openshift/api/openapi/cmd/models-schema/main.go
-	refFunc := func(name string) spec.Ref {
-		return spec.MustCreateRef(fmt.Sprintf("#/definitions/%s", openShiftModule.ApiName(name)))
-	}
-	defs := generated_openapi.GetOpenAPIDefinitions(refFunc)
-	for k, v := range defs {
-		// Marc: Use gengo to complete information for the definition
-		fabric8Info := openShiftModule.ExtractInfo(k)
-		if v.Schema.ExtraProps == nil {
-			v.Schema.ExtraProps = make(map[string]interface{})
-		}
-		v.Schema.ExtraProps["x-fabric8-info"] = fabric8Info
-
-		// Replace top-level schema with v2 if a v2 schema is embedded
-		// so that the output of this program is always in OpenAPI v2.
-		// This is done by looking up an extension that marks the embedded v2
-		// schema, and, if the v2 schema is found, make it the resulting schema for
-		// the type.
-		if schema, ok := v.Schema.Extensions[common.ExtensionV2Schema]; ok {
-			if v2Schema, isOpenAPISchema := schema.(spec.Schema); isOpenAPISchema {
-				openApiGenerator.PutDefinition(openShiftModule.ApiName(k), v2Schema)
-				continue
-			}
-		}
-		openApiGenerator.PutDefinition(openShiftModule.ApiName(k), v.Schema)
-	}
+	openApiGenerator := openapi.NewGenerator(
+		targetDirectory,
+		"openshift-generated",
+		generated_openapi.GetOpenAPIDefinitions,
+		openshift.PackagePatterns...,
+	)
 	if err := openApiGenerator.WriteDefinitions(); err != nil {
 		panic(fmt.Errorf("error writing OpenAPI schema: %w", err))
 	}

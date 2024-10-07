@@ -79,9 +79,10 @@
     <skipTests>false</skipTests>
     <testExclusionPattern>**/*KubernetesTest.java</testExclusionPattern>
     <openapi.schema.kubernetes-latest>${project.parent.basedir}/openapi/schemas/kubernetes-1.30.0.json</openapi.schema.kubernetes-latest>
-    <!-- Contains Paths. Retrieve from a real cluster -->
     <openapi.schema.openshift-generated>${project.parent.basedir}/openapi/schemas/openshift-generated.json</openapi.schema.openshift-generated>
     <openapi.openshift-version>4.17</openapi.openshift-version>
+    <openapi.storageversionmigrator-revision>5c8923c5ff96ceb4435f66b986b5aec2dd0cbc22</openapi.storageversionmigrator-revision>
+    <openapi.whereabouts-revision>5bb9e1542cf987458db181bedee7c051a1538dc1</openapi.whereabouts-revision>
     <osgi.require-capability>
       osgi.extender;
       filter:="(osgi.extender=osgi.serviceloader.registrar)"

@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+// Package parser provides functionality to extract information from Go types and packages using gengo.
 package parser
 
 import (
 	"fmt"
 	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/pkg/kubernetes"
-	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/pkg/openapi"
 	"k8s.io/gengo/v2/parser"
 	"k8s.io/gengo/v2/types"
 	"strings"
@@ -73,17 +74,22 @@ func (oam *Module) ExtractInfo(definitionName string) *Fabric8Info {
 	return fabric8Info
 }
 
+// ApiName returns the completed definition name for the OpenAPI component
+// The standard definition name is usually based on the module name + package name + type name.
+// However, Kubernetes comment tags include augmented information such as the groupName and versionName.
+// This method attempts to resolve the additional information from the gengo processed/parsed package and
+// type information.
 func (oam *Module) ApiName(definitionName string) string {
 	// Don't treat k8s.io types, json is expected to contain the full Go definition name instead of the group/version
 	if strings.HasPrefix(definitionName, "k8s.io/") {
-		return openapi.FriendlyName(definitionName)
+		return FriendlyName(definitionName)
 	}
 	lastSeparator := strings.LastIndex(definitionName, ".")
 	typeName := definitionName[lastSeparator+1:]
 	pkg := oam.resolvePackage(definitionName)
 	gn := groupName(pkg)
 	if gn == "" {
-		return openapi.FriendlyName(definitionName)
+		return FriendlyName(definitionName)
 	}
 	groupParts := strings.Split(gn, ".")
 	for i, j := 0, len(groupParts)-1; i < j; i, j = i+1, j-1 {
@@ -170,4 +176,20 @@ func scope(typ *types.Type) string {
 		}
 	}
 	return scope
+}
+
+// FriendlyName returns an OpenAPI friendly name for the given name.
+// From vendor/k8s.io/apiserver/pkg/endpoints/openapi/openapi.go
+// https://github.com/kubernetes/apiserver/blob/60d1ca672541e1b30b558e32e53cad7c172345a6/pkg/endpoints/openapi/openapi.go#L136-L147
+func FriendlyName(name string) string {
+	nameParts := strings.Split(name, "/")
+	// Reverse first part. e.g., io.k8s... instead of k8s.io...
+	if len(nameParts) > 0 && strings.Contains(nameParts[0], ".") {
+		parts := strings.Split(nameParts[0], ".")
+		for i, j := 0, len(parts)-1; i < j; i, j = i+1, j-1 {
+			parts[i], parts[j] = parts[j], parts[i]
+		}
+		nameParts[0] = strings.Join(parts, ".")
+	}
+	return strings.Join(nameParts, ".")
 }
