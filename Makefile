@@ -14,7 +14,9 @@
 # limitations under the License.
 #
 
-MAVEN_OPTIONS ?=
+.DEFAULT_GOAL := quickly
+MAVEN_ARGS ?=
+override MAVEN_ARGS += -T 1C
 OPENAPI_DIR=$(realpath ./kubernetes-model-generator/openapi)
 OPENAPI_GENERATOR_DIR=$(OPENAPI_DIR)/generator
 OPENAPI_GENERATOR_BINARY_NAME=generator
@@ -23,7 +25,7 @@ OPENAPI_SCHEMAS_DIR=$(OPENAPI_DIR)/schemas
 
 .PHONY: clean-java
 clean-java:
-	mvn $(MAVEN_OPTIONS) clean
+	mvn $(MAVEN_ARGS) clean
 
 .PHONY: clean
 clean: clean-java
@@ -38,47 +40,7 @@ openapi-generate-schema:
 
 .PHONY: openapi-generate-java-classes
 openapi-generate-java-classes:
-# TODO: Do for all modules once they've all been migrated
-#	cd kubernetes-model-generator && mvn -Pgenerate clean install
-	cd kubernetes-model-generator/kubernetes-model-common && mvn clean install
-	cd kubernetes-model-generator/openapi/maven-plugin && mvn clean verify
-	cd kubernetes-model-generator/kubernetes-model-core && mvn -Pgenerate clean install
-	cd kubernetes-model-generator/kubernetes-model-rbac && mvn -Pgenerate clean install
-	cd kubernetes-model-generator/kubernetes-model-admissionregistration && mvn -Pgenerate clean install
-	cd kubernetes-model-generator/kubernetes-model-apiextensions && mvn -Pgenerate clean install
-	cd kubernetes-model-generator/kubernetes-model-apps && mvn -Pgenerate clean install
-	cd kubernetes-model-generator/kubernetes-model-autoscaling && mvn -Pgenerate clean install
-	cd kubernetes-model-generator/kubernetes-model-batch && mvn -Pgenerate clean install
-	cd kubernetes-model-generator/kubernetes-model-certificates && mvn -Pgenerate clean install
-	cd kubernetes-model-generator/kubernetes-model-coordination && mvn -Pgenerate clean install
-	cd kubernetes-model-generator/kubernetes-model-discovery && mvn -Pgenerate clean install
-	cd kubernetes-model-generator/kubernetes-model-events && mvn -Pgenerate clean install
-	cd kubernetes-model-generator/kubernetes-model-extensions && mvn -Pgenerate clean install
-	cd kubernetes-model-generator/kubernetes-model-flowcontrol && mvn -Pgenerate clean install
-	cd kubernetes-model-generator/kubernetes-model-gatewayapi && mvn -Pgenerate clean install
-	cd kubernetes-model-generator/kubernetes-model-networking && mvn -Pgenerate clean install
-	cd kubernetes-model-generator/kubernetes-model-metrics && mvn -Pgenerate clean install
-	cd kubernetes-model-generator/kubernetes-model-node && mvn -Pgenerate clean install
-	cd kubernetes-model-generator/kubernetes-model-policy && mvn -Pgenerate clean install
-	cd kubernetes-model-generator/kubernetes-model-scheduling && mvn -Pgenerate clean install
-	cd kubernetes-model-generator/kubernetes-model-storageclass && mvn -Pgenerate clean install
-	cd kubernetes-model-generator/kubernetes-model-resource && mvn -Pgenerate clean install
-	cd kubernetes-model-generator/kubernetes-model-kustomize && mvn -Pgenerate clean install
-	cd kubernetes-model-generator/openshift-model-config && mvn -Pgenerate clean install
-	cd kubernetes-model-generator/openshift-model && mvn -Pgenerate clean install
-	cd kubernetes-model-generator/openshift-model-operator && mvn -Pgenerate clean install
-	cd kubernetes-model-generator/openshift-model-miscellaneous && mvn -Pgenerate clean install
-	cd kubernetes-model-generator/openshift-model-operatorhub && mvn -Pgenerate clean install
-	cd kubernetes-model-generator/openshift-model-console && mvn -Pgenerate clean install
-	cd kubernetes-model-generator/openshift-model-autoscaling && mvn -Pgenerate clean install
-	cd kubernetes-model-generator/openshift-model-machine && mvn -Pgenerate clean install
-	cd kubernetes-model-generator/openshift-model-machineconfiguration && mvn -Pgenerate clean install
-	cd kubernetes-model-generator/openshift-model-monitoring && mvn -Pgenerate clean install
-	cd kubernetes-model-generator/openshift-model-tuned && mvn -Pgenerate clean install
-	cd kubernetes-model-generator/openshift-model-whereabouts && mvn -Pgenerate clean install
-	cd kubernetes-model-generator/openshift-model-storageversionmigrator && mvn -Pgenerate clean install
-	cd kubernetes-model-generator/openshift-model-hive && mvn -Pgenerate clean install
-	cd kubernetes-model-generator/openshift-model-installer && mvn -Pgenerate clean install
+	cd kubernetes-model-generator && mvn $(MAVEN_ARGS) -Pgenerate clean install
 
 # Legacy generation of the model: TODO: remove
 .PHONY: generate-model-legacy
@@ -89,5 +51,18 @@ generate-model-legacy:
 generate-model: openapi-generate-schema openapi-generate-java-classes generate-model-legacy
 
 .PHONY: sonar
-sonar:
-	mvn $(MAVEN_OPTIONS) clean install sonar:sonar -Psonar
+sonar: clean
+	# $(MAVEN_ARGS) ---> -T 1C won't work with sonar analysis (yet)
+	mvn -Psonar install sonar:sonar
+
+.PHONY: format-license
+format-license:
+	mvn $(MAVEN_ARGS) -N license:format
+
+.PHONY: format-java
+format-java:
+	mvn $(MAVEN_ARGS) spotless:apply -Pitests
+
+.PHONY:
+quickly: clean
+	mvn $(MAVEN_ARGS) install -DskipTests -Djacoco.skip=true
