@@ -56,8 +56,8 @@
             <configuration >
               <settings combine.self="append">
                 <urls>
-                  <url>https://raw.githubusercontent.com/kubernetes-sigs/kube-storage-version-migrator/5c8923c5ff96ceb4435f66b986b5aec2dd0cbc22/manifests/storage_migration_crd.yaml</url>
-                  <url>https://raw.githubusercontent.com/kubernetes-sigs/kube-storage-version-migrator/5c8923c5ff96ceb4435f66b986b5aec2dd0cbc22/manifests/storage_state_crd.yaml</url>
+                  <url>https://raw.githubusercontent.com/kubernetes-sigs/kube-storage-version-migrator/${openapi.storageversionmigrator-revision}/manifests/storage_migration_crd.yaml</url>
+                  <url>https://raw.githubusercontent.com/kubernetes-sigs/kube-storage-version-migrator/${openapi.storageversionmigrator-revision}/manifests/storage_state_crd.yaml</url>
                 </urls>
                 <packageMappings combine.self="append">
                   <io.k8s.migration.storagestates>io.fabric8.openshift.api.model.storageversionmigrator</io.k8s.migration.storagestates>
