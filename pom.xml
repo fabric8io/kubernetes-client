@@ -111,7 +111,7 @@
     <junit.version>5.11.2</junit.version>
     <assertj.core.version>3.26.3</assertj.core.version>
     <awaitility.version>4.2.2</awaitility.version>
-    <approvaltests.version>24.7.0</approvaltests.version>
+    <approvaltests.version>24.8.0</approvaltests.version>
     <keycloak.version>26.0.0</keycloak.version><!-- Used by CRD Generator integration tests for verifications -->
     <mockito.version>4.11.0</mockito.version>
     <mockito-inline.version>5.2.0</mockito-inline.version>
