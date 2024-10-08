@@ -17,9 +17,9 @@ package io.fabric8.volcano.test.request;
 
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
+import io.fabric8.volcano.api.model.scheduling.v1beta1.Queue;
+import io.fabric8.volcano.api.model.scheduling.v1beta1.QueueBuilder;
 import io.fabric8.volcano.client.VolcanoClient;
-import io.fabric8.volcano.scheduling.v1beta1.Queue;
-import io.fabric8.volcano.scheduling.v1beta1.QueueBuilder;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

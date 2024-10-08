@@ -19,6 +19,7 @@ package main
 import (
 	"fmt"
 	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/cmd/generated_openshift_openapi"
+	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/cmd/generated_volcano_openapi"
 	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/cmd/generated_volumesnapshot_openapi"
 	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/pkg/openapi"
 	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/pkg/packages"
@@ -46,6 +47,7 @@ type module struct {
 var modules = []module{
 	{outputName: "openshift-generated", getDefinitionsFunc: generated_openshift_openapi.GetOpenAPIDefinitions, patterns: packages.OpenShiftPackagePatterns},
 	{outputName: "io.k8s.storage.snapshot", getDefinitionsFunc: generated_volumesnapshot_openapi.GetOpenAPIDefinitions, patterns: packages.VolumeSnapshotPackagePatterns},
+	{outputName: "sh.volcano", getDefinitionsFunc: generated_volcano_openapi.GetOpenAPIDefinitions, patterns: packages.VolcanoPackagePatterns},
 }
 
 var openApiRun = func(cobraCmd *cobra.Command, args []string) {

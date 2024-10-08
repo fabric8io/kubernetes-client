@@ -15,10 +15,10 @@
  */
 package io.fabric8.volcano.examples;
 
+import io.fabric8.volcano.api.model.scheduling.v1beta1.PodGroup;
+import io.fabric8.volcano.api.model.scheduling.v1beta1.PodGroupList;
 import io.fabric8.volcano.client.DefaultVolcanoClient;
 import io.fabric8.volcano.client.NamespacedVolcanoClient;
-import io.fabric8.volcano.scheduling.v1beta1.PodGroup;
-import io.fabric8.volcano.scheduling.v1beta1.PodGroupList;
 
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
