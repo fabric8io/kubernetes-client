@@ -1,0 +1,454 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Kubernetes",
+    "version": "0.0.0"
+  },
+  "paths": null,
+  "definitions": {
+    "io.k8s.storage.snapshot.v1.VolumeSnapshot": {
+      "description": "VolumeSnapshot is a user's request for either creating a point-in-time snapshot of a persistent volume, or binding to a pre-existing snapshot.",
+      "type": "object",
+      "required": [
+        "spec"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+        },
+        "spec": {
+          "description": "spec defines the desired characteristics of a snapshot requested by a user. More info: https://kubernetes.io/docs/concepts/storage/volume-snapshots#volumesnapshots Required.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.storage.snapshot.v1.VolumeSnapshotSpec"
+        },
+        "status": {
+          "description": "status represents the current information of a snapshot. Consumers must verify binding between VolumeSnapshot and VolumeSnapshotContent objects is successful (by validating that both VolumeSnapshot and VolumeSnapshotContent point at each other) before using this object.",
+          "$ref": "#/definitions/io.k8s.storage.snapshot.v1.VolumeSnapshotStatus"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "object",
+        "Group": "snapshot.storage.k8s.io",
+        "Version": "v1",
+        "Kind": "VolumeSnapshot",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.storage.snapshot.v1.VolumeSnapshotClass": {
+      "description": "VolumeSnapshotClass specifies parameters that a underlying storage system uses when creating a volume snapshot. A specific VolumeSnapshotClass is used by specifying its name in a VolumeSnapshot object. VolumeSnapshotClasses are non-namespaced",
+      "type": "object",
+      "required": [
+        "driver",
+        "deletionPolicy"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "deletionPolicy": {
+          "description": "deletionPolicy determines whether a VolumeSnapshotContent created through the VolumeSnapshotClass should be deleted when its bound VolumeSnapshot is deleted. Supported values are \"Retain\" and \"Delete\". \"Retain\" means that the VolumeSnapshotContent and its physical snapshot on underlying storage system are kept. \"Delete\" means that the VolumeSnapshotContent and its physical snapshot on underlying storage system are deleted. Required.",
+          "type": "string",
+          "default": ""
+        },
+        "driver": {
+          "description": "driver is the name of the storage driver that handles this VolumeSnapshotClass. Required.",
+          "type": "string",
+          "default": ""
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+        },
+        "parameters": {
+          "description": "parameters is a key-value map with storage driver specific parameters for creating snapshots. These values are opaque to Kubernetes.",
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "default": ""
+          }
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "object",
+        "Group": "snapshot.storage.k8s.io",
+        "Version": "v1",
+        "Kind": "VolumeSnapshotClass",
+        "Scope": "Clustered"
+      }
+    },
+    "io.k8s.storage.snapshot.v1.VolumeSnapshotClassList": {
+      "description": "VolumeSnapshotClassList is a collection of VolumeSnapshotClasses.",
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "description": "items is the list of VolumeSnapshotClasses",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/io.k8s.storage.snapshot.v1.VolumeSnapshotClass"
+          }
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "Standard list metadata More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "list",
+        "Group": "snapshot.storage.k8s.io",
+        "Version": "v1",
+        "Kind": "VolumeSnapshotClassList",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.storage.snapshot.v1.VolumeSnapshotContent": {
+      "description": "VolumeSnapshotContent represents the actual \"on-disk\" snapshot object in the underlying storage system",
+      "type": "object",
+      "required": [
+        "spec"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+        },
+        "spec": {
+          "description": "spec defines properties of a VolumeSnapshotContent created by the underlying storage system. Required.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.storage.snapshot.v1.VolumeSnapshotContentSpec"
+        },
+        "status": {
+          "description": "status represents the current information of a snapshot.",
+          "$ref": "#/definitions/io.k8s.storage.snapshot.v1.VolumeSnapshotContentStatus"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "object",
+        "Group": "snapshot.storage.k8s.io",
+        "Version": "v1",
+        "Kind": "VolumeSnapshotContent",
+        "Scope": "Clustered"
+      }
+    },
+    "io.k8s.storage.snapshot.v1.VolumeSnapshotContentList": {
+      "description": "VolumeSnapshotContentList is a list of VolumeSnapshotContent objects",
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "description": "items is the list of VolumeSnapshotContents",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/io.k8s.storage.snapshot.v1.VolumeSnapshotContent"
+          }
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "list",
+        "Group": "snapshot.storage.k8s.io",
+        "Version": "v1",
+        "Kind": "VolumeSnapshotContentList",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.storage.snapshot.v1.VolumeSnapshotContentSource": {
+      "description": "VolumeSnapshotContentSource represents the CSI source of a snapshot. Exactly one of its members must be set. Members in VolumeSnapshotContentSource are immutable.",
+      "type": "object",
+      "properties": {
+        "snapshotHandle": {
+          "description": "snapshotHandle specifies the CSI \"snapshot_id\" of a pre-existing snapshot on the underlying storage system for which a Kubernetes object representation was (or should be) created. This field is immutable.",
+          "type": "string"
+        },
+        "volumeHandle": {
+          "description": "volumeHandle specifies the CSI \"volume_id\" of the volume from which a snapshot should be dynamically taken from. This field is immutable.",
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "snapshot.storage.k8s.io",
+        "Version": "v1",
+        "Kind": "VolumeSnapshotContentSource",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.storage.snapshot.v1.VolumeSnapshotContentSpec": {
+      "description": "VolumeSnapshotContentSpec is the specification of a VolumeSnapshotContent",
+      "type": "object",
+      "required": [
+        "volumeSnapshotRef",
+        "deletionPolicy",
+        "driver",
+        "source"
+      ],
+      "properties": {
+        "deletionPolicy": {
+          "description": "deletionPolicy determines whether this VolumeSnapshotContent and its physical snapshot on the underlying storage system should be deleted when its bound VolumeSnapshot is deleted. Supported values are \"Retain\" and \"Delete\". \"Retain\" means that the VolumeSnapshotContent and its physical snapshot on underlying storage system are kept. \"Delete\" means that the VolumeSnapshotContent and its physical snapshot on underlying storage system are deleted. For dynamically provisioned snapshots, this field will automatically be filled in by the CSI snapshotter sidecar with the \"DeletionPolicy\" field defined in the corresponding VolumeSnapshotClass. For pre-existing snapshots, users MUST specify this field when creating the\n VolumeSnapshotContent object.\nRequired.",
+          "type": "string",
+          "default": ""
+        },
+        "driver": {
+          "description": "driver is the name of the CSI driver used to create the physical snapshot on the underlying storage system. This MUST be the same as the name returned by the CSI GetPluginName() call for that driver. Required.",
+          "type": "string",
+          "default": ""
+        },
+        "source": {
+          "description": "source specifies whether the snapshot is (or should be) dynamically provisioned or already exists, and just requires a Kubernetes object representation. This field is immutable after creation. Required.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.storage.snapshot.v1.VolumeSnapshotContentSource"
+        },
+        "sourceVolumeMode": {
+          "description": "SourceVolumeMode is the mode of the volume whose snapshot is taken. Can be either “Filesystem” or “Block”. If not specified, it indicates the source volume's mode is unknown. This field is immutable. This field is an alpha field.",
+          "type": "string"
+        },
+        "volumeSnapshotClassName": {
+          "description": "name of the VolumeSnapshotClass from which this snapshot was (or will be) created. Note that after provisioning, the VolumeSnapshotClass may be deleted or recreated with different set of values, and as such, should not be referenced post-snapshot creation.",
+          "type": "string"
+        },
+        "volumeSnapshotRef": {
+          "description": "volumeSnapshotRef specifies the VolumeSnapshot object to which this VolumeSnapshotContent object is bound. VolumeSnapshot.Spec.VolumeSnapshotContentName field must reference to this VolumeSnapshotContent's name for the bidirectional binding to be valid. For a pre-existing VolumeSnapshotContent object, name and namespace of the VolumeSnapshot object MUST be provided for binding to happen. This field is immutable after creation. Required.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.api.core.v1.ObjectReference"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "snapshot.storage.k8s.io",
+        "Version": "v1",
+        "Kind": "VolumeSnapshotContentSpec",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.storage.snapshot.v1.VolumeSnapshotContentStatus": {
+      "description": "VolumeSnapshotContentStatus is the status of a VolumeSnapshotContent object Note that CreationTime, RestoreSize, ReadyToUse, and Error are in both VolumeSnapshotStatus and VolumeSnapshotContentStatus. Fields in VolumeSnapshotStatus are updated based on fields in VolumeSnapshotContentStatus. They are eventual consistency. These fields are duplicate in both objects due to the following reasons:\n  - Fields in VolumeSnapshotContentStatus can be used for filtering when importing a\n    volumesnapshot.\n  - VolumsnapshotStatus is used by end users because they cannot see VolumeSnapshotContent.\n  - CSI snapshotter sidecar is light weight as it only watches VolumeSnapshotContent\n    object, not VolumeSnapshot object.",
+      "type": "object",
+      "properties": {
+        "creationTime": {
+          "description": "creationTime is the timestamp when the point-in-time snapshot is taken by the underlying storage system. In dynamic snapshot creation case, this field will be filled in by the CSI snapshotter sidecar with the \"creation_time\" value returned from CSI \"CreateSnapshot\" gRPC call. For a pre-existing snapshot, this field will be filled with the \"creation_time\" value returned from the CSI \"ListSnapshots\" gRPC call if the driver supports it. If not specified, it indicates the creation time is unknown. The format of this field is a Unix nanoseconds time encoded as an int64. On Unix, the command `date +%s%N` returns the current time in nanoseconds since 1970-01-01 00:00:00 UTC.",
+          "type": "integer",
+          "format": "int64"
+        },
+        "error": {
+          "description": "error is the last observed error during snapshot creation, if any. Upon success after retry, this error field will be cleared.",
+          "$ref": "#/definitions/io.k8s.storage.snapshot.v1.VolumeSnapshotError"
+        },
+        "readyToUse": {
+          "description": "readyToUse indicates if a snapshot is ready to be used to restore a volume. In dynamic snapshot creation case, this field will be filled in by the CSI snapshotter sidecar with the \"ready_to_use\" value returned from CSI \"CreateSnapshot\" gRPC call. For a pre-existing snapshot, this field will be filled with the \"ready_to_use\" value returned from the CSI \"ListSnapshots\" gRPC call if the driver supports it, otherwise, this field will be set to \"True\". If not specified, it means the readiness of a snapshot is unknown.",
+          "type": "boolean"
+        },
+        "restoreSize": {
+          "description": "restoreSize represents the complete size of the snapshot in bytes. In dynamic snapshot creation case, this field will be filled in by the CSI snapshotter sidecar with the \"size_bytes\" value returned from CSI \"CreateSnapshot\" gRPC call. For a pre-existing snapshot, this field will be filled with the \"size_bytes\" value returned from the CSI \"ListSnapshots\" gRPC call if the driver supports it. When restoring a volume from this snapshot, the size of the volume MUST NOT be smaller than the restoreSize if it is specified, otherwise the restoration will fail. If not specified, it indicates that the size is unknown.",
+          "type": "integer",
+          "format": "int64"
+        },
+        "snapshotHandle": {
+          "description": "snapshotHandle is the CSI \"snapshot_id\" of a snapshot on the underlying storage system. If not specified, it indicates that dynamic snapshot creation has either failed or it is still in progress.",
+          "type": "string"
+        },
+        "volumeGroupSnapshotHandle": {
+          "description": "VolumeGroupSnapshotHandle is the CSI \"group_snapshot_id\" of a group snapshot on the underlying storage system.",
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "snapshot.storage.k8s.io",
+        "Version": "v1",
+        "Kind": "VolumeSnapshotContentStatus",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.storage.snapshot.v1.VolumeSnapshotError": {
+      "description": "VolumeSnapshotError describes an error encountered during snapshot creation.",
+      "type": "object",
+      "properties": {
+        "message": {
+          "description": "message is a string detailing the encountered error during snapshot creation if specified. NOTE: message may be logged, and it should not contain sensitive information.",
+          "type": "string"
+        },
+        "time": {
+          "description": "time is the timestamp when the error was encountered.",
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Time"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "snapshot.storage.k8s.io",
+        "Version": "v1",
+        "Kind": "VolumeSnapshotError",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.storage.snapshot.v1.VolumeSnapshotList": {
+      "description": "VolumeSnapshotList is a list of VolumeSnapshot objects",
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "description": "List of VolumeSnapshots",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/io.k8s.storage.snapshot.v1.VolumeSnapshot"
+          }
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "list",
+        "Group": "snapshot.storage.k8s.io",
+        "Version": "v1",
+        "Kind": "VolumeSnapshotList",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.storage.snapshot.v1.VolumeSnapshotSource": {
+      "description": "VolumeSnapshotSource specifies whether the underlying snapshot should be dynamically taken upon creation or if a pre-existing VolumeSnapshotContent object should be used. Exactly one of its members must be set. Members in VolumeSnapshotSource are immutable.",
+      "type": "object",
+      "properties": {
+        "persistentVolumeClaimName": {
+          "description": "persistentVolumeClaimName specifies the name of the PersistentVolumeClaim object representing the volume from which a snapshot should be created. This PVC is assumed to be in the same namespace as the VolumeSnapshot object. This field should be set if the snapshot does not exists, and needs to be created. This field is immutable.",
+          "type": "string"
+        },
+        "volumeSnapshotContentName": {
+          "description": "volumeSnapshotContentName specifies the name of a pre-existing VolumeSnapshotContent object representing an existing volume snapshot. This field should be set if the snapshot already exists and only needs a representation in Kubernetes. This field is immutable.",
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "snapshot.storage.k8s.io",
+        "Version": "v1",
+        "Kind": "VolumeSnapshotSource",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.storage.snapshot.v1.VolumeSnapshotSpec": {
+      "description": "VolumeSnapshotSpec describes the common attributes of a volume snapshot.",
+      "type": "object",
+      "required": [
+        "source"
+      ],
+      "properties": {
+        "source": {
+          "description": "source specifies where a snapshot will be created from. This field is immutable after creation. Required.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.storage.snapshot.v1.VolumeSnapshotSource"
+        },
+        "volumeSnapshotClassName": {
+          "description": "VolumeSnapshotClassName is the name of the VolumeSnapshotClass requested by the VolumeSnapshot. VolumeSnapshotClassName may be left nil to indicate that the default SnapshotClass should be used. A given cluster may have multiple default Volume SnapshotClasses: one default per CSI Driver. If a VolumeSnapshot does not specify a SnapshotClass, VolumeSnapshotSource will be checked to figure out what the associated CSI Driver is, and the default VolumeSnapshotClass associated with that CSI Driver will be used. If more than one VolumeSnapshotClass exist for a given CSI Driver and more than one have been marked as default, CreateSnapshot will fail and generate an event. Empty string is not allowed for this field.",
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "snapshot.storage.k8s.io",
+        "Version": "v1",
+        "Kind": "VolumeSnapshotSpec",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.storage.snapshot.v1.VolumeSnapshotStatus": {
+      "description": "VolumeSnapshotStatus is the status of the VolumeSnapshot Note that CreationTime, RestoreSize, ReadyToUse, and Error are in both VolumeSnapshotStatus and VolumeSnapshotContentStatus. Fields in VolumeSnapshotStatus are updated based on fields in VolumeSnapshotContentStatus. They are eventual consistency. These fields are duplicate in both objects due to the following reasons:\n  - Fields in VolumeSnapshotContentStatus can be used for filtering when importing a\n    volumesnapshot.\n  - VolumsnapshotStatus is used by end users because they cannot see VolumeSnapshotContent.\n  - CSI snapshotter sidecar is light weight as it only watches VolumeSnapshotContent\n    object, not VolumeSnapshot object.",
+      "type": "object",
+      "properties": {
+        "boundVolumeSnapshotContentName": {
+          "description": "boundVolumeSnapshotContentName is the name of the VolumeSnapshotContent object to which this VolumeSnapshot object intends to bind to. If not specified, it indicates that the VolumeSnapshot object has not been successfully bound to a VolumeSnapshotContent object yet. NOTE: To avoid possible security issues, consumers must verify binding between VolumeSnapshot and VolumeSnapshotContent objects is successful (by validating that both VolumeSnapshot and VolumeSnapshotContent point at each other) before using this object.",
+          "type": "string"
+        },
+        "creationTime": {
+          "description": "creationTime is the timestamp when the point-in-time snapshot is taken by the underlying storage system. In dynamic snapshot creation case, this field will be filled in by the snapshot controller with the \"creation_time\" value returned from CSI \"CreateSnapshot\" gRPC call. For a pre-existing snapshot, this field will be filled with the \"creation_time\" value returned from the CSI \"ListSnapshots\" gRPC call if the driver supports it. If not specified, it may indicate that the creation time of the snapshot is unknown.",
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Time"
+        },
+        "error": {
+          "description": "error is the last observed error during snapshot creation, if any. This field could be helpful to upper level controllers(i.e., application controller) to decide whether they should continue on waiting for the snapshot to be created based on the type of error reported. The snapshot controller will keep retrying when an error occurs during the snapshot creation. Upon success, this error field will be cleared.",
+          "$ref": "#/definitions/io.k8s.storage.snapshot.v1.VolumeSnapshotError"
+        },
+        "readyToUse": {
+          "description": "readyToUse indicates if the snapshot is ready to be used to restore a volume. In dynamic snapshot creation case, this field will be filled in by the snapshot controller with the \"ready_to_use\" value returned from CSI \"CreateSnapshot\" gRPC call. For a pre-existing snapshot, this field will be filled with the \"ready_to_use\" value returned from the CSI \"ListSnapshots\" gRPC call if the driver supports it, otherwise, this field will be set to \"True\". If not specified, it means the readiness of a snapshot is unknown.",
+          "type": "boolean"
+        },
+        "restoreSize": {
+          "description": "restoreSize represents the minimum size of volume required to create a volume from this snapshot. In dynamic snapshot creation case, this field will be filled in by the snapshot controller with the \"size_bytes\" value returned from CSI \"CreateSnapshot\" gRPC call. For a pre-existing snapshot, this field will be filled with the \"size_bytes\" value returned from the CSI \"ListSnapshots\" gRPC call if the driver supports it. When restoring a volume from this snapshot, the size of the volume MUST NOT be smaller than the restoreSize if it is specified, otherwise the restoration will fail. If not specified, it indicates that the size is unknown.",
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.api.resource.Quantity"
+        },
+        "volumeGroupSnapshotName": {
+          "description": "VolumeGroupSnapshotName is the name of the VolumeGroupSnapshot of which this VolumeSnapshot is a part of.",
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "snapshot.storage.k8s.io",
+        "Version": "v1",
+        "Kind": "VolumeSnapshotStatus",
+        "Scope": "Namespaced"
+      }
+    }
+  }
+}

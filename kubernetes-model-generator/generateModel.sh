@@ -32,7 +32,6 @@ declare -a modules=(
     "../extensions/tekton/generator-triggers"
     "../extensions/verticalpodautoscaler/generator-v1"
     "../extensions/volcano/generator-v1beta1"
-    "../extensions/volumesnapshot/generator"
     "../extensions/istio/generator-v1alpha3"
     "../extensions/istio/generator-v1beta1"
     "../extensions/open-cluster-management/generator-apps"
@@ -54,7 +53,6 @@ declare -a extensionModuleParents=(
     "../extensions/tekton/pom.xml"
     "../extensions/verticalpodautoscaler/pom.xml"
     "../extensions/volcano/pom.xml"
-    "../extensions/volumesnapshot/pom.xml"
     "../extensions/istio/pom.xml"
 )
 

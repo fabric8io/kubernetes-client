@@ -13,18 +13,15 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.ContainerPort;
-import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.kubernetes.api.model.Volume;
-import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -37,6 +34,7 @@ import lombok.experimental.Accessors;
     "deletionPolicy",
     "driver",
     "source",
+    "sourceVolumeMode",
     "volumeSnapshotClassName",
     "volumeSnapshotRef"
 })
@@ -53,30 +51,28 @@ import lombok.experimental.Accessors;
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
+    @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
-    @BuildableReference(PersistentVolumeClaim.class),
-    @BuildableReference(EnvVar.class),
-    @BuildableReference(ContainerPort.class),
-    @BuildableReference(Volume.class),
-    @BuildableReference(VolumeMount.class)
+    @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
 public class VolumeSnapshotContentSpec implements Editable<VolumeSnapshotContentSpecBuilder> , KubernetesResource
 {
 
     @JsonProperty("deletionPolicy")
-    private java.lang.String deletionPolicy;
+    private String deletionPolicy;
     @JsonProperty("driver")
-    private java.lang.String driver;
+    private String driver;
     @JsonProperty("source")
     private VolumeSnapshotContentSource source;
+    @JsonProperty("sourceVolumeMode")
+    private String sourceVolumeMode;
     @JsonProperty("volumeSnapshotClassName")
     private String volumeSnapshotClassName;
     @JsonProperty("volumeSnapshotRef")
-    private io.fabric8.kubernetes.api.model.ObjectReference volumeSnapshotRef;
+    private ObjectReference volumeSnapshotRef;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -85,32 +81,33 @@ public class VolumeSnapshotContentSpec implements Editable<VolumeSnapshotContent
     public VolumeSnapshotContentSpec() {
     }
 
-    public VolumeSnapshotContentSpec(java.lang.String deletionPolicy, java.lang.String driver, VolumeSnapshotContentSource source, String volumeSnapshotClassName, io.fabric8.kubernetes.api.model.ObjectReference volumeSnapshotRef) {
+    public VolumeSnapshotContentSpec(String deletionPolicy, String driver, VolumeSnapshotContentSource source, String sourceVolumeMode, String volumeSnapshotClassName, ObjectReference volumeSnapshotRef) {
         super();
         this.deletionPolicy = deletionPolicy;
         this.driver = driver;
         this.source = source;
+        this.sourceVolumeMode = sourceVolumeMode;
         this.volumeSnapshotClassName = volumeSnapshotClassName;
         this.volumeSnapshotRef = volumeSnapshotRef;
     }
 
     @JsonProperty("deletionPolicy")
-    public java.lang.String getDeletionPolicy() {
+    public String getDeletionPolicy() {
         return deletionPolicy;
     }
 
     @JsonProperty("deletionPolicy")
-    public void setDeletionPolicy(java.lang.String deletionPolicy) {
+    public void setDeletionPolicy(String deletionPolicy) {
         this.deletionPolicy = deletionPolicy;
     }
 
     @JsonProperty("driver")
-    public java.lang.String getDriver() {
+    public String getDriver() {
         return driver;
     }
 
     @JsonProperty("driver")
-    public void setDriver(java.lang.String driver) {
+    public void setDriver(String driver) {
         this.driver = driver;
     }
 
@@ -124,6 +121,16 @@ public class VolumeSnapshotContentSpec implements Editable<VolumeSnapshotContent
         this.source = source;
     }
 
+    @JsonProperty("sourceVolumeMode")
+    public String getSourceVolumeMode() {
+        return sourceVolumeMode;
+    }
+
+    @JsonProperty("sourceVolumeMode")
+    public void setSourceVolumeMode(String sourceVolumeMode) {
+        this.sourceVolumeMode = sourceVolumeMode;
+    }
+
     @JsonProperty("volumeSnapshotClassName")
     public String getVolumeSnapshotClassName() {
         return volumeSnapshotClassName;
@@ -135,12 +142,12 @@ public class VolumeSnapshotContentSpec implements Editable<VolumeSnapshotContent
     }
 
     @JsonProperty("volumeSnapshotRef")
-    public io.fabric8.kubernetes.api.model.ObjectReference getVolumeSnapshotRef() {
+    public ObjectReference getVolumeSnapshotRef() {
         return volumeSnapshotRef;
     }
 
     @JsonProperty("volumeSnapshotRef")
-    public void setVolumeSnapshotRef(io.fabric8.kubernetes.api.model.ObjectReference volumeSnapshotRef) {
+    public void setVolumeSnapshotRef(ObjectReference volumeSnapshotRef) {
         this.volumeSnapshotRef = volumeSnapshotRef;
     }
 
@@ -155,16 +162,16 @@ public class VolumeSnapshotContentSpec implements Editable<VolumeSnapshotContent
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 
