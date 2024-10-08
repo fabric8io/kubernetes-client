@@ -18,10 +18,12 @@ package main
 
 import (
 	"fmt"
-	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/cmd/generated_openapi"
+	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/cmd/generated_openshift_openapi"
+	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/cmd/generated_volumesnapshot_openapi"
 	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/pkg/openapi"
-	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/pkg/openshift"
+	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/pkg/packages"
 	"github.com/spf13/cobra"
+	"k8s.io/kube-openapi/pkg/common"
 	"time"
 )
 
@@ -35,6 +37,17 @@ func init() {
 	rootCmd.AddCommand(openApi)
 }
 
+type module struct {
+	outputName         string
+	getDefinitionsFunc func(callback common.ReferenceCallback) map[string]common.OpenAPIDefinition
+	patterns           []string
+}
+
+var modules = []module{
+	{outputName: "openshift-generated", getDefinitionsFunc: generated_openshift_openapi.GetOpenAPIDefinitions, patterns: packages.OpenShiftPackagePatterns},
+	{outputName: "io.k8s.storage.snapshot", getDefinitionsFunc: generated_volumesnapshot_openapi.GetOpenAPIDefinitions, patterns: packages.VolumeSnapshotPackagePatterns},
+}
+
 var openApiRun = func(cobraCmd *cobra.Command, args []string) {
 	startTime := time.Now()
 	fmt.Println("OpenAPI JSON schema generation started...")
@@ -44,14 +57,13 @@ var openApiRun = func(cobraCmd *cobra.Command, args []string) {
 	} else {
 		targetDirectory = "."
 	}
-	openApiGenerator := openapi.NewGenerator(
-		targetDirectory,
-		"openshift-generated",
-		generated_openapi.GetOpenAPIDefinitions,
-		openshift.PackagePatterns...,
-	)
-	if err := openApiGenerator.WriteDefinitions(); err != nil {
-		panic(fmt.Errorf("error writing OpenAPI schema: %w", err))
+	for _, m := range modules {
+		taskStartTime := time.Now()
+		openApiGenerator := openapi.NewGenerator(targetDirectory, m.outputName, m.getDefinitionsFunc, m.patterns...)
+		if err := openApiGenerator.WriteDefinitions(); err != nil {
+			panic(fmt.Errorf("OpenAPI JSON generation error (%s): %w", m.outputName, err))
+		}
+		fmt.Printf("OpenAPI JSON generation for (%s) completed in %v\n", m.outputName, time.Since(taskStartTime))
 	}
 	fmt.Printf("OpenAPI JSON schema generation completed in %v\n", time.Since(startTime))
 }

@@ -24,6 +24,7 @@ import (
 	"k8s.io/gengo/v2/types"
 	openapiargs "k8s.io/kube-openapi/cmd/openapi-gen/args"
 	"k8s.io/kube-openapi/pkg/generators"
+	"reflect"
 	"strings"
 )
 
@@ -56,6 +57,22 @@ func (g *GoGenerator) KubernetesTargets(context *generator.Context) []generator.
 	for _, comment := range originalComments {
 		if comment != "+enum" {
 			scopeType.CommentLines = append(scopeType.CommentLines, comment)
+		}
+	}
+	// Consider swaggerignore tag and add json:omitted so that kube-openapi ignores the field
+	for _, pkg := range context.Universe {
+		for _, t := range pkg.Types {
+			for im, m := range t.Members {
+				swaggerIgnore := reflect.StructTag(m.Tags).Get("swaggerignore")
+				if swaggerIgnore != "" {
+					jsonTag := reflect.StructTag(m.Tags).Get("json")
+					if jsonTag == "" {
+						t.Members[im].Tags = m.Tags + " json:\"-\""
+					} else {
+						t.Members[im].Tags = strings.Replace(m.Tags, jsonTag, ",omitted", 1)
+					}
+				}
+			}
 		}
 	}
 
