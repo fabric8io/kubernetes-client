@@ -13,8 +13,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.ContainerPort;
-import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
@@ -24,8 +22,6 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.kubernetes.api.model.Volume;
-import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -39,7 +35,8 @@ import lombok.experimental.Accessors;
     "error",
     "readyToUse",
     "restoreSize",
-    "snapshotHandle"
+    "snapshotHandle",
+    "volumeGroupSnapshotHandle"
 })
 @ToString
 @EqualsAndHashCode
@@ -56,11 +53,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
-    @BuildableReference(PersistentVolumeClaim.class),
-    @BuildableReference(EnvVar.class),
-    @BuildableReference(ContainerPort.class),
-    @BuildableReference(Volume.class),
-    @BuildableReference(VolumeMount.class)
+    @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
 public class VolumeSnapshotContentStatus implements Editable<VolumeSnapshotContentStatusBuilder> , KubernetesResource
@@ -76,8 +69,10 @@ public class VolumeSnapshotContentStatus implements Editable<VolumeSnapshotConte
     private Long restoreSize;
     @JsonProperty("snapshotHandle")
     private String snapshotHandle;
+    @JsonProperty("volumeGroupSnapshotHandle")
+    private String volumeGroupSnapshotHandle;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -86,13 +81,14 @@ public class VolumeSnapshotContentStatus implements Editable<VolumeSnapshotConte
     public VolumeSnapshotContentStatus() {
     }
 
-    public VolumeSnapshotContentStatus(Long creationTime, VolumeSnapshotError error, Boolean readyToUse, Long restoreSize, String snapshotHandle) {
+    public VolumeSnapshotContentStatus(Long creationTime, VolumeSnapshotError error, Boolean readyToUse, Long restoreSize, String snapshotHandle, String volumeGroupSnapshotHandle) {
         super();
         this.creationTime = creationTime;
         this.error = error;
         this.readyToUse = readyToUse;
         this.restoreSize = restoreSize;
         this.snapshotHandle = snapshotHandle;
+        this.volumeGroupSnapshotHandle = volumeGroupSnapshotHandle;
     }
 
     @JsonProperty("creationTime")
@@ -145,6 +141,16 @@ public class VolumeSnapshotContentStatus implements Editable<VolumeSnapshotConte
         this.snapshotHandle = snapshotHandle;
     }
 
+    @JsonProperty("volumeGroupSnapshotHandle")
+    public String getVolumeGroupSnapshotHandle() {
+        return volumeGroupSnapshotHandle;
+    }
+
+    @JsonProperty("volumeGroupSnapshotHandle")
+    public void setVolumeGroupSnapshotHandle(String volumeGroupSnapshotHandle) {
+        this.volumeGroupSnapshotHandle = volumeGroupSnapshotHandle;
+    }
+
     @JsonIgnore
     public VolumeSnapshotContentStatusBuilder edit() {
         return new VolumeSnapshotContentStatusBuilder(this);
@@ -156,16 +162,16 @@ public class VolumeSnapshotContentStatus implements Editable<VolumeSnapshotConte
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 

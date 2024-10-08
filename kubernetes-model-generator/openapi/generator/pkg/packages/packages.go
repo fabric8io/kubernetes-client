@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-// Package openshift provides OpenShift related functionality
-package openshift
+// Package packages provides the patterns required for OpenAPI generation
+package packages
 
-// PackagePatterns are the patterns required for OpenShift GO and JSON OpenAPI generation
-var PackagePatterns = []string{
+// OpenShiftPackagePatterns are the patterns required for OpenShift GO and JSON OpenAPI generation
+var OpenShiftPackagePatterns = []string{
 	// Always import Kubernetes base packages as they are required by the rest of APIs
 	"k8s.io/apimachinery/pkg/apis/meta/v...",
 	"k8s.io/api/.../v...",
@@ -50,4 +50,12 @@ var PackagePatterns = []string{
 	"github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring/v...",
 	// Support types required by some APIs such as (github.com/openshift/hive)
 	"github.com/openshift/custom-resource-status/conditions/v...",
+}
+
+var ChaosMeshPackagePatterns = []string{
+	"github.com/chaos-mesh/chaos-mesh/api/v1alpha1",
+}
+
+var VolumeSnapshotPackagePatterns = []string{
+	"github.com/kubernetes-csi/external-snapshotter/client/v8/apis/volumesnapshot/v1",
 }

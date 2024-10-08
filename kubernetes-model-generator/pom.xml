@@ -80,6 +80,7 @@
     <testExclusionPattern>**/*KubernetesTest.java</testExclusionPattern>
     <openapi.schema.kubernetes-latest>${project.parent.basedir}/openapi/schemas/kubernetes-1.30.0.json</openapi.schema.kubernetes-latest>
     <openapi.schema.openshift-generated>${project.parent.basedir}/openapi/schemas/openshift-generated.json</openapi.schema.openshift-generated>
+    <openapi.schema.io.k8s.storage.snapshot>${project.basedir}/../../../kubernetes-model-generator/openapi/schemas/io.k8s.storage.snapshot.json</openapi.schema.io.k8s.storage.snapshot>
     <openapi.openshift-version>4.17</openapi.openshift-version>
     <openapi.storageversionmigrator-revision>5c8923c5ff96ceb4435f66b986b5aec2dd0cbc22</openapi.storageversionmigrator-revision>
     <openapi.whereabouts-revision>5bb9e1542cf987458db181bedee7c051a1538dc1</openapi.whereabouts-revision>
@@ -168,6 +169,7 @@
                 <io.k8s.client-go.tools.clientcmd.api.v1>io.fabric8.kubernetes.api.model</io.k8s.client-go.tools.clientcmd.api.v1>
                 <io.k8s.kube-aggregator.pkg.apis.apiregistration.v1>io.fabric8.kubernetes.api.model</io.k8s.kube-aggregator.pkg.apis.apiregistration.v1>
                 <io.k8s.sigs.cluster-api.api>io.fabric8.kubernetes.api.model.clusterapi</io.k8s.sigs.cluster-api.api>
+                <io.k8s.storage.snapshot.v1>io.fabric8.volumesnapshot.api.model</io.k8s.storage.snapshot.v1>
                 <io.openshift>io.fabric8.openshift.api.model</io.openshift>
                 <io.openshift.apiserver>io.fabric8.openshift.api.model.miscellaneous.apiserver</io.openshift.apiserver>
                 <io.openshift.apps.v1>io.fabric8.openshift.api.model</io.openshift.apps.v1>
