@@ -34,12 +34,6 @@
     <name>Kube API Test Parent</name>
     <description>Library to support testing against Kubernetes API server</description>
 
-    <properties>
-        <maven.compiler.release>11</maven.compiler.release>
-        <maven.compiler.target>11</maven.compiler.target>
-        <maven.compiler.source>11</maven.compiler.source>
-    </properties>
-
     <modules>
         <module>core</module>
         <module>client-inject</module>

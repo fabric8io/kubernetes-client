@@ -42,36 +42,7 @@ env:
 #  contents: read
 
 jobs:
-  release-java-8:
-    name: Release Java 8 ${{ github.event.inputs.tag }}
-    # Cheap way to prevent accidental releases
-    # Modify the list to add users with release permissions
-    if: contains('["manusa","rohanKanojia"]', github.actor)
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.inputs.tag }}
-      - name: Cache .m2 registry
-        uses: actions/cache@v4
-        with:
-          path: ~/.m2/repository
-          key: cache-release-${{ github.sha }}-${{ github.run_id }}
-      - name: Setup Java 8
-        uses: actions/setup-java@v4
-        with:
-          java-version: 8
-          distribution: ${{ github.event.inputs.java_distribution }}
-          server-id: ossrh
-          server-username: OSSRHUSERNAME
-          server-password: OSSRHPASSWORD
-          gpg-private-key: ${{ secrets.SIGNINGKEY }}
-          gpg-passphrase: SIGNINGPASSWORD
-      - name: Build and release Java 8 modules
-        run: ./mvnw ${MAVEN_ARGS} ${RELEASE_MAVEN_ARGS} clean deploy
   release-java-11:
-    needs: release-java-8
     name: Release Java 11 ${{ github.event.inputs.tag }}
     # Cheap way to prevent accidental releases
     # Modify the list to add users with release permissions
@@ -97,17 +68,5 @@ jobs:
           server-password: OSSRHPASSWORD
           gpg-private-key: ${{ secrets.SIGNINGKEY }}
           gpg-passphrase: SIGNINGPASSWORD
-      - name: Build and release Java 11 modules
-        run: |
-          ./mvnw ${MAVEN_ARGS} ${RELEASE_MAVEN_ARGS}                                                                    \
-            -pl "httpclient-jdk"                                                                                        \
-            -pl "httpclient-jetty"                                                                                      \
-            -pl "junit/kube-api-test"                                                                                   \
-            -pl "junit/kube-api-test/core"                                                                              \
-            -pl "junit/kube-api-test/client-inject"                                                                     \
-            clean deploy
-      - name: Build and release BOM
-        run: |
-          ./mvnw ${MAVEN_ARGS} ${RELEASE_MAVEN_ARGS} clean sundr:generate-bom                                                                                                                                                                                                                                                                              &&
-          ./mvnw ${MAVEN_ARGS} ${RELEASE_MAVEN_ARGS} gpg:sign-and-deploy-file -Prelease -Dgpg.passphrase=${{ secrets.SIGNINGPASSWORD }} -DrepositoryId=ossrh -Durl=https://oss.sonatype.org/service/local/staging/deploy/maven2/ -DpomFile="target/classes/kubernetes-client-bom/pom.xml" -Dfile="target/classes/kubernetes-client-bom/pom.xml"            &&
-          ./mvnw ${MAVEN_ARGS} ${RELEASE_MAVEN_ARGS} gpg:sign-and-deploy-file -Prelease -Dgpg.passphrase=${{ secrets.SIGNINGPASSWORD }} -DrepositoryId=ossrh -Durl=https://oss.sonatype.org/service/local/staging/deploy/maven2/ -DpomFile="target/classes/kubernetes-client-bom-with-deps/pom.xml" -Dfile="target/classes/kubernetes-client-bom-with-deps/pom.xml"
+      - name: Build and release Java 8 modules
+        run: ./mvnw ${MAVEN_ARGS} ${RELEASE_MAVEN_ARGS} clean deploy

@@ -29,7 +29,6 @@
   <name>Fabric8 :: Kubernetes :: HttpClient :: Jetty</name>
 
   <properties>
-    <maven.compiler.release>11</maven.compiler.release>
     <osgi.require-capability>
       osgi.extender;
       filter:="(osgi.extender=osgi.serviceloader.registrar)",

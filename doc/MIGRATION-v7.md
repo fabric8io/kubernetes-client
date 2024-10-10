@@ -1,6 +1,7 @@
 # Migration from 6.x to 7.x
 
 ## Contents
+- [Java baseline set to Java 11](#java-11)
 - [Bouncy Castle is no longer needed](#bouncy-castle)
 - [Apache Felix SCR Annotations removed](#apache-felix-scr-annotations)
 - [Model Changes](#model-changes)
@@ -19,6 +20,13 @@
 >
 > We value your feedback and will work to address your issue promptly.
 > Your contribution is essential to improving our documentation, making our migration process smoother for everyone!
+
+## Java baseline set to Java 11 <a href="#java-11" id="java-11"/>
+
+Starting from version 7.0.0, you will need a Java 11+ runtime (using the latest Java release is always encouraged) to use the Fabric8 Kubernetes Client.
+
+It's been more than 10 years since Java 8 was released, and it's no longer supported by most vendors.
+We made our best effort to keep the client compatible with Java 8 for as long as possible, but it's time to move on.
 
 ## Bouncy Castle is no longer needed <a href="#bouncy-castle" id="bouncy-castle"/>
 
