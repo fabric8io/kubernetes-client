@@ -25,6 +25,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import java.util.Collections;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
@@ -47,7 +48,7 @@ class ConfigConstructorTest {
         null, null, null,
         null, null, null,
         null, null, null, null,
-        null, null, false);
+        null, null, false, null);
 
     // Then
     assertThat(config)
@@ -190,7 +191,7 @@ class ConfigConstructorTest {
           null, null, null,
           null, null, null,
           null, null, null, null,
-          null, true, true);
+          null, true, true, null);
 
       // Then
       assertThat(config)
@@ -237,7 +238,8 @@ class ConfigConstructorTest {
           .hasFieldOrPropertyWithValue("proxyPassword", "autoconfigured-proxyPassword")
           .hasFieldOrPropertyWithValue("noProxy",
               new String[] { "autoconfigured-no-proxy-url1.io", "autoconfigured-no-proxy-url2.io" })
-          .hasFieldOrPropertyWithValue("autoOAuthToken", "autoconfigured-token");
+          .hasFieldOrPropertyWithValue("autoOAuthToken", "autoconfigured-token")
+          .hasFieldOrPropertyWithValue("files", Collections.singletonList(Config.DEFAULT_KUBECONFIG_FILE));
     }
 
     @Test
@@ -256,7 +258,7 @@ class ConfigConstructorTest {
           null, null, null,
           null, null, null,
           null, null, null, null,
-          null, false, true);
+          null, false, true, null);
 
       assertThat(config)
           .isNotNull()
@@ -299,7 +301,8 @@ class ConfigConstructorTest {
           .hasFieldOrPropertyWithValue("proxyUsername", null)
           .hasFieldOrPropertyWithValue("proxyPassword", null)
           .hasFieldOrPropertyWithValue("noProxy", null)
-          .hasFieldOrPropertyWithValue("autoOAuthToken", null);
+          .hasFieldOrPropertyWithValue("autoOAuthToken", null)
+          .hasFieldOrPropertyWithValue("files", Collections.<File> emptyList());
     }
   }
 
@@ -364,7 +367,7 @@ class ConfigConstructorTest {
               null, null, null,
               null, null, null,
               null, null, null, null,
-              null, true, true);
+              null, true, true, null);
 
           // Then
           assertThat(config)
@@ -411,7 +414,8 @@ class ConfigConstructorTest {
               .hasFieldOrPropertyWithValue("proxyPassword", "autoconfigured-proxyPassword")
               .hasFieldOrPropertyWithValue("noProxy",
                   new String[] { "autoconfigured-no-proxy-url1.io", "autoconfigured-no-proxy-url2.io" })
-              .hasFieldOrPropertyWithValue("autoOAuthToken", "autoconfigured-token");
+              .hasFieldOrPropertyWithValue("autoOAuthToken", "autoconfigured-token")
+              .hasFieldOrPropertyWithValue("files", Collections.singletonList(Config.DEFAULT_KUBECONFIG_FILE));
         } finally {
           System.clearProperty("kubernetes.master");
           System.clearProperty("kubernetes.namespace");
@@ -472,7 +476,7 @@ class ConfigConstructorTest {
               null, null, null,
               null, null, null,
               null, null, null, null,
-              null, true, true);
+              null, true, true, null);
 
           // Then
           assertThat(config)
@@ -513,7 +517,7 @@ class ConfigConstructorTest {
               null, null, null,
               null, null, null,
               null, null, null, null,
-              null, true, true);
+              null, true, true, null);
 
           // Then
           assertThat(config)
@@ -563,7 +567,7 @@ class ConfigConstructorTest {
                   null, null, null,
                   null, null, null,
                   null, null, null, null,
-                  null, true, false));
+                  null, true, false, null));
         } finally {
           System.clearProperty("kubeconfig");
         }

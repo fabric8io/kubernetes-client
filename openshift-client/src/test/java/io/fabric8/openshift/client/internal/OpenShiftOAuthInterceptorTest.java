@@ -16,9 +16,11 @@
 package io.fabric8.openshift.client.internal;
 
 import io.fabric8.kubernetes.api.model.ContextBuilder;
+import io.fabric8.kubernetes.api.model.NamedAuthInfo;
 import io.fabric8.kubernetes.api.model.NamedAuthInfoBuilder;
 import io.fabric8.kubernetes.api.model.NamedContextBuilder;
 import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.KubeConfigFile;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.HttpResponse;
@@ -34,6 +36,7 @@ import java.io.File;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
@@ -175,10 +178,16 @@ class OpenShiftOAuthInterceptorTest {
               .withUser("testuser")
               .build())
           .build());
-      when(config.getFile()).thenReturn(new File("kube/config"));
-      when(kubeConfigContent.getUsers()).thenReturn(Collections.singletonList(new NamedAuthInfoBuilder()
-          .withName("testuser")
-          .build()));
+      List<NamedAuthInfo> users = Collections.singletonList(
+          new NamedAuthInfoBuilder()
+              .withName("testuser")
+              .build());
+      when(kubeConfigContent.getUsers()).thenReturn(users);
+      File file = new File("kube/config");
+      when(config.getFiles()).thenReturn(Collections.singletonList(file));
+      KubeConfigFile kubeConfigFile = mockKubeConfigFile(file, kubeConfigContent);
+      when(config.getFileWithAuthInfo(any())).thenReturn(kubeConfigFile);
+      kubeConfigUtilsMockedStatic.when(() -> KubeConfigUtils.parseConfig(any())).thenReturn(kubeConfigContent);
       when(client.newBuilder()).thenReturn(derivedClientBuilder);
       when(client.newHttpRequestBuilder()).thenReturn(builder);
       when(builder.url(any())).thenReturn(builder);
@@ -193,7 +202,6 @@ class OpenShiftOAuthInterceptorTest {
       when(client.sendAsync(any(), any()))
           .thenReturn(authEndpointResponseCompletableFuture)
           .thenReturn(authResponseCompletableFuture);
-      kubeConfigUtilsMockedStatic.when(() -> KubeConfigUtils.parseConfig(any())).thenReturn(kubeConfigContent);
       OpenShiftOAuthInterceptor interceptor = new OpenShiftOAuthInterceptor(client, config);
 
       // When
@@ -204,8 +212,16 @@ class OpenShiftOAuthInterceptorTest {
 
       // Then
       assertThat(result).isCompletedWithValue(true);
-      kubeConfigUtilsMockedStatic.verify(() -> KubeConfigUtils.persistKubeConfigIntoFile(any(), anyString()));
+      kubeConfigUtilsMockedStatic.verify(
+          () -> KubeConfigUtils.persistKubeConfigIntoFile(any(io.fabric8.kubernetes.api.model.Config.class), anyString()));
     }
+  }
+
+  private static KubeConfigFile mockKubeConfigFile(File file, io.fabric8.kubernetes.api.model.Config kubeConfigContent) {
+    KubeConfigFile kubeConfigFile = mock(KubeConfigFile.class, RETURNS_SELF);
+    when(kubeConfigFile.getFile()).thenReturn(file);
+    when(kubeConfigFile.getConfig()).thenReturn(kubeConfigContent);
+    return kubeConfigFile;
   }
 
   @Test
