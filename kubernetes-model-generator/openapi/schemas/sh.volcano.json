@@ -1,0 +1,1759 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Kubernetes",
+    "version": "0.0.0"
+  },
+  "paths": null,
+  "definitions": {
+    "sh.volcano.batch.v1alpha1.DependsOn": {
+      "description": "DependsOn represents the tasks that this task depends on and their dependencies",
+      "type": "object",
+      "properties": {
+        "iteration": {
+          "description": "This field specifies that when there are multiple dependent tasks, as long as one task becomes the specified state, the task scheduling is triggered or all tasks must be changed to the specified state to trigger the task scheduling",
+          "type": "string"
+        },
+        "name": {
+          "description": "Indicates the name of the tasks that this task depends on, which can depend on multiple tasks",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "default": ""
+          }
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "batch.volcano.sh",
+        "Version": "v1alpha1",
+        "Kind": "DependsOn",
+        "Scope": "Namespaced"
+      }
+    },
+    "sh.volcano.batch.v1alpha1.Job": {
+      "description": "Job defines the volcano job.",
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+        },
+        "spec": {
+          "description": "Specification of the desired behavior of the volcano job, including the minAvailable",
+          "default": {},
+          "$ref": "#/definitions/sh.volcano.batch.v1alpha1.JobSpec"
+        },
+        "status": {
+          "description": "Current status of the volcano Job",
+          "default": {},
+          "$ref": "#/definitions/sh.volcano.batch.v1alpha1.JobStatus"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "object",
+        "Group": "batch.volcano.sh",
+        "Version": "v1alpha1",
+        "Kind": "Job",
+        "Scope": "Namespaced"
+      }
+    },
+    "sh.volcano.batch.v1alpha1.JobCondition": {
+      "description": "JobCondition contains details for the current condition of this job.",
+      "type": "object",
+      "required": [
+        "status"
+      ],
+      "properties": {
+        "lastTransitionTime": {
+          "description": "Last time the condition transitioned from one phase to another.",
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Time"
+        },
+        "status": {
+          "description": "Status is the new phase of job after performing the state's action.",
+          "type": "string",
+          "default": ""
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "batch.volcano.sh",
+        "Version": "v1alpha1",
+        "Kind": "JobCondition",
+        "Scope": "Namespaced"
+      }
+    },
+    "sh.volcano.batch.v1alpha1.JobList": {
+      "description": "JobList defines the list of jobs.",
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/sh.volcano.batch.v1alpha1.Job"
+          }
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "list",
+        "Group": "batch.volcano.sh",
+        "Version": "v1alpha1",
+        "Kind": "JobList",
+        "Scope": "Namespaced"
+      }
+    },
+    "sh.volcano.batch.v1alpha1.JobSpec": {
+      "description": "JobSpec describes how the job execution will look like and when it will actually run.",
+      "type": "object",
+      "properties": {
+        "maxRetry": {
+          "description": "Specifies the maximum number of retries before marking this Job failed. Defaults to 3.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "minAvailable": {
+          "description": "The minimal available pods to run for this Job Defaults to the summary of tasks' replicas",
+          "type": "integer",
+          "format": "int32"
+        },
+        "minSuccess": {
+          "description": "The minimal success pods to run for this Job",
+          "type": "integer",
+          "format": "int32"
+        },
+        "plugins": {
+          "description": "Specifies the plugin of job Key is plugin name, value is the arguments of the plugin",
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "default": ""
+            }
+          }
+        },
+        "policies": {
+          "description": "Specifies the default lifecycle of tasks",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/sh.volcano.batch.v1alpha1.LifecyclePolicy"
+          }
+        },
+        "priorityClassName": {
+          "description": "If specified, indicates the job's priority.",
+          "type": "string"
+        },
+        "queue": {
+          "description": "Specifies the queue that will be used in the scheduler, \"default\" queue is used this leaves empty.",
+          "type": "string"
+        },
+        "runningEstimate": {
+          "description": "Running Estimate is a user running duration estimate for the job Default to nil",
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Duration"
+        },
+        "schedulerName": {
+          "description": "SchedulerName is the default value of `tasks.template.spec.schedulerName`.",
+          "type": "string"
+        },
+        "tasks": {
+          "description": "Tasks specifies the task specification of Job",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/sh.volcano.batch.v1alpha1.TaskSpec"
+          }
+        },
+        "ttlSecondsAfterFinished": {
+          "description": "ttlSecondsAfterFinished limits the lifetime of a Job that has finished execution (either Completed or Failed). If this field is set, ttlSecondsAfterFinished after the Job finishes, it is eligible to be automatically deleted. If this field is unset, the Job won't be automatically deleted. If this field is set to zero, the Job becomes eligible to be deleted immediately after it finishes.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "volumes": {
+          "description": "The volumes mount on Job",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/sh.volcano.batch.v1alpha1.VolumeSpec"
+          }
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "batch.volcano.sh",
+        "Version": "v1alpha1",
+        "Kind": "JobSpec",
+        "Scope": "Namespaced"
+      }
+    },
+    "sh.volcano.batch.v1alpha1.JobState": {
+      "description": "JobState contains details for the current state of the job.",
+      "type": "object",
+      "properties": {
+        "lastTransitionTime": {
+          "description": "Last time the condition transit from one phase to another.",
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Time"
+        },
+        "message": {
+          "description": "Human-readable message indicating details about last transition.",
+          "type": "string"
+        },
+        "phase": {
+          "description": "The phase of Job.",
+          "type": "string"
+        },
+        "reason": {
+          "description": "Unique, one-word, CamelCase reason for the phase's last transition.",
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "batch.volcano.sh",
+        "Version": "v1alpha1",
+        "Kind": "JobState",
+        "Scope": "Namespaced"
+      }
+    },
+    "sh.volcano.batch.v1alpha1.JobStatus": {
+      "description": "JobStatus represents the current status of a Job.",
+      "type": "object",
+      "properties": {
+        "conditions": {
+          "description": "Which conditions caused the current job state.",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/sh.volcano.batch.v1alpha1.JobCondition"
+          },
+          "x-kubernetes-patch-merge-key": "status",
+          "x-kubernetes-patch-strategy": "merge"
+        },
+        "controlledResources": {
+          "description": "The resources that controlled by this job, e.g. Service, ConfigMap",
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "default": ""
+          }
+        },
+        "failed": {
+          "description": "The number of pods which reached phase Failed.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "minAvailable": {
+          "description": "The minimal available pods to run for this Job",
+          "type": "integer",
+          "format": "int32"
+        },
+        "pending": {
+          "description": "The number of pending pods.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "retryCount": {
+          "description": "The number of Job retries.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "running": {
+          "description": "The number of running pods.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "runningDuration": {
+          "description": "The job running duration is the length of time from job running to complete.",
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Duration"
+        },
+        "state": {
+          "description": "Current state of Job.",
+          "default": {},
+          "$ref": "#/definitions/sh.volcano.batch.v1alpha1.JobState"
+        },
+        "succeeded": {
+          "description": "The number of pods which reached phase Succeeded.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "taskStatusCount": {
+          "description": "The status of pods for each task",
+          "type": "object",
+          "additionalProperties": {
+            "default": {},
+            "$ref": "#/definitions/sh.volcano.batch.v1alpha1.TaskState"
+          }
+        },
+        "terminating": {
+          "description": "The number of pods which reached phase Terminating.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "unknown": {
+          "description": "The number of pods which reached phase Unknown.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "version": {
+          "description": "Current version of job",
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "batch.volcano.sh",
+        "Version": "v1alpha1",
+        "Kind": "JobStatus",
+        "Scope": "Namespaced"
+      }
+    },
+    "sh.volcano.batch.v1alpha1.LifecyclePolicy": {
+      "description": "LifecyclePolicy specifies the lifecycle and error handling of task and job.",
+      "type": "object",
+      "properties": {
+        "action": {
+          "description": "The action that will be taken to the PodGroup according to Event. One of \"Restart\", \"None\". Default to None.",
+          "type": "string"
+        },
+        "event": {
+          "description": "The Event recorded by scheduler; the controller takes actions according to this Event.",
+          "type": "string"
+        },
+        "events": {
+          "description": "The Events recorded by scheduler; the controller takes actions according to this Events.",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "default": ""
+          }
+        },
+        "exitCode": {
+          "description": "The exit code of the pod container, controller will take action according to this code. Note: only one of `Event` or `ExitCode` can be specified.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "timeout": {
+          "description": "Timeout is the grace period for controller to take actions. Default to nil (take action immediately).",
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Duration"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "batch.volcano.sh",
+        "Version": "v1alpha1",
+        "Kind": "LifecyclePolicy",
+        "Scope": "Namespaced"
+      }
+    },
+    "sh.volcano.batch.v1alpha1.TaskSpec": {
+      "description": "TaskSpec specifies the task specification of Job.",
+      "type": "object",
+      "properties": {
+        "dependsOn": {
+          "description": "Specifies the tasks that this task depends on.",
+          "$ref": "#/definitions/sh.volcano.batch.v1alpha1.DependsOn"
+        },
+        "maxRetry": {
+          "description": "Specifies the maximum number of retries before marking this Task failed. Defaults to 3.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "minAvailable": {
+          "description": "The minimal available pods to run for this Task Defaults to the task replicas",
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "description": "Name specifies the name of tasks",
+          "type": "string"
+        },
+        "policies": {
+          "description": "Specifies the lifecycle of task",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/sh.volcano.batch.v1alpha1.LifecyclePolicy"
+          }
+        },
+        "replicas": {
+          "description": "Replicas specifies the replicas of this TaskSpec in Job",
+          "type": "integer",
+          "format": "int32"
+        },
+        "template": {
+          "description": "Specifies the pod that will be created for this TaskSpec when executing a Job",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.api.core.v1.PodTemplateSpec"
+        },
+        "topologyPolicy": {
+          "description": "Specifies the topology policy of task",
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "batch.volcano.sh",
+        "Version": "v1alpha1",
+        "Kind": "TaskSpec",
+        "Scope": "Namespaced"
+      }
+    },
+    "sh.volcano.batch.v1alpha1.TaskState": {
+      "description": "TaskState contains details for the current state of the task.",
+      "type": "object",
+      "properties": {
+        "phase": {
+          "description": "The phase of Task.",
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "format": "int32",
+            "default": 0
+          }
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "batch.volcano.sh",
+        "Version": "v1alpha1",
+        "Kind": "TaskState",
+        "Scope": "Namespaced"
+      }
+    },
+    "sh.volcano.batch.v1alpha1.VolumeSpec": {
+      "description": "VolumeSpec defines the specification of Volume, e.g. PVC.",
+      "type": "object",
+      "required": [
+        "mountPath"
+      ],
+      "properties": {
+        "mountPath": {
+          "description": "Path within the container at which the volume should be mounted.  Must not contain ':'.",
+          "type": "string",
+          "default": ""
+        },
+        "volumeClaim": {
+          "description": "VolumeClaim defines the PVC used by the VolumeMount.",
+          "$ref": "#/definitions/io.k8s.api.core.v1.PersistentVolumeClaimSpec"
+        },
+        "volumeClaimName": {
+          "description": "defined the PVC name",
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "batch.volcano.sh",
+        "Version": "v1alpha1",
+        "Kind": "VolumeSpec",
+        "Scope": "Namespaced"
+      }
+    },
+    "sh.volcano.bus.v1alpha1.Command": {
+      "description": "Command defines command structure.",
+      "type": "object",
+      "properties": {
+        "action": {
+          "description": "Action defines the action that will be took to the target object.",
+          "type": "string"
+        },
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "message": {
+          "description": "Human-readable message indicating details of this command.",
+          "type": "string"
+        },
+        "metadata": {
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+        },
+        "reason": {
+          "description": "Unique, one-word, CamelCase reason for this command.",
+          "type": "string"
+        },
+        "target": {
+          "description": "TargetObject defines the target object of this command.",
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.OwnerReference"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "object",
+        "Group": "bus.volcano.sh",
+        "Version": "v1alpha1",
+        "Kind": "Command",
+        "Scope": "Namespaced"
+      }
+    },
+    "sh.volcano.bus.v1alpha1.CommandList": {
+      "description": "CommandList defines list of commands.",
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/sh.volcano.bus.v1alpha1.Command"
+          }
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "list",
+        "Group": "bus.volcano.sh",
+        "Version": "v1alpha1",
+        "Kind": "CommandList",
+        "Scope": "Namespaced"
+      }
+    },
+    "sh.volcano.flow.v1alpha1.Condition": {
+      "type": "object",
+      "properties": {
+        "createTime": {
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Time"
+        },
+        "phase": {
+          "type": "string"
+        },
+        "runningDuration": {
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Duration"
+        },
+        "taskStatusCount": {
+          "type": "object",
+          "additionalProperties": {
+            "default": {},
+            "$ref": "#/definitions/sh.volcano.batch.v1alpha1.TaskState"
+          }
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "flow.volcano.sh",
+        "Version": "v1alpha1",
+        "Kind": "Condition",
+        "Scope": "Namespaced"
+      }
+    },
+    "sh.volcano.flow.v1alpha1.DependsOn": {
+      "type": "object",
+      "properties": {
+        "probe": {
+          "$ref": "#/definitions/sh.volcano.flow.v1alpha1.Probe"
+        },
+        "targets": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "default": ""
+          }
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "flow.volcano.sh",
+        "Version": "v1alpha1",
+        "Kind": "DependsOn",
+        "Scope": "Namespaced"
+      }
+    },
+    "sh.volcano.flow.v1alpha1.Flow": {
+      "description": "Flow defines the dependent of jobs",
+      "type": "object",
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "dependsOn": {
+          "$ref": "#/definitions/sh.volcano.flow.v1alpha1.DependsOn"
+        },
+        "name": {
+          "type": "string",
+          "default": ""
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "flow.volcano.sh",
+        "Version": "v1alpha1",
+        "Kind": "Flow",
+        "Scope": "Namespaced"
+      }
+    },
+    "sh.volcano.flow.v1alpha1.HttpGet": {
+      "type": "object",
+      "properties": {
+        "httpHeader": {
+          "default": {},
+          "$ref": "#/definitions/io.k8s.api.core.v1.HTTPHeader"
+        },
+        "path": {
+          "type": "string"
+        },
+        "port": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "taskName": {
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "flow.volcano.sh",
+        "Version": "v1alpha1",
+        "Kind": "HttpGet",
+        "Scope": "Namespaced"
+      }
+    },
+    "sh.volcano.flow.v1alpha1.JobFlow": {
+      "description": "JobFlow is the Schema for the jobflows API",
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+        },
+        "spec": {
+          "default": {},
+          "$ref": "#/definitions/sh.volcano.flow.v1alpha1.JobFlowSpec"
+        },
+        "status": {
+          "default": {},
+          "$ref": "#/definitions/sh.volcano.flow.v1alpha1.JobFlowStatus"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "object",
+        "Group": "flow.volcano.sh",
+        "Version": "v1alpha1",
+        "Kind": "JobFlow",
+        "Scope": "Namespaced"
+      }
+    },
+    "sh.volcano.flow.v1alpha1.JobFlowList": {
+      "description": "JobFlowList contains a list of JobFlow",
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/sh.volcano.flow.v1alpha1.JobFlow"
+          }
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "list",
+        "Group": "flow.volcano.sh",
+        "Version": "v1alpha1",
+        "Kind": "JobFlowList",
+        "Scope": "Namespaced"
+      }
+    },
+    "sh.volcano.flow.v1alpha1.JobFlowSpec": {
+      "description": "JobFlowSpec defines the desired state of JobFlow",
+      "type": "object",
+      "properties": {
+        "flows": {
+          "description": "Foo is an example field of JobFlow. Edit jobflow_types.go to remove/update",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/sh.volcano.flow.v1alpha1.Flow"
+          }
+        },
+        "jobRetainPolicy": {
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "flow.volcano.sh",
+        "Version": "v1alpha1",
+        "Kind": "JobFlowSpec",
+        "Scope": "Namespaced"
+      }
+    },
+    "sh.volcano.flow.v1alpha1.JobFlowStatus": {
+      "description": "JobFlowStatus defines the observed state of JobFlow",
+      "type": "object",
+      "properties": {
+        "completedJobs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "default": ""
+          }
+        },
+        "conditions": {
+          "type": "object",
+          "additionalProperties": {
+            "default": {},
+            "$ref": "#/definitions/sh.volcano.flow.v1alpha1.Condition"
+          }
+        },
+        "failedJobs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "default": ""
+          }
+        },
+        "jobStatusList": {
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/sh.volcano.flow.v1alpha1.JobStatus"
+          }
+        },
+        "pendingJobs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "default": ""
+          }
+        },
+        "runningJobs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "default": ""
+          }
+        },
+        "state": {
+          "default": {},
+          "$ref": "#/definitions/sh.volcano.flow.v1alpha1.State"
+        },
+        "terminatedJobs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "default": ""
+          }
+        },
+        "unKnowJobs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "default": ""
+          }
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "flow.volcano.sh",
+        "Version": "v1alpha1",
+        "Kind": "JobFlowStatus",
+        "Scope": "Namespaced"
+      }
+    },
+    "sh.volcano.flow.v1alpha1.JobRunningHistory": {
+      "type": "object",
+      "properties": {
+        "endTimestamp": {
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Time"
+        },
+        "startTimestamp": {
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Time"
+        },
+        "state": {
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "flow.volcano.sh",
+        "Version": "v1alpha1",
+        "Kind": "JobRunningHistory",
+        "Scope": "Namespaced"
+      }
+    },
+    "sh.volcano.flow.v1alpha1.JobStatus": {
+      "type": "object",
+      "properties": {
+        "endTimestamp": {
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Time"
+        },
+        "name": {
+          "type": "string"
+        },
+        "restartCount": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "runningHistories": {
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/sh.volcano.flow.v1alpha1.JobRunningHistory"
+          }
+        },
+        "startTimestamp": {
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Time"
+        },
+        "state": {
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "flow.volcano.sh",
+        "Version": "v1alpha1",
+        "Kind": "JobStatus",
+        "Scope": "Namespaced"
+      }
+    },
+    "sh.volcano.flow.v1alpha1.JobTemplate": {
+      "description": "JobTemplate is the Schema for the jobtemplates API",
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+        },
+        "spec": {
+          "default": {},
+          "$ref": "#/definitions/sh.volcano.batch.v1alpha1.JobSpec"
+        },
+        "status": {
+          "default": {},
+          "$ref": "#/definitions/sh.volcano.flow.v1alpha1.JobTemplateStatus"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "object",
+        "Group": "flow.volcano.sh",
+        "Version": "v1alpha1",
+        "Kind": "JobTemplate",
+        "Scope": "Namespaced"
+      }
+    },
+    "sh.volcano.flow.v1alpha1.JobTemplateList": {
+      "description": "JobTemplateList contains a list of JobTemplate",
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/sh.volcano.flow.v1alpha1.JobTemplate"
+          }
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "list",
+        "Group": "flow.volcano.sh",
+        "Version": "v1alpha1",
+        "Kind": "JobTemplateList",
+        "Scope": "Namespaced"
+      }
+    },
+    "sh.volcano.flow.v1alpha1.JobTemplateSpec": {
+      "description": "JobTemplateSpec defines the desired state of JobTemplate",
+      "type": "object",
+      "required": [
+        "JobSpec"
+      ],
+      "properties": {
+        "JobSpec": {
+          "description": "Foo is an example field of JobTemplate. Edit jobtemplate_types.go to remove/update",
+          "default": {},
+          "$ref": "#/definitions/sh.volcano.batch.v1alpha1.JobSpec"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "flow.volcano.sh",
+        "Version": "v1alpha1",
+        "Kind": "JobTemplateSpec",
+        "Scope": "Namespaced"
+      }
+    },
+    "sh.volcano.flow.v1alpha1.JobTemplateStatus": {
+      "description": "JobTemplateStatus defines the observed state of JobTemplate",
+      "type": "object",
+      "properties": {
+        "jobDependsOnList": {
+          "description": "Describes the Jobs generated from the JobTemplate",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "default": ""
+          }
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "flow.volcano.sh",
+        "Version": "v1alpha1",
+        "Kind": "JobTemplateStatus",
+        "Scope": "Namespaced"
+      }
+    },
+    "sh.volcano.flow.v1alpha1.Probe": {
+      "type": "object",
+      "properties": {
+        "httpGetList": {
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/sh.volcano.flow.v1alpha1.HttpGet"
+          }
+        },
+        "taskStatusList": {
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/sh.volcano.flow.v1alpha1.TaskStatus"
+          }
+        },
+        "tcpSocketList": {
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/sh.volcano.flow.v1alpha1.TcpSocket"
+          }
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "flow.volcano.sh",
+        "Version": "v1alpha1",
+        "Kind": "Probe",
+        "Scope": "Namespaced"
+      }
+    },
+    "sh.volcano.flow.v1alpha1.State": {
+      "type": "object",
+      "properties": {
+        "phase": {
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "flow.volcano.sh",
+        "Version": "v1alpha1",
+        "Kind": "State",
+        "Scope": "Namespaced"
+      }
+    },
+    "sh.volcano.flow.v1alpha1.TaskStatus": {
+      "type": "object",
+      "properties": {
+        "phase": {
+          "type": "string"
+        },
+        "taskName": {
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "flow.volcano.sh",
+        "Version": "v1alpha1",
+        "Kind": "TaskStatus",
+        "Scope": "Namespaced"
+      }
+    },
+    "sh.volcano.flow.v1alpha1.TcpSocket": {
+      "type": "object",
+      "required": [
+        "port"
+      ],
+      "properties": {
+        "port": {
+          "type": "integer",
+          "format": "int32",
+          "default": 0
+        },
+        "taskName": {
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "flow.volcano.sh",
+        "Version": "v1alpha1",
+        "Kind": "TcpSocket",
+        "Scope": "Namespaced"
+      }
+    },
+    "sh.volcano.nodeinfo.v1alpha1.CPUInfo": {
+      "description": "CPUInfo is the cpu topology detail",
+      "type": "object",
+      "properties": {
+        "core": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "numa": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "socket": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "nodeinfo.volcano.sh",
+        "Version": "v1alpha1",
+        "Kind": "CPUInfo",
+        "Scope": "Namespaced"
+      }
+    },
+    "sh.volcano.nodeinfo.v1alpha1.NumatopoSpec": {
+      "description": "NumatopoSpec defines the desired state of Numatopology",
+      "type": "object",
+      "properties": {
+        "cpuDetail": {
+          "description": "Specifies the cpu topology info Key is cpu id",
+          "type": "object",
+          "additionalProperties": {
+            "default": {},
+            "$ref": "#/definitions/sh.volcano.nodeinfo.v1alpha1.CPUInfo"
+          }
+        },
+        "numares": {
+          "description": "Specifies the numa info for the resource Key is resource name",
+          "type": "object",
+          "additionalProperties": {
+            "default": {},
+            "$ref": "#/definitions/sh.volcano.nodeinfo.v1alpha1.ResourceInfo"
+          }
+        },
+        "policies": {
+          "description": "Specifies the policy of the manager",
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "default": ""
+          }
+        },
+        "resReserved": {
+          "description": "Specifies the reserved resource of the node Key is resource name",
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "default": ""
+          }
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "nodeinfo.volcano.sh",
+        "Version": "v1alpha1",
+        "Kind": "NumatopoSpec",
+        "Scope": "Namespaced"
+      }
+    },
+    "sh.volcano.nodeinfo.v1alpha1.Numatopology": {
+      "description": "Numatopology is the Schema for the Numatopologies API",
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+        },
+        "spec": {
+          "description": "Specification of the numa information of the worker node",
+          "default": {},
+          "$ref": "#/definitions/sh.volcano.nodeinfo.v1alpha1.NumatopoSpec"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "object",
+        "Group": "nodeinfo.volcano.sh",
+        "Version": "v1alpha1",
+        "Kind": "Numatopology",
+        "Scope": "Clustered"
+      }
+    },
+    "sh.volcano.nodeinfo.v1alpha1.NumatopologyList": {
+      "description": "NumatopologyList contains a list of Numatopology",
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/sh.volcano.nodeinfo.v1alpha1.Numatopology"
+          }
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "list",
+        "Group": "nodeinfo.volcano.sh",
+        "Version": "v1alpha1",
+        "Kind": "NumatopologyList",
+        "Scope": "Namespaced"
+      }
+    },
+    "sh.volcano.nodeinfo.v1alpha1.ResourceInfo": {
+      "description": "ResourceInfo is the sets about resource capacity and allocatable",
+      "type": "object",
+      "properties": {
+        "allocatable": {
+          "type": "string"
+        },
+        "capacity": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "nodeinfo.volcano.sh",
+        "Version": "v1alpha1",
+        "Kind": "ResourceInfo",
+        "Scope": "Namespaced"
+      }
+    },
+    "sh.volcano.scheduling.v1beta1.Affinity": {
+      "description": "Affinity is a group of affinity scheduling rules.",
+      "type": "object",
+      "properties": {
+        "nodeGroupAffinity": {
+          "description": "Describes nodegroup affinity scheduling rules for the queue(e.g. putting pods of the queue in the nodes of the nodegroup)",
+          "$ref": "#/definitions/sh.volcano.scheduling.v1beta1.NodeGroupAffinity"
+        },
+        "nodeGroupAntiAffinity": {
+          "description": "Describes nodegroup anti-affinity scheduling rules for the queue(e.g. avoid putting pods of the queue in the nodes of the nodegroup).",
+          "$ref": "#/definitions/sh.volcano.scheduling.v1beta1.NodeGroupAntiAffinity"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "scheduling.volcano.sh",
+        "Version": "v1beta1",
+        "Kind": "Affinity",
+        "Scope": "Namespaced"
+      }
+    },
+    "sh.volcano.scheduling.v1beta1.Cluster": {
+      "description": "CluterSpec represents the template of Cluster",
+      "type": "object",
+      "properties": {
+        "capacity": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/io.k8s.apimachinery.pkg.api.resource.Quantity"
+          }
+        },
+        "name": {
+          "type": "string"
+        },
+        "weight": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "scheduling.volcano.sh",
+        "Version": "v1beta1",
+        "Kind": "Cluster",
+        "Scope": "Namespaced"
+      }
+    },
+    "sh.volcano.scheduling.v1beta1.Guarantee": {
+      "description": "Guarantee represents configuration of queue resource reservation",
+      "type": "object",
+      "properties": {
+        "resource": {
+          "description": "The amount of cluster resource reserved for queue. Just set either `percentage` or `resource`",
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/io.k8s.apimachinery.pkg.api.resource.Quantity"
+          }
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "scheduling.volcano.sh",
+        "Version": "v1beta1",
+        "Kind": "Guarantee",
+        "Scope": "Namespaced"
+      }
+    },
+    "sh.volcano.scheduling.v1beta1.NodeGroupAffinity": {
+      "type": "object",
+      "properties": {
+        "preferredDuringSchedulingIgnoredDuringExecution": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "default": ""
+          }
+        },
+        "requiredDuringSchedulingIgnoredDuringExecution": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "default": ""
+          }
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "scheduling.volcano.sh",
+        "Version": "v1beta1",
+        "Kind": "NodeGroupAffinity",
+        "Scope": "Namespaced"
+      }
+    },
+    "sh.volcano.scheduling.v1beta1.NodeGroupAntiAffinity": {
+      "type": "object",
+      "properties": {
+        "preferredDuringSchedulingIgnoredDuringExecution": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "default": ""
+          }
+        },
+        "requiredDuringSchedulingIgnoredDuringExecution": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "default": ""
+          }
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "scheduling.volcano.sh",
+        "Version": "v1beta1",
+        "Kind": "NodeGroupAntiAffinity",
+        "Scope": "Namespaced"
+      }
+    },
+    "sh.volcano.scheduling.v1beta1.PodGroup": {
+      "description": "PodGroup is a collection of Pod; used for batch workload.",
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+        },
+        "spec": {
+          "description": "Specification of the desired behavior of the pod group. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#spec-and-status",
+          "default": {},
+          "$ref": "#/definitions/sh.volcano.scheduling.v1beta1.PodGroupSpec"
+        },
+        "status": {
+          "description": "Status represents the current information about a pod group. This data may not be up to date.",
+          "default": {},
+          "$ref": "#/definitions/sh.volcano.scheduling.v1beta1.PodGroupStatus"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "object",
+        "Group": "scheduling.volcano.sh",
+        "Version": "v1beta1",
+        "Kind": "PodGroup",
+        "Scope": "Namespaced"
+      }
+    },
+    "sh.volcano.scheduling.v1beta1.PodGroupCondition": {
+      "description": "PodGroupCondition contains details for the current state of this pod group.",
+      "type": "object",
+      "properties": {
+        "lastTransitionTime": {
+          "description": "Last time the phase transitioned from another to current phase.",
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Time"
+        },
+        "message": {
+          "description": "Human-readable message indicating details about last transition.",
+          "type": "string"
+        },
+        "reason": {
+          "description": "Unique, one-word, CamelCase reason for the phase's last transition.",
+          "type": "string"
+        },
+        "status": {
+          "description": "Status is the status of the condition.",
+          "type": "string"
+        },
+        "transitionID": {
+          "description": "The ID of condition transition.",
+          "type": "string"
+        },
+        "type": {
+          "description": "Type is the type of the condition",
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "scheduling.volcano.sh",
+        "Version": "v1beta1",
+        "Kind": "PodGroupCondition",
+        "Scope": "Namespaced"
+      }
+    },
+    "sh.volcano.scheduling.v1beta1.PodGroupList": {
+      "description": "PodGroupList is a collection of pod groups.",
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "description": "items is the list of PodGroup",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/sh.volcano.scheduling.v1beta1.PodGroup"
+          }
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "Standard list metadata More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "list",
+        "Group": "scheduling.volcano.sh",
+        "Version": "v1beta1",
+        "Kind": "PodGroupList",
+        "Scope": "Namespaced"
+      }
+    },
+    "sh.volcano.scheduling.v1beta1.PodGroupSpec": {
+      "description": "PodGroupSpec represents the template of a pod group.",
+      "type": "object",
+      "properties": {
+        "minMember": {
+          "description": "MinMember defines the minimal number of members/tasks to run the pod group; if there's not enough resources to start all tasks, the scheduler will not start anyone.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "minResources": {
+          "description": "MinResources defines the minimal resource of members/tasks to run the pod group; if there's not enough resources to start all tasks, the scheduler will not start anyone.",
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/io.k8s.apimachinery.pkg.api.resource.Quantity"
+          }
+        },
+        "minTaskMember": {
+          "description": "MinTaskMember defines the minimal number of pods to run each task in the pod group; if there's not enough resources to start each task, the scheduler will not start anyone.",
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "format": "int32",
+            "default": 0
+          }
+        },
+        "priorityClassName": {
+          "description": "If specified, indicates the PodGroup's priority. \"system-node-critical\" and \"system-cluster-critical\" are two special keywords which indicate the highest priorities with the former being the highest priority. Any other name must be defined by creating a PriorityClass object with that name. If not specified, the PodGroup priority will be default or zero if there is no default.",
+          "type": "string"
+        },
+        "queue": {
+          "description": "Queue defines the queue to allocate resource for PodGroup; if queue does not exist, the PodGroup will not be scheduled. Defaults to `default` Queue with the lowest weight.",
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "scheduling.volcano.sh",
+        "Version": "v1beta1",
+        "Kind": "PodGroupSpec",
+        "Scope": "Namespaced"
+      }
+    },
+    "sh.volcano.scheduling.v1beta1.PodGroupStatus": {
+      "description": "PodGroupStatus represents the current state of a pod group.",
+      "type": "object",
+      "properties": {
+        "conditions": {
+          "description": "The conditions of PodGroup.",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/sh.volcano.scheduling.v1beta1.PodGroupCondition"
+          }
+        },
+        "failed": {
+          "description": "The number of pods which reached phase Failed.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "phase": {
+          "description": "Current phase of PodGroup.",
+          "type": "string"
+        },
+        "running": {
+          "description": "The number of actively running pods.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "succeeded": {
+          "description": "The number of pods which reached phase Succeeded.",
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "scheduling.volcano.sh",
+        "Version": "v1beta1",
+        "Kind": "PodGroupStatus",
+        "Scope": "Namespaced"
+      }
+    },
+    "sh.volcano.scheduling.v1beta1.Queue": {
+      "description": "Queue is a queue of PodGroup.",
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+        },
+        "spec": {
+          "description": "Specification of the desired behavior of the queue. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#spec-and-status",
+          "default": {},
+          "$ref": "#/definitions/sh.volcano.scheduling.v1beta1.QueueSpec"
+        },
+        "status": {
+          "description": "The status of queue.",
+          "default": {},
+          "$ref": "#/definitions/sh.volcano.scheduling.v1beta1.QueueStatus"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "object",
+        "Group": "scheduling.volcano.sh",
+        "Version": "v1beta1",
+        "Kind": "Queue",
+        "Scope": "Clustered"
+      }
+    },
+    "sh.volcano.scheduling.v1beta1.QueueList": {
+      "description": "QueueList is a collection of queues.",
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "description": "items is the list of PodGroup",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/sh.volcano.scheduling.v1beta1.Queue"
+          }
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "Standard list metadata More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "list",
+        "Group": "scheduling.volcano.sh",
+        "Version": "v1beta1",
+        "Kind": "QueueList",
+        "Scope": "Namespaced"
+      }
+    },
+    "sh.volcano.scheduling.v1beta1.QueueSpec": {
+      "description": "QueueSpec represents the template of Queue.",
+      "type": "object",
+      "properties": {
+        "affinity": {
+          "description": "If specified, the pod owned by the queue will be scheduled with constraint",
+          "$ref": "#/definitions/sh.volcano.scheduling.v1beta1.Affinity"
+        },
+        "capability": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/io.k8s.apimachinery.pkg.api.resource.Quantity"
+          }
+        },
+        "deserved": {
+          "description": "The amount of resources configured by the user. This part of resource can be shared with other queues and reclaimed back.",
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/io.k8s.apimachinery.pkg.api.resource.Quantity"
+          }
+        },
+        "extendClusters": {
+          "description": "extendCluster indicate the jobs in this Queue will be dispatched to these clusters.",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/sh.volcano.scheduling.v1beta1.Cluster"
+          }
+        },
+        "guarantee": {
+          "description": "Guarantee indicate configuration about resource reservation",
+          "default": {},
+          "$ref": "#/definitions/sh.volcano.scheduling.v1beta1.Guarantee"
+        },
+        "parent": {
+          "description": "Parent define the parent of queue",
+          "type": "string"
+        },
+        "priority": {
+          "description": "Priority define the priority of queue. Higher values are prioritized for scheduling and considered later during reclamation.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "reclaimable": {
+          "description": "Reclaimable indicate whether the queue can be reclaimed by other queue",
+          "type": "boolean"
+        },
+        "type": {
+          "description": "Type define the type of queue",
+          "type": "string"
+        },
+        "weight": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "scheduling.volcano.sh",
+        "Version": "v1beta1",
+        "Kind": "QueueSpec",
+        "Scope": "Namespaced"
+      }
+    },
+    "sh.volcano.scheduling.v1beta1.QueueStatus": {
+      "description": "QueueStatus represents the status of Queue.",
+      "type": "object",
+      "required": [
+        "allocated"
+      ],
+      "properties": {
+        "allocated": {
+          "description": "Allocated is allocated resources in queue",
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/io.k8s.apimachinery.pkg.api.resource.Quantity"
+          }
+        },
+        "completed": {
+          "description": "The number of `Completed` PodGroup in this queue.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "inqueue": {
+          "description": "The number of `Inqueue` PodGroup in this queue.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "pending": {
+          "description": "The number of 'Pending' PodGroup in this queue.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "reservation": {
+          "description": "Reservation is the profile of resource reservation for queue",
+          "default": {},
+          "$ref": "#/definitions/sh.volcano.scheduling.v1beta1.Reservation"
+        },
+        "running": {
+          "description": "The number of 'Running' PodGroup in this queue.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "state": {
+          "description": "State is state of queue",
+          "type": "string"
+        },
+        "unknown": {
+          "description": "The number of 'Unknown' PodGroup in this queue.",
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "scheduling.volcano.sh",
+        "Version": "v1beta1",
+        "Kind": "QueueStatus",
+        "Scope": "Namespaced"
+      }
+    },
+    "sh.volcano.scheduling.v1beta1.Reservation": {
+      "description": "Reservation represents current condition about resource reservation",
+      "type": "object",
+      "properties": {
+        "nodes": {
+          "description": "Nodes are Locked nodes for queue",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "default": ""
+          }
+        },
+        "resource": {
+          "description": "Resource is a list of total idle resource in locked nodes.",
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/io.k8s.apimachinery.pkg.api.resource.Quantity"
+          }
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "scheduling.volcano.sh",
+        "Version": "v1beta1",
+        "Kind": "Reservation",
+        "Scope": "Namespaced"
+      }
+    }
+  }
+}

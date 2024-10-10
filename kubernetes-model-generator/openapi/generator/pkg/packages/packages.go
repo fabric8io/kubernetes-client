@@ -56,6 +56,14 @@ var ChaosMeshPackagePatterns = []string{
 	"github.com/chaos-mesh/chaos-mesh/api/v1alpha1",
 }
 
+var VolcanoPackagePatterns = []string{
+	"volcano.sh/apis/pkg/apis/batch/v1alpha1",
+	"volcano.sh/apis/pkg/apis/bus/v1alpha1",
+	"volcano.sh/apis/pkg/apis/flow/v1alpha1",
+	"volcano.sh/apis/pkg/apis/nodeinfo/v1alpha1",
+	"volcano.sh/apis/pkg/apis/scheduling/v1beta1",
+}
+
 var VolumeSnapshotPackagePatterns = []string{
 	"github.com/kubernetes-csi/external-snapshotter/client/v8/apis/volumesnapshot/v1",
 }

@@ -45,6 +45,8 @@ openapi-generate-java-classes:
 	cd extensions && mvn $(MAVEN_ARGS) -N clean install
 	cd extensions/volumesnapshot && mvn $(MAVEN_ARGS) -N clean install
 	cd extensions/volumesnapshot/model && mvn $(MAVEN_ARGS) -Pgenerate clean install
+	cd extensions/volcano && mvn $(MAVEN_ARGS) -N clean install
+	cd extensions/volcano/model && mvn $(MAVEN_ARGS) -Pgenerate clean install
 
 # Legacy generation of the model: TODO: remove
 .PHONY: generate-model-legacy

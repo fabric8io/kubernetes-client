@@ -64,7 +64,7 @@
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
-      <artifactId>volcano-model-v1beta1</artifactId>
+      <artifactId>volcano-model</artifactId>
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>

@@ -34,6 +34,7 @@ import (
 	prometheusoperatorv1 "github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring/v1"
 	"github.com/spf13/cobra"
 	"strings"
+	volcanov1beta1 "volcano.sh/apis/pkg/apis/scheduling/v1beta1"
 )
 
 var supportedApis = &cobra.Command{
@@ -64,5 +65,6 @@ var supportedApisRun = func(cobraCmd *cobra.Command, args []string) {
 		operatorframeworkv1.GroupVersion.String(),
 		prometheusoperatorv1.SchemeGroupVersion.String(),
 		volumesnapshotv1.SchemeGroupVersion.String(),
+		volcanov1beta1.SchemeGroupVersion.String(),
 	}, "\n"))
 }

@@ -81,6 +81,7 @@
     <openapi.schema.kubernetes-latest>${project.parent.basedir}/openapi/schemas/kubernetes-1.30.0.json</openapi.schema.kubernetes-latest>
     <openapi.schema.openshift-generated>${project.parent.basedir}/openapi/schemas/openshift-generated.json</openapi.schema.openshift-generated>
     <openapi.schema.io.k8s.storage.snapshot>${project.basedir}/../../../kubernetes-model-generator/openapi/schemas/io.k8s.storage.snapshot.json</openapi.schema.io.k8s.storage.snapshot>
+    <openapi.schema.sh.volcano>${project.basedir}/../../../kubernetes-model-generator/openapi/schemas/sh.volcano.json</openapi.schema.sh.volcano>
     <openapi.openshift-version>4.17</openapi.openshift-version>
     <openapi.storageversionmigrator-revision>5c8923c5ff96ceb4435f66b986b5aec2dd0cbc22</openapi.storageversionmigrator-revision>
     <openapi.whereabouts-revision>5bb9e1542cf987458db181bedee7c051a1538dc1</openapi.whereabouts-revision>
@@ -187,6 +188,7 @@
                 <io.openshift.security.v1>io.fabric8.openshift.api.model</io.openshift.security.v1>
                 <io.openshift.template.v1>io.fabric8.openshift.api.model</io.openshift.template.v1>
                 <io.openshift.user.v1>io.fabric8.openshift.api.model</io.openshift.user.v1>
+                <sh.volcano>io.fabric8.volcano.api.model</sh.volcano>
               </packageMappings>
             </settings>
           </configuration>

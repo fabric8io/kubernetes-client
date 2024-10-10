@@ -28,12 +28,8 @@
   <packaging>pom</packaging>
   <name>Fabric8 :: Volcano :: Extension</name>
 
-  <properties>
-    <jsonschema2pojo.targetPackage>io.fabric8.volcano.api.model</jsonschema2pojo.targetPackage>
-  </properties>
-
   <modules>
-    <module>model-v1beta1</module>
+    <module>model</module>
     <module>client</module>
     <module>examples</module>
     <module>tests</module>
