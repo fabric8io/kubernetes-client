@@ -15,22 +15,20 @@
  */
 package io.fabric8.kubernetes.client.http;
 
+import io.fabric8.kubernetes.client.RequestConfigBuilder;
 import io.fabric8.kubernetes.client.internal.SSLUtils;
 import io.fabric8.mockwebserver.Context;
 import io.fabric8.mockwebserver.DefaultMockServer;
+import io.fabric8.mockwebserver.MockWebServer;
 import io.fabric8.mockwebserver.ServerRequest;
 import io.fabric8.mockwebserver.ServerResponse;
 import io.fabric8.mockwebserver.dsl.HttpMethod;
+import io.fabric8.mockwebserver.http.Headers;
+import io.fabric8.mockwebserver.http.RecordedRequest;
 import io.fabric8.mockwebserver.internal.MockDispatcher;
-import io.fabric8.mockwebserver.internal.MockSSLContextFactory;
 import io.fabric8.mockwebserver.internal.SimpleRequest;
 import io.fabric8.mockwebserver.internal.SimpleResponse;
 import io.fabric8.mockwebserver.utils.ResponseProvider;
-import okhttp3.Headers;
-import okhttp3.mockwebserver.MockResponse;
-import okhttp3.mockwebserver.MockWebServer;
-import okhttp3.mockwebserver.RecordedRequest;
-import okhttp3.mockwebserver.SocketPolicy;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -49,42 +47,32 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public abstract class AbstractHttpClientProxyHttpsTest {
 
-  private static SocketPolicy defaultResponseSocketPolicy;
   private static Map<ServerRequest, Queue<ServerResponse>> responses;
-  private static DefaultMockServer server;
+  private static DefaultMockServer proxyServer;
 
   @BeforeAll
   static void beforeAll() {
-    defaultResponseSocketPolicy = SocketPolicy.KEEP_OPEN;
     responses = new HashMap<>();
-    final MockWebServer okHttpMockWebServer = new MockWebServer();
-    final MockDispatcher dispatcher = new MockDispatcher(responses) {
-      @Override
-      public MockResponse peek() {
-        return new MockResponse().setSocketPolicy(defaultResponseSocketPolicy);
-      }
-    };
-    server = new DefaultMockServer(new Context(), okHttpMockWebServer, responses, dispatcher, true);
-    server.start();
-    okHttpMockWebServer.useHttps(MockSSLContextFactory.create().getSocketFactory(), true);
+    proxyServer = new DefaultMockServer(new Context(), new MockWebServer(), responses, new MockDispatcher(responses), false);
+    proxyServer.start();
   }
 
   @AfterAll
   static void afterAll() {
-    server.shutdown();
+    proxyServer.shutdown();
   }
 
   protected abstract HttpClient.Factory getHttpClientFactory();
 
   @Test
-  @DisplayName("Proxied HttpClient adds required headers to the request")
+  @DisplayName("Proxied HttpClient with basic authorization adds required headers to the request")
   protected void proxyConfigurationAddsRequiredHeadersForHttps() throws Exception {
     final AtomicReference<RecordedRequest> initialConnectRequest = new AtomicReference<>();
     final ResponseProvider<String> bodyProvider = new ResponseProvider<String>() {
 
       @Override
       public String getBody(RecordedRequest request) {
-        return "";
+        return "\n";
       }
 
       @Override
@@ -93,7 +81,6 @@ public abstract class AbstractHttpClientProxyHttpsTest {
 
       @Override
       public int getStatusCode(RecordedRequest request) {
-        defaultResponseSocketPolicy = SocketPolicy.UPGRADE_TO_SSL_AT_END; // for jetty to upgrade after the challenge
         if (request.getHeader(StandardHttpHeaders.PROXY_AUTHORIZATION) != null) {
           initialConnectRequest.compareAndSet(null, request);
           return 200;
@@ -107,20 +94,20 @@ public abstract class AbstractHttpClientProxyHttpsTest {
       }
 
     };
-    responses.computeIfAbsent(new SimpleRequest(HttpMethod.CONNECT, "/"), k -> new ArrayDeque<>())
+    responses.computeIfAbsent(new SimpleRequest(HttpMethod.CONNECT, "example.com:443"), k -> new ArrayDeque<>())
         .add(new SimpleResponse(true, bodyProvider, null, 0, TimeUnit.SECONDS));
     // Given
     final HttpClient.Builder builder = getHttpClientFactory().newBuilder()
         .sslContext(null, SSLUtils.trustManagers(null, null, true, null, null))
-        .proxyAddress(new InetSocketAddress("localhost", server.getPort()))
+        .proxyAddress(new InetSocketAddress("localhost", proxyServer.getPort()))
         .proxyAuthorization(basicCredentials("auth", "cred"));
+    builder.tag(new RequestConfigBuilder().withRequestRetryBackoffInterval(1).build());
     try (HttpClient client = builder.build()) {
-      // When
-      client.sendAsync(client.newHttpRequestBuilder()
-          .uri(String.format("https://0.0.0.0:%s/not-found", server.getPort() + 1)).build(), String.class)
+      // When (just send and ignore response, we only care about the CONNECT request headers)
+      client.sendAsync(client.newHttpRequestBuilder().uri("https://example.com/proxied").build(), String.class)
+          .exceptionally(t -> null)
           .get(30, TimeUnit.SECONDS);
-
-      // if it fails, then authorization was not set
+      // Then
       assertThat(initialConnectRequest)
           .doesNotHaveNullValue()
           .hasValueMatching(r -> r.getHeader("Proxy-Authorization").equals("Basic YXV0aDpjcmVk"));
