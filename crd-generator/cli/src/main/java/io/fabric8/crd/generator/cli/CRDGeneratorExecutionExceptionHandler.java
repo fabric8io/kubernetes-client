@@ -20,14 +20,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import picocli.CommandLine;
 
+import java.util.function.Supplier;
+
 class CRDGeneratorExecutionExceptionHandler implements CommandLine.IExecutionExceptionHandler {
 
   private static final Logger log = LoggerFactory.getLogger(CRDGeneratorExecutionExceptionHandler.class);
 
-  private final CRDGeneratorCLI crdGeneratorCLI;
+  private final Supplier<String> diagTextSupplier;
 
-  CRDGeneratorExecutionExceptionHandler(CRDGeneratorCLI crdGeneratorCLI) {
-    this.crdGeneratorCLI = crdGeneratorCLI;
+  CRDGeneratorExecutionExceptionHandler(Supplier<String> diagTextSupplier) {
+    this.diagTextSupplier = diagTextSupplier;
   }
 
   @Override
@@ -44,7 +46,7 @@ class CRDGeneratorExecutionExceptionHandler implements CommandLine.IExecutionExc
           "Check the list of classpath elements and add further JAR archives " +
           "or directories containing required classes " +
           "e.g. with `-cp my-dep.jar` or `-cp target/classes/`.");
-      commandLine.getErr().print(crdGeneratorCLI.getDiagText());
+      commandLine.getErr().print(diagTextSupplier.get());
       return CRDGeneratorExitCode.CR_CLASS_LOADING;
     }
 
@@ -53,12 +55,12 @@ class CRDGeneratorExecutionExceptionHandler implements CommandLine.IExecutionExc
       commandLine.getErr().println("Check JAR files and directories considered to be scanned " +
           "as well as your filters. At least one Custom Resource class " +
           "must be retained after filtering.");
-      commandLine.getErr().print(crdGeneratorCLI.getDiagText());
+      commandLine.getErr().print(diagTextSupplier.get());
       return CRDGeneratorExitCode.NO_CR_CLASSES_RETAINED;
     }
 
     if (log.isDebugEnabled()) {
-      commandLine.getErr().println(crdGeneratorCLI.getDiagText());
+      commandLine.getErr().println(diagTextSupplier.get());
     }
 
     log.trace(ex.getMessage(), ex);
