@@ -15,9 +15,8 @@
  */
 package io.fabric8.crd.generator.cli;
 
-import ch.qos.logback.classic.Level;
-import ch.qos.logback.classic.LoggerContext;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.core.config.Configurator;
 
 import java.util.List;
 
@@ -34,15 +33,13 @@ class LoggingConfiguration {
   }
 
   private static void configureLogger(LogLevel baseLogLevel) {
-    setLogLevel("io.fabric8.crd.generator.cli", baseLogLevel.toLogbackLevel());
-    setLogLevel("io.fabric8.crd.generator.collector", baseLogLevel.toLogbackLevel());
-    setLogLevel("io.fabric8.crdv2.generator", baseLogLevel.toLogbackLevel());
+    setLogLevel("io.fabric8.crd.generator.cli", baseLogLevel.toLog4jLevel());
+    setLogLevel("io.fabric8.crd.generator.collector", baseLogLevel.toLog4jLevel());
+    setLogLevel("io.fabric8.crdv2.generator", baseLogLevel.toLog4jLevel());
   }
 
   private static void setLogLevel(String packageName, Level level) {
-    LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
-    ch.qos.logback.classic.Logger logger = loggerContext.getLogger(packageName);
-    logger.setLevel(level);
+    Configurator.setLevel(packageName, level);
   }
 
   /**
@@ -71,8 +68,8 @@ class LoggingConfiguration {
     DEBUG,
     TRACE;
 
-    Level toLogbackLevel() {
-      return Level.toLevel(name());
+    Level toLog4jLevel() {
+      return Level.valueOf(name());
     }
   }
 }
