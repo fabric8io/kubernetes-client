@@ -311,7 +311,7 @@ public class CRDGeneratorCLI implements Runnable {
 
   static CommandLine createCommandLine(CRDGeneratorCLI crdGeneratorCLI) {
     return new CommandLine(crdGeneratorCLI)
-        .setExecutionExceptionHandler(new CRDGeneratorExecutionExceptionHandler(crdGeneratorCLI));
+        .setExecutionExceptionHandler(new CRDGeneratorExecutionExceptionHandler(crdGeneratorCLI::getDiagText));
   }
 
 }
