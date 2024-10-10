@@ -54,7 +54,7 @@ public class KubernetesDeserializerTest extends TestBase {
     final List<HasMetadata> result = kubernetesClient.load(
         KubernetesDeserializerTest.class.getResourceAsStream("/deserializer_test.yaml")).items();
     // Then
-    assertEquals(22, result.size());
+    assertEquals(23, result.size());
     assertResourceTypes(result);
   }
 
