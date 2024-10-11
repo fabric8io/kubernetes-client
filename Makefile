@@ -61,6 +61,10 @@ sonar: clean
 	# $(MAVEN_ARGS) ---> -T 1C won't work with sonar analysis (yet)
 	mvn -Psonar install sonar:sonar
 
+.PHONY: javadoc
+javadoc: clean
+	mvn $(MAVEN_ARGS) install javadoc:jar -DskipTests -Pjavadoc-test
+
 .PHONY: format-license
 format-license:
 	mvn $(MAVEN_ARGS) -N license:format
@@ -68,6 +72,9 @@ format-license:
 .PHONY: format-java
 format-java:
 	mvn $(MAVEN_ARGS) spotless:apply -Pitests
+
+.PHONY: format
+format: format-license format-java
 
 .PHONY:
 quickly: clean
