@@ -14,6 +14,7 @@
     limitations under the License.
 }}
 {{>licenseInfo}}
+
 package {{package}};
 
 {{#imports}}
@@ -26,8 +27,11 @@ import {{.}};
 {{> model_class_annotations}}public class {{className}} implements {{implementedInterfaces}}
 {
 {{>model_fields}}
+
 {{#hasFields}}
 {{>model_constructors}}
+
 {{/hasFields}}
 {{>model_methods}}
+
 }
