@@ -28,10 +28,6 @@
   <packaging>jar</packaging>
   <name>Fabric8 :: Kubernetes :: HttpClient Tests</name>
 
-  <properties>
-    <maven.compiler.release>11</maven.compiler.release>
-  </properties>
-
   <dependencies>
     <dependency>
       <groupId>io.fabric8</groupId>
