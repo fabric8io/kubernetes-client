@@ -84,7 +84,7 @@ class TelemetryTest {
         .withNewSpec()
         .withNewSelector()
         .addToMatchLabels(Collections.singletonMap("service.istio.io/canonical-name", "foo"))
-        .endV1beta1Selector()
+        .endSelector()
         .addNewTracing()
         .addNewProvider()
         .withName("zipkin-alternate")
