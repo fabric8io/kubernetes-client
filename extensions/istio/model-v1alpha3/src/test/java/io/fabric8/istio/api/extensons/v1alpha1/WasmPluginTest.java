@@ -84,7 +84,7 @@ class WasmPluginTest {
         .withNewSpec()
         .withNewSelector()
         .addToMatchLabels(Collections.singletonMap("istio", "ingressgateway"))
-        .endV1beta1Selector()
+        .endSelector()
         .withUrl("file:///opt/filters/openid.wasm")
         .withSha256("1ef0c9a92b0420cf25f7fe5d481b231464bc88f486ca3b9c83ed5cc21df6210")
         .addToPluginConfig("openid_server", "authn")

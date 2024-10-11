@@ -17,6 +17,7 @@
 
 #### Dependency Upgrade
 * Fix #6052: Removed dependency on no longer maintained com.github.mifmif:generex
+* Fix #5965: Bumped sundrio.version from 0.103.1 to 0.200.0
 
 #### New Features
 * Fix #6150: Config uses `proxy-url` in kubeconfig's cluster configuration

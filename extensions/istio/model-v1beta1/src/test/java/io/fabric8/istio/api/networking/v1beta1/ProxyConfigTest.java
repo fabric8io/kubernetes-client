@@ -78,7 +78,7 @@ class ProxyConfigTest {
         .withNewSpec()
         .withNewSelector()
         .addToMatchLabels(Collections.singletonMap("app", "ratings"))
-        .endTypeSelector()
+        .endSelector()
         .withNewImage().withImageType("debug").endImage()
         .withConcurrency(0)
         .endSpec();
