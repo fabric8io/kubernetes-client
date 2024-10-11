@@ -50,7 +50,7 @@ func main() {
 	providedPackages := map[string]string{
 		// external
 		"k8s.io/api/core/v1":                   "io.fabric8.kubernetes.api.model",
-		"knative.dev/pkg/apis":                 "io.fabric8.knative.internal.pkg.apis",
+		"knative.dev/pkg/apis":                 "io.fabric8.knative.pkg.apis",
 		"k8s.io/apimachinery/pkg/apis/meta/v1": "io.fabric8.kubernetes.api.model",
 	}
 

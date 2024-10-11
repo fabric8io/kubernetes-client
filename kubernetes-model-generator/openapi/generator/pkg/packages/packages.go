@@ -69,6 +69,25 @@ var IstioPackagePatterns = []string{
 	"istio.io/api/telemetry/v...",
 }
 
+var KnativePackagePatterns = []string{
+	"knative.dev/pkg/apis",
+	"knative.dev/pkg/apis/duck/v...",
+	"knative.dev/pkg/tracker",
+	"knative.dev/caching/pkg/apis/.../v...",
+	"knative.dev/eventing/pkg/apis/.../v...",
+	"knative.dev/networking/pkg/apis/.../v...",
+	"knative.dev/serving/pkg/apis/.../v...",
+	"knative.dev/eventing-awssqs/pkg/apis/.../v...",
+	"knative.dev/eventing-couchdb/source/pkg/apis/.../v...",
+	"knative.dev/eventing-github/pkg/apis/.../v...",
+	"knative.dev/eventing-gitlab/pkg/apis/.../v...", // TODO: See how to remove the duplicate SecretValueFromSource
+	"knative.dev/eventing-kafka-broker/control-plane/pkg/apis/bindings/v...",
+	"knative.dev/eventing-kafka-broker/control-plane/pkg/apis/eventing/v1alpha1",
+	"knative.dev/eventing-kafka-broker/control-plane/pkg/apis/messaging/v...",
+	"knative.dev/eventing-kafka-broker/control-plane/pkg/apis/sources/v...",
+	"knative.dev/eventing-prometheus/pkg/apis/.../v...",
+}
+
 var VolcanoPackagePatterns = []string{
 	"volcano.sh/apis/pkg/apis/batch/v1alpha1",
 	"volcano.sh/apis/pkg/apis/bus/v1alpha1",

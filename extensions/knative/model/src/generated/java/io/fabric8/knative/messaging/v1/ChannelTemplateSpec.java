@@ -13,21 +13,22 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.ContainerPort;
-import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
+import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.kubernetes.api.model.Volume;
-import io.fabric8.kubernetes.api.model.VolumeMount;
+import io.fabric8.kubernetes.model.annotation.Group;
+import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
+import io.sundr.transform.annotations.TemplateTransformation;
+import io.sundr.transform.annotations.TemplateTransformations;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
@@ -54,25 +55,36 @@ import lombok.experimental.Accessors;
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
-    @BuildableReference(PersistentVolumeClaim.class),
-    @BuildableReference(EnvVar.class),
-    @BuildableReference(ContainerPort.class),
-    @BuildableReference(Volume.class),
-    @BuildableReference(VolumeMount.class)
+    @BuildableReference(PersistentVolumeClaim.class)
 })
+@TemplateTransformations({
+    @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true)
+})
+@Version("v1")
+@Group("messaging.knative.dev")
 @Generated("jsonschema2pojo")
-public class ChannelTemplateSpec implements Editable<ChannelTemplateSpecBuilder> , KubernetesResource
+public class ChannelTemplateSpec implements Editable<ChannelTemplateSpecBuilder> , KubernetesResource, Namespaced
 {
 
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @JsonProperty("apiVersion")
-    private java.lang.String apiVersion;
+    private String apiVersion = "messaging.knative.dev/v1";
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @JsonProperty("kind")
-    private java.lang.String kind;
+    private String kind = "ChannelTemplateSpec";
     @JsonProperty("spec")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Object> spec = new LinkedHashMap<>();
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
+    private Object spec;
     @JsonIgnore
-    private Map<java.lang.String, java.lang.Object> additionalProperties = new LinkedHashMap<java.lang.String, java.lang.Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -81,41 +93,61 @@ public class ChannelTemplateSpec implements Editable<ChannelTemplateSpecBuilder>
     public ChannelTemplateSpec() {
     }
 
-    public ChannelTemplateSpec(java.lang.String apiVersion, java.lang.String kind, Map<String, Object> spec) {
+    public ChannelTemplateSpec(String apiVersion, String kind, Object spec) {
         super();
         this.apiVersion = apiVersion;
         this.kind = kind;
         this.spec = spec;
     }
 
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @JsonProperty("apiVersion")
-    public java.lang.String getApiVersion() {
+    public String getApiVersion() {
         return apiVersion;
     }
 
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @JsonProperty("apiVersion")
-    public void setApiVersion(java.lang.String apiVersion) {
+    public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @JsonProperty("kind")
-    public java.lang.String getKind() {
+    public String getKind() {
         return kind;
     }
 
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @JsonProperty("kind")
-    public void setKind(java.lang.String kind) {
+    public void setKind(String kind) {
         this.kind = kind;
     }
 
     @JsonProperty("spec")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Map<String, Object> getSpec() {
+    public Object getSpec() {
         return spec;
     }
 
     @JsonProperty("spec")
-    public void setSpec(Map<String, Object> spec) {
+    @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
+    public void setSpec(Object spec) {
         this.spec = spec;
     }
 
@@ -130,16 +162,16 @@ public class ChannelTemplateSpec implements Editable<ChannelTemplateSpecBuilder>
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, java.lang.Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, java.lang.Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, java.lang.Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 

@@ -13,11 +13,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import io.fabric8.knative.internal.pkg.apis.Condition;
+import io.fabric8.knative.pkg.apis.Condition;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.ContainerPort;
-import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
@@ -27,8 +25,6 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.kubernetes.api.model.Volume;
-import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -61,11 +57,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
-    @BuildableReference(PersistentVolumeClaim.class),
-    @BuildableReference(EnvVar.class),
-    @BuildableReference(ContainerPort.class),
-    @BuildableReference(Volume.class),
-    @BuildableReference(VolumeMount.class)
+    @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
 public class PodAutoscalerStatus implements Editable<PodAutoscalerStatusBuilder> , KubernetesResource
@@ -82,13 +74,13 @@ public class PodAutoscalerStatus implements Editable<PodAutoscalerStatusBuilder>
     @JsonProperty("desiredScale")
     private Integer desiredScale;
     @JsonProperty("metricsServiceName")
-    private java.lang.String metricsServiceName;
+    private String metricsServiceName;
     @JsonProperty("observedGeneration")
     private Long observedGeneration;
     @JsonProperty("serviceName")
-    private java.lang.String serviceName;
+    private String serviceName;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -97,7 +89,7 @@ public class PodAutoscalerStatus implements Editable<PodAutoscalerStatusBuilder>
     public PodAutoscalerStatus() {
     }
 
-    public PodAutoscalerStatus(Integer actualScale, Map<String, String> annotations, List<Condition> conditions, Integer desiredScale, java.lang.String metricsServiceName, Long observedGeneration, java.lang.String serviceName) {
+    public PodAutoscalerStatus(Integer actualScale, Map<String, String> annotations, List<Condition> conditions, Integer desiredScale, String metricsServiceName, Long observedGeneration, String serviceName) {
         super();
         this.actualScale = actualScale;
         this.annotations = annotations;
@@ -151,12 +143,12 @@ public class PodAutoscalerStatus implements Editable<PodAutoscalerStatusBuilder>
     }
 
     @JsonProperty("metricsServiceName")
-    public java.lang.String getMetricsServiceName() {
+    public String getMetricsServiceName() {
         return metricsServiceName;
     }
 
     @JsonProperty("metricsServiceName")
-    public void setMetricsServiceName(java.lang.String metricsServiceName) {
+    public void setMetricsServiceName(String metricsServiceName) {
         this.metricsServiceName = metricsServiceName;
     }
 
@@ -171,12 +163,12 @@ public class PodAutoscalerStatus implements Editable<PodAutoscalerStatusBuilder>
     }
 
     @JsonProperty("serviceName")
-    public java.lang.String getServiceName() {
+    public String getServiceName() {
         return serviceName;
     }
 
     @JsonProperty("serviceName")
-    public void setServiceName(java.lang.String serviceName) {
+    public void setServiceName(String serviceName) {
         this.serviceName = serviceName;
     }
 
@@ -191,16 +183,16 @@ public class PodAutoscalerStatus implements Editable<PodAutoscalerStatusBuilder>
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 

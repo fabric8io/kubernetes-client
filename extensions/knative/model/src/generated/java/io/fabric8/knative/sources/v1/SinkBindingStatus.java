@@ -13,13 +13,11 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import io.fabric8.knative.internal.pkg.apis.Condition;
-import io.fabric8.knative.internal.pkg.apis.duck.v1.AuthStatus;
-import io.fabric8.knative.internal.pkg.apis.duck.v1.CloudEventAttributes;
+import io.fabric8.knative.duck.v1.AuthStatus;
+import io.fabric8.knative.duck.v1.CloudEventAttributes;
+import io.fabric8.knative.pkg.apis.Condition;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.ContainerPort;
-import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
@@ -29,8 +27,6 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.kubernetes.api.model.Volume;
-import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -45,6 +41,7 @@ import lombok.experimental.Accessors;
     "ceAttributes",
     "conditions",
     "observedGeneration",
+    "oidcTokenSecretName",
     "sinkAudience",
     "sinkCACerts",
     "sinkUri"
@@ -64,11 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
-    @BuildableReference(PersistentVolumeClaim.class),
-    @BuildableReference(EnvVar.class),
-    @BuildableReference(ContainerPort.class),
-    @BuildableReference(Volume.class),
-    @BuildableReference(VolumeMount.class)
+    @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
 public class SinkBindingStatus implements Editable<SinkBindingStatusBuilder> , KubernetesResource
@@ -87,14 +80,16 @@ public class SinkBindingStatus implements Editable<SinkBindingStatusBuilder> , K
     private List<Condition> conditions = new ArrayList<>();
     @JsonProperty("observedGeneration")
     private Long observedGeneration;
+    @JsonProperty("oidcTokenSecretName")
+    private String oidcTokenSecretName;
     @JsonProperty("sinkAudience")
     private String sinkAudience;
     @JsonProperty("sinkCACerts")
     private String sinkCACerts;
     @JsonProperty("sinkUri")
-    private java.lang.String sinkUri;
+    private String sinkUri;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -103,13 +98,14 @@ public class SinkBindingStatus implements Editable<SinkBindingStatusBuilder> , K
     public SinkBindingStatus() {
     }
 
-    public SinkBindingStatus(Map<String, String> annotations, AuthStatus auth, List<CloudEventAttributes> ceAttributes, List<Condition> conditions, Long observedGeneration, String sinkAudience, String sinkCACerts, java.lang.String sinkUri) {
+    public SinkBindingStatus(Map<String, String> annotations, AuthStatus auth, List<CloudEventAttributes> ceAttributes, List<Condition> conditions, Long observedGeneration, String oidcTokenSecretName, String sinkAudience, String sinkCACerts, String sinkUri) {
         super();
         this.annotations = annotations;
         this.auth = auth;
         this.ceAttributes = ceAttributes;
         this.conditions = conditions;
         this.observedGeneration = observedGeneration;
+        this.oidcTokenSecretName = oidcTokenSecretName;
         this.sinkAudience = sinkAudience;
         this.sinkCACerts = sinkCACerts;
         this.sinkUri = sinkUri;
@@ -168,6 +164,16 @@ public class SinkBindingStatus implements Editable<SinkBindingStatusBuilder> , K
         this.observedGeneration = observedGeneration;
     }
 
+    @JsonProperty("oidcTokenSecretName")
+    public String getOidcTokenSecretName() {
+        return oidcTokenSecretName;
+    }
+
+    @JsonProperty("oidcTokenSecretName")
+    public void setOidcTokenSecretName(String oidcTokenSecretName) {
+        this.oidcTokenSecretName = oidcTokenSecretName;
+    }
+
     @JsonProperty("sinkAudience")
     public String getSinkAudience() {
         return sinkAudience;
@@ -189,12 +195,12 @@ public class SinkBindingStatus implements Editable<SinkBindingStatusBuilder> , K
     }
 
     @JsonProperty("sinkUri")
-    public java.lang.String getSinkUri() {
+    public String getSinkUri() {
         return sinkUri;
     }
 
     @JsonProperty("sinkUri")
-    public void setSinkUri(java.lang.String sinkUri) {
+    public void setSinkUri(String sinkUri) {
         this.sinkUri = sinkUri;
     }
 
@@ -209,16 +215,16 @@ public class SinkBindingStatus implements Editable<SinkBindingStatusBuilder> , K
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 

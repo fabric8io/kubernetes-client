@@ -11,21 +11,18 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import io.fabric8.knative.internal.pkg.apis.Condition;
+import io.fabric8.knative.pkg.apis.Condition;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.ContainerPort;
-import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.kubernetes.api.model.Volume;
-import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -51,20 +48,16 @@ import lombok.experimental.Accessors;
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
+    @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
-    @BuildableReference(PersistentVolumeClaim.class),
-    @BuildableReference(EnvVar.class),
-    @BuildableReference(ContainerPort.class),
-    @BuildableReference(Volume.class),
-    @BuildableReference(VolumeMount.class)
+    @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
 public class SequenceChannelStatus implements Editable<SequenceChannelStatusBuilder> , KubernetesResource
 {
 
     @JsonProperty("channel")
-    private io.fabric8.kubernetes.api.model.ObjectReference channel;
+    private ObjectReference channel;
     @JsonProperty("ready")
     private Condition ready;
     @JsonIgnore
@@ -77,19 +70,19 @@ public class SequenceChannelStatus implements Editable<SequenceChannelStatusBuil
     public SequenceChannelStatus() {
     }
 
-    public SequenceChannelStatus(io.fabric8.kubernetes.api.model.ObjectReference channel, Condition ready) {
+    public SequenceChannelStatus(ObjectReference channel, Condition ready) {
         super();
         this.channel = channel;
         this.ready = ready;
     }
 
     @JsonProperty("channel")
-    public io.fabric8.kubernetes.api.model.ObjectReference getChannel() {
+    public ObjectReference getChannel() {
         return channel;
     }
 
     @JsonProperty("channel")
-    public void setChannel(io.fabric8.kubernetes.api.model.ObjectReference channel) {
+    public void setChannel(ObjectReference channel) {
         this.channel = channel;
     }
 

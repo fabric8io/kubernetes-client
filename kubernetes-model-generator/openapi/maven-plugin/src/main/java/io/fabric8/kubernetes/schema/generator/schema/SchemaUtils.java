@@ -72,6 +72,7 @@ public class SchemaUtils {
     REF_TO_JAVA_PRIMITIVE_MAP.put("#/components/schemas/io.k8s.apimachinery.pkg.runtime.RawExtension", OBJECT_PRIMITIVE);
     REF_TO_JAVA_PRIMITIVE_MAP.put("#/components/schemas/com.github.operator-framework.api.pkg.lib.version.OperatorVersion",
         STRING_PRIMITIVE);
+    REF_TO_JAVA_PRIMITIVE_MAP.put("#/components/schemas/dev.knative.pkg.apis.URL", STRING_PRIMITIVE);
   }
 
   private static final Map<String, String> JAVA_CLASS_SERIALIZER_MAP = new LinkedHashMap<>();

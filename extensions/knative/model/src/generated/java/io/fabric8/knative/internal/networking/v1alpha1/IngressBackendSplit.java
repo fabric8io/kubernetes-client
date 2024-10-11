@@ -13,8 +13,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.ContainerPort;
-import io.fabric8.kubernetes.api.model.EnvVar;
+import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
@@ -23,8 +22,6 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.kubernetes.api.model.Volume;
-import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -52,14 +49,10 @@ import lombok.experimental.Accessors;
     @BuildableReference(Container.class),
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.IntOrString.class),
+    @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
-    @BuildableReference(PersistentVolumeClaim.class),
-    @BuildableReference(EnvVar.class),
-    @BuildableReference(ContainerPort.class),
-    @BuildableReference(Volume.class),
-    @BuildableReference(VolumeMount.class)
+    @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
 public class IngressBackendSplit implements Editable<IngressBackendSplitBuilder> , KubernetesResource
@@ -71,13 +64,13 @@ public class IngressBackendSplit implements Editable<IngressBackendSplitBuilder>
     @JsonProperty("percent")
     private Integer percent;
     @JsonProperty("serviceName")
-    private java.lang.String serviceName;
+    private String serviceName;
     @JsonProperty("serviceNamespace")
-    private java.lang.String serviceNamespace;
+    private String serviceNamespace;
     @JsonProperty("servicePort")
-    private io.fabric8.kubernetes.api.model.IntOrString servicePort;
+    private IntOrString servicePort;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -86,7 +79,7 @@ public class IngressBackendSplit implements Editable<IngressBackendSplitBuilder>
     public IngressBackendSplit() {
     }
 
-    public IngressBackendSplit(Map<String, String> appendHeaders, Integer percent, java.lang.String serviceName, java.lang.String serviceNamespace, io.fabric8.kubernetes.api.model.IntOrString servicePort) {
+    public IngressBackendSplit(Map<String, String> appendHeaders, Integer percent, String serviceName, String serviceNamespace, IntOrString servicePort) {
         super();
         this.appendHeaders = appendHeaders;
         this.percent = percent;
@@ -117,32 +110,32 @@ public class IngressBackendSplit implements Editable<IngressBackendSplitBuilder>
     }
 
     @JsonProperty("serviceName")
-    public java.lang.String getServiceName() {
+    public String getServiceName() {
         return serviceName;
     }
 
     @JsonProperty("serviceName")
-    public void setServiceName(java.lang.String serviceName) {
+    public void setServiceName(String serviceName) {
         this.serviceName = serviceName;
     }
 
     @JsonProperty("serviceNamespace")
-    public java.lang.String getServiceNamespace() {
+    public String getServiceNamespace() {
         return serviceNamespace;
     }
 
     @JsonProperty("serviceNamespace")
-    public void setServiceNamespace(java.lang.String serviceNamespace) {
+    public void setServiceNamespace(String serviceNamespace) {
         this.serviceNamespace = serviceNamespace;
     }
 
     @JsonProperty("servicePort")
-    public io.fabric8.kubernetes.api.model.IntOrString getServicePort() {
+    public IntOrString getServicePort() {
         return servicePort;
     }
 
     @JsonProperty("servicePort")
-    public void setServicePort(io.fabric8.kubernetes.api.model.IntOrString servicePort) {
+    public void setServicePort(IntOrString servicePort) {
         this.servicePort = servicePort;
     }
 
@@ -157,16 +150,16 @@ public class IngressBackendSplit implements Editable<IngressBackendSplitBuilder>
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 

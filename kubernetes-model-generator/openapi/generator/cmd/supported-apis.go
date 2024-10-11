@@ -34,6 +34,16 @@ import (
 	prometheusoperatorv1 "github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring/v1"
 	"github.com/spf13/cobra"
 	istioapiclientextensions "istio.io/client-go/pkg/apis/extensions/v1alpha1"
+	knativecaching "knative.dev/caching/pkg/apis/caching/v1alpha1"
+	knativeextawssqs "knative.dev/eventing-awssqs/pkg/apis/sources/v1alpha1"
+	knativeextcouchdb "knative.dev/eventing-couchdb/source/pkg/apis/sources/v1alpha1"
+	knativeextgithub "knative.dev/eventing-github/pkg/apis/bindings/v1alpha1"
+	knativeextgitlab "knative.dev/eventing-gitlab/pkg/apis/bindings/v1alpha1"
+	knativeextkafka "knative.dev/eventing-kafka-broker/control-plane/pkg/apis/bindings/v1beta1"
+	knativeextprometheus "knative.dev/eventing-prometheus/pkg/apis/sources/v1alpha1"
+	knativeeventing "knative.dev/eventing/pkg/apis/eventing/v1"
+	knativenetworking "knative.dev/networking/pkg/apis/networking/v1alpha1"
+	knativeserving "knative.dev/serving/pkg/apis/serving/v1"
 	"strings"
 	volcanov1beta1 "volcano.sh/apis/pkg/apis/scheduling/v1beta1"
 )
@@ -68,5 +78,15 @@ var supportedApisRun = func(cobraCmd *cobra.Command, args []string) {
 		volumesnapshotv1.SchemeGroupVersion.String(),
 		volcanov1beta1.SchemeGroupVersion.String(),
 		istioapiclientextensions.SchemeGroupVersion.String(),
+		knativecaching.SchemeGroupVersion.String(),
+		knativeeventing.SchemeGroupVersion.String(),
+		knativenetworking.SchemeGroupVersion.String(),
+		knativeserving.SchemeGroupVersion.String(),
+		knativeextawssqs.SchemeGroupVersion.String(),
+		knativeextcouchdb.SchemeGroupVersion.String(),
+		knativeextgithub.SchemeGroupVersion.String(),
+		knativeextgitlab.SchemeGroupVersion.String(),
+		knativeextkafka.SchemeGroupVersion.String(),
+		knativeextprometheus.SchemeGroupVersion.String(),
 	}, "\n"))
 }
