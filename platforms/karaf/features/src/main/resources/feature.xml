@@ -31,17 +31,15 @@
     <bundle dependency='true'>mvn:org.snakeyaml/snakeyaml-engine/${snakeyaml.version}</bundle>
     <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.automaton/${automaton.bundle.version}</bundle>
     <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.conscrypt-openjdk/${conscrypt-openjdk-uber.bundle.version}</bundle>
-    <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.okhttp/${okhttp.bundle.version}</bundle>
-    <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.okio/${okio.bundle.version}</bundle>
     <bundle dependency='true'>mvn:org.apache.aries.spifly/org.apache.aries.spifly.dynamic.bundle/${aries-spifly.bundle.version}</bundle>
     <bundle dependency='true'>mvn:org.ow2.asm/asm/${asm.bundle.version}</bundle>
     <bundle dependency='true'>mvn:org.ow2.asm/asm-analysis/${asm.bundle.version}</bundle>
     <bundle dependency='true'>mvn:org.ow2.asm/asm-commons/${asm.bundle.version}</bundle>
     <bundle dependency='true'>mvn:org.ow2.asm/asm-tree/${asm.bundle.version}</bundle>
     <bundle dependency='true'>mvn:org.ow2.asm/asm-util/${asm.bundle.version}</bundle>
-    <bundle dependency='true'>mvn:io.fabric8/kubernetes-model-common/${project.version}</bundle>
-    <bundle>mvn:io.fabric8/zjsonpatch/${project.version}</bundle>
 
+    <bundle>mvn:io.fabric8/zjsonpatch/${project.version}</bundle>
+    <bundle>mvn:io.fabric8/kubernetes-model-common/${project.version}</bundle>
     <bundle>mvn:io.fabric8/kubernetes-model-core/${project.version}</bundle>
     <bundle>mvn:io.fabric8/kubernetes-model-rbac/${project.version}</bundle>
     <bundle>mvn:io.fabric8/kubernetes-model-admissionregistration/${project.version}</bundle>
@@ -64,7 +62,7 @@
     <bundle>mvn:io.fabric8/kubernetes-model-storageclass/${project.version}</bundle>
     <bundle>mvn:io.fabric8/kubernetes-model-resource/${project.version}</bundle>
     <bundle>mvn:io.fabric8/openshift-model/${project.version}</bundle>
-    <bundle>mvn:io.fabric8/kubernetes-httpclient-okhttp/${project.version}/jar/bundle</bundle>
+    <bundle>mvn:io.fabric8/kubernetes-httpclient-jdk/${project.version}/jar/bundle</bundle>
     <bundle>mvn:io.fabric8/kubernetes-client/${project.version}/jar/bundle</bundle>
   </feature>
 
