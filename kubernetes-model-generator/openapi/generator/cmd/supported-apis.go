@@ -33,6 +33,7 @@ import (
 	olm "github.com/operator-framework/operator-lifecycle-manager/pkg/package-server/apis/operators/v1"
 	prometheusoperatorv1 "github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring/v1"
 	"github.com/spf13/cobra"
+	istioapiclientextensions "istio.io/client-go/pkg/apis/extensions/v1alpha1"
 	"strings"
 	volcanov1beta1 "volcano.sh/apis/pkg/apis/scheduling/v1beta1"
 )
@@ -66,5 +67,6 @@ var supportedApisRun = func(cobraCmd *cobra.Command, args []string) {
 		prometheusoperatorv1.SchemeGroupVersion.String(),
 		volumesnapshotv1.SchemeGroupVersion.String(),
 		volcanov1beta1.SchemeGroupVersion.String(),
+		istioapiclientextensions.SchemeGroupVersion.String(),
 	}, "\n"))
 }

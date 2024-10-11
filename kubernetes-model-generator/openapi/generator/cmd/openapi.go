@@ -47,6 +47,7 @@ type module struct {
 var modules = []module{
 	{outputName: "openshift-generated", getDefinitionsFunc: generated_openshift_openapi.GetOpenAPIDefinitions, patterns: packages.OpenShiftPackagePatterns},
 	{outputName: "io.k8s.storage.snapshot", getDefinitionsFunc: generated_volumesnapshot_openapi.GetOpenAPIDefinitions, patterns: packages.VolumeSnapshotPackagePatterns},
+	//{outputName: "io.istio", getDefinitionsFunc: generated_istio_openapi.GetOpenAPIDefinitions, patterns: packages.IstioPackagePatterns},
 	{outputName: "sh.volcano", getDefinitionsFunc: generated_volcano_openapi.GetOpenAPIDefinitions, patterns: packages.VolcanoPackagePatterns},
 }
 
