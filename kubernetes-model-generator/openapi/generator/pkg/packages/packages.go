@@ -56,6 +56,19 @@ var ChaosMeshPackagePatterns = []string{
 	"github.com/chaos-mesh/chaos-mesh/api/v1alpha1",
 }
 
+var IstioPackagePatterns = []string{
+	"istio.io/api/meta/v...",
+	"istio.io/api/type/v...",
+	"istio.io/client-go/pkg/apis/extensions/v...",
+	"istio.io/api/extensions/v...",
+	"istio.io/client-go/pkg/apis/networking/v...",
+	//"istio.io/api/networking/v...",
+	"istio.io/client-go/pkg/apis/security/v...",
+	//"istio.io/api/security/v...",
+	"istio.io/client-go/pkg/apis/telemetry/v...",
+	"istio.io/api/telemetry/v...",
+}
+
 var VolcanoPackagePatterns = []string{
 	"volcano.sh/apis/pkg/apis/batch/v1alpha1",
 	"volcano.sh/apis/pkg/apis/bus/v1alpha1",
