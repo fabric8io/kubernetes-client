@@ -32,7 +32,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Max {
   /**
-   * @return the value of the minimum constraint
+   * @return the value of the maximum constraint
    */
   double value();
 
@@ -40,8 +40,8 @@ public @interface Max {
    * Specifies whether the specified maximum is inclusive or exclusive.
    * By default, it is inclusive.
    *
-   * @return {@code true} if the value must be higher or equal to the specified minimum,
-   *         {@code false} if the value must be higher
+   * @return {@code true} if the value must be lower or equal to the specified maximum,
+   *         {@code false} if the value must be lower
    */
   boolean inclusive() default true;
 }
