@@ -237,6 +237,8 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
     private String pattern;
     private Long minLength;
     private Long maxLength;
+    private Long minItems;
+    private Long maxItems;
     private boolean nullable;
     private String format;
     private List<V> validationRules = new ArrayList<>();
@@ -257,59 +259,59 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
       }
 
       if (value.isStringSchema()) {
-        System.out.println("String schema");
         StringSchema stringSchema = value.asStringSchema();
         // only set if ValidationSchemaFactoryWrapper is used
-        this.pattern = stringSchema.getPattern();
 
-        this.maxLength = ofNullable(stringSchema.getMaxLength())
+        pattern = ofNullable(stringSchema.getPattern())
+          .or(() -> ofNullable(beanProperty.getAnnotation(Pattern.class)).map(Pattern::value))
+          .orElse(null);
+
+        maxLength = ofNullable(stringSchema.getMaxLength())
           .map(Integer::longValue)
           .or(() -> ofNullable(beanProperty.getAnnotation(Size.class))
             .map(Size::max)
             .filter(v -> v < Long.MAX_VALUE))
           .orElse(null);
-        this.minLength = ofNullable(stringSchema.getMinLength())
+        minLength = ofNullable(stringSchema.getMinLength())
           .map(Integer::longValue)
           .or(() -> ofNullable(beanProperty.getAnnotation(Size.class))
             .map(Size::min)
             .filter(v -> v > 0))
           .orElse(null);
-
-      } else {
-        // TODO: process the other schema types for validation values
+      } else if(value.isNumberSchema() || value.isIntegerSchema()){
+        // minimum and maximum are only allowed on number and integer types
+        ofNullable(beanProperty.getAnnotation(Max.class)).ifPresent(a -> {
+          max = a.value();
+          if (!a.inclusive()) {
+            exclusiveMaximum = true;
+          }
+        });
+        ofNullable(beanProperty.getAnnotation(Min.class)).ifPresent(a -> {
+          min = a.value();
+          if (!a.inclusive()) {
+            exclusiveMinimum = true;
+          }
+        });
+      } else if (value.isArraySchema()) {
+        maxItems = ofNullable(beanProperty.getAnnotation(Size.class))
+            .map(Size::max)
+            .filter(v -> v < Long.MAX_VALUE)
+            .orElse(null);
+        minItems = ofNullable(beanProperty.getAnnotation(Size.class))
+            .map(Size::min)
+            .filter(v -> v > 0)
+            .orElse(null);
       }
 
       collectValidationRules(beanProperty, validationRules);
-
-      if (beanProperty.getMetadata().getDefaultValue() != null) {
-        defaultValue = toTargetType(beanProperty.getType(), beanProperty.getMetadata().getDefaultValue());
-      } else if (ofNullable(beanProperty.getAnnotation(Default.class)).map(Default::value).isPresent()) {
-        defaultValue = toTargetType(beanProperty.getType(),
-            ofNullable(beanProperty.getAnnotation(Default.class)).map(Default::value).get());
-      } else {
-        defaultValue = null;
-      }
 
       // TODO: should probably move to a standard annotations
       // see ValidationSchemaFactoryWrapper
       nullable = beanProperty.getAnnotation(Nullable.class) != null;
 
-      ofNullable(beanProperty.getAnnotation(Max.class)).ifPresent(a -> {
-        max = a.value();
-        if (!a.inclusive()) {
-          exclusiveMaximum = true;
-        }
-      });
-      ofNullable(beanProperty.getAnnotation(Min.class)).ifPresent(a -> {
-        min = a.value();
-        if (!a.inclusive()) {
-          exclusiveMinimum = true;
-        }
-      });
-
       // TODO: should the following be deprecated?
       required = beanProperty.getAnnotation(Required.class) != null;
-      pattern = ofNullable(beanProperty.getAnnotation(Pattern.class)).map(Pattern::value).orElse(pattern);
+      defaultValue = ofNullable(beanProperty.getAnnotation(Default.class)).map(Default::value).orElse(defaultValue);
     }
 
     public void updateSchema(T schema) {
@@ -332,6 +334,9 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
 
       schema.setMinLength(minLength);
       schema.setMaxLength(maxLength);
+
+      schema.setMinItems(minItems);
+      schema.setMaxItems(maxItems);
 
       schema.setPattern(pattern);
       schema.setFormat(format);
