@@ -32,7 +32,11 @@ public interface KubernetesJSONSchemaProps {
 
   void setMaximum(Double max);
 
+  void setExclusiveMaximum(Boolean b);
+
   void setMinimum(Double min);
+
+  void setExclusiveMinimum(Boolean b);
 
   void setPattern(String pattern);
 
