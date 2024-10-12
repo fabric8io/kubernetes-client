@@ -235,6 +235,16 @@ spec:
                 type: "object"
               onString:
                 properties:
+                  maxLength1:
+                    maxLength: 1
+                    type: "string"
+                  minLength1:
+                    minLength: 1
+                    type: "string"
+                  minLength1maxLength3:
+                    maxLength: 3
+                    minLength: 1
+                    type: "string"
                   pattern:
                     pattern: "(a|b)+"
                     type: "string"
