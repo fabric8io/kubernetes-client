@@ -588,7 +588,7 @@ spec:
     singular: "replica"
   scope: "Cluster"
   versions:
-  - name: "v1alpha1"
+  - name: "v1"
     schema:
       openAPIV3Schema:
         properties:
