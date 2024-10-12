@@ -252,6 +252,25 @@ spec:
                     minimum: 1.0
                     type: "integer"
                 type: "object"
+              onMap:
+                properties:
+                  maxItems1:
+                    additionalProperties:
+                      type: "string"
+                    maxProperties: 1
+                    type: "object"
+                  minItems1:
+                    additionalProperties:
+                      type: "string"
+                    minProperties: 1
+                    type: "object"
+                  minItems1maxItems3:
+                    additionalProperties:
+                      type: "string"
+                    maxProperties: 3
+                    minProperties: 1
+                    type: "object"
+                type: "object"
               onString:
                 properties:
                   maxLength1:
