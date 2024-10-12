@@ -686,6 +686,9 @@ spec:
 | `io.fabric8.crd.generator.annotation.Annotations`           | Additional `annotations` in `metadata`                                                |
 | `io.fabric8.crd.generator.annotation.Labels`                | Additional `labels` in `metadata`                                                     |
 | `io.fabric8.crd.generator.annotation.PrinterColumn`         | Customize columns shown by the `kubectl get` command                                  |
+| `io.fabric8.kubernetes.model.annotation.SpecReplicas`       | The field is used in scale subresource as `specReplicaPath`                           |
+| `io.fabric8.kubernetes.model.annotation.StatusReplicas`     | The field is used in scale subresource as `statusReplicaPath`                         |
+| `io.fabric8.kubernetes.model.annotation.LabelSelector`      | The field is used in scale subresource as `labelSelector`                             |
 
 
 A field of type `com.fasterxml.jackson.databind.JsonNode` is encoded as an empty object with `x-kubernetes-preserve-unknown-fields: true` defined.
