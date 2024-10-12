@@ -21,6 +21,8 @@ import io.fabric8.generator.annotation.Pattern;
 import io.fabric8.generator.annotation.Size;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class ValidationSpec {
 
@@ -33,6 +35,7 @@ public class ValidationSpec {
   private ValidationOnDouble onDouble;
   private ValidationOnDoublePrim onDoublePrim;
   private ValidationOnString onString;
+  private ValidationOnList onList;
 
   @Data
   static class ValidationOnInteger {
@@ -189,6 +192,16 @@ public class ValidationSpec {
     private String maxLength1;
     @Size(min = 1, max = 3)
     private String minLength1maxLength3;
+  }
+
+  @Data
+  static class ValidationOnList {
+    @Size(min = 1)
+    private List<String> minItems1;
+    @Size(max = 1)
+    private List<String> maxItems1;
+    @Size(min = 1, max = 3)
+    private List<String> minItems1maxItems3;
   }
 
 }

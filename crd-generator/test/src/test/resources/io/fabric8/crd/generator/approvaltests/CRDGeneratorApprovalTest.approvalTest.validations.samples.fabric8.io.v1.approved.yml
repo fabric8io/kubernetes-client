@@ -179,6 +179,25 @@ spec:
                     minimum: 1.0
                     type: "integer"
                 type: "object"
+              onList:
+                properties:
+                  maxItems1:
+                    items:
+                      type: "string"
+                    maxItems: 1
+                    type: "array"
+                  minItems1:
+                    items:
+                      type: "string"
+                    minItems: 1
+                    type: "array"
+                  minItems1maxItems3:
+                    items:
+                      type: "string"
+                    maxItems: 3
+                    minItems: 1
+                    type: "array"
+                type: "object"
               onLong:
                 properties:
                   maximum1:
