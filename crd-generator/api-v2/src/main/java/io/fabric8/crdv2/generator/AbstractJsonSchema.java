@@ -230,7 +230,9 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
     private final String description;
     private final Object defaultValue;
     private Double min;
+    private Boolean exclusiveMinimum;
     private Double max;
+    private Boolean exclusiveMaximum;
     private String pattern;
     private boolean nullable;
     private String format;
@@ -275,8 +277,19 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
       // TODO: should probably move to a standard annotations
       // see ValidationSchemaFactoryWrapper
       nullable = beanProperty.getAnnotation(Nullable.class) != null;
-      max = ofNullable(beanProperty.getAnnotation(Max.class)).map(Max::value).orElse(max);
-      min = ofNullable(beanProperty.getAnnotation(Min.class)).map(Min::value).orElse(min);
+
+      ofNullable(beanProperty.getAnnotation(Max.class)).ifPresent(a -> {
+        max = a.value();
+        if (!a.inclusive()) {
+          exclusiveMaximum = true;
+        }
+      });
+      ofNullable(beanProperty.getAnnotation(Min.class)).ifPresent(a -> {
+        min = a.value();
+        if (!a.inclusive()) {
+          exclusiveMinimum = true;
+        }
+      });
 
       // TODO: should the following be deprecated?
       required = beanProperty.getAnnotation(Required.class) != null;
@@ -297,7 +310,9 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
         schema.setNullable(nullable);
       }
       schema.setMaximum(max);
+      schema.setExclusiveMaximum(exclusiveMaximum);
       schema.setMinimum(min);
+      schema.setExclusiveMinimum(exclusiveMinimum);
       schema.setPattern(pattern);
       schema.setFormat(format);
       if (preserveUnknownFields) {
@@ -530,8 +545,18 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
         .map(a -> a[typeIndex])
         .forEach(at -> {
           Optional.ofNullable(at.getAnnotation(Pattern.class)).ifPresent(a -> schema.setPattern(a.value()));
-          Optional.ofNullable(at.getAnnotation(Min.class)).ifPresent(a -> schema.setMinimum(a.value()));
-          Optional.ofNullable(at.getAnnotation(Max.class)).ifPresent(a -> schema.setMaximum(a.value()));
+          Optional.ofNullable(at.getAnnotation(Min.class)).ifPresent(a -> {
+            schema.setMinimum(a.value());
+            if (!a.inclusive()) {
+              schema.setExclusiveMinimum(true);
+            }
+          });
+          Optional.ofNullable(at.getAnnotation(Max.class)).ifPresent(a -> {
+            schema.setMaximum(a.value());
+            if (!a.inclusive()) {
+              schema.setExclusiveMaximum(true);
+            }
+          });
         });
   }
 
