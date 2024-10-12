@@ -22,7 +22,9 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.module.jsonSchema.JsonSchema;
+import com.fasterxml.jackson.module.jsonSchema.types.ArraySchema;
 import com.fasterxml.jackson.module.jsonSchema.types.ArraySchema.Items;
+import com.fasterxml.jackson.module.jsonSchema.types.NumberSchema;
 import com.fasterxml.jackson.module.jsonSchema.types.ObjectSchema;
 import com.fasterxml.jackson.module.jsonSchema.types.ObjectSchema.SchemaAdditionalProperties;
 import com.fasterxml.jackson.module.jsonSchema.types.ReferenceSchema;
@@ -225,6 +227,18 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
         .ifPresent(ann -> Stream.of(ann.value()).map(this::from).forEach(validationRules::add));
   }
 
+  private Optional<Long> findMinInSizeAnnotation(BeanProperty beanProperty) {
+    return ofNullable(beanProperty.getAnnotation(Size.class))
+        .map(Size::min)
+        .filter(v -> v > 0);
+  }
+
+  private Optional<Long> findMaxInSizeAnnotation(BeanProperty beanProperty) {
+    return ofNullable(beanProperty.getAnnotation(Size.class))
+        .map(Size::max)
+        .filter(v -> v < Long.MAX_VALUE);
+  }
+
   class PropertyMetadata {
 
     private boolean required;
@@ -239,6 +253,8 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
     private Long maxLength;
     private Long minItems;
     private Long maxItems;
+    private Long minProperties;
+    private Long maxProperties;
     private boolean nullable;
     private String format;
     private List<V> validationRules = new ArrayList<>();
@@ -262,44 +278,43 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
         StringSchema stringSchema = value.asStringSchema();
         // only set if ValidationSchemaFactoryWrapper is used
 
-        pattern = ofNullable(stringSchema.getPattern())
-          .or(() -> ofNullable(beanProperty.getAnnotation(Pattern.class)).map(Pattern::value))
-          .orElse(null);
-
-        maxLength = ofNullable(stringSchema.getMaxLength())
-          .map(Integer::longValue)
-          .or(() -> ofNullable(beanProperty.getAnnotation(Size.class))
-            .map(Size::max)
-            .filter(v -> v < Long.MAX_VALUE))
-          .orElse(null);
-        minLength = ofNullable(stringSchema.getMinLength())
-          .map(Integer::longValue)
-          .or(() -> ofNullable(beanProperty.getAnnotation(Size.class))
-            .map(Size::min)
-            .filter(v -> v > 0))
-          .orElse(null);
-      } else if(value.isNumberSchema() || value.isIntegerSchema()){
+        pattern = ofNullable(beanProperty.getAnnotation(Pattern.class)).map(Pattern::value)
+            .or(() -> ofNullable(stringSchema.getPattern()))
+            .orElse(null);
+        minLength = findMinInSizeAnnotation(beanProperty)
+            .or(() -> ofNullable(stringSchema.getMinLength()).map(Integer::longValue))
+            .orElse(null);
+        maxLength = findMaxInSizeAnnotation(beanProperty)
+            .or(() -> ofNullable(stringSchema.getMaxLength()).map(Integer::longValue))
+            .orElse(null);
+      } else if (value.isNumberSchema()) {
+        NumberSchema numberSchema = value.asNumberSchema();
         // minimum and maximum are only allowed on number and integer types
-        ofNullable(beanProperty.getAnnotation(Max.class)).ifPresent(a -> {
-          max = a.value();
-          if (!a.inclusive()) {
-            exclusiveMaximum = true;
-          }
-        });
         ofNullable(beanProperty.getAnnotation(Min.class)).ifPresent(a -> {
           min = a.value();
           if (!a.inclusive()) {
             exclusiveMinimum = true;
           }
         });
+        ofNullable(beanProperty.getAnnotation(Max.class)).ifPresent(a -> {
+          max = a.value();
+          if (!a.inclusive()) {
+            exclusiveMaximum = true;
+          }
+        });
       } else if (value.isArraySchema()) {
-        maxItems = ofNullable(beanProperty.getAnnotation(Size.class))
-            .map(Size::max)
-            .filter(v -> v < Long.MAX_VALUE)
+        ArraySchema arraySchema = value.asArraySchema();
+        minItems = findMinInSizeAnnotation(beanProperty)
+            .or(() -> ofNullable(arraySchema.getMinItems()).map(Integer::longValue))
             .orElse(null);
-        minItems = ofNullable(beanProperty.getAnnotation(Size.class))
-            .map(Size::min)
-            .filter(v -> v > 0)
+        maxItems = findMaxInSizeAnnotation(beanProperty)
+            .or(() -> ofNullable(arraySchema.getMaxItems()).map(Integer::longValue))
+            .orElse(null);
+      } else if (value.isObjectSchema()) {
+        // TODO: Could be also applied only on Maps instead of "all the rest"
+        minProperties = findMinInSizeAnnotation(beanProperty)
+            .orElse(null);
+        maxProperties = findMaxInSizeAnnotation(beanProperty)
             .orElse(null);
       }
 
@@ -325,7 +340,7 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
         }
       }
       if (nullable) {
-        schema.setNullable(nullable);
+        schema.setNullable(true);
       }
       schema.setMaximum(max);
       schema.setExclusiveMaximum(exclusiveMaximum);
@@ -337,6 +352,9 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
 
       schema.setMinItems(minItems);
       schema.setMaxItems(maxItems);
+
+      schema.setMinProperties(minProperties);
+      schema.setMaxProperties(maxProperties);
 
       schema.setPattern(pattern);
       schema.setFormat(format);
