@@ -43,6 +43,7 @@ import io.fabric8.generator.annotation.Min;
 import io.fabric8.generator.annotation.Nullable;
 import io.fabric8.generator.annotation.Pattern;
 import io.fabric8.generator.annotation.Required;
+import io.fabric8.generator.annotation.Size;
 import io.fabric8.generator.annotation.ValidationRule;
 import io.fabric8.generator.annotation.ValidationRules;
 import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
@@ -234,6 +235,8 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
     private Double max;
     private Boolean exclusiveMaximum;
     private String pattern;
+    private Long minLength;
+    private Long maxLength;
     private boolean nullable;
     private String format;
     private List<V> validationRules = new ArrayList<>();
@@ -254,11 +257,24 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
       }
 
       if (value.isStringSchema()) {
+        System.out.println("String schema");
         StringSchema stringSchema = value.asStringSchema();
         // only set if ValidationSchemaFactoryWrapper is used
         this.pattern = stringSchema.getPattern();
-        //this.maxLength = ofNullable(stringSchema.getMaxLength()).map(Integer::doubleValue).orElse(null);
-        //this.minLength = ofNullable(stringSchema.getMinLength()).map(Integer::doubleValue).orElse(null);
+
+        this.maxLength = ofNullable(stringSchema.getMaxLength())
+          .map(Integer::longValue)
+          .or(() -> ofNullable(beanProperty.getAnnotation(Size.class))
+            .map(Size::max)
+            .filter(v -> v < Long.MAX_VALUE))
+          .orElse(null);
+        this.minLength = ofNullable(stringSchema.getMinLength())
+          .map(Integer::longValue)
+          .or(() -> ofNullable(beanProperty.getAnnotation(Size.class))
+            .map(Size::min)
+            .filter(v -> v > 0))
+          .orElse(null);
+
       } else {
         // TODO: process the other schema types for validation values
       }
@@ -313,6 +329,10 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
       schema.setExclusiveMaximum(exclusiveMaximum);
       schema.setMinimum(min);
       schema.setExclusiveMinimum(exclusiveMinimum);
+
+      schema.setMinLength(minLength);
+      schema.setMaxLength(maxLength);
+
       schema.setPattern(pattern);
       schema.setFormat(format);
       if (preserveUnknownFields) {

@@ -18,6 +18,7 @@ package io.fabric8.crd.generator.approvaltests.validation;
 import io.fabric8.generator.annotation.Max;
 import io.fabric8.generator.annotation.Min;
 import io.fabric8.generator.annotation.Pattern;
+import io.fabric8.generator.annotation.Size;
 import lombok.Data;
 
 @Data
@@ -181,6 +182,13 @@ public class ValidationSpec {
   static class ValidationOnString {
     @Pattern("(a|b)+")
     private String pattern;
+
+    @Size(min = 1)
+    private String minLength1;
+    @Size(max = 1)
+    private String maxLength1;
+    @Size(min = 1, max = 3)
+    private String minLength1maxLength3;
   }
 
 }
