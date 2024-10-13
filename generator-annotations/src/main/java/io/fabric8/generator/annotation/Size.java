@@ -22,14 +22,13 @@ import java.lang.annotation.Target;
 
 /**
  * Decorates the resulting property with size limits.
- * <p>
+ * <br>
  * The annotation can be used on strings, list/arrays and maps and will result in an appropriate JSON Schema constraint:
  * <ul>
  * <li>{@code minLength} and/or {@code maxLength} for a String</li>
  * <li>{@code minItems} and/or {@code maxItems} for a list/array</li>
  * <li>{@code minProperties} and/or {@code maxProperties} for a map</li>
  * </ul>
- * </p>
  *
  * @see <a href=
  *      "https://kubernetes.io/docs/reference/kubernetes-api/extend-resources/custom-resource-definition-v1/#JSONSchemaProps">
@@ -39,7 +38,13 @@ import java.lang.annotation.Target;
 @Target({ ElementType.ANNOTATION_TYPE, ElementType.FIELD, ElementType.METHOD, ElementType.TYPE_USE })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Size {
+  /**
+   * @return the minimum value (inclusive)
+   */
   long min() default 0;
 
+  /**
+   * @return the maximum value (inclusive)
+   */
   long max() default Long.MAX_VALUE;
 }
