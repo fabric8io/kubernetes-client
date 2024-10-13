@@ -229,6 +229,9 @@ public class ValidationSpec {
     private String maxLength1;
     @Size(min = 1, max = 3)
     private String minLength1maxLength3;
+
+    private List<@Size(min = 1, max = 3) String> listItemMinLength1MaxLength3;
+    private Map<String, @Size(min = 1, max = 3) String> mapItemMinLength1MaxLength3;
   }
 
   @Data
