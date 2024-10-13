@@ -384,16 +384,20 @@ spec:
                 properties:
                   maxItems1:
                     additionalProperties:
+                      maxLength: 1
                       type: "string"
                     maxProperties: 1
                     type: "object"
                   minItems1:
                     additionalProperties:
+                      minLength: 1
                       type: "string"
                     minProperties: 1
                     type: "object"
                   minItems1maxItems3:
                     additionalProperties:
+                      maxLength: 3
+                      minLength: 1
                       type: "string"
                     maxProperties: 3
                     minProperties: 1
@@ -401,11 +405,19 @@ spec:
                 type: "object"
               onString:
                 properties:
+                  listItemMinLength1MaxLength3:
+                    items:
+                      type: "string"
+                    type: "array"
                   listItemPattern:
                     items:
                       pattern: "(a|b)+"
                       type: "string"
                     type: "array"
+                  mapItemMinLength1MaxLength3:
+                    additionalProperties:
+                      type: "string"
+                    type: "object"
                   mapItemPattern:
                     additionalProperties:
                       pattern: "(a|b)+"

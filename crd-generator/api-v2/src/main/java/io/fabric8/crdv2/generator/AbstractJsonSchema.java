@@ -600,34 +600,49 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
 
     AnnotatedElement member = beanProperty.getMember().getAnnotated();
     AnnotatedType fieldType = null;
-    AnnotatedType type = null;
+    AnnotatedType methodType = null;
     if (member instanceof Field) {
       fieldType = ((Field) member).getAnnotatedType();
     } else if (member instanceof Method) {
       fieldType = getFieldForMethod(beanProperty).map(Field::getAnnotatedType).orElse(null);
-      type = ((Method) member).getAnnotatedReceiverType();
+      methodType = ((Method) member).getAnnotatedReceiverType();
     }
 
-    Stream.of(fieldType, type)
+    Stream.of(fieldType, methodType)
         .filter(o -> !Objects.isNull(o))
         .filter(AnnotatedParameterizedType.class::isInstance)
         .map(AnnotatedParameterizedType.class::cast)
         .map(AnnotatedParameterizedType::getAnnotatedActualTypeArguments)
         .map(a -> a[typeIndex])
         .forEach(at -> {
-          Optional.ofNullable(at.getAnnotation(Pattern.class)).ifPresent(a -> schema.setPattern(a.value()));
-          Optional.ofNullable(at.getAnnotation(Min.class)).ifPresent(a -> {
-            schema.setMinimum(a.value());
-            if (!a.inclusive()) {
-              schema.setExclusiveMinimum(true);
-            }
-          });
-          Optional.ofNullable(at.getAnnotation(Max.class)).ifPresent(a -> {
-            schema.setMaximum(a.value());
-            if (!a.inclusive()) {
-              schema.setExclusiveMaximum(true);
-            }
-          });
+          if ("string".equals(schema.getType())) {
+            ofNullable(at.getAnnotation(Pattern.class))
+                .ifPresent(a -> schema.setPattern(a.value()));
+
+            ofNullable(at.getAnnotation(Size.class))
+                .map(Size::min)
+                .filter(v -> v > 0)
+                .ifPresent(schema::setMinLength);
+
+            ofNullable(at.getAnnotation(Size.class))
+                .map(Size::max)
+                .filter(v -> v < Long.MAX_VALUE)
+                .ifPresent(schema::setMaxLength);
+
+          } else if ("number".equals(schema.getType()) || "integer".equals(schema.getType())) {
+            ofNullable(at.getAnnotation(Min.class)).ifPresent(a -> {
+              schema.setMinimum(a.value());
+              if (!a.inclusive()) {
+                schema.setExclusiveMinimum(true);
+              }
+            });
+            ofNullable(at.getAnnotation(Max.class)).ifPresent(a -> {
+              schema.setMaximum(a.value());
+              if (!a.inclusive()) {
+                schema.setExclusiveMaximum(true);
+              }
+            });
+          }
         });
   }
 
