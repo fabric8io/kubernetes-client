@@ -545,15 +545,16 @@ Result:
 
 #### Scale
 
-The [scale subresource](https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#scale-subresource) will be emitted, if at least one field is marked with either `@SpecReplicas`, `@StatusReplicas` or `@LabelSelector`.
-If used, `@SpecReplicas` and `@StatusReplicas` are required together to produce a valid CRD. `@LabelSelector` is optional.
+The [scale subresource](https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#scale-subresource)
+will be emitted, if at least one field is marked with either `@SpecReplicas`, `@StatusReplicas` or `@LabelSelector`.
+If used, `@SpecReplicas` and `@StatusReplicas` are both required to produce a valid CRD. `@LabelSelector` is optional.
 All three annotations can be used only once per Custom Resource. Further constraints are:
 
-| Annotation        |  Allowed in Spec   | Allowed in Status  | Required Field Type |
-|-------------------|:------------------:|:------------------:|---------------------|
-| `@SpecReplicas`   | :heavy_check_mark: |        :x:         | `integer`           |
-| `@StatusReplicas` |        :x:         | :heavy_check_mark: | `integer`           |
-| `@LabelSelector`  | :heavy_check_mark: | :heavy_check_mark: | `string`            |
+| Annotation        | Allowed in Spec | Allowed in Status | Required Field Type |
+|-------------------|:---------------:|:-----------------:|---------------------|
+| `@SpecReplicas`   |       Yes       |        No         | `integer`           |
+| `@StatusReplicas` |       No        |        Yes        | `integer`           |
+| `@LabelSelector`  |       Yes       |        Yes        | `string`            |
 
 ```java
 @Version("v1")
