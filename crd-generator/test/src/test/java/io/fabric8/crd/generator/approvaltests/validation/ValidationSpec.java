@@ -55,6 +55,14 @@ public class ValidationSpec {
     @Min(value = 1, inclusive = false)
     @Max(value = 3, inclusive = false)
     private Integer minimumExclusive1MaximumExclusive3;
+
+    private List<@Min(1) Integer> listItemMin1;
+    private List<@Max(1) Integer> listItemMax1;
+    private List<@Min(1) @Max(3) Integer> listItemMin1Max3;
+
+    private Map<String, @Min(1) Integer> mapItemMin1;
+    private Map<String, @Max(1) Integer> mapItemMax1;
+    private Map<String, @Min(1) @Max(3) Integer> mapItemMin1Max3;
   }
 
   @Data
@@ -91,6 +99,14 @@ public class ValidationSpec {
     @Min(value = 1, inclusive = false)
     @Max(value = 3, inclusive = false)
     private Long minimumExclusive1MaximumExclusive3;
+
+    private List<@Min(1) Long> listItemMin1;
+    private List<@Max(1) Long> listItemMax1;
+    private List<@Min(1) @Max(3) Long> listItemMin1Max3;
+
+    private Map<String, @Min(1) Long> mapItemMin1;
+    private Map<String, @Max(1) Long> mapItemMax1;
+    private Map<String, @Min(1) @Max(3) Long> mapItemMin1Max3;
   }
 
   @Data
@@ -127,6 +143,14 @@ public class ValidationSpec {
     @Min(value = 1, inclusive = false)
     @Max(value = 3, inclusive = false)
     private Float minimumExclusive1MaximumExclusive3;
+
+    private List<@Min(1) Float> listItemMin1;
+    private List<@Max(1) Float> listItemMax1;
+    private List<@Min(1) @Max(3) Float> listItemMin1Max3;
+
+    private Map<String, @Min(1) Float> mapItemMin1;
+    private Map<String, @Max(1) Float> mapItemMax1;
+    private Map<String, @Min(1) @Max(3) Float> mapItemMin1Max3;
   }
 
   @Data
@@ -163,6 +187,14 @@ public class ValidationSpec {
     @Min(value = 1, inclusive = false)
     @Max(value = 3, inclusive = false)
     private Double minimumExclusive1MaximumExclusive3;
+
+    private List<@Min(1) Double> listItemMin1;
+    private List<@Max(1) Double> listItemMax1;
+    private List<@Min(1) @Max(3) Double> listItemMin1Max3;
+
+    private Map<String, @Min(1) Double> mapItemMin1;
+    private Map<String, @Max(1) Double> mapItemMax1;
+    private Map<String, @Min(1) @Max(3) Double> mapItemMin1Max3;
   }
 
   @Data
@@ -187,6 +219,9 @@ public class ValidationSpec {
   static class ValidationOnString {
     @Pattern("(a|b)+")
     private String pattern;
+
+    private List<@Pattern("(a|b)+") String> listItemPattern;
+    private Map<String, @Pattern("(a|b)+") String> mapItemPattern;
 
     @Size(min = 1)
     private String minLength1;

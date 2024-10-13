@@ -24,6 +24,7 @@ import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.module.jsonSchema.JsonSchema;
 import com.fasterxml.jackson.module.jsonSchema.types.ArraySchema;
 import com.fasterxml.jackson.module.jsonSchema.types.ArraySchema.Items;
+import com.fasterxml.jackson.module.jsonSchema.types.IntegerSchema;
 import com.fasterxml.jackson.module.jsonSchema.types.NumberSchema;
 import com.fasterxml.jackson.module.jsonSchema.types.ObjectSchema;
 import com.fasterxml.jackson.module.jsonSchema.types.ObjectSchema.SchemaAdditionalProperties;
@@ -227,18 +228,6 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
         .ifPresent(ann -> Stream.of(ann.value()).map(this::from).forEach(validationRules::add));
   }
 
-  private Optional<Long> findMinInSizeAnnotation(BeanProperty beanProperty) {
-    return ofNullable(beanProperty.getAnnotation(Size.class))
-        .map(Size::min)
-        .filter(v -> v > 0);
-  }
-
-  private Optional<Long> findMaxInSizeAnnotation(BeanProperty beanProperty) {
-    return ofNullable(beanProperty.getAnnotation(Size.class))
-        .map(Size::max)
-        .filter(v -> v < Long.MAX_VALUE);
-  }
-
   class PropertyMetadata {
 
     private boolean required;
@@ -277,7 +266,6 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
       if (value.isStringSchema()) {
         StringSchema stringSchema = value.asStringSchema();
         // only set if ValidationSchemaFactoryWrapper is used
-
         pattern = ofNullable(beanProperty.getAnnotation(Pattern.class)).map(Pattern::value)
             .or(() -> ofNullable(stringSchema.getPattern()))
             .orElse(null);
@@ -287,21 +275,21 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
         maxLength = findMaxInSizeAnnotation(beanProperty)
             .or(() -> ofNullable(stringSchema.getMaxLength()).map(Integer::longValue))
             .orElse(null);
+      } else if (value.isIntegerSchema()) {
+        // integerschema extends numberschema and must handled first
+        IntegerSchema integerSchema = value.asIntegerSchema();
+        setMinMax(beanProperty,
+            integerSchema.getMinimum(),
+            integerSchema.getExclusiveMinimum(),
+            integerSchema.getMaximum(),
+            integerSchema.getExclusiveMaximum());
       } else if (value.isNumberSchema()) {
         NumberSchema numberSchema = value.asNumberSchema();
-        // minimum and maximum are only allowed on number and integer types
-        ofNullable(beanProperty.getAnnotation(Min.class)).ifPresent(a -> {
-          min = a.value();
-          if (!a.inclusive()) {
-            exclusiveMinimum = true;
-          }
-        });
-        ofNullable(beanProperty.getAnnotation(Max.class)).ifPresent(a -> {
-          max = a.value();
-          if (!a.inclusive()) {
-            exclusiveMaximum = true;
-          }
-        });
+        setMinMax(beanProperty,
+            numberSchema.getMinimum(),
+            numberSchema.getExclusiveMinimum(),
+            numberSchema.getMaximum(),
+            numberSchema.getExclusiveMaximum());
       } else if (value.isArraySchema()) {
         ArraySchema arraySchema = value.asArraySchema();
         minItems = findMinInSizeAnnotation(beanProperty)
@@ -327,6 +315,34 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
       // TODO: should the following be deprecated?
       required = beanProperty.getAnnotation(Required.class) != null;
       defaultValue = ofNullable(beanProperty.getAnnotation(Default.class)).map(Default::value).orElse(defaultValue);
+    }
+
+    private void setMinMax(BeanProperty beanProperty,
+        Double minimum, Boolean exclusiveMinimum, Double maximum, Boolean exclusiveMaximum) {
+      ofNullable(minimum).ifPresent(v -> {
+        this.min = v;
+        if (Boolean.TRUE.equals(exclusiveMinimum)) {
+          this.exclusiveMinimum = true;
+        }
+      });
+      ofNullable(beanProperty.getAnnotation(Min.class)).ifPresent(a -> {
+        min = a.value();
+        if (!a.inclusive()) {
+          this.exclusiveMinimum = true;
+        }
+      });
+      ofNullable(maximum).ifPresent(v -> {
+        this.max = v;
+        if (Boolean.TRUE.equals(exclusiveMaximum)) {
+          this.exclusiveMaximum = true;
+        }
+      });
+      ofNullable(beanProperty.getAnnotation(Max.class)).ifPresent(a -> {
+        this.max = a.value();
+        if (!a.inclusive()) {
+          this.exclusiveMaximum = true;
+        }
+      });
     }
 
     public void updateSchema(T schema) {
@@ -363,6 +379,18 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
       }
 
       addToValidationRules(schema, validationRules);
+    }
+
+    private Optional<Long> findMinInSizeAnnotation(BeanProperty beanProperty) {
+      return ofNullable(beanProperty.getAnnotation(Size.class))
+          .map(Size::min)
+          .filter(v -> v > 0);
+    }
+
+    private Optional<Long> findMaxInSizeAnnotation(BeanProperty beanProperty) {
+      return ofNullable(beanProperty.getAnnotation(Size.class))
+          .map(Size::max)
+          .filter(v -> v < Long.MAX_VALUE);
     }
   }
 

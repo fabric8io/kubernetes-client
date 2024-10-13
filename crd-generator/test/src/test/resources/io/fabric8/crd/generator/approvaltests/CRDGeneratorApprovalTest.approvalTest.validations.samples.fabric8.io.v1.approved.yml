@@ -19,6 +19,38 @@ spec:
             properties:
               onDouble:
                 properties:
+                  listItemMax1:
+                    items:
+                      maximum: 1.0
+                      type: "number"
+                    type: "array"
+                  listItemMin1:
+                    items:
+                      minimum: 1.0
+                      type: "number"
+                    type: "array"
+                  listItemMin1Max3:
+                    items:
+                      maximum: 3.0
+                      minimum: 1.0
+                      type: "number"
+                    type: "array"
+                  mapItemMax1:
+                    additionalProperties:
+                      maximum: 1.0
+                      type: "number"
+                    type: "object"
+                  mapItemMin1:
+                    additionalProperties:
+                      minimum: 1.0
+                      type: "number"
+                    type: "object"
+                  mapItemMin1Max3:
+                    additionalProperties:
+                      maximum: 3.0
+                      minimum: 1.0
+                      type: "number"
+                    type: "object"
                   maximum1:
                     maximum: 1.0
                     type: "number"
@@ -73,6 +105,38 @@ spec:
                 type: "object"
               onFloat:
                 properties:
+                  listItemMax1:
+                    items:
+                      maximum: 1.0
+                      type: "number"
+                    type: "array"
+                  listItemMin1:
+                    items:
+                      minimum: 1.0
+                      type: "number"
+                    type: "array"
+                  listItemMin1Max3:
+                    items:
+                      maximum: 3.0
+                      minimum: 1.0
+                      type: "number"
+                    type: "array"
+                  mapItemMax1:
+                    additionalProperties:
+                      maximum: 1.0
+                      type: "number"
+                    type: "object"
+                  mapItemMin1:
+                    additionalProperties:
+                      minimum: 1.0
+                      type: "number"
+                    type: "object"
+                  mapItemMin1Max3:
+                    additionalProperties:
+                      maximum: 3.0
+                      minimum: 1.0
+                      type: "number"
+                    type: "object"
                   maximum1:
                     maximum: 1.0
                     type: "number"
@@ -127,6 +191,38 @@ spec:
                 type: "object"
               onInteger:
                 properties:
+                  listItemMax1:
+                    items:
+                      maximum: 1.0
+                      type: "integer"
+                    type: "array"
+                  listItemMin1:
+                    items:
+                      minimum: 1.0
+                      type: "integer"
+                    type: "array"
+                  listItemMin1Max3:
+                    items:
+                      maximum: 3.0
+                      minimum: 1.0
+                      type: "integer"
+                    type: "array"
+                  mapItemMax1:
+                    additionalProperties:
+                      maximum: 1.0
+                      type: "integer"
+                    type: "object"
+                  mapItemMin1:
+                    additionalProperties:
+                      minimum: 1.0
+                      type: "integer"
+                    type: "object"
+                  mapItemMin1Max3:
+                    additionalProperties:
+                      maximum: 3.0
+                      minimum: 1.0
+                      type: "integer"
+                    type: "object"
                   maximum1:
                     maximum: 1.0
                     type: "integer"
@@ -200,6 +296,38 @@ spec:
                 type: "object"
               onLong:
                 properties:
+                  listItemMax1:
+                    items:
+                      maximum: 1.0
+                      type: "integer"
+                    type: "array"
+                  listItemMin1:
+                    items:
+                      minimum: 1.0
+                      type: "integer"
+                    type: "array"
+                  listItemMin1Max3:
+                    items:
+                      maximum: 3.0
+                      minimum: 1.0
+                      type: "integer"
+                    type: "array"
+                  mapItemMax1:
+                    additionalProperties:
+                      maximum: 1.0
+                      type: "integer"
+                    type: "object"
+                  mapItemMin1:
+                    additionalProperties:
+                      minimum: 1.0
+                      type: "integer"
+                    type: "object"
+                  mapItemMin1Max3:
+                    additionalProperties:
+                      maximum: 3.0
+                      minimum: 1.0
+                      type: "integer"
+                    type: "object"
                   maximum1:
                     maximum: 1.0
                     type: "integer"
@@ -273,6 +401,16 @@ spec:
                 type: "object"
               onString:
                 properties:
+                  listItemPattern:
+                    items:
+                      pattern: "(a|b)+"
+                      type: "string"
+                    type: "array"
+                  mapItemPattern:
+                    additionalProperties:
+                      pattern: "(a|b)+"
+                      type: "string"
+                    type: "object"
                   maxLength1:
                     maxLength: 1
                     type: "string"
