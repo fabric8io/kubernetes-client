@@ -13,13 +13,12 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import io.fabric8.knative.internal.pkg.apis.Condition;
-import io.fabric8.knative.internal.pkg.apis.duck.v1.Addressable;
-import io.fabric8.knative.internal.pkg.apis.duck.v1.AuthStatus;
+import io.fabric8.knative.duck.v1.Addressable;
+import io.fabric8.knative.duck.v1.AppliedEventPolicyRef;
+import io.fabric8.knative.duck.v1.AuthStatus;
+import io.fabric8.knative.pkg.apis.Condition;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.ContainerPort;
-import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
@@ -29,8 +28,6 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.kubernetes.api.model.Volume;
-import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -47,7 +44,8 @@ import lombok.experimental.Accessors;
     "branchStatuses",
     "conditions",
     "ingressChannelStatus",
-    "observedGeneration"
+    "observedGeneration",
+    "policies"
 })
 @ToString
 @EqualsAndHashCode
@@ -64,11 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
-    @BuildableReference(PersistentVolumeClaim.class),
-    @BuildableReference(EnvVar.class),
-    @BuildableReference(ContainerPort.class),
-    @BuildableReference(Volume.class),
-    @BuildableReference(VolumeMount.class)
+    @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
 public class ParallelStatus implements Editable<ParallelStatusBuilder> , KubernetesResource
@@ -94,8 +88,11 @@ public class ParallelStatus implements Editable<ParallelStatusBuilder> , Kuberne
     private ParallelChannelStatus ingressChannelStatus;
     @JsonProperty("observedGeneration")
     private Long observedGeneration;
+    @JsonProperty("policies")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<AppliedEventPolicyRef> policies = new ArrayList<>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -104,7 +101,7 @@ public class ParallelStatus implements Editable<ParallelStatusBuilder> , Kuberne
     public ParallelStatus() {
     }
 
-    public ParallelStatus(Addressable address, List<Addressable> addresses, Map<String, String> annotations, AuthStatus auth, List<ParallelBranchStatus> branchStatuses, List<Condition> conditions, ParallelChannelStatus ingressChannelStatus, Long observedGeneration) {
+    public ParallelStatus(Addressable address, List<Addressable> addresses, Map<String, String> annotations, AuthStatus auth, List<ParallelBranchStatus> branchStatuses, List<Condition> conditions, ParallelChannelStatus ingressChannelStatus, Long observedGeneration, List<AppliedEventPolicyRef> policies) {
         super();
         this.address = address;
         this.addresses = addresses;
@@ -114,6 +111,7 @@ public class ParallelStatus implements Editable<ParallelStatusBuilder> , Kuberne
         this.conditions = conditions;
         this.ingressChannelStatus = ingressChannelStatus;
         this.observedGeneration = observedGeneration;
+        this.policies = policies;
     }
 
     @JsonProperty("address")
@@ -200,6 +198,17 @@ public class ParallelStatus implements Editable<ParallelStatusBuilder> , Kuberne
         this.observedGeneration = observedGeneration;
     }
 
+    @JsonProperty("policies")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<AppliedEventPolicyRef> getPolicies() {
+        return policies;
+    }
+
+    @JsonProperty("policies")
+    public void setPolicies(List<AppliedEventPolicyRef> policies) {
+        this.policies = policies;
+    }
+
     @JsonIgnore
     public ParallelStatusBuilder edit() {
         return new ParallelStatusBuilder(this);
@@ -211,16 +220,16 @@ public class ParallelStatus implements Editable<ParallelStatusBuilder> , Kuberne
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 

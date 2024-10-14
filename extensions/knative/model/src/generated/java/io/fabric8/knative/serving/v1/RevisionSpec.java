@@ -15,13 +15,13 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Affinity;
-import io.fabric8.kubernetes.api.model.ContainerPort;
-import io.fabric8.kubernetes.api.model.EnvVar;
+import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.EphemeralContainer;
 import io.fabric8.kubernetes.api.model.HostAlias;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
+import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
@@ -36,7 +36,7 @@ import io.fabric8.kubernetes.api.model.Quantity;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.Toleration;
 import io.fabric8.kubernetes.api.model.TopologySpreadConstraint;
-import io.fabric8.kubernetes.api.model.VolumeMount;
+import io.fabric8.kubernetes.api.model.Volume;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -99,17 +99,13 @@ import lombok.experimental.Accessors;
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
     @BuildableReference(LabelSelector.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.Container.class),
+    @BuildableReference(Container.class),
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
-    @BuildableReference(PersistentVolumeClaim.class),
-    @BuildableReference(EnvVar.class),
-    @BuildableReference(ContainerPort.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.Volume.class),
-    @BuildableReference(VolumeMount.class)
+    @BuildableReference(LocalObjectReference.class),
+    @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
 public class RevisionSpec implements Editable<RevisionSpecBuilder> , KubernetesResource
@@ -125,11 +121,11 @@ public class RevisionSpec implements Editable<RevisionSpecBuilder> , KubernetesR
     private Long containerConcurrency;
     @JsonProperty("containers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.Container> containers = new ArrayList<>();
+    private List<Container> containers = new ArrayList<>();
     @JsonProperty("dnsConfig")
     private PodDNSConfig dnsConfig;
     @JsonProperty("dnsPolicy")
-    private java.lang.String dnsPolicy;
+    private String dnsPolicy;
     @JsonProperty("enableServiceLinks")
     private Boolean enableServiceLinks;
     @JsonProperty("ephemeralContainers")
@@ -139,25 +135,25 @@ public class RevisionSpec implements Editable<RevisionSpecBuilder> , KubernetesR
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<HostAlias> hostAliases = new ArrayList<>();
     @JsonProperty("hostIPC")
-    private java.lang.Boolean hostIPC;
+    private Boolean hostIPC;
     @JsonProperty("hostNetwork")
-    private java.lang.Boolean hostNetwork;
+    private Boolean hostNetwork;
     @JsonProperty("hostPID")
-    private java.lang.Boolean hostPID;
+    private Boolean hostPID;
     @JsonProperty("hostUsers")
     private Boolean hostUsers;
     @JsonProperty("hostname")
-    private java.lang.String hostname;
+    private String hostname;
     @JsonProperty("idleTimeoutSeconds")
     private Long idleTimeoutSeconds;
     @JsonProperty("imagePullSecrets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.LocalObjectReference> imagePullSecrets = new ArrayList<>();
+    private List<LocalObjectReference> imagePullSecrets = new ArrayList<>();
     @JsonProperty("initContainers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.Container> initContainers = new ArrayList<>();
+    private List<Container> initContainers = new ArrayList<>();
     @JsonProperty("nodeName")
-    private java.lang.String nodeName;
+    private String nodeName;
     @JsonProperty("nodeSelector")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> nodeSelector = new LinkedHashMap<>();
@@ -171,7 +167,7 @@ public class RevisionSpec implements Editable<RevisionSpecBuilder> , KubernetesR
     @JsonProperty("priority")
     private Integer priority;
     @JsonProperty("priorityClassName")
-    private java.lang.String priorityClassName;
+    private String priorityClassName;
     @JsonProperty("readinessGates")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<PodReadinessGate> readinessGates = new ArrayList<>();
@@ -181,26 +177,26 @@ public class RevisionSpec implements Editable<RevisionSpecBuilder> , KubernetesR
     @JsonProperty("responseStartTimeoutSeconds")
     private Long responseStartTimeoutSeconds;
     @JsonProperty("restartPolicy")
-    private java.lang.String restartPolicy;
+    private String restartPolicy;
     @JsonProperty("runtimeClassName")
     private String runtimeClassName;
     @JsonProperty("schedulerName")
-    private java.lang.String schedulerName;
+    private String schedulerName;
     @JsonProperty("schedulingGates")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<PodSchedulingGate> schedulingGates = new ArrayList<>();
     @JsonProperty("securityContext")
     private PodSecurityContext securityContext;
     @JsonProperty("serviceAccount")
-    private java.lang.String serviceAccount;
+    private String serviceAccount;
     @JsonProperty("serviceAccountName")
-    private java.lang.String serviceAccountName;
+    private String serviceAccountName;
     @JsonProperty("setHostnameAsFQDN")
     private Boolean setHostnameAsFQDN;
     @JsonProperty("shareProcessNamespace")
     private Boolean shareProcessNamespace;
     @JsonProperty("subdomain")
-    private java.lang.String subdomain;
+    private String subdomain;
     @JsonProperty("terminationGracePeriodSeconds")
     private Long terminationGracePeriodSeconds;
     @JsonProperty("timeoutSeconds")
@@ -213,9 +209,9 @@ public class RevisionSpec implements Editable<RevisionSpecBuilder> , KubernetesR
     private List<TopologySpreadConstraint> topologySpreadConstraints = new ArrayList<>();
     @JsonProperty("volumes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.Volume> volumes = new ArrayList<>();
+    private List<Volume> volumes = new ArrayList<>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -224,7 +220,7 @@ public class RevisionSpec implements Editable<RevisionSpecBuilder> , KubernetesR
     public RevisionSpec() {
     }
 
-    public RevisionSpec(Long activeDeadlineSeconds, Affinity affinity, Boolean automountServiceAccountToken, Long containerConcurrency, List<io.fabric8.kubernetes.api.model.Container> containers, PodDNSConfig dnsConfig, java.lang.String dnsPolicy, Boolean enableServiceLinks, List<EphemeralContainer> ephemeralContainers, List<HostAlias> hostAliases, java.lang.Boolean hostIPC, java.lang.Boolean hostNetwork, java.lang.Boolean hostPID, Boolean hostUsers, java.lang.String hostname, Long idleTimeoutSeconds, List<io.fabric8.kubernetes.api.model.LocalObjectReference> imagePullSecrets, List<io.fabric8.kubernetes.api.model.Container> initContainers, java.lang.String nodeName, Map<String, String> nodeSelector, PodOS os, Map<String, Quantity> overhead, String preemptionPolicy, Integer priority, java.lang.String priorityClassName, List<PodReadinessGate> readinessGates, List<PodResourceClaim> resourceClaims, Long responseStartTimeoutSeconds, java.lang.String restartPolicy, String runtimeClassName, java.lang.String schedulerName, List<PodSchedulingGate> schedulingGates, PodSecurityContext securityContext, java.lang.String serviceAccount, java.lang.String serviceAccountName, Boolean setHostnameAsFQDN, Boolean shareProcessNamespace, java.lang.String subdomain, Long terminationGracePeriodSeconds, Long timeoutSeconds, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, List<io.fabric8.kubernetes.api.model.Volume> volumes) {
+    public RevisionSpec(Long activeDeadlineSeconds, Affinity affinity, Boolean automountServiceAccountToken, Long containerConcurrency, List<Container> containers, PodDNSConfig dnsConfig, String dnsPolicy, Boolean enableServiceLinks, List<EphemeralContainer> ephemeralContainers, List<HostAlias> hostAliases, Boolean hostIPC, Boolean hostNetwork, Boolean hostPID, Boolean hostUsers, String hostname, Long idleTimeoutSeconds, List<LocalObjectReference> imagePullSecrets, List<Container> initContainers, String nodeName, Map<String, String> nodeSelector, PodOS os, Map<String, Quantity> overhead, String preemptionPolicy, Integer priority, String priorityClassName, List<PodReadinessGate> readinessGates, List<PodResourceClaim> resourceClaims, Long responseStartTimeoutSeconds, String restartPolicy, String runtimeClassName, String schedulerName, List<PodSchedulingGate> schedulingGates, PodSecurityContext securityContext, String serviceAccount, String serviceAccountName, Boolean setHostnameAsFQDN, Boolean shareProcessNamespace, String subdomain, Long terminationGracePeriodSeconds, Long timeoutSeconds, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, List<Volume> volumes) {
         super();
         this.activeDeadlineSeconds = activeDeadlineSeconds;
         this.affinity = affinity;
@@ -313,12 +309,12 @@ public class RevisionSpec implements Editable<RevisionSpecBuilder> , KubernetesR
 
     @JsonProperty("containers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<io.fabric8.kubernetes.api.model.Container> getContainers() {
+    public List<Container> getContainers() {
         return containers;
     }
 
     @JsonProperty("containers")
-    public void setContainers(List<io.fabric8.kubernetes.api.model.Container> containers) {
+    public void setContainers(List<Container> containers) {
         this.containers = containers;
     }
 
@@ -333,12 +329,12 @@ public class RevisionSpec implements Editable<RevisionSpecBuilder> , KubernetesR
     }
 
     @JsonProperty("dnsPolicy")
-    public java.lang.String getDnsPolicy() {
+    public String getDnsPolicy() {
         return dnsPolicy;
     }
 
     @JsonProperty("dnsPolicy")
-    public void setDnsPolicy(java.lang.String dnsPolicy) {
+    public void setDnsPolicy(String dnsPolicy) {
         this.dnsPolicy = dnsPolicy;
     }
 
@@ -375,32 +371,32 @@ public class RevisionSpec implements Editable<RevisionSpecBuilder> , KubernetesR
     }
 
     @JsonProperty("hostIPC")
-    public java.lang.Boolean getHostIPC() {
+    public Boolean getHostIPC() {
         return hostIPC;
     }
 
     @JsonProperty("hostIPC")
-    public void setHostIPC(java.lang.Boolean hostIPC) {
+    public void setHostIPC(Boolean hostIPC) {
         this.hostIPC = hostIPC;
     }
 
     @JsonProperty("hostNetwork")
-    public java.lang.Boolean getHostNetwork() {
+    public Boolean getHostNetwork() {
         return hostNetwork;
     }
 
     @JsonProperty("hostNetwork")
-    public void setHostNetwork(java.lang.Boolean hostNetwork) {
+    public void setHostNetwork(Boolean hostNetwork) {
         this.hostNetwork = hostNetwork;
     }
 
     @JsonProperty("hostPID")
-    public java.lang.Boolean getHostPID() {
+    public Boolean getHostPID() {
         return hostPID;
     }
 
     @JsonProperty("hostPID")
-    public void setHostPID(java.lang.Boolean hostPID) {
+    public void setHostPID(Boolean hostPID) {
         this.hostPID = hostPID;
     }
 
@@ -415,12 +411,12 @@ public class RevisionSpec implements Editable<RevisionSpecBuilder> , KubernetesR
     }
 
     @JsonProperty("hostname")
-    public java.lang.String getHostname() {
+    public String getHostname() {
         return hostname;
     }
 
     @JsonProperty("hostname")
-    public void setHostname(java.lang.String hostname) {
+    public void setHostname(String hostname) {
         this.hostname = hostname;
     }
 
@@ -436,33 +432,33 @@ public class RevisionSpec implements Editable<RevisionSpecBuilder> , KubernetesR
 
     @JsonProperty("imagePullSecrets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<io.fabric8.kubernetes.api.model.LocalObjectReference> getImagePullSecrets() {
+    public List<LocalObjectReference> getImagePullSecrets() {
         return imagePullSecrets;
     }
 
     @JsonProperty("imagePullSecrets")
-    public void setImagePullSecrets(List<io.fabric8.kubernetes.api.model.LocalObjectReference> imagePullSecrets) {
+    public void setImagePullSecrets(List<LocalObjectReference> imagePullSecrets) {
         this.imagePullSecrets = imagePullSecrets;
     }
 
     @JsonProperty("initContainers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<io.fabric8.kubernetes.api.model.Container> getInitContainers() {
+    public List<Container> getInitContainers() {
         return initContainers;
     }
 
     @JsonProperty("initContainers")
-    public void setInitContainers(List<io.fabric8.kubernetes.api.model.Container> initContainers) {
+    public void setInitContainers(List<Container> initContainers) {
         this.initContainers = initContainers;
     }
 
     @JsonProperty("nodeName")
-    public java.lang.String getNodeName() {
+    public String getNodeName() {
         return nodeName;
     }
 
     @JsonProperty("nodeName")
-    public void setNodeName(java.lang.String nodeName) {
+    public void setNodeName(String nodeName) {
         this.nodeName = nodeName;
     }
 
@@ -519,12 +515,12 @@ public class RevisionSpec implements Editable<RevisionSpecBuilder> , KubernetesR
     }
 
     @JsonProperty("priorityClassName")
-    public java.lang.String getPriorityClassName() {
+    public String getPriorityClassName() {
         return priorityClassName;
     }
 
     @JsonProperty("priorityClassName")
-    public void setPriorityClassName(java.lang.String priorityClassName) {
+    public void setPriorityClassName(String priorityClassName) {
         this.priorityClassName = priorityClassName;
     }
 
@@ -561,12 +557,12 @@ public class RevisionSpec implements Editable<RevisionSpecBuilder> , KubernetesR
     }
 
     @JsonProperty("restartPolicy")
-    public java.lang.String getRestartPolicy() {
+    public String getRestartPolicy() {
         return restartPolicy;
     }
 
     @JsonProperty("restartPolicy")
-    public void setRestartPolicy(java.lang.String restartPolicy) {
+    public void setRestartPolicy(String restartPolicy) {
         this.restartPolicy = restartPolicy;
     }
 
@@ -581,12 +577,12 @@ public class RevisionSpec implements Editable<RevisionSpecBuilder> , KubernetesR
     }
 
     @JsonProperty("schedulerName")
-    public java.lang.String getSchedulerName() {
+    public String getSchedulerName() {
         return schedulerName;
     }
 
     @JsonProperty("schedulerName")
-    public void setSchedulerName(java.lang.String schedulerName) {
+    public void setSchedulerName(String schedulerName) {
         this.schedulerName = schedulerName;
     }
 
@@ -612,22 +608,22 @@ public class RevisionSpec implements Editable<RevisionSpecBuilder> , KubernetesR
     }
 
     @JsonProperty("serviceAccount")
-    public java.lang.String getServiceAccount() {
+    public String getServiceAccount() {
         return serviceAccount;
     }
 
     @JsonProperty("serviceAccount")
-    public void setServiceAccount(java.lang.String serviceAccount) {
+    public void setServiceAccount(String serviceAccount) {
         this.serviceAccount = serviceAccount;
     }
 
     @JsonProperty("serviceAccountName")
-    public java.lang.String getServiceAccountName() {
+    public String getServiceAccountName() {
         return serviceAccountName;
     }
 
     @JsonProperty("serviceAccountName")
-    public void setServiceAccountName(java.lang.String serviceAccountName) {
+    public void setServiceAccountName(String serviceAccountName) {
         this.serviceAccountName = serviceAccountName;
     }
 
@@ -652,12 +648,12 @@ public class RevisionSpec implements Editable<RevisionSpecBuilder> , KubernetesR
     }
 
     @JsonProperty("subdomain")
-    public java.lang.String getSubdomain() {
+    public String getSubdomain() {
         return subdomain;
     }
 
     @JsonProperty("subdomain")
-    public void setSubdomain(java.lang.String subdomain) {
+    public void setSubdomain(String subdomain) {
         this.subdomain = subdomain;
     }
 
@@ -705,12 +701,12 @@ public class RevisionSpec implements Editable<RevisionSpecBuilder> , KubernetesR
 
     @JsonProperty("volumes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<io.fabric8.kubernetes.api.model.Volume> getVolumes() {
+    public List<Volume> getVolumes() {
         return volumes;
     }
 
     @JsonProperty("volumes")
-    public void setVolumes(List<io.fabric8.kubernetes.api.model.Volume> volumes) {
+    public void setVolumes(List<Volume> volumes) {
         this.volumes = volumes;
     }
 
@@ -725,16 +721,16 @@ public class RevisionSpec implements Editable<RevisionSpecBuilder> , KubernetesR
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 

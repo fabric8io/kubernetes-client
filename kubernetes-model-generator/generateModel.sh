@@ -22,7 +22,6 @@ ABSOLUTE_BASEDIR=$(realpath "$BASEDIR")
 
 # Array for all existing modules
 declare -a modules=(
-    "../extensions/knative/generator"
     "../extensions/certmanager/generator-v1"
     "../extensions/certmanager/generator-v1alpha2"
     "../extensions/certmanager/generator-v1alpha3"
@@ -46,7 +45,6 @@ declare -a modules=(
 )
 
 declare -a extensionModuleParents=(
-    "../extensions/knative/pom.xml"
     "../extensions/certmanager/pom.xml"
     "../extensions/chaosmesh/pom.xml"
     "../extensions/tekton/pom.xml"

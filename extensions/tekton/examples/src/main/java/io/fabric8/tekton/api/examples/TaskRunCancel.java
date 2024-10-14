@@ -15,7 +15,7 @@
  */
 package io.fabric8.tekton.api.examples;
 
-import io.fabric8.knative.internal.pkg.apis.Condition;
+import io.fabric8.knative.pkg.apis.Condition;
 import io.fabric8.tekton.client.DefaultTektonClient;
 import io.fabric8.tekton.client.TektonClient;
 import io.fabric8.tekton.pipeline.v1.TaskRun;

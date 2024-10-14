@@ -154,7 +154,7 @@
       "type": "object",
       "properties": {
         "address": {
-          "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.Addressable"
+          "existingJavaType": "io.fabric8.knative.duck.v1.Addressable"
         },
         "annotations": {
           "type": "object",
@@ -164,7 +164,7 @@
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "existingJavaType": "io.fabric8.knative.internal.pkg.apis.Condition"
+            "existingJavaType": "io.fabric8.knative.pkg.apis.Condition"
           }
         },
         "observedGeneration": {
@@ -344,7 +344,7 @@
       "type": "object",
       "properties": {
         "address": {
-          "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1alpha1.Addressable"
+          "existingJavaType": "io.fabric8.knative.duck.v1alpha1.Addressable"
         },
         "annotations": {
           "type": "object",
@@ -354,7 +354,7 @@
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "existingJavaType": "io.fabric8.knative.internal.pkg.apis.Condition"
+            "existingJavaType": "io.fabric8.knative.pkg.apis.Condition"
           }
         },
         "configuration": {
@@ -560,7 +560,7 @@
       "type": "object",
       "properties": {
         "address": {
-          "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.Addressable"
+          "existingJavaType": "io.fabric8.knative.duck.v1.Addressable"
         },
         "annotations": {
           "type": "object",
@@ -570,7 +570,7 @@
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "existingJavaType": "io.fabric8.knative.internal.pkg.apis.Condition"
+            "existingJavaType": "io.fabric8.knative.pkg.apis.Condition"
           }
         },
         "observedGeneration": {
@@ -594,7 +594,7 @@
           "type": "string"
         },
         "spec": {
-          "existingJavaType": "io.fabric8.knative.internal.pkg.apis.duck.v1.WithPodSpec"
+          "existingJavaType": "io.fabric8.knative.duck.v1.WithPodSpec"
         }
       },
       "javaType": "io.fabric8.tekton.triggers.v1alpha1.KubernetesResource",

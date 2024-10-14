@@ -15,8 +15,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.ContainerPort;
-import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
@@ -26,8 +24,6 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.kubernetes.api.model.Volume;
-import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -60,11 +56,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
-    @BuildableReference(PersistentVolumeClaim.class),
-    @BuildableReference(EnvVar.class),
-    @BuildableReference(ContainerPort.class),
-    @BuildableReference(Volume.class),
-    @BuildableReference(VolumeMount.class)
+    @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
 public class SubscriptionsAPIFilter implements Editable<SubscriptionsAPIFilterBuilder> , KubernetesResource
@@ -72,17 +64,17 @@ public class SubscriptionsAPIFilter implements Editable<SubscriptionsAPIFilterBu
 
     @JsonProperty("all")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<SubscriptionsAPIFilter> all = new ArrayList<>();
+    private List<io.fabric8.knative.eventing.v1.SubscriptionsAPIFilter> all = new ArrayList<>();
     @JsonProperty("any")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<SubscriptionsAPIFilter> any = new ArrayList<>();
+    private List<io.fabric8.knative.eventing.v1.SubscriptionsAPIFilter> any = new ArrayList<>();
     @JsonProperty("cesql")
-    private java.lang.String cesql;
+    private String cesql;
     @JsonProperty("exact")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> exact = new LinkedHashMap<>();
     @JsonProperty("not")
-    private SubscriptionsAPIFilter not;
+    private io.fabric8.knative.eventing.v1.SubscriptionsAPIFilter not;
     @JsonProperty("prefix")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> prefix = new LinkedHashMap<>();
@@ -90,7 +82,7 @@ public class SubscriptionsAPIFilter implements Editable<SubscriptionsAPIFilterBu
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> suffix = new LinkedHashMap<>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -99,7 +91,7 @@ public class SubscriptionsAPIFilter implements Editable<SubscriptionsAPIFilterBu
     public SubscriptionsAPIFilter() {
     }
 
-    public SubscriptionsAPIFilter(List<SubscriptionsAPIFilter> all, List<SubscriptionsAPIFilter> any, java.lang.String cesql, Map<String, String> exact, SubscriptionsAPIFilter not, Map<String, String> prefix, Map<String, String> suffix) {
+    public SubscriptionsAPIFilter(List<io.fabric8.knative.eventing.v1.SubscriptionsAPIFilter> all, List<io.fabric8.knative.eventing.v1.SubscriptionsAPIFilter> any, String cesql, Map<String, String> exact, io.fabric8.knative.eventing.v1.SubscriptionsAPIFilter not, Map<String, String> prefix, Map<String, String> suffix) {
         super();
         this.all = all;
         this.any = any;
@@ -112,33 +104,33 @@ public class SubscriptionsAPIFilter implements Editable<SubscriptionsAPIFilterBu
 
     @JsonProperty("all")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<SubscriptionsAPIFilter> getAll() {
+    public List<io.fabric8.knative.eventing.v1.SubscriptionsAPIFilter> getAll() {
         return all;
     }
 
     @JsonProperty("all")
-    public void setAll(List<SubscriptionsAPIFilter> all) {
+    public void setAll(List<io.fabric8.knative.eventing.v1.SubscriptionsAPIFilter> all) {
         this.all = all;
     }
 
     @JsonProperty("any")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<SubscriptionsAPIFilter> getAny() {
+    public List<io.fabric8.knative.eventing.v1.SubscriptionsAPIFilter> getAny() {
         return any;
     }
 
     @JsonProperty("any")
-    public void setAny(List<SubscriptionsAPIFilter> any) {
+    public void setAny(List<io.fabric8.knative.eventing.v1.SubscriptionsAPIFilter> any) {
         this.any = any;
     }
 
     @JsonProperty("cesql")
-    public java.lang.String getCesql() {
+    public String getCesql() {
         return cesql;
     }
 
     @JsonProperty("cesql")
-    public void setCesql(java.lang.String cesql) {
+    public void setCesql(String cesql) {
         this.cesql = cesql;
     }
 
@@ -154,12 +146,12 @@ public class SubscriptionsAPIFilter implements Editable<SubscriptionsAPIFilterBu
     }
 
     @JsonProperty("not")
-    public SubscriptionsAPIFilter getNot() {
+    public io.fabric8.knative.eventing.v1.SubscriptionsAPIFilter getNot() {
         return not;
     }
 
     @JsonProperty("not")
-    public void setNot(SubscriptionsAPIFilter not) {
+    public void setNot(io.fabric8.knative.eventing.v1.SubscriptionsAPIFilter not) {
         this.not = not;
     }
 
@@ -196,16 +188,16 @@ public class SubscriptionsAPIFilter implements Editable<SubscriptionsAPIFilterBu
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 

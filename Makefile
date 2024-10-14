@@ -43,10 +43,12 @@ openapi-generate-java-classes:
 	cd kubernetes-model-generator && mvn $(MAVEN_ARGS) -Pgenerate clean install
 	# TODO: run generate from extensions module root once all extensions are migrated
 	cd extensions && mvn $(MAVEN_ARGS) -N clean install
-	cd extensions/volumesnapshot && mvn $(MAVEN_ARGS) -N clean install
-	cd extensions/volumesnapshot/model && mvn $(MAVEN_ARGS) -Pgenerate clean install
+	cd extensions/knative && mvn $(MAVEN_ARGS) -N clean install
+	cd extensions/knative/model && mvn $(MAVEN_ARGS) -Pgenerate clean install
 	cd extensions/volcano && mvn $(MAVEN_ARGS) -N clean install
 	cd extensions/volcano/model && mvn $(MAVEN_ARGS) -Pgenerate clean install
+	cd extensions/volumesnapshot && mvn $(MAVEN_ARGS) -N clean install
+	cd extensions/volumesnapshot/model && mvn $(MAVEN_ARGS) -Pgenerate clean install
 
 # Legacy generation of the model: TODO: remove
 .PHONY: generate-model-legacy

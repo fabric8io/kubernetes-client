@@ -13,12 +13,10 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import io.fabric8.knative.internal.pkg.apis.Condition;
-import io.fabric8.knative.internal.pkg.apis.duck.v1.AuthStatus;
+import io.fabric8.knative.duck.v1.AuthStatus;
+import io.fabric8.knative.pkg.apis.Condition;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.ContainerPort;
-import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
@@ -28,8 +26,6 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.kubernetes.api.model.Volume;
-import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -42,9 +38,11 @@ import lombok.experimental.Accessors;
     "annotations",
     "auth",
     "conditions",
+    "deadLetterSinkAudience",
     "deadLetterSinkCACerts",
     "deadLetterSinkUri",
     "observedGeneration",
+    "subscriberAudience",
     "subscriberCACerts",
     "subscriberUri"
 })
@@ -63,11 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
-    @BuildableReference(PersistentVolumeClaim.class),
-    @BuildableReference(EnvVar.class),
-    @BuildableReference(ContainerPort.class),
-    @BuildableReference(Volume.class),
-    @BuildableReference(VolumeMount.class)
+    @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
 public class TriggerStatus implements Editable<TriggerStatusBuilder> , KubernetesResource
@@ -81,18 +75,22 @@ public class TriggerStatus implements Editable<TriggerStatusBuilder> , Kubernete
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Condition> conditions = new ArrayList<>();
+    @JsonProperty("deadLetterSinkAudience")
+    private String deadLetterSinkAudience;
     @JsonProperty("deadLetterSinkCACerts")
     private String deadLetterSinkCACerts;
     @JsonProperty("deadLetterSinkUri")
-    private java.lang.String deadLetterSinkUri;
+    private String deadLetterSinkUri;
     @JsonProperty("observedGeneration")
     private Long observedGeneration;
+    @JsonProperty("subscriberAudience")
+    private String subscriberAudience;
     @JsonProperty("subscriberCACerts")
     private String subscriberCACerts;
     @JsonProperty("subscriberUri")
-    private java.lang.String subscriberUri;
+    private String subscriberUri;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -101,14 +99,16 @@ public class TriggerStatus implements Editable<TriggerStatusBuilder> , Kubernete
     public TriggerStatus() {
     }
 
-    public TriggerStatus(Map<String, String> annotations, AuthStatus auth, List<Condition> conditions, String deadLetterSinkCACerts, java.lang.String deadLetterSinkUri, Long observedGeneration, String subscriberCACerts, java.lang.String subscriberUri) {
+    public TriggerStatus(Map<String, String> annotations, AuthStatus auth, List<Condition> conditions, String deadLetterSinkAudience, String deadLetterSinkCACerts, String deadLetterSinkUri, Long observedGeneration, String subscriberAudience, String subscriberCACerts, String subscriberUri) {
         super();
         this.annotations = annotations;
         this.auth = auth;
         this.conditions = conditions;
+        this.deadLetterSinkAudience = deadLetterSinkAudience;
         this.deadLetterSinkCACerts = deadLetterSinkCACerts;
         this.deadLetterSinkUri = deadLetterSinkUri;
         this.observedGeneration = observedGeneration;
+        this.subscriberAudience = subscriberAudience;
         this.subscriberCACerts = subscriberCACerts;
         this.subscriberUri = subscriberUri;
     }
@@ -145,6 +145,16 @@ public class TriggerStatus implements Editable<TriggerStatusBuilder> , Kubernete
         this.conditions = conditions;
     }
 
+    @JsonProperty("deadLetterSinkAudience")
+    public String getDeadLetterSinkAudience() {
+        return deadLetterSinkAudience;
+    }
+
+    @JsonProperty("deadLetterSinkAudience")
+    public void setDeadLetterSinkAudience(String deadLetterSinkAudience) {
+        this.deadLetterSinkAudience = deadLetterSinkAudience;
+    }
+
     @JsonProperty("deadLetterSinkCACerts")
     public String getDeadLetterSinkCACerts() {
         return deadLetterSinkCACerts;
@@ -156,12 +166,12 @@ public class TriggerStatus implements Editable<TriggerStatusBuilder> , Kubernete
     }
 
     @JsonProperty("deadLetterSinkUri")
-    public java.lang.String getDeadLetterSinkUri() {
+    public String getDeadLetterSinkUri() {
         return deadLetterSinkUri;
     }
 
     @JsonProperty("deadLetterSinkUri")
-    public void setDeadLetterSinkUri(java.lang.String deadLetterSinkUri) {
+    public void setDeadLetterSinkUri(String deadLetterSinkUri) {
         this.deadLetterSinkUri = deadLetterSinkUri;
     }
 
@@ -175,6 +185,16 @@ public class TriggerStatus implements Editable<TriggerStatusBuilder> , Kubernete
         this.observedGeneration = observedGeneration;
     }
 
+    @JsonProperty("subscriberAudience")
+    public String getSubscriberAudience() {
+        return subscriberAudience;
+    }
+
+    @JsonProperty("subscriberAudience")
+    public void setSubscriberAudience(String subscriberAudience) {
+        this.subscriberAudience = subscriberAudience;
+    }
+
     @JsonProperty("subscriberCACerts")
     public String getSubscriberCACerts() {
         return subscriberCACerts;
@@ -186,12 +206,12 @@ public class TriggerStatus implements Editable<TriggerStatusBuilder> , Kubernete
     }
 
     @JsonProperty("subscriberUri")
-    public java.lang.String getSubscriberUri() {
+    public String getSubscriberUri() {
         return subscriberUri;
     }
 
     @JsonProperty("subscriberUri")
-    public void setSubscriberUri(java.lang.String subscriberUri) {
+    public void setSubscriberUri(String subscriberUri) {
         this.subscriberUri = subscriberUri;
     }
 
@@ -206,16 +226,16 @@ public class TriggerStatus implements Editable<TriggerStatusBuilder> , Kubernete
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 

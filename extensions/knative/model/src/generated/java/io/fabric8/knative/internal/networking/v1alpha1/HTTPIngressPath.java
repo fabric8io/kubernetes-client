@@ -15,8 +15,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.ContainerPort;
-import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
@@ -26,8 +24,6 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.kubernetes.api.model.Volume;
-import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -58,11 +54,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
-    @BuildableReference(PersistentVolumeClaim.class),
-    @BuildableReference(EnvVar.class),
-    @BuildableReference(ContainerPort.class),
-    @BuildableReference(Volume.class),
-    @BuildableReference(VolumeMount.class)
+    @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
 public class HTTPIngressPath implements Editable<HTTPIngressPathBuilder> , KubernetesResource
@@ -75,14 +67,14 @@ public class HTTPIngressPath implements Editable<HTTPIngressPathBuilder> , Kuber
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, HeaderMatch> headers = new LinkedHashMap<>();
     @JsonProperty("path")
-    private java.lang.String path;
+    private String path;
     @JsonProperty("rewriteHost")
-    private java.lang.String rewriteHost;
+    private String rewriteHost;
     @JsonProperty("splits")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<IngressBackendSplit> splits = new ArrayList<>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -91,7 +83,7 @@ public class HTTPIngressPath implements Editable<HTTPIngressPathBuilder> , Kuber
     public HTTPIngressPath() {
     }
 
-    public HTTPIngressPath(Map<String, String> appendHeaders, Map<String, HeaderMatch> headers, java.lang.String path, java.lang.String rewriteHost, List<IngressBackendSplit> splits) {
+    public HTTPIngressPath(Map<String, String> appendHeaders, Map<String, HeaderMatch> headers, String path, String rewriteHost, List<IngressBackendSplit> splits) {
         super();
         this.appendHeaders = appendHeaders;
         this.headers = headers;
@@ -123,22 +115,22 @@ public class HTTPIngressPath implements Editable<HTTPIngressPathBuilder> , Kuber
     }
 
     @JsonProperty("path")
-    public java.lang.String getPath() {
+    public String getPath() {
         return path;
     }
 
     @JsonProperty("path")
-    public void setPath(java.lang.String path) {
+    public void setPath(String path) {
         this.path = path;
     }
 
     @JsonProperty("rewriteHost")
-    public java.lang.String getRewriteHost() {
+    public String getRewriteHost() {
         return rewriteHost;
     }
 
     @JsonProperty("rewriteHost")
-    public void setRewriteHost(java.lang.String rewriteHost) {
+    public void setRewriteHost(String rewriteHost) {
         this.rewriteHost = rewriteHost;
     }
 
@@ -164,16 +156,16 @@ public class HTTPIngressPath implements Editable<HTTPIngressPathBuilder> , Kuber
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 

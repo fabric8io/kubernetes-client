@@ -15,18 +15,15 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.ContainerPort;
-import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
+import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.kubernetes.api.model.Volume;
-import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -54,12 +51,8 @@ import lombok.experimental.Accessors;
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
-    @BuildableReference(PersistentVolumeClaim.class),
-    @BuildableReference(EnvVar.class),
-    @BuildableReference(ContainerPort.class),
-    @BuildableReference(Volume.class),
-    @BuildableReference(VolumeMount.class)
+    @BuildableReference(LocalObjectReference.class),
+    @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
 public class ImageSpec implements Editable<ImageSpecBuilder> , KubernetesResource
@@ -69,7 +62,7 @@ public class ImageSpec implements Editable<ImageSpecBuilder> , KubernetesResourc
     private String image;
     @JsonProperty("imagePullSecrets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.kubernetes.api.model.LocalObjectReference> imagePullSecrets = new ArrayList<>();
+    private List<LocalObjectReference> imagePullSecrets = new ArrayList<>();
     @JsonProperty("serviceAccountName")
     private String serviceAccountName;
     @JsonIgnore
@@ -82,7 +75,7 @@ public class ImageSpec implements Editable<ImageSpecBuilder> , KubernetesResourc
     public ImageSpec() {
     }
 
-    public ImageSpec(String image, List<io.fabric8.kubernetes.api.model.LocalObjectReference> imagePullSecrets, String serviceAccountName) {
+    public ImageSpec(String image, List<LocalObjectReference> imagePullSecrets, String serviceAccountName) {
         super();
         this.image = image;
         this.imagePullSecrets = imagePullSecrets;
@@ -101,12 +94,12 @@ public class ImageSpec implements Editable<ImageSpecBuilder> , KubernetesResourc
 
     @JsonProperty("imagePullSecrets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<io.fabric8.kubernetes.api.model.LocalObjectReference> getImagePullSecrets() {
+    public List<LocalObjectReference> getImagePullSecrets() {
         return imagePullSecrets;
     }
 
     @JsonProperty("imagePullSecrets")
-    public void setImagePullSecrets(List<io.fabric8.kubernetes.api.model.LocalObjectReference> imagePullSecrets) {
+    public void setImagePullSecrets(List<LocalObjectReference> imagePullSecrets) {
         this.imagePullSecrets = imagePullSecrets;
     }
 

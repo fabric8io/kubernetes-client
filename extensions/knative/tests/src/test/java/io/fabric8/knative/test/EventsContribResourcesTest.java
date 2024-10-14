@@ -15,21 +15,21 @@
  */
 package io.fabric8.knative.test;
 
+import io.fabric8.knative.bindings.v1alpha1.GitLabBinding;
+import io.fabric8.knative.bindings.v1alpha1.GitLabBindingBuilder;
 import io.fabric8.knative.client.KnativeClient;
-import io.fabric8.knative.eventing.contrib.awssqs.v1alpha1.AwsSqsSource;
-import io.fabric8.knative.eventing.contrib.awssqs.v1alpha1.AwsSqsSourceBuilder;
-import io.fabric8.knative.eventing.contrib.couchdb.v1alpha1.CouchDbSource;
-import io.fabric8.knative.eventing.contrib.couchdb.v1alpha1.CouchDbSourceBuilder;
-import io.fabric8.knative.eventing.contrib.github.v1alpha1.GitHubSource;
-import io.fabric8.knative.eventing.contrib.github.v1alpha1.GitHubSourceBuilder;
-import io.fabric8.knative.eventing.contrib.gitlab.v1alpha1.GitLabBinding;
-import io.fabric8.knative.eventing.contrib.gitlab.v1alpha1.GitLabBindingBuilder;
-import io.fabric8.knative.eventing.contrib.gitlab.v1alpha1.GitLabSource;
-import io.fabric8.knative.eventing.contrib.gitlab.v1alpha1.GitLabSourceBuilder;
-import io.fabric8.knative.eventing.contrib.kafka.v1beta1.KafkaChannel;
-import io.fabric8.knative.eventing.contrib.kafka.v1beta1.KafkaChannelBuilder;
-import io.fabric8.knative.eventing.contrib.prometheus.v1alpha1.PrometheusSource;
-import io.fabric8.knative.eventing.contrib.prometheus.v1alpha1.PrometheusSourceBuilder;
+import io.fabric8.knative.messaging.v1beta1.KafkaChannel;
+import io.fabric8.knative.messaging.v1beta1.KafkaChannelBuilder;
+import io.fabric8.knative.sources.v1alpha1.AwsSqsSource;
+import io.fabric8.knative.sources.v1alpha1.AwsSqsSourceBuilder;
+import io.fabric8.knative.sources.v1alpha1.CouchDbSource;
+import io.fabric8.knative.sources.v1alpha1.CouchDbSourceBuilder;
+import io.fabric8.knative.sources.v1alpha1.GitHubSource;
+import io.fabric8.knative.sources.v1alpha1.GitHubSourceBuilder;
+import io.fabric8.knative.sources.v1alpha1.GitLabSource;
+import io.fabric8.knative.sources.v1alpha1.GitLabSourceBuilder;
+import io.fabric8.knative.sources.v1alpha1.PrometheusSource;
+import io.fabric8.knative.sources.v1alpha1.PrometheusSourceBuilder;
 import io.fabric8.kubernetes.api.model.LabelSelectorBuilder;
 import io.fabric8.kubernetes.api.model.ObjectReferenceBuilder;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;

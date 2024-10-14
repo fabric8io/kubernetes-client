@@ -13,12 +13,11 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import io.fabric8.knative.internal.eventing.pkg.apis.duck.v1.DeliverySpec;
-import io.fabric8.knative.internal.pkg.apis.duck.v1.Destination;
+import io.fabric8.knative.duck.v1.DeliverySpec;
+import io.fabric8.knative.duck.v1.Destination;
+import io.fabric8.knative.duck.v1.KReference;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.ContainerPort;
-import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
@@ -28,8 +27,6 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.kubernetes.api.model.Volume;
-import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -40,6 +37,7 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "broker",
+    "brokerRef",
     "delivery",
     "filter",
     "filters",
@@ -60,11 +58,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
-    @BuildableReference(PersistentVolumeClaim.class),
-    @BuildableReference(EnvVar.class),
-    @BuildableReference(ContainerPort.class),
-    @BuildableReference(Volume.class),
-    @BuildableReference(VolumeMount.class)
+    @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
 public class TriggerSpec implements Editable<TriggerSpecBuilder> , KubernetesResource
@@ -72,6 +66,8 @@ public class TriggerSpec implements Editable<TriggerSpecBuilder> , KubernetesRes
 
     @JsonProperty("broker")
     private String broker;
+    @JsonProperty("brokerRef")
+    private KReference brokerRef;
     @JsonProperty("delivery")
     private DeliverySpec delivery;
     @JsonProperty("filter")
@@ -91,9 +87,10 @@ public class TriggerSpec implements Editable<TriggerSpecBuilder> , KubernetesRes
     public TriggerSpec() {
     }
 
-    public TriggerSpec(String broker, DeliverySpec delivery, TriggerFilter filter, List<SubscriptionsAPIFilter> filters, Destination subscriber) {
+    public TriggerSpec(String broker, KReference brokerRef, DeliverySpec delivery, TriggerFilter filter, List<SubscriptionsAPIFilter> filters, Destination subscriber) {
         super();
         this.broker = broker;
+        this.brokerRef = brokerRef;
         this.delivery = delivery;
         this.filter = filter;
         this.filters = filters;
@@ -108,6 +105,16 @@ public class TriggerSpec implements Editable<TriggerSpecBuilder> , KubernetesRes
     @JsonProperty("broker")
     public void setBroker(String broker) {
         this.broker = broker;
+    }
+
+    @JsonProperty("brokerRef")
+    public KReference getBrokerRef() {
+        return brokerRef;
+    }
+
+    @JsonProperty("brokerRef")
+    public void setBrokerRef(KReference brokerRef) {
+        this.brokerRef = brokerRef;
     }
 
     @JsonProperty("delivery")

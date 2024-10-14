@@ -26,6 +26,7 @@ import (
 	"k8s.io/kube-openapi/pkg/generators"
 	"reflect"
 	"strings"
+	"unicode"
 )
 
 type GoGenerator struct {
@@ -49,20 +50,38 @@ func (g *GoGenerator) Generate() error {
 //
 // Allows to override the default kube-openapi generators.apiTypeFilterFunc with our own (see KubernetesFilterFunc).
 func (g *GoGenerator) KubernetesTargets(context *generator.Context) []generator.Target {
-	// Non-deterministic bug-fix
-	// ScopeType is sometimes considered enum and others isn't. Force it to be non enum to avoid issues
-	scopeType := context.Universe.Type(types.Name{Package: "k8s.io/api/admissionregistration/v1", Name: "ScopeType"})
-	originalComments := scopeType.CommentLines
-	scopeType.CommentLines = make([]string, 0)
-	for _, comment := range originalComments {
-		if comment != "+enum" {
-			scopeType.CommentLines = append(scopeType.CommentLines, comment)
+	g.processUniverse(context)
+	// Replace original Filter function with something that includes all Kubernetes Object types regardless of the comment tag
+	openApiGenTargets := generators.GetTargets(context, &g.Args)
+	for _, target := range openApiGenTargets {
+		// Override standard filter function to include types that haven't been annotated/tagged with k8s:openapi-gen=true
+		target.(*generator.SimpleTarget).FilterFunc = g.KubernetesFilterFunc
+		// Override standard Generator function to be able to provide our Generator overrides
+		originalGeneratorsFunc := target.(*generator.SimpleTarget).GeneratorsFunc
+		target.(*generator.SimpleTarget).GeneratorsFunc = func(context *generator.Context) []generator.Generator {
+			originalGenerators := originalGeneratorsFunc(context)
+			delegatingGenerators := make([]generator.Generator, len(originalGenerators))
+			for i, originalGenerator := range originalGenerators {
+				delegatingGenerators[i] = NewGeneratorDelegating(originalGenerator)
+			}
+			return delegatingGenerators
 		}
 	}
-	// Consider swaggerignore tag and add json:omitted so that kube-openapi ignores the field
+	return openApiGenTargets
+}
+
+// processUniverse function to process the universe and apply some fixes to the types.
+func (g *GoGenerator) processUniverse(context *generator.Context) {
+	// Create a map of all the input packages for performance (queried later on)
+	g.inputPkgs = make(map[string]bool)
+	for _, inputPackage := range context.Inputs {
+		g.inputPkgs[inputPackage] = true
+	}
+
 	for _, pkg := range context.Universe {
 		for _, t := range pkg.Types {
 			for im, m := range t.Members {
+				// Consider swaggerignore tag and add json:omitted so that kube-openapi ignores the field
 				swaggerIgnore := reflect.StructTag(m.Tags).Get("swaggerignore")
 				if swaggerIgnore != "" {
 					jsonTag := reflect.StructTag(m.Tags).Get("json")
@@ -76,19 +95,16 @@ func (g *GoGenerator) KubernetesTargets(context *generator.Context) []generator.
 		}
 	}
 
-	// Create a map of all the input packages for performance (queried later on)
-	g.inputPkgs = make(map[string]bool)
-	for _, inputPackage := range context.Inputs {
-		g.inputPkgs[inputPackage] = true
+	// Non-deterministic bug-fix
+	// ScopeType is sometimes considered enum and others isn't. Force it to be non enum to avoid issues
+	scopeType := context.Universe.Type(types.Name{Package: "k8s.io/api/admissionregistration/v1", Name: "ScopeType"})
+	originalComments := scopeType.CommentLines
+	scopeType.CommentLines = make([]string, 0)
+	for _, comment := range originalComments {
+		if comment != "+enum" {
+			scopeType.CommentLines = append(scopeType.CommentLines, comment)
+		}
 	}
-
-	// Replace original Filter function with something that includes all Kubernetes Object types regardless of the comment tag
-	openApiGenTargets := generators.GetTargets(context, &g.Args)
-	for _, target := range openApiGenTargets {
-		// Override standard filter function to include types that haven't been annotated/tagged with k8s:openapi-gen=true
-		target.(*generator.SimpleTarget).FilterFunc = g.KubernetesFilterFunc
-	}
-	return openApiGenTargets
 }
 
 // KubernetesFilterFunc function to filter out types that are not Kubernetes Objects,
@@ -104,6 +120,10 @@ func (g *GoGenerator) KubernetesTargets(context *generator.Context) []generator.
 func (g *GoGenerator) KubernetesFilterFunc(c *generator.Context, t *types.Type) bool {
 	// Skip types that are not structs
 	if t.Kind != types.Struct {
+		return false
+	}
+	// Skip types that are not exported
+	if t.Name.Name == "" || unicode.IsUpper(rune(t.Name.Name[0])) == false {
 		return false
 	}
 	// There is a conflict between this codegen and codecgen, we should avoid types generated for codecgen

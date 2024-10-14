@@ -13,12 +13,10 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import io.fabric8.knative.internal.pkg.apis.Condition;
-import io.fabric8.knative.internal.pkg.apis.duck.v1.Addressable;
+import io.fabric8.knative.duck.v1.Addressable;
+import io.fabric8.knative.pkg.apis.Condition;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.ContainerPort;
-import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
@@ -28,8 +26,6 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.kubernetes.api.model.Volume;
-import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -61,11 +57,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
-    @BuildableReference(PersistentVolumeClaim.class),
-    @BuildableReference(EnvVar.class),
-    @BuildableReference(ContainerPort.class),
-    @BuildableReference(Volume.class),
-    @BuildableReference(VolumeMount.class)
+    @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
 public class RouteStatus implements Editable<RouteStatusBuilder> , KubernetesResource
@@ -85,9 +77,9 @@ public class RouteStatus implements Editable<RouteStatusBuilder> , KubernetesRes
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<TrafficTarget> traffic = new ArrayList<>();
     @JsonProperty("url")
-    private java.lang.String url;
+    private String url;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -96,7 +88,7 @@ public class RouteStatus implements Editable<RouteStatusBuilder> , KubernetesRes
     public RouteStatus() {
     }
 
-    public RouteStatus(Addressable address, Map<String, String> annotations, List<Condition> conditions, Long observedGeneration, List<TrafficTarget> traffic, java.lang.String url) {
+    public RouteStatus(Addressable address, Map<String, String> annotations, List<Condition> conditions, Long observedGeneration, List<TrafficTarget> traffic, String url) {
         super();
         this.address = address;
         this.annotations = annotations;
@@ -160,12 +152,12 @@ public class RouteStatus implements Editable<RouteStatusBuilder> , KubernetesRes
     }
 
     @JsonProperty("url")
-    public java.lang.String getUrl() {
+    public String getUrl() {
         return url;
     }
 
     @JsonProperty("url")
-    public void setUrl(java.lang.String url) {
+    public void setUrl(String url) {
         this.url = url;
     }
 
@@ -180,16 +172,16 @@ public class RouteStatus implements Editable<RouteStatusBuilder> , KubernetesRes
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 

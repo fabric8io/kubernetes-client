@@ -13,12 +13,11 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import io.fabric8.knative.internal.pkg.apis.Condition;
-import io.fabric8.knative.internal.pkg.apis.duck.v1.Addressable;
+import io.fabric8.knative.duck.v1.Addressable;
+import io.fabric8.knative.duck.v1.AppliedEventPolicyRef;
+import io.fabric8.knative.pkg.apis.Condition;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.ContainerPort;
-import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
@@ -28,8 +27,6 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.kubernetes.api.model.Volume;
-import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -43,9 +40,11 @@ import lombok.experimental.Accessors;
     "addresses",
     "annotations",
     "conditions",
+    "deadLetterSinkAudience",
     "deadLetterSinkCACerts",
     "deadLetterSinkUri",
-    "observedGeneration"
+    "observedGeneration",
+    "policies"
 })
 @ToString
 @EqualsAndHashCode
@@ -62,11 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
-    @BuildableReference(PersistentVolumeClaim.class),
-    @BuildableReference(EnvVar.class),
-    @BuildableReference(ContainerPort.class),
-    @BuildableReference(Volume.class),
-    @BuildableReference(VolumeMount.class)
+    @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
 public class BrokerStatus implements Editable<BrokerStatusBuilder> , KubernetesResource
@@ -83,14 +78,19 @@ public class BrokerStatus implements Editable<BrokerStatusBuilder> , KubernetesR
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Condition> conditions = new ArrayList<>();
+    @JsonProperty("deadLetterSinkAudience")
+    private String deadLetterSinkAudience;
     @JsonProperty("deadLetterSinkCACerts")
     private String deadLetterSinkCACerts;
     @JsonProperty("deadLetterSinkUri")
-    private java.lang.String deadLetterSinkUri;
+    private String deadLetterSinkUri;
     @JsonProperty("observedGeneration")
     private Long observedGeneration;
+    @JsonProperty("policies")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<AppliedEventPolicyRef> policies = new ArrayList<>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -99,15 +99,17 @@ public class BrokerStatus implements Editable<BrokerStatusBuilder> , KubernetesR
     public BrokerStatus() {
     }
 
-    public BrokerStatus(Addressable address, List<Addressable> addresses, Map<String, String> annotations, List<Condition> conditions, String deadLetterSinkCACerts, java.lang.String deadLetterSinkUri, Long observedGeneration) {
+    public BrokerStatus(Addressable address, List<Addressable> addresses, Map<String, String> annotations, List<Condition> conditions, String deadLetterSinkAudience, String deadLetterSinkCACerts, String deadLetterSinkUri, Long observedGeneration, List<AppliedEventPolicyRef> policies) {
         super();
         this.address = address;
         this.addresses = addresses;
         this.annotations = annotations;
         this.conditions = conditions;
+        this.deadLetterSinkAudience = deadLetterSinkAudience;
         this.deadLetterSinkCACerts = deadLetterSinkCACerts;
         this.deadLetterSinkUri = deadLetterSinkUri;
         this.observedGeneration = observedGeneration;
+        this.policies = policies;
     }
 
     @JsonProperty("address")
@@ -153,6 +155,16 @@ public class BrokerStatus implements Editable<BrokerStatusBuilder> , KubernetesR
         this.conditions = conditions;
     }
 
+    @JsonProperty("deadLetterSinkAudience")
+    public String getDeadLetterSinkAudience() {
+        return deadLetterSinkAudience;
+    }
+
+    @JsonProperty("deadLetterSinkAudience")
+    public void setDeadLetterSinkAudience(String deadLetterSinkAudience) {
+        this.deadLetterSinkAudience = deadLetterSinkAudience;
+    }
+
     @JsonProperty("deadLetterSinkCACerts")
     public String getDeadLetterSinkCACerts() {
         return deadLetterSinkCACerts;
@@ -164,12 +176,12 @@ public class BrokerStatus implements Editable<BrokerStatusBuilder> , KubernetesR
     }
 
     @JsonProperty("deadLetterSinkUri")
-    public java.lang.String getDeadLetterSinkUri() {
+    public String getDeadLetterSinkUri() {
         return deadLetterSinkUri;
     }
 
     @JsonProperty("deadLetterSinkUri")
-    public void setDeadLetterSinkUri(java.lang.String deadLetterSinkUri) {
+    public void setDeadLetterSinkUri(String deadLetterSinkUri) {
         this.deadLetterSinkUri = deadLetterSinkUri;
     }
 
@@ -183,6 +195,17 @@ public class BrokerStatus implements Editable<BrokerStatusBuilder> , KubernetesR
         this.observedGeneration = observedGeneration;
     }
 
+    @JsonProperty("policies")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<AppliedEventPolicyRef> getPolicies() {
+        return policies;
+    }
+
+    @JsonProperty("policies")
+    public void setPolicies(List<AppliedEventPolicyRef> policies) {
+        this.policies = policies;
+    }
+
     @JsonIgnore
     public BrokerStatusBuilder edit() {
         return new BrokerStatusBuilder(this);
@@ -194,16 +217,16 @@ public class BrokerStatus implements Editable<BrokerStatusBuilder> , KubernetesR
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 

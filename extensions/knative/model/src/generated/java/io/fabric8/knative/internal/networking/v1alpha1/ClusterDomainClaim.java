@@ -13,18 +13,15 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.ContainerPort;
-import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
+import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.kubernetes.api.model.Volume;
-import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
@@ -50,7 +47,7 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
+    @BuildableReference(ObjectMeta.class),
     @BuildableReference(LabelSelector.class),
     @BuildableReference(Container.class),
     @BuildableReference(PodTemplateSpec.class),
@@ -58,11 +55,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
-    @BuildableReference(PersistentVolumeClaim.class),
-    @BuildableReference(EnvVar.class),
-    @BuildableReference(ContainerPort.class),
-    @BuildableReference(Volume.class),
-    @BuildableReference(VolumeMount.class)
+    @BuildableReference(PersistentVolumeClaim.class)
 })
 @TemplateTransformations({
     @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true)
@@ -88,7 +81,7 @@ public class ClusterDomainClaim implements Editable<ClusterDomainClaimBuilder> ,
     @JsonProperty("kind")
     private String kind = "ClusterDomainClaim";
     @JsonProperty("metadata")
-    private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
+    private ObjectMeta metadata;
     @JsonProperty("spec")
     private ClusterDomainClaimSpec spec;
     @JsonIgnore
@@ -101,7 +94,7 @@ public class ClusterDomainClaim implements Editable<ClusterDomainClaimBuilder> ,
     public ClusterDomainClaim() {
     }
 
-    public ClusterDomainClaim(String apiVersion, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, ClusterDomainClaimSpec spec) {
+    public ClusterDomainClaim(String apiVersion, String kind, ObjectMeta metadata, ClusterDomainClaimSpec spec) {
         super();
         this.apiVersion = apiVersion;
         this.kind = kind;
@@ -150,12 +143,12 @@ public class ClusterDomainClaim implements Editable<ClusterDomainClaimBuilder> ,
     }
 
     @JsonProperty("metadata")
-    public io.fabric8.kubernetes.api.model.ObjectMeta getMetadata() {
+    public ObjectMeta getMetadata() {
         return metadata;
     }
 
     @JsonProperty("metadata")
-    public void setMetadata(io.fabric8.kubernetes.api.model.ObjectMeta metadata) {
+    public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 

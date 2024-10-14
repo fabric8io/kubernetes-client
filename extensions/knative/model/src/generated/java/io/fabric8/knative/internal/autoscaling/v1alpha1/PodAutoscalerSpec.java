@@ -13,18 +13,15 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.ContainerPort;
-import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.kubernetes.api.model.Volume;
-import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -52,13 +49,9 @@ import lombok.experimental.Accessors;
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
+    @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
-    @BuildableReference(PersistentVolumeClaim.class),
-    @BuildableReference(EnvVar.class),
-    @BuildableReference(ContainerPort.class),
-    @BuildableReference(Volume.class),
-    @BuildableReference(VolumeMount.class)
+    @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
 public class PodAutoscalerSpec implements Editable<PodAutoscalerSpecBuilder> , KubernetesResource
@@ -71,7 +64,7 @@ public class PodAutoscalerSpec implements Editable<PodAutoscalerSpecBuilder> , K
     @JsonProperty("reachability")
     private String reachability;
     @JsonProperty("scaleTargetRef")
-    private io.fabric8.kubernetes.api.model.ObjectReference scaleTargetRef;
+    private ObjectReference scaleTargetRef;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -82,7 +75,7 @@ public class PodAutoscalerSpec implements Editable<PodAutoscalerSpecBuilder> , K
     public PodAutoscalerSpec() {
     }
 
-    public PodAutoscalerSpec(Long containerConcurrency, String protocolType, String reachability, io.fabric8.kubernetes.api.model.ObjectReference scaleTargetRef) {
+    public PodAutoscalerSpec(Long containerConcurrency, String protocolType, String reachability, ObjectReference scaleTargetRef) {
         super();
         this.containerConcurrency = containerConcurrency;
         this.protocolType = protocolType;
@@ -121,12 +114,12 @@ public class PodAutoscalerSpec implements Editable<PodAutoscalerSpecBuilder> , K
     }
 
     @JsonProperty("scaleTargetRef")
-    public io.fabric8.kubernetes.api.model.ObjectReference getScaleTargetRef() {
+    public ObjectReference getScaleTargetRef() {
         return scaleTargetRef;
     }
 
     @JsonProperty("scaleTargetRef")
-    public void setScaleTargetRef(io.fabric8.kubernetes.api.model.ObjectReference scaleTargetRef) {
+    public void setScaleTargetRef(ObjectReference scaleTargetRef) {
         this.scaleTargetRef = scaleTargetRef;
     }
 

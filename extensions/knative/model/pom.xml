@@ -78,64 +78,32 @@
       <artifactId>lombok</artifactId>
     </dependency>
   </dependencies>
-  
+
   <profiles>
     <profile>
       <id>generate</id>
       <build>
         <plugins>
           <plugin>
-            <groupId>org.jsonschema2pojo</groupId>
-            <artifactId>jsonschema2pojo-maven-plugin</artifactId>
-          </plugin>
-          <plugin>
-            <artifactId>maven-antrun-plugin</artifactId>
-            <executions>
-              <execution>
-                <phase>generate-sources</phase>
-                <configuration>
-                  <target>
-                    <!-- removing the generated Schema class -->
-                    <delete
-                      file="${generate.targetDirectory}/io/fabric8/knative/api/model/KnativeSchema.java"
-                      verbose="true" />
-                  </target>
-                </configuration>
-                <goals>
-                  <goal>run</goal>
-                </goals>
-              </execution>
-            </executions>
+            <groupId>io.fabric8</groupId>
+            <artifactId>openapi-model-generator-maven-plugin</artifactId>
+            <configuration >
+              <settings combine.self="append">
+                <schemas>
+                  <schema>${openapi.schema.dev.knative}</schema>
+                </schemas>
+                <includeGenerationRegexes>
+                  <includeGenerationRegex>^dev\.knative\..*$</includeGenerationRegex>
+                </includeGenerationRegexes>
+                <skipGenerationRegexes>
+                  <skipGenerationRegex>^dev\.knative\.pkg\.apis\.URL$</skipGenerationRegex>
+                  <skipGenerationRegex>^dev\.knative\.duck\.v1alpha1\.PlaceableList$</skipGenerationRegex>
+                </skipGenerationRegexes>
+              </settings>
+            </configuration>
           </plugin>
         </plugins>
       </build>
     </profile>
   </profiles>
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>build-helper-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>attach-artifacts</id>
-            <phase>package</phase>
-            <goals>
-              <goal>attach-artifact</goal>
-            </goals>
-            <configuration>
-              <artifacts>
-                <artifact>
-                  <file>${project.build.outputDirectory}/schema/knative-schema.json</file>
-                  <type>json</type>
-                  <classifier>schema</classifier>
-                </artifact>
-              </artifacts>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
 </project>

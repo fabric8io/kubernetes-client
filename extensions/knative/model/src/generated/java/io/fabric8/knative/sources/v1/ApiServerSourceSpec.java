@@ -13,22 +13,20 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import io.fabric8.knative.internal.pkg.apis.duck.v1.CloudEventOverrides;
-import io.fabric8.knative.internal.pkg.apis.duck.v1.Destination;
+import io.fabric8.knative.duck.v1.CloudEventOverrides;
+import io.fabric8.knative.duck.v1.Destination;
+import io.fabric8.knative.eventing.v1.SubscriptionsAPIFilter;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.ContainerPort;
-import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
+import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.kubernetes.api.model.Volume;
-import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -39,6 +37,7 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "ceOverrides",
+    "filters",
     "mode",
     "namespaceSelector",
     "owner",
@@ -54,18 +53,14 @@ import lombok.experimental.Accessors;
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.LabelSelector.class),
+    @BuildableReference(LabelSelector.class),
     @BuildableReference(Container.class),
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
-    @BuildableReference(PersistentVolumeClaim.class),
-    @BuildableReference(EnvVar.class),
-    @BuildableReference(ContainerPort.class),
-    @BuildableReference(Volume.class),
-    @BuildableReference(VolumeMount.class)
+    @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
 public class ApiServerSourceSpec implements Editable<ApiServerSourceSpecBuilder> , KubernetesResource
@@ -73,10 +68,13 @@ public class ApiServerSourceSpec implements Editable<ApiServerSourceSpecBuilder>
 
     @JsonProperty("ceOverrides")
     private CloudEventOverrides ceOverrides;
+    @JsonProperty("filters")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<SubscriptionsAPIFilter> filters = new ArrayList<>();
     @JsonProperty("mode")
     private String mode;
     @JsonProperty("namespaceSelector")
-    private io.fabric8.kubernetes.api.model.LabelSelector namespaceSelector;
+    private LabelSelector namespaceSelector;
     @JsonProperty("owner")
     private APIVersionKind owner;
     @JsonProperty("resources")
@@ -96,9 +94,10 @@ public class ApiServerSourceSpec implements Editable<ApiServerSourceSpecBuilder>
     public ApiServerSourceSpec() {
     }
 
-    public ApiServerSourceSpec(CloudEventOverrides ceOverrides, String mode, io.fabric8.kubernetes.api.model.LabelSelector namespaceSelector, APIVersionKind owner, List<APIVersionKindSelector> resources, String serviceAccountName, Destination sink) {
+    public ApiServerSourceSpec(CloudEventOverrides ceOverrides, List<SubscriptionsAPIFilter> filters, String mode, LabelSelector namespaceSelector, APIVersionKind owner, List<APIVersionKindSelector> resources, String serviceAccountName, Destination sink) {
         super();
         this.ceOverrides = ceOverrides;
+        this.filters = filters;
         this.mode = mode;
         this.namespaceSelector = namespaceSelector;
         this.owner = owner;
@@ -117,6 +116,17 @@ public class ApiServerSourceSpec implements Editable<ApiServerSourceSpecBuilder>
         this.ceOverrides = ceOverrides;
     }
 
+    @JsonProperty("filters")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<SubscriptionsAPIFilter> getFilters() {
+        return filters;
+    }
+
+    @JsonProperty("filters")
+    public void setFilters(List<SubscriptionsAPIFilter> filters) {
+        this.filters = filters;
+    }
+
     @JsonProperty("mode")
     public String getMode() {
         return mode;
@@ -128,12 +138,12 @@ public class ApiServerSourceSpec implements Editable<ApiServerSourceSpecBuilder>
     }
 
     @JsonProperty("namespaceSelector")
-    public io.fabric8.kubernetes.api.model.LabelSelector getNamespaceSelector() {
+    public LabelSelector getNamespaceSelector() {
         return namespaceSelector;
     }
 
     @JsonProperty("namespaceSelector")
-    public void setNamespaceSelector(io.fabric8.kubernetes.api.model.LabelSelector namespaceSelector) {
+    public void setNamespaceSelector(LabelSelector namespaceSelector) {
         this.namespaceSelector = namespaceSelector;
     }
 

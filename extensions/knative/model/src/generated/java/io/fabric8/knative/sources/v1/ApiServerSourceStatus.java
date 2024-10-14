@@ -13,13 +13,11 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import io.fabric8.knative.internal.pkg.apis.Condition;
-import io.fabric8.knative.internal.pkg.apis.duck.v1.AuthStatus;
-import io.fabric8.knative.internal.pkg.apis.duck.v1.CloudEventAttributes;
+import io.fabric8.knative.duck.v1.AuthStatus;
+import io.fabric8.knative.duck.v1.CloudEventAttributes;
+import io.fabric8.knative.pkg.apis.Condition;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.ContainerPort;
-import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
@@ -29,8 +27,6 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.kubernetes.api.model.Volume;
-import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -65,11 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
-    @BuildableReference(PersistentVolumeClaim.class),
-    @BuildableReference(EnvVar.class),
-    @BuildableReference(ContainerPort.class),
-    @BuildableReference(Volume.class),
-    @BuildableReference(VolumeMount.class)
+    @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
 public class ApiServerSourceStatus implements Editable<ApiServerSourceStatusBuilder> , KubernetesResource
@@ -88,7 +80,7 @@ public class ApiServerSourceStatus implements Editable<ApiServerSourceStatusBuil
     private List<Condition> conditions = new ArrayList<>();
     @JsonProperty("namespaces")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> namespaces = new ArrayList<>();
+    private List<String> namespaces = new ArrayList<>();
     @JsonProperty("observedGeneration")
     private Long observedGeneration;
     @JsonProperty("sinkAudience")
@@ -96,9 +88,9 @@ public class ApiServerSourceStatus implements Editable<ApiServerSourceStatusBuil
     @JsonProperty("sinkCACerts")
     private String sinkCACerts;
     @JsonProperty("sinkUri")
-    private java.lang.String sinkUri;
+    private String sinkUri;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -107,7 +99,7 @@ public class ApiServerSourceStatus implements Editable<ApiServerSourceStatusBuil
     public ApiServerSourceStatus() {
     }
 
-    public ApiServerSourceStatus(Map<String, String> annotations, AuthStatus auth, List<CloudEventAttributes> ceAttributes, List<Condition> conditions, List<java.lang.String> namespaces, Long observedGeneration, String sinkAudience, String sinkCACerts, java.lang.String sinkUri) {
+    public ApiServerSourceStatus(Map<String, String> annotations, AuthStatus auth, List<CloudEventAttributes> ceAttributes, List<Condition> conditions, List<String> namespaces, Long observedGeneration, String sinkAudience, String sinkCACerts, String sinkUri) {
         super();
         this.annotations = annotations;
         this.auth = auth;
@@ -165,12 +157,12 @@ public class ApiServerSourceStatus implements Editable<ApiServerSourceStatusBuil
 
     @JsonProperty("namespaces")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<java.lang.String> getNamespaces() {
+    public List<String> getNamespaces() {
         return namespaces;
     }
 
     @JsonProperty("namespaces")
-    public void setNamespaces(List<java.lang.String> namespaces) {
+    public void setNamespaces(List<String> namespaces) {
         this.namespaces = namespaces;
     }
 
@@ -205,12 +197,12 @@ public class ApiServerSourceStatus implements Editable<ApiServerSourceStatusBuil
     }
 
     @JsonProperty("sinkUri")
-    public java.lang.String getSinkUri() {
+    public String getSinkUri() {
         return sinkUri;
     }
 
     @JsonProperty("sinkUri")
-    public void setSinkUri(java.lang.String sinkUri) {
+    public void setSinkUri(String sinkUri) {
         this.sinkUri = sinkUri;
     }
 
@@ -225,16 +217,16 @@ public class ApiServerSourceStatus implements Editable<ApiServerSourceStatusBuil
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 

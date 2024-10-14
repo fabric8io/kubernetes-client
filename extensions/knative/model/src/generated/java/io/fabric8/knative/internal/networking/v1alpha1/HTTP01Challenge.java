@@ -13,8 +13,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.ContainerPort;
-import io.fabric8.kubernetes.api.model.EnvVar;
+import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
@@ -23,8 +22,6 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.kubernetes.api.model.Volume;
-import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -51,14 +48,10 @@ import lombok.experimental.Accessors;
     @BuildableReference(Container.class),
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.IntOrString.class),
+    @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
-    @BuildableReference(PersistentVolumeClaim.class),
-    @BuildableReference(EnvVar.class),
-    @BuildableReference(ContainerPort.class),
-    @BuildableReference(Volume.class),
-    @BuildableReference(VolumeMount.class)
+    @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
 public class HTTP01Challenge implements Editable<HTTP01ChallengeBuilder> , KubernetesResource
@@ -69,7 +62,7 @@ public class HTTP01Challenge implements Editable<HTTP01ChallengeBuilder> , Kuber
     @JsonProperty("serviceNamespace")
     private String serviceNamespace;
     @JsonProperty("servicePort")
-    private io.fabric8.kubernetes.api.model.IntOrString servicePort;
+    private IntOrString servicePort;
     @JsonProperty("url")
     private String url;
     @JsonIgnore
@@ -82,7 +75,7 @@ public class HTTP01Challenge implements Editable<HTTP01ChallengeBuilder> , Kuber
     public HTTP01Challenge() {
     }
 
-    public HTTP01Challenge(String serviceName, String serviceNamespace, io.fabric8.kubernetes.api.model.IntOrString servicePort, String url) {
+    public HTTP01Challenge(String serviceName, String serviceNamespace, IntOrString servicePort, String url) {
         super();
         this.serviceName = serviceName;
         this.serviceNamespace = serviceNamespace;
@@ -111,12 +104,12 @@ public class HTTP01Challenge implements Editable<HTTP01ChallengeBuilder> , Kuber
     }
 
     @JsonProperty("servicePort")
-    public io.fabric8.kubernetes.api.model.IntOrString getServicePort() {
+    public IntOrString getServicePort() {
         return servicePort;
     }
 
     @JsonProperty("servicePort")
-    public void setServicePort(io.fabric8.kubernetes.api.model.IntOrString servicePort) {
+    public void setServicePort(IntOrString servicePort) {
         this.servicePort = servicePort;
     }
 

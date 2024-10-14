@@ -932,7 +932,7 @@
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "existingJavaType": "io.fabric8.knative.internal.pkg.apis.Condition"
+            "existingJavaType": "io.fabric8.knative.pkg.apis.Condition"
           }
         },
         "finallyStartTime": {
@@ -2195,7 +2195,7 @@
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "existingJavaType": "io.fabric8.knative.internal.pkg.apis.Condition"
+            "existingJavaType": "io.fabric8.knative.pkg.apis.Condition"
           }
         },
         "observedGeneration": {
@@ -2572,7 +2572,7 @@
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "existingJavaType": "io.fabric8.knative.internal.pkg.apis.Condition"
+            "existingJavaType": "io.fabric8.knative.pkg.apis.Condition"
           }
         },
         "data": {
@@ -2688,7 +2688,7 @@
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "existingJavaType": "io.fabric8.knative.internal.pkg.apis.Condition"
+            "existingJavaType": "io.fabric8.knative.pkg.apis.Condition"
           }
         },
         "extraFields": {

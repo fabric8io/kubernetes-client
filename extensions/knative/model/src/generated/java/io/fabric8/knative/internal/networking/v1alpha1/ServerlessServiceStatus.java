@@ -13,11 +13,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import io.fabric8.knative.internal.pkg.apis.Condition;
+import io.fabric8.knative.pkg.apis.Condition;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.ContainerPort;
-import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
@@ -27,8 +25,6 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.kubernetes.api.model.Volume;
-import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -59,11 +55,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
-    @BuildableReference(PersistentVolumeClaim.class),
-    @BuildableReference(EnvVar.class),
-    @BuildableReference(ContainerPort.class),
-    @BuildableReference(Volume.class),
-    @BuildableReference(VolumeMount.class)
+    @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
 public class ServerlessServiceStatus implements Editable<ServerlessServiceStatusBuilder> , KubernetesResource
@@ -78,11 +70,11 @@ public class ServerlessServiceStatus implements Editable<ServerlessServiceStatus
     @JsonProperty("observedGeneration")
     private Long observedGeneration;
     @JsonProperty("privateServiceName")
-    private java.lang.String privateServiceName;
+    private String privateServiceName;
     @JsonProperty("serviceName")
-    private java.lang.String serviceName;
+    private String serviceName;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -91,7 +83,7 @@ public class ServerlessServiceStatus implements Editable<ServerlessServiceStatus
     public ServerlessServiceStatus() {
     }
 
-    public ServerlessServiceStatus(Map<String, String> annotations, List<Condition> conditions, Long observedGeneration, java.lang.String privateServiceName, java.lang.String serviceName) {
+    public ServerlessServiceStatus(Map<String, String> annotations, List<Condition> conditions, Long observedGeneration, String privateServiceName, String serviceName) {
         super();
         this.annotations = annotations;
         this.conditions = conditions;
@@ -133,22 +125,22 @@ public class ServerlessServiceStatus implements Editable<ServerlessServiceStatus
     }
 
     @JsonProperty("privateServiceName")
-    public java.lang.String getPrivateServiceName() {
+    public String getPrivateServiceName() {
         return privateServiceName;
     }
 
     @JsonProperty("privateServiceName")
-    public void setPrivateServiceName(java.lang.String privateServiceName) {
+    public void setPrivateServiceName(String privateServiceName) {
         this.privateServiceName = privateServiceName;
     }
 
     @JsonProperty("serviceName")
-    public java.lang.String getServiceName() {
+    public String getServiceName() {
         return serviceName;
     }
 
     @JsonProperty("serviceName")
-    public void setServiceName(java.lang.String serviceName) {
+    public void setServiceName(String serviceName) {
         this.serviceName = serviceName;
     }
 
@@ -163,16 +155,16 @@ public class ServerlessServiceStatus implements Editable<ServerlessServiceStatus
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 

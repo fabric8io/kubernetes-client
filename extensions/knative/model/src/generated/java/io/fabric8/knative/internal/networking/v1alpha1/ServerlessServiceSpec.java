@@ -13,18 +13,15 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.ContainerPort;
-import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.kubernetes.api.model.Volume;
-import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -52,13 +49,9 @@ import lombok.experimental.Accessors;
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
+    @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
-    @BuildableReference(PersistentVolumeClaim.class),
-    @BuildableReference(EnvVar.class),
-    @BuildableReference(ContainerPort.class),
-    @BuildableReference(Volume.class),
-    @BuildableReference(VolumeMount.class)
+    @BuildableReference(PersistentVolumeClaim.class)
 })
 @Generated("jsonschema2pojo")
 public class ServerlessServiceSpec implements Editable<ServerlessServiceSpecBuilder> , KubernetesResource
@@ -69,7 +62,7 @@ public class ServerlessServiceSpec implements Editable<ServerlessServiceSpecBuil
     @JsonProperty("numActivators")
     private Integer numActivators;
     @JsonProperty("objectRef")
-    private io.fabric8.kubernetes.api.model.ObjectReference objectRef;
+    private ObjectReference objectRef;
     @JsonProperty("protocolType")
     private String protocolType;
     @JsonIgnore
@@ -82,7 +75,7 @@ public class ServerlessServiceSpec implements Editable<ServerlessServiceSpecBuil
     public ServerlessServiceSpec() {
     }
 
-    public ServerlessServiceSpec(String mode, Integer numActivators, io.fabric8.kubernetes.api.model.ObjectReference objectRef, String protocolType) {
+    public ServerlessServiceSpec(String mode, Integer numActivators, ObjectReference objectRef, String protocolType) {
         super();
         this.mode = mode;
         this.numActivators = numActivators;
@@ -111,12 +104,12 @@ public class ServerlessServiceSpec implements Editable<ServerlessServiceSpecBuil
     }
 
     @JsonProperty("objectRef")
-    public io.fabric8.kubernetes.api.model.ObjectReference getObjectRef() {
+    public ObjectReference getObjectRef() {
         return objectRef;
     }
 
     @JsonProperty("objectRef")
-    public void setObjectRef(io.fabric8.kubernetes.api.model.ObjectReference objectRef) {
+    public void setObjectRef(ObjectReference objectRef) {
         this.objectRef = objectRef;
     }
 
