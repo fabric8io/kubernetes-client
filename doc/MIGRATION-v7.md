@@ -11,6 +11,7 @@
   - [Removed deprecated types for network.openshift.io (OpenShift-SDN-only)](#openshift-network-removed)
   - [Renamed clusterautoscaling to autoscaling](#openshift-clusterautoscaling-to-autoscaling)
   - [Renamed machineconfig to machineconfiguration](#openshift-machineconfig-to-machineconfiguration)
+  - [Tekton Extension](#tekton-extension)
 - [Deprecations and Removals](#deprecations-and-removals)
   - [Service Catalog API (extension) removed](#service-catalog-extension) 
 
@@ -102,6 +103,27 @@ The module `openshift-model-machineconfig` has been renamed to `openshift-model-
 The package has also been renamed from `io.fabric8.openshift.api.model.machineconfig` to `io.fabric8.openshift.api.model.machineconfiguration`.
 
 The OpenShiftClient DSL entry-point remains the same: `OpenShiftClient.machineConfigurations()`.
+
+### Tekton Extension <a href="#tekton-extension" id="tekton-extension"/>
+
+All the model modules for the Tekton extension have been merged into a single module `io.fabric8:tekton-model`.
+
+The following packages have been moved:
+
+| Old Package                                                              | New Package                                  |
+|--------------------------------------------------------------------------|----------------------------------------------|
+| `io.fabric8.tekton.pipeline.v1`                                          | `io.fabric8.tekton.v1`                       |
+| `io.fabric8.tekton.pipeline.v1alpha1`                                    | `io.fabric8.tekton.v1alpha1`                 |
+| `io.fabric8.tekton.pipeline.v1beta1`                                     | `io.fabric8.tekton.v1beta1`                  |
+| `io.fabric8.tekton.v1.internal.pipeline.pkg.apis.config`                 | `io.fabric8.tekton.pipeline.pkg.apis.config` |
+| `io.fabric8.tekton.v1.internal.pipeline.pkg.apis.pipeline.pod`           | `io.fabric8.tekton.pod`                      |
+| `io.fabric8.tekton.v1alpha1.internal.pipeline.pkg.apis.pipeline.pod`     | `io.fabric8.tekton.pod`                      |
+| `io.fabric8.tekton.v1alpha1.internal.pipeline.pkg.apis.pipeline.v1beta1` | `io.fabric8.tekton.v1beta1`                  |
+| `io.fabric8.tekton.v1beta1.internal.pipeline.pkg.apis.config`            | `io.fabric8.tekton.pipeline.pkg.apis.config` |
+| `io.fabric8.tekton.v1beta1.internal.pipeline.pkg.apis.pipeline.pod`      | `io.fabric8.tekton.pod`                      |
+| `io.fabric8.tekton.v1beta1.internal.pipeline.pkg.apis.resource.v1alpha1` | `io.fabric8.tekton.v1alpha1`                 |
+| `io.fabric8.tekton.v1beta1.internal.pipeline.pkg.apis.run.v1beta1`       | `io.fabric8.tekton.v1beta1`                  |
+| `io.fabric8.tekton.v1beta1.internal.pipeline.pkg.result`                 | `io.fabric8.tekton.pipeline.pkg.result`      |
 
 ## Deprecations and Removals <a href="#deprecations-and-removals" id="deprecations-and-removals"/>
 

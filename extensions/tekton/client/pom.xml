@@ -53,33 +53,8 @@
 
   <dependencies>
     <dependency>
-      <groupId>io.sundr</groupId>
-      <artifactId>builder-annotations</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>io.sundr</groupId>
-      <artifactId>transform-annotations</artifactId>
-    </dependency>
-    <dependency>
       <groupId>io.fabric8</groupId>
-      <artifactId>tekton-model-v1</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.fabric8</groupId>
-      <artifactId>tekton-model-v1alpha1</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.fabric8</groupId>
-      <artifactId>tekton-model-v1beta1</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.fabric8</groupId>
-      <artifactId>tekton-model-triggers-v1alpha1</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.fabric8</groupId>
-      <artifactId>tekton-model-triggers-v1beta1</artifactId>
+      <artifactId>tekton-model</artifactId>
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>

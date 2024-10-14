@@ -250,10 +250,15 @@ class ModelGenerator {
     }
     // KubernetesResource
     else {
-      if (!templateContext.isInRootPackage()) {
-        templateContext.addImport(settings.getKubernetesResourceClass());
+      if (templateContext.getClassSimpleName().equals(settings.getKubernetesResourceClassSimpleName())) {
+        // There's a class actually named KubernetesResource in the tekton package
+        implementedInterfaces.append(settings.getKubernetesResourceClass());
+      } else {
+        if (!templateContext.isInRootPackage()) {
+          templateContext.addImport(settings.getKubernetesResourceClass());
+        }
+        implementedInterfaces.append(settings.getKubernetesResourceClassSimpleName());
       }
-      implementedInterfaces.append(settings.getKubernetesResourceClassSimpleName());
     }
     // Namespaced
     if (templateContext.isNamespaced() && templateContext.getKubernetesListType() == null) {

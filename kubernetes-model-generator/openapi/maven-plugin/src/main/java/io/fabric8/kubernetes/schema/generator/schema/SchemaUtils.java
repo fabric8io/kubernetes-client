@@ -144,6 +144,7 @@ public class SchemaUtils {
       "continue",
       "default",
       "enum",
+      "finally",
       "for",
       "import",
       "int",

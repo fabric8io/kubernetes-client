@@ -33,11 +33,7 @@
   </properties>
 
   <modules>
-    <module>model-v1</module>
-    <module>model-v1alpha1</module>
-    <module>model-v1beta1</module>
-    <module>model-triggers-v1alpha1</module>
-    <module>model-triggers-v1beta1</module>
+    <module>model</module>
     <module>client</module>
     <module>examples</module>
     <module>tests</module>

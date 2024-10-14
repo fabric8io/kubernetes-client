@@ -1,5 +1,5 @@
-//go:build ignore
-// +build ignore
+////go:build ignore
+//// +build ignore
 
 /**
  * Copyright (C) 2015 Red Hat, Inc.
@@ -37,6 +37,7 @@ var modules = []module{
 	//{patterns: packages.ChaosMeshPackagePatterns, outputName: "generated_chaosmesh_openapi"},
 	//{patterns: packages.IstioPackagePatterns, outputName: "generated_istio_openapi"},
 	{patterns: packages.KnativePackagePatterns, outputName: "generated_knative_openapi"},
+	{patterns: packages.TektonPackagePatterns, outputName: "generated_tekton_openapi"},
 	{patterns: packages.VolcanoPackagePatterns, outputName: "generated_volcano_openapi"},
 	{patterns: packages.VolumeSnapshotPackagePatterns, outputName: "generated_volumesnapshot_openapi"},
 }
