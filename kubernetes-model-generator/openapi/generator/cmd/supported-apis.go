@@ -36,6 +36,7 @@ import (
 	tektonpipelinev1 "github.com/tektoncd/pipeline/pkg/apis/pipeline/v1"
 	tektontriggersv1beta1 "github.com/tektoncd/triggers/pkg/apis/triggers/v1beta1"
 	istioapiclientextensions "istio.io/client-go/pkg/apis/extensions/v1alpha1"
+	verticalpodautoscalerv1 "k8s.io/autoscaler/vertical-pod-autoscaler/pkg/apis/autoscaling.k8s.io/v1"
 	knativecaching "knative.dev/caching/pkg/apis/caching/v1alpha1"
 	knativeextawssqs "knative.dev/eventing-awssqs/pkg/apis/sources/v1alpha1"
 	knativeextcouchdb "knative.dev/eventing-couchdb/source/pkg/apis/sources/v1alpha1"
@@ -92,5 +93,6 @@ var supportedApisRun = func(cobraCmd *cobra.Command, args []string) {
 		knativeextprometheus.SchemeGroupVersion.String(),
 		tektonpipelinev1.SchemeGroupVersion.String(),
 		tektontriggersv1beta1.SchemeGroupVersion.String(),
+		verticalpodautoscalerv1.SchemeGroupVersion.String(),
 	}, "\n"))
 }

@@ -80,8 +80,8 @@ func (oam *Module) ExtractInfo(definitionName string) *Fabric8Info {
 // This method attempts to resolve the additional information from the gengo processed/parsed package and
 // type information.
 func (oam *Module) ApiName(definitionName string) string {
-	// Don't treat k8s.io types, json is expected to contain the full Go definition name instead of the group/version
-	if strings.HasPrefix(definitionName, "k8s.io/") {
+	// Don't treat k8s.io/api(.*) types (api,apimachinery,api-extensions...), json is expected to contain the full Go definition name instead of the group/version
+	if strings.HasPrefix(definitionName, "k8s.io/api") {
 		return FriendlyName(definitionName)
 	}
 	lastSeparator := strings.LastIndex(definitionName, ".")

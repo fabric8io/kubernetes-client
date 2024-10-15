@@ -12,6 +12,7 @@
   - [Renamed clusterautoscaling to autoscaling](#openshift-clusterautoscaling-to-autoscaling)
   - [Renamed machineconfig to machineconfiguration](#openshift-machineconfig-to-machineconfiguration)
   - [Tekton Extension](#tekton-extension)
+  - [Vertical Pod Autoscaler Extension](#vertical-pod-autoscaler-extension)
 - [Deprecations and Removals](#deprecations-and-removals)
   - [Service Catalog API (extension) removed](#service-catalog-extension) 
 
@@ -124,6 +125,12 @@ The following packages have been moved:
 | `io.fabric8.tekton.v1beta1.internal.pipeline.pkg.apis.resource.v1alpha1` | `io.fabric8.tekton.v1alpha1`                 |
 | `io.fabric8.tekton.v1beta1.internal.pipeline.pkg.apis.run.v1beta1`       | `io.fabric8.tekton.v1beta1`                  |
 | `io.fabric8.tekton.v1beta1.internal.pipeline.pkg.result`                 | `io.fabric8.tekton.pipeline.pkg.result`      |
+
+### Vertical Pod Autoscaler Extension <a href="#vertical-pod-autoscaler-extension" id="vertical-pod-autoscaler-extension"/>
+
+The module `verticalpodautoscaler-model-v1` has been renamed to `verticalpodautoscaler-model`.
+
+The package containing the Vertical Pod Autoscaler classes has also been renamed from `io.fabric8.verticalpodautoscaler.api.model` to `io.fabric8.autoscaling.api.model.v1`.
 
 ## Deprecations and Removals <a href="#deprecations-and-removals" id="deprecations-and-removals"/>
 
