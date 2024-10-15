@@ -15,6 +15,7 @@
  */
 package io.fabric8.crd.generator.approvaltests.immutables;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.immutables.value.Value;
 
@@ -22,6 +23,8 @@ import org.immutables.value.Value;
 @JsonDeserialize(as = ImmutableViaImmutableSpec.class)
 public interface ViaImmutableSpec {
 
+  @JsonProperty("value")
   String getValue();
 
 }
+
