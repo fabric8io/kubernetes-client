@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.crd.generator.maps;
+package io.fabric8.crd.generator.approvaltests.immutables;
 
 import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 
-@Group("map.fabric8.io")
+@Group("samples.fabric8.io")
 @Version("v1")
-public class ContainingMaps extends CustomResource<ContainingMapsSpec, Void> {
+public class ViaImmutable extends CustomResource<ViaImmutableSpec, Void> {
 
 }

@@ -31,6 +31,7 @@
 
   <properties>
     <skipStaging>true</skipStaging>
+    <immutables.version>2.10.1</immutables.version>
   </properties>
 
   <dependencies>
@@ -72,5 +73,31 @@
       <artifactId>validation-api</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.immutables</groupId>
+      <artifactId>value</artifactId>
+      <version>${immutables.version}</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <annotationProcessorPaths>
+            <path>
+              <groupId>org.immutables</groupId>
+              <artifactId>value</artifactId>
+              <version>${immutables.version}</version>
+            </path>
+          </annotationProcessorPaths>
+          <compilerArgs>
+            <arg>-Aio.fabric8.crd.generator.parallel=false</arg>
+          </compilerArgs>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>
