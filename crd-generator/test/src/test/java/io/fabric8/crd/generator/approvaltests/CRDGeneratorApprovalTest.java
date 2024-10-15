@@ -27,6 +27,7 @@ import io.fabric8.crd.generator.approvaltests.json.ContainingJson;
 import io.fabric8.crd.generator.approvaltests.k8svalidation.K8sValidation;
 import io.fabric8.crd.generator.approvaltests.map.ContainingMaps;
 import io.fabric8.crd.generator.approvaltests.nocyclic.NoCyclic;
+import io.fabric8.crd.generator.approvaltests.replica.Replica;
 import io.fabric8.kubernetes.client.CustomResource;
 import io.sundr.utils.Strings;
 import org.approvaltests.Approvals;
@@ -35,6 +36,7 @@ import org.approvaltests.writers.FileApprovalWriter;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.io.CleanupMode;
 import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -50,7 +52,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class CRDGeneratorApprovalTest {
 
-  @TempDir
+  @TempDir(cleanup = CleanupMode.ON_SUCCESS)
   File tempDir;
 
   private boolean minimizeQuotes;
@@ -140,6 +142,7 @@ class CRDGeneratorApprovalTest {
       cases.add(new TestCase("containingjsons.sample.fabric8.io", crdVersion, parallel, ContainingJson.class));
       cases.add(new TestCase("k8svalidations.samples.fabric8.io", crdVersion, parallel, K8sValidation.class));
       cases.add(new TestCase("containingmaps.sample.fabric8.io", crdVersion, parallel, ContainingMaps.class));
+      cases.add(new TestCase("replicas.samples.fabric8.io", crdVersion, parallel, Replica.class));
       cases.add(new TestCase("multiples.sample.fabric8.io", crdVersion, parallel,
           io.fabric8.crd.generator.approvaltests.multipleversions.v1.Multiple.class,
           io.fabric8.crd.generator.approvaltests.multipleversions.v2.Multiple.class));

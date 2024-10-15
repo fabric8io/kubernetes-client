@@ -525,6 +525,97 @@ The CRD generator will add the additional `labels`:
             ...
 ```
 
+### Subresources
+
+#### Status
+
+The [status subresource](https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#status-subresource) will be emitted, if a status type has been defined for the Custom Resource:
+
+```java
+@Version("v1")
+@Group("sample.fabric8.io")
+public class WithStatusSubresource extends CustomResource<ExampleSpec, ExampleStatus> {}
+```
+Result:
+
+```yaml
+    subresources:
+      status: {}
+```
+
+#### Scale
+
+The [scale subresource](https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#scale-subresource)
+will be emitted, if at least one field is marked with either `@SpecReplicas`, `@StatusReplicas` or `@LabelSelector`.
+If used, `@SpecReplicas` and `@StatusReplicas` are both required to produce a valid CRD. `@LabelSelector` is optional.
+All three annotations can be used only once per Custom Resource. Further constraints are:
+
+| Annotation        | Allowed in Spec | Allowed in Status | Required Field Type |
+|-------------------|:---------------:|:-----------------:|---------------------|
+| `@SpecReplicas`   |       Yes       |        No         | `integer`           |
+| `@StatusReplicas` |       No        |        Yes        | `integer`           |
+| `@LabelSelector`  |       Yes       |        Yes        | `string`            |
+
+```java
+@Version("v1")
+@Group("sample.fabric8.io")
+public class WithScaleSubresource extends CustomResource<ExampleSpec, ExampleStatus> {}
+
+public class ExampleSpec {
+  @SpecReplicas
+  int replicas;
+}
+
+public class ExampleStatus {
+  @StatusReplicas
+  int replicas;
+  
+  @LabelSelector
+  String labelSelector;
+}
+```
+
+Result:
+
+```yaml
+kind: "CustomResourceDefinition"
+metadata:
+  name: "withscalesubresources.sample.fabric8.io"
+spec:
+  group: "sample.fabric8.io"
+  names:
+    kind: "Replica"
+    plural: "replicas"
+    singular: "replica"
+  scope: "Cluster"
+  versions:
+  - name: "v1"
+    schema:
+      openAPIV3Schema:
+        properties:
+          spec:
+            properties:
+              replicas:
+                type: "integer"
+            type: "object"
+          status:
+            properties:
+              labelSelector:
+                type: "string"
+              replicas:
+                type: "integer"
+            type: "object"
+        type: "object"
+    served: true
+    storage: true
+    subresources:
+      scale:
+        labelSelectorPath: ".status.labelSelector"
+        specReplicasPath: ".spec.replicas"
+        statusReplicasPath: ".status.replicas"
+      status: {}
+```
+
 ### Multiple Custom Resource Versions
 
 The CRD Generator supports multiple versions of the same kind. In this case a schema for each version will be generated and merged into a single CRD. Keep in mind, that only one version can be marked as stored at the same time!
@@ -596,6 +687,9 @@ spec:
 | `io.fabric8.crd.generator.annotation.Annotations`           | Additional `annotations` in `metadata`                                                |
 | `io.fabric8.crd.generator.annotation.Labels`                | Additional `labels` in `metadata`                                                     |
 | `io.fabric8.crd.generator.annotation.PrinterColumn`         | Customize columns shown by the `kubectl get` command                                  |
+| `io.fabric8.kubernetes.model.annotation.SpecReplicas`       | The field is used in scale subresource as `specReplicaPath`                           |
+| `io.fabric8.kubernetes.model.annotation.StatusReplicas`     | The field is used in scale subresource as `statusReplicaPath`                         |
+| `io.fabric8.kubernetes.model.annotation.LabelSelector`      | The field is used in scale subresource as `labelSelectorPath`                         |
 
 
 A field of type `com.fasterxml.jackson.databind.JsonNode` is encoded as an empty object with `x-kubernetes-preserve-unknown-fields: true` defined.
