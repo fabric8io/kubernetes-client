@@ -81,6 +81,7 @@
     <openapi.schema.kubernetes-latest>${project.parent.basedir}/openapi/schemas/kubernetes-1.30.0.json</openapi.schema.kubernetes-latest>
     <openapi.schema.openshift-generated>${project.parent.basedir}/openapi/schemas/openshift-generated.json</openapi.schema.openshift-generated>
     <openapi.schema.dev.knative>${project.basedir}/../../../kubernetes-model-generator/openapi/schemas/dev.knative.json</openapi.schema.dev.knative>
+    <openapi.schema.dev.tekton>${project.basedir}/../../../kubernetes-model-generator/openapi/schemas/dev.tekton.json</openapi.schema.dev.tekton>
     <openapi.schema.io.k8s.storage.snapshot>${project.basedir}/../../../kubernetes-model-generator/openapi/schemas/io.k8s.storage.snapshot.json</openapi.schema.io.k8s.storage.snapshot>
     <openapi.schema.sh.volcano>${project.basedir}/../../../kubernetes-model-generator/openapi/schemas/sh.volcano.json</openapi.schema.sh.volcano>
     <openapi.openshift-version>4.17</openapi.openshift-version>
@@ -168,7 +169,9 @@
               <packageMappings>
                 <com.coreos.monitoring>io.fabric8.openshift.api.model.monitoring</com.coreos.monitoring>
                 <com.github.openshift.custom-resource-status>io.fabric8.openshift.api.model.customresourcestatus</com.github.openshift.custom-resource-status>
+                <com.github.tektoncd.pipeline>io.fabric8.tekton.pipeline</com.github.tektoncd.pipeline>
                 <dev.knative>io.fabric8.knative</dev.knative>
+                <dev.tekton>io.fabric8.tekton</dev.tekton>
                 <io.k8s.api.core.v1>io.fabric8.kubernetes.api.model</io.k8s.api.core.v1>
                 <io.k8s.apimachinery.pkg>io.fabric8.kubernetes.api.model</io.k8s.apimachinery.pkg>
                 <io.k8s.apimachinery.pkg.apis.meta.v1>io.fabric8.kubernetes.api.model</io.k8s.apimachinery.pkg.apis.meta.v1>

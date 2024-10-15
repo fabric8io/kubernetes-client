@@ -20,6 +20,7 @@ import (
 	"fmt"
 	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/cmd/generated_knative_openapi"
 	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/cmd/generated_openshift_openapi"
+	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/cmd/generated_tekton_openapi"
 	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/cmd/generated_volcano_openapi"
 	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/cmd/generated_volumesnapshot_openapi"
 	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/pkg/openapi"
@@ -47,9 +48,10 @@ type module struct {
 
 var modules = []module{
 	{outputName: "openshift-generated", getDefinitionsFunc: generated_openshift_openapi.GetOpenAPIDefinitions, patterns: packages.OpenShiftPackagePatterns},
+	{outputName: "dev.knative", getDefinitionsFunc: generated_knative_openapi.GetOpenAPIDefinitions, patterns: packages.KnativePackagePatterns},
+	{outputName: "dev.tekton", getDefinitionsFunc: generated_tekton_openapi.GetOpenAPIDefinitions, patterns: packages.TektonPackagePatterns},
 	{outputName: "io.k8s.storage.snapshot", getDefinitionsFunc: generated_volumesnapshot_openapi.GetOpenAPIDefinitions, patterns: packages.VolumeSnapshotPackagePatterns},
 	//{outputName: "io.istio", getDefinitionsFunc: generated_istio_openapi.GetOpenAPIDefinitions, patterns: packages.IstioPackagePatterns},
-	{outputName: "dev.knative", getDefinitionsFunc: generated_knative_openapi.GetOpenAPIDefinitions, patterns: packages.KnativePackagePatterns},
 	{outputName: "sh.volcano", getDefinitionsFunc: generated_volcano_openapi.GetOpenAPIDefinitions, patterns: packages.VolcanoPackagePatterns},
 }
 

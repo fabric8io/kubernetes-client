@@ -88,6 +88,17 @@ var KnativePackagePatterns = []string{
 	"knative.dev/eventing-prometheus/pkg/apis/.../v...",
 }
 
+var TektonPackagePatterns = []string{
+	"github.com/tektoncd/pipeline/pkg/apis/pipeline/v...",
+	"github.com/tektoncd/pipeline/pkg/apis/pipeline/pod",
+	"github.com/tektoncd/pipeline/pkg/result",
+	"github.com/tektoncd/pipeline/pkg/apis/resolution/v...",
+	"github.com/tektoncd/pipeline/pkg/apis/resource/v...",
+	"github.com/tektoncd/pipeline/pkg/apis/run/v...",
+	"github.com/tektoncd/triggers/pkg/apis/triggers/v...",
+	"github.com/tektoncd/pipeline/pkg/apis/config",
+}
+
 var VolcanoPackagePatterns = []string{
 	"volcano.sh/apis/pkg/apis/batch/v1alpha1",
 	"volcano.sh/apis/pkg/apis/bus/v1alpha1",

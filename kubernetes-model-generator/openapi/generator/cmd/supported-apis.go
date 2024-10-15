@@ -33,6 +33,8 @@ import (
 	olm "github.com/operator-framework/operator-lifecycle-manager/pkg/package-server/apis/operators/v1"
 	prometheusoperatorv1 "github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring/v1"
 	"github.com/spf13/cobra"
+	tektonpipelinev1 "github.com/tektoncd/pipeline/pkg/apis/pipeline/v1"
+	tektontriggersv1beta1 "github.com/tektoncd/triggers/pkg/apis/triggers/v1beta1"
 	istioapiclientextensions "istio.io/client-go/pkg/apis/extensions/v1alpha1"
 	knativecaching "knative.dev/caching/pkg/apis/caching/v1alpha1"
 	knativeextawssqs "knative.dev/eventing-awssqs/pkg/apis/sources/v1alpha1"
@@ -88,5 +90,7 @@ var supportedApisRun = func(cobraCmd *cobra.Command, args []string) {
 		knativeextgitlab.SchemeGroupVersion.String(),
 		knativeextkafka.SchemeGroupVersion.String(),
 		knativeextprometheus.SchemeGroupVersion.String(),
+		tektonpipelinev1.SchemeGroupVersion.String(),
+		tektontriggersv1beta1.SchemeGroupVersion.String(),
 	}, "\n"))
 }

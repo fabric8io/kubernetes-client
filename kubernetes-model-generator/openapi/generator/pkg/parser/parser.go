@@ -85,6 +85,9 @@ func (oam *Module) ApiName(definitionName string) string {
 		return FriendlyName(definitionName)
 	}
 	lastSeparator := strings.LastIndex(definitionName, ".")
+	if lastSeparator < 0 {
+		return FriendlyName(definitionName)
+	}
 	typeName := definitionName[lastSeparator+1:]
 	pkg := oam.resolvePackage(definitionName)
 	gn := groupName(pkg)

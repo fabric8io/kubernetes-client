@@ -17,12 +17,12 @@ package io.fabric8.tekton.api.examples;
 
 import io.fabric8.tekton.client.DefaultTektonClient;
 import io.fabric8.tekton.client.TektonClient;
-import io.fabric8.tekton.pipeline.v1.StepBuilder;
-import io.fabric8.tekton.pipeline.v1.Task;
-import io.fabric8.tekton.pipeline.v1.TaskBuilder;
-import io.fabric8.tekton.pipeline.v1.TaskRun;
-import io.fabric8.tekton.pipeline.v1.TaskRunBuilder;
-import io.fabric8.tekton.pipeline.v1.TaskRunList;
+import io.fabric8.tekton.v1.StepBuilder;
+import io.fabric8.tekton.v1.Task;
+import io.fabric8.tekton.v1.TaskBuilder;
+import io.fabric8.tekton.v1.TaskRun;
+import io.fabric8.tekton.v1.TaskRunBuilder;
+import io.fabric8.tekton.v1.TaskRunList;
 
 import static io.fabric8.kubernetes.client.utils.Utils.generateId;
 

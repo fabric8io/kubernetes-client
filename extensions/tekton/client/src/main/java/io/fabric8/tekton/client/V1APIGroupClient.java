@@ -19,14 +19,14 @@ import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.extension.ClientAdapter;
 import io.fabric8.tekton.client.dsl.V1APIGroupDSL;
-import io.fabric8.tekton.pipeline.v1.Pipeline;
-import io.fabric8.tekton.pipeline.v1.PipelineList;
-import io.fabric8.tekton.pipeline.v1.PipelineRun;
-import io.fabric8.tekton.pipeline.v1.PipelineRunList;
-import io.fabric8.tekton.pipeline.v1.Task;
-import io.fabric8.tekton.pipeline.v1.TaskList;
-import io.fabric8.tekton.pipeline.v1.TaskRun;
-import io.fabric8.tekton.pipeline.v1.TaskRunList;
+import io.fabric8.tekton.v1.Pipeline;
+import io.fabric8.tekton.v1.PipelineList;
+import io.fabric8.tekton.v1.PipelineRun;
+import io.fabric8.tekton.v1.PipelineRunList;
+import io.fabric8.tekton.v1.Task;
+import io.fabric8.tekton.v1.TaskList;
+import io.fabric8.tekton.v1.TaskRun;
+import io.fabric8.tekton.v1.TaskRunList;
 
 public class V1APIGroupClient extends ClientAdapter<V1APIGroupClient> implements V1APIGroupDSL {
 

@@ -17,10 +17,10 @@ package io.fabric8.tekton.test.crud;
 
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.tekton.client.TektonClient;
-import io.fabric8.tekton.pipeline.v1.Param;
-import io.fabric8.tekton.pipeline.v1.Pipeline;
-import io.fabric8.tekton.pipeline.v1.PipelineBuilder;
-import io.fabric8.tekton.pipeline.v1.PipelineList;
+import io.fabric8.tekton.v1.Param;
+import io.fabric8.tekton.v1.Pipeline;
+import io.fabric8.tekton.v1.PipelineBuilder;
+import io.fabric8.tekton.v1.PipelineList;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
