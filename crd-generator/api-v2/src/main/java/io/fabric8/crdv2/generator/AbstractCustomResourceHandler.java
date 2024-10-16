@@ -46,7 +46,7 @@ public abstract class AbstractCustomResourceHandler {
 
   protected void handlePrinterColumns(AbstractJsonSchema<?, ?> resolver, PrinterColumnHandler handler) {
     TreeMap<String, AnnotationMetadata> sortedCols = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
-    resolver.getAdditionalPrinterColumns().forEach(apc -> sortedCols.put(apc.path(), new AnnotationMetadata(apc, null)));
+    resolver.getAdditionalPrinterColumns().forEach(apc -> sortedCols.put(apc.jsonPath(), new AnnotationMetadata(apc, null)));
     sortedCols.putAll(resolver.getAllPaths(PrinterColumn.class));
     sortedCols.forEach((path, property) -> {
       if (property.annotation instanceof AdditionalPrinterColumn) {

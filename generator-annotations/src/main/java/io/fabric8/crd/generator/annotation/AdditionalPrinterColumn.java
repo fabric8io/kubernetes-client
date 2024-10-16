@@ -102,7 +102,7 @@ public @interface AdditionalPrinterColumn {
    * 
    * @return
    */
-  String path();
+  String jsonPath();
 
   /**
    * The type of the printer column
