@@ -19,7 +19,6 @@ import io.fabric8.mockwebserver.crud.CrudDispatcher
 import io.vertx.core.Future
 import io.vertx.core.Vertx
 import io.vertx.ext.web.client.WebClient
-import okhttp3.mockwebserver.MockWebServer
 import spock.lang.Shared
 import spock.lang.Specification
 import spock.util.concurrent.AsyncConditions

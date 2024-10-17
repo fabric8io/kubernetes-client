@@ -173,6 +173,7 @@ class KubernetesLookupTest {
 
   @Test
   void initialize_works_with_mock_client() {
+    KubernetesLookup.clear();
     final Pod pod = mockClient.pods().resource(createPod()).create();
     final Namespace namespace = mockClient.namespaces().resource(createNamespace()).create();
     final StrLookup lookup = new KubernetesLookup() {
