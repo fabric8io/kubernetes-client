@@ -13,28 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.mockwebserver.dsl;
+package io.fabric8.mockwebserver.vertx
 
-public enum HttpMethod {
+import io.fabric8.mockwebserver.dsl.HttpMethod
+import io.fabric8.mockwebserver.http.Headers
+import io.fabric8.mockwebserver.http.RecordedRequest
+import spock.lang.Specification
 
-  GET,
-  POST,
-  PUT,
-  PATCH,
-  DELETE,
-  OPTIONS,
-  CONNECT,
-  ANY;
+class VertxMockWebSocketTest extends Specification {
 
-  public static HttpMethod fromVertx(io.vertx.core.http.HttpMethod method) {
-    if (method != null) {
-      for (HttpMethod m : HttpMethod.values()) {
-        if (m.toString().equalsIgnoreCase(method.toString())) {
-          return m;
-        }
-      }
-    }
-    return null;
-  }
-
+	def "request returns the RecordedRequest"() {
+		given:
+		def recordedRequest = new RecordedRequest("HTTP/1.1", HttpMethod.GET, "/", Headers.builder().build(), null)
+		def serverSocket = new VertxMockWebSocket(recordedRequest, null)
+		when:
+		def result = serverSocket.request()
+		then:
+		result == recordedRequest
+	}
 }

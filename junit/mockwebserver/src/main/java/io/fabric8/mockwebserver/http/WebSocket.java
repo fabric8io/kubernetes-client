@@ -16,10 +16,21 @@
 package io.fabric8.mockwebserver.http;
 
 public interface WebSocket {
+  /**
+   * Returns the original request that initiated this web socket.
+   */
   RecordedRequest request();
 
+  /**
+   * Attempts to enqueue {@code text} to be UTF-8 encoded and sent as the data of a text (type
+   * {@code 0x1}) message.
+   */
   boolean send(String text);
 
+  /**
+   * Attempts to enqueue {@code bytes} to be sent as a the data of a binary (type {@code 0x2})
+   * message.
+   */
   boolean send(byte[] bytes);
 
   /**
@@ -32,5 +43,13 @@ public interface WebSocket {
     return send(bytes.toByteArray());
   }
 
+  /**
+   * Attempts to initiate a graceful shutdown of this web socket.
+   * <p>
+   * No more messages can be sent.
+   *
+   * @param code the status code.
+   * @param reason reason of closure.
+   */
   boolean close(int code, String reason);
 }

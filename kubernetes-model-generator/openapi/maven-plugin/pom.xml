@@ -30,6 +30,7 @@
 
   <artifactId>openapi-model-generator-maven-plugin</artifactId>
   <packaging>maven-plugin</packaging>
+  <name>Fabric8 :: OpenAPI Generator Maven Plugin</name>
 
   <properties>
     <maven.deploy.skip>true</maven.deploy.skip><!-- Keep module private -->
