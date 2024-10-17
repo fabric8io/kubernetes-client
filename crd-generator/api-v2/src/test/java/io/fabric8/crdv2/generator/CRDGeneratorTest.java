@@ -381,6 +381,9 @@ class CRDGeneratorTest {
           "jokerequests", spec);
       assertEquals(1, names.getShortNames().size());
       assertTrue(names.getShortNames().contains("jr"));
+      assertEquals(2, names.getCategories().size());
+      assertTrue(names.getCategories().contains("cat1"));
+      assertTrue(names.getCategories().contains("cat2"));
 
       final CustomResourceDefinitionVersion version = checkVersion(spec);
       assertNotNull(version.getSubresources());
