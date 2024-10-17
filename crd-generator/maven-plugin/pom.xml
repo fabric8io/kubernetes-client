@@ -49,6 +49,10 @@
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
+      <artifactId>crd-generator-api-v2</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
       <artifactId>crd-generator-collector</artifactId>
     </dependency>
 

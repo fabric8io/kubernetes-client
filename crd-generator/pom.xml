@@ -36,6 +36,7 @@
     <module>apt</module>
     <module>collector</module>
     <module>maven-plugin</module>
+    <module>cli</module>
     <module>test</module>
     <module>test-apt</module>
   </modules>
