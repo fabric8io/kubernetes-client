@@ -15,6 +15,9 @@
  */
 package io.fabric8.mockwebserver.http;
 
+import io.netty.handler.codec.http.HttpResponseStatus;
+import io.netty.handler.codec.http.HttpStatusClass;
+
 import java.time.Duration;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -35,24 +38,18 @@ public class MockResponse implements Response {
 
   @Override
   public String getStatus() {
-    // TODO: See if we can avoid hard-coding stuff unlike OkHttp
-    final String reason;
-    if (code == 101) {
-      reason = "Switching protocols";
-    } else if (code >= 100 && code < 200) {
-      reason = "Informational";
-    } else if (code >= 200 && code < 300) {
-      reason = "OK";
-    } else if (code >= 300 && code < 400) {
-      reason = "Redirection";
-    } else if (code >= 400 && code < 500) {
-      reason = "Client Error";
-    } else if (code >= 500 && code < 600) {
-      reason = "Server Error";
+    final HttpResponseStatus status;
+    if (code == 200 || code % 100 != 0) {
+      status = HttpResponseStatus.valueOf(code);
     } else {
-      reason = "Mock Response";
+      // Get the status for an invalid code which contains a default reason matching the family/class name
+      status = HttpResponseStatus.valueOf(code + 99);
     }
-    return httpVersion + " " + code + " " + reason;
+    var reason = status.codeClass() == HttpStatusClass.UNKNOWN ? "Mock Response" : status.reasonPhrase();
+    if (reason.indexOf('(') > -1) {
+      reason = reason.substring(0, reason.indexOf('('));
+    }
+    return httpVersion + " " + code + " " + reason.trim();
   }
 
   @Override

@@ -28,7 +28,7 @@ class MockResponseTest extends Specification {
 		where:
 		code | expected
 		100  | "HTTP/1.1 100 Informational"
-		101  | "HTTP/1.1 101 Switching protocols"
+		101  | "HTTP/1.1 101 Switching Protocols"
 		200  | "HTTP/1.1 200 OK"
 		300  | "HTTP/1.1 300 Redirection"
 		400  | "HTTP/1.1 400 Client Error"
