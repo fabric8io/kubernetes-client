@@ -39,7 +39,7 @@ import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
-import okhttp3.mockwebserver.RecordedRequest;
+import io.fabric8.mockwebserver.http.RecordedRequest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -285,7 +285,7 @@ class ResourceTest {
 
       @Override
       public void onClose(WatcherException cause) {
-
+        // NO OP
       }
     });
     assertTrue(latch.await(5000, MILLISECONDS));
@@ -293,7 +293,7 @@ class ResourceTest {
   }
 
   @Test
-  void testWaitUntilReady() throws InterruptedException {
+  void testWaitUntilReady() {
     Pod pod1 = new PodBuilder().withNewMetadata()
         .withName("pod1")
         .withResourceVersion("1")

@@ -22,10 +22,10 @@ import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.mockwebserver.Context;
 import io.fabric8.mockwebserver.crud.AttributeSet;
+import io.fabric8.mockwebserver.http.Response;
+import io.fabric8.mockwebserver.http.WebSocket;
+import io.fabric8.mockwebserver.http.WebSocketListener;
 import io.fabric8.mockwebserver.internal.WebSocketMessage;
-import okhttp3.Response;
-import okhttp3.WebSocket;
-import okhttp3.WebSocketListener;
 import org.slf4j.Logger;
 
 import java.util.Set;

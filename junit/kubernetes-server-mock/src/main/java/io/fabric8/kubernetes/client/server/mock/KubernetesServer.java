@@ -18,11 +18,11 @@ package io.fabric8.kubernetes.client.server.mock;
 import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.mockwebserver.Context;
+import io.fabric8.mockwebserver.MockWebServer;
 import io.fabric8.mockwebserver.ServerRequest;
 import io.fabric8.mockwebserver.ServerResponse;
 import io.fabric8.mockwebserver.dsl.MockServerExpectation;
-import okhttp3.mockwebserver.MockWebServer;
-import okhttp3.mockwebserver.RecordedRequest;
+import io.fabric8.mockwebserver.http.RecordedRequest;
 import org.junit.rules.ExternalResource;
 
 import java.net.InetAddress;
@@ -93,26 +93,6 @@ public class KubernetesServer extends ExternalResource {
 
   public MockServerExpectation expect() {
     return mock.expect();
-  }
-
-  @Deprecated
-  public <T> void expectAndReturnAsJson(String path, int code, T body) {
-    expect().withPath(path).andReturn(code, body).always();
-  }
-
-  @Deprecated
-  public void expectAndReturnAsString(String path, int code, String body) {
-    expect().withPath(path).andReturn(code, body).always();
-  }
-
-  @Deprecated
-  public <T> void expectAndReturnAsJson(String method, String path, int code, T body) {
-    expect().withPath(path).andReturn(code, body).always();
-  }
-
-  @Deprecated
-  public void expectAndReturnAsString(String method, String path, int code, String body) {
-    expect().withPath(path).andReturn(code, body).always();
   }
 
   public KubernetesMockServer getKubernetesMockServer() {

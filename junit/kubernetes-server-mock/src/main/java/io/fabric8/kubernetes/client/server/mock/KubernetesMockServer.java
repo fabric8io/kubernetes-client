@@ -37,11 +37,11 @@ import io.fabric8.kubernetes.client.utils.ApiVersionUtil;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.mockwebserver.Context;
 import io.fabric8.mockwebserver.DefaultMockServer;
+import io.fabric8.mockwebserver.MockWebServer;
 import io.fabric8.mockwebserver.ServerRequest;
 import io.fabric8.mockwebserver.ServerResponse;
+import io.fabric8.mockwebserver.http.Dispatcher;
 import io.fabric8.mockwebserver.internal.MockDispatcher;
-import okhttp3.mockwebserver.Dispatcher;
-import okhttp3.mockwebserver.MockWebServer;
 
 import java.net.HttpURLConnection;
 import java.net.InetAddress;

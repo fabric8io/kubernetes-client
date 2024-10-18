@@ -15,6 +15,8 @@
  */
 package io.fabric8.mockwebserver.http;
 
+import java.nio.charset.StandardCharsets;
+
 public abstract class WebSocketListener {
 
   /**
@@ -40,10 +42,11 @@ public abstract class WebSocketListener {
    */
   @Deprecated
   public void onMessage(WebSocket webSocket, ByteString bytes) {
+    onMessage(webSocket, bytes.utf8());
   }
 
   public void onMessage(WebSocket webSocket, byte[] bytes) {
-    onMessage(webSocket, ByteString.of(bytes));
+    onMessage(webSocket, new String(bytes, StandardCharsets.UTF_8));
   }
 
   /**

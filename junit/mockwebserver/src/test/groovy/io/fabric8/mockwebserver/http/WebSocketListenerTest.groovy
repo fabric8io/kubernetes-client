@@ -20,17 +20,33 @@ import spock.lang.Specification
 
 class WebSocketListenerTest extends Specification {
 
-	def "onMessage(WebSocket,byte[]) calls deprecated onMessage(WebSocket,ByteString) method"() {
+	def "onMessage(WebSocket,byte[]) calls onMessage(WebSocket,String) method by default"() {
 		given:
 		String message
 		def listener = new WebSocketListener(){
 					@Override
-					void onMessage(WebSocket webSocket, ByteString bytes) {
-						message = bytes.utf8()
+					void onMessage(WebSocket webSocket, String msg) {
+						message = msg
 					}
 				}
 		when:
 		listener.onMessage(null, "Hello, world!".getBytes(StandardCharsets.UTF_8))
+		then:
+		message == "Hello, world!"
+	}
+
+	@SuppressWarnings('GrDeprecatedAPIUsage')
+	def "onMessage(WebSocket,ByteString) calls onMessage(WebSocket,String) method by default"() {
+		given:
+		String message
+		def listener = new WebSocketListener(){
+					@Override
+					void onMessage(WebSocket webSocket, String msg) {
+						message = msg
+					}
+				}
+		when:
+		listener.onMessage(null, ByteString.of("Hello, world!".getBytes(StandardCharsets.UTF_8)))
 		then:
 		message == "Hello, world!"
 	}

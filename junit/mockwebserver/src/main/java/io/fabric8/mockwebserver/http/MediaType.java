@@ -20,11 +20,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Compatibility layer for OkHttp.
+ * Provides tooling to parse and manipulate media types.
  *
- * @deprecated should not be needed anymore
+ * <p>
+ * Compatibility layer for OkHttp.
  */
-@Deprecated
 public class MediaType {
   private static final String TOKEN = "([a-zA-Z0-9-!#$%&'*+.^_`{|}~]+)";
   private static final String QUOTED = "\"([^\"]*)\"";

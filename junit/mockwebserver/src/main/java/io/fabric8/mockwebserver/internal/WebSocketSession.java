@@ -16,12 +16,12 @@
 package io.fabric8.mockwebserver.internal;
 
 import io.fabric8.mockwebserver.MockServerException;
-import io.fabric8.mockwebserver.http.ByteString;
 import io.fabric8.mockwebserver.http.RecordedRequest;
 import io.fabric8.mockwebserver.http.Response;
 import io.fabric8.mockwebserver.http.WebSocket;
 import io.fabric8.mockwebserver.http.WebSocketListener;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -80,11 +80,6 @@ public class WebSocketSession extends WebSocketListener {
   }
 
   @Override
-  public void onMessage(WebSocket webSocket, ByteString bytes) {
-    onMessage(webSocket, bytes.utf8());
-  }
-
-  @Override
   public void onMessage(WebSocket webSocket, String in) {
     Queue<WebSocketMessage> queue = requestEvents.get(in);
     send(webSocket, queue, in);
@@ -109,7 +104,7 @@ public class WebSocketSession extends WebSocketListener {
   }
 
   private void checkIfShouldSendAgain(WebSocket ws, WebSocketMessage msg) {
-    String text = msg.isBinary() ? ByteString.of(msg.getBytes()).utf8() : msg.getBody();
+    String text = msg.isBinary() ? new String(msg.getBytes(), StandardCharsets.UTF_8) : msg.getBody();
     if (sentWebSocketMessagesRequestEvents.containsKey(text)) {
       Queue<WebSocketMessage> queue = sentWebSocketMessagesRequestEvents.get(text);
       send(ws, queue, text);
@@ -163,7 +158,7 @@ public class WebSocketSession extends WebSocketListener {
     executor.schedule(() -> {
       if (ws != null) {
         if (message.isBinary()) {
-          ws.send(ByteString.of(message.getBytes()));
+          ws.send(message.getBytes());
         } else {
           ws.send(message.getBody());
         }

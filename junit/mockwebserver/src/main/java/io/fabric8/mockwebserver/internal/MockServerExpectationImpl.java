@@ -230,7 +230,7 @@ public class MockServerExpectationImpl implements MockServerExpectation {
   }
 
   private ResponseProvider<String> toString(final ResponseProvider<Object> provider) {
-    return new ResponseProvider<String>() {
+    return new ResponseProvider<>() {
       @Override
       public String getBody(RecordedRequest request) {
         Object object = provider.getBody(request);
@@ -255,7 +255,7 @@ public class MockServerExpectationImpl implements MockServerExpectation {
   }
 
   private ResponseProvider<List<String>> listToString(final ResponseProvider<List<Object>> provider) {
-    return new ResponseProvider<List<String>>() {
+    return new ResponseProvider<>() {
       @Override
       public List<String> getBody(RecordedRequest request) {
         List<Object> objects = provider.getBody(request);

@@ -16,9 +16,9 @@
 package io.fabric8.kubernetes.client.http;
 
 import io.fabric8.mockwebserver.DefaultMockServer;
+import io.fabric8.mockwebserver.http.Headers;
+import io.fabric8.mockwebserver.http.RecordedRequest;
 import io.fabric8.mockwebserver.utils.ResponseProvider;
-import okhttp3.Headers;
-import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -30,19 +30,20 @@ import java.util.concurrent.TimeUnit;
 import static io.fabric8.kubernetes.client.utils.HttpClientUtils.basicCredentials;
 import static org.assertj.core.api.Assertions.assertThat;
 
+@SuppressWarnings("HttpUrlsUsage")
 public abstract class AbstractHttpClientProxyTest {
 
-  private static DefaultMockServer server;
+  private static DefaultMockServer proxyServer;
 
   @BeforeAll
   static void beforeAll() {
-    server = new DefaultMockServer(false);
-    server.start();
+    proxyServer = new DefaultMockServer(false);
+    proxyServer.start();
   }
 
   @AfterAll
   static void afterAll() {
-    server.shutdown();
+    proxyServer.shutdown();
   }
 
   protected abstract HttpClient.Factory getHttpClientFactory();
@@ -50,7 +51,7 @@ public abstract class AbstractHttpClientProxyTest {
   @Test
   @DisplayName("Proxied HttpClient with basic authorization adds required headers to the request")
   protected void proxyConfigurationBasicAuthAddsRequiredHeaders() throws Exception {
-    server.expect().get().withPath("/").andReply(new ResponseProvider<Object>() {
+    proxyServer.expect().get().withPath("http://example.com/proxied").andReply(new ResponseProvider<Object>() {
 
       @Override
       public String getBody(RecordedRequest request) {
@@ -74,17 +75,16 @@ public abstract class AbstractHttpClientProxyTest {
     }).always();
     // Given
     final HttpClient.Builder builder = getHttpClientFactory().newBuilder()
-        .proxyAddress(new InetSocketAddress("localhost", server.getPort()))
+        .proxyAddress(new InetSocketAddress("localhost", proxyServer.getPort()))
         .proxyAuthorization(basicCredentials("auth", "cred"));
     try (HttpClient client = builder.build()) {
       // When
-      client.sendAsync(client.newHttpRequestBuilder()
-          .uri(String.format("http://0.0.0.0:%s/not-found", server.getPort())).build(), String.class)
+      client.sendAsync(client.newHttpRequestBuilder().uri("http://example.com/proxied").build(), String.class)
           .get(10L, TimeUnit.SECONDS);
       // Then
-      assertThat(server.getLastRequest())
+      assertThat(proxyServer.getLastRequest())
           .extracting(RecordedRequest::getHeaders)
-          .returns("0.0.0.0:" + server.getPort(), h -> h.get("Host"))
+          .returns("example.com", h -> h.get("Host"))
           .returns("Basic YXV0aDpjcmVk", h -> h.get("Proxy-Authorization"));
     }
   }
@@ -94,17 +94,16 @@ public abstract class AbstractHttpClientProxyTest {
   protected void proxyConfigurationOtherAuthAddsRequiredHeaders() throws Exception {
     // Given
     final HttpClient.Builder builder = getHttpClientFactory().newBuilder()
-        .proxyAddress(new InetSocketAddress("localhost", server.getPort()))
+        .proxyAddress(new InetSocketAddress("localhost", proxyServer.getPort()))
         .proxyAuthorization("Other kind of auth");
     try (HttpClient client = builder.build()) {
       // When
-      client.sendAsync(client.newHttpRequestBuilder()
-          .uri(String.format("http://0.0.0.0:%s/not-found", server.getPort())).build(), String.class)
+      client.sendAsync(client.newHttpRequestBuilder().uri("http://example.com/proxied").build(), String.class)
           .get(10L, TimeUnit.SECONDS);
       // Then
-      assertThat(server.getLastRequest())
+      assertThat(proxyServer.getLastRequest())
           .extracting(RecordedRequest::getHeaders)
-          .returns("0.0.0.0:" + server.getPort(), h -> h.get("Host"))
+          .returns("example.com", h -> h.get("Host"))
           .returns("Other kind of auth", h -> h.get("Proxy-Authorization"));
     }
   }
