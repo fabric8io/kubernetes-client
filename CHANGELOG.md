@@ -7,6 +7,7 @@
 * Fix #6214: Java generator does not recognize fields in CRDs other than metadata, spec, and status
 
 #### Improvements
+* Fix #3069: added AdditionalPrinterColumn type annotation to completely specify additional printer columns
 * Fix #5264: Remove deprecated `Config.errorMessages` field
 * Fix #6008: removing the optional dependency on bouncy castle
 * Fix #6407: sundrio builder-annotations is not available via bom import

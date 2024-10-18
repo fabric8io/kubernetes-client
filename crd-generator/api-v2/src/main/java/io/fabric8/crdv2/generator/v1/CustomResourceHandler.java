@@ -69,6 +69,11 @@ public class CustomResourceHandler extends AbstractCustomResourceHandler {
     handlePrinterColumns(resolver, new PrinterColumnHandler() {
       @Override
       public void addPrinterColumn(String path, String column, String format, int priority, String type, String description) {
+        if (Utils.isNullOrEmpty(column)) {
+          column = path.substring(path.lastIndexOf(".") + 1).toUpperCase();
+        }
+        description = Utils.isNotNullOrEmpty(description) ? description : null;
+
         builder.addNewAdditionalPrinterColumn()
             .withType(type)
             .withName(column)
