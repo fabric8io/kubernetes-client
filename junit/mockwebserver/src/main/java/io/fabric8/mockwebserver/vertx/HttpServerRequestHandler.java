@@ -53,7 +53,6 @@ public abstract class HttpServerRequestHandler implements Handler<HttpServerRequ
     }
     body.onFailure(exceptionHandler);
     body.onSuccess(bodyBuffer -> {
-
       final RecordedRequest request = new RecordedRequest(
           event.version().alpnName().toUpperCase(Locale.ROOT),
           HttpMethod.fromVertx(event.method()),
