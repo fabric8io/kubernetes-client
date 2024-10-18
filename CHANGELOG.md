@@ -17,8 +17,9 @@
 * Fix #5480: Move `io.fabric8:zjsonpatch` to KubernetesClient project
 
 #### Dependency Upgrade
-* Fix #6052: Removed dependency on no longer maintained com.github.mifmif:generex
+* Fix #2632: Bumped OkHttp from 3.12.12 to 4.12.0
 * Fix #5965: Bumped sundrio.version from 0.103.1 to 0.200.0
+* Fix #6052: Removed dependency on no longer maintained com.github.mifmif:generex
 
 #### New Features
 * Fix #6150: Config uses `proxy-url` in kubeconfig's cluster configuration

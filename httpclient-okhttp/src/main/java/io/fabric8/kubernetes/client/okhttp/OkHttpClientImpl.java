@@ -41,7 +41,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
-import okhttp3.internal.Internal;
+import okhttp3.internal.connection.RealConnectionPool;
 import okhttp3.internal.http.HttpMethod;
 import okio.Buffer;
 import okio.BufferedSink;
@@ -55,7 +55,6 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InterruptedIOException;
 import java.io.Reader;
-import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.nio.ByteBuffer;
 import java.util.Collections;
@@ -265,18 +264,9 @@ public class OkHttpClientImpl extends StandardHttpClient<OkHttpClientImpl, OkHtt
 
       // begin hack to terminate the idle task, which is not necessary after 4.3.0 - https://github.com/square/okhttp/commit/bc3ad111ad01100a77846f7dc433b0c0f5b58dba
       // to immediately clean it up, we need to notify the thread waiting on the ConnectionPool / RealConnectionPool
-      Object realConnectionPool = connectionPool;
-
-      try {
-        // 3.14+ holds a delegate to the real pool
-        Method method = Internal.class.getMethod("realConnectionPool", ConnectionPool.class);
-        realConnectionPool = method.invoke(Internal.instance, connectionPool);
-      } catch (Exception e) {
-        // could be 3.12
-      }
-      synchronized (realConnectionPool) {
-        realConnectionPool.notifyAll();
-      }
+      // Former code to deal with https://github.com/fabric8io/kubernetes-client/issues/4985
+      // Not necessary, left here for reference and commenting
+      RealConnectionPool.Companion.get(connectionPool);
     }
 
     if (executorService != null) {
