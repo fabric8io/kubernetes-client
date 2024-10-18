@@ -179,10 +179,6 @@ public class MockResponse implements Response {
   }
 
   public MockResponse withWebSocketUpgrade(WebSocketListener listener) {
-    // TODO: Check if this is necessary with Vert.x
-    //    setStatus("HTTP/1.1 101 Switching Protocols");
-    //    setHeader("Connection", "Upgrade");
-    //    setHeader("Upgrade", "websocket");
     body = null;
     webSocketListener = listener;
     return this;
