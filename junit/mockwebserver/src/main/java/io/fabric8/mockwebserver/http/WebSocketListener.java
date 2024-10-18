@@ -42,7 +42,7 @@ public abstract class WebSocketListener {
   public void onMessage(WebSocket webSocket, ByteString bytes) {
   }
 
-  public final void onMessage(WebSocket webSocket, byte[] bytes) {
+  public void onMessage(WebSocket webSocket, byte[] bytes) {
     onMessage(webSocket, ByteString.of(bytes));
   }
 

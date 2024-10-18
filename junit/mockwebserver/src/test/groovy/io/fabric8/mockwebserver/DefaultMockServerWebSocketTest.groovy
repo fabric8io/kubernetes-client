@@ -89,24 +89,16 @@ class DefaultMockServerWebSocketTest extends Specification {
 				.andUpgradeToWebSocket().open().immediately().andEmit("event").done().always()
 		and: "A WebSocket request"
 		def wsReq = wsClient.webSocket().connect(server.port, server.getHostName(), "/websocket")
-		and: "A WebSocket listener"
-		String closeReason
-		wsReq.onComplete { ws ->
-			ws.result().closeHandler { _ ->
-				ws.result().close()
-				closeReason = ws.result().closeReason()
-			}
-		}
 		and: "An instance of PollingConditions"
 		def conditions = new PollingConditions(timeout: 10)
 
 		when: "The request is sent and completed"
 		conditions.eventually {
-			assert closeReason != null
+			assert wsReq.isComplete()
 		}
 
 		then: "Expect the onClose reason"
-		closeReason == "Closing..."
+		wsReq.result().closeReason() == "Closing..."
 	}
 
 	def "andUpgradeToWebSocket, with no events, should emit onClose"() {

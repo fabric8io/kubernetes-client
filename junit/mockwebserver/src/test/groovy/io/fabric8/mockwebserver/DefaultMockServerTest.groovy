@@ -104,7 +104,6 @@ class DefaultMockServerTest extends Specification {
 		def conditions = new PollingConditions(timeout: 10)
 
 		when: "The requests are completed"
-		all.each {}
 		conditions.eventually {
 			all.each { req ->
 				assert req.isComplete()
@@ -345,7 +344,7 @@ class DefaultMockServerTest extends Specification {
 		then: "Expect the messages to be received"
 		receivedMessages.iterator().next() == "DELETED"
 		and: "Expect the current time to be at least 300ms greater than the start time"
-		System.currentTimeMillis() - startTime >= 300
+		System.currentTimeMillis() - startTime >= 300L
 	}
 
 	def "when setting a timed websocket binary message it should be fire at the specified time"() {
@@ -441,6 +440,7 @@ class DefaultMockServerTest extends Specification {
 		when: "The request is completed"
 		conditions.eventually {
 			assert wsReq.isComplete()
+			assert wsReq.result() != null
 		}
 
 		then: "Expect the close code to be 1002"
