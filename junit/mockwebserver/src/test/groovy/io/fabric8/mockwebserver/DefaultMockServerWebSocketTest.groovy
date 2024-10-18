@@ -21,33 +21,32 @@ import io.vertx.core.Vertx
 import io.vertx.core.http.WebSocket
 import io.vertx.core.http.WebSocketClient
 import io.vertx.core.http.WebSocketConnectOptions
-import java.util.concurrent.ArrayBlockingQueue
-import java.util.concurrent.CompletableFuture
-import java.util.concurrent.CountDownLatch
-import java.util.concurrent.TimeUnit
+import java.util.concurrent.ConcurrentLinkedQueue
 import java.util.stream.IntStream
 import spock.lang.Shared
 import spock.lang.Specification
-import spock.util.concurrent.AsyncConditions
+import spock.util.concurrent.PollingConditions
 
 class DefaultMockServerWebSocketTest extends Specification {
 
 	@Shared
 	static def vertx = Vertx.vertx()
-
+	WebSocketClient wsClient
 	DefaultMockServer server
 
-	WebSocketClient wsClient
-
 	def setup() {
+		wsClient = vertx.createWebSocketClient()
 		server = new DefaultMockServer()
 		server.start()
-		wsClient = vertx.createWebSocketClient()
 	}
 
 	def cleanup() {
-		server.shutdown()
 		wsClient.close()
+		server.shutdown()
+	}
+
+	def cleanupSpec() {
+		vertx.close()
 	}
 
 	def "andUpgradeToWebSocket, with configured events, should emit events"() {
@@ -55,11 +54,11 @@ class DefaultMockServerWebSocketTest extends Specification {
 		server.expect().withPath("/websocket")
 				.andUpgradeToWebSocket()
 				.open()
-				.waitFor(10L).andEmit("A text message")
+				.waitFor(10L).andEmit("A text message from the server")
 				.done()
 				.always()
 		and:
-		Queue<String> messages = new ArrayBlockingQueue<>(1)
+		def messages = new ArrayList<>()
 		and: "A WebSocket request"
 		def wsReq = wsClient.webSocket().connect(server.port, server.getHostName(), "/websocket")
 		and: "A WebSocket listener"
@@ -71,16 +70,16 @@ class DefaultMockServerWebSocketTest extends Specification {
 				ws.result().close()
 			}
 		}
-		and: "An instance of AsyncConditions"
-		def async = new AsyncConditions(1)
+		and: "An instance of PollingConditions"
+		def conditions = new PollingConditions(timeout: 10)
 
 		when: "The request is sent and completed"
-		async.evaluate {
-			assert messages.poll(10, TimeUnit.SECONDS) == "A text message"
+		conditions.eventually {
+			assert !messages.isEmpty()
 		}
 
-		then: "Expect the result to be completed in the specified time"
-		async.await(10)
+		then: "Expect the event from the server"
+		messages.iterator().next() == "A text message from the server"
 	}
 
 	def "andUpgradeToWebSocket, with configured events, should emit onClose when done"() {
@@ -88,27 +87,26 @@ class DefaultMockServerWebSocketTest extends Specification {
 		server.expect()
 				.withPath("/websocket")
 				.andUpgradeToWebSocket().open().immediately().andEmit("event").done().always()
-		and:
-		def future = new CompletableFuture()
 		and: "A WebSocket request"
 		def wsReq = wsClient.webSocket().connect(server.port, server.getHostName(), "/websocket")
 		and: "A WebSocket listener"
+		String closeReason
 		wsReq.onComplete { ws ->
 			ws.result().closeHandler { _ ->
 				ws.result().close()
-				future.complete(ws.result().closeReason())
+				closeReason = ws.result().closeReason()
 			}
 		}
-		and: "An instance of AsyncConditions"
-		def async = new AsyncConditions(1)
+		and: "An instance of PollingConditions"
+		def conditions = new PollingConditions(timeout: 10)
 
 		when: "The request is sent and completed"
-		async.evaluate {
-			assert future.get(10, TimeUnit.SECONDS) == "Closing..."
+		conditions.eventually {
+			assert closeReason != null
 		}
 
-		then: "Expect the result to be completed in the specified time"
-		async.await(10)
+		then: "Expect the onClose reason"
+		closeReason == "Closing..."
 	}
 
 	def "andUpgradeToWebSocket, with no events, should emit onClose"() {
@@ -116,31 +114,30 @@ class DefaultMockServerWebSocketTest extends Specification {
 		server.expect()
 				.withPath("/websocket")
 				.andUpgradeToWebSocket().open().done().always()
-		and:
-		def future = new CompletableFuture()
 		and: "A WebSocket request"
 		def wsReq = wsClient.webSocket().connect(server.port, server.getHostName(), "/websocket")
 		and: "A WebSocket listener"
+		String closeReason
 		wsReq.onComplete { ws ->
 			if (ws.result().isClosed()) {
-				future.complete(ws.result().closeReason())
+				closeReason = ws.result().closeReason()
 			} else {
 				ws.result().closeHandler { _ ->
 					ws.result().close()
-					future.complete(ws.result().closeReason())
+					closeReason = ws.result().closeReason()
 				}
 			}
 		}
-		and: "An instance of AsyncConditions"
-		def async = new AsyncConditions(1)
+		and: "An instance of PollingConditions"
+		def conditions = new PollingConditions(timeout: 10)
 
 		when: "The request is sent and completed"
-		async.evaluate {
-			assert future.get(10, TimeUnit.SECONDS) == "Closing..."
+		conditions.eventually {
+			assert closeReason != null
 		}
 
-		then: "Expect the result to be completed in the specified time"
-		async.await(10)
+		then: "Expect the onClose reason"
+		closeReason == "Closing..."
 	}
 
 	// https://github.com/fabric8io/mockwebserver/pull/66#issuecomment-944289335
@@ -148,13 +145,15 @@ class DefaultMockServerWebSocketTest extends Specification {
 		given: "A WebSocket expectation"
 		server.expect()
 				.withPath("/websocket")
-				.andUpgradeToWebSocket().open().waitFor(10L).andEmit("A text message").done().always()
-		and: "A CountDown latch to verify the event count"
-		def latch = new CountDownLatch(15)
+				.andUpgradeToWebSocket().open().waitFor(10L)
+				.andEmit("A text message from the server")
+				.done().always()
+		and: "A list to store the received messages"
+		def receivedMessages = new ConcurrentLinkedQueue<String>()
 		and: "A Vert.x WebSocket completion handler"
 		Handler<AsyncResult<WebSocket>> completionHandler =  { ws ->
 			ws.result().textMessageHandler { text ->
-				latch.countDown()
+				receivedMessages.add(text)
 			}
 			ws.result().closeHandler { _ ->
 				ws.result().close()
@@ -165,16 +164,18 @@ class DefaultMockServerWebSocketTest extends Specification {
 			def wsReq = wsClient.webSocket().connect(server.port, server.getHostName(), "/websocket")
 			wsReq.onComplete(completionHandler)
 		}
-		and: "An instance of AsyncConditions"
-		def async = new AsyncConditions(1)
+		and: "An instance of PollingConditions"
+		def conditions = new PollingConditions(timeout: 10)
 
 		when: "The requests are sent and completed"
-		async.evaluate {
-			assert latch.await(10, TimeUnit.SECONDS)
+		conditions.eventually {
+			assert receivedMessages.size() == 15
 		}
 
-		then: "Expect the result to be completed in the specified time"
-		async.await(10)
+		then: "Expect the messages to be received"
+		receivedMessages.each { message ->
+			assert message == "A text message from the server"
+		}
 	}
 
 	// https://github.com/fabric8io/mockwebserver/issues/77
@@ -183,8 +184,6 @@ class DefaultMockServerWebSocketTest extends Specification {
 		server.expect()
 				.withPath("/websocket")
 				.andUpgradeToWebSocket().open().waitFor(10L).andEmit("done").done().always()
-		and:
-		def future = new CompletableFuture()
 		and: "A WebSocket request"
 		def wsReq = wsClient.webSocket().connect(new WebSocketConnectOptions()
 				.setPort(server.port)
@@ -192,24 +191,25 @@ class DefaultMockServerWebSocketTest extends Specification {
 				.setURI("/websocket")
 				.addSubProtocol("v4.channel.k8s.io"))
 		and: "A WebSocket listener"
+		String secWebSocketProtocol
 		wsReq.onComplete { ws ->
 			if (ws.result() != null && ws.result().headers() != null) {
-				future.complete(ws.result().headers().get("sec-websocket-protocol"))
+				secWebSocketProtocol = ws.result().headers().get("sec-websocket-protocol")
 			}
 		}
 		def currentResult = wsReq.result()
 		if (currentResult != null && currentResult.headers() != null) {
-			future.complete(currentResult.headers().get("sec-websocket-protocol"))
+			secWebSocketProtocol = currentResult.headers().get("sec-websocket-protocol")
 		}
-		and: "An instance of AsyncConditions"
-		def async = new AsyncConditions(1)
+		and: "An instance of PollingConditions"
+		def conditions = new PollingConditions(timeout: 10)
 
 		when: "The request is sent and completed"
-		async.evaluate {
-			assert future.get(10, TimeUnit.SECONDS) == "v4.channel.k8s.io"
+		conditions.eventually {
+			assert secWebSocketProtocol != null
 		}
 
-		then: "Expect the result to be completed in the specified time"
-		async.await(10)
+		then: "Expect the response to contain a matching header"
+		secWebSocketProtocol == "v4.channel.k8s.io"
 	}
 }
