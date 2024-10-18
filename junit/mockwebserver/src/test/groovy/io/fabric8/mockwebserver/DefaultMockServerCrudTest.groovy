@@ -18,77 +18,74 @@ package io.fabric8.mockwebserver
 import io.fabric8.mockwebserver.crud.CrudDispatcher
 import io.vertx.core.Future
 import io.vertx.core.Vertx
+import io.vertx.core.buffer.Buffer
+import io.vertx.ext.web.client.HttpResponse
 import io.vertx.ext.web.client.WebClient
 import okhttp3.mockwebserver.MockWebServer
 import spock.lang.Shared
 import spock.lang.Specification
-import spock.util.concurrent.AsyncConditions
+import spock.util.concurrent.PollingConditions
 
 class DefaultMockServerCrudTest extends Specification {
 
 	@Shared
 	static def vertx = Vertx.vertx()
-	@Shared
-	static def client = WebClient.create(vertx)
-
+	WebClient client
 	DefaultMockServer server
 
 	def setup() {
+		client = WebClient.create(vertx)
 		server = new DefaultMockServer(new Context(), new MockWebServer(), new HashMap<>(),
 				new CrudDispatcher(new Context(), new UserAttributeExtractor(), new JsonResponseComposer()), false)
 		server.start()
 	}
 
 	def cleanup() {
+		client.close()
 		server.shutdown()
 	}
 
 	def cleanupSpec() {
-		client.close()
 		vertx.close()
 	}
 
 	def "GET /, with empty store, should return 404"() {
 		given: "An HTTP request to /"
-		def request = client.get(server.port, server.getHostName(), "/")
-		and: "An instance of AsyncConditions"
-		def async = new AsyncConditions(1)
+		def request = client.get(server.port, server.getHostName(), "/").send()
+		and: "An instance of PollingConditions"
+		def conditions = new PollingConditions(timeout: 10)
 
-		when: "The request is sent and completed"
-		request.send().onComplete { res ->
-			async.evaluate {
-				assert res.result().statusCode() == 404
-				assert res.result().body() == null
-			}
+		when: "The request is completed"
+		conditions.eventually {
+			assert request.isComplete()
 		}
 
-		then: "Expect the result to be completed in the specified time"
-		async.await(10)
+		then: "Expect the response to have status code 404"
+		request.result().statusCode() == 404
+		request.result().body() == null
 	}
 
 	def "POST /, with one item, should return item"() {
 		given: "An HTTP request to /"
 		def request = client.post(server.port, server.getHostName(), "/")
-		and: "An instance of AsyncConditions"
-		def async = new AsyncConditions(1)
+		and: "An instance of PollingConditions"
+		def conditions = new PollingConditions(timeout: 10)
 
-		when: "The request is sent with one JSON item and completed"
-		request.sendJson(new User(1L, "user", true)).onComplete { res ->
-			async.evaluate {
-				assert res.result().statusCode() == 202
-				assert res.result().body().toString() == "{\"id\":1,\"username\":\"user\",\"enabled\":true}"
-			}
+		when: "The request is sent"
+		def requestFuture = request.sendJson(new User(1L, "user", true))
+		and: "completed"
+		conditions.eventually {
+			assert requestFuture.isComplete()
 		}
 
-		then: "Expect the result to be completed in the specified time"
-		async.await(10)
+		then: "The response contains the item"
+		requestFuture.result().statusCode() == 202
+		requestFuture.result().body().toString() == "{\"id\":1,\"username\":\"user\",\"enabled\":true}"
 	}
 
 	def "GET /, with multiple items, should return array"() {
 		given: "An HTTP request to /"
 		def request = client.get(server.port, server.getHostName(), "/")
-		and: "An instance of AsyncConditions"
-		def async = new AsyncConditions(1)
 		and: "Items in the server"
 		def itemsInServer = client.post(server.port, server.getHostName(), "/")
 				.sendJson(new User(1L, "user", true))
@@ -96,26 +93,27 @@ class DefaultMockServerCrudTest extends Specification {
 					client.post(server.port, server.getHostName(), "/")
 							.sendJson(new User(2L, "user-2", true))
 				}
+		and: "An instance of PollingConditions"
+		def conditions = new PollingConditions(timeout: 10)
 
-		when: "The request is sent and completed"
+		when: "The request is sent after the initial items have been created"
+		Future<HttpResponse<Buffer>> requestFuture
 		itemsInServer.onComplete {isr ->
-			request.send().onComplete { res ->
-				async.evaluate {
-					assert res.result().statusCode() == 200
-					assert res.result().body().toString() == "[{\"id\":1,\"username\":\"user\",\"enabled\":true},{\"id\":2,\"username\":\"user-2\",\"enabled\":true}]"
-				}
-			}
+			requestFuture = request.send()
+		}
+		and: "completed"
+		conditions.eventually {
+			assert requestFuture.isComplete()
 		}
 
-		then: "Expect the result to be completed in the specified time"
-		async.await(10)
+		then: "Expect the response to contain the requested items"
+		requestFuture.result().statusCode() == 200
+		requestFuture.result().body().toString() == "[{\"id\":1,\"username\":\"user\",\"enabled\":true},{\"id\":2,\"username\":\"user-2\",\"enabled\":true}]"
 	}
 
 	def "GET /1, with existent item, should return item"() {
 		given: "An HTTP request to /1"
 		def request = client.get(server.port, server.getHostName(), "/1")
-		and: "An instance of AsyncConditions"
-		def async = new AsyncConditions(1)
 		and: "Items in the server"
 		def itemsInServer = Future.all(
 				client.post(server.port, server.getHostName(), "/")
@@ -123,45 +121,45 @@ class DefaultMockServerCrudTest extends Specification {
 				client.post(server.port, server.getHostName(), "/")
 				.sendJson(new User(2L, "user-2", true))
 				)
+		and: "An instance of PollingConditions"
+		def conditions = new PollingConditions(timeout: 10)
 
-		when: "The request is sent and completed"
+		when: "The request is sent after the initial items have been created"
+		Future<HttpResponse<Buffer>> requestFuture
 		itemsInServer.onComplete {isr ->
-			request.send().onComplete { res ->
-				async.evaluate {
-					assert res.result().statusCode() == 200
-					assert res.result().body().toString() == "{\"id\":1,\"username\":\"user\",\"enabled\":true}"
-				}
-			}
+			requestFuture = request.send()
+		}
+		and: "completed"
+		conditions.eventually {
+			assert requestFuture.isComplete()
 		}
 
-		then: "Expect the result to be completed in the specified time"
-		async.await(10)
+		then: "Expect the response to contain the requested item"
+		requestFuture.result().statusCode() == 200
+		requestFuture.result().body().toString() == "{\"id\":1,\"username\":\"user\",\"enabled\":true}"
 	}
 
 	def "PUT /1, with missing item, should create item"() {
 		given: "An HTTP request to /1"
 		def request = client.put(server.port, server.getHostName(), "/1")
-		and: "An instance of AsyncConditions"
-		def async = new AsyncConditions(1)
+		and: "An instance of PollingConditions"
+		def conditions = new PollingConditions(timeout: 10)
 
-
-		when: "The request is sent with one JSON item and completed"
-		request.sendJson(new User(1L, "user-replaced", true)).onComplete { res ->
-			async.evaluate {
-				assert res.result().statusCode() == 201
-				assert res.result().body().toString() == "{\"id\":1,\"username\":\"user-replaced\",\"enabled\":true}"
-			}
+		when: "The request is sent with one JSON item"
+		def requestFuture = request.sendJson(new User(1L, "user-replaced", true))
+		and: "completed"
+		conditions.eventually {
+			assert requestFuture.isComplete()
 		}
 
-		then: "Expect the result to be completed in the specified time"
-		async.await(10)
+		then: "Expect the response to contain the created item"
+		requestFuture.result().statusCode() == 201
+		requestFuture.result().body().toString() == "{\"id\":1,\"username\":\"user-replaced\",\"enabled\":true}"
 	}
 
 	def "PUT /1, with existent item, should replace item"() {
 		given: "An HTTP request to /1"
 		def request = client.put(server.port, server.getHostName(), "/1")
-		and: "An instance of AsyncConditions"
-		def async = new AsyncConditions(1)
 		and: "Items in the server"
 		def itemsInServer = Future.all(
 				client.post(server.port, server.getHostName(), "/")
@@ -169,18 +167,21 @@ class DefaultMockServerCrudTest extends Specification {
 				client.post(server.port, server.getHostName(), "/")
 				.sendJson(new User(2L, "user-2", true))
 				)
+		and: "An instance of PollingConditions"
+		def conditions = new PollingConditions(timeout: 10)
 
-		when: "The request is sent with one JSON item and completed"
+		when: "The request is sent with one JSON item after the initial items have been created"
+		Future<HttpResponse<Buffer>> requestFuture
 		itemsInServer.onComplete { isr ->
-			request.sendJson(new User(1L, "user-replaced", true)).onComplete { res ->
-				async.evaluate {
-					assert res.result().statusCode() == 202
-					assert res.result().body().toString() == "{\"id\":1,\"username\":\"user-replaced\",\"enabled\":true}"
-				}
-			}
+			requestFuture = request.sendJson(new User(1L, "user-replaced", true))
+		}
+		and: "completed"
+		conditions.eventually {
+			assert requestFuture.isComplete()
 		}
 
-		then: "Expect the result to be completed in the specified time"
-		async.await(10)
+		then: "Expect the response to contain the replaced item"
+		requestFuture.result().statusCode() == 202
+		requestFuture.result().body().toString() == "{\"id\":1,\"username\":\"user-replaced\",\"enabled\":true}"
 	}
 }
