@@ -20,7 +20,9 @@ import io.vertx.core.Handler
 import io.vertx.core.Vertx
 import io.vertx.core.http.WebSocket
 import io.vertx.core.http.WebSocketClient
-import io.vertx.core.http.WebSocketConnectOptions
+import java.net.http.HttpClient
+import java.net.http.HttpRequest
+import java.net.http.HttpResponse
 import java.util.concurrent.ConcurrentLinkedQueue
 import java.util.stream.IntStream
 import spock.lang.Shared
@@ -171,37 +173,57 @@ class DefaultMockServerWebSocketTest extends Specification {
 	}
 
 	// https://github.com/fabric8io/mockwebserver/issues/77
+	// n.b. Uses JDK HTTP client in its simplest form (emulating a WebSocket protocol negotation)
+	// since it's the only reliable way to get the protocol negotiation headers (in this case 'sec-websocket-protocol')
 	def "andUpgradeToWebSocket, with request header 'sec-websocket-protocol', should create response with matching header"() {
 		given: "A WebSocket expectation"
 		server.expect()
 				.withPath("/websocket")
 				.andUpgradeToWebSocket().open().waitFor(10L).andEmit("done").done().always()
-		and: "A WebSocket request"
-		def wsReq = wsClient.webSocket().connect(new WebSocketConnectOptions()
-				.setPort(server.port)
-				.setHost(server.getHostName())
-				.setURI("/websocket")
-				.addSubProtocol("v4.channel.k8s.io"))
-		and: "A WebSocket listener"
-		String secWebSocketProtocol
-		wsReq.onComplete { ws ->
-			if (ws.result() != null && ws.result().headers() != null) {
-				secWebSocketProtocol = ws.result().headers().get("sec-websocket-protocol")
-			}
-		}
-		def currentResult = wsReq.result()
-		if (currentResult != null && currentResult.headers() != null) {
-			secWebSocketProtocol = currentResult.headers().get("sec-websocket-protocol")
-		}
-		and: "An instance of PollingConditions"
-		def conditions = new PollingConditions(timeout: 10)
+		and: "System properties to allow setting restricted headers in the Java HTTP Client"
+		System.setProperty("jdk.httpclient.allowRestrictedHeaders", "connection,upgrade");
+		and: "An HTTP client"
+		def httpClient = HttpClient.newHttpClient()
+		and: "A simple HTTP request to retrieve the headers and status"
+		// Emulates an HTTP Request as a WebSocket client would perform it
+		// This is mimicking what jdk.internal.net.http.websocket.OpeningHandshake does
+		def request = HttpRequest.newBuilder(server.url("/websocket").toURI())
+				.header("sec-websocket-protocol", "v4.channel.k8s.io")
+				.header("sec-websocket-key", Base64.getEncoder().encodeToString([
+					1,
+					2,
+					3,
+					4,
+					5,
+					6,
+					7,
+					8,
+					9,
+					10,
+					11,
+					12,
+					13,
+					14,
+					15,
+					16
+				] as byte[]))
+				.header("sec-websocket-version", "13")
+				.header("connection", "upgrade")
+				.header("upgrade", "websocket")
+				.header("origin", "http://localhost")
+				.expectContinue(false)
+				// Setting request version to HTTP/1.1 forcibly, since it's not possible
+				// to upgrade from HTTP/2 to WebSocket (as of August 2016):
+				//
+				//     https://tools.ietf.org/html/draft-hirano-httpbis-websocket-over-http2-00
+				.version(HttpClient.Version.HTTP_1_1)
+				.build()
 
-		when: "The request is sent and completed"
-		conditions.eventually {
-			assert secWebSocketProtocol != null
-		}
+		when: "The request is sent"
+		def response = httpClient.send(request, HttpResponse.BodyHandlers.discarding())
 
 		then: "Expect the response to contain a matching header"
-		secWebSocketProtocol == "v4.channel.k8s.io"
+		response.statusCode() == 101
+		response.headers().firstValue("sec-websocket-protocol").get() == "v4.channel.k8s.io"
 	}
 }

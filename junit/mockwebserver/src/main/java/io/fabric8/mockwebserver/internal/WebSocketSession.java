@@ -16,12 +16,11 @@
 package io.fabric8.mockwebserver.internal;
 
 import io.fabric8.mockwebserver.MockServerException;
-import io.fabric8.mockwebserver.dsl.HttpMethod;
-import okhttp3.Response;
-import okhttp3.WebSocket;
-import okhttp3.WebSocketListener;
-import okhttp3.mockwebserver.RecordedRequest;
-import okio.ByteString;
+import io.fabric8.mockwebserver.http.ByteString;
+import io.fabric8.mockwebserver.http.RecordedRequest;
+import io.fabric8.mockwebserver.http.Response;
+import io.fabric8.mockwebserver.http.WebSocket;
+import io.fabric8.mockwebserver.http.WebSocketListener;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -63,8 +62,12 @@ public class WebSocketSession extends WebSocketListener {
   }
 
   @Override
-  public void onOpen(WebSocket webSocket, Response response) {
+  public void onBeforeAccept(WebSocket webSocket, Response response) {
     activeSockets.add(webSocket);
+  }
+
+  @Override
+  public void onOpen(WebSocket webSocket, Response response) {
     //Schedule all timed events
     for (WebSocketMessage msg : open) {
       send(webSocket, msg);
@@ -114,10 +117,9 @@ public class WebSocketSession extends WebSocketListener {
   }
 
   public void dispatch(RecordedRequest request) {
-    HttpMethod method = HttpMethod.valueOf(request.getMethod());
-    String path = request.getPath();
-    SimpleRequest key = new SimpleRequest(method, path);
-    SimpleRequest keyForAnyMethod = new SimpleRequest(path);
+    final String path = request.getPath();
+    final SimpleRequest key = new SimpleRequest(request.method(), path);
+    final SimpleRequest keyForAnyMethod = new SimpleRequest(path);
     if (httpRequestEvents.containsKey(key)) {
       Queue<WebSocketMessage> queue = httpRequestEvents.get(key);
       activeSockets.forEach(ws -> send(ws, queue, "from http " + path));
@@ -185,6 +187,7 @@ public class WebSocketSession extends WebSocketListener {
         executor.shutdownNow();
       }
     } catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
       throw MockServerException.launderThrowable(e);
     }
   }

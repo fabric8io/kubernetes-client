@@ -17,12 +17,12 @@ package io.fabric8.openshift.client.server.mock;
 
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.mockwebserver.Context;
+import io.fabric8.mockwebserver.MockWebServer;
 import io.fabric8.mockwebserver.ServerRequest;
 import io.fabric8.mockwebserver.ServerResponse;
+import io.fabric8.mockwebserver.http.Dispatcher;
 import io.fabric8.openshift.client.NamespacedOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftConfig;
-import okhttp3.mockwebserver.Dispatcher;
-import okhttp3.mockwebserver.MockWebServer;
 
 import java.util.Map;
 import java.util.Queue;

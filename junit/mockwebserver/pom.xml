@@ -36,10 +36,6 @@
       <artifactId>vertx-web</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.squareup.okhttp3</groupId>
-      <artifactId>mockwebserver</artifactId>
-    </dependency>
-    <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
     </dependency>
@@ -87,7 +83,6 @@
           </execution>
         </executions>
       </plugin>
-
     </plugins>
   </build>
 </project>

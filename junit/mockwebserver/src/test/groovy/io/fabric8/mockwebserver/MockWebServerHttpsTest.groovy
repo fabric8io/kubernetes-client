@@ -31,14 +31,17 @@ class MockWebServerHttpsTest extends Specification {
 
 	@Shared
 	static def vertx = Vertx.vertx()
-	WebClient client
 	MockWebServer server
+	WebClient client
 
 	def setup() {
-		client = WebClient.create(vertx, new WebClientOptions().setSsl(true).setTrustAll(true))
 		server = new MockWebServer()
 		server.useHttps()
 		server.start()
+		client = WebClient.create(vertx, new WebClientOptions()
+				.setSsl(true)
+				.setTrustOptions(server.getSelfSignedCertificate().trustOptions())
+				.setKeyCertOptions(server.getSelfSignedCertificate().keyCertOptions()))
 	}
 
 	def cleanup() {

@@ -27,7 +27,7 @@ import io.fabric8.kubernetes.client.mock.crd.PodSetSpec;
 import io.fabric8.kubernetes.client.mock.crd.PodSetStatus;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
-import okhttp3.mockwebserver.RecordedRequest;
+import io.fabric8.mockwebserver.http.RecordedRequest;
 import org.junit.jupiter.api.Test;
 
 import java.net.HttpURLConnection;
