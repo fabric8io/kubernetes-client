@@ -30,9 +30,8 @@ import io.fabric8.mockwebserver.Context;
 import io.fabric8.mockwebserver.crud.Attribute;
 import io.fabric8.mockwebserver.crud.AttributeSet;
 import io.fabric8.mockwebserver.crud.CrudDispatcher;
-import okhttp3.mockwebserver.MockResponse;
-import okhttp3.mockwebserver.RecordedRequest;
-import okhttp3.mockwebserver.SocketPolicy;
+import io.fabric8.mockwebserver.http.MockResponse;
+import io.fabric8.mockwebserver.http.RecordedRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -292,7 +291,6 @@ public class KubernetesCrudDispatcher extends CrudDispatcher implements Kubernet
             .filter(entry -> watch.attributeMatches(entry.getKey()))
             .forEach(entry -> watch.sendWebSocketResponse(entry.getValue(), Action.ADDED))));
     watchEventListeners.add(watchEventListener);
-    mockResponse.setSocketPolicy(SocketPolicy.KEEP_OPEN);
     return mockResponse.withWebSocketUpgrade(watchEventListener);
   }
 
