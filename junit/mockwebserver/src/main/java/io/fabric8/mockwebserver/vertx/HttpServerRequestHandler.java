@@ -42,8 +42,11 @@ public abstract class HttpServerRequestHandler implements Handler<HttpServerRequ
 
   @Override
   public final void handle(HttpServerRequest event) {
-    final Handler<Throwable> exceptionHandler = err -> event.response().setStatusCode(500).setStatusMessage(err.getMessage())
-        .send();
+    final Handler<Throwable> exceptionHandler = err -> {
+      if (!event.response().headWritten()) {
+        event.response().setStatusCode(500).setStatusMessage(err.getMessage()).send();
+      }
+    };
     event.resume();
     final Future<io.vertx.core.buffer.Buffer> body;
     if (hasBody(event)) {
