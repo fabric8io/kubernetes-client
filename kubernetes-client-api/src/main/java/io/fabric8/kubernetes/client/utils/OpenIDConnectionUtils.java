@@ -20,7 +20,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.fabric8.kubernetes.api.model.AuthInfo;
 import io.fabric8.kubernetes.api.model.AuthProviderConfig;
 import io.fabric8.kubernetes.api.model.NamedAuthInfo;
+import io.fabric8.kubernetes.api.model.NamedAuthInfoBuilder;
 import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.KubeConfigFile;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpRequest;
@@ -190,38 +192,70 @@ public class OpenIDConnectionUtils {
     if (oAuthToken != null) {
       authProviderConfig.put(ID_TOKEN_KUBECONFIG, oAuthToken.idToken);
       authProviderConfig.put(REFRESH_TOKEN_KUBECONFIG, oAuthToken.refreshToken);
-      // Persist in memory
-      Optional.of(currentConfig).map(Config::getAuthProvider).map(AuthProviderConfig::getConfig)
-          .ifPresent(c -> c.putAll(authProviderConfig));
+      persistOAuthTokenToFile(currentConfig.getAuthProvider(), authProviderConfig);
     }
-    // Persist in file
-    if (currentConfig.getFile() != null && currentConfig.getCurrentContext() != null) {
+    persistOAuthTokenToFile(currentConfig, token, authProviderConfig);
+
+    return oAuthToken;
+  }
+
+  private static void persistOAuthTokenToFile(Config currentConfig, String token, Map<String, String> authProviderConfig) {
+    if (currentConfig.getCurrentContext() != null
+        && currentConfig.getCurrentContext().getContext() != null) {
       try {
-        final io.fabric8.kubernetes.api.model.Config kubeConfig = KubeConfigUtils.parseConfig(currentConfig.getFile());
         final String userName = currentConfig.getCurrentContext().getContext().getUser();
-        NamedAuthInfo namedAuthInfo = kubeConfig.getUsers().stream().filter(n -> n.getName().equals(userName)).findFirst()
-            .orElseGet(() -> {
-              NamedAuthInfo result = new NamedAuthInfo(userName, new AuthInfo());
-              kubeConfig.getUsers().add(result);
-              return result;
-            });
-        if (namedAuthInfo.getUser() == null) {
-          namedAuthInfo.setUser(new AuthInfo());
+        KubeConfigFile kubeConfigFile = currentConfig.getFileWithAuthInfo(userName);
+        if (kubeConfigFile == null
+            || kubeConfigFile.getConfig() == null) {
+          LOGGER.warn("oidc: failure while persisting new tokens into KUBECONFIG: file for user {} not found", userName);
+          return;
         }
-        if (namedAuthInfo.getUser().getAuthProvider() == null) {
-          namedAuthInfo.getUser().setAuthProvider(new AuthProviderConfig());
-        }
-        namedAuthInfo.getUser().getAuthProvider().getConfig().putAll(authProviderConfig);
-        if (Utils.isNotNullOrEmpty(token)) {
-          namedAuthInfo.getUser().setToken(token);
-        }
-        KubeConfigUtils.persistKubeConfigIntoFile(kubeConfig, currentConfig.getFile().getAbsolutePath());
+        final NamedAuthInfo namedAuthInfo = getOrCreateNamedAuthInfo(userName, kubeConfigFile.getConfig());
+        setAuthProviderAndToken(token, authProviderConfig, namedAuthInfo);
+
+        KubeConfigUtils.persistKubeConfigIntoFile(kubeConfigFile.getConfig(), kubeConfigFile.getFile().getAbsolutePath());
       } catch (IOException ex) {
         LOGGER.warn("oidc: failure while persisting new tokens into KUBECONFIG", ex);
       }
     }
+  }
 
-    return oAuthToken;
+  private static void setAuthProviderAndToken(String token, Map<String, String> authProviderConfig,
+      NamedAuthInfo namedAuthInfo) {
+    if (namedAuthInfo.getUser() == null) {
+      namedAuthInfo.setUser(new AuthInfo());
+    }
+    if (namedAuthInfo.getUser().getAuthProvider() == null) {
+      namedAuthInfo.getUser().setAuthProvider(new AuthProviderConfig());
+    }
+    namedAuthInfo.getUser().getAuthProvider().getConfig().putAll(authProviderConfig);
+    if (Utils.isNotNullOrEmpty(token)) {
+      namedAuthInfo.getUser().setToken(token);
+    }
+  }
+
+  private static NamedAuthInfo getOrCreateNamedAuthInfo(String name, io.fabric8.kubernetes.api.model.Config kubeConfig) {
+    return kubeConfig.getUsers().stream()
+        .filter(n -> n.getName().equals(name))
+        .findFirst()
+        .orElseGet(() -> {
+          NamedAuthInfo authInfo = new NamedAuthInfoBuilder()
+              .withName(name)
+              .withNewUser()
+              .endUser()
+              .build();
+          kubeConfig.getUsers().add(authInfo);
+          return authInfo;
+        });
+  }
+
+  private static void persistOAuthTokenToFile(AuthProviderConfig config, Map<String, String> authProviderConfig) {
+    if (config == null) {
+      return;
+    }
+    Optional.of(config)
+        .map(AuthProviderConfig::getConfig)
+        .ifPresent(c -> c.putAll(authProviderConfig));
   }
 
   /**

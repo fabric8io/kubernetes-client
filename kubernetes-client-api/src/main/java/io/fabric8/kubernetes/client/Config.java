@@ -28,6 +28,7 @@ import io.fabric8.kubernetes.api.model.ConfigBuilder;
 import io.fabric8.kubernetes.api.model.Context;
 import io.fabric8.kubernetes.api.model.ExecConfig;
 import io.fabric8.kubernetes.api.model.ExecEnvVar;
+import io.fabric8.kubernetes.api.model.NamedAuthInfo;
 import io.fabric8.kubernetes.api.model.NamedContext;
 import io.fabric8.kubernetes.client.http.TlsVersion;
 import io.fabric8.kubernetes.client.internal.CertUtils;
@@ -37,13 +38,13 @@ import io.fabric8.kubernetes.client.readiness.Readiness;
 import io.fabric8.kubernetes.client.utils.IOHelpers;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
+import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -116,7 +117,12 @@ public class Config {
   public static final String KUBERNETES_NAMESPACE_PATH = "/var/run/secrets/kubernetes.io/serviceaccount/namespace";
   public static final String KUBERNETES_NAMESPACE_FILE = "kubenamespace";
   public static final String KUBERNETES_NAMESPACE_SYSTEM_PROPERTY = "kubernetes.namespace";
+  /**
+   * @deprecated use {@link #KUBERNETES_KUBECONFIG_FILES} instead.
+   */
+  @Deprecated
   public static final String KUBERNETES_KUBECONFIG_FILE = "kubeconfig";
+  public static final String KUBERNETES_KUBECONFIG_FILES = "kubeconfig";
   public static final String KUBERNETES_SERVICE_HOST_PROPERTY = "KUBERNETES_SERVICE_HOST";
   public static final String KUBERNETES_SERVICE_PORT_PROPERTY = "KUBERNETES_SERVICE_PORT";
   public static final String KUBERNETES_SERVICE_ACCOUNT_TOKEN_PATH = "/var/run/secrets/kubernetes.io/serviceaccount/token";
@@ -147,6 +153,8 @@ public class Config {
 
   public static final String HTTP_PROTOCOL_PREFIX = "http://";
   public static final String HTTPS_PROTOCOL_PREFIX = "https://";
+
+  public static final File DEFAULT_KUBECONFIG_FILE = Paths.get(System.getProperty("user.home"), ".kube", "config").toFile();
 
   private static final String ACCESS_TOKEN = "access-token";
   private static final String ID_TOKEN = "id-token";
@@ -189,6 +197,8 @@ public class Config {
 
   private List<NamedContext> contexts;
   private NamedContext currentContext = null;
+  @Getter
+  private List<KubeConfigFile> kubeConfigFiles = new ArrayList<>();
 
   /**
    * fields not used but needed for builder generation.
@@ -232,8 +242,6 @@ public class Config {
 
   private Boolean autoConfigure;
 
-  private File file;
-
   @JsonIgnore
   protected Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -263,7 +271,7 @@ public class Config {
         null, null, null,
         null, null, null,
         null, null, null, null,
-        null, autoConfigure, true);
+        null, autoConfigure, true, null);
   }
 
   /**
@@ -371,7 +379,7 @@ public class Config {
         httpProxy, httpsProxy, noProxy, userAgent, tlsVersions, websocketPingInterval, proxyUsername, proxyPassword,
         trustStoreFile, trustStorePassphrase, keyStoreFile, keyStorePassphrase, impersonateUsername, impersonateGroups,
         impersonateExtras, oauthTokenProvider, customHeaders, requestRetryBackoffLimit, requestRetryBackoffInterval,
-        uploadRequestTimeout, onlyHttpWatches, currentContext, contexts, false, true);
+        uploadRequestTimeout, onlyHttpWatches, currentContext, contexts, false, true, null);
   }
 
   public Config(String masterUrl, String apiVersion, String namespace, Boolean trustCerts, Boolean disableHostnameVerification,
@@ -395,7 +403,7 @@ public class Config {
         httpProxy, httpsProxy, noProxy, userAgent, tlsVersions, websocketPingInterval, proxyUsername, proxyPassword,
         trustStoreFile, trustStorePassphrase, keyStoreFile, keyStorePassphrase, impersonateUsername, impersonateGroups,
         impersonateExtras, oauthTokenProvider, customHeaders, requestRetryBackoffLimit, requestRetryBackoffInterval,
-        uploadRequestTimeout, onlyHttpWatches, currentContext, contexts, autoConfigure, true);
+        uploadRequestTimeout, onlyHttpWatches, currentContext, contexts, autoConfigure, true, null);
   }
 
   /*
@@ -414,7 +422,7 @@ public class Config {
       String impersonateUsername, String[] impersonateGroups, Map<String, List<String>> impersonateExtras,
       OAuthTokenProvider oauthTokenProvider, Map<String, String> customHeaders, Integer requestRetryBackoffLimit,
       Integer requestRetryBackoffInterval, Integer uploadRequestTimeout, Boolean onlyHttpWatches, NamedContext currentContext,
-      List<NamedContext> contexts, Boolean autoConfigure, Boolean shouldSetDefaultValues) {
+      List<NamedContext> contexts, Boolean autoConfigure, Boolean shouldSetDefaultValues, List<KubeConfigFile> files) {
     if (Boolean.TRUE.equals(shouldSetDefaultValues)) {
       this.masterUrl = DEFAULT_MASTER_URL;
       this.apiVersion = "v1";
@@ -582,7 +590,7 @@ public class Config {
     if (Utils.isNotNullOrEmpty(autoOAuthToken)) {
       this.autoOAuthToken = autoOAuthToken;
     }
-    if (contexts != null && !contexts.isEmpty()) {
+    if (Utils.isNotNullOrEmpty(contexts)) {
       this.contexts = contexts;
     }
     if (Utils.isNotNull(currentContext)) {
@@ -596,6 +604,9 @@ public class Config {
     this.oauthTokenProvider = oauthTokenProvider;
     this.customHeaders = customHeaders;
     this.onlyHttpWatches = onlyHttpWatches;
+    if (Utils.isNotNullOrEmpty(files)) {
+      this.kubeConfigFiles = files;
+    }
   }
 
   public static void configFromSysPropsOrEnvVars(Config config) {
@@ -718,7 +729,7 @@ public class Config {
     }
 
     String tlsVersionsVar = Utils.getSystemPropertyOrEnvVar(KUBERNETES_TLS_VERSIONS);
-    if (tlsVersionsVar != null && !tlsVersionsVar.isEmpty()) {
+    if (Utils.isNotNullOrEmpty(tlsVersionsVar)) {
       String[] tlsVersionsSplit = tlsVersionsVar.split(",");
       TlsVersion[] tlsVersions = new TlsVersion[tlsVersionsSplit.length];
       for (int i = 0; i < tlsVersionsSplit.length; i++) {
@@ -815,7 +826,7 @@ public class Config {
     // we allow passing context along here, since downstream accepts it
     Config config = new Config(false);
     if (kubeconfigPath != null) {
-      config.file = new File(kubeconfigPath);
+      config.setFile(new File(kubeconfigPath));
     }
     if (!loadFromKubeconfig(config, context, kubeconfigContents)) {
       throw new KubernetesClientException("Could not create Config from kubeconfig");
@@ -834,20 +845,19 @@ public class Config {
    */
   public Config refresh() {
     final String currentContextName = this.getCurrentContext() != null ? this.getCurrentContext().getName() : null;
-    if (this.oauthToken != null && !this.oauthToken.isEmpty()) {
+    if (Utils.isNotNullOrEmpty(this.oauthToken)) {
       return this;
     }
     if (this.autoConfigure) {
       return Config.autoConfigure(currentContextName);
     }
-    if (this.file != null) {
-      String kubeconfigContents = getKubeconfigContents(this.file);
-      if (kubeconfigContents == null) {
-        return this; // getKubeconfigContents will have logged an exception
+    // if files is null there's nothing to refresh - the kubeconfigs were directly supplied
+    if (!Utils.isNullOrEmpty(kubeConfigFiles)) {
+      io.fabric8.kubernetes.api.model.Config mergedConfig = mergeKubeConfigs(kubeConfigFiles);
+      if (mergedConfig != null) {
+        loadFromKubeconfig(this, mergedConfig.getCurrentContext(), mergedConfig);
       }
-      return Config.fromKubeconfig(currentContextName, kubeconfigContents, this.file.getPath());
     }
-    // nothing to refresh - the kubeconfig was directly supplied
     return this;
   }
 
@@ -856,55 +866,89 @@ public class Config {
     if (!Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_TRYKUBECONFIG_SYSTEM_PROPERTY, true)) {
       return false;
     }
-    File kubeConfigFile = new File(getKubeconfigFilename());
-    if (!kubeConfigFile.isFile()) {
-      LOGGER.debug("Did not find Kubernetes config at: [{}]. Ignoring.", kubeConfigFile.getPath());
+    String[] kubeConfigFilenames = getKubeconfigFilenames();
+    if (Utils.isNullOrEmpty(kubeConfigFilenames)) {
       return false;
     }
-    LOGGER.debug("Found for Kubernetes config at: [{}].", kubeConfigFile.getPath());
-    String kubeconfigContents = getKubeconfigContents(kubeConfigFile);
-    if (kubeconfigContents == null) {
-      return false;
-    }
-    config.file = new File(kubeConfigFile.getPath());
-    return loadFromKubeconfig(config, context, kubeconfigContents);
+
+    List<KubeConfigFile> files = Arrays.stream(kubeConfigFilenames)
+        .map(KubeConfigFile::new)
+        .collect(Collectors.toList());
+    config.setKubeConfigFiles(files);
+    io.fabric8.kubernetes.api.model.Config mergedConfig = mergeKubeConfigs(files);
+    return loadFromKubeconfig(config, context, mergedConfig);
   }
 
+  private static io.fabric8.kubernetes.api.model.Config mergeKubeConfigs(List<KubeConfigFile> files) {
+    if (Utils.isNullOrEmpty(files)) {
+      return null;
+    }
+    return files.stream()
+        .map(KubeConfigFile::getConfig)
+        .reduce(null, (merged, additionalConfig) -> {
+          if (additionalConfig == null) {
+            return merged;
+          } else {
+            return KubeConfigUtils.merge(additionalConfig, merged);
+          }
+        });
+  }
+
+  /**
+   * Returns the first filename of all the filenames that are used in this Config.
+   *
+   * @return the first config filename that is used in this config.
+   *
+   * @deprecated use {@link #getKubeconfigFilenames()} instead
+   */
+  @Deprecated
   public static String getKubeconfigFilename() {
-    String fileName = Utils.getSystemPropertyOrEnvVar(KUBERNETES_KUBECONFIG_FILE,
-        new File(getHomeDir(), ".kube" + File.separator + "config").toString());
-
-    // if system property/env var contains multiple files take the first one based on the environment
-    // we are running in (eg. : for Linux, ; for Windows)
-    String[] fileNames = fileName.split(File.pathSeparator);
-
-    if (fileNames.length > 1) {
-      LOGGER.warn(
-          "Found multiple Kubernetes config files [{}], using the first one: [{}]. If not desired file, please change it by doing `export KUBECONFIG=/path/to/kubeconfig` on Unix systems or `$Env:KUBECONFIG=/path/to/kubeconfig` on Windows.",
-          fileNames, fileNames[0]);
+    String fileName = null;
+    String[] fileNames = getKubeconfigFilenames();
+    if (Utils.isNotNullOrEmpty(fileNames)) {
+      // if system property/env var contains multiple files take the first one based on the environment
       fileName = fileNames[0];
+      if (fileNames.length > 1) {
+        LOGGER.info("Found multiple Kubernetes config files [{}], returning the first one. Use #getKubeconfigFilenames instead",
+            fileNames[0]);
+      }
     }
     return fileName;
   }
 
-  private static String getKubeconfigContents(File kubeConfigFile) {
-    String kubeconfigContents = null;
-    try (FileReader reader = new FileReader(kubeConfigFile)) {
-      kubeconfigContents = IOHelpers.readFully(reader);
-    } catch (IOException e) {
-      LOGGER.error("Could not load Kubernetes config file from {}", kubeConfigFile.getPath(), e);
-      return null;
+  /**
+   * Returns all the filenames that are used in this Config.
+   * Several config files can be used by setting the {@link Config#KUBERNETES_KUBECONFIG_FILES} env variable.
+   * Returns the default file at {@link Config#DEFAULT_KUBECONFIG_FILE} otherwise
+   *
+   * @return all the config files that are used in this Config
+   */
+  public static String[] getKubeconfigFilenames() {
+    String[] fileNames = null;
+    String fileName = Utils.getSystemPropertyOrEnvVar(KUBERNETES_KUBECONFIG_FILES);
+    if (Utils.isNotNullOrEmpty(fileName)) {
+      fileNames = fileName.split(File.pathSeparator);
     }
-    return kubeconfigContents;
+    if (Utils.isNullOrEmpty(fileNames)) {
+      fileNames = new String[] { DEFAULT_KUBECONFIG_FILE.toString() };
+    }
+    return fileNames;
   }
 
   // Note: kubeconfigPath is optional
   // It is only used to rewrite relative tls asset paths inside kubeconfig when a file is passed, and in the case that
   // the kubeconfig references some assets via relative paths.
   private static boolean loadFromKubeconfig(Config config, String context, String kubeconfigContents) {
+    if (Utils.isNotNullOrEmpty(kubeconfigContents)) {
+      return loadFromKubeconfig(config, context, KubeConfigUtils.parseConfigFromString(kubeconfigContents));
+    } else {
+      return false;
+    }
+  }
+
+  private static boolean loadFromKubeconfig(Config config, String context, io.fabric8.kubernetes.api.model.Config kubeConfig) {
     try {
-      if (kubeconfigContents != null && !kubeconfigContents.isEmpty()) {
-        io.fabric8.kubernetes.api.model.Config kubeConfig = KubeConfigUtils.parseConfigFromString(kubeconfigContents);
+      if (kubeConfig != null) {
         mergeKubeConfigContents(config, context, kubeConfig);
         return true;
       }
@@ -929,52 +973,70 @@ public class Config {
       config.setDisableHostnameVerification(
           currentCluster.getInsecureSkipTlsVerify() != null && currentCluster.getInsecureSkipTlsVerify());
       config.setCaCertData(currentCluster.getCertificateAuthorityData());
-      AuthInfo currentAuthInfo = KubeConfigUtils.getUserAuthInfo(kubeConfig, currentContext);
-      if (currentAuthInfo != null) {
+      if (currentContext != null) {
+        NamedAuthInfo currentAuthInfo = KubeConfigUtils.getAuthInfo(kubeConfig, currentContext.getUser());
         mergeKubeConfigAuthInfo(config, currentCluster, currentAuthInfo);
-      }
-      String proxyUrl = currentCluster.getProxyUrl();
-      if (Utils.isNotNullOrEmpty(proxyUrl)) {
-        if (proxyUrl.startsWith(SOCKS5_PROTOCOL_PREFIX) && config.getMasterUrl().startsWith(HTTPS_PROTOCOL_PREFIX)) {
-          config.setHttpsProxy(proxyUrl);
-        } else if (proxyUrl.startsWith(SOCKS5_PROTOCOL_PREFIX)) {
-          config.setHttpProxy(proxyUrl);
-        } else if (proxyUrl.startsWith(HTTP_PROTOCOL_PREFIX)) {
-          config.setHttpProxy(proxyUrl);
-        } else if (proxyUrl.startsWith(HTTPS_PROTOCOL_PREFIX)) {
-          config.setHttpsProxy(proxyUrl);
-        }
+        mergeProxyUrl(config, currentCluster.getProxyUrl());
       }
     }
   }
 
-  private static void mergeKubeConfigAuthInfo(Config config, Cluster currentCluster, AuthInfo currentAuthInfo)
+  private static void mergeProxyUrl(Config config, String proxyUrl) {
+    if (Utils.isNullOrEmpty(proxyUrl)) {
+      return;
+    }
+    if (proxyUrl.startsWith(SOCKS5_PROTOCOL_PREFIX) && config.getMasterUrl().startsWith(HTTPS_PROTOCOL_PREFIX)) {
+      config.setHttpsProxy(proxyUrl);
+    } else if (proxyUrl.startsWith(SOCKS5_PROTOCOL_PREFIX)) {
+      config.setHttpProxy(proxyUrl);
+    } else if (proxyUrl.startsWith(HTTP_PROTOCOL_PREFIX)) {
+      config.setHttpProxy(proxyUrl);
+    } else if (proxyUrl.startsWith(HTTPS_PROTOCOL_PREFIX)) {
+      config.setHttpsProxy(proxyUrl);
+    }
+  }
+
+  private static void mergeKubeConfigAuthInfo(Config config, Cluster currentCluster, NamedAuthInfo currentAuthInfo)
       throws IOException {
-    // rewrite tls asset paths if needed
+    if (currentAuthInfo == null) {
+      return;
+    }
+    AuthInfo user = currentAuthInfo.getUser();
+    KubeConfigFile kubeConfigFile = config.getFileWithAuthInfo(currentAuthInfo.getName());
+    File file = (kubeConfigFile != null) ? kubeConfigFile.getFile() : null;
+    mergeCertFiles(config, file, currentCluster, user);
+    config.setClientCertData(user.getClientCertificateData());
+    config.setClientKeyData(user.getClientKeyData());
+    config.setClientKeyAlgo(getKeyAlgorithm(config.getClientKeyFile(), config.getClientKeyData()));
+    config.setAutoOAuthToken(user.getToken());
+    config.setUsername(user.getUsername());
+    config.setPassword(user.getPassword());
+
+    if (Utils.isNullOrEmpty(config.getAutoOAuthToken()) && user.getAuthProvider() != null) {
+      mergeKubeConfigAuthProviderConfig(config, user);
+    } else if (config.getOauthTokenProvider() == null) { // https://kubernetes.io/docs/reference/access-authn-authz/authentication/#client-go-credential-plugins
+      mergeKubeConfigExecCredential(config, user.getExec(), file);
+    }
+  }
+
+  private static void mergeCertFiles(Config config, File file, Cluster currentCluster, AuthInfo currentAuthInfo) {
+    if (config == null
+        || currentCluster == null
+        || currentAuthInfo == null) {
+      return;
+    }
     String caCertFile = currentCluster.getCertificateAuthority();
     String clientCertFile = currentAuthInfo.getClientCertificate();
     String clientKeyFile = currentAuthInfo.getClientKey();
-    File configFile = config.file;
-    if (configFile != null) {
-      caCertFile = absolutify(configFile, currentCluster.getCertificateAuthority());
-      clientCertFile = absolutify(configFile, currentAuthInfo.getClientCertificate());
-      clientKeyFile = absolutify(configFile, currentAuthInfo.getClientKey());
+    if (file != null) {
+      // rewrite tls asset paths if needed
+      caCertFile = absolutify(file, currentCluster.getCertificateAuthority());
+      clientCertFile = absolutify(file, currentAuthInfo.getClientCertificate());
+      clientKeyFile = absolutify(file, currentAuthInfo.getClientKey());
     }
     config.setCaCertFile(caCertFile);
     config.setClientCertFile(clientCertFile);
-    config.setClientCertData(currentAuthInfo.getClientCertificateData());
     config.setClientKeyFile(clientKeyFile);
-    config.setClientKeyData(currentAuthInfo.getClientKeyData());
-    config.setClientKeyAlgo(getKeyAlgorithm(config.getClientKeyFile(), config.getClientKeyData()));
-    config.setAutoOAuthToken(currentAuthInfo.getToken());
-    config.setUsername(currentAuthInfo.getUsername());
-    config.setPassword(currentAuthInfo.getPassword());
-
-    if (Utils.isNullOrEmpty(config.getAutoOAuthToken()) && currentAuthInfo.getAuthProvider() != null) {
-      mergeKubeConfigAuthProviderConfig(config, currentAuthInfo);
-    } else if (config.getOauthTokenProvider() == null) { // https://kubernetes.io/docs/reference/access-authn-authz/authentication/#client-go-credential-plugins
-      mergeKubeConfigExecCredential(config, currentAuthInfo.getExec(), configFile);
-    }
   }
 
   private static void mergeKubeConfigAuthProviderConfig(Config config, AuthInfo currentAuthInfo) {
@@ -1059,7 +1121,7 @@ public class Config {
     command = shellQuote(command);
 
     List<String> args = exec.getArgs();
-    if (args != null && !args.isEmpty()) {
+    if (Utils.isNotNullOrEmpty(args)) {
       command += " " + args
           .stream()
           .map(Config::shellQuote)
@@ -1092,6 +1154,7 @@ public class Config {
 
   private static Context setCurrentContext(String context, Config config, io.fabric8.kubernetes.api.model.Config kubeConfig) {
     if (context != null) {
+      // override existing current-context
       kubeConfig.setCurrentContext(context);
     }
     Context currentContext = null;
@@ -1144,22 +1207,9 @@ public class Config {
     return false;
   }
 
-  private static String getHomeDir() {
-    return getHomeDir(Config::isDirectoryAndExists, Config::getSystemEnvVariable);
-  }
-
-  private static boolean isDirectoryAndExists(String filePath) {
-    File f = new File(filePath);
-    return f.exists() && f.isDirectory();
-  }
-
-  private static String getSystemEnvVariable(String envVariableName) {
-    return System.getenv(envVariableName);
-  }
-
   protected static String getHomeDir(Predicate<String> directoryExists, UnaryOperator<String> getEnvVar) {
     String home = getEnvVar.apply("HOME");
-    if (home != null && !home.isEmpty() && directoryExists.test(home)) {
+    if (Utils.isNotNullOrEmpty(home) && directoryExists.test(home)) {
       return home;
     }
     String osName = System.getProperty("os.name").toLowerCase(Locale.ROOT);
@@ -1173,7 +1223,7 @@ public class Config {
         }
       }
       String userProfile = getEnvVar.apply("USERPROFILE");
-      if (userProfile != null && !userProfile.isEmpty() && directoryExists.test(userProfile)) {
+      if (Utils.isNotNullOrEmpty(userProfile) && directoryExists.test(userProfile)) {
         return userProfile;
       }
     }
@@ -1686,11 +1736,44 @@ public class Config {
   /**
    *
    * Returns the path to the file that this configuration was loaded from. Returns {@code null} if no file was used.
-   *
-   * @return the path to the kubeConfig file
+   * 
+   * @return the kubeConfig file
    */
   public File getFile() {
-    return file;
+    if (Utils.isNotNullOrEmpty(kubeConfigFiles)) {
+      return kubeConfigFiles.get(0).getFile();
+    } else {
+      return null;
+    }
+  }
+
+  public KubeConfigFile getFileWithAuthInfo(String name) {
+    if (Utils.isNullOrEmpty(name)) {
+      return null;
+    }
+    return getFirstKubeConfigFileMatching(config -> KubeConfigUtils.hasAuthInfoNamed(config, name));
+  }
+
+  public KubeConfigFile getFileWithContext(String name) {
+    if (Utils.isNullOrEmpty(name)) {
+      return null;
+    }
+    return getFirstKubeConfigFileMatching(config -> KubeConfigUtils.getContext(config, name) != null);
+  }
+
+  public KubeConfigFile getFileWithCurrentContext() {
+    return getFirstKubeConfigFileMatching(config -> Utils.isNotNullOrEmpty(config.getCurrentContext()));
+  }
+
+  private KubeConfigFile getFirstKubeConfigFileMatching(Predicate<io.fabric8.kubernetes.api.model.Config> predicate) {
+    if (Utils.isNullOrEmpty(kubeConfigFiles)) {
+      return null;
+    }
+    return kubeConfigFiles.stream()
+        .filter(KubeConfigFile::isReadable)
+        .filter(entry -> predicate.test(entry.getConfig()))
+        .findFirst()
+        .orElse(null);
   }
 
   @JsonIgnore
@@ -1716,8 +1799,58 @@ public class Config {
     this.additionalProperties.put(name, value);
   }
 
+  public void setKubeConfigFiles(List<KubeConfigFile> files) {
+    if (Utils.isNullOrEmpty(files)) {
+      this.kubeConfigFiles = Collections.emptyList();
+    } else {
+      this.kubeConfigFiles = files;
+    }
+  }
+
+  /**
+   * Returns the kube config files that are used to configure this client.
+   * Returns the files that are listed in the KUBERNETES_KUBECONFIG_FILES env or system variables.
+   * Returns the default kube config file if it's not set'.
+   *
+   * @return the files and Configs that configure this client
+   */
+  public List<KubeConfigFile> getKubeConfigFiles() {
+    if (this.kubeConfigFiles == null) {
+      return Collections.emptyList();
+    } else {
+      return new ArrayList<>(kubeConfigFiles);
+    }
+  }
+
   public void setFile(File file) {
-    this.file = file;
+    setFiles(Collections.singletonList(file));
+  }
+
+  public void setFiles(List<File> files) {
+    if (Utils.isNullOrEmpty(files)) {
+      setKubeConfigFiles(Collections.emptyList());
+    } else {
+      setKubeConfigFiles(files.stream()
+          .map(KubeConfigFile::new)
+          .collect(Collectors.toList()));
+    }
+  }
+
+  /**
+   * Returns the kube config files that are used to configure this client.
+   * Returns the files that are listed in the KUBERNETES_KUBECONFIG_FILES env or system variables.
+   * Returns the default kube config file if it's not set'.
+   *
+   * @return the files that configure this client
+   */
+  public List<File> getFiles() {
+    if (this.kubeConfigFiles == null) {
+      return Collections.emptyList();
+    } else {
+      return kubeConfigFiles.stream()
+          .map(KubeConfigFile::getFile)
+          .collect(Collectors.toList());
+    }
   }
 
   public void setAutoConfigure(boolean autoConfigure) {

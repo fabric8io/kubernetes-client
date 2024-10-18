@@ -20,16 +20,24 @@ import io.fabric8.kubernetes.api.model.Cluster;
 import io.fabric8.kubernetes.api.model.Config;
 import io.fabric8.kubernetes.api.model.ConfigBuilder;
 import io.fabric8.kubernetes.api.model.Context;
+import io.fabric8.kubernetes.api.model.NamedAuthInfo;
 import io.fabric8.kubernetes.api.model.NamedContext;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Objects;
+import java.util.function.Consumer;
+import java.util.stream.Stream;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Named.named;
 
 class KubeConfigUtilsTest {
   @Test
@@ -115,7 +123,56 @@ class KubeConfigUtilsTest {
     assertEquals("test-token-2", authInfo.getToken());
   }
 
-  private Config getTestKubeConfig() {
+  @Test
+  void getAuthInfo_when_authInfoExists_returnsAuthInfo() {
+    // given
+    Config config = getTestKubeConfig();
+    // when
+    NamedAuthInfo found = KubeConfigUtils.getAuthInfo(config, "test/api-test-com:443");
+    // then
+    assertThat(found).isNotNull();
+  }
+
+  @Test
+  void getAuthInfo_when_authInfoDoesntExist_returnsNull() {
+    // given
+    Config config = getTestKubeConfig();
+    // when
+    NamedAuthInfo found = KubeConfigUtils.getAuthInfo(config, "bogus");
+    // then
+    assertThat(found).isNull();
+  }
+
+  @ParameterizedTest
+  @MethodSource("hasAuthInfoNamed_arguments")
+  void hasAuthInfoNamed(Config config, String authInfoName, Consumer<Boolean> consumer) {
+    // given
+    // when
+    boolean hasIt = KubeConfigUtils.hasAuthInfoNamed(config, authInfoName);
+    // then
+    consumer.accept(hasIt);
+  }
+
+  static Stream<Arguments> hasAuthInfoNamed_arguments() {
+    return Stream.of(
+        // given config with authInfo, when getAuthInfoName with existing name, then should return true
+        Arguments.of(
+            named("given config with authInfo", getTestKubeConfig()),
+            named("given existing name", "test/api-test-com:443"),
+            named("then return true", (Consumer<Boolean>) (hasIt -> assertThat(hasIt).isTrue()))),
+        // given config with authInfo, when getAuthInfoName with missing name, then should return false
+        Arguments.of(
+            named("given config with authInfo", getTestKubeConfig()),
+            named("given missing authInfo name", "bogus"),
+            named("then return false", (Consumer<Boolean>) (hasIt -> assertThat(hasIt).isFalse()))),
+        // given config without authInfo, when getAuthInfoName with missing name, then should return false
+        Arguments.of(
+            named("given config without authInfo", new ConfigBuilder().build()),
+            named("given missing authInfo name", "test/api-test-com:443"),
+            named("then return false", (Consumer<Boolean>) (hasIt -> assertThat(hasIt).isFalse()))));
+  }
+
+  private static Config getTestKubeConfig() {
     return new ConfigBuilder()
         .withCurrentContext("test-context")
         .addNewCluster()

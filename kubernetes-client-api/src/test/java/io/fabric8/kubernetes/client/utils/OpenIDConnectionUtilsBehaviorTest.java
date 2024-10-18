@@ -19,6 +19,7 @@ import io.fabric8.kubernetes.api.model.AuthProviderConfig;
 import io.fabric8.kubernetes.api.model.NamedAuthInfo;
 import io.fabric8.kubernetes.api.model.NamedAuthInfoBuilder;
 import io.fabric8.kubernetes.api.model.NamedClusterBuilder;
+import io.fabric8.kubernetes.api.model.NamedContext;
 import io.fabric8.kubernetes.api.model.NamedContextBuilder;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
@@ -112,7 +113,7 @@ class OpenIDConnectionUtilsBehaviorTest {
         .build();
     Files.write(kubeConfigFile, Serialization.asYaml(kubeConfig).getBytes(StandardCharsets.UTF_8));
     originalConfig = new ConfigBuilder(Config.empty())
-        .withFile(tempDir.resolve("kube-config").toFile())
+        .withFiles(tempDir.resolve("kube-config").toFile())
         .build()
         .refresh();
     // Auth provider configuration (minimal)
@@ -493,11 +494,12 @@ class OpenIDConnectionUtilsBehaviorTest {
     void logsWarningIfReferencedFileIsMissing() {
       originalConfig.setFile(kubeConfig);
       originalConfig = new ConfigBuilder(originalConfig)
-          .withCurrentContext(new NamedContextBuilder().withName("context").build()).build();
+          .withCurrentContext(createNamedContext("context", "default-user"))
+          .build();
       persistOAuthToken(originalConfig, oAuthTokenResponse, "fake.token");
       assertThat(systemErr.toString())
           .contains("oidc: failure while persisting new tokens into KUBECONFIG")
-          .contains("FileNotFoundException");
+          .contains("file for user default-user not found");
     }
 
     @Nested
@@ -505,18 +507,19 @@ class OpenIDConnectionUtilsBehaviorTest {
     class WithValidKubeConfig {
       @BeforeEach
       void setUp() throws IOException {
-        Files.write(kubeConfig.toPath(), ("---" +
+        Files.write(kubeConfig.toPath(), ("---\n" +
             "users:\n" +
-            "- name: user\n").getBytes(StandardCharsets.UTF_8));
+            "- name: user\n" +
+            "contexts:\n" +
+            "- context:\n" +
+            "  name: context\n").getBytes(StandardCharsets.UTF_8));
       }
 
       @Test
       void persistsTokenInFile() throws IOException {
         originalConfig.setFile(kubeConfig);
         originalConfig = new ConfigBuilder(originalConfig)
-            .withCurrentContext(new NamedContextBuilder()
-                .withName("context")
-                .withNewContext().withUser("user").endContext().build())
+            .withCurrentContext(createNamedContext("context", "user"))
             .build();
         persistOAuthToken(originalConfig, oAuthTokenResponse, "fake.token");
         assertThat(KubeConfigUtils.parseConfig(kubeConfig))
@@ -554,5 +557,14 @@ class OpenIDConnectionUtilsBehaviorTest {
       }
     }
 
+  }
+
+  private static NamedContext createNamedContext(String name, String user) {
+    return new NamedContextBuilder()
+        .withName(name)
+        .withNewContext()
+        .withUser(user)
+        .endContext()
+        .build();
   }
 }
