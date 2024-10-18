@@ -194,7 +194,7 @@ class DefaultMockServerTest extends Specification {
 		}
 	}
 
-	def "takeRequest, with timeout and no requests, should return null and don't block (after timeout)"() {
+	def "takeRequest, with timeout and no requests, should return null and don't block after timeout"() {
 		when:
 		def result = server.takeRequest(1, TimeUnit.MICROSECONDS)
 
@@ -650,5 +650,26 @@ class DefaultMockServerTest extends Specification {
 		then: "Expect the messages to be received"
 		receivedMessages.poll() == "CREATED"
 		receivedMessages.poll() == "WS-CREATED"
+	}
+
+	def "when setting a chunked response it should be sent in chunks"() {
+		given: "An expectation with chunked response"
+		server.expect().get().withPath("/api/v1/chunked-response")
+				.andReturnChunked(200, "A response that should be sent in chunks")
+				.always()
+		and: "A request"
+		def request = client.get(server.port, server.getHostName(), "/api/v1/chunked-response").send()
+		and: "An instance of PollingConditions"
+		def conditions = new PollingConditions(timeout: 10)
+
+		when: "The request is completed"
+		conditions.eventually {
+			assert request.isComplete()
+		}
+
+		then: "Expect the response to match the expectation"
+		request.result().statusCode() == 200
+		request.result().body().toString() == "28\r\nA response that should be sent in chunks\r\n0\r\n"
+		request.result().headers().get("Transfer-Encoding") == "chunked"
 	}
 }

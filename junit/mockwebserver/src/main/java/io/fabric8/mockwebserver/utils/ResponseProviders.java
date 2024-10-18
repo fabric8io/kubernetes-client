@@ -54,7 +54,7 @@ public class ResponseProviders {
 
   public static <R> ResponseProvider<R> of(final int statusCode, final BodyProvider<R> bodyProvider) {
     if (bodyProvider != null) {
-      return new ResponseProvider<R>() {
+      return new ResponseProvider<>() {
         private Headers headers = new Headers.Builder().build();
 
         @Override

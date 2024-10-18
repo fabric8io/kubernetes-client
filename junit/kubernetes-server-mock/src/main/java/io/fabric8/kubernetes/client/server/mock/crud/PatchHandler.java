@@ -22,9 +22,9 @@ import io.fabric8.kubernetes.client.dsl.base.PatchType;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.mockwebserver.crud.AttributeSet;
+import io.fabric8.mockwebserver.http.MediaType;
+import io.fabric8.mockwebserver.http.MockResponse;
 import io.fabric8.zjsonpatch.JsonPatch;
-import okhttp3.MediaType;
-import okhttp3.mockwebserver.MockResponse;
 
 import java.net.HttpURLConnection;
 import java.util.Iterator;

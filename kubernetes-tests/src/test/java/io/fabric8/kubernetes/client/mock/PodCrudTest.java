@@ -26,7 +26,6 @@ import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.WatcherException;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
-import junit.framework.AssertionFailedError;
 import org.awaitility.Awaitility;
 import org.junit.jupiter.api.Test;
 
@@ -34,6 +33,7 @@ import java.util.Collections;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
+import static org.junit.jupiter.api.AssertionFailureBuilder.assertionFailure;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -289,7 +289,7 @@ class PodCrudTest {
           addLatch.countDown();
           break;
         default:
-          throw new AssertionFailedError(action.toString().concat(" isn't recognised."));
+          throw assertionFailure().message(action.toString().concat(" isn't recognised.")).build();
       }
     }
 

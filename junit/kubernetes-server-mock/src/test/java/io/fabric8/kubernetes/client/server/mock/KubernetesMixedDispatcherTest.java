@@ -20,21 +20,18 @@ import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.mockwebserver.ServerRequest;
 import io.fabric8.mockwebserver.ServerResponse;
 import io.fabric8.mockwebserver.dsl.HttpMethod;
+import io.fabric8.mockwebserver.http.Buffer;
+import io.fabric8.mockwebserver.http.Headers;
+import io.fabric8.mockwebserver.http.MockResponse;
+import io.fabric8.mockwebserver.http.RecordedRequest;
 import io.fabric8.mockwebserver.internal.SimpleRequest;
 import io.fabric8.mockwebserver.internal.SimpleResponse;
-import okhttp3.Headers;
-import okhttp3.mockwebserver.MockResponse;
-import okhttp3.mockwebserver.RecordedRequest;
-import okio.Buffer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
-import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayDeque;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Queue;
@@ -48,25 +45,21 @@ class KubernetesMixedDispatcherTest {
   private Map<ServerRequest, Queue<ServerResponse>> responses;
   private KubernetesMixedDispatcher dispatcher;
 
-  private Socket socket;
-
   @BeforeEach
   void setUp() {
     responses = new HashMap<>();
     dispatcher = new KubernetesMixedDispatcher(responses);
-    socket = Mockito.mock(Socket.class, Mockito.RETURNS_DEEP_STUBS);
   }
 
   @Test
   @DisplayName("dispatch, with matching expectation, returns expectation")
-  void dispatchWithMatchingExpectation() throws Exception {
+  void dispatchWithMatchingExpectation() {
     // Given
     responses.compute(new SimpleRequest(HttpMethod.GET, "/api/v1/resources/my-resource"), (k, v) -> new ArrayDeque<>())
         .add(new SimpleResponse(true, 200, "resourceBody", null));
     // When
-    final MockResponse result = dispatcher.dispatch(new RecordedRequest(
-        "GET /api/v1/resources/my-resource HTTP/1.1", EMPTY_HEADERS, Collections.emptyList(),
-        0, new Buffer(), 0, socket));
+    final MockResponse result = dispatcher.dispatch(new RecordedRequest("HTTP/1.1", HttpMethod.GET,
+        "/api/v1/resources/my-resource", EMPTY_HEADERS, null));
     // Then
     assertThat(result)
         .hasFieldOrPropertyWithValue("status", "HTTP/1.1 200 OK")
@@ -76,19 +69,17 @@ class KubernetesMixedDispatcherTest {
 
   @Test
   @DisplayName("dispatch, with existing CRUD resource, returns CRUD resource")
-  void dispatchWithCrudExistentResource() throws Exception {
+  void dispatchWithCrudExistentResource() {
     // Given
     final Buffer requestBody = new Buffer();
     requestBody.writeString("{\"kind\": \"Resource\", \"apiVersion\": \"v1\",\"metadata\": {\"name\": \"my-resource\"}}",
         StandardCharsets.UTF_8);
     requestBody.flush();
-    dispatcher.dispatch(new RecordedRequest(
-        "POST /api/v1/resources HTTP/1.1", EMPTY_HEADERS, Collections.emptyList(),
-        requestBody.size(), requestBody, 0, socket));
+    dispatcher.dispatch(new RecordedRequest("HTTP/1.1", HttpMethod.POST,
+        "/api/v1/resources", EMPTY_HEADERS, requestBody));
     // When
-    final MockResponse result = dispatcher.dispatch(new RecordedRequest(
-        "GET /api/v1/resources/my-resource HTTP/1.1", EMPTY_HEADERS, Collections.emptyList(),
-        0, new Buffer(), 0, socket));
+    final MockResponse result = dispatcher.dispatch(new RecordedRequest("HTTP/1.1", HttpMethod.GET,
+        "/api/v1/resources/my-resource", EMPTY_HEADERS, null));
     // Then
     assertThat(result)
         .hasFieldOrPropertyWithValue("status", "HTTP/1.1 200 OK")

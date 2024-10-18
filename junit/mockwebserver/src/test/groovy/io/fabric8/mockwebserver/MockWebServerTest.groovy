@@ -20,7 +20,6 @@ import io.fabric8.mockwebserver.http.RecordedRequest
 import io.vertx.core.Future
 import io.vertx.core.Vertx
 import io.vertx.ext.web.client.WebClient
-import io.vertx.ext.web.client.WebClientOptions
 import java.util.concurrent.TimeUnit
 import spock.lang.Shared
 import spock.lang.Specification

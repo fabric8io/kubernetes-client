@@ -18,9 +18,12 @@ package io.fabric8.mockwebserver
 import io.vertx.core.AsyncResult
 import io.vertx.core.Handler
 import io.vertx.core.Vertx
+import io.vertx.core.http.HttpClientOptions
+import io.vertx.core.http.HttpMethod
+import io.vertx.core.http.HttpVersion
+import io.vertx.core.http.RequestOptions
 import io.vertx.core.http.WebSocket
 import io.vertx.core.http.WebSocketClient
-import io.vertx.core.http.WebSocketConnectOptions
 import java.util.concurrent.ConcurrentLinkedQueue
 import java.util.stream.IntStream
 import spock.lang.Shared
@@ -171,37 +174,81 @@ class DefaultMockServerWebSocketTest extends Specification {
 	}
 
 	// https://github.com/fabric8io/mockwebserver/issues/77
+	// n.b. Uses an HTTP client in its simplest form (emulating a WebSocket protocol negotiation)
+	// since it's the only reliable way to get the protocol negotiation headers (in this case 'sec-websocket-protocol')
 	def "andUpgradeToWebSocket, with request header 'sec-websocket-protocol', should create response with matching header"() {
 		given: "A WebSocket expectation"
 		server.expect()
 				.withPath("/websocket")
 				.andUpgradeToWebSocket().open().waitFor(10L).andEmit("done").done().always()
-		and: "A WebSocket request"
-		def wsReq = wsClient.webSocket().connect(new WebSocketConnectOptions()
-				.setPort(server.port)
+		and: "An HTTP client"
+		def httpClient = vertx.createHttpClient(new HttpClientOptions()
+				.setProtocolVersion(HttpVersion.HTTP_1_1))
+		and: "A simple HTTP request to retrieve the headers and status"
+		// Emulates an HTTP Request as a WebSocket client would perform it
+		// This is mimicking what jdk.internal.net.http.websocket.OpeningHandshake does
+		def request = httpClient.request(new RequestOptions()
+				.setPort(server.getPort())
 				.setHost(server.getHostName())
 				.setURI("/websocket")
-				.addSubProtocol("v4.channel.k8s.io"))
-		and: "A WebSocket listener"
-		String secWebSocketProtocol
-		wsReq.onComplete { ws ->
-			if (ws.result() != null && ws.result().headers() != null) {
-				secWebSocketProtocol = ws.result().headers().get("sec-websocket-protocol")
-			}
-		}
-		def currentResult = wsReq.result()
-		if (currentResult != null && currentResult.headers() != null) {
-			secWebSocketProtocol = currentResult.headers().get("sec-websocket-protocol")
-		}
+				.setMethod(HttpMethod.GET)
+				.putHeader("sec-websocket-protocol", "v4.channel.k8s.io")
+				.putHeader("sec-websocket-version", "13")
+				.putHeader("sec-websocket-key", Base64.getEncoder().encodeToString(new byte[16]))
+				.putHeader("connection", "upgrade")
+				.putHeader("upgrade", "websocket")
+				.putHeader("origin", "http://localhost"))
+				.compose { req ->
+					req.send()
+				}
 		and: "An instance of PollingConditions"
 		def conditions = new PollingConditions(timeout: 10)
 
-		when: "The request is sent and completed"
+		when: "The request is completed"
 		conditions.eventually {
-			assert secWebSocketProtocol != null
+			assert request.isComplete()
 		}
 
 		then: "Expect the response to contain a matching header"
-		secWebSocketProtocol == "v4.channel.k8s.io"
+		request.result().statusCode() == 101
+		request.result().headers().get("sec-websocket-protocol") == "v4.channel.k8s.io"
+
+		cleanup:
+		httpClient.close()
+	}
+
+	def "andUpgradeToWebSocket, with invalid request should respond with 400 status message"() {
+		given: "A WebSocket expectation"
+		server.expect()
+				.withPath("/websocket")
+				.andUpgradeToWebSocket().open().waitFor(10L).andEmit("done").done().always()
+		and: "An HTTP client"
+		def httpClient = vertx.createHttpClient(new HttpClientOptions()
+				.setProtocolVersion(HttpVersion.HTTP_1_1))
+		and: "A simple HTTP request to retrieve the headers and status"
+		// Emulates an HTTP Request as a WebSocket client would perform it
+		// This is mimicking what jdk.internal.net.http.websocket.OpeningHandshake does
+		def request = httpClient.request(new RequestOptions()
+				.setPort(server.getPort())
+				.setHost(server.getHostName())
+				.setURI("/websocket")
+				.setMethod(HttpMethod.GET)
+				.putHeader("connection", "upgrade"))
+				.compose { req ->
+					req.send()
+				}
+		and: "An instance of PollingConditions"
+		def conditions = new PollingConditions(timeout: 10)
+
+		when: "The request is completed"
+		conditions.eventually {
+			assert request.isComplete()
+		}
+
+		then: "Expect the response to have a client error status code"
+		request.result().statusCode() == 400
+
+		cleanup:
+		httpClient.close()
 	}
 }
