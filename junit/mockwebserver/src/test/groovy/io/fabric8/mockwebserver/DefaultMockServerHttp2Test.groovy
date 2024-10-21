@@ -16,13 +16,14 @@
 package io.fabric8.mockwebserver
 
 import io.vertx.core.Vertx
+import io.vertx.core.http.HttpVersion
 import io.vertx.ext.web.client.WebClient
 import io.vertx.ext.web.client.WebClientOptions
 import spock.lang.Shared
 import spock.lang.Specification
 import spock.util.concurrent.PollingConditions
 
-class DefaultMockServerHttpsTest extends Specification {
+class DefaultMockServerHttp2Test extends Specification {
 
 	@Shared
 	static def vertx = Vertx.vertx()
@@ -30,34 +31,16 @@ class DefaultMockServerHttpsTest extends Specification {
 	WebClient client
 
 	def setup() {
-		server = new DefaultMockServer(true)
+		server = new DefaultMockServer(false)
 		server.start()
 		client = WebClient.create(vertx, new WebClientOptions()
-				.setSsl(true)
-				.setTrustOptions(server.getSelfSignedCertificate().trustOptions())
-				.setKeyCertOptions(server.getSelfSignedCertificate().keyCertOptions()))
-	}
-
-	def cleanup() {
-		server.shutdown()
-		client.close()
-	}
-
-	def cleanupSpec() {
-		vertx.close()
-	}
-
-	def "url, with path, returns URL with HTTPS protocol"() {
-		when:
-		def result = server.url("/")
-
-		then:
-		assert result.startsWith("https://")
+				.setUseAlpn(true)
+				.setProtocolVersion(HttpVersion.HTTP_2))
 	}
 
 	def "GET /, with no expectations, should return 404"() {
 		given: "An HTTP request to /"
-		def request = client.get(server.port, server.getHostName(), "/").ssl(true).send()
+		def request = client.get(server.port, server.getHostName(), "/").send()
 		and: "An instance of PollingConditions"
 		def conditions = new PollingConditions(timeout: 10)
 
@@ -69,5 +52,20 @@ class DefaultMockServerHttpsTest extends Specification {
 		then: "The response has status code 404"
 		request.result().statusCode() == 404
 		request.result().body() == null
+	}
+
+	def "getLastRequest, after request, should return h2 protocol"() {
+		given: "An HTTP request to /"
+		def request = client.get(server.port, server.getHostName(), "/").send()
+		and: "An instance of PollingConditions"
+		def conditions = new PollingConditions(timeout: 10)
+
+		when: "The request is completed"
+		conditions.eventually {
+			assert request.isComplete()
+		}
+
+		then: "The http version is H2"
+		server.getLastRequest().getHttpVersion() == "H2"
 	}
 }
