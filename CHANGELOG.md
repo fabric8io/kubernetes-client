@@ -22,6 +22,7 @@
 
 #### New Features
 * Fix #6150: Config uses `proxy-url` in kubeconfig's cluster configuration
+* Fix #5719: io.fabric8:mockwebserver is now based on Vert.x
 
 #### _**Note**_: Breaking changes
 * Check detailed migration documentation for breaking changes in [7.0.0](./doc/MIGRATION-v7.md)

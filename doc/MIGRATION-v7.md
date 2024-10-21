@@ -13,6 +13,9 @@
   - [Renamed machineconfig to machineconfiguration](#openshift-machineconfig-to-machineconfiguration)
   - [Tekton Extension](#tekton-extension)
   - [Vertical Pod Autoscaler Extension](#vertical-pod-autoscaler-extension)
+- [MockWebServer is based on Vert.x](#mockwebserver-vertx)
+  - [OkHttp class replacements](#mockwebserver-okhttp-replacements)
+  - [SSL/TLS certificates](#mockwebserver-ssl-tls-certificates)
 - [Deprecations and Removals](#deprecations-and-removals)
   - [Service Catalog API (extension) removed](#service-catalog-extension) 
 
@@ -131,6 +134,40 @@ The following packages have been moved:
 The module `verticalpodautoscaler-model-v1` has been renamed to `verticalpodautoscaler-model`.
 
 The package containing the Vertical Pod Autoscaler classes has also been renamed from `io.fabric8.verticalpodautoscaler.api.model` to `io.fabric8.autoscaling.api.model.v1`.
+
+## MockWebServer is based on Vert.x <a href="#mockwebserver-vertx" id="mockwebserver-vertx"/>
+
+MockWebServer is no longer based on OkHttp, but on Vert.x instead.
+
+### OkHttp class replacements <a href="#mockwebserver-okhttp-replacements" id="mockwebserver-okhttp-replacements"/>
+
+As part of this change, the OkHttp dependency has been completely removed from all the MockWebServer related modules.
+
+The `okhttp3`, `okhttp3.mockwebserver` and `okio` package classes have been replaced by equivalent classes.
+The following table contains the mapping of the classes:
+
+| OkHttp Class Name                       | New Class Name                                    |
+|-----------------------------------------|---------------------------------------------------|
+| `okhttp3.Headers`                       | `io.fabric8.mockwebserver.http.Headers`           |
+| `okhttp3.HttpUrl`                       | `io.fabric8.mockwebserver.http.HttpUrl`           |
+| `okhttp3.MediaType`                     | `io.fabric8.mockwebserver.http.MediaType`         |
+| `okhttp3.Protocol`                      | `io.fabric8.mockwebserver.vertx.Protocol`         |
+| `okhttp3.Response`                      | `io.fabric8.mockwebserver.http.Response`          |
+| `okhttp3.WebSocket`                     | `io.fabric8.mockwebserver.http.WebSocket`         |
+| `okhttp3.WebSocketListener`             | `io.fabric8.mockwebserver.http.WebSocketListener` |
+| `okhttp3.mockwebserver.Dispatcher`      | `io.fabric8.mockwebserver.http.Dispatcher`        |
+| `okhttp3.mockwebserver.MockResponse`    | `io.fabric8.mockwebserver.http.MockResponse`      |
+| `okhttp3.mockwebserver.MockWebServer`   | `io.fabric8.mockwebserver.MockWebServer`          |
+| `okhttp3.mockwebserver.QueueDispatcher` | `io.fabric8.mockwebserver.http.QueueDispatcher`   |
+| `okhttp3.mockwebserver.RecordedRequest` | `io.fabric8.mockwebserver.http.RecordedRequest`   |
+| `okio.Buffer`                           | `io.fabric8.mockwebserver.http.Buffer`            |
+| `okio.ByteString`                       | `io.fabric8.mockwebserver.http.ByteString`        |
+
+### SSL/TLS certificates <a href="#mockwebserver-ssl-tls-certificates" id="mockwebserver-ssl-tls-certificates"/>
+
+The MockWebServer will now use self-signed certificates that are generated each time the server is started.
+In the prior version, the MockWebServer used a set of hardcoded certificates that were distributed with the `io.fabric8:mockwebserver` module artifact.
+If you need the certificates (public and private), you can retrieve them by using the new `MockWebServer#getSelfSignedCertificate` method.
 
 ## Deprecations and Removals <a href="#deprecations-and-removals" id="deprecations-and-removals"/>
 

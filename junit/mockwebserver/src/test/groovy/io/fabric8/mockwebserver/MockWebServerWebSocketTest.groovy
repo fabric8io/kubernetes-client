@@ -220,6 +220,8 @@ class MockWebServerWebSocketTest extends Specification {
 		when: "The connection completes"
 		condition.eventually {
 			assert wsReq.isComplete()
+			assert wsReq.result() != null
+			assert wsReq.result().closeReason() != null
 		}
 
 		then: "The received message should be the expected one"
