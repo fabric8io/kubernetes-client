@@ -50,30 +50,6 @@ public @interface AdditionalPrinterColumn {
     }
   }
 
-  // https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#format
-  enum Format {
-
-    NONE(""),
-    INT32("int32"),
-    INT64("int64"),
-    FLOAT("float"),
-    DOUBLE("double"),
-    BYTE("byte"),
-    DATE("date"),
-    DATE_TIME("date-time"),
-    PASSWORD("password");
-
-    public final String value;
-
-    Format(String value) {
-      this.value = value;
-    }
-
-    public String getValue() {
-      return value;
-    }
-  }
-
   /**
    * The name of the column. An empty column name implies the use of the last path
    * element
@@ -88,7 +64,7 @@ public @interface AdditionalPrinterColumn {
    *
    * @return the format or NONE if no format is specified.
    */
-  Format format() default Format.NONE;
+  PrinterColumnFormat format() default PrinterColumnFormat.NONE;
 
   /**
    * The printer column priority.
@@ -99,21 +75,21 @@ public @interface AdditionalPrinterColumn {
 
   /**
    * The JSON Path to the field
-   * 
-   * @return
+   *
+   * @return the JSON Path
    */
   String jsonPath();
 
   /**
    * The type of the printer column
-   * 
+   *
    * @return the type
    */
   Type type() default Type.STRING;
 
   /**
    * The description of the printer column
-   * 
+   *
    * @return the description
    */
   String getDescription() default "";

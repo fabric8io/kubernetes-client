@@ -16,8 +16,8 @@
 package io.fabric8.crdv2.generator;
 
 import io.fabric8.crd.generator.annotation.AdditionalPrinterColumn;
-import io.fabric8.crd.generator.annotation.AdditionalPrinterColumn.Format;
 import io.fabric8.crd.generator.annotation.PrinterColumn;
+import io.fabric8.crd.generator.annotation.PrinterColumnFormat;
 import io.fabric8.crd.generator.annotation.SelectableField;
 import io.fabric8.crdv2.generator.AbstractJsonSchema.AnnotationMetadata;
 import io.fabric8.kubernetes.api.model.HasMetadata;
@@ -57,7 +57,7 @@ public abstract class AbstractCustomResourceHandler {
       if (property.annotation instanceof AdditionalPrinterColumn) {
         AdditionalPrinterColumn printerColumn = ((AdditionalPrinterColumn) property.annotation);
         String column = printerColumn.name();
-        String format = printerColumn.format() == Format.NONE ? null : printerColumn.format().getValue();
+        String format = printerColumn.format() == PrinterColumnFormat.NONE ? null : printerColumn.format().getValue();
         String type = printerColumn.type().getValue();
         int priority = printerColumn.priority();
         String description = printerColumn.getDescription();
