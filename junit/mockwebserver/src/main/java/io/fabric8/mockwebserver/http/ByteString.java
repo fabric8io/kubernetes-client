@@ -21,7 +21,8 @@ import java.util.Objects;
 /**
  * Compatibility layer for OkHttp.
  *
- * @deprecated
+ * @deprecated used as parameter in {@link WebSocketListener} and {@link WebSocket}.
+ *             Alternative methods provided in those classes should be used instead.
  */
 public class ByteString {
 
