@@ -32,7 +32,7 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 @EnableKubernetesMockClient
 class EgressIPTest {
   private OpenVirtualNetworkingClient ovnClient;
-  private KubernetesMockServer server;
+  KubernetesMockServer server;
 
   @Test
   void get() {

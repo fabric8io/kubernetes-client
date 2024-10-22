@@ -15,6 +15,8 @@
  */
 package io.fabric8.openshift.client.server.mock;
 
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.openshift.api.model.UserIdentityMapping;
 import io.fabric8.openshift.api.model.UserIdentityMappingBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
@@ -23,10 +25,10 @@ import org.junit.jupiter.api.Test;
 import static java.net.HttpURLConnection.HTTP_CREATED;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@EnableOpenShiftMockClient
+@EnableKubernetesMockClient
 class UserIdentityMappingTest {
   private OpenShiftClient client;
-  private OpenShiftMockServer server;
+  KubernetesMockServer server;
 
   @Test
   void create() {

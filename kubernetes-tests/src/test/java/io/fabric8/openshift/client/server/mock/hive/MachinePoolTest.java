@@ -15,23 +15,23 @@
  */
 package io.fabric8.openshift.client.server.mock.hive;
 
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.openshift.api.model.hive.v1.MachinePool;
 import io.fabric8.openshift.api.model.hive.v1.MachinePoolBuilder;
 import io.fabric8.openshift.api.model.hive.v1.MachinePoolList;
 import io.fabric8.openshift.api.model.hive.v1.MachinePoolListBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
-import io.fabric8.openshift.client.server.mock.EnableOpenShiftMockClient;
-import io.fabric8.openshift.client.server.mock.OpenShiftMockServer;
 import org.junit.jupiter.api.Test;
 
 import java.net.HttpURLConnection;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@EnableOpenShiftMockClient
+@EnableKubernetesMockClient
 class MachinePoolTest {
   private OpenShiftClient client;
-  private OpenShiftMockServer server;
+  KubernetesMockServer server;
 
   @Test
   void get() {

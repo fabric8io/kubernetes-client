@@ -31,7 +31,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 @EnableKubernetesMockClient
 class V1SelfSubjectReviewTest {
   private KubernetesClient client;
-  private KubernetesMockServer server;
+  KubernetesMockServer server;
 
   @Test
   void create_whenInvoked_shouldReturnObjectWithUpdatedStatus() {

@@ -17,6 +17,8 @@ package io.fabric8.openshift.client.server.mock;
 
 import io.fabric8.kubernetes.api.model.APIGroupListBuilder;
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.openshift.api.model.Group;
 import io.fabric8.openshift.api.model.GroupBuilder;
 import io.fabric8.openshift.api.model.GroupList;
@@ -31,15 +33,15 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableOpenShiftMockClient
+@EnableKubernetesMockClient
 class GroupTest {
 
-  OpenShiftMockServer server;
+  KubernetesMockServer server;
   NamespacedOpenShiftClient client;
 
   @BeforeEach
   void setUp() {
-    client = server.createOpenShiftClient();
+    client = server.createClient().adapt(NamespacedOpenShiftClient.class);
   }
 
   @Test
