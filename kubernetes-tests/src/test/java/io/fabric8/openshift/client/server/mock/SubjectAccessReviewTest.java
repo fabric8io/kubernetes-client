@@ -15,6 +15,8 @@
  */
 package io.fabric8.openshift.client.server.mock;
 
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.openshift.api.model.LocalResourceAccessReviewBuilder;
 import io.fabric8.openshift.api.model.LocalSubjectAccessReviewBuilder;
 import io.fabric8.openshift.api.model.ResourceAccessReviewBuilder;
@@ -36,15 +38,15 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@EnableOpenShiftMockClient
+@EnableKubernetesMockClient
 class SubjectAccessReviewTest {
 
-  OpenShiftMockServer server;
+  KubernetesMockServer server;
   NamespacedOpenShiftClient client;
 
   @BeforeEach
   void setUp() {
-    client = server.createOpenShiftClient();
+    client = server.createClient().adapt(NamespacedOpenShiftClient.class);
   }
 
   @Test

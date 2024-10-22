@@ -33,7 +33,7 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 @EnableKubernetesMockClient
 class FlowSchemaTest {
-  private KubernetesMockServer server;
+  KubernetesMockServer server;
   private KubernetesClient client;
 
   @Test

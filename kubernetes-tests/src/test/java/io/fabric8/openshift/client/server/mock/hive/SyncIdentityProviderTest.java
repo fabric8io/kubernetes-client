@@ -15,6 +15,8 @@
  */
 package io.fabric8.openshift.client.server.mock.hive;
 
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.openshift.api.model.config.v1.GitHubIdentityProviderBuilder;
 import io.fabric8.openshift.api.model.config.v1.IdentityProviderBuilder;
 import io.fabric8.openshift.api.model.hive.v1.SyncIdentityProvider;
@@ -22,18 +24,16 @@ import io.fabric8.openshift.api.model.hive.v1.SyncIdentityProviderBuilder;
 import io.fabric8.openshift.api.model.hive.v1.SyncIdentityProviderList;
 import io.fabric8.openshift.api.model.hive.v1.SyncIdentityProviderListBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
-import io.fabric8.openshift.client.server.mock.EnableOpenShiftMockClient;
-import io.fabric8.openshift.client.server.mock.OpenShiftMockServer;
 import org.junit.jupiter.api.Test;
 
 import java.net.HttpURLConnection;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@EnableOpenShiftMockClient
+@EnableKubernetesMockClient
 class SyncIdentityProviderTest {
   private OpenShiftClient client;
-  private OpenShiftMockServer server;
+  KubernetesMockServer server;
 
   @Test
   void get() {

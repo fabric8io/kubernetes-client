@@ -28,7 +28,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @EnableKubernetesMockClient(crud = true)
 class ManagedClusterCrudTest {
   private OpenClusterManagementClient client;
-  private KubernetesMockServer server;
+  KubernetesMockServer server;
 
   @Test
   void get() {

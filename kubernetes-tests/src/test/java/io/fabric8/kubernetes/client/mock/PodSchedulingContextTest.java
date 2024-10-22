@@ -31,7 +31,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @EnableKubernetesMockClient
 class PodSchedulingContextTest {
   private KubernetesClient client;
-  private KubernetesMockServer server;
+  KubernetesMockServer server;
 
   @Test
   void get() {

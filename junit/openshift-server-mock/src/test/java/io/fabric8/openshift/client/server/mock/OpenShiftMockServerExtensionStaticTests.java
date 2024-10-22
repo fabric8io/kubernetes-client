@@ -16,12 +16,13 @@
 package io.fabric8.openshift.client.server.mock;
 
 import io.fabric8.kubernetes.client.Client;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@EnableOpenShiftMockClient(crud = true)
+@EnableKubernetesMockClient(crud = true)
 class OpenShiftMockServerExtensionStaticTests {
   static OpenShiftClient openShiftClient;
 

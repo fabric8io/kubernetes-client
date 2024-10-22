@@ -33,7 +33,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @EnableKubernetesMockClient
 class ResourceClassTest {
   private KubernetesClient client;
-  private KubernetesMockServer server;
+  KubernetesMockServer server;
 
   @Test
   void get() {
