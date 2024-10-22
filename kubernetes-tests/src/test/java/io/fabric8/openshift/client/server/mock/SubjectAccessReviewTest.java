@@ -30,7 +30,6 @@ import io.fabric8.openshift.api.model.SubjectAccessReviewResponseBuilder;
 import io.fabric8.openshift.api.model.SubjectRulesReview;
 import io.fabric8.openshift.api.model.SubjectRulesReviewBuilder;
 import io.fabric8.openshift.client.NamespacedOpenShiftClient;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static java.net.HttpURLConnection.HTTP_CREATED;
@@ -43,11 +42,6 @@ class SubjectAccessReviewTest {
 
   KubernetesMockServer server;
   NamespacedOpenShiftClient client;
-
-  @BeforeEach
-  void setUp() {
-    client = server.createClient().adapt(NamespacedOpenShiftClient.class);
-  }
 
   @Test
   void testCreate() {
