@@ -41,7 +41,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class MixedCrudTest {
 
-  KubernetesMockServer server;
+  private KubernetesMockServer server;
   private KubernetesClient client;
 
   @BeforeEach
