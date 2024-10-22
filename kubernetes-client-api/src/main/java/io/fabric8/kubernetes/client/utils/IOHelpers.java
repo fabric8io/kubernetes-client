@@ -15,10 +15,6 @@
  */
 package io.fabric8.kubernetes.client.utils;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,8 +24,6 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.nio.charset.Charset;
 
-/**
- */
 public class IOHelpers {
   private IOHelpers() {
     throw new IllegalStateException("Utility class");
@@ -63,39 +57,6 @@ public class IOHelpers {
         break;
       }
     }
-  }
-
-  /**
-   * @deprecated will be removed in future versions
-   */
-  @Deprecated
-  public static boolean isJSONValid(String json) {
-    try {
-      ObjectMapper objectMapper = Serialization.jsonMapper();
-      objectMapper.readTree(json);
-    } catch (JsonProcessingException e) {
-      return false;
-    }
-    return true;
-  }
-
-  /**
-   * @deprecated will be removed in future versions
-   */
-  @Deprecated
-  public static String convertYamlToJson(String yaml) {
-    return Serialization.asJson(Serialization.unmarshal(yaml, JsonNode.class));
-  }
-
-  /**
-   * @deprecated will be removed in future versions
-   */
-  @Deprecated
-  public static String convertToJson(String jsonOrYaml) {
-    if (isJSONValid(jsonOrYaml)) {
-      return jsonOrYaml;
-    }
-    return convertYamlToJson(jsonOrYaml);
   }
 
 }

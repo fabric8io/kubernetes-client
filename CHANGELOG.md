@@ -31,6 +31,7 @@
 * Fix #6081: Moved Java baseline from 8 (1.8) to 11
 * Fix #6138: Removed unused `io:fabric8:kubernetes-model` artifact
 * Fix #6156: Removed deprecated extension `io:fabric8:service-catalog`
+* Fix #6158: Removed deprecated methods from `io.fabric8.kubernetes.client.utils.IOHelpers`
 
 ### 6.13.4 (2024-09-25)
 
