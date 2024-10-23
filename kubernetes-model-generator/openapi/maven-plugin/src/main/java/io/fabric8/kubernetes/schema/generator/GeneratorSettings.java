@@ -123,7 +123,11 @@ public class GeneratorSettings {
       "io.fabric8.kubernetes.api.model.IntOrString",
       "io.fabric8.kubernetes.api.model.ObjectReference",
       "io.fabric8.kubernetes.api.model.LocalObjectReference",
-      "io.fabric8.kubernetes.api.model.PersistentVolumeClaim");
+      "io.fabric8.kubernetes.api.model.PersistentVolumeClaim",
+      "io.fabric8.kubernetes.api.model.EnvVar",
+      "io.fabric8.kubernetes.api.model.ContainerPort",
+      "io.fabric8.kubernetes.api.model.Volume",
+      "io.fabric8.kubernetes.api.model.VolumeMount");
 
   public OpenAPI getOpenAPI() {
     synchronized (this) {
