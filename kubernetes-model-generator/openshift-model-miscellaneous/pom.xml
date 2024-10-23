@@ -28,7 +28,7 @@
 
   <artifactId>openshift-model-miscellaneous</artifactId>
   <packaging>bundle</packaging>
-  <name>Fabric8 :: OpenShift Miscellaneous Operators Model</name>
+  <name>Fabric8 :: OpenShift Model :: Miscellaneous</name>
 
   <properties>
     <clone-kube>true</clone-kube>
