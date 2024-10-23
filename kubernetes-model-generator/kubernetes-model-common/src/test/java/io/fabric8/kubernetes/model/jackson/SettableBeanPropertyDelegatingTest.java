@@ -67,14 +67,14 @@ import java.util.stream.Stream;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-class SettableBeanPropertyDelegateTest {
+class SettableBeanPropertyDelegatingTest {
 
   private AtomicBoolean useAnySetter;
   private ObjectMapper objectMapper;
   private DefaultDeserializationContext deserializationContext;
   private SettableAnyProperty anySetter;
   private SettableBeanProperty intFieldProperty;
-  private SettableBeanPropertyDelegate intFieldPropertyDelegating;
+  private SettableBeanPropertyDelegating intFieldPropertyDelegating;
 
   @BeforeEach
   void setUp() throws Exception {
@@ -104,7 +104,7 @@ class SettableBeanPropertyDelegateTest {
     intFieldProperty = testBeanDeserializer.findProperty("intField")
         .withValueDeserializer(NumberDeserializers.find(int.class, null));
     // Delegating SettableBeanProperty in test
-    intFieldPropertyDelegating = new SettableBeanPropertyDelegate(intFieldProperty, anySetter, useAnySetter::get);
+    intFieldPropertyDelegating = new SettableBeanPropertyDelegating(intFieldProperty, anySetter, useAnySetter::get);
 
   }
 
@@ -115,11 +115,11 @@ class SettableBeanPropertyDelegateTest {
     final SettableBeanProperty result = intFieldPropertyDelegating.withValueDeserializer(null);
     // Then
     assertThat(result)
-        .isInstanceOf(SettableBeanPropertyDelegate.class)
+        .isInstanceOf(SettableBeanPropertyDelegating.class)
         .isNotSameAs(intFieldPropertyDelegating)
         .hasFieldOrPropertyWithValue("anySetter", anySetter)
-        .asInstanceOf(InstanceOfAssertFactories.type(SettableBeanPropertyDelegate.class))
-        .extracting(SettableBeanPropertyDelegate::getDelegate)
+        .asInstanceOf(InstanceOfAssertFactories.type(SettableBeanPropertyDelegating.class))
+        .extracting(SettableBeanPropertyDelegating::getDelegate)
         .isInstanceOf(CreatorProperty.class)
         .isNotSameAs(intFieldProperty)
         .hasFieldOrPropertyWithValue("name", "intField");
@@ -132,11 +132,11 @@ class SettableBeanPropertyDelegateTest {
     final SettableBeanProperty result = intFieldPropertyDelegating.withName(new PropertyName("overriddenName"));
     // Then
     assertThat(result)
-        .isInstanceOf(SettableBeanPropertyDelegate.class)
+        .isInstanceOf(SettableBeanPropertyDelegating.class)
         .isNotSameAs(intFieldPropertyDelegating)
         .hasFieldOrPropertyWithValue("anySetter", anySetter)
-        .asInstanceOf(InstanceOfAssertFactories.type(SettableBeanPropertyDelegate.class))
-        .extracting(SettableBeanPropertyDelegate::getDelegate)
+        .asInstanceOf(InstanceOfAssertFactories.type(SettableBeanPropertyDelegating.class))
+        .extracting(SettableBeanPropertyDelegating::getDelegate)
         .isInstanceOf(CreatorProperty.class)
         .isNotSameAs(intFieldProperty)
         .hasFieldOrPropertyWithValue("name", "overriddenName");
@@ -149,11 +149,11 @@ class SettableBeanPropertyDelegateTest {
     final SettableBeanProperty result = intFieldPropertyDelegating.withNullProvider(null);
     // Then
     assertThat(result)
-        .isInstanceOf(SettableBeanPropertyDelegate.class)
+        .isInstanceOf(SettableBeanPropertyDelegating.class)
         .isNotSameAs(intFieldPropertyDelegating)
         .hasFieldOrPropertyWithValue("anySetter", anySetter)
-        .asInstanceOf(InstanceOfAssertFactories.type(SettableBeanPropertyDelegate.class))
-        .extracting(SettableBeanPropertyDelegate::getDelegate)
+        .asInstanceOf(InstanceOfAssertFactories.type(SettableBeanPropertyDelegating.class))
+        .extracting(SettableBeanPropertyDelegating::getDelegate)
         .isInstanceOf(CreatorProperty.class)
         .isNotSameAs(intFieldProperty)
         .hasFieldOrPropertyWithValue("name", "intField");
@@ -201,7 +201,7 @@ class SettableBeanPropertyDelegateTest {
         .findProperty(PropertyName.construct("intField"));
     final SettableBeanProperty fieldProperty = new FieldProperty(testPropertyFieldDefinition, testBeanJavaType, null,
         testBeanDescription.getClassAnnotations(), testPropertyFieldDefinition.getField());
-    final SettableBeanProperty fieldPropertyDelegating = new SettableBeanPropertyDelegate(fieldProperty, anySetter,
+    final SettableBeanProperty fieldPropertyDelegating = new SettableBeanPropertyDelegating(fieldProperty, anySetter,
         useAnySetter::get);
     assertThat(((AccessibleObject) fieldProperty.getMember().getMember()).isAccessible()).isFalse();
     // When
@@ -274,7 +274,7 @@ class SettableBeanPropertyDelegateTest {
         .findProperty(PropertyName.construct("intField"));
     final SettableBeanProperty fieldProperty = new FieldProperty(testPropertyFieldDefinition, testBeanJavaType, null,
         testBeanDescription.getClassAnnotations(), testPropertyFieldDefinition.getField());
-    final SettableBeanProperty fieldPropertyDelegating = new SettableBeanPropertyDelegate(fieldProperty, anySetter,
+    final SettableBeanProperty fieldPropertyDelegating = new SettableBeanPropertyDelegating(fieldProperty, anySetter,
         useAnySetter::get);
     // When
     final PropertyName result = fieldPropertyDelegating.getWrapperName();
@@ -458,7 +458,7 @@ class SettableBeanPropertyDelegateTest {
     @Test
     @DisplayName("deserializeSetAndReturn, with anySetter=null and throws Exception, should throw Exception")
     void deserializeSetAndReturnWithExceptionAndNullAnySetter() throws IOException {
-      intFieldPropertyDelegating = new SettableBeanPropertyDelegate(intFieldProperty, null, () -> true);
+      intFieldPropertyDelegating = new SettableBeanPropertyDelegating(intFieldProperty, null, () -> true);
       try (JsonParser parser = objectMapper.createParser("\"${a-placeholder}\"")) {
         final DefaultDeserializationContext ctx = deserializationContext
             .createInstance(deserializationContext.getConfig(), parser, null);
@@ -486,7 +486,7 @@ class SettableBeanPropertyDelegateTest {
           .collect(Collectors.toMap(ms -> ms, ms -> false));
       Stream.concat(
           Stream.of(SettableBeanProperty.Delegating.class.getDeclaredMethods()),
-          Stream.of(SettableBeanPropertyDelegate.class.getDeclaredMethods()))
+          Stream.of(SettableBeanPropertyDelegating.class.getDeclaredMethods()))
           .map(MethodSignature::from)
           .forEach(ms -> superclassMethods.computeIfPresent(ms, (k, v) -> true));
       assertThat(superclassMethods)
