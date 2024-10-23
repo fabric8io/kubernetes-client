@@ -13,15 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.http;
+package io.fabric8.kubernetes.client.jetty;
 
-import io.fabric8.kubernetes.client.jetty.JettyHttpClientFactory;
+import io.fabric8.kubernetes.client.http.AbstractHttpGetTest;
+import io.fabric8.kubernetes.client.http.HttpClient;
 
-public class JettyHttpClientTest extends OkHttpClientTest {
+import java.net.ConnectException;
 
+@SuppressWarnings("java:S2187")
+public class JettyHttpClientGetTest extends AbstractHttpGetTest {
   @Override
   protected HttpClient.Factory getHttpClientFactory() {
     return new JettyHttpClientFactory();
   }
 
+  @Override
+  protected Class<? extends Exception> getConnectionFailedExceptionType() {
+    return ConnectException.class;
+  }
 }

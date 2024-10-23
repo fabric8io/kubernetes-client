@@ -96,4 +96,26 @@ public abstract class AbstractAsyncBodyTest {
     }
   }
 
+  @Test
+  @DisplayName("Large bodies are processed and consumed")
+  public void consumeBytesProcessesLargeBodies() throws Exception {
+    try (final HttpClient client = getHttpClientFactory().newBuilder().build()) {
+      final var largeBody = new String(new byte[1048576], StandardCharsets.UTF_8);
+      server.expect().withPath("/large-body").andReturn(200, largeBody).always();
+      final StringBuffer responseText = new StringBuffer();
+      final HttpResponse<AsyncBody> asyncBodyResponse = client.consumeBytes(
+          client.newHttpRequestBuilder().uri(server.url("/large-body")).build(),
+          (value, asyncBody) -> {
+            responseText.append(value.stream().map(StandardCharsets.UTF_8::decode)
+                .map(CharBuffer::toString).collect(Collectors.joining()));
+            asyncBody.consume();
+          })
+          .get(10L, TimeUnit.SECONDS);
+      asyncBodyResponse.body().consume();
+      asyncBodyResponse.body().done().get(10L, TimeUnit.SECONDS);
+      assertThat(responseText.toString()).isEqualTo(largeBody);
+
+    }
+  }
+
 }
