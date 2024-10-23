@@ -22,8 +22,10 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.TimeUnit;
+import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatNoException;
 
 public abstract class AbstractConfiguredClientTest {
 
@@ -59,4 +61,12 @@ public abstract class AbstractConfiguredClientTest {
     }
   }
 
+  @Test
+  public void multipleClosure() {
+    final HttpClient client = clientWithDefaultConfiguration();
+    client.close();
+    assertThat(client.isClosed()).isTrue();
+    IntStream.range(0, 10).forEach(i -> client.close());
+    assertThatNoException().isThrownBy(client::close);
+  }
 }

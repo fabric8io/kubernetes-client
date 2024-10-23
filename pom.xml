@@ -214,7 +214,6 @@
     <module>httpclient-jetty</module>
     <module>httpclient-okhttp</module>
     <module>httpclient-vertx</module>
-    <module>httpclient-tests</module>
     <module>kubernetes-client</module>
     <module>junit/mockwebserver</module>
     <module>junit/kubernetes-junit-jupiter</module>
