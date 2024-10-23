@@ -15,6 +15,8 @@
  */
 package io.fabric8.openshift.client.server.mock;
 
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.openshift.api.model.PodSecurityPolicySubjectReview;
 import io.fabric8.openshift.api.model.PodSecurityPolicySubjectReviewBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
@@ -24,10 +26,10 @@ import java.net.HttpURLConnection;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@EnableOpenShiftMockClient
+@EnableKubernetesMockClient
 class PodSecurityPolicySubjectReviewTest {
   private OpenShiftClient client;
-  private OpenShiftMockServer server;
+  KubernetesMockServer server;
 
   @Test
   void create() {

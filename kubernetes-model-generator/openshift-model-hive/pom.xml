@@ -28,7 +28,7 @@
 
   <artifactId>openshift-model-hive</artifactId>
   <packaging>bundle</packaging>
-  <name>Fabric8 :: OpenShift Hive Model</name>
+  <name>Fabric8 :: OpenShift Model :: Hive</name>
 
   <properties>
     <clone-kube>true</clone-kube>

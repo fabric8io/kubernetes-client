@@ -32,7 +32,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @EnableKubernetesMockClient
 class V1EventsTest {
   private KubernetesClient client;
-  private KubernetesMockServer server;
+  KubernetesMockServer server;
 
   @Test
   void testList() {

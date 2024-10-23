@@ -24,7 +24,7 @@ import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.mockwebserver.crud.Attribute;
 import io.fabric8.mockwebserver.crud.AttributeExtractor;
 import io.fabric8.mockwebserver.crud.AttributeSet;
-import okhttp3.HttpUrl;
+import io.fabric8.mockwebserver.http.HttpUrl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

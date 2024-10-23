@@ -28,7 +28,7 @@
 
   <artifactId>openshift-model-config</artifactId>
   <packaging>bundle</packaging>
-  <name>Fabric8 :: OpenShift Config Model</name>
+  <name>Fabric8 :: OpenShift Model :: Config</name>
 
   <properties>
     <clone-kube>true</clone-kube>

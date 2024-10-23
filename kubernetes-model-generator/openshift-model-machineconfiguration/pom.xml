@@ -28,7 +28,7 @@
 
   <artifactId>openshift-model-machineconfiguration</artifactId>
   <packaging>bundle</packaging>
-  <name>Fabric8 :: OpenShift Machine Config Operator Model</name>
+  <name>Fabric8 :: OpenShift Model :: Machine Configuration</name>
 
   <properties>
     <clone-kube>true</clone-kube>

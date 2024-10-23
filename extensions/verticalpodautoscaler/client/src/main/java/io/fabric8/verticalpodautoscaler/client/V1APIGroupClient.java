@@ -15,13 +15,13 @@
  */
 package io.fabric8.verticalpodautoscaler.client;
 
+import io.fabric8.autoscaling.api.model.v1.VerticalPodAutoscaler;
+import io.fabric8.autoscaling.api.model.v1.VerticalPodAutoscalerCheckpoint;
+import io.fabric8.autoscaling.api.model.v1.VerticalPodAutoscalerCheckpointList;
+import io.fabric8.autoscaling.api.model.v1.VerticalPodAutoscalerList;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.extension.ClientAdapter;
-import io.fabric8.verticalpodautoscaler.api.model.v1.VerticalPodAutoscaler;
-import io.fabric8.verticalpodautoscaler.api.model.v1.VerticalPodAutoscalerCheckpoint;
-import io.fabric8.verticalpodautoscaler.api.model.v1.VerticalPodAutoscalerCheckpointList;
-import io.fabric8.verticalpodautoscaler.api.model.v1.VerticalPodAutoscalerList;
 import io.fabric8.verticalpodautoscaler.client.dsl.V1APIGroupDSL;
 
 public class V1APIGroupClient extends ClientAdapter<V1APIGroupClient> implements V1APIGroupDSL {

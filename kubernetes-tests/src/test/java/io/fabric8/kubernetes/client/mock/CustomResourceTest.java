@@ -37,7 +37,7 @@ import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
-import okhttp3.mockwebserver.RecordedRequest;
+import io.fabric8.mockwebserver.http.RecordedRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -385,6 +385,7 @@ class CustomResourceTest {
 
           @Override
           public void onClose(WatcherException cause) {
+            // NO OP
           }
         });
 
@@ -416,6 +417,7 @@ class CustomResourceTest {
 
           @Override
           public void onClose(WatcherException cause) {
+            // NO OP
           }
         });
 
@@ -450,6 +452,7 @@ class CustomResourceTest {
 
           @Override
           public void onClose(WatcherException cause) {
+            // NO OP
           }
         });
 
@@ -483,6 +486,7 @@ class CustomResourceTest {
 
           @Override
           public void onClose(WatcherException cause) {
+            // NO OP
           }
         });
 
@@ -520,6 +524,7 @@ class CustomResourceTest {
 
           @Override
           public void onClose(WatcherException cause) {
+            // NO OP
           }
         });
 
@@ -557,6 +562,7 @@ class CustomResourceTest {
 
               @Override
               public void onClose(WatcherException cause) {
+                // NO OP
               }
             });
 
@@ -567,7 +573,7 @@ class CustomResourceTest {
 
   @Test
   @DisplayName("Should be able to test watch with Namespace and ListOptions provided")
-  void testWatchWithNamespaceAndListOptions() throws IOException, InterruptedException {
+  void testWatchWithNamespaceAndListOptions() throws InterruptedException {
     // Given
     server.expect().withPath(
         "/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos?allowWatchBookmarks=true&resourceVersion=1003&timeoutSeconds=30&watch=true")
@@ -594,6 +600,7 @@ class CustomResourceTest {
 
               @Override
               public void onClose(WatcherException cause) {
+                // NO OP
               }
             });
 

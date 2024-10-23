@@ -18,11 +18,11 @@ package io.fabric8.openshift.client.server.mock;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMixedDispatcher;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServerExtension;
 import io.fabric8.mockwebserver.Context;
+import io.fabric8.mockwebserver.MockWebServer;
 import io.fabric8.mockwebserver.ServerRequest;
 import io.fabric8.mockwebserver.ServerResponse;
 import io.fabric8.openshift.client.NamespacedOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftClient;
-import okhttp3.mockwebserver.MockWebServer;
 import org.junit.jupiter.api.extension.ExtensionContext;
 
 import java.lang.reflect.Field;
@@ -56,11 +56,6 @@ public class OpenShiftMockServerExtension extends KubernetesMockServerExtension 
     if (instantOpenShiftClient != null) {
       instantOpenShiftClient.close();
     }
-  }
-
-  @Override
-  protected Class<?> getClientType() {
-    return OpenShiftClient.class;
   }
 
   @Override
@@ -100,7 +95,7 @@ public class OpenShiftMockServerExtension extends KubernetesMockServerExtension 
       openShiftClient = instantOpenShiftClient;
       openShiftMockServer = instantOpenShiftMockServer;
     }
-    setFieldIfEqualsToProvidedType(context, isStatic, field, getClientType(), (i, f) -> f.set(i, openShiftClient));
+    setFieldIfEqualsToProvidedType(context, isStatic, field, OpenShiftClient.class, (i, f) -> f.set(i, openShiftClient));
     setFieldIfEqualsToProvidedType(context, isStatic, field, getKubernetesMockServerType(),
         (i, f) -> f.set(i, openShiftMockServer));
   }

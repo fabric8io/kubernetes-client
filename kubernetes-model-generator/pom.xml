@@ -82,6 +82,7 @@
     <openapi.schema.openshift-generated>${project.parent.basedir}/openapi/schemas/openshift-generated.json</openapi.schema.openshift-generated>
     <openapi.schema.dev.knative>${project.basedir}/../../../kubernetes-model-generator/openapi/schemas/dev.knative.json</openapi.schema.dev.knative>
     <openapi.schema.dev.tekton>${project.basedir}/../../../kubernetes-model-generator/openapi/schemas/dev.tekton.json</openapi.schema.dev.tekton>
+    <openapi.schema.io.k8s.autoscaling>${project.basedir}/../../../kubernetes-model-generator/openapi/schemas/io.k8s.autoscaling.json</openapi.schema.io.k8s.autoscaling>
     <openapi.schema.io.k8s.storage.snapshot>${project.basedir}/../../../kubernetes-model-generator/openapi/schemas/io.k8s.storage.snapshot.json</openapi.schema.io.k8s.storage.snapshot>
     <openapi.schema.sh.volcano>${project.basedir}/../../../kubernetes-model-generator/openapi/schemas/sh.volcano.json</openapi.schema.sh.volcano>
     <openapi.openshift-version>4.17</openapi.openshift-version>
@@ -178,6 +179,7 @@
                 <io.k8s.api>io.fabric8.kubernetes.api.model</io.k8s.api>
                 <io.k8s.api.apps.v1>io.fabric8.kubernetes.api.model.apps</io.k8s.api.apps.v1>
                 <io.k8s.api.rbac.v1>io.fabric8.kubernetes.api.model.rbac</io.k8s.api.rbac.v1>
+                <io.k8s.autoscaling>io.fabric8.autoscaling.api.model</io.k8s.autoscaling>
                 <io.k8s.client-go.tools.clientcmd.api.v1>io.fabric8.kubernetes.api.model</io.k8s.client-go.tools.clientcmd.api.v1>
                 <io.k8s.kube-aggregator.pkg.apis.apiregistration.v1>io.fabric8.kubernetes.api.model</io.k8s.kube-aggregator.pkg.apis.apiregistration.v1>
                 <io.k8s.sigs.cluster-api.api>io.fabric8.kubernetes.api.model.clusterapi</io.k8s.sigs.cluster-api.api>

@@ -28,7 +28,7 @@
 
   <artifactId>openshift-model-whereabouts</artifactId>
   <packaging>bundle</packaging>
-  <name>Fabric8 :: OpenShift Whereabouts CNI Model</name>
+  <name>Fabric8 :: OpenShift Model :: Whereabouts (CNI)</name>
 
   <properties>
     <clone-kube>true</clone-kube>

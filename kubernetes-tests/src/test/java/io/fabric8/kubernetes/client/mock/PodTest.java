@@ -24,9 +24,9 @@ import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.api.model.PodListBuilder;
 import io.fabric8.kubernetes.api.model.WatchEvent;
 import io.fabric8.kubernetes.api.model.policy.v1.EvictionBuilder;
-import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.LocalPortForward;
+import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
 import io.fabric8.kubernetes.client.PortForward;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
@@ -83,15 +83,14 @@ import static org.junit.jupiter.api.Assertions.fail;
 class PodTest {
 
   KubernetesMockServer server;
+  NamespacedKubernetesClient client;
 
   @TempDir
   Path tempDir;
 
-  private KubernetesClient client;
-
   @BeforeEach
   void setUp() {
-    client = server.createClient().inNamespace("test");
+    client = client.inNamespace("test");
   }
 
   @Test

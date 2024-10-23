@@ -15,15 +15,17 @@
  */
 package io.fabric8.openshift.client.server.mock;
 
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@EnableOpenShiftMockClient
+@EnableKubernetesMockClient
 class OpenShiftMockServerExtensionClientAndServerTests {
-  private OpenShiftMockServer openShiftMockServer;
-  private OpenShiftClient openShiftClient;
+  KubernetesMockServer openShiftMockServer;
+  OpenShiftClient openShiftClient;
 
   @Test
   void testMockServerAndClientAreInitialized() {

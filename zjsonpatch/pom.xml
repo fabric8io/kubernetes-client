@@ -26,8 +26,9 @@
     <version>7.0-SNAPSHOT</version>
   </parent>
 
-  <packaging>bundle</packaging>
   <artifactId>zjsonpatch</artifactId>
+  <packaging>bundle</packaging>
+  <name>Fabric8 :: zjsonpatch</name>
 
   <properties>
     <osgi.import>

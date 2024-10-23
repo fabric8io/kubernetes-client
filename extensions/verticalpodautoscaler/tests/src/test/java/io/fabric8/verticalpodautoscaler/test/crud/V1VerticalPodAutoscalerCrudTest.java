@@ -15,10 +15,10 @@
  */
 package io.fabric8.verticalpodautoscaler.test.crud;
 
+import io.fabric8.autoscaling.api.model.v1.VerticalPodAutoscaler;
+import io.fabric8.autoscaling.api.model.v1.VerticalPodAutoscalerBuilder;
+import io.fabric8.autoscaling.api.model.v1.VerticalPodAutoscalerList;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
-import io.fabric8.verticalpodautoscaler.api.model.v1.VerticalPodAutoscaler;
-import io.fabric8.verticalpodautoscaler.api.model.v1.VerticalPodAutoscalerBuilder;
-import io.fabric8.verticalpodautoscaler.api.model.v1.VerticalPodAutoscalerList;
 import io.fabric8.verticalpodautoscaler.client.VerticalPodAutoscalerClient;
 import org.junit.jupiter.api.Test;
 

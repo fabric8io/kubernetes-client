@@ -28,7 +28,7 @@
 
   <artifactId>openshift-model-operator</artifactId>
   <packaging>bundle</packaging>
-  <name>Fabric8 :: OpenShift Operator Model</name>
+  <name>Fabric8 :: OpenShift Model :: Operator</name>
 
   <properties>
     <clone-kube>true</clone-kube>

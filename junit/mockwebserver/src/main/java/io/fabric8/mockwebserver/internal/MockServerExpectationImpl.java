@@ -27,11 +27,11 @@ import io.fabric8.mockwebserver.dsl.Pathable;
 import io.fabric8.mockwebserver.dsl.ReturnOrWebsocketable;
 import io.fabric8.mockwebserver.dsl.TimesOnceableOrHttpHeaderable;
 import io.fabric8.mockwebserver.dsl.WebSocketSessionBuilder;
+import io.fabric8.mockwebserver.http.Headers;
+import io.fabric8.mockwebserver.http.RecordedRequest;
 import io.fabric8.mockwebserver.utils.BodyProvider;
 import io.fabric8.mockwebserver.utils.ResponseProvider;
 import io.fabric8.mockwebserver.utils.ResponseProviders;
-import okhttp3.Headers;
-import okhttp3.mockwebserver.RecordedRequest;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -230,7 +230,7 @@ public class MockServerExpectationImpl implements MockServerExpectation {
   }
 
   private ResponseProvider<String> toString(final ResponseProvider<Object> provider) {
-    return new ResponseProvider<String>() {
+    return new ResponseProvider<>() {
       @Override
       public String getBody(RecordedRequest request) {
         Object object = provider.getBody(request);
@@ -255,7 +255,7 @@ public class MockServerExpectationImpl implements MockServerExpectation {
   }
 
   private ResponseProvider<List<String>> listToString(final ResponseProvider<List<Object>> provider) {
-    return new ResponseProvider<List<String>>() {
+    return new ResponseProvider<>() {
       @Override
       public List<String> getBody(RecordedRequest request) {
         List<Object> objects = provider.getBody(request);

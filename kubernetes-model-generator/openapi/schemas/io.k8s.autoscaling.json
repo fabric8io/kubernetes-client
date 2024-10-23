@@ -1,0 +1,1534 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Kubernetes",
+    "version": "0.0.0"
+  },
+  "paths": null,
+  "definitions": {
+    "io.k8s.autoscaling.v1.ContainerResourcePolicy": {
+      "description": "ContainerResourcePolicy controls how autoscaler computes the recommended resources for a specific container.",
+      "type": "object",
+      "properties": {
+        "containerName": {
+          "description": "Name of the container or DefaultContainerResourcePolicy, in which case the policy is used by the containers that don't have their own policy specified.",
+          "type": "string"
+        },
+        "controlledResources": {
+          "description": "Specifies the type of recommendations that will be computed (and possibly applied) by VPA. If not specified, the default of [ResourceCPU, ResourceMemory] will be used.",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "default": ""
+          },
+          "x-kubernetes-patch-strategy": "merge"
+        },
+        "controlledValues": {
+          "description": "Specifies which resource values should be controlled. The default is \"RequestsAndLimits\".",
+          "type": "string"
+        },
+        "maxAllowed": {
+          "description": "Specifies the maximum amount of resources that will be recommended for the container. The default is no maximum.",
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/io.k8s.apimachinery.pkg.api.resource.Quantity"
+          }
+        },
+        "minAllowed": {
+          "description": "Specifies the minimal amount of resources that will be recommended for the container. The default is no minimum.",
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/io.k8s.apimachinery.pkg.api.resource.Quantity"
+          }
+        },
+        "mode": {
+          "description": "Whether autoscaler is enabled for the container. The default is \"Auto\".",
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "autoscaling.k8s.io",
+        "Version": "v1",
+        "Kind": "ContainerResourcePolicy",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.autoscaling.v1.EvictionRequirement": {
+      "description": "EvictionRequirement defines a single condition which needs to be true in order to evict a Pod",
+      "type": "object",
+      "required": [
+        "resources",
+        "changeRequirement"
+      ],
+      "properties": {
+        "changeRequirement": {
+          "type": "string",
+          "default": ""
+        },
+        "resources": {
+          "description": "Resources is a list of one or more resources that the condition applies to. If more than one resource is given, the EvictionRequirement is fulfilled if at least one resource meets `changeRequirement`.",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "default": ""
+          }
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "autoscaling.k8s.io",
+        "Version": "v1",
+        "Kind": "EvictionRequirement",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.autoscaling.v1.HistogramCheckpoint": {
+      "description": "HistogramCheckpoint contains data needed to reconstruct the histogram.",
+      "type": "object",
+      "properties": {
+        "bucketWeights": {
+          "description": "Map from bucket index to bucket weight.",
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "format": "int64",
+            "default": 0
+          }
+        },
+        "referenceTimestamp": {
+          "description": "Reference timestamp for samples collected within this histogram.",
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Time"
+        },
+        "totalWeight": {
+          "description": "Sum of samples to be used as denominator for weights from BucketWeights.",
+          "type": "number",
+          "format": "double"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "autoscaling.k8s.io",
+        "Version": "v1",
+        "Kind": "HistogramCheckpoint",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.autoscaling.v1.PodResourcePolicy": {
+      "description": "PodResourcePolicy controls how autoscaler computes the recommended resources for containers belonging to the pod. There can be at most one entry for every named container and optionally a single wildcard entry with `containerName` = '*', which handles all containers that don't have individual policies.",
+      "type": "object",
+      "properties": {
+        "containerPolicies": {
+          "description": "Per-container resource policies.",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/io.k8s.autoscaling.v1.ContainerResourcePolicy"
+          },
+          "x-kubernetes-patch-merge-key": "containerName",
+          "x-kubernetes-patch-strategy": "merge"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "autoscaling.k8s.io",
+        "Version": "v1",
+        "Kind": "PodResourcePolicy",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.autoscaling.v1.PodUpdatePolicy": {
+      "description": "PodUpdatePolicy describes the rules on how changes are applied to the pods.",
+      "type": "object",
+      "properties": {
+        "evictionRequirements": {
+          "description": "EvictionRequirements is a list of EvictionRequirements that need to evaluate to true in order for a Pod to be evicted. If more than one EvictionRequirement is specified, all of them need to be fulfilled to allow eviction.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/io.k8s.autoscaling.v1.EvictionRequirement"
+          }
+        },
+        "minReplicas": {
+          "description": "Minimal number of replicas which need to be alive for Updater to attempt pod eviction (pending other checks like PDB). Only positive values are allowed. Overrides global '--min-replicas' flag.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "updateMode": {
+          "description": "Controls when autoscaler applies changes to the pod resources. The default is 'Auto'.",
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "autoscaling.k8s.io",
+        "Version": "v1",
+        "Kind": "PodUpdatePolicy",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.autoscaling.v1.RecommendedContainerResources": {
+      "description": "RecommendedContainerResources is the recommendation of resources computed by autoscaler for a specific container. Respects the container resource policy if present in the spec. In particular the recommendation is not produced for containers with `ContainerScalingMode` set to 'Off'.",
+      "type": "object",
+      "required": [
+        "target"
+      ],
+      "properties": {
+        "containerName": {
+          "description": "Name of the container.",
+          "type": "string"
+        },
+        "lowerBound": {
+          "description": "Minimum recommended amount of resources. Observes ContainerResourcePolicy. This amount is not guaranteed to be sufficient for the application to operate in a stable way, however running with less resources is likely to have significant impact on performance/availability.",
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/io.k8s.apimachinery.pkg.api.resource.Quantity"
+          }
+        },
+        "target": {
+          "description": "Recommended amount of resources. Observes ContainerResourcePolicy.",
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/io.k8s.apimachinery.pkg.api.resource.Quantity"
+          }
+        },
+        "uncappedTarget": {
+          "description": "The most recent recommended resources target computed by the autoscaler for the controlled pods, based only on actual resource usage, not taking into account the ContainerResourcePolicy. May differ from the Recommendation if the actual resource usage causes the target to violate the ContainerResourcePolicy (lower than MinAllowed or higher that MaxAllowed). Used only as status indication, will not affect actual resource assignment.",
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/io.k8s.apimachinery.pkg.api.resource.Quantity"
+          }
+        },
+        "upperBound": {
+          "description": "Maximum recommended amount of resources. Observes ContainerResourcePolicy. Any resources allocated beyond this value are likely wasted. This value may be larger than the maximum amount of application is actually capable of consuming.",
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/io.k8s.apimachinery.pkg.api.resource.Quantity"
+          }
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "autoscaling.k8s.io",
+        "Version": "v1",
+        "Kind": "RecommendedContainerResources",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.autoscaling.v1.RecommendedPodResources": {
+      "description": "RecommendedPodResources is the recommendation of resources computed by autoscaler. It contains a recommendation for each container in the pod (except for those with `ContainerScalingMode` set to 'Off').",
+      "type": "object",
+      "properties": {
+        "containerRecommendations": {
+          "description": "Resources recommended by the autoscaler for each container.",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/io.k8s.autoscaling.v1.RecommendedContainerResources"
+          }
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "autoscaling.k8s.io",
+        "Version": "v1",
+        "Kind": "RecommendedPodResources",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.autoscaling.v1.VerticalPodAutoscaler": {
+      "description": "VerticalPodAutoscaler is the configuration for a vertical pod autoscaler, which automatically manages pod resources based on historical and real time resource utilization.",
+      "type": "object",
+      "required": [
+        "spec"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+        },
+        "spec": {
+          "description": "Specification of the behavior of the autoscaler. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.autoscaling.v1.VerticalPodAutoscalerSpec"
+        },
+        "status": {
+          "description": "Current information about the autoscaler.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.autoscaling.v1.VerticalPodAutoscalerStatus"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "object",
+        "Group": "autoscaling.k8s.io",
+        "Version": "v1",
+        "Kind": "VerticalPodAutoscaler",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.autoscaling.v1.VerticalPodAutoscalerCheckpoint": {
+      "description": "VerticalPodAutoscalerCheckpoint is the checkpoint of the internal state of VPA that is used for recovery after recommender's restart.",
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+        },
+        "spec": {
+          "description": "Specification of the checkpoint. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.autoscaling.v1.VerticalPodAutoscalerCheckpointSpec"
+        },
+        "status": {
+          "description": "Data of the checkpoint.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.autoscaling.v1.VerticalPodAutoscalerCheckpointStatus"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "object",
+        "Group": "autoscaling.k8s.io",
+        "Version": "v1",
+        "Kind": "VerticalPodAutoscalerCheckpoint",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.autoscaling.v1.VerticalPodAutoscalerCheckpointList": {
+      "description": "VerticalPodAutoscalerCheckpointList is a list of VerticalPodAutoscalerCheckpoint objects.",
+      "type": "object",
+      "required": [
+        "metadata",
+        "items"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/io.k8s.autoscaling.v1.VerticalPodAutoscalerCheckpoint"
+          }
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "list",
+        "Group": "autoscaling.k8s.io",
+        "Version": "v1",
+        "Kind": "VerticalPodAutoscalerCheckpointList",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.autoscaling.v1.VerticalPodAutoscalerCheckpointSpec": {
+      "description": "VerticalPodAutoscalerCheckpointSpec is the specification of the checkpoint object.",
+      "type": "object",
+      "properties": {
+        "containerName": {
+          "description": "Name of the checkpointed container.",
+          "type": "string"
+        },
+        "vpaObjectName": {
+          "description": "Name of the VPA object that stored VerticalPodAutoscalerCheckpoint object.",
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "autoscaling.k8s.io",
+        "Version": "v1",
+        "Kind": "VerticalPodAutoscalerCheckpointSpec",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.autoscaling.v1.VerticalPodAutoscalerCheckpointStatus": {
+      "description": "VerticalPodAutoscalerCheckpointStatus contains data of the checkpoint.",
+      "type": "object",
+      "properties": {
+        "cpuHistogram": {
+          "description": "Checkpoint of histogram for consumption of CPU.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.autoscaling.v1.HistogramCheckpoint"
+        },
+        "firstSampleStart": {
+          "description": "Timestamp of the fist sample from the histograms.",
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Time"
+        },
+        "lastSampleStart": {
+          "description": "Timestamp of the last sample from the histograms.",
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Time"
+        },
+        "lastUpdateTime": {
+          "description": "The time when the status was last refreshed.",
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Time"
+        },
+        "memoryHistogram": {
+          "description": "Checkpoint of histogram for consumption of memory.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.autoscaling.v1.HistogramCheckpoint"
+        },
+        "totalSamplesCount": {
+          "description": "Total number of samples in the histograms.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "version": {
+          "description": "Version of the format of the stored data.",
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "autoscaling.k8s.io",
+        "Version": "v1",
+        "Kind": "VerticalPodAutoscalerCheckpointStatus",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.autoscaling.v1.VerticalPodAutoscalerCondition": {
+      "description": "VerticalPodAutoscalerCondition describes the state of a VerticalPodAutoscaler at a certain point.",
+      "type": "object",
+      "required": [
+        "type",
+        "status"
+      ],
+      "properties": {
+        "lastTransitionTime": {
+          "description": "lastTransitionTime is the last time the condition transitioned from one status to another",
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Time"
+        },
+        "message": {
+          "description": "message is a human-readable explanation containing details about the transition",
+          "type": "string"
+        },
+        "reason": {
+          "description": "reason is the reason for the condition's last transition.",
+          "type": "string"
+        },
+        "status": {
+          "description": "status is the status of the condition (True, False, Unknown)",
+          "type": "string",
+          "default": ""
+        },
+        "type": {
+          "description": "type describes the current condition",
+          "type": "string",
+          "default": ""
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "autoscaling.k8s.io",
+        "Version": "v1",
+        "Kind": "VerticalPodAutoscalerCondition",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.autoscaling.v1.VerticalPodAutoscalerList": {
+      "description": "VerticalPodAutoscalerList is a list of VerticalPodAutoscaler objects.",
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "description": "items is the list of vertical pod autoscaler objects.",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/io.k8s.autoscaling.v1.VerticalPodAutoscaler"
+          }
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "metadata is the standard list metadata.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "list",
+        "Group": "autoscaling.k8s.io",
+        "Version": "v1",
+        "Kind": "VerticalPodAutoscalerList",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.autoscaling.v1.VerticalPodAutoscalerRecommenderSelector": {
+      "description": "VerticalPodAutoscalerRecommenderSelector points to a specific Vertical Pod Autoscaler recommender. In the future it might pass parameters to the recommender.",
+      "type": "object",
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "description": "Name of the recommender responsible for generating recommendation for this object.",
+          "type": "string",
+          "default": ""
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "autoscaling.k8s.io",
+        "Version": "v1",
+        "Kind": "VerticalPodAutoscalerRecommenderSelector",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.autoscaling.v1.VerticalPodAutoscalerSpec": {
+      "description": "VerticalPodAutoscalerSpec is the specification of the behavior of the autoscaler.",
+      "type": "object",
+      "required": [
+        "targetRef"
+      ],
+      "properties": {
+        "recommenders": {
+          "description": "Recommender responsible for generating recommendation for this object. List should be empty (then the default recommender will generate the recommendation) or contain exactly one recommender.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/io.k8s.autoscaling.v1.VerticalPodAutoscalerRecommenderSelector"
+          }
+        },
+        "resourcePolicy": {
+          "description": "Controls how the autoscaler computes recommended resources. The resource policy may be used to set constraints on the recommendations for individual containers. If any individual containers need to be excluded from getting the VPA recommendations, then it must be disabled explicitly by setting mode to \"Off\" under containerPolicies. If not specified, the autoscaler computes recommended resources for all containers in the pod, without additional constraints.",
+          "$ref": "#/definitions/io.k8s.autoscaling.v1.PodResourcePolicy"
+        },
+        "targetRef": {
+          "description": "TargetRef points to the controller managing the set of pods for the autoscaler to control - e.g. Deployment, StatefulSet. VerticalPodAutoscaler can be targeted at controller implementing scale subresource (the pod set is retrieved from the controller's ScaleStatus) or some well known controllers (e.g. for DaemonSet the pod set is read from the controller's spec). If VerticalPodAutoscaler cannot use specified target it will report ConfigUnsupported condition. Note that VerticalPodAutoscaler does not require full implementation of scale subresource - it will not use it to modify the replica count. The only thing retrieved is a label selector matching pods grouped by the target resource.",
+          "$ref": "#/definitions/io.k8s.api.autoscaling.v1.CrossVersionObjectReference"
+        },
+        "updatePolicy": {
+          "description": "Describes the rules on how changes are applied to the pods. If not specified, all fields in the `PodUpdatePolicy` are set to their default values.",
+          "$ref": "#/definitions/io.k8s.autoscaling.v1.PodUpdatePolicy"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "autoscaling.k8s.io",
+        "Version": "v1",
+        "Kind": "VerticalPodAutoscalerSpec",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.autoscaling.v1.VerticalPodAutoscalerStatus": {
+      "description": "VerticalPodAutoscalerStatus describes the runtime state of the autoscaler.",
+      "type": "object",
+      "properties": {
+        "conditions": {
+          "description": "Conditions is the set of conditions required for this autoscaler to scale its target, and indicates whether or not those conditions are met.",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/io.k8s.autoscaling.v1.VerticalPodAutoscalerCondition"
+          },
+          "x-kubernetes-patch-merge-key": "type",
+          "x-kubernetes-patch-strategy": "merge"
+        },
+        "recommendation": {
+          "description": "The most recently computed amount of resources recommended by the autoscaler for the controlled pods.",
+          "$ref": "#/definitions/io.k8s.autoscaling.v1.RecommendedPodResources"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "autoscaling.k8s.io",
+        "Version": "v1",
+        "Kind": "VerticalPodAutoscalerStatus",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.autoscaling.v1beta1.ContainerResourcePolicy": {
+      "description": "ContainerResourcePolicy controls how autoscaler computes the recommended resources for a specific container.",
+      "type": "object",
+      "properties": {
+        "containerName": {
+          "description": "Name of the container or DefaultContainerResourcePolicy, in which case the policy is used by the containers that don't have their own policy specified.",
+          "type": "string"
+        },
+        "maxAllowed": {
+          "description": "Specifies the maximum amount of resources that will be recommended for the container. The default is no maximum.",
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/io.k8s.apimachinery.pkg.api.resource.Quantity"
+          }
+        },
+        "minAllowed": {
+          "description": "Specifies the minimal amount of resources that will be recommended for the container. The default is no minimum.",
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/io.k8s.apimachinery.pkg.api.resource.Quantity"
+          }
+        },
+        "mode": {
+          "description": "Whether autoscaler is enabled for the container. The default is \"Auto\".",
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "autoscaling.k8s.io",
+        "Version": "v1beta1",
+        "Kind": "ContainerResourcePolicy",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.autoscaling.v1beta1.HistogramCheckpoint": {
+      "description": "HistogramCheckpoint contains data needed to reconstruct the histogram.",
+      "type": "object",
+      "properties": {
+        "bucketWeights": {
+          "description": "Map from bucket index to bucket weight.",
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "format": "int64",
+            "default": 0
+          }
+        },
+        "referenceTimestamp": {
+          "description": "Reference timestamp for samples collected within this histogram.",
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Time"
+        },
+        "totalWeight": {
+          "description": "Sum of samples to be used as denominator for weights from BucketWeights.",
+          "type": "number",
+          "format": "double"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "autoscaling.k8s.io",
+        "Version": "v1beta1",
+        "Kind": "HistogramCheckpoint",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.autoscaling.v1beta1.PodResourcePolicy": {
+      "description": "PodResourcePolicy controls how autoscaler computes the recommended resources for containers belonging to the pod. There can be at most one entry for every named container and optionally a single wildcard entry with `containerName` = '*', which handles all containers that don't have individual policies.",
+      "type": "object",
+      "properties": {
+        "containerPolicies": {
+          "description": "Per-container resource policies.",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/io.k8s.autoscaling.v1beta1.ContainerResourcePolicy"
+          },
+          "x-kubernetes-patch-merge-key": "containerName",
+          "x-kubernetes-patch-strategy": "merge"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "autoscaling.k8s.io",
+        "Version": "v1beta1",
+        "Kind": "PodResourcePolicy",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.autoscaling.v1beta1.PodUpdatePolicy": {
+      "description": "PodUpdatePolicy describes the rules on how changes are applied to the pods.",
+      "type": "object",
+      "properties": {
+        "updateMode": {
+          "description": "Controls when autoscaler applies changes to the pod resources. The default is 'Auto'.",
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "autoscaling.k8s.io",
+        "Version": "v1beta1",
+        "Kind": "PodUpdatePolicy",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.autoscaling.v1beta1.RecommendedContainerResources": {
+      "description": "RecommendedContainerResources is the recommendation of resources computed by autoscaler for a specific container. Respects the container resource policy if present in the spec. In particular the recommendation is not produced for containers with `ContainerScalingMode` set to 'Off'.",
+      "type": "object",
+      "required": [
+        "target"
+      ],
+      "properties": {
+        "containerName": {
+          "description": "Name of the container.",
+          "type": "string"
+        },
+        "lowerBound": {
+          "description": "Minimum recommended amount of resources. Observes ContainerResourcePolicy. This amount is not guaranteed to be sufficient for the application to operate in a stable way, however running with less resources is likely to have significant impact on performance/availability.",
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/io.k8s.apimachinery.pkg.api.resource.Quantity"
+          }
+        },
+        "target": {
+          "description": "Recommended amount of resources. Observes ContainerResourcePolicy.",
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/io.k8s.apimachinery.pkg.api.resource.Quantity"
+          }
+        },
+        "uncappedTarget": {
+          "description": "The most recent recommended resources target computed by the autoscaler for the controlled pods, based only on actual resource usage, not taking into account the ContainerResourcePolicy. May differ from the Recommendation if the actual resource usage causes the target to violate the ContainerResourcePolicy (lower than MinAllowed or higher that MaxAllowed). Used only as status indication, will not affect actual resource assignment.",
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/io.k8s.apimachinery.pkg.api.resource.Quantity"
+          }
+        },
+        "upperBound": {
+          "description": "Maximum recommended amount of resources. Observes ContainerResourcePolicy. Any resources allocated beyond this value are likely wasted. This value may be larger than the maximum amount of application is actually capable of consuming.",
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/io.k8s.apimachinery.pkg.api.resource.Quantity"
+          }
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "autoscaling.k8s.io",
+        "Version": "v1beta1",
+        "Kind": "RecommendedContainerResources",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.autoscaling.v1beta1.RecommendedPodResources": {
+      "description": "RecommendedPodResources is the recommendation of resources computed by autoscaler. It contains a recommendation for each container in the pod (except for those with `ContainerScalingMode` set to 'Off').",
+      "type": "object",
+      "properties": {
+        "containerRecommendations": {
+          "description": "Resources recommended by the autoscaler for each container.",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/io.k8s.autoscaling.v1beta1.RecommendedContainerResources"
+          }
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "autoscaling.k8s.io",
+        "Version": "v1beta1",
+        "Kind": "RecommendedPodResources",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.autoscaling.v1beta1.VerticalPodAutoscaler": {
+      "description": "VerticalPodAutoscaler is the configuration for a vertical pod autoscaler, which automatically manages pod resources based on historical and real time resource utilization.",
+      "type": "object",
+      "required": [
+        "spec"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "Standard object metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+        },
+        "spec": {
+          "description": "Specification of the behavior of the autoscaler. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.autoscaling.v1beta1.VerticalPodAutoscalerSpec"
+        },
+        "status": {
+          "description": "Current information about the autoscaler.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.autoscaling.v1beta1.VerticalPodAutoscalerStatus"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "object",
+        "Group": "autoscaling.k8s.io",
+        "Version": "v1beta1",
+        "Kind": "VerticalPodAutoscaler",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.autoscaling.v1beta1.VerticalPodAutoscalerCheckpoint": {
+      "description": "VerticalPodAutoscalerCheckpoint is the checkpoint of the internal state of VPA that is used for recovery after recommender's restart.",
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "Standard object metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+        },
+        "spec": {
+          "description": "Specification of the checkpoint. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.autoscaling.v1beta1.VerticalPodAutoscalerCheckpointSpec"
+        },
+        "status": {
+          "description": "Data of the checkpoint.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.autoscaling.v1beta1.VerticalPodAutoscalerCheckpointStatus"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "object",
+        "Group": "autoscaling.k8s.io",
+        "Version": "v1beta1",
+        "Kind": "VerticalPodAutoscalerCheckpoint",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.autoscaling.v1beta1.VerticalPodAutoscalerCheckpointList": {
+      "description": "VerticalPodAutoscalerCheckpointList is a list of VerticalPodAutoscalerCheckpoint objects.",
+      "type": "object",
+      "required": [
+        "metadata",
+        "items"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/io.k8s.autoscaling.v1beta1.VerticalPodAutoscalerCheckpoint"
+          }
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "list",
+        "Group": "autoscaling.k8s.io",
+        "Version": "v1beta1",
+        "Kind": "VerticalPodAutoscalerCheckpointList",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.autoscaling.v1beta1.VerticalPodAutoscalerCheckpointSpec": {
+      "description": "VerticalPodAutoscalerCheckpointSpec is the specification of the checkpoint object.",
+      "type": "object",
+      "properties": {
+        "containerName": {
+          "description": "Name of the checkpointed container.",
+          "type": "string"
+        },
+        "vpaObjectName": {
+          "description": "Name of the VPA object that stored VerticalPodAutoscalerCheckpoint object.",
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "autoscaling.k8s.io",
+        "Version": "v1beta1",
+        "Kind": "VerticalPodAutoscalerCheckpointSpec",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.autoscaling.v1beta1.VerticalPodAutoscalerCheckpointStatus": {
+      "description": "VerticalPodAutoscalerCheckpointStatus contains data of the checkpoint.",
+      "type": "object",
+      "properties": {
+        "cpuHistogram": {
+          "description": "Checkpoint of histogram for consumption of CPU.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.autoscaling.v1beta1.HistogramCheckpoint"
+        },
+        "firstSampleStart": {
+          "description": "Timestamp of the fist sample from the histograms.",
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Time"
+        },
+        "lastSampleStart": {
+          "description": "Timestamp of the last sample from the histograms.",
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Time"
+        },
+        "lastUpdateTime": {
+          "description": "The time when the status was last refreshed.",
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Time"
+        },
+        "memoryHistogram": {
+          "description": "Checkpoint of histogram for consumption of memory.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.autoscaling.v1beta1.HistogramCheckpoint"
+        },
+        "totalSamplesCount": {
+          "description": "Total number of samples in the histograms.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "version": {
+          "description": "Version of the format of the stored data.",
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "autoscaling.k8s.io",
+        "Version": "v1beta1",
+        "Kind": "VerticalPodAutoscalerCheckpointStatus",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.autoscaling.v1beta1.VerticalPodAutoscalerCondition": {
+      "description": "VerticalPodAutoscalerCondition describes the state of a VerticalPodAutoscaler at a certain point.",
+      "type": "object",
+      "required": [
+        "type",
+        "status"
+      ],
+      "properties": {
+        "lastTransitionTime": {
+          "description": "lastTransitionTime is the last time the condition transitioned from one status to another",
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Time"
+        },
+        "message": {
+          "description": "message is a human-readable explanation containing details about the transition",
+          "type": "string"
+        },
+        "reason": {
+          "description": "reason is the reason for the condition's last transition.",
+          "type": "string"
+        },
+        "status": {
+          "description": "status is the status of the condition (True, False, Unknown)",
+          "type": "string",
+          "default": ""
+        },
+        "type": {
+          "description": "type describes the current condition",
+          "type": "string",
+          "default": ""
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "autoscaling.k8s.io",
+        "Version": "v1beta1",
+        "Kind": "VerticalPodAutoscalerCondition",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.autoscaling.v1beta1.VerticalPodAutoscalerList": {
+      "description": "VerticalPodAutoscalerList is a list of VerticalPodAutoscaler objects.",
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "description": "items is the list of vertical pod autoscaler objects.",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/io.k8s.autoscaling.v1beta1.VerticalPodAutoscaler"
+          }
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "metadata is the standard list metadata.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "list",
+        "Group": "autoscaling.k8s.io",
+        "Version": "v1beta1",
+        "Kind": "VerticalPodAutoscalerList",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.autoscaling.v1beta1.VerticalPodAutoscalerSpec": {
+      "description": "VerticalPodAutoscalerSpec is the specification of the behavior of the autoscaler.",
+      "type": "object",
+      "required": [
+        "selector"
+      ],
+      "properties": {
+        "resourcePolicy": {
+          "description": "Controls how the autoscaler computes recommended resources. The resource policy may be used to set constraints on the recommendations for individual containers. If not specified, the autoscaler computes recommended resources for all containers in the pod, without additional constraints.",
+          "$ref": "#/definitions/io.k8s.autoscaling.v1beta1.PodResourcePolicy"
+        },
+        "selector": {
+          "description": "A label query that determines the set of pods controlled by the Autoscaler. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#label-selectors",
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.LabelSelector"
+        },
+        "updatePolicy": {
+          "description": "Describes the rules on how changes are applied to the pods. If not specified, all fields in the `PodUpdatePolicy` are set to their default values.",
+          "$ref": "#/definitions/io.k8s.autoscaling.v1beta1.PodUpdatePolicy"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "autoscaling.k8s.io",
+        "Version": "v1beta1",
+        "Kind": "VerticalPodAutoscalerSpec",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.autoscaling.v1beta1.VerticalPodAutoscalerStatus": {
+      "description": "VerticalPodAutoscalerStatus describes the runtime state of the autoscaler.",
+      "type": "object",
+      "properties": {
+        "conditions": {
+          "description": "Conditions is the set of conditions required for this autoscaler to scale its target, and indicates whether or not those conditions are met.",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/io.k8s.autoscaling.v1beta1.VerticalPodAutoscalerCondition"
+          },
+          "x-kubernetes-patch-merge-key": "type",
+          "x-kubernetes-patch-strategy": "merge"
+        },
+        "recommendation": {
+          "description": "The most recently computed amount of resources recommended by the autoscaler for the controlled pods.",
+          "$ref": "#/definitions/io.k8s.autoscaling.v1beta1.RecommendedPodResources"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "autoscaling.k8s.io",
+        "Version": "v1beta1",
+        "Kind": "VerticalPodAutoscalerStatus",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.autoscaling.v1beta2.ContainerResourcePolicy": {
+      "description": "ContainerResourcePolicy controls how autoscaler computes the recommended resources for a specific container.",
+      "type": "object",
+      "properties": {
+        "containerName": {
+          "description": "Name of the container or DefaultContainerResourcePolicy, in which case the policy is used by the containers that don't have their own policy specified.",
+          "type": "string"
+        },
+        "maxAllowed": {
+          "description": "Specifies the maximum amount of resources that will be recommended for the container. The default is no maximum.",
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/io.k8s.apimachinery.pkg.api.resource.Quantity"
+          }
+        },
+        "minAllowed": {
+          "description": "Specifies the minimal amount of resources that will be recommended for the container. The default is no minimum.",
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/io.k8s.apimachinery.pkg.api.resource.Quantity"
+          }
+        },
+        "mode": {
+          "description": "Whether autoscaler is enabled for the container. The default is \"Auto\".",
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "autoscaling.k8s.io",
+        "Version": "v1beta2",
+        "Kind": "ContainerResourcePolicy",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.autoscaling.v1beta2.HistogramCheckpoint": {
+      "description": "HistogramCheckpoint contains data needed to reconstruct the histogram.",
+      "type": "object",
+      "properties": {
+        "bucketWeights": {
+          "description": "Map from bucket index to bucket weight.",
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "format": "int64",
+            "default": 0
+          }
+        },
+        "referenceTimestamp": {
+          "description": "Reference timestamp for samples collected within this histogram.",
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Time"
+        },
+        "totalWeight": {
+          "description": "Sum of samples to be used as denominator for weights from BucketWeights.",
+          "type": "number",
+          "format": "double"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "autoscaling.k8s.io",
+        "Version": "v1beta2",
+        "Kind": "HistogramCheckpoint",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.autoscaling.v1beta2.PodResourcePolicy": {
+      "description": "PodResourcePolicy controls how autoscaler computes the recommended resources for containers belonging to the pod. There can be at most one entry for every named container and optionally a single wildcard entry with `containerName` = '*', which handles all containers that don't have individual policies.",
+      "type": "object",
+      "properties": {
+        "containerPolicies": {
+          "description": "Per-container resource policies.",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/io.k8s.autoscaling.v1beta2.ContainerResourcePolicy"
+          },
+          "x-kubernetes-patch-merge-key": "containerName",
+          "x-kubernetes-patch-strategy": "merge"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "autoscaling.k8s.io",
+        "Version": "v1beta2",
+        "Kind": "PodResourcePolicy",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.autoscaling.v1beta2.PodUpdatePolicy": {
+      "description": "PodUpdatePolicy describes the rules on how changes are applied to the pods.",
+      "type": "object",
+      "properties": {
+        "updateMode": {
+          "description": "Controls when autoscaler applies changes to the pod resources. The default is 'Auto'.",
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "autoscaling.k8s.io",
+        "Version": "v1beta2",
+        "Kind": "PodUpdatePolicy",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.autoscaling.v1beta2.RecommendedContainerResources": {
+      "description": "RecommendedContainerResources is the recommendation of resources computed by autoscaler for a specific container. Respects the container resource policy if present in the spec. In particular the recommendation is not produced for containers with `ContainerScalingMode` set to 'Off'.",
+      "type": "object",
+      "required": [
+        "target"
+      ],
+      "properties": {
+        "containerName": {
+          "description": "Name of the container.",
+          "type": "string"
+        },
+        "lowerBound": {
+          "description": "Minimum recommended amount of resources. Observes ContainerResourcePolicy. This amount is not guaranteed to be sufficient for the application to operate in a stable way, however running with less resources is likely to have significant impact on performance/availability.",
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/io.k8s.apimachinery.pkg.api.resource.Quantity"
+          }
+        },
+        "target": {
+          "description": "Recommended amount of resources. Observes ContainerResourcePolicy.",
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/io.k8s.apimachinery.pkg.api.resource.Quantity"
+          }
+        },
+        "uncappedTarget": {
+          "description": "The most recent recommended resources target computed by the autoscaler for the controlled pods, based only on actual resource usage, not taking into account the ContainerResourcePolicy. May differ from the Recommendation if the actual resource usage causes the target to violate the ContainerResourcePolicy (lower than MinAllowed or higher that MaxAllowed). Used only as status indication, will not affect actual resource assignment.",
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/io.k8s.apimachinery.pkg.api.resource.Quantity"
+          }
+        },
+        "upperBound": {
+          "description": "Maximum recommended amount of resources. Observes ContainerResourcePolicy. Any resources allocated beyond this value are likely wasted. This value may be larger than the maximum amount of application is actually capable of consuming.",
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/io.k8s.apimachinery.pkg.api.resource.Quantity"
+          }
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "autoscaling.k8s.io",
+        "Version": "v1beta2",
+        "Kind": "RecommendedContainerResources",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.autoscaling.v1beta2.RecommendedPodResources": {
+      "description": "RecommendedPodResources is the recommendation of resources computed by autoscaler. It contains a recommendation for each container in the pod (except for those with `ContainerScalingMode` set to 'Off').",
+      "type": "object",
+      "properties": {
+        "containerRecommendations": {
+          "description": "Resources recommended by the autoscaler for each container.",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/io.k8s.autoscaling.v1beta2.RecommendedContainerResources"
+          }
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "autoscaling.k8s.io",
+        "Version": "v1beta2",
+        "Kind": "RecommendedPodResources",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.autoscaling.v1beta2.VerticalPodAutoscaler": {
+      "description": "VerticalPodAutoscaler is the configuration for a vertical pod autoscaler, which automatically manages pod resources based on historical and real time resource utilization.",
+      "type": "object",
+      "required": [
+        "spec"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+        },
+        "spec": {
+          "description": "Specification of the behavior of the autoscaler. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.autoscaling.v1beta2.VerticalPodAutoscalerSpec"
+        },
+        "status": {
+          "description": "Current information about the autoscaler.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.autoscaling.v1beta2.VerticalPodAutoscalerStatus"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "object",
+        "Group": "autoscaling.k8s.io",
+        "Version": "v1beta2",
+        "Kind": "VerticalPodAutoscaler",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.autoscaling.v1beta2.VerticalPodAutoscalerCheckpoint": {
+      "description": "VerticalPodAutoscalerCheckpoint is the checkpoint of the internal state of VPA that is used for recovery after recommender's restart.",
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+        },
+        "spec": {
+          "description": "Specification of the checkpoint. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.autoscaling.v1beta2.VerticalPodAutoscalerCheckpointSpec"
+        },
+        "status": {
+          "description": "Data of the checkpoint.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.autoscaling.v1beta2.VerticalPodAutoscalerCheckpointStatus"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "object",
+        "Group": "autoscaling.k8s.io",
+        "Version": "v1beta2",
+        "Kind": "VerticalPodAutoscalerCheckpoint",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.autoscaling.v1beta2.VerticalPodAutoscalerCheckpointList": {
+      "description": "VerticalPodAutoscalerCheckpointList is a list of VerticalPodAutoscalerCheckpoint objects.",
+      "type": "object",
+      "required": [
+        "metadata",
+        "items"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/io.k8s.autoscaling.v1beta2.VerticalPodAutoscalerCheckpoint"
+          }
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "list",
+        "Group": "autoscaling.k8s.io",
+        "Version": "v1beta2",
+        "Kind": "VerticalPodAutoscalerCheckpointList",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.autoscaling.v1beta2.VerticalPodAutoscalerCheckpointSpec": {
+      "description": "VerticalPodAutoscalerCheckpointSpec is the specification of the checkpoint object.",
+      "type": "object",
+      "properties": {
+        "containerName": {
+          "description": "Name of the checkpointed container.",
+          "type": "string"
+        },
+        "vpaObjectName": {
+          "description": "Name of the VPA object that stored VerticalPodAutoscalerCheckpoint object.",
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "autoscaling.k8s.io",
+        "Version": "v1beta2",
+        "Kind": "VerticalPodAutoscalerCheckpointSpec",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.autoscaling.v1beta2.VerticalPodAutoscalerCheckpointStatus": {
+      "description": "VerticalPodAutoscalerCheckpointStatus contains data of the checkpoint.",
+      "type": "object",
+      "properties": {
+        "cpuHistogram": {
+          "description": "Checkpoint of histogram for consumption of CPU.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.autoscaling.v1beta2.HistogramCheckpoint"
+        },
+        "firstSampleStart": {
+          "description": "Timestamp of the fist sample from the histograms.",
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Time"
+        },
+        "lastSampleStart": {
+          "description": "Timestamp of the last sample from the histograms.",
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Time"
+        },
+        "lastUpdateTime": {
+          "description": "The time when the status was last refreshed.",
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Time"
+        },
+        "memoryHistogram": {
+          "description": "Checkpoint of histogram for consumption of memory.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.autoscaling.v1beta2.HistogramCheckpoint"
+        },
+        "totalSamplesCount": {
+          "description": "Total number of samples in the histograms.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "version": {
+          "description": "Version of the format of the stored data.",
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "autoscaling.k8s.io",
+        "Version": "v1beta2",
+        "Kind": "VerticalPodAutoscalerCheckpointStatus",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.autoscaling.v1beta2.VerticalPodAutoscalerCondition": {
+      "description": "VerticalPodAutoscalerCondition describes the state of a VerticalPodAutoscaler at a certain point.",
+      "type": "object",
+      "required": [
+        "type",
+        "status"
+      ],
+      "properties": {
+        "lastTransitionTime": {
+          "description": "lastTransitionTime is the last time the condition transitioned from one status to another",
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Time"
+        },
+        "message": {
+          "description": "message is a human-readable explanation containing details about the transition",
+          "type": "string"
+        },
+        "reason": {
+          "description": "reason is the reason for the condition's last transition.",
+          "type": "string"
+        },
+        "status": {
+          "description": "status is the status of the condition (True, False, Unknown)",
+          "type": "string",
+          "default": ""
+        },
+        "type": {
+          "description": "type describes the current condition",
+          "type": "string",
+          "default": ""
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "autoscaling.k8s.io",
+        "Version": "v1beta2",
+        "Kind": "VerticalPodAutoscalerCondition",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.autoscaling.v1beta2.VerticalPodAutoscalerList": {
+      "description": "VerticalPodAutoscalerList is a list of VerticalPodAutoscaler objects.",
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "description": "items is the list of vertical pod autoscaler objects.",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/io.k8s.autoscaling.v1beta2.VerticalPodAutoscaler"
+          }
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "metadata is the standard list metadata.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "list",
+        "Group": "autoscaling.k8s.io",
+        "Version": "v1beta2",
+        "Kind": "VerticalPodAutoscalerList",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.autoscaling.v1beta2.VerticalPodAutoscalerSpec": {
+      "description": "VerticalPodAutoscalerSpec is the specification of the behavior of the autoscaler.",
+      "type": "object",
+      "required": [
+        "targetRef"
+      ],
+      "properties": {
+        "resourcePolicy": {
+          "description": "Controls how the autoscaler computes recommended resources. The resource policy may be used to set constraints on the recommendations for individual containers. If not specified, the autoscaler computes recommended resources for all containers in the pod, without additional constraints.",
+          "$ref": "#/definitions/io.k8s.autoscaling.v1beta2.PodResourcePolicy"
+        },
+        "targetRef": {
+          "description": "TargetRef points to the controller managing the set of pods for the autoscaler to control - e.g. Deployment, StatefulSet. VerticalPodAutoscaler can be targeted at controller implementing scale subresource (the pod set is retrieved from the controller's ScaleStatus) or some well known controllers (e.g. for DaemonSet the pod set is read from the controller's spec). If VerticalPodAutoscaler cannot use specified target it will report ConfigUnsupported condition. Note that VerticalPodAutoscaler does not require full implementation of scale subresource - it will not use it to modify the replica count. The only thing retrieved is a label selector matching pods grouped by the target resource.",
+          "$ref": "#/definitions/io.k8s.api.autoscaling.v1.CrossVersionObjectReference"
+        },
+        "updatePolicy": {
+          "description": "Describes the rules on how changes are applied to the pods. If not specified, all fields in the `PodUpdatePolicy` are set to their default values.",
+          "$ref": "#/definitions/io.k8s.autoscaling.v1beta2.PodUpdatePolicy"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "autoscaling.k8s.io",
+        "Version": "v1beta2",
+        "Kind": "VerticalPodAutoscalerSpec",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.autoscaling.v1beta2.VerticalPodAutoscalerStatus": {
+      "description": "VerticalPodAutoscalerStatus describes the runtime state of the autoscaler.",
+      "type": "object",
+      "properties": {
+        "conditions": {
+          "description": "Conditions is the set of conditions required for this autoscaler to scale its target, and indicates whether or not those conditions are met.",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/io.k8s.autoscaling.v1beta2.VerticalPodAutoscalerCondition"
+          },
+          "x-kubernetes-patch-merge-key": "type",
+          "x-kubernetes-patch-strategy": "merge"
+        },
+        "recommendation": {
+          "description": "The most recently computed amount of resources recommended by the autoscaler for the controlled pods.",
+          "$ref": "#/definitions/io.k8s.autoscaling.v1beta2.RecommendedPodResources"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "autoscaling.k8s.io",
+        "Version": "v1beta2",
+        "Kind": "VerticalPodAutoscalerStatus",
+        "Scope": "Namespaced"
+      }
+    }
+  }
+}

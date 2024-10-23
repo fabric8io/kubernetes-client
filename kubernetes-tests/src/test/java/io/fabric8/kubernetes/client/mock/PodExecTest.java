@@ -46,7 +46,7 @@ class PodExecTest {
   private static PodStatus READY = new PodStatusBuilder().addNewCondition().withType("Ready").withStatus("True").endCondition()
       .build();
 
-  private KubernetesMockServer server;
+  KubernetesMockServer server;
   private KubernetesClient client;
 
   @BeforeEach

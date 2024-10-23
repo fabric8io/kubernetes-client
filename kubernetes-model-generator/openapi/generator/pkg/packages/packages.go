@@ -52,6 +52,10 @@ var OpenShiftPackagePatterns = []string{
 	"github.com/openshift/custom-resource-status/conditions/v...",
 }
 
+var AutoscalingPackagePatterns = []string{
+	"k8s.io/autoscaler/vertical-pod-autoscaler/pkg/apis/autoscaling.k8s.io/v...",
+}
+
 var ChaosMeshPackagePatterns = []string{
 	"github.com/chaos-mesh/chaos-mesh/api/v1alpha1",
 }

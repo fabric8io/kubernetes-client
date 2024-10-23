@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class KubernetesMockServerTest {
 
-  private KubernetesMockServer server;
+  KubernetesMockServer server;
   private KubernetesClient client;
 
   @BeforeEach

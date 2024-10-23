@@ -7,6 +7,7 @@
 * Fix #6214: Java generator does not recognize fields in CRDs other than metadata, spec, and status
 
 #### Improvements
+* Fix #3069: added AdditionalPrinterColumn type annotation to completely specify additional printer columns
 * Fix #5264: Remove deprecated `Config.errorMessages` field
 * Fix #6008: removing the optional dependency on bouncy castle
 * Fix #6407: sundrio builder-annotations is not available via bom import
@@ -16,11 +17,13 @@
 * Fix #5480: Move `io.fabric8:zjsonpatch` to KubernetesClient project
 
 #### Dependency Upgrade
-* Fix #6052: Removed dependency on no longer maintained com.github.mifmif:generex
+* Fix #2632: Bumped OkHttp from 3.12.12 to 4.12.0
 * Fix #5965: Bumped sundrio.version from 0.103.1 to 0.200.0
+* Fix #6052: Removed dependency on no longer maintained com.github.mifmif:generex
 
 #### New Features
 * Fix #6150: Config uses `proxy-url` in kubeconfig's cluster configuration
+* Fix #5719: io.fabric8:mockwebserver is now based on Vert.x
 
 #### _**Note**_: Breaking changes
 * Check detailed migration documentation for breaking changes in [7.0.0](./doc/MIGRATION-v7.md)
@@ -28,6 +31,8 @@
 * Fix #6081: Moved Java baseline from 8 (1.8) to 11
 * Fix #6138: Removed unused `io:fabric8:kubernetes-model` artifact
 * Fix #6156: Removed deprecated extension `io:fabric8:service-catalog`
+* Fix #6158: Removed deprecated methods from `io.fabric8.kubernetes.client.utils.IOHelpers`
+* Fix #6361: Renamed SettableBeanPropertyDelegate to SettableBeanPropertyDelegating
 
 ### 6.13.4 (2024-09-25)
 

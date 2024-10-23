@@ -31,7 +31,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("Kubernetes Mock Server Expectations")
 class ExpectationsTest {
-  private KubernetesMockServer server;
+  KubernetesMockServer server;
   private KubernetesClient client;
   private HttpClient httpClient;
   private HttpRequest.Builder request;

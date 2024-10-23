@@ -20,10 +20,10 @@ import io.fabric8.kubernetes.api.model.APIGroupListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
+import io.fabric8.mockwebserver.http.Headers;
+import io.fabric8.mockwebserver.http.RecordedRequest;
 import io.fabric8.mockwebserver.utils.ResponseProvider;
 import io.fabric8.openshift.client.OpenShiftClient;
-import okhttp3.Headers;
-import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.jupiter.api.Test;
 
 import java.net.HttpURLConnection;
@@ -64,7 +64,7 @@ class AdaptTest {
         .andReturn(HttpURLConnection.HTTP_OK, "{\"authorization_endpoint\":\"" + authorizationEndpoint + "\"}")
         .once();
     server.expect().get().withPath("/oauth/authorize?response_type=token&client_id=openshift-challenging-client")
-        .andReply(new ResponseProvider<Object>() {
+        .andReply(new ResponseProvider<>() {
           @Override
           public Object getBody(RecordedRequest recordedRequest) {
             return null;
@@ -85,6 +85,7 @@ class AdaptTest {
 
           @Override
           public void setHeaders(Headers headers) {
+            // NO OP
           }
         }).once();
     server.expect().withPath("/apis").andReturn(HttpURLConnection.HTTP_OK, new APIGroupListBuilder()

@@ -17,11 +17,9 @@ package io.fabric8.mockwebserver.internal;
 
 import io.fabric8.mockwebserver.ServerRequest;
 import io.fabric8.mockwebserver.ServerResponse;
-import io.fabric8.mockwebserver.dsl.HttpMethod;
-import okhttp3.mockwebserver.Dispatcher;
-import okhttp3.mockwebserver.MockResponse;
-import okhttp3.mockwebserver.RecordedRequest;
-import okhttp3.mockwebserver.SocketPolicy;
+import io.fabric8.mockwebserver.http.Dispatcher;
+import io.fabric8.mockwebserver.http.MockResponse;
+import io.fabric8.mockwebserver.http.RecordedRequest;
 
 import java.util.Collection;
 import java.util.Map;
@@ -38,19 +36,13 @@ public class MockDispatcher extends Dispatcher {
   }
 
   @Override
-  public MockResponse peek() {
-    return new MockResponse().setSocketPolicy(SocketPolicy.EXPECT_CONTINUE);
-  }
-
-  @Override
   public MockResponse dispatch(RecordedRequest request) {
     for (WebSocketSession webSocketSession : webSocketSessions) {
       webSocketSession.dispatch(request);
     }
 
-    HttpMethod method = HttpMethod.valueOf(request.getMethod());
     String path = request.getPath();
-    SimpleRequest key = new SimpleRequest(method, path);
+    SimpleRequest key = new SimpleRequest(request.method(), path);
     SimpleRequest keyForAnyMethod = new SimpleRequest(path);
     if (responses.containsKey(key)) {
       Queue<ServerResponse> queue = responses.get(key);
@@ -59,12 +51,12 @@ public class MockDispatcher extends Dispatcher {
       Queue<ServerResponse> queue = responses.get(keyForAnyMethod);
       return handleResponse(queue.peek(), queue, request);
     }
-    return new MockResponse().setResponseCode(404);
+    return new MockResponse().setHttpVersion(request.getHttpVersion()).setResponseCode(404);
   }
 
   private MockResponse handleResponse(ServerResponse response, Queue<ServerResponse> queue, RecordedRequest request) {
     if (response == null) {
-      return new MockResponse().setResponseCode(404);
+      return new MockResponse().setHttpVersion(request.getHttpVersion()).setResponseCode(404);
     } else if (!response.isRepeatable()) {
       queue.remove();
     }

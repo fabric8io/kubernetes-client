@@ -51,7 +51,10 @@ public abstract class AbstractWebSocketSendTest {
   @Test
   @DisplayName("send, emits a message to the server (the server responds to this message)")
   void sendEmitsMessageToWebSocketServer() throws Exception {
-    try (final HttpClient client = getHttpClientFactory().newBuilder().build()) {
+    try (
+        final HttpClient client = getHttpClientFactory().newBuilder().build();
+        // ensure that a derived builder works
+        final var derivedClient = client.newBuilder().build()) {
       // Given
       server.expect().withPath("/send-text")
           .andUpgradeToWebSocket()
@@ -62,14 +65,12 @@ public abstract class AbstractWebSocketSendTest {
           .done()
           .always();
       final BlockingQueue<String> receivedText = new ArrayBlockingQueue<>(1);
-      final WebSocket ws = client
-          // ensure that a derived builder works
-          .newBuilder().build().newWebSocketBuilder()
-          // TODO: JDK HttpClient implementation doesn't work with ws URIs
-          // - Currently we are using an HttpRequest.Builder which is then
-          //   mapped to a WebSocket.Builder. We should probably user the WebSocket.Builder
-          //   directly
-          //.uri(URI.create(String.format("ws://%s:%s/send-text", server.getHostName(), server.getPort())))
+      // TODO: JDK HttpClient implementation doesn't work with ws URIs
+      // - Currently we are using an HttpRequest.Builder which is then
+      //   mapped to a WebSocket.Builder. We should probably use the WebSocket.Builder
+      //   directly
+      //.uri(URI.create(String.format("ws://%s:%s/send-text", server.getHostName(), server.getPort())))
+      final var ws = derivedClient.newWebSocketBuilder()
           .uri(URI.create(server.url("send-text")))
           .buildAsync(new WebSocket.Listener() {
             @Override

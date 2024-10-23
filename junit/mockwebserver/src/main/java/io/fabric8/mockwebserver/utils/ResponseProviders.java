@@ -15,8 +15,8 @@
  */
 package io.fabric8.mockwebserver.utils;
 
-import okhttp3.Headers;
-import okhttp3.mockwebserver.RecordedRequest;
+import io.fabric8.mockwebserver.http.Headers;
+import io.fabric8.mockwebserver.http.RecordedRequest;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -54,7 +54,7 @@ public class ResponseProviders {
 
   public static <R> ResponseProvider<R> of(final int statusCode, final BodyProvider<R> bodyProvider) {
     if (bodyProvider != null) {
-      return new ResponseProvider<R>() {
+      return new ResponseProvider<>() {
         private Headers headers = new Headers.Builder().build();
 
         @Override

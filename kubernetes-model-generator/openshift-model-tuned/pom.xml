@@ -28,7 +28,7 @@
 
   <artifactId>openshift-model-tuned</artifactId>
   <packaging>bundle</packaging>
-  <name>Fabric8 :: OpenShift Node Tuning Operator Model</name>
+  <name>Fabric8 :: OpenShift Model :: Tuned</name>
 
   <properties>
     <clone-kube>true</clone-kube>

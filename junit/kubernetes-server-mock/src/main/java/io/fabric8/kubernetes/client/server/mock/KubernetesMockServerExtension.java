@@ -16,15 +16,14 @@
 package io.fabric8.kubernetes.client.server.mock;
 
 import io.fabric8.kubernetes.client.Client;
-import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.mockwebserver.Context;
+import io.fabric8.mockwebserver.MockWebServer;
 import io.fabric8.mockwebserver.ServerRequest;
 import io.fabric8.mockwebserver.ServerResponse;
+import io.fabric8.mockwebserver.http.Dispatcher;
 import io.fabric8.mockwebserver.internal.MockDispatcher;
-import okhttp3.mockwebserver.Dispatcher;
-import okhttp3.mockwebserver.MockWebServer;
 import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
@@ -146,14 +145,6 @@ public class KubernetesMockServerExtension
   protected void destroyStatic() {
     staticMock.destroy();
     staticClient.close();
-  }
-
-  /**
-   * @deprecated no longer used
-   */
-  @Deprecated
-  protected Class<?> getClientType() {
-    return KubernetesClient.class;
   }
 
   protected Class<?> getKubernetesMockServerType() {

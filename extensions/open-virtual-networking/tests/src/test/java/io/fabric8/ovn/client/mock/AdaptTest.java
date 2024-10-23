@@ -29,7 +29,7 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 @EnableKubernetesMockClient
 class AdaptTest {
   private KubernetesClient client;
-  private KubernetesMockServer server;
+  KubernetesMockServer server;
 
   @ParameterizedTest(name = "when server does not support {0}, then adapt = {1}")
   @CsvSource(value = {

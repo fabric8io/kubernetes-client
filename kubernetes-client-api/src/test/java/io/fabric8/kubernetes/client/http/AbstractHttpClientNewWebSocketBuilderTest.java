@@ -113,6 +113,35 @@ public abstract class AbstractHttpClientNewWebSocketBuilderTest {
   }
 
   @Test
+  void buildAsyncConnectsAndCloses() throws Exception {
+    server.expect().withPath("/websocket-on-close")
+        .andUpgradeToWebSocket()
+        .open()
+        .expectSentWebSocketMessage("NEVER RECEIVED; JUST TO KEEP THE CONNECTION OPEN")
+        .andEmit("OK")
+        .once()
+        .done()
+        .always();
+    final CompletableFuture<String> closeMessage = new CompletableFuture<>();
+    httpClient.newWebSocketBuilder()
+        .uri(URI.create(server.url("/websocket-on-close")))
+        .buildAsync(new WebSocket.Listener() {
+          public void onOpen(WebSocket webSocket) {
+            webSocket.sendClose(1000, "Closing from client");
+          }
+
+          @Override
+          public void onClose(WebSocket webSocket, int code, String reason) {
+            closeMessage.complete(reason);
+          }
+        }).get(10L, TimeUnit.SECONDS);
+    assertThat(closeMessage)
+        .succeedsWithin(10, TimeUnit.SECONDS)
+        .asString()
+        .isEqualTo("Closing from client");
+  }
+
+  @Test
   void buildAsyncCantUpgradeThrowsWebSocketHandshakeException() {
     final CompletableFuture<WebSocket> future = httpClient.newWebSocketBuilder()
         .uri(URI.create(server.url("/not-found")))
@@ -191,4 +220,5 @@ public abstract class AbstractHttpClientNewWebSocketBuilderTest {
         .extracting(HttpResponse::code)
         .isEqualTo(200);
   }
+
 }

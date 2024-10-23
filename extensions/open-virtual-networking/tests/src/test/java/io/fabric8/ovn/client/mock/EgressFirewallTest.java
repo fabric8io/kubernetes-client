@@ -31,7 +31,7 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 @EnableKubernetesMockClient
 class EgressFirewallTest {
   private OpenVirtualNetworkingClient ovnClient;
-  private KubernetesMockServer server;
+  KubernetesMockServer server;
 
   @Test
   void get() {

@@ -15,6 +15,8 @@
  */
 package io.fabric8.openshift.client.server.mock;
 
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.openshift.api.model.autoscaling.v1.ClusterAutoscaler;
 import io.fabric8.openshift.api.model.autoscaling.v1.ClusterAutoscalerBuilder;
 import io.fabric8.openshift.api.model.autoscaling.v1.ClusterAutoscalerList;
@@ -26,9 +28,9 @@ import java.net.HttpURLConnection;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@EnableOpenShiftMockClient
+@EnableKubernetesMockClient
 class ClusterAutoscalerTest {
-  private OpenShiftMockServer server;
+  KubernetesMockServer server;
   private OpenShiftClient client;
 
   @Test

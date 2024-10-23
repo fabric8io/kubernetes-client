@@ -16,10 +16,10 @@
 package io.fabric8.mockwebserver.internal;
 
 import io.fabric8.mockwebserver.ServerResponse;
+import io.fabric8.mockwebserver.http.MockResponse;
+import io.fabric8.mockwebserver.http.RecordedRequest;
 import io.fabric8.mockwebserver.utils.ResponseProvider;
 import io.fabric8.mockwebserver.utils.ResponseProviders;
-import okhttp3.mockwebserver.MockResponse;
-import okhttp3.mockwebserver.RecordedRequest;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -59,6 +59,7 @@ public class ChunkedResponse implements ServerResponse {
   @Override
   public MockResponse toMockResponse(RecordedRequest request) {
     MockResponse mockResponse = new MockResponse();
+    mockResponse.setHttpVersion(request.getHttpVersion());
     mockResponse.setHeaders(bodyProvider.getHeaders());
     mockResponse.setChunkedBody(concatBody(request), DEFAULT_MAX_CHUNK_SIZE);
     mockResponse.setResponseCode(bodyProvider.getStatusCode(request));

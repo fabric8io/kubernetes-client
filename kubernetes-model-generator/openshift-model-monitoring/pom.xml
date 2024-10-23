@@ -28,7 +28,7 @@
 
   <artifactId>openshift-model-monitoring</artifactId>
   <packaging>bundle</packaging>
-  <name>Fabric8 :: OpenShift Monitoring Model</name>
+  <name>Fabric8 :: OpenShift Model :: Monitoring</name>
 
   <properties>
     <clone-kube>true</clone-kube>

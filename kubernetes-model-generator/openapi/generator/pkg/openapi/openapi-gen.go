@@ -31,12 +31,17 @@ import (
 
 type GoGenerator struct {
 	openapiargs.Args
-	Patterns  []string
-	inputPkgs map[string]bool
+	Patterns   []string
+	inputPkgs  map[string]bool
+	processors []func(context *generator.Context, pkg *types.Package, t *types.Type, member *types.Member, memberIndex int)
 }
 
 func (g *GoGenerator) Generate() error {
 	g.ReportFilename = g.OutputFile + ".report.txt"
+	g.processors = []func(context *generator.Context, pkg *types.Package, t *types.Type, member *types.Member, memberIndex int){
+		processSwaggerIgnore,
+		fixVerticalPodAutoscalerInvalidMap,
+	}
 	return gengo.Execute(
 		generators.NameSystems(),
 		generators.DefaultNameSystem(),
@@ -80,16 +85,9 @@ func (g *GoGenerator) processUniverse(context *generator.Context) {
 
 	for _, pkg := range context.Universe {
 		for _, t := range pkg.Types {
-			for im, m := range t.Members {
-				// Consider swaggerignore tag and add json:omitted so that kube-openapi ignores the field
-				swaggerIgnore := reflect.StructTag(m.Tags).Get("swaggerignore")
-				if swaggerIgnore != "" {
-					jsonTag := reflect.StructTag(m.Tags).Get("json")
-					if jsonTag == "" {
-						t.Members[im].Tags = m.Tags + " json:\"-\""
-					} else {
-						t.Members[im].Tags = strings.Replace(m.Tags, jsonTag, ",omitted", 1)
-					}
+			for memberIndex, member := range t.Members {
+				for _, processor := range g.processors {
+					processor(context, pkg, t, &member, memberIndex)
 				}
 			}
 		}
@@ -152,4 +150,32 @@ func (g *GoGenerator) KubernetesFilterFunc(c *generator.Context, t *types.Type) 
 		return true
 	}
 	return false
+}
+
+// Processors used to fix specific issues
+
+// processSwaggerIgnore function to process the swaggerignore tag and add json:omitted so that kube-openapi ignores the field.
+func processSwaggerIgnore(_ *generator.Context, _ *types.Package, t *types.Type, m *types.Member, memberIndex int) {
+	swaggerIgnore := reflect.StructTag(m.Tags).Get("swaggerignore")
+	if swaggerIgnore != "" {
+		jsonTag := reflect.StructTag(m.Tags).Get("json")
+		if jsonTag == "" {
+			t.Members[memberIndex].Tags = m.Tags + " json:\"-\""
+		} else {
+			t.Members[memberIndex].Tags = strings.Replace(m.Tags, jsonTag, ",omitted", 1)
+		}
+	}
+}
+
+// fixVerticalPodAutoscaler invalidMap key property (replaces it by string)
+// failed to generate map property in k8s.io/autoscaler/vertical-pod-autoscaler/pkg/apis/autoscaling.k8s.io/v1.HistogramCheckpoint: BucketWeights: map with non-string keys are not supported by OpenAPI in map[int]uint32
+// https://github.com/kubernetes/kube-openapi/blob/67ed5848f094e4cd74f5bdc458cd98f12767c538/pkg/generators/openapi.go#L1062-L1065
+func fixVerticalPodAutoscalerInvalidMap(context *generator.Context, pkg *types.Package, t *types.Type, m *types.Member, memberIndex int) {
+	// https://github.com/kubernetes/autoscaler/blob/bb94d270d71795339fc750f1dafeee2a95ed03f5/vertical-pod-autoscaler/pkg/apis/autoscaling.k8s.io/v1beta1/types.go#L318
+	// https://github.com/kubernetes/autoscaler/blob/bb94d270d71795339fc750f1dafeee2a95ed03f5/vertical-pod-autoscaler/pkg/apis/autoscaling.k8s.io/v1beta2/types.go#L347
+	// https://github.com/kubernetes/autoscaler/blob/bb94d270d71795339fc750f1dafeee2a95ed03f5/vertical-pod-autoscaler/pkg/apis/autoscaling.k8s.io/v1/types.go#L420C2-L420C15
+	if m.Name == "BucketWeights" && strings.HasPrefix(pkg.Path, "k8s.io/autoscaler/vertical-pod-autoscaler/") {
+		stringType := context.Universe.Type(types.Name{Name: "string"})
+		t.Members[memberIndex].Type.Key = stringType
+	}
 }

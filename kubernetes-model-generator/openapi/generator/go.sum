@@ -753,6 +753,8 @@ github.com/marcnuri-forks/api v0.0.0-20240930125604-62d5277244a4 h1:OVm/tM0Io+jk
 github.com/marcnuri-forks/api v0.0.0-20240930125604-62d5277244a4/go.mod h1:OOh6Qopf21pSzqNVCB5gomomBXb8o5sGKZxG2KNpaXM=
 github.com/marcnuri-forks/baremetal-operator/apis v0.0.0-20241004142039-6b123cc23349 h1:jSdEzmJMzBkCBT4Ft39OYARV+fgP82RlYcZc09Z8Ldk=
 github.com/marcnuri-forks/baremetal-operator/apis v0.0.0-20241004142039-6b123cc23349/go.mod h1:Qao+jEhzuKU8M763GkP70ZIdiZCaeC0H0LPyMw/l/O0=
+github.com/marcnuri-forks/kubernetes-autoscaler/vertical-pod-autoscaler v0.0.0-20241015073945-66b859601d68 h1:l07b2bEkrVvZLAkgQgUoQPPTmjDX2PqZeMrjhJYjJaw=
+github.com/marcnuri-forks/kubernetes-autoscaler/vertical-pod-autoscaler v0.0.0-20241015073945-66b859601d68/go.mod h1:9ywHbt0kTrLyeNGgTNm7WEns34PmBMEr+9bDKTxW6wQ=
 github.com/marcnuri-forks/operator-lifecycle-manager v0.0.0-20241002090802-7539192fbf96 h1:SYIVgj5Jfq7gpO1kqSvKYazwhVgGvAfszlKFoqVqw3g=
 github.com/marcnuri-forks/operator-lifecycle-manager v0.0.0-20241002090802-7539192fbf96/go.mod h1:ToPwavGeU72yaPYn18qaDo6anPlJvFiAkgXhS39PgPc=
 github.com/matryer/moq v0.2.3/go.mod h1:9RtPYjTnH1bSBIkpvtHkFN7nbWAnO7oRpdJkEIn6UtE=
