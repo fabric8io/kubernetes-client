@@ -37,7 +37,7 @@ import java.util.function.Supplier;
  *
  * <p>
  * This BeanPropertyWriter implementation is intended to be used in combination with
- * the {@link SettableBeanPropertyDelegate} to allow the propagation of deserialized properties that don't match the
+ * the {@link SettableBeanPropertyDelegating} to allow the propagation of deserialized properties that don't match the
  * target field types.
  */
 public class BeanPropertyWriterDelegate extends BeanPropertyWriter {

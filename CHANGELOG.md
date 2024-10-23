@@ -32,6 +32,7 @@
 * Fix #6138: Removed unused `io:fabric8:kubernetes-model` artifact
 * Fix #6156: Removed deprecated extension `io:fabric8:service-catalog`
 * Fix #6158: Removed deprecated methods from `io.fabric8.kubernetes.client.utils.IOHelpers`
+* Fix #6361: Renamed SettableBeanPropertyDelegate to SettableBeanPropertyDelegating
 
 ### 6.13.4 (2024-09-25)
 

@@ -39,12 +39,12 @@ import java.util.function.BooleanSupplier;
  * A fall-back mechanism is implemented in the deserializeAndSet methods to allow field values that don't match the
  * target type to be preserved in the anySetter method if exists.
  */
-public class SettableBeanPropertyDelegate extends SettableBeanProperty.Delegating {
+public class SettableBeanPropertyDelegating extends SettableBeanProperty.Delegating {
 
   private final SettableAnyProperty anySetter;
   private final transient BooleanSupplier useAnySetter;
 
-  SettableBeanPropertyDelegate(SettableBeanProperty delegate, SettableAnyProperty anySetter, BooleanSupplier useAnySetter) {
+  SettableBeanPropertyDelegating(SettableBeanProperty delegate, SettableAnyProperty anySetter, BooleanSupplier useAnySetter) {
     super(delegate);
     this.anySetter = anySetter;
     this.useAnySetter = useAnySetter;
@@ -55,7 +55,7 @@ public class SettableBeanPropertyDelegate extends SettableBeanProperty.Delegatin
    */
   @Override
   protected SettableBeanProperty withDelegate(SettableBeanProperty d) {
-    return new SettableBeanPropertyDelegate(d, anySetter, useAnySetter);
+    return new SettableBeanPropertyDelegating(d, anySetter, useAnySetter);
   }
 
   /**
