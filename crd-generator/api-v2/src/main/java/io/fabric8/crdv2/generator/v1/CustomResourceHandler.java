@@ -113,6 +113,7 @@ public class CustomResourceHandler extends AbstractCustomResourceHandler {
         .withNewNames()
         .withKind(config.kind())
         .withShortNames(config.shortNames())
+        .withCategories(config.categories())
         .withPlural(config.plural())
         .withSingular(config.singular())
         .endNames()
