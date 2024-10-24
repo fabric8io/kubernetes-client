@@ -40,6 +40,7 @@ import java.time.Instant;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import static io.fabric8.kubernetes.client.http.TestStandardHttpClientFactory.Mode.SINGLETON;
 import static io.fabric8.kubernetes.client.utils.OpenIDConnectionUtils.CLIENT_ID_KUBECONFIG;
@@ -77,9 +78,13 @@ class OpenIDConnectionUtilsTest {
     oAuthTokenResponse.setIdToken("id-token-updated");
     oAuthTokenResponse.setRefreshToken("refresh-token-updated");
     Path kubeConfig = Files.createTempFile(tempDir, "test", "kubeconfig");
-    Files.copy(OpenIDConnectionUtilsTest.class.getResourceAsStream("/test-kubeconfig-oidc"), kubeConfig,
+    Files.copy(
+        Objects.requireNonNull(OpenIDConnectionUtilsTest.class.getResourceAsStream("/test-kubeconfig-oidc")),
+        kubeConfig,
         StandardCopyOption.REPLACE_EXISTING);
-    Config originalConfig = Config.fromKubeconfig(null, new String(Files.readAllBytes(kubeConfig), StandardCharsets.UTF_8),
+    Config originalConfig = Config.fromKubeconfig(
+        null,
+        new String(Files.readAllBytes(kubeConfig), StandardCharsets.UTF_8),
         kubeConfig.toFile().getAbsolutePath());
 
     // When
