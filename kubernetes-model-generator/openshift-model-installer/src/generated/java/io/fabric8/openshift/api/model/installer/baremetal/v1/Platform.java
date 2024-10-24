@@ -1,7 +1,6 @@
 
 package io.fabric8.openshift.api.model.installer.baremetal.v1;
 
-import java.lang.String;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
