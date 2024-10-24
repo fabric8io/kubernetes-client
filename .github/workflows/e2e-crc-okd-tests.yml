@@ -14,15 +14,13 @@
 # limitations under the License.
 #
 
-name: KubernetesClient E2E Tests (CRC-OKD)
+name: E2E CRC-OKD Tests
 
 on:
   workflow_dispatch:
   pull_request:
-    paths-ignore:
-      - 'doc/**'
-      - 'ide-config/**'
-      - '**.md'
+    paths:
+      - .github/workflows/e2e-crc-okd-tests.yml
   schedule:
     - cron: '0 4 * * *' # Every day at 4am
 
@@ -36,7 +34,7 @@ env:
   SHELL: /bin/bash
 
 jobs:
-  openshift-kubernetes-distribution:
+  e2e:
     name: CRC ${{ matrix.crc }} / OKD ${{ matrix.okd }}
     runs-on: ubuntu-24.04
     if: github.repository == 'fabric8io/kubernetes-client'
@@ -88,11 +86,11 @@ jobs:
         run: |
           crc config set preset okd
           crc config set network-mode user
-      - name: Setup the crc
+      - name: Setup CRC
         run: sudo -su $USER crc setup
-      - name: Start the crc
+      - name: Start CRC
         run: sudo -su $USER crc start
       - name: Install Kubernetes Client
-        run: make quickly 
+        run: make quickly
       - name: Install and Run Integration Tests
-        run: sudo -su $USER ./mvnw ${MAVEN_ARGS} -Pitests -pl $IT_MODULE verify 
+        run: ./mvnw ${MAVEN_ARGS} -Pitests -pl $IT_MODULE verify
