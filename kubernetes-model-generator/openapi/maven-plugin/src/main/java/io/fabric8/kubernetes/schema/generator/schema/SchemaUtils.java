@@ -174,7 +174,9 @@ public class SchemaUtils {
    * @return the simple class name associated to the provided Schema reference.
    */
   public static String refToClassName(String ref) {
-    return capitalize(ref.substring(ref.lastIndexOf('.') + 1));
+    return capitalize(ref.substring(ref.lastIndexOf('.') + 1))
+        // Remove underscores from Class Names, this doesn't look good in Java :)
+        .replace("_", "");
   }
 
   private String refToModelPackage(String ref) {
