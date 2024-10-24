@@ -80,7 +80,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
-        <version>3.6.0</version>
         <executions>
             <execution>
                 <phase>package</phase>
@@ -114,7 +113,6 @@
     <plugin>
         <groupId>org.skife.maven</groupId>
         <artifactId>really-executable-jar-maven-plugin</artifactId>
-        <version>2.1.1</version>
         <configuration>
             <flags>-Xmx1G</flags>
             <programFile>java-gen</programFile>
