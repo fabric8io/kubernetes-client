@@ -130,7 +130,9 @@ class ModelGenerator {
     }
     ret.addImport("com.fasterxml.jackson.annotation.JsonInclude");
     ret.put("classJsonInclude", "NON_NULL");
+    ret.put("classInterface", ret.isInterface() ? "interface" : "class");
     ret.put("className", ret.getClassSimpleName());
+    ret.put("implementsExtends", ret.isInterface() ? "extends" : "implements");
     ret.put("implementedInterfaces", resolveImplementedInterfaces(ret));
     final List<Map<String, Object>> templateFields = templateFields(ret);
     ret.put("fields", templateFields);
@@ -140,15 +142,19 @@ class ModelGenerator {
     }
     ret.put("propertyOrder", SchemaUtils.propertyOrder(ret.getClassSchema()));
     ret.put("builderPackage", settings.getBuilderPackage());
-    if (settings.isAddBuildableReferences()) {
+    if (!ret.isInterface() && settings.isAddBuildableReferences()) {
       ret.put("buildable", false);
+      ret.addImport("io.sundr.builder.annotations.Buildable");
       ret.addImport("io.sundr.builder.annotations.BuildableReference");
       ret.put("buildableReferences", buildableReferences(ret, templateFields));
-    } else {
+    } else if (!ret.isInterface()) {
+      ret.addImport("io.sundr.builder.annotations.Buildable");
       ret.put("buildable", true);
     }
-    if (!ret.getSchemaProperties().containsKey("additionalProperties")) {
+    if (!ret.getSchemaProperties().containsKey("additionalProperties") && !ret.isInterface()) {
       ret.put("additionalProperties", true);
+      ret.addImport("java.util.LinkedHashMap");
+      ret.addImport("java.util.Map");
       ret.addImport("com.fasterxml.jackson.annotation.JsonAnyGetter");
       ret.addImport("com.fasterxml.jackson.annotation.JsonAnySetter");
     }
@@ -236,12 +242,14 @@ class ModelGenerator {
   }
 
   private String resolveImplementedInterfaces(TemplateContext templateContext) {
-    // Editable (all classes)
-    templateContext.addImport(settings.getBuilderPackage() + "." + "Editable");
     final StringBuilder implementedInterfaces = new StringBuilder();
-    implementedInterfaces.append("Editable<").append(templateContext.getClassSimpleName()).append("Builder>");
+    // Editable (all classes except interfaces)
+    if (!templateContext.isInterface()) {
+      templateContext.addImport(settings.getBuilderPackage() + "." + "Editable");
+      implementedInterfaces.append("Editable<").append(templateContext.getClassSimpleName()).append("Builder>");
+      implementedInterfaces.append(" , "); // TODO: weird comma introduced by jsonschema2pojo
+    }
     // HasMetadata
-    implementedInterfaces.append(" , "); // TODO: weird comma introduced by jsonschema2pojo
     if (templateContext.isHasMetadata()) {
       if (!templateContext.isInRootPackage()) {
         templateContext.addImport(settings.getHasMetadataClass());
@@ -312,13 +320,10 @@ class ModelGenerator {
 
   private static Set<String> initDefaultImports() {
     return new HashSet<>(Arrays.asList(
-        "java.util.LinkedHashMap",
-        "java.util.Map",
         "javax.annotation.Generated",
         "com.fasterxml.jackson.annotation.JsonIgnore",
         "com.fasterxml.jackson.annotation.JsonPropertyOrder",
         "com.fasterxml.jackson.databind.annotation.JsonDeserialize",
-        "io.sundr.builder.annotations.Buildable",
         "lombok.EqualsAndHashCode",
         "lombok.ToString",
         "lombok.experimental.Accessors"));

@@ -62,12 +62,14 @@ var ChaosMeshPackagePatterns = []string{
 
 var IstioPackagePatterns = []string{
 	"istio.io/api/analysis/v...",
+	"istio.io/api/extensions/v...",
 	"istio.io/api/meta/v...",
+	"istio.io/api/networking/v...",
 	"istio.io/api/security/v...",
+	"istio.io/api/telemetry/v...",
 	"istio.io/api/type/v...",
 	"istio.io/client-go/pkg/apis/extensions/v...",
 	"istio.io/client-go/pkg/apis/networking/v...",
-	"istio.io/api/networking/v...",
 	"istio.io/client-go/pkg/apis/security/v...",
 	"istio.io/client-go/pkg/apis/telemetry/v...",
 }
