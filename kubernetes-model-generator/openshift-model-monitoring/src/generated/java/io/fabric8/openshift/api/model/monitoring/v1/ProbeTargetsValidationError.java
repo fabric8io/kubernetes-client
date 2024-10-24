@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
@@ -35,7 +34,7 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "err"
+
 })
 @ToString
 @EqualsAndHashCode
@@ -62,32 +61,8 @@ import lombok.experimental.Accessors;
 public class ProbeTargetsValidationError implements Editable<ProbeTargetsValidationErrorBuilder> , KubernetesResource
 {
 
-    @JsonProperty("err")
-    private String err;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
-
-    /**
-     * No args constructor for use in serialization
-     * 
-     */
-    public ProbeTargetsValidationError() {
-    }
-
-    public ProbeTargetsValidationError(String err) {
-        super();
-        this.err = err;
-    }
-
-    @JsonProperty("err")
-    public String getErr() {
-        return err;
-    }
-
-    @JsonProperty("err")
-    public void setErr(String err) {
-        this.err = err;
-    }
 
     @JsonIgnore
     public ProbeTargetsValidationErrorBuilder edit() {

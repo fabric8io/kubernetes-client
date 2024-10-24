@@ -2006,15 +2006,6 @@
     },
     "dev.tekton.triggers.v1alpha1.StatusError": {
       "type": "object",
-      "required": [
-        "s"
-      ],
-      "properties": {
-        "s": {
-          "default": {},
-          "$ref": "#/definitions/dev.tekton.triggers.v1alpha1.Status"
-        }
-      },
       "x-fabric8-info": {
         "Type": "nested",
         "Group": "triggers.tekton.dev",
@@ -3171,15 +3162,6 @@
     },
     "dev.tekton.triggers.v1beta1.StatusError": {
       "type": "object",
-      "required": [
-        "s"
-      ],
-      "properties": {
-        "s": {
-          "default": {},
-          "$ref": "#/definitions/dev.tekton.triggers.v1beta1.Status"
-        }
-      },
       "x-fabric8-info": {
         "Type": "nested",
         "Group": "triggers.tekton.dev",

@@ -1,16 +1,13 @@
 
 package io.fabric8.knative.pkg.apis;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
@@ -37,8 +34,7 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "dependents",
-    "happy"
+
 })
 @ToString
 @EqualsAndHashCode
@@ -65,47 +61,8 @@ import lombok.experimental.Accessors;
 public class ConditionSet implements Editable<ConditionSetBuilder> , KubernetesResource
 {
 
-    @JsonProperty("dependents")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> dependents = new ArrayList<>();
-    @JsonProperty("happy")
-    private String happy;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
-
-    /**
-     * No args constructor for use in serialization
-     * 
-     */
-    public ConditionSet() {
-    }
-
-    public ConditionSet(List<String> dependents, String happy) {
-        super();
-        this.dependents = dependents;
-        this.happy = happy;
-    }
-
-    @JsonProperty("dependents")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<String> getDependents() {
-        return dependents;
-    }
-
-    @JsonProperty("dependents")
-    public void setDependents(List<String> dependents) {
-        this.dependents = dependents;
-    }
-
-    @JsonProperty("happy")
-    public String getHappy() {
-        return happy;
-    }
-
-    @JsonProperty("happy")
-    public void setHappy(String happy) {
-        this.happy = happy;
-    }
 
     @JsonIgnore
     public ConditionSetBuilder edit() {
