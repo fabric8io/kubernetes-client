@@ -26,9 +26,14 @@ public interface ImportManager {
 
   default void addImport(String importedClass) {
     // Only add import if it belongs to a different package
-    if (!Objects.equals(importedClass.substring(0, importedClass.lastIndexOf('.')), getPackageName())) {
-      getImports().add(importedClass);
+    if (Objects.equals(importedClass.substring(0, importedClass.lastIndexOf('.')), getPackageName())) {
+      return;
     }
+    // Do not import classes from java.lang
+    if (importedClass.substring(0, importedClass.lastIndexOf('.')).equals("java.lang")) {
+      return;
+    }
+    getImports().add(importedClass);
   }
 
   default void addAllImports(Collection<String> allImports) {

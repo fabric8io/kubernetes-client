@@ -1,7 +1,6 @@
 
 package io.fabric8.openshift.api.model.installer.v1;
 
-import java.lang.String;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import javax.annotation.Generated;
