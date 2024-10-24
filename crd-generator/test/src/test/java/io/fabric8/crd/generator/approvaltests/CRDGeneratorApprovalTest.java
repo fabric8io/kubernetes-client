@@ -28,6 +28,7 @@ import io.fabric8.crd.generator.approvaltests.k8svalidation.K8sValidation;
 import io.fabric8.crd.generator.approvaltests.map.ContainingMaps;
 import io.fabric8.crd.generator.approvaltests.nocyclic.NoCyclic;
 import io.fabric8.crd.generator.approvaltests.replica.Replica;
+import io.fabric8.crd.generator.approvaltests.validation.Validation;
 import io.fabric8.kubernetes.client.CustomResource;
 import io.sundr.utils.Strings;
 import org.approvaltests.Approvals;
@@ -72,7 +73,7 @@ class CRDGeneratorApprovalTest {
   }
 
   @ParameterizedTest(name = "{1}.{2} parallel={3}")
-  @MethodSource("crdApprovalTests")
+  @MethodSource("crdApprovalTestsApiV1")
   @DisplayName("CRD Generator V1 Approval Tests")
   void apiV1ApprovalTest(
       Class<? extends CustomResource<?, ?>>[] crClasses, String expectedCrd, String version, boolean parallel) {
@@ -97,7 +98,7 @@ class CRDGeneratorApprovalTest {
   }
 
   @ParameterizedTest(name = "{1}.{2} parallel={3}")
-  @MethodSource("crdV1ApprovalTests")
+  @MethodSource("crdApprovalTestsApiV2")
   @DisplayName("CRD Generator V2 Approval Tests")
   void apiV2ApprovalTest(
       Class<? extends CustomResource<?, ?>>[] crClasses, String expectedCrd, String version, boolean parallel) {
@@ -122,14 +123,16 @@ class CRDGeneratorApprovalTest {
         new Namer(expectedCrd, version));
   }
 
-  static Stream<Arguments> crdApprovalTests() {
+  static Stream<Arguments> crdApprovalTestsApiV1() {
     return Stream.concat(
         crdApprovalBaseCases("v1"),
         crdApprovalBaseCases("v1beta1")).map(tc -> Arguments.of(tc.crClasses, tc.expectedCrd, tc.version, tc.parallel));
   }
 
-  static Stream<Arguments> crdV1ApprovalTests() {
-    return crdApprovalBaseCases("v1")
+  static Stream<Arguments> crdApprovalTestsApiV2() {
+    return Stream.concat(
+        crdApprovalBaseCases("v1"),
+        crdApprovalCasesApiV2("v1"))
         .map(tc -> Arguments.of(tc.crClasses, tc.expectedCrd, tc.version, tc.parallel));
   }
 
@@ -147,6 +150,14 @@ class CRDGeneratorApprovalTest {
           io.fabric8.crd.generator.approvaltests.multipleversions.v1.Multiple.class,
           io.fabric8.crd.generator.approvaltests.multipleversions.v2.Multiple.class));
       cases.add(new TestCase("nocyclics.sample.fabric8.io", crdVersion, parallel, NoCyclic.class));
+    }
+    return cases.stream();
+  }
+
+  static Stream<TestCase> crdApprovalCasesApiV2(String crdVersion) {
+    final List<TestCase> cases = new ArrayList<>();
+    for (boolean parallel : new boolean[] { false, true }) {
+      cases.add(new TestCase("validations.samples.fabric8.io", crdVersion, parallel, Validation.class));
     }
     return cases.stream();
   }
