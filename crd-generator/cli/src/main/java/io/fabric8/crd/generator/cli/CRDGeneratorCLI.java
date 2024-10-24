@@ -232,29 +232,43 @@ public class CRDGeneratorCLI implements Runnable {
     return crdGenerationInfo;
   }
 
-  String getDiagText() {
+  /**
+   * Get details as text about the internal state.
+   * 
+   * @return the debug text.
+   */
+  String getDebugText() {
+    final String lineSeparator = System.lineSeparator();
     StringBuilder sb = new StringBuilder();
-    sb.append("\n");
+    sb.append(lineSeparator);
 
     if (!customResourceClassNames.isEmpty()) {
-      sb.append("Custom Resource class names:\n");
-      customResourceClassNames.forEach(fqcn -> sb.append(" ").append(fqcn).append("\n"));
+      sb.append("Custom Resource class names:");
+      sb.append(lineSeparator);
+      customResourceClassNames.forEach(fqcn -> sb.append(" ").append(fqcn).append(lineSeparator));
+      sb.append(lineSeparator);
     }
     if (filesToScan.isEmpty()) {
-      sb.append("Scan Paths: []\n");
+      sb.append("Scan Paths: []");
+      sb.append(lineSeparator);
     } else {
-      sb.append("Scan Paths:\n");
-      filesToScan.forEach(f -> sb.append(" ").append(f.getPath()).append("\n"));
+      sb.append("Scan Paths:");
+      sb.append(lineSeparator);
+      filesToScan.forEach(f -> sb.append(" ").append(f.getPath()).append(lineSeparator));
+      sb.append(lineSeparator);
     }
 
     List<String> allClasspathElements = getClasspathElements();
     if (allClasspathElements.isEmpty()) {
-      sb.append("Classpath: []\n");
+      sb.append("Classpath: []");
+      sb.append(lineSeparator);
     } else {
-      sb.append("\nClasspath:\n");
-      allClasspathElements.forEach(cpe -> sb.append(" ").append(cpe).append("\n"));
+      sb.append("Classpath:");
+      sb.append(lineSeparator);
+      allClasspathElements.forEach(cpe -> sb.append(" ").append(cpe).append(lineSeparator));
+      sb.append(lineSeparator);
     }
-    sb.append("\n");
+    sb.append(lineSeparator);
     return sb.toString();
   }
 
@@ -311,7 +325,7 @@ public class CRDGeneratorCLI implements Runnable {
 
   static CommandLine createCommandLine(CRDGeneratorCLI crdGeneratorCLI) {
     return new CommandLine(crdGeneratorCLI)
-        .setExecutionExceptionHandler(new CRDGeneratorExecutionExceptionHandler(crdGeneratorCLI::getDiagText));
+        .setExecutionExceptionHandler(new CRDGeneratorExecutionExceptionHandler(crdGeneratorCLI::getDebugText));
   }
 
 }

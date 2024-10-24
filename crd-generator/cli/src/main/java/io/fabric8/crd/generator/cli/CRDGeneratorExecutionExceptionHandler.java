@@ -26,10 +26,10 @@ class CRDGeneratorExecutionExceptionHandler implements CommandLine.IExecutionExc
 
   private static final Logger log = LoggerFactory.getLogger(CRDGeneratorExecutionExceptionHandler.class);
 
-  private final Supplier<String> diagTextSupplier;
+  private final Supplier<String> debugTextSupplier;
 
-  CRDGeneratorExecutionExceptionHandler(Supplier<String> diagTextSupplier) {
-    this.diagTextSupplier = diagTextSupplier;
+  CRDGeneratorExecutionExceptionHandler(Supplier<String> debugTextSupplier) {
+    this.debugTextSupplier = debugTextSupplier;
   }
 
   @Override
@@ -42,11 +42,13 @@ class CRDGeneratorExecutionExceptionHandler implements CommandLine.IExecutionExc
 
     if (ex instanceof CustomResourceClassLoaderException) {
       commandLine.getErr().println();
-      commandLine.getErr().println("The classloader could not load the Custom Resource class.\n" +
+      commandLine.getErr().println("The classloader could not load the Custom Resource class.");
+      commandLine.getErr().println(
           "Check the list of classpath elements and add further JAR archives " +
-          "or directories containing required classes " +
-          "e.g. with `-cp my-dep.jar` or `-cp target/classes/`.");
-      commandLine.getErr().print(diagTextSupplier.get());
+              "or directories containing required classes " +
+              "e.g. with `-cp my-dep.jar` or `-cp target/classes/`.");
+      commandLine.getErr().print(debugTextSupplier.get());
+      commandLine.getErr().flush();
       return CRDGeneratorExitCode.CR_CLASS_LOADING;
     }
 
@@ -55,15 +57,17 @@ class CRDGeneratorExecutionExceptionHandler implements CommandLine.IExecutionExc
       commandLine.getErr().println("Check JAR files and directories considered to be scanned " +
           "as well as your filters. At least one Custom Resource class " +
           "must be retained after filtering.");
-      commandLine.getErr().print(diagTextSupplier.get());
+      commandLine.getErr().print(debugTextSupplier.get());
+      commandLine.getErr().flush();
       return CRDGeneratorExitCode.NO_CR_CLASSES_RETAINED;
     }
 
     if (log.isDebugEnabled()) {
-      commandLine.getErr().println(diagTextSupplier.get());
+      commandLine.getErr().println(debugTextSupplier.get());
     }
 
     log.trace(ex.getMessage(), ex);
+    commandLine.getErr().flush();
     return CRDGeneratorExitCode.SOFTWARE;
   }
 }
