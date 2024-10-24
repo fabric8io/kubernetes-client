@@ -94,6 +94,17 @@ func processProtobufOneof(_ *generator.Context, pkg *types.Package, t *types.Typ
 			}
 			if reflect.ValueOf(t.Methods).MapKeys()[0].String() == reflect.ValueOf(candidateType.Methods).MapKeys()[0].String() {
 				t.CommentLines = append(t.CommentLines, "+k8s:openapi-gen=x-kubernetes-fabric8-implements:"+publicInterfaceName(candidateType.Name.Name))
+				addedImplementation := false
+				for i, candidateCommentLine := range candidateType.CommentLines {
+					if strings.HasPrefix(candidateCommentLine, "+k8s:openapi-gen=x-kubernetes-fabric8-implementation") {
+						candidateType.CommentLines[i] = candidateCommentLine +","+t.Name.Name
+						addedImplementation = true
+						break
+					}
+				}
+				if !addedImplementation {
+					candidateType.CommentLines = append(candidateType.CommentLines, "+k8s:openapi-gen=x-kubernetes-fabric8-implementation:"+t.Name.Name)
+				}
 			}
 		}
 	}

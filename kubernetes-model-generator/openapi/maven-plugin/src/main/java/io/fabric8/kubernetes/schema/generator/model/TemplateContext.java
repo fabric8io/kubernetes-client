@@ -26,6 +26,7 @@ import lombok.Getter;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -39,6 +40,7 @@ final class TemplateContext implements ImportManager {
   private final boolean inRootPackage;
   private final String classSimpleName;
   private final String className;
+  private final boolean isInterface;
   private final boolean hasMetadata;
   private final String kubernetesListType;
   private final Map<String, Object> context;
@@ -53,6 +55,8 @@ final class TemplateContext implements ImportManager {
     inRootPackage = packageName.equals(settings.getPackageName());
     classSimpleName = SchemaUtils.refToClassName(classKey);
     className = packageName + "." + classSimpleName;
+    isInterface = classSchema.getExtensions() != null
+        && Objects.equals(classSchema.getExtensions().get("x-kubernetes-fabric8-type"), "interface");
     imports = new TreeSet<>(new ImportOrderComparator());
     kubernetesListType = apiVersion == null ? null : schemaUtils.kubernetesListType(this, classSchema);
     hasMetadata = apiVersion != null && kubernetesListType == null && schemaUtils.isHasMetadata(classSchema);

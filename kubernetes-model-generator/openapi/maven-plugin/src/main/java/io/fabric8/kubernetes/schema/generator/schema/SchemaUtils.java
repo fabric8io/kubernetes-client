@@ -209,7 +209,8 @@ public class SchemaUtils {
       return String.format("List<%s>", schemaToClassName(imports, arraySchema.getItems()));
     }
     if (isMap(schema)) {
-      imports.addImport("java.util.Map");
+      imports.addImport("java.util.Map"); // Type
+      imports.addImport("java.util.LinkedHashMap"); // Default value
       final String valueType;
       if (schema.getAdditionalProperties() instanceof Schema) {
         valueType = schemaToClassName(imports, (Schema<?>) schema.getAdditionalProperties());

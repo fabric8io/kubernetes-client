@@ -177,7 +177,9 @@ class SchemaUtilsTest {
       final MapSchema schema = new MapSchema();
       final String result = schemaUtils.schemaToClassName(importManager, schema);
       assertEquals("Map<String, Object>", result);
-      assertEquals("java.util.Map", importManager.getImports().iterator().next());
+      assertEquals(2, importManager.getImports().size());
+      assertTrue(importManager.getImports().contains("java.util.Map"));
+      assertTrue(importManager.getImports().contains("java.util.LinkedHashMap"));
     }
 
     @Test
@@ -186,7 +188,9 @@ class SchemaUtilsTest {
       schema.additionalProperties(new IntegerSchema());
       final String result = schemaUtils.schemaToClassName(importManager, schema);
       assertEquals("Map<String, Integer>", result);
-      assertEquals("java.util.Map", importManager.getImports().iterator().next());
+      assertEquals(2, importManager.getImports().size());
+      assertTrue(importManager.getImports().contains("java.util.Map"));
+      assertTrue(importManager.getImports().contains("java.util.LinkedHashMap"));
     }
 
     @Test

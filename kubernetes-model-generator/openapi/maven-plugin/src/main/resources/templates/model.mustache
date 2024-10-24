@@ -24,7 +24,7 @@ import {{.}};
 /**
  * {{description}}
  */{{/hasDescription}}
-{{> model_class_annotations}}public class {{className}} implements {{implementedInterfaces}}
+{{> model_class_annotations}}public {{classInterface}} {{className}} {{implementsExtends}} {{implementedInterfaces}}
 {
 {{>model_fields}}
 
