@@ -40,8 +40,7 @@ import lombok.experimental.Accessors;
     "Details",
     "Level",
     "Message",
-    "Paths",
-    "errors"
+    "Paths"
 })
 @ToString
 @EqualsAndHashCode
@@ -77,9 +76,6 @@ public class FieldError implements Editable<FieldErrorBuilder> , KubernetesResou
     @JsonProperty("Paths")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> paths = new ArrayList<>();
-    @JsonProperty("errors")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<io.fabric8.knative.pkg.apis.FieldError> errors = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -90,13 +86,12 @@ public class FieldError implements Editable<FieldErrorBuilder> , KubernetesResou
     public FieldError() {
     }
 
-    public FieldError(String details, Integer level, String message, List<String> paths, List<io.fabric8.knative.pkg.apis.FieldError> errors) {
+    public FieldError(String details, Integer level, String message, List<String> paths) {
         super();
         this.details = details;
         this.level = level;
         this.message = message;
         this.paths = paths;
-        this.errors = errors;
     }
 
     @JsonProperty("Details")
@@ -138,17 +133,6 @@ public class FieldError implements Editable<FieldErrorBuilder> , KubernetesResou
     @JsonProperty("Paths")
     public void setPaths(List<String> paths) {
         this.paths = paths;
-    }
-
-    @JsonProperty("errors")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<io.fabric8.knative.pkg.apis.FieldError> getErrors() {
-        return errors;
-    }
-
-    @JsonProperty("errors")
-    public void setErrors(List<io.fabric8.knative.pkg.apis.FieldError> errors) {
-        this.errors = errors;
     }
 
     @JsonIgnore

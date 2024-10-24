@@ -7649,23 +7649,6 @@
     "dev.knative.pkg.apis.ConditionSet": {
       "description": "ConditionSet is an abstract collection of the possible ConditionType values that a particular resource might expose.  It also holds the \"happy condition\" for that resource, which we define to be one of Ready or Succeeded depending on whether it is a Living or Batch process respectively.",
       "type": "object",
-      "required": [
-        "happy",
-        "dependents"
-      ],
-      "properties": {
-        "dependents": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "default": ""
-          }
-        },
-        "happy": {
-          "type": "string",
-          "default": ""
-        }
-      },
       "x-fabric8-info": {
         "Type": "nested",
         "Group": "",
@@ -7680,8 +7663,7 @@
       "required": [
         "Message",
         "Paths",
-        "Level",
-        "errors"
+        "Level"
       ],
       "properties": {
         "Details": {
@@ -7706,13 +7688,6 @@
           "items": {
             "type": "string",
             "default": ""
-          }
-        },
-        "errors": {
-          "type": "array",
-          "items": {
-            "default": {},
-            "$ref": "#/definitions/dev.knative.pkg.apis.FieldError"
           }
         }
       },
