@@ -36,12 +36,14 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class SchemaUtils {
 
@@ -268,6 +270,16 @@ public class SchemaUtils {
       return Set.of(schema.getExtensions().get("x-kubernetes-fabric8-interface-fields").toString().split(","));
     }
     return Collections.emptySet();
+  }
+
+  public static List<String> interfaceImplementation(Schema<?> schema) {
+    if (schema.getExtensions() != null && schema.getExtensions().containsKey("x-kubernetes-fabric8-implementation")) {
+      return Stream.of(schema.getExtensions().get("x-kubernetes-fabric8-implementation").toString().split(","))
+          .map(SchemaUtils::refToClassName)
+          .sorted()
+          .collect(Collectors.toList());
+    }
+    return Collections.emptyList();
   }
 
   public static boolean isArray(Schema<?> schema) {

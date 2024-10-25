@@ -100,7 +100,6 @@ class ModelGenerator {
 
   private void processTemplate(TemplateContext ret) {
     ret.put("emptySpace", " "); // TODO: remove after generator migration, current workaround so that models match with jsonschema2pojo
-
     ret.addAllImports(initDefaultImports());
     if (ret.getApiVersion() != null) {
       ret.addImport("io.fabric8.kubernetes.model.annotation.Version");
@@ -130,16 +129,26 @@ class ModelGenerator {
       deserializer = "com.fasterxml.jackson.databind.JsonDeserializer.None.class";
     }
     ret.put("classJsonDeserializeUsing", deserializer);
+    ret.addImport("com.fasterxml.jackson.annotation.JsonInclude");
+    ret.put("classJsonInclude", "NON_NULL");
+    if (!ret.getClassInformation().isInterface()) {
+      ret.addImport("com.fasterxml.jackson.annotation.JsonPropertyOrder");
+      ret.put("propertyOrder", SchemaUtils.propertyOrder(ret.getClassSchema()));
+      ret.addImport("lombok.ToString");
+      ret.put("lombokToString", true);
+      ret.addImport("lombok.EqualsAndHashCode");
+      ret.put("lombokEqualsAndHashCode", true);
+      ret.addImport("lombok.experimental.Accessors");
+      ret.put("lombokAccessors", true);
+    }
     ret.put("package", ret.getPackageName());
     if (settings.isGenerateJavadoc()) {
       ret.put("hasDescription", !sanitizeDescription(ret.getClassSchema().getDescription()).trim().isEmpty());
       ret.put("description", sanitizeDescription(ret.getClassSchema().getDescription()));
     }
-    ret.addImport("com.fasterxml.jackson.annotation.JsonInclude");
-    ret.put("classJsonInclude", "NON_NULL");
-    ret.put("classInterface", ret.isInterface() ? "interface" : "class");
+    ret.put("classInterface", ret.getClassInformation().isInterface() ? "interface" : "class");
     ret.put("className", ret.getClassSimpleName());
-    ret.put("implementsExtends", ret.isInterface() ? "extends" : "implements");
+    ret.put("implementsExtends", ret.getClassInformation().isInterface() ? "extends" : "implements");
     ret.put("implementedInterfaces", resolveImplementedInterfaces(ret));
     final List<Map<String, Object>> templateFields = templateFields(ret);
     ret.put("fields", templateFields);
@@ -147,18 +156,18 @@ class ModelGenerator {
       ret.put("hasFields", true);
       ret.addImport("com.fasterxml.jackson.annotation.JsonProperty");
     }
-    ret.put("propertyOrder", SchemaUtils.propertyOrder(ret.getClassSchema()));
+    ret.put("editable", ret.getClassInformation().isEditable());
     ret.put("builderPackage", settings.getBuilderPackage());
-    if (!ret.isInterface() && settings.isAddBuildableReferences()) {
+    if (!ret.getClassInformation().isInterface() && settings.isAddBuildableReferences()) {
       ret.put("buildable", false);
       ret.addImport("io.sundr.builder.annotations.Buildable");
       ret.addImport("io.sundr.builder.annotations.BuildableReference");
       ret.put("buildableReferences", buildableReferences(ret, templateFields));
-    } else if (!ret.isInterface()) {
+    } else if (!ret.getClassInformation().isInterface()) {
       ret.addImport("io.sundr.builder.annotations.Buildable");
       ret.put("buildable", true);
     }
-    if (!ret.getSchemaProperties().containsKey("additionalProperties") && !ret.isInterface()) {
+    if (!ret.getSchemaProperties().containsKey("additionalProperties") && !ret.getClassInformation().isInterface()) {
       ret.put("additionalProperties", true);
       ret.addImport("java.util.LinkedHashMap");
       ret.addImport("java.util.Map");
@@ -255,8 +264,8 @@ class ModelGenerator {
 
   private String resolveImplementedInterfaces(TemplateContext templateContext) {
     final StringBuilder implementedInterfaces = new StringBuilder();
-    // Editable (all classes except interfaces)
-    if (!templateContext.isInterface()) {
+    if (templateContext.getClassInformation().isEditable()) {
+      templateContext.addImport("com.fasterxml.jackson.annotation.JsonIgnore");
       templateContext.addImport(settings.getBuilderPackage() + "." + "Editable");
       implementedInterfaces.append("Editable<").append(templateContext.getClassSimpleName()).append("Builder>");
       implementedInterfaces.append(" , "); // TODO: weird comma introduced by jsonschema2pojo
@@ -333,12 +342,7 @@ class ModelGenerator {
   private static Set<String> initDefaultImports() {
     return new HashSet<>(Arrays.asList(
         "javax.annotation.Generated",
-        "com.fasterxml.jackson.annotation.JsonIgnore",
-        "com.fasterxml.jackson.annotation.JsonPropertyOrder",
-        "com.fasterxml.jackson.databind.annotation.JsonDeserialize",
-        "lombok.EqualsAndHashCode",
-        "lombok.ToString",
-        "lombok.experimental.Accessors"));
+        "com.fasterxml.jackson.databind.annotation.JsonDeserialize"));
   }
 
 }

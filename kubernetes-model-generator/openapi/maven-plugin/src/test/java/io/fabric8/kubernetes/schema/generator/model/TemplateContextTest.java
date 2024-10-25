@@ -26,6 +26,7 @@ import java.util.AbstractMap;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -116,8 +117,8 @@ class TemplateContextTest {
 
   @Test
   void context() {
-    assertEquals(1, templateContext.getContext().size());
-    assertEquals(new HashSet<>(Collections.singletonList("imports")), templateContext.getContext().keySet());
+    assertEquals(2, templateContext.getContext().size());
+    assertEquals(new HashSet<>(List.of("imports", "classInformation")), templateContext.getContext().keySet());
   }
 
   @Test

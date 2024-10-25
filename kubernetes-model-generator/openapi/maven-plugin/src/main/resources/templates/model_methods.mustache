@@ -48,6 +48,7 @@
     }
 
 {{/fields}}
+{{#editable}}
     @JsonIgnore
     public {{className}}Builder edit() {
         return new {{className}}Builder(this);
@@ -58,6 +59,7 @@
         return edit();
     }
 
+{{/editable}}
 {{#additionalProperties}}
     @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
