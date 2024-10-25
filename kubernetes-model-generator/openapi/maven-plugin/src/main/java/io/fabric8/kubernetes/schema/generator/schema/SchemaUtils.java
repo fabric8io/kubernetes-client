@@ -29,6 +29,7 @@ import io.swagger.v3.oas.models.media.DateTimeSchema;
 import io.swagger.v3.oas.models.media.MapSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
+import lombok.Getter;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -45,6 +46,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@Getter
 public class SchemaUtils {
 
   public static final String APPLICATION_JSON = "application/json";
@@ -280,6 +282,13 @@ public class SchemaUtils {
           .collect(Collectors.toList());
     }
     return Collections.emptyList();
+  }
+
+  public static String interfaceImplemented(Schema<?> schema) {
+    if (schema.getExtensions() != null && schema.getExtensions().containsKey("x-kubernetes-fabric8-implements")) {
+      return refToClassName(schema.getExtensions().get("x-kubernetes-fabric8-implements").toString());
+    }
+    return null;
   }
 
   public static boolean isArray(Schema<?> schema) {
