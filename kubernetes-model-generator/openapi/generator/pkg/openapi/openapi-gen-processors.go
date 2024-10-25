@@ -98,7 +98,7 @@ func processProtobufOneof(_ *generator.Context, pkg *types.Package, t *types.Typ
 		// Ensure it's exported
 		t.Members[memberIndex].Type.Name.Name = publicInterfaceName(m.Type.Name.Name)
 		//// Add comment tag to the referenced type and mark it as an interface
-		//t.Members[memberIndex].Type.CommentLines = append(m.Type.CommentLines, "+k8s:openapi-gen=x-kubernetes-fabric8-type:interface")
+		t.Members[memberIndex].Type.CommentLines = append(m.Type.CommentLines, "+k8s:openapi-gen=x-kubernetes-fabric8-type:interface")
 		// Add comment tag to the current type to mark it as it has fields that are interfaces (useful for the OpenAPI Java generator)
 		t.CommentLines = addOrAppend(t.CommentLines, "+k8s:openapi-gen=x-kubernetes-fabric8-interface-fields:", m.Name)
 	}

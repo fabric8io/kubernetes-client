@@ -18,16 +18,14 @@ package io.fabric8.kubernetes.schema.generator.model;
 import io.fabric8.kubernetes.schema.generator.ApiVersion;
 import io.fabric8.kubernetes.schema.generator.GeneratorSettings;
 import io.fabric8.kubernetes.schema.generator.ImportManager;
-import io.fabric8.kubernetes.schema.generator.ImportOrderComparator;
 import io.fabric8.kubernetes.schema.generator.schema.SchemaUtils;
 import io.swagger.v3.oas.models.media.Schema;
 import lombok.Getter;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
 
 @Getter
 final class TemplateContext implements ImportManager {
@@ -35,31 +33,29 @@ final class TemplateContext implements ImportManager {
   private final String classKey;
   private final Schema<?> classSchema;
   private final ApiVersion apiVersion;
-  private final String packageName;
+  private final ClassInformation classInformation;
+  // TODO: Move to ClassInformation
   private final boolean inRootPackage;
   private final String classSimpleName;
   private final String className;
-  private final boolean isInterface;
   private final boolean hasMetadata;
   private final String kubernetesListType;
   private final Map<String, Object> context;
-  private final Set<String> imports;
 
   TemplateContext(GeneratorSettings settings, Map.Entry<String, Schema<?>> clazz) {
     final SchemaUtils schemaUtils = new SchemaUtils(settings);
     classKey = clazz.getKey();
     classSchema = clazz.getValue();
     apiVersion = settings.getApiVersions().get(classKey);
-    packageName = schemaUtils.toModelPackage(classKey.substring(0, classKey.lastIndexOf('.')));
-    inRootPackage = packageName.equals(settings.getPackageName());
+    classInformation = new ClassInformation(schemaUtils, clazz);
+    inRootPackage = getClassInformation().getPackageName().equals(settings.getPackageName());
     classSimpleName = SchemaUtils.refToClassName(classKey);
-    className = packageName + "." + classSimpleName;
-    isInterface = SchemaUtils.isInterface(classSchema);
-    imports = new TreeSet<>(new ImportOrderComparator());
+    className = getClassInformation().getPackageName() + "." + classSimpleName;
     kubernetesListType = apiVersion == null ? null : schemaUtils.kubernetesListType(this, classSchema);
     hasMetadata = apiVersion != null && kubernetesListType == null && schemaUtils.isHasMetadata(classSchema);
     context = new HashMap<>();
-    context.put("imports", imports);
+    context.put("imports", classInformation.getImports());
+    context.put("classInformation", classInformation);
   }
 
   void put(String key, Object value) {
@@ -72,6 +68,16 @@ final class TemplateContext implements ImportManager {
 
   boolean isNamespaced() {
     return getApiVersion() != null && getApiVersion().isNamespaced();
+  }
+
+  @Override
+  public String getPackageName() {
+    return getClassInformation().getPackageName();
+  }
+
+  @Override
+  public Collection<String> getImports() {
+    return getClassInformation().getImports();
   }
 
   @Override

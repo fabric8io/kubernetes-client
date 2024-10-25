@@ -22,22 +22,28 @@
 {{#classJsonInclude}}
 @JsonInclude(JsonInclude.Include.{{.}})
 {{/classJsonInclude}}
-@JsonPropertyOrder({
 {{#propertyOrder}}
+@JsonPropertyOrder({
 {{#isEmpty}}
 
 {{/isEmpty}}
 {{#properties}}
     "{{.}}"{{^-last}},{{/-last}}
 {{/properties}}
-{{/propertyOrder}}
 })
+{{/propertyOrder}}
+{{#lombokToString}}
 @ToString
+{{/lombokToString}}
+{{#lombokEqualsAndHashCode}}
 @EqualsAndHashCode
+{{/lombokEqualsAndHashCode}}
+{{#lombokAccessors}}
 @Accessors(prefix = {
     "_",
     ""
 })
+{{/lombokAccessors}}
 {{#buildable}}
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "{{builderPackage}}")
 {{/buildable}}
@@ -59,4 +65,13 @@
 {{#group}}
 {{.}}
 {{/group}}
+{{#classInformation.jsonSubTypes}}
+@JsonTypeResolver(io.fabric8.kubernetes.model.jackson.UnwrappedTypeResolverBuilder.class)
+@JsonSubTypes({
+{{#subTypes}}
+    @JsonSubTypes.Type({{.}}.class),
+{{/subTypes}}
+})
+@JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
+{{/classInformation.jsonSubTypes}}
 @Generated("jsonschema2pojo")
