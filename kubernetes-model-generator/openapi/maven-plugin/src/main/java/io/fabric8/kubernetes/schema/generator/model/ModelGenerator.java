@@ -121,8 +121,15 @@ class ModelGenerator {
       ret.addImport("com.fasterxml.jackson.databind.annotation.JsonSerialize");
       ret.put("classJsonSerializeUsing", serializer);
     }
-    ret.put("classJsonDeserializeUsing", Optional.ofNullable(deserializerForJavaClass(ret.getClassName()))
-        .orElse("com.fasterxml.jackson.databind.JsonDeserializer.None.class"));
+    final String deserializer;
+    if (SchemaUtils.hasInterfaceFields(ret.getClassSchema())) {
+      deserializer = "io.fabric8.kubernetes.model.jackson.JsonUnwrappedDeserializer.class";
+    } else if (deserializerForJavaClass(ret.getClassName()) != null) {
+      deserializer = deserializerForJavaClass(ret.getClassName());
+    } else {
+      deserializer = "com.fasterxml.jackson.databind.JsonDeserializer.None.class";
+    }
+    ret.put("classJsonDeserializeUsing", deserializer);
     ret.put("package", ret.getPackageName());
     if (settings.isGenerateJavadoc()) {
       ret.put("hasDescription", !sanitizeDescription(ret.getClassSchema().getDescription()).trim().isEmpty());
@@ -162,6 +169,7 @@ class ModelGenerator {
 
   private List<Map<String, Object>> templateFields(TemplateContext templateContext) {
     final List<Map<String, Object>> properties = new ArrayList<>();
+    final Set<String> interfaceFields = SchemaUtils.interfaceFields(templateContext.getClassSchema());
     for (Entry<String, Schema> property : templateContext.getSchemaProperties().entrySet()) {
       final Map<String, Object> templateProp = new HashMap<>();
       final Schema<?> propertySchema = property.getValue();
@@ -189,6 +197,10 @@ class ModelGenerator {
       if (deserializeUsing != null) {
         templateContext.addImport("com.fasterxml.jackson.databind.annotation.JsonDeserialize");
         templateProp.put("deserializeUsing", deserializeUsing);
+      }
+      if (interfaceFields.contains(property.getKey())) {
+        templateContext.addImport("com.fasterxml.jackson.annotation.JsonUnwrapped");
+        templateProp.put("jsonUnwrapped", true);
       }
       // Default values
       if (isArray(propertySchema)) {

@@ -37,6 +37,9 @@
 {{#jsonInclude}}
     @JsonInclude(JsonInclude.Include.{{.}})
 {{/jsonInclude}}
+{{#jsonUnwrapped}}
+    @JsonUnwrapped
+{{/jsonUnwrapped}}
     private {{type}} {{name}}{{#defaultValue}} = {{.}}{{/defaultValue}};{{/fields}}
 {{#additionalProperties}}
     @JsonIgnore

@@ -135,6 +135,13 @@ class SchemaUtilsTest {
     assertEquals(expected, SchemaUtils.serializerForJavaClass(javaClass));
   }
 
+  @Test
+  void isInterface() {
+    final ObjectSchema schema = new ObjectSchema();
+    schema.setExtensions(Map.of("x-kubernetes-fabric8-type", "interface"));
+    assertTrue(SchemaUtils.isInterface(schema));
+  }
+
   @Nested
   class SchemaToClassName {
 

@@ -253,6 +253,23 @@ public class SchemaUtils {
     return schemaTypeToJavaPrimitive(schema);
   }
 
+  public static boolean isInterface(Schema<?> schema) {
+    return schema.getExtensions() != null
+        && Objects.equals(schema.getExtensions().get("x-kubernetes-fabric8-type"), "interface");
+  }
+
+  public static boolean hasInterfaceFields(Schema<?> schema) {
+    return schema.getExtensions() != null
+        && schema.getExtensions().containsKey("x-kubernetes-fabric8-interface-fields");
+  }
+
+  public static Set<String> interfaceFields(Schema<?> schema) {
+    if (hasInterfaceFields(schema)) {
+      return Set.of(schema.getExtensions().get("x-kubernetes-fabric8-interface-fields").toString().split(","));
+    }
+    return Collections.emptySet();
+  }
+
   public static boolean isArray(Schema<?> schema) {
     return schema instanceof ArraySchema;
   }
