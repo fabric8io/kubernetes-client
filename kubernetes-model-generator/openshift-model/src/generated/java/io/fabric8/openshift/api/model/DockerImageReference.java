@@ -35,11 +35,11 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "ID",
-    "Name",
-    "Namespace",
-    "Registry",
-    "Tag"
+    "iD",
+    "name",
+    "namespace",
+    "registry",
+    "tag"
 })
 @ToString
 @EqualsAndHashCode
@@ -66,15 +66,15 @@ import lombok.experimental.Accessors;
 public class DockerImageReference implements Editable<DockerImageReferenceBuilder> , KubernetesResource
 {
 
-    @JsonProperty("ID")
+    @JsonProperty("iD")
     private String iD;
-    @JsonProperty("Name")
+    @JsonProperty("name")
     private String name;
-    @JsonProperty("Namespace")
+    @JsonProperty("namespace")
     private String namespace;
-    @JsonProperty("Registry")
+    @JsonProperty("registry")
     private String registry;
-    @JsonProperty("Tag")
+    @JsonProperty("tag")
     private String tag;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
@@ -95,52 +95,52 @@ public class DockerImageReference implements Editable<DockerImageReferenceBuilde
         this.tag = tag;
     }
 
-    @JsonProperty("ID")
+    @JsonProperty("iD")
     public String getID() {
         return iD;
     }
 
-    @JsonProperty("ID")
+    @JsonProperty("iD")
     public void setID(String iD) {
         this.iD = iD;
     }
 
-    @JsonProperty("Name")
+    @JsonProperty("name")
     public String getName() {
         return name;
     }
 
-    @JsonProperty("Name")
+    @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
-    @JsonProperty("Namespace")
+    @JsonProperty("namespace")
     public String getNamespace() {
         return namespace;
     }
 
-    @JsonProperty("Namespace")
+    @JsonProperty("namespace")
     public void setNamespace(String namespace) {
         this.namespace = namespace;
     }
 
-    @JsonProperty("Registry")
+    @JsonProperty("registry")
     public String getRegistry() {
         return registry;
     }
 
-    @JsonProperty("Registry")
+    @JsonProperty("registry")
     public void setRegistry(String registry) {
         this.registry = registry;
     }
 
-    @JsonProperty("Tag")
+    @JsonProperty("tag")
     public String getTag() {
         return tag;
     }
 
-    @JsonProperty("Tag")
+    @JsonProperty("tag")
     public void setTag(String tag) {
         this.tag = tag;
     }
