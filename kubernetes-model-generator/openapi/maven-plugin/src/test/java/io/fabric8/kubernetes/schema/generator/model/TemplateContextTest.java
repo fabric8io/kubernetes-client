@@ -23,8 +23,6 @@ import org.junit.jupiter.api.io.TempDir;
 
 import java.io.File;
 import java.util.AbstractMap;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
@@ -47,6 +45,7 @@ class TemplateContextTest {
         .packageMapping(
             "io.k8s.api.core.v1", "io.fabric8.kubernetes.api.model")
         .packageMapping("io.k8s.apimachinery.pkg.apis.meta.v1", "io.fabric8.kubernetes.api.model")
+        .builderPackage("io.fabric8.kubernetes.api.builder")
         .build();
 
     final Schema<?> schema = (Schema<?>) settings.getOpenAPI().getComponents().getSchemas().get("io.k8s.api.core.v1.Pod");
@@ -78,41 +77,41 @@ class TemplateContextTest {
 
   @Test
   void inRootPackage() {
-    assertTrue(templateContext.isInRootPackage());
+    assertTrue(templateContext.getClassInformation().isInRootPackage());
   }
 
   @Test
   void classSimpleName() {
-    assertEquals("Pod", templateContext.getClassSimpleName());
+    assertEquals("Pod", templateContext.getClassInformation().getClassSimpleName());
   }
 
   @Test
   void className() {
-    assertEquals("io.fabric8.kubernetes.api.model.Pod", templateContext.getClassName());
+    assertEquals("io.fabric8.kubernetes.api.model.Pod", templateContext.getClassInformation().getClassName());
   }
 
   @Test
   void hasMetadata() {
-    assertTrue(templateContext.isHasMetadata());
+    assertTrue(templateContext.getClassInformation().isHasMetadata());
   }
 
   @Test
   void hasMetadata_podSpec() {
     final Schema<?> schema = (Schema<?>) settings.getOpenAPI().getComponents().getSchemas().get("io.k8s.api.core.v1.PodSpec");
     templateContext = new TemplateContext(settings, new AbstractMap.SimpleEntry<>("io.k8s.api.core.v1.PodSpec", schema));
-    assertFalse(templateContext.isHasMetadata());
+    assertFalse(templateContext.getClassInformation().isHasMetadata());
   }
 
   @Test
   void kubernetesListType() {
-    assertNull(templateContext.getKubernetesListType());
+    assertNull(templateContext.getClassInformation().getKubernetesListType());
   }
 
   @Test
   void kubernetesListType_podList() {
     final Schema<?> schema = (Schema<?>) settings.getOpenAPI().getComponents().getSchemas().get("io.k8s.api.core.v1.PodList");
     templateContext = new TemplateContext(settings, new AbstractMap.SimpleEntry<>("io.k8s.api.core.v1.PodList", schema));
-    assertEquals("Pod", templateContext.getKubernetesListType());
+    assertEquals("Pod", templateContext.getClassInformation().getKubernetesListType());
   }
 
   @Test
@@ -130,31 +129,38 @@ class TemplateContextTest {
   @Test
   void addImport() {
     templateContext.addImport("java.util.List");
-    assertEquals(new HashSet<>(Collections.singletonList("java.util.List")), templateContext.getContext().get("imports"));
+    assertEquals(new HashSet<>(List.of(
+        "java.util.List",
+        "com.fasterxml.jackson.annotation.JsonIgnore",
+        "io.fabric8.kubernetes.api.builder.Editable")), templateContext.getContext().get("imports"));
   }
 
   @Test
   void addAllImports() {
-    templateContext.addAllImports(Arrays.asList("java.util.List", "java.util.Map"));
-    assertEquals(new HashSet<>(Arrays.asList("java.util.List", "java.util.Map")), templateContext.getContext().get("imports"));
+    templateContext.addAllImports(List.of("java.util.List", "java.util.Map"));
+    assertEquals(new HashSet<>(List.of(
+        "java.util.List",
+        "java.util.Map",
+        "com.fasterxml.jackson.annotation.JsonIgnore",
+        "io.fabric8.kubernetes.api.builder.Editable")), templateContext.getContext().get("imports"));
   }
 
   @Test
   void isNamespaced() {
-    assertTrue(templateContext.isNamespaced());
+    assertTrue(templateContext.getClassInformation().isNamespaced());
   }
 
   @Test
   void isNamespaced_node() {
     final Schema<?> schema = (Schema<?>) settings.getOpenAPI().getComponents().getSchemas().get("io.k8s.api.core.v1.Node");
     templateContext = new TemplateContext(settings, new AbstractMap.SimpleEntry<>("io.k8s.api.core.v1.Node", schema));
-    assertFalse(templateContext.isNamespaced());
+    assertFalse(templateContext.getClassInformation().isNamespaced());
   }
 
   @Test
   void isNamespaced_podSpec() {
     final Schema<?> schema = (Schema<?>) settings.getOpenAPI().getComponents().getSchemas().get("io.k8s.api.core.v1.PodSpec");
     templateContext = new TemplateContext(settings, new AbstractMap.SimpleEntry<>("io.k8s.api.core.v1.PodSpec", schema));
-    assertFalse(templateContext.isNamespaced());
+    assertFalse(templateContext.getClassInformation().isNamespaced());
   }
 }

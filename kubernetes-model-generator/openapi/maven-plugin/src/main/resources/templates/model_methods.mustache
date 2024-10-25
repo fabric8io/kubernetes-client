@@ -50,12 +50,12 @@
 {{/fields}}
 {{#editable}}
     @JsonIgnore
-    public {{className}}Builder edit() {
-        return new {{className}}Builder(this);
+    public {{classInformation.builderName}} edit() {
+        return new {{classInformation.builderName}}(this);
     }
 
     @JsonIgnore
-    public {{className}}Builder toBuilder() {
+    public {{classInformation.builderName}} toBuilder() {
         return edit();
     }
 

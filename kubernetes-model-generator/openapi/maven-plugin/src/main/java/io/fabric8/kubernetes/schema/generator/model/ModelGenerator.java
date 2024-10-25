@@ -85,10 +85,12 @@ class ModelGenerator {
         .forEach(classEntry -> {
           final TemplateContext templateContext = new TemplateContext(settings, classEntry);
           if (hasOverride(templateContext)) {
-            settings.getLogger().fine(String.format("Skipping %s since it has an override", templateContext.getClassName()));
+            settings.getLogger().fine(String.format("Skipping %s since it has an override",
+                templateContext.getClassInformation().getClassName()));
             return;
           }
-          settings.getLogger().fine(String.format("Generating %ss", templateContext.getClassName()));
+          settings.getLogger()
+              .fine(String.format("Generating %ss", templateContext.getClassInformation().getClassName()));
           mkPackageDirectories(templateContext);
           processTemplate(templateContext);
           final String fileContents = modelTemplate.execute(templateContext.getContext());
@@ -105,7 +107,7 @@ class ModelGenerator {
       ret.addImport("io.fabric8.kubernetes.model.annotation.Version");
       ret.put("version", ret.getApiVersion().getVersion());
       // TODO: we might want to generify this logic for other annotations and imports
-      if (Objects.equals("Group", ret.getClassSimpleName())) {
+      if (Objects.equals("Group", ret.getClassInformation().getClassSimpleName())) {
         ret.put("group", "@io.fabric8.kubernetes.model.annotation.Group(\"" + ret.getApiVersion().getGroup() + "\")");
       } else {
         ret.addImport("io.fabric8.kubernetes.model.annotation.Group");
@@ -115,7 +117,7 @@ class ModelGenerator {
       ret.addImport("io.sundr.transform.annotations.TemplateTransformations");
       ret.put("kubernetesResourceClass", settings.getKubernetesResourceClass());
     }
-    final String serializer = serializerForJavaClass(ret.getClassName());
+    final String serializer = serializerForJavaClass(ret.getClassInformation().getClassName());
     if (serializer != null) {
       ret.addImport("com.fasterxml.jackson.databind.annotation.JsonSerialize");
       ret.put("classJsonSerializeUsing", serializer);
@@ -123,8 +125,8 @@ class ModelGenerator {
     final String deserializer;
     if (SchemaUtils.hasInterfaceFields(ret.getClassSchema())) {
       deserializer = "io.fabric8.kubernetes.model.jackson.JsonUnwrappedDeserializer.class";
-    } else if (deserializerForJavaClass(ret.getClassName()) != null) {
-      deserializer = deserializerForJavaClass(ret.getClassName());
+    } else if (deserializerForJavaClass(ret.getClassInformation().getClassName()) != null) {
+      deserializer = deserializerForJavaClass(ret.getClassInformation().getClassName());
     } else {
       deserializer = "com.fasterxml.jackson.databind.JsonDeserializer.None.class";
     }
@@ -146,10 +148,7 @@ class ModelGenerator {
       ret.put("hasDescription", !sanitizeDescription(ret.getClassSchema().getDescription()).trim().isEmpty());
       ret.put("description", sanitizeDescription(ret.getClassSchema().getDescription()));
     }
-    ret.put("classInterface", ret.getClassInformation().isInterface() ? "interface" : "class");
-    ret.put("className", ret.getClassSimpleName());
     ret.put("implementsExtends", ret.getClassInformation().isInterface() ? "extends" : "implements");
-    ret.put("implementedInterfaces", resolveImplementedInterfaces(ret));
     final List<Map<String, Object>> templateFields = templateFields(ret);
     ret.put("fields", templateFields);
     if (!templateFields.isEmpty()) {
@@ -225,7 +224,7 @@ class ModelGenerator {
           && Objects.equals(type, "String")
           && templateContext.getApiVersion() != null) {
         templateProp.put("legacyRequired", true); // TODO: remove after generator migration
-        templateProp.put("defaultValue", String.format("\"%s\"", templateContext.getClassSimpleName()));
+        templateProp.put("defaultValue", String.format("\"%s\"", templateContext.getClassInformation().getClassSimpleName()));
       } else if (Objects.equals(property.getKey(), "apiVersion")
           && Objects.equals(type, "String")
           && templateContext.getApiVersion() != null) {
@@ -233,10 +232,11 @@ class ModelGenerator {
         templateProp.put("defaultValue", String.format("\"%s\"", templateContext.getApiVersion()));
       }
       // TODO: remove after generator migration, match jsonschema2pojo generation for items
-      if (templateContext.getKubernetesListType() != null
+      if (templateContext.getClassInformation().getKubernetesListType() != null
           && Objects.equals(property.getKey(), "items")) {
         templateProp.put("type",
-            "List<" + templateContext.getPackageName() + "." + templateContext.getKubernetesListType() + ">");
+            "List<" + templateContext.getPackageName() + "." + templateContext.getClassInformation().getKubernetesListType()
+                + ">");
       }
     }
     return properties;
@@ -253,61 +253,13 @@ class ModelGenerator {
   private boolean hasOverride(TemplateContext templateContext) {
     return settings.getOverridesDirectory().toPath()
         .resolve(templateContext.getPackageName().replace('.', File.separatorChar))
-        .resolve(templateContext.getClassSimpleName().concat(".java"))
+        .resolve(templateContext.getClassInformation().getClassSimpleName().concat(".java"))
         .toFile().exists();
   }
 
   private Path resolvePackageDirectory(TemplateContext templateContext) {
     return settings.getGeneratedSourcesDirectory().toPath()
         .resolve(templateContext.getPackageName().replace('.', File.separatorChar));
-  }
-
-  private String resolveImplementedInterfaces(TemplateContext templateContext) {
-    final StringBuilder implementedInterfaces = new StringBuilder();
-    if (templateContext.getClassInformation().isEditable()) {
-      templateContext.addImport("com.fasterxml.jackson.annotation.JsonIgnore");
-      templateContext.addImport(settings.getBuilderPackage() + "." + "Editable");
-      implementedInterfaces.append("Editable<").append(templateContext.getClassSimpleName()).append("Builder>");
-      implementedInterfaces.append(" , "); // TODO: weird comma introduced by jsonschema2pojo
-    }
-    // HasMetadata
-    if (templateContext.isHasMetadata()) {
-      if (!templateContext.isInRootPackage()) {
-        templateContext.addImport(settings.getHasMetadataClass());
-      }
-      implementedInterfaces.append(settings.getHasMetadataClassSimpleName());
-    }
-    // KubernetesResource
-    else {
-      if (templateContext.getClassSimpleName().equals(settings.getKubernetesResourceClassSimpleName())) {
-        // There's a class actually named KubernetesResource in the tekton package
-        implementedInterfaces.append(settings.getKubernetesResourceClass());
-      } else {
-        if (!templateContext.isInRootPackage()) {
-          templateContext.addImport(settings.getKubernetesResourceClass());
-        }
-        implementedInterfaces.append(settings.getKubernetesResourceClassSimpleName());
-      }
-    }
-    // Namespaced
-    if (templateContext.isNamespaced() && templateContext.getKubernetesListType() == null) {
-      if (!templateContext.isInRootPackage()) {
-        templateContext.addImport(settings.getNamespacedClass());
-      }
-      implementedInterfaces.append(", ").append(settings.getNamespacedClassSimpleName());
-    }
-    // KubernetesResourceList
-    if (templateContext.getKubernetesListType() != null) {
-      if (!templateContext.isInRootPackage()) {
-        templateContext.addImport(settings.getKubernetesResourceListClass());
-      }
-      implementedInterfaces.append(", ").append(settings.getKubernetesResourceListClassSimpleName())
-          .append("<")
-          // TODO: remove after generator migration, match jsonschema2pojo generation for KubernetesResourceList
-          .append(templateContext.getPackageName()).append(".").append(templateContext.getKubernetesListType())
-          .append(">");
-    }
-    return implementedInterfaces.toString();
   }
 
   private Map<String, List<String>> buildableReferences(TemplateContext templateContext, List<Map<String, Object>> fields) {
@@ -321,7 +273,7 @@ class ModelGenerator {
     return Collections.singletonMap("refs", references.stream()
         .map(r -> {
           final String referenceSimpleClass = r.substring(r.lastIndexOf('.') + 1);
-          if (templateContext.getClassSimpleName().equals(referenceSimpleClass)) {
+          if (templateContext.getClassInformation().getClassSimpleName().equals(referenceSimpleClass)) {
             return r;
           }
           // Don't add import if there's an import for a class with the same name e.g. ObjectReference in k8s core and monitoring
@@ -335,7 +287,8 @@ class ModelGenerator {
   }
 
   private void writeFile(TemplateContext context, String fileContents) {
-    final Path file = resolvePackageDirectory(context).resolve(context.getClassSimpleName().concat(".java"));
+    final Path file = resolvePackageDirectory(context)
+        .resolve(context.getClassInformation().getClassSimpleName().concat(".java"));
     generatorUtils.writeFile(file, fileContents);
   }
 

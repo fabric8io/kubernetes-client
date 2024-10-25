@@ -125,7 +125,7 @@ func processProtobufTags(_ *generator.Context, _ *types.Package, t *types.Type, 
 	tags := reflect.StructTag(m.Tags)
 	protobufTag := tags.Get("protobuf")
 	jsonTag := tags.Get("json")
-	if protobufTag != "" && jsonTag != "" && strings.Contains(protobufTag, "json=") {
+	if protobufTag != "" && strings.Contains(protobufTag, "json=") {
 		name := strings.Split(protobufTag, "json=")[1]
 		name = strings.Split(name, ",")[0]
 		var updatedJsonTag string
@@ -134,7 +134,11 @@ func processProtobufTags(_ *generator.Context, _ *types.Package, t *types.Type, 
 		} else {
 			updatedJsonTag = name
 		}
-		t.Members[memberIndex].Tags = strings.Replace(t.Members[memberIndex].Tags, jsonTag, updatedJsonTag, 1)
+		if jsonTag == "" {
+			t.Members[memberIndex].Tags = t.Members[memberIndex].Tags + " json:\"" + updatedJsonTag+"\""
+		} else {
+			t.Members[memberIndex].Tags = strings.Replace(t.Members[memberIndex].Tags, jsonTag, updatedJsonTag, 1)
+		}
 	}
 }
 

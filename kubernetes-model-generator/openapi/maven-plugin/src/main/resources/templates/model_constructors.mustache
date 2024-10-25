@@ -17,10 +17,10 @@
      * No args constructor for use in serialization
      *{{emptySpace}}
      */
-    public {{className}}() {
+    public {{classInformation.classSimpleName}}() {
     }
 
-    public {{className}}({{#fields}}{{type}} {{name}}{{^-last}}, {{/-last}}{{/fields}}) {
+    public {{classInformation.classSimpleName}}({{#fields}}{{type}} {{name}}{{^-last}}, {{/-last}}{{/fields}}) {
         super();
 {{#fields}}
         this.{{name}} = {{name}};
