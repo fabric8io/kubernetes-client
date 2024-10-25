@@ -77,6 +77,12 @@ func addOrAppend(commentLines []string, prefix, value string) []string {
 	}
 	return commentLines
 }
+func publicInterfaceName(name string) string {
+	if unicode.IsUpper(rune(name[0])) {
+		return name
+	}
+	return string(unicode.ToUpper(rune(name[0]))) + name[1:]
+}
 
 // func processProtobufOneof
 // To generate interfaces and extending classes for oneof fields
@@ -84,19 +90,9 @@ func addOrAppend(commentLines []string, prefix, value string) []string {
 //
 // For processing we'll add +k8s:openapi-gen=x-kubernetes tags that will be later processed by kube-openapi and added to the OpenAPI json spec
 func processProtobufOneof(_ *generator.Context, pkg *types.Package, t *types.Type, m *types.Member, memberIndex int) {
-	publicInterfaceName := func(name string) string {
-		if unicode.IsUpper(rune(name[0])) {
-			return name
-		}
-		return string(unicode.ToUpper(rune(name[0]))) + name[1:]
-	}
 	// Interfaces
 	protobufOneOf := reflect.StructTag(m.Tags).Get("protobuf_oneof")
 	if protobufOneOf != "" {
-		// kube-openapi doesn't handle interfaces, so we need to change the interface to a struct
-		m.Type.Kind = types.Struct
-		// Ensure it's exported
-		t.Members[memberIndex].Type.Name.Name = publicInterfaceName(m.Type.Name.Name)
 		//// Add comment tag to the referenced type and mark it as an interface
 		t.Members[memberIndex].Type.CommentLines = append(m.Type.CommentLines, "+k8s:openapi-gen=x-kubernetes-fabric8-type:interface")
 		// Add comment tag to the current type to mark it as it has fields that are interfaces (useful for the OpenAPI Java generator)
@@ -119,6 +115,28 @@ func processProtobufOneof(_ *generator.Context, pkg *types.Package, t *types.Typ
 	}
 }
 
+// processProtobufPackageOneOf function to process the protobuf package and change the interfaces to structs
+// kube-openapi doesn't handle interfaces, so we need to change the interface to a struct
+func processProtobufPackageOneOf(_ *generator.Context, pkg *types.Package) {
+	for _, t := range pkg.Types {
+		if t.Kind != types.Interface {
+			continue
+		}
+		openApiGen := gengo.ExtractCommentTags("+", t.CommentLines)["k8s:openapi-gen"]
+		if len(openApiGen) > 0 {
+			for _, openApiGenValue := range openApiGen {
+				if openApiGenValue == "x-kubernetes-fabric8-type:interface" {
+					// Change to Struct so that it's processed by kube-openapi
+					t.Kind = types.Struct
+					// Ensure it's public so that it can be exported
+					t.Name.Name = publicInterfaceName(t.Name.Name)
+					break
+				}
+			}
+		}
+	}
+}
+
 // processProtobufTags function to process the protobuf field tags and fix json tags that might have mismatched names for serialization
 // This happens for most of the istio APIs
 func processProtobufTags(_ *generator.Context, _ *types.Package, t *types.Type, m *types.Member, memberIndex int) {
@@ -126,6 +144,7 @@ func processProtobufTags(_ *generator.Context, _ *types.Package, t *types.Type, 
 	protobufTag := tags.Get("protobuf")
 	jsonTag := tags.Get("json")
 	if protobufTag != "" && strings.Contains(protobufTag, "json=") {
+		// TODO, consider also name= (sometimes this is included instad of json=)
 		name := strings.Split(protobufTag, "json=")[1]
 		name = strings.Split(name, ",")[0]
 		var updatedJsonTag string

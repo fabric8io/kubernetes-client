@@ -32,18 +32,24 @@ type GoGenerator struct {
 	openapiargs.Args
 	Patterns   []string
 	inputPkgs  map[string]bool
-	processors []func(context *generator.Context, pkg *types.Package, t *types.Type, member *types.Member, memberIndex int)
+	// memberProcessors are functions that are applied to each member of a type
+	memberProcessors []func(context *generator.Context, pkg *types.Package, t *types.Type, member *types.Member, memberIndex int)
+	// packageProcessors are functions that are applied to each package once all type members have been processed for that package
+	packageProcessors []func(context *generator.Context, pkg *types.Package)
 }
 
 func (g *GoGenerator) Generate() error {
 	g.ReportFilename = g.OutputFile + ".report.txt"
-	g.processors = []func(context *generator.Context, pkg *types.Package, t *types.Type, member *types.Member, memberIndex int){
+	g.memberProcessors = []func(context *generator.Context, pkg *types.Package, t *types.Type, member *types.Member, memberIndex int){
 		processMapKeyTypes,
 		processOmitPrivateFields,
 		processPatchComments,
 		processProtobufOneof,
 		processProtobufTags,
 		processSwaggerIgnore,
+	}
+	g.packageProcessors = []func(context *generator.Context, pkg *types.Package){
+		processProtobufPackageOneOf,
 	}
 	return gengo.Execute(
 		generators.NameSystems(),
@@ -89,10 +95,13 @@ func (g *GoGenerator) processUniverse(context *generator.Context) {
 	for _, pkg := range context.Universe {
 		for _, t := range pkg.Types {
 			for memberIndex, member := range t.Members {
-				for _, processor := range g.processors {
-					processor(context, pkg, t, &member, memberIndex)
+				for _, memeberProcessor := range g.memberProcessors {
+					memeberProcessor(context, pkg, t, &member, memberIndex)
 				}
 			}
+		}
+		for _, packageProcessor := range g.packageProcessors {
+			packageProcessor(context, pkg)
 		}
 	}
 
