@@ -63,9 +63,26 @@ func processPatchComments(_ *generator.Context, _ *types.Package, t *types.Type,
 	}
 }
 
+func addOrAppend(commentLines []string, prefix, value string) []string {
+	added := false
+	for i, commentLine := range commentLines{
+		if strings.HasPrefix(commentLine, prefix) {
+			commentLines[i] = commentLine +","+value
+			added = true
+			break
+		}
+	}
+	if !added {
+		commentLines = append(commentLines, prefix+value)
+	}
+	return commentLines
+}
+
 // func processProtobufOneof
 // To generate interfaces and extending classes for oneof fields
 // This is something extensively used in the Istio API, that uses these as marker interfaces
+//
+// For processing we'll add +k8s:openapi-gen=x-kubernetes tags that will be later processed by kube-openapi and added to the OpenAPI json spec
 func processProtobufOneof(_ *generator.Context, pkg *types.Package, t *types.Type, m *types.Member, memberIndex int) {
 	publicInterfaceName := func(name string) string {
 		if unicode.IsUpper(rune(name[0])) {
@@ -80,8 +97,10 @@ func processProtobufOneof(_ *generator.Context, pkg *types.Package, t *types.Typ
 		m.Type.Kind = types.Struct
 		// Ensure it's exported
 		t.Members[memberIndex].Type.Name.Name = publicInterfaceName(m.Type.Name.Name)
-		// Add comment tag to mark this as an interface, this is later processed by kube-openapi and added to the OpenAPI json spec
-		m.Type.CommentLines = append(m.Type.CommentLines, "+k8s:openapi-gen=x-kubernetes-fabric8-type:interface")
+		//// Add comment tag to the referenced type and mark it as an interface
+		//t.Members[memberIndex].Type.CommentLines = append(m.Type.CommentLines, "+k8s:openapi-gen=x-kubernetes-fabric8-type:interface")
+		// Add comment tag to the current type to mark it as it has fields that are interfaces (useful for the OpenAPI Java generator)
+		t.CommentLines = addOrAppend(t.CommentLines, "+k8s:openapi-gen=x-kubernetes-fabric8-interface-fields:", m.Name)
 	}
 	// Implementations
 	// It's just a marker interface, it contains a single method that has the same name as the interface
@@ -94,17 +113,7 @@ func processProtobufOneof(_ *generator.Context, pkg *types.Package, t *types.Typ
 			}
 			if reflect.ValueOf(t.Methods).MapKeys()[0].String() == reflect.ValueOf(candidateType.Methods).MapKeys()[0].String() {
 				t.CommentLines = append(t.CommentLines, "+k8s:openapi-gen=x-kubernetes-fabric8-implements:"+publicInterfaceName(candidateType.Name.Name))
-				addedImplementation := false
-				for i, candidateCommentLine := range candidateType.CommentLines {
-					if strings.HasPrefix(candidateCommentLine, "+k8s:openapi-gen=x-kubernetes-fabric8-implementation") {
-						candidateType.CommentLines[i] = candidateCommentLine +","+t.Name.Name
-						addedImplementation = true
-						break
-					}
-				}
-				if !addedImplementation {
-					candidateType.CommentLines = append(candidateType.CommentLines, "+k8s:openapi-gen=x-kubernetes-fabric8-implementation:"+t.Name.Name)
-				}
+				candidateType.CommentLines = addOrAppend(candidateType.CommentLines, "+k8s:openapi-gen=x-kubernetes-fabric8-implementation:", t.Name.Name)
 			}
 		}
 	}

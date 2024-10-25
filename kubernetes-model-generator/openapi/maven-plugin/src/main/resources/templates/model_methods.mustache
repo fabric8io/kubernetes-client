@@ -25,6 +25,9 @@
 {{#jsonInclude}}
     @JsonInclude(JsonInclude.Include.{{.}})
 {{/jsonInclude}}
+{{#jsonUnwrapped}}
+    @JsonUnwrapped
+{{/jsonUnwrapped}}
     public {{type}} {{getterName}}() {
         return {{name}};
     }
