@@ -142,22 +142,30 @@ func processProtobufPackageOneOf(_ *generator.Context, pkg *types.Package) {
 func processProtobufTags(_ *generator.Context, _ *types.Package, t *types.Type, m *types.Member, memberIndex int) {
 	tags := reflect.StructTag(m.Tags)
 	protobufTag := tags.Get("protobuf")
+	if protobufTag == "" {
+		return
+	}
 	jsonTag := tags.Get("json")
-	if protobufTag != "" && strings.Contains(protobufTag, "json=") {
-		// TODO, consider also name= (sometimes this is included instad of json=)
-		name := strings.Split(protobufTag, "json=")[1]
-		name = strings.Split(name, ",")[0]
-		var updatedJsonTag string
-		if strings.Contains(jsonTag, ",") {
-			updatedJsonTag = name + "," + strings.Split(jsonTag, ",")[1]
-		} else {
-			updatedJsonTag = name
-		}
-		if jsonTag == "" {
-			t.Members[memberIndex].Tags = t.Members[memberIndex].Tags + " json:\"" + updatedJsonTag+"\""
-		} else {
-			t.Members[memberIndex].Tags = strings.Replace(t.Members[memberIndex].Tags, jsonTag, updatedJsonTag, 1)
-		}
+	var name string
+	if strings.Contains(protobufTag, "json=") {
+		name = strings.Split(strings.Split(protobufTag, "json=")[1], ",")[0]
+
+	} else if strings.Contains(protobufTag, "name=") && jsonTag == "" {
+		name = strings.Split(strings.Split(protobufTag, "name=")[1], ",")[0]
+	}
+	if name == "" {
+		return
+	}
+	var updatedJsonTag string
+	if strings.Contains(jsonTag, ",") {
+		updatedJsonTag = name + "," + strings.Split(jsonTag, ",")[1]
+	} else {
+		updatedJsonTag = name
+	}
+	if jsonTag == "" {
+		t.Members[memberIndex].Tags = t.Members[memberIndex].Tags + " json:\"" + updatedJsonTag+"\""
+	} else {
+		t.Members[memberIndex].Tags = strings.Replace(t.Members[memberIndex].Tags, jsonTag, updatedJsonTag, 1)
 	}
 }
 
