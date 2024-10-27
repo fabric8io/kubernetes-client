@@ -15,7 +15,23 @@
  */
 package io.fabric8.kubernetes.client.internal;
 
-import io.fabric8.kubernetes.api.model.*;
+import io.fabric8.kubernetes.api.model.Binding;
+import io.fabric8.kubernetes.api.model.ComponentStatus;
+import io.fabric8.kubernetes.api.model.ConfigMap;
+import io.fabric8.kubernetes.api.model.Endpoints;
+import io.fabric8.kubernetes.api.model.Event;
+import io.fabric8.kubernetes.api.model.LimitRange;
+import io.fabric8.kubernetes.api.model.Namespace;
+import io.fabric8.kubernetes.api.model.Node;
+import io.fabric8.kubernetes.api.model.PersistentVolume;
+import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
+import io.fabric8.kubernetes.api.model.Pod;
+import io.fabric8.kubernetes.api.model.PodTemplate;
+import io.fabric8.kubernetes.api.model.ReplicationController;
+import io.fabric8.kubernetes.api.model.ResourceQuota;
+import io.fabric8.kubernetes.api.model.Secret;
+import io.fabric8.kubernetes.api.model.Service;
+import io.fabric8.kubernetes.api.model.ServiceAccount;
 import io.fabric8.kubernetes.api.model.admissionregistration.v1.MutatingWebhookConfiguration;
 import io.fabric8.kubernetes.api.model.admissionregistration.v1.ValidatingWebhookConfiguration;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
