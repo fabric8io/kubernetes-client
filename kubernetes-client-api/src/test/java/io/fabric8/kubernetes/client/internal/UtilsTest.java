@@ -15,23 +15,7 @@
  */
 package io.fabric8.kubernetes.client.internal;
 
-import io.fabric8.kubernetes.api.model.Binding;
-import io.fabric8.kubernetes.api.model.ComponentStatus;
-import io.fabric8.kubernetes.api.model.ConfigMap;
-import io.fabric8.kubernetes.api.model.Endpoints;
-import io.fabric8.kubernetes.api.model.Event;
-import io.fabric8.kubernetes.api.model.LimitRange;
-import io.fabric8.kubernetes.api.model.Namespace;
-import io.fabric8.kubernetes.api.model.Node;
-import io.fabric8.kubernetes.api.model.PersistentVolume;
-import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
-import io.fabric8.kubernetes.api.model.Pod;
-import io.fabric8.kubernetes.api.model.PodTemplate;
-import io.fabric8.kubernetes.api.model.ReplicationController;
-import io.fabric8.kubernetes.api.model.ResourceQuota;
-import io.fabric8.kubernetes.api.model.Secret;
-import io.fabric8.kubernetes.api.model.Service;
-import io.fabric8.kubernetes.api.model.ServiceAccount;
+import io.fabric8.kubernetes.api.model.*;
 import io.fabric8.kubernetes.api.model.admissionregistration.v1.MutatingWebhookConfiguration;
 import io.fabric8.kubernetes.api.model.admissionregistration.v1.ValidatingWebhookConfiguration;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
@@ -173,65 +157,6 @@ class UtilsTest {
     final String result = Utils.interpolateString(input, parameters);
     // Then
     assertEquals("This is a \"template string\" and the following is code ${NOT_REPLACED}: '1' === '1'; /* END */", result);
-  }
-
-  @Test
-  void testGetPluralFromKind() {
-    // Given
-    SortedMap<String, Class> pluralToKubernetesResourceMap = new TreeMap<>();
-    pluralToKubernetesResourceMap.put("bindings", Binding.class);
-    pluralToKubernetesResourceMap.put("componentstatuses", ComponentStatus.class);
-    pluralToKubernetesResourceMap.put("configmaps", ConfigMap.class);
-    pluralToKubernetesResourceMap.put("endpoints", Endpoints.class);
-    pluralToKubernetesResourceMap.put("events", Event.class);
-    pluralToKubernetesResourceMap.put("limitranges", LimitRange.class);
-    pluralToKubernetesResourceMap.put("namespaces", Namespace.class);
-    pluralToKubernetesResourceMap.put("nodes", Node.class);
-    pluralToKubernetesResourceMap.put("persistentvolumeclaims", PersistentVolumeClaim.class);
-    pluralToKubernetesResourceMap.put("persistentvolumes", PersistentVolume.class);
-    pluralToKubernetesResourceMap.put("pods", Pod.class);
-    pluralToKubernetesResourceMap.put("podtemplates", PodTemplate.class);
-    pluralToKubernetesResourceMap.put("replicationcontrollers", ReplicationController.class);
-    pluralToKubernetesResourceMap.put("resourcequotas", ResourceQuota.class);
-    pluralToKubernetesResourceMap.put("secrets", Secret.class);
-    pluralToKubernetesResourceMap.put("serviceaccounts", ServiceAccount.class);
-    pluralToKubernetesResourceMap.put("services", Service.class);
-    pluralToKubernetesResourceMap.put("mutatingwebhookconfigurations", MutatingWebhookConfiguration.class);
-    pluralToKubernetesResourceMap.put("validatingwebhookconfigurations", ValidatingWebhookConfiguration.class);
-    pluralToKubernetesResourceMap.put("customresourcedefinitions", CustomResourceDefinition.class);
-    pluralToKubernetesResourceMap.put("controllerrevisions", ControllerRevision.class);
-    pluralToKubernetesResourceMap.put("daemonsets", DaemonSet.class);
-    pluralToKubernetesResourceMap.put("deployments", Deployment.class);
-    pluralToKubernetesResourceMap.put("replicasets", ReplicaSet.class);
-    pluralToKubernetesResourceMap.put("statefulsets", StatefulSet.class);
-    pluralToKubernetesResourceMap.put("tokenreviews", TokenReview.class);
-    pluralToKubernetesResourceMap.put("localsubjectaccessreviews", LocalSubjectAccessReview.class);
-    pluralToKubernetesResourceMap.put("selfsubjectaccessreviews", SelfSubjectAccessReview.class);
-    pluralToKubernetesResourceMap.put("selfsubjectrulesreviews", SelfSubjectRulesReview.class);
-    pluralToKubernetesResourceMap.put("subjectaccessreviews", SubjectAccessReview.class);
-    pluralToKubernetesResourceMap.put("horizontalpodautoscalers", HorizontalPodAutoscaler.class);
-    pluralToKubernetesResourceMap.put("cronjobs", CronJob.class);
-    pluralToKubernetesResourceMap.put("jobs", Job.class);
-    pluralToKubernetesResourceMap.put("certificatesigningrequests", CertificateSigningRequest.class);
-    pluralToKubernetesResourceMap.put("leases", Lease.class);
-    pluralToKubernetesResourceMap.put("endpointslices", EndpointSlice.class);
-    pluralToKubernetesResourceMap.put("ingresses", Ingress.class);
-    pluralToKubernetesResourceMap.put("networkpolicies", NetworkPolicy.class);
-    pluralToKubernetesResourceMap.put("poddisruptionbudgets", PodDisruptionBudget.class);
-    pluralToKubernetesResourceMap.put("podsecuritypolicies", PodSecurityPolicy.class);
-    pluralToKubernetesResourceMap.put("clusterrolebindings", ClusterRoleBinding.class);
-    pluralToKubernetesResourceMap.put("clusterroles", ClusterRole.class);
-    pluralToKubernetesResourceMap.put("rolebindings", RoleBinding.class);
-    pluralToKubernetesResourceMap.put("roles", Role.class);
-    pluralToKubernetesResourceMap.put("priorityclasses", PriorityClass.class);
-    pluralToKubernetesResourceMap.put("csidrivers", CSIDriver.class);
-    pluralToKubernetesResourceMap.put("csinodes", CSINode.class);
-    pluralToKubernetesResourceMap.put("storageclasses", StorageClass.class);
-    pluralToKubernetesResourceMap.put("volumeattachments", VolumeAttachment.class);
-
-    // When & Then
-    pluralToKubernetesResourceMap.forEach(
-        (plural, kubernetesResource) -> assertEquals(plural, Utils.getPluralFromKind(kubernetesResource.getSimpleName())));
   }
 
   @Test

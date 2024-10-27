@@ -56,7 +56,7 @@ public class ResourceDefinitionContext {
       if (kind == null) {
         throw new IllegalArgumentException("Neither kind nor plural was set, at least one is required");
       }
-      plural = Utils.getPluralFromKind(kind);
+      plural = HasMetadata.getPlural(kind.getClass());
     }
   }
 
