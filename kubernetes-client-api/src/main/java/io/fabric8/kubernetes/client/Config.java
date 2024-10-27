@@ -203,10 +203,6 @@ public class Config {
   private Integer loggingInterval;
   private String impersonateUsername;
 
-  /**
-   * @deprecated use impersonateGroups instead
-   */
-  @Deprecated
   private String impersonateGroup;
   private String[] impersonateGroups;
   private Map<String, List<String>> impersonateExtras;
@@ -326,28 +322,6 @@ public class Config {
       masterUrl = (SSLUtils.isHttpsAvailable(config) ? HTTPS_PROTOCOL_PREFIX : HTTP_PROTOCOL_PREFIX) + masterUrl;
     }
     return masterUrl;
-  }
-
-  @Deprecated
-  public Config(String masterUrl, String apiVersion, String namespace, Boolean trustCerts, boolean disableHostnameVerification,
-      String caCertFile, String caCertData, String clientCertFile, String clientCertData, String clientKeyFile,
-      String clientKeyData, String clientKeyAlgo, String clientKeyPassphrase, String username, String password,
-      String oauthToken, String autoOAuthToken, int watchReconnectInterval, int watchReconnectLimit, int connectionTimeout,
-      int requestTimeout,
-      long rollingTimeout, long scaleTimeout, int loggingInterval, int maxConcurrentRequests, int maxConcurrentRequestsPerHost,
-      String httpProxy, String httpsProxy, String[] noProxy, Map<Integer, String> errorMessages, String userAgent,
-      TlsVersion[] tlsVersions, long websocketPingInterval, String proxyUsername, String proxyPassword,
-      String trustStoreFile, String trustStorePassphrase, String keyStoreFile, String keyStorePassphrase,
-      String impersonateUsername, String[] impersonateGroups, Map<String, List<String>> impersonateExtras) {
-    this(masterUrl, apiVersion, namespace, trustCerts, disableHostnameVerification, caCertFile, caCertData, clientCertFile,
-        clientCertData, clientKeyFile, clientKeyData, clientKeyAlgo, clientKeyPassphrase, username, password, oauthToken,
-        autoOAuthToken,
-        watchReconnectInterval, watchReconnectLimit, connectionTimeout, requestTimeout, scaleTimeout,
-        loggingInterval, maxConcurrentRequests, maxConcurrentRequestsPerHost, false, httpProxy, httpsProxy, noProxy,
-        userAgent, tlsVersions, websocketPingInterval, proxyUsername, proxyPassword,
-        trustStoreFile, trustStorePassphrase, keyStoreFile, keyStorePassphrase, impersonateUsername, impersonateGroups,
-        impersonateExtras, null, null, DEFAULT_REQUEST_RETRY_BACKOFFLIMIT, DEFAULT_REQUEST_RETRY_BACKOFFINTERVAL,
-        DEFAULT_UPLOAD_REQUEST_TIMEOUT, false, null, Collections.emptyList());
   }
 
   @Deprecated

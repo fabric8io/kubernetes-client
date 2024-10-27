@@ -978,67 +978,6 @@ class ConfigTest {
   }
 
   @Test
-  void deprecatedOldConfigConstructor() {
-    // Given + When
-    Config config = new Config("https://api.example.testing:6443", "v1", "ns1", true, true,
-        "ca.crt", "certificate-authority-data", "client.crt", "client-authority-data", "client-key.crt",
-        "client-key-data", "EC", "client-key-passphrase", "test-user", "secret", "sha256~secret", "sha256~auto-token",
-        500, 5, 5000, 5000, 0, 100000, 10000, 5, 10, "http://proxy-url", "https://proxy-url",
-        new String[] { "https://noproxy-url1" }, Collections.emptyMap(), "fabric8-kubernetes-client/ConfigTest",
-        new TlsVersion[] { TlsVersion.TLS_1_3 }, 10000L, "proxy-username", "proxy-password", "truststore.jks",
-        "truststore-password", "k8s.keystore", "keystore-password", "jane.doe@example.com", new String[] { "developers" },
-        Collections.singletonMap("scope", Arrays.asList("view", "development")));
-    // Then
-    assertThat(config)
-        .hasFieldOrPropertyWithValue("autoConfigure", false)
-        .hasFieldOrPropertyWithValue("apiVersion", "v1")
-        .hasFieldOrPropertyWithValue("namespace", "ns1")
-        .hasFieldOrPropertyWithValue("masterUrl", "https://api.example.testing:6443/")
-        .hasFieldOrPropertyWithValue("contexts", Collections.emptyList())
-        .hasFieldOrPropertyWithValue("caCertFile", "ca.crt")
-        .hasFieldOrPropertyWithValue("caCertData", "certificate-authority-data")
-        .hasFieldOrPropertyWithValue("clientCertFile", "client.crt")
-        .hasFieldOrPropertyWithValue("clientCertData", "client-authority-data")
-        .hasFieldOrPropertyWithValue("clientKeyFile", "client-key.crt")
-        .hasFieldOrPropertyWithValue("clientKeyData", "client-key-data")
-        .hasFieldOrPropertyWithValue("clientKeyPassphrase", "client-key-passphrase")
-        .hasFieldOrPropertyWithValue("username", "test-user")
-        .hasFieldOrPropertyWithValue("password", "secret")
-        .hasFieldOrPropertyWithValue("oauthToken", "sha256~secret")
-        .hasFieldOrPropertyWithValue("autoOAuthToken", "sha256~auto-token")
-        .hasFieldOrPropertyWithValue("httpProxy", "http://proxy-url")
-        .hasFieldOrPropertyWithValue("httpsProxy", "https://proxy-url")
-        .hasFieldOrPropertyWithValue("noProxy", new String[] { "https://noproxy-url1" })
-        .hasFieldOrPropertyWithValue("proxyUsername", "proxy-username")
-        .hasFieldOrPropertyWithValue("proxyPassword", "proxy-password")
-        .hasFieldOrPropertyWithValue("trustStoreFile", "truststore.jks")
-        .hasFieldOrPropertyWithValue("trustStorePassphrase", "truststore-password")
-        .hasFieldOrPropertyWithValue("keyStoreFile", "k8s.keystore")
-        .hasFieldOrPropertyWithValue("keyStorePassphrase", "keystore-password")
-        .hasFieldOrPropertyWithValue("maxConcurrentRequests", 5)
-        .hasFieldOrPropertyWithValue("maxConcurrentRequestsPerHost", 10)
-        .hasFieldOrPropertyWithValue("trustCerts", true)
-        .hasFieldOrPropertyWithValue("disableHostnameVerification", true)
-        .hasFieldOrPropertyWithValue("clientKeyAlgo", "EC")
-        .hasFieldOrPropertyWithValue("clientKeyPassphrase", "client-key-passphrase")
-        .hasFieldOrPropertyWithValue("watchReconnectInterval", 500)
-        .hasFieldOrPropertyWithValue("watchReconnectLimit", 5)
-        .hasFieldOrPropertyWithValue("connectionTimeout", 5000)
-        .hasFieldOrPropertyWithValue("requestTimeout", 5000)
-        .hasFieldOrPropertyWithValue("scaleTimeout", 100000L)
-        .hasFieldOrPropertyWithValue("loggingInterval", 10000)
-        .hasFieldOrPropertyWithValue("websocketPingInterval", 10000L)
-        .hasFieldOrPropertyWithValue("uploadRequestTimeout", 120000)
-        .hasFieldOrPropertyWithValue("impersonateUsername", "jane.doe@example.com")
-        .satisfies(e -> assertThat(e.getImpersonateGroups()).containsExactly("developers"))
-        .hasFieldOrPropertyWithValue("impersonateExtras",
-            Collections.singletonMap("scope", Arrays.asList("view", "development")))
-        .hasFieldOrPropertyWithValue("http2Disable", false)
-        .hasFieldOrPropertyWithValue("tlsVersions", new TlsVersion[] { TlsVersion.TLS_1_3 })
-        .satisfies(e -> assertThat(e.getUserAgent()).isEqualTo("fabric8-kubernetes-client/ConfigTest"));
-  }
-
-  @Test
   @DisplayName("should create expected authenticator command for aws")
   void getAuthenticatorCommandFromExecConfig_whenAwsCommandUsed_thenUseCommandLineArgsInExecCommand() throws IOException {
     // Given
