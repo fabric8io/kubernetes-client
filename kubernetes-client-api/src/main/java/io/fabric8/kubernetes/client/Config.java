@@ -203,7 +203,6 @@ public class Config {
   private Integer loggingInterval;
   private String impersonateUsername;
 
-  private String impersonateGroup;
   private String[] impersonateGroups;
   private Map<String, List<String>> impersonateExtras;
   /**
