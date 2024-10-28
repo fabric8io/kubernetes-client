@@ -17,13 +17,23 @@
 package openapi
 
 import (
+	"go/ast"
+	"go/parser"
+	"go/token"
 	"k8s.io/gengo/v2"
 	"k8s.io/gengo/v2/generator"
 	"k8s.io/gengo/v2/types"
 	"reflect"
+	"strconv"
 	"strings"
 	"unicode"
 )
+
+const (
+	XKubernetesFabric8Type = "+k8s:openapi-gen=x-kubernetes-fabric8-type"
+)
+
+var astFileSet = token.NewFileSet()
 
 // processMapKeyTypes function to process the map key types and replace them by string in case they are not
 // kube-openapi throws a validation error for maps that have non-string keys such as uint32
@@ -63,20 +73,26 @@ func processPatchComments(_ *generator.Context, _ *types.Package, t *types.Type,
 	}
 }
 
-func addOrAppend(commentLines []string, prefix, value string) []string {
-	added := false
-	for i, commentLine := range commentLines{
-		if strings.HasPrefix(commentLine, prefix) {
-			commentLines[i] = commentLine +","+value
-			added = true
-			break
+func processProtobufEnumsForIstio(_ *generator.Context, pkg *types.Package, _ *types.Type, m *types.Member, memberIndex int) {
+	protobuf := reflect.StructTag(m.Tags).Get("protobuf")
+	if protobuf == "" || !strings.Contains(protobuf, "enum=") {
+		return
+	}
+	hp, _ := hasPrefix(m.Type.CommentLines, XKubernetesFabric8Type+":enum")
+	if hp {
+		return
+	}
+	istioEnumExtractor := &IstioEnumExtractor{pkg: pkg, typeName: m.Type.Name.Name + "_value"}
+	if istioEnumExtractor.extract() {
+		// Export the type
+		m.Type.Kind = types.Struct // Change to Struct so that it's processed by kube-openapi
+		m.Type.CommentLines = append(m.Type.CommentLines, XKubernetesFabric8Type+":enum")
+		for _, value := range istioEnumExtractor.values {
+			m.Type.CommentLines = addOrAppend(m.Type.CommentLines, "+k8s:openapi-gen=x-kubernetes-fabric8-enum-values:", value)
 		}
 	}
-	if !added {
-		commentLines = append(commentLines, prefix+value)
-	}
-	return commentLines
 }
+
 func publicInterfaceName(name string) string {
 	if unicode.IsUpper(rune(name[0])) {
 		return name
@@ -94,7 +110,7 @@ func processProtobufOneof(_ *generator.Context, pkg *types.Package, t *types.Typ
 	protobufOneOf := reflect.StructTag(m.Tags).Get("protobuf_oneof")
 	if protobufOneOf != "" {
 		//// Add comment tag to the referenced type and mark it as an interface
-		t.Members[memberIndex].Type.CommentLines = append(m.Type.CommentLines, "+k8s:openapi-gen=x-kubernetes-fabric8-type:interface")
+		t.Members[memberIndex].Type.CommentLines = append(m.Type.CommentLines, XKubernetesFabric8Type+":interface")
 		// Add comment tag to the current type to mark it as it has fields that are interfaces (useful for the OpenAPI Java generator)
 		t.CommentLines = addOrAppend(t.CommentLines, "+k8s:openapi-gen=x-kubernetes-fabric8-interface-fields:", m.Name)
 	}
@@ -180,4 +196,60 @@ func processSwaggerIgnore(_ *generator.Context, _ *types.Package, t *types.Type,
 			t.Members[memberIndex].Tags = strings.Replace(m.Tags, jsonTag, ",omitted", 1)
 		}
 	}
+}
+
+func hasPrefix(commentLines []string, prefix string) (bool, int) {
+	for i, commentLine := range commentLines {
+		if strings.HasPrefix(commentLine, prefix) {
+			return true, i
+		}
+	}
+	return false, -1
+}
+
+func addOrAppend(commentLines []string, prefix, value string) []string {
+	if ok, i := hasPrefix(commentLines, prefix); ok {
+		commentLines[i] = commentLines[i] + "," + value
+	} else {
+		commentLines = append(commentLines, prefix+value)
+	}
+	return commentLines
+}
+
+type IstioEnumExtractor struct {
+	pkg *types.Package
+	typeName string
+	values []string
+}
+
+func (v *IstioEnumExtractor) Visit(node ast.Node) ast.Visitor {
+	switch node.(type) {
+	case *ast.ValueSpec:
+		valueSpec := node.(*ast.ValueSpec)
+			if valueSpec.Names[0].Name == v.typeName {
+			ast.Inspect(valueSpec, func(valueNode ast.Node) bool {
+				switch valueNode.(type) {
+				case *ast.KeyValueExpr:
+					unquoted, _ := strconv.Unquote(valueNode.(*ast.KeyValueExpr).Key.(*ast.BasicLit).Value)
+					v.values = append(v.values, unquoted)
+				}
+				return true
+			})
+			return nil
+		}
+	}
+	return v
+}
+
+func (v *IstioEnumExtractor) extract() bool {
+	packages, err := parser.ParseDir(astFileSet, v.pkg.Dir, nil, parser.ParseComments)
+	if err == nil && packages[v.pkg.Name] != nil {
+		for _, f := range packages[v.pkg.Name].Files {
+			ast.Walk(v, f)
+			if v.values != nil {
+				return true
+			}
+		}
+	}
+	return false
 }

@@ -24,8 +24,11 @@ import {{.}};
 /**
  * {{description}}
  */{{/hasDescription}}
-{{> model_class_annotations}}public {{classInformation.classInterface}} {{classInformation.classSimpleName}} {{implementsExtends}} {{classInformation.implementedInterfaces}}
+{{> model_class_annotations}}public {{classInformation.classType}} {{classInformation.classSimpleName}} {{classInformation.implementsExtends}}
 {
+{{#classInformation.enumValues}}
+    {{.}};
+{{/classInformation.enumValues}}
 {{>model_fields}}
 
 {{#hasFields}}
