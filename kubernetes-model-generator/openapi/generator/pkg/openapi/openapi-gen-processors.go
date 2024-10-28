@@ -230,8 +230,9 @@ func (v *IstioEnumExtractor) Visit(node ast.Node) ast.Visitor {
 			ast.Inspect(valueSpec, func(valueNode ast.Node) bool {
 				switch valueNode.(type) {
 				case *ast.KeyValueExpr:
-					unquoted, _ := strconv.Unquote(valueNode.(*ast.KeyValueExpr).Key.(*ast.BasicLit).Value)
-					v.values = append(v.values, unquoted)
+					enumKey, _ := strconv.Unquote(valueNode.(*ast.KeyValueExpr).Key.(*ast.BasicLit).Value)
+					enumValue := valueNode.(*ast.KeyValueExpr).Value.(*ast.BasicLit).Value
+					v.values = append(v.values, enumKey+"("+enumValue+")")
 				}
 				return true
 			})
