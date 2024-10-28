@@ -264,7 +264,7 @@ public class Config {
    * Create an empty {@link Config} class without any automatic configuration
    * (i.e. reading system properties/environment variables to load defaults.)
    * You can also reuse this object to build your own {@link Config} object
-   * without any auto configuration like this:
+   * without any autoconfiguration like this:
    *
    *
    * <pre>{@code
