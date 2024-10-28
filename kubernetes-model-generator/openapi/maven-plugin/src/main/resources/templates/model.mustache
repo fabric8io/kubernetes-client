@@ -26,9 +26,7 @@ import {{.}};
  */{{/hasDescription}}
 {{> model_class_annotations}}public {{classInformation.classType}} {{classInformation.classSimpleName}} {{classInformation.implementsExtends}}
 {
-{{#classInformation.enumValues}}
-    {{.}};
-{{/classInformation.enumValues}}
+{{>model_enum_body}}
 {{>model_fields}}
 
 {{#hasFields}}
