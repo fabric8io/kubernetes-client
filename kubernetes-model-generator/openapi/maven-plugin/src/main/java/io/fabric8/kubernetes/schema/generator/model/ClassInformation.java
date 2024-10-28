@@ -55,7 +55,12 @@ public class ClassInformation implements ImportManager {
     kubernetesListType = apiVersion == null ? null : schemaUtils.kubernetesListType(this, classSchema);
     inRootPackage = getPackageName().equals(schemaUtils.getSettings().getPackageName());
     isEnum = SchemaUtils.isEnum(classSchema);
-    enumValues = isEnum ? String.join(",\n    ", SchemaUtils.enumValues(classSchema)) : null;
+    if (isEnum) {
+      addImport("com.fasterxml.jackson.annotation.JsonCreator");
+      enumValues = String.join(",\n    ", SchemaUtils.enumValues(classSchema));
+    } else {
+      enumValues = null;
+    }
     isInterface = SchemaUtils.isInterface(classSchema);
     isHasMetadata = apiVersion != null && kubernetesListType == null && schemaUtils.isHasMetadata(classSchema);
     isNamespaced = apiVersion != null && apiVersion.isNamespaced();
