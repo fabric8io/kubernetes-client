@@ -127,13 +127,17 @@ class ModelGenerator {
       deserializer = "io.fabric8.kubernetes.model.jackson.JsonUnwrappedDeserializer.class";
     } else if (deserializerForJavaClass(ret.getClassInformation().getClassName()) != null) {
       deserializer = deserializerForJavaClass(ret.getClassInformation().getClassName());
-    } else {
+    } else if (!ret.getClassInformation().isEnum()) {
       deserializer = "com.fasterxml.jackson.databind.JsonDeserializer.None.class";
+    } else {
+      deserializer = null;
     }
     ret.put("classJsonDeserializeUsing", deserializer);
-    ret.addImport("com.fasterxml.jackson.annotation.JsonInclude");
-    ret.put("classJsonInclude", "NON_NULL");
-    if (!ret.getClassInformation().isInterface()) {
+    if (!ret.getClassInformation().isEnum()) {
+      ret.addImport("com.fasterxml.jackson.annotation.JsonInclude");
+      ret.put("classJsonInclude", "NON_NULL");
+    }
+    if (!ret.getClassInformation().isInterface() && !ret.getClassInformation().isEnum()) {
       ret.addImport("com.fasterxml.jackson.annotation.JsonPropertyOrder");
       ret.put("propertyOrder", SchemaUtils.propertyOrder(ret.getClassSchema()));
       ret.addImport("lombok.ToString");
@@ -148,25 +152,25 @@ class ModelGenerator {
       ret.put("hasDescription", !sanitizeDescription(ret.getClassSchema().getDescription()).trim().isEmpty());
       ret.put("description", sanitizeDescription(ret.getClassSchema().getDescription()));
     }
-    ret.put("implementsExtends", ret.getClassInformation().isInterface() ? "extends" : "implements");
     final List<Map<String, Object>> templateFields = templateFields(ret);
     ret.put("fields", templateFields);
     if (!templateFields.isEmpty()) {
       ret.put("hasFields", true);
       ret.addImport("com.fasterxml.jackson.annotation.JsonProperty");
     }
-    ret.put("editable", ret.getClassInformation().isEditable());
     ret.put("builderPackage", settings.getBuilderPackage());
-    if (!ret.getClassInformation().isInterface() && settings.isAddBuildableReferences()) {
+    if (!ret.getClassInformation().isInterface() && !ret.getClassInformation().isEnum()
+        && settings.isAddBuildableReferences()) {
       ret.put("buildable", false);
       ret.addImport("io.sundr.builder.annotations.Buildable");
       ret.addImport("io.sundr.builder.annotations.BuildableReference");
       ret.put("buildableReferences", buildableReferences(ret, templateFields));
-    } else if (!ret.getClassInformation().isInterface()) {
+    } else if (!ret.getClassInformation().isInterface() && !ret.getClassInformation().isEnum()) {
       ret.addImport("io.sundr.builder.annotations.Buildable");
       ret.put("buildable", true);
     }
-    if (!ret.getSchemaProperties().containsKey("additionalProperties") && !ret.getClassInformation().isInterface()) {
+    if (!ret.getSchemaProperties().containsKey("additionalProperties") && !ret.getClassInformation().isInterface()
+        && !ret.getClassInformation().isEnum()) {
       ret.put("additionalProperties", true);
       ret.addImport("java.util.LinkedHashMap");
       ret.addImport("java.util.Map");

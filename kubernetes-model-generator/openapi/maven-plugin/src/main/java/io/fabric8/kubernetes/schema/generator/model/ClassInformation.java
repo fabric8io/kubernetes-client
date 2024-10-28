@@ -33,12 +33,15 @@ public class ClassInformation implements ImportManager {
   private final String kubernetesListType;
   private final String packageName;
   private final boolean inRootPackage;
+  private final boolean isEnum;
+  private final String enumValues;
   private final boolean isInterface;
   private final boolean isHasMetadata;
   private final boolean isNamespaced;
+  private final String classType;
   private final String classSimpleName;
   private final String className;
-  private final String implementedInterfaces;
+  private final String implementsExtends;
   private final JsonSubTypes jsonSubTypes;
 
   ClassInformation(SchemaUtils schemaUtils, Map.Entry<String, Schema<?>> clazz) {
@@ -51,12 +54,15 @@ public class ClassInformation implements ImportManager {
     packageName = schemaUtils.toModelPackage(classKey.substring(0, classKey.lastIndexOf('.')));
     kubernetesListType = apiVersion == null ? null : schemaUtils.kubernetesListType(this, classSchema);
     inRootPackage = getPackageName().equals(schemaUtils.getSettings().getPackageName());
+    isEnum = SchemaUtils.isEnum(classSchema);
+    enumValues = isEnum ? String.join(",\n    ", SchemaUtils.enumValues(classSchema)) : null;
     isInterface = SchemaUtils.isInterface(classSchema);
     isHasMetadata = apiVersion != null && kubernetesListType == null && schemaUtils.isHasMetadata(classSchema);
     isNamespaced = apiVersion != null && apiVersion.isNamespaced();
+    classType = SchemaUtils.classType(classSchema);
     classSimpleName = SchemaUtils.refToClassName(classKey);
     className = getPackageName() + "." + getClassSimpleName();
-    implementedInterfaces = resolveImplementedInterfaces(classSchema);
+    implementsExtends = resolveImplementsExtends(classSchema);
     if (isInterface) {
       addImport("com.fasterxml.jackson.annotation.JsonSubTypes");
       addImport("com.fasterxml.jackson.annotation.JsonTypeInfo");
@@ -78,46 +84,50 @@ public class ClassInformation implements ImportManager {
   }
 
   boolean isEditable() {
-    return !isInterface();
-  }
-
-  public final String getClassInterface() {
-    return isInterface() ? "interface" : "class";
+    return !isEnum() && !isInterface();
   }
 
   public final String getBuilderName() {
     return getClassSimpleName() + "Builder";
   }
 
-  private String resolveImplementedInterfaces(Schema<?> classSchema) {
-    final StringBuilder implementedInterfaces = new StringBuilder();
+  private String resolveImplementsExtends(Schema<?> classSchema) {
+    if (isEnum()) {
+      return "";
+    }
+    final StringBuilder implementsExtends = new StringBuilder();
+    if (isInterface()) {
+      implementsExtends.append("extends ");
+    } else {
+      implementsExtends.append("implements ");
+    }
     final var interfaceImplemented = SchemaUtils.interfaceImplemented(classSchema);
     if (interfaceImplemented != null) {
-      implementedInterfaces.append(interfaceImplemented).append(", ");
+      implementsExtends.append(interfaceImplemented).append(", ");
     }
     if (isEditable()) {
       addImport("com.fasterxml.jackson.annotation.JsonIgnore");
       addImport(schemaUtils.getSettings().getBuilderPackage() + "." + "Editable");
-      implementedInterfaces.append("Editable<").append(getBuilderName()).append(">");
-      implementedInterfaces.append(" , "); // TODO: weird comma introduced by jsonschema2pojo
+      implementsExtends.append("Editable<").append(getBuilderName()).append(">");
+      implementsExtends.append(" , "); // TODO: weird comma introduced by jsonschema2pojo
     }
     // HasMetadata
     if (isHasMetadata()) {
       if (!isInRootPackage()) {
         addImport(schemaUtils.getSettings().getHasMetadataClass());
       }
-      implementedInterfaces.append(schemaUtils.getSettings().getHasMetadataClassSimpleName());
+      implementsExtends.append(schemaUtils.getSettings().getHasMetadataClassSimpleName());
     }
     // KubernetesResource
     else {
       if (getClassSimpleName().equals(schemaUtils.getSettings().getKubernetesResourceClassSimpleName())) {
         // There's a class actually named KubernetesResource in the tekton package
-        implementedInterfaces.append(schemaUtils.getSettings().getKubernetesResourceClass());
+        implementsExtends.append(schemaUtils.getSettings().getKubernetesResourceClass());
       } else {
         if (!isInRootPackage()) {
           addImport(schemaUtils.getSettings().getKubernetesResourceClass());
         }
-        implementedInterfaces.append(schemaUtils.getSettings().getKubernetesResourceClassSimpleName());
+        implementsExtends.append(schemaUtils.getSettings().getKubernetesResourceClassSimpleName());
       }
     }
     // Namespaced
@@ -125,19 +135,19 @@ public class ClassInformation implements ImportManager {
       if (!isInRootPackage()) {
         addImport(schemaUtils.getSettings().getNamespacedClass());
       }
-      implementedInterfaces.append(", ").append(schemaUtils.getSettings().getNamespacedClassSimpleName());
+      implementsExtends.append(", ").append(schemaUtils.getSettings().getNamespacedClassSimpleName());
     }
     // KubernetesResourceList
     if (getKubernetesListType() != null) {
       if (!isInRootPackage()) {
         addImport(schemaUtils.getSettings().getKubernetesResourceListClass());
       }
-      implementedInterfaces.append(", ").append(schemaUtils.getSettings().getKubernetesResourceListClassSimpleName())
+      implementsExtends.append(", ").append(schemaUtils.getSettings().getKubernetesResourceListClassSimpleName())
           .append("<")
           // TODO: remove after generator migration, match jsonschema2pojo generation for KubernetesResourceList
           .append(getPackageName()).append(".").append(getKubernetesListType())
           .append(">");
     }
-    return implementedInterfaces.toString();
+    return implementsExtends.toString();
   }
 }

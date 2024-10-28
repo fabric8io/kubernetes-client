@@ -44,6 +44,7 @@ func (g *GoGenerator) Generate() error {
 		processMapKeyTypes,
 		processOmitPrivateFields,
 		processPatchComments,
+		processProtobufEnumsForIstio,
 		processProtobufOneof,
 		processProtobufTags,
 		processSwaggerIgnore,

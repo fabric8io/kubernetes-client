@@ -257,9 +257,26 @@ public class SchemaUtils {
     return schemaTypeToJavaPrimitive(schema);
   }
 
+  public static String classType(Schema<?> schema) {
+    if (schema.getExtensions() != null && schema.getExtensions().get("x-kubernetes-fabric8-type") != null) {
+      return schema.getExtensions().get("x-kubernetes-fabric8-type").toString();
+    }
+    return "class";
+  }
+
+  public static boolean isEnum(Schema<?> schema) {
+    return Objects.equals(classType(schema), "enum");
+  }
+
+  public static Set<String> enumValues(Schema<?> schema) {
+    if (isEnum(schema) && schema.getExtensions().containsKey("x-kubernetes-fabric8-enum-values")) {
+      return Set.of(schema.getExtensions().get("x-kubernetes-fabric8-enum-values").toString().split(","));
+    }
+    return Collections.emptySet();
+  }
+
   public static boolean isInterface(Schema<?> schema) {
-    return schema.getExtensions() != null
-        && Objects.equals(schema.getExtensions().get("x-kubernetes-fabric8-type"), "interface");
+    return Objects.equals(classType(schema), "interface");
   }
 
   public static boolean hasInterfaceFields(Schema<?> schema) {
