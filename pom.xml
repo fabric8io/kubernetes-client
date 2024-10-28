@@ -553,12 +553,7 @@
 
       <dependency>
         <groupId>io.fabric8</groupId>
-        <artifactId>istio-model-v1alpha3</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>io.fabric8</groupId>
-        <artifactId>istio-model-v1beta1</artifactId>
+        <artifactId>istio-model</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>

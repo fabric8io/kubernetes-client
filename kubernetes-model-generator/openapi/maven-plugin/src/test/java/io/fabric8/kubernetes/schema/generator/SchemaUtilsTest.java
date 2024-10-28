@@ -59,7 +59,7 @@ class SchemaUtilsTest {
       "#/components/schemas/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta, ListMeta"
   })
   void refToClassName(String ref, String expected) {
-    final String result = SchemaUtils.refToClassName(ref);
+    final String result = new SchemaUtils(generatorSettingsBuilder.build()).refToClassName(ref);
     assertEquals(expected, result);
   }
 

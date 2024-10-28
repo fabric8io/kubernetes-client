@@ -177,7 +177,11 @@ public class SchemaUtils {
    * @param ref the reference to extract the class name from.
    * @return the simple class name associated to the provided Schema reference.
    */
-  public static String refToClassName(String ref) {
+  public String refToClassName(String ref) {
+    final String cleanRef = ref.replaceAll("^#/components/schemas/", "");
+    if (settings.getRefToClassNameMappings().containsKey(cleanRef)) {
+      return settings.getRefToClassNameMappings().getProperty(cleanRef);
+    }
     return capitalize(ref.substring(ref.lastIndexOf('.') + 1))
         // Remove underscores from Class Names, this doesn't look good in Java :)
         .replace("_", "");
@@ -268,11 +272,13 @@ public class SchemaUtils {
     return Objects.equals(classType(schema), "enum");
   }
 
-  public static Set<String> enumValues(Schema<?> schema) {
+  public static Collection<String> enumValues(Schema<?> schema) {
     if (isEnum(schema) && schema.getExtensions().containsKey("x-kubernetes-fabric8-enum-values")) {
-      return Set.of(schema.getExtensions().get("x-kubernetes-fabric8-enum-values").toString().split(","));
+      return Stream.of(schema.getExtensions().get("x-kubernetes-fabric8-enum-values").toString().split(","))
+          .sorted()
+          .collect(Collectors.toList());
     }
-    return Collections.emptySet();
+    return Collections.emptyList();
   }
 
   public static boolean isInterface(Schema<?> schema) {
@@ -291,17 +297,17 @@ public class SchemaUtils {
     return Collections.emptySet();
   }
 
-  public static List<String> interfaceImplementation(Schema<?> schema) {
+  public List<String> interfaceImplementation(Schema<?> schema) {
     if (schema.getExtensions() != null && schema.getExtensions().containsKey("x-kubernetes-fabric8-implementation")) {
       return Stream.of(schema.getExtensions().get("x-kubernetes-fabric8-implementation").toString().split(","))
-          .map(SchemaUtils::refToClassName)
+          .map(this::refToClassName)
           .sorted()
           .collect(Collectors.toList());
     }
     return Collections.emptyList();
   }
 
-  public static String interfaceImplemented(Schema<?> schema) {
+  public String interfaceImplemented(Schema<?> schema) {
     if (schema.getExtensions() != null && schema.getExtensions().containsKey("x-kubernetes-fabric8-implements")) {
       return refToClassName(schema.getExtensions().get("x-kubernetes-fabric8-implements").toString());
     }

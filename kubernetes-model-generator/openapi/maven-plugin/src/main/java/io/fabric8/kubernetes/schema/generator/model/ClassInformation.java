@@ -65,14 +65,14 @@ public class ClassInformation implements ImportManager {
     isHasMetadata = apiVersion != null && kubernetesListType == null && schemaUtils.isHasMetadata(classSchema);
     isNamespaced = apiVersion != null && apiVersion.isNamespaced();
     classType = SchemaUtils.classType(classSchema);
-    classSimpleName = SchemaUtils.refToClassName(classKey);
+    classSimpleName = schemaUtils.refToClassName(classKey);
     className = getPackageName() + "." + getClassSimpleName();
     implementsExtends = resolveImplementsExtends(classSchema);
     if (isInterface) {
       addImport("com.fasterxml.jackson.annotation.JsonSubTypes");
       addImport("com.fasterxml.jackson.annotation.JsonTypeInfo");
       addImport("com.fasterxml.jackson.databind.annotation.JsonTypeResolver");
-      jsonSubTypes = new JsonSubTypes(classSchema);
+      jsonSubTypes = new JsonSubTypes(schemaUtils, classSchema);
     } else {
       jsonSubTypes = null;
     }
@@ -106,7 +106,7 @@ public class ClassInformation implements ImportManager {
     } else {
       implementsExtends.append("implements ");
     }
-    final var interfaceImplemented = SchemaUtils.interfaceImplemented(classSchema);
+    final var interfaceImplemented = schemaUtils.interfaceImplemented(classSchema);
     if (interfaceImplemented != null) {
       implementsExtends.append(interfaceImplemented).append(", ");
     }

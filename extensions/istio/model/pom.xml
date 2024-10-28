@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+
+    Copyright (C) 2015 Red Hat, Inc.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+            http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>io.fabric8</groupId>
+    <artifactId>istio-extension-pom</artifactId>
+    <version>7.0-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>istio-model</artifactId>
+  <packaging>bundle</packaging>
+  <name>Fabric8 :: Istio :: Model</name>
+
+  <properties>
+    <osgi.import>
+      io.fabric8.kubernetes.api.builder,
+      !io.fabric8.istio.*,
+      *
+    </osgi.import>
+    <osgi.export>
+      io.fabric8.istio.api.api.meta.v1alpha1.*,
+      io.fabric8.istio.api.api.type.v1beta1.*,
+      io.fabric8.istio.api.analysis.v1alpha1.*,
+      io.fabric8.istio.api.api.analysis.v1alpha1.*,
+      io.fabric8.istio.api.extensions.v1alpha1.*,
+      io.fabric8.istio.api.api.extensions.v1alpha1.*,
+      io.fabric8.istio.api.networking.v1alpha3.*,
+      io.fabric8.istio.api.api.networking.v1alpha3.*,
+      io.fabric8.istio.api.networking.v1beta1.*,
+      io.fabric8.istio.api.api.networking.v1beta1.*,
+      io.fabric8.istio.api.networking.v1.*,
+      io.fabric8.istio.api.api.security.v1alpha1.*,
+      io.fabric8.istio.api.security.v1beta1.*,
+      io.fabric8.istio.api.api.security.v1beta1.*,
+      io.fabric8.istio.api.security.v1.*,
+      io.fabric8.istio.api.telemetry.v1alpha1.*,
+      io.fabric8.istio.api.api.telemetry.v1alpha1.*,
+      io.fabric8.istio.api.telemetry.v1.*,
+    </osgi.export>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>kubernetes-model-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+    </dependency>
+  </dependencies>
+
+  <profiles>
+    <profile>
+      <id>generate</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>io.fabric8</groupId>
+            <artifactId>openapi-model-generator-maven-plugin</artifactId>
+            <configuration>
+              <settings combine.self="append">
+                <schemas>
+                  <schema>${openapi.schema.io.istio}</schema>
+                </schemas>
+                <includeGenerationRegexes>
+                  <includeGenerationRegex>^io\.istio\..*$</includeGenerationRegex>
+                </includeGenerationRegexes>
+                <refToClassNameMappings>
+                  <!-- These classes have the same name as other classes but with different case (problems in windows) -->
+                  <property>
+                    <name>io.istio.api.networking.v1alpha3.LoadBalancerSettings_ConsistentHashLB_HTTPCookie</name>
+                    <value>LoadBalancerSettingsConsistentHashLBHTTPCookie_</value>
+                  </property>
+                  <property>
+                    <name>io.istio.api.networking.v1alpha3.LoadBalancerSettings_ConsistentHashLB_MagLev</name>
+                    <value>LoadBalancerSettingsConsistentHashLBMagLev_</value>
+                  </property>
+                </refToClassNameMappings>
+                <refToJavaTypeMappings>
+                  <property>
+                    <name>#/components/schemas/org.golang.google.protobuf.types.known.durationpb.Duration</name>
+                    <value>java.lang.String</value>
+                  </property>
+                  <property>
+                    <name>#/components/schemas/org.golang.google.protobuf.types.known.structpb.Struct</name>
+                    <value>java.lang.Object</value>
+                  </property>
+                  <property>
+                    <name>#/components/schemas/org.golang.google.protobuf.types.known.timestamppb.Timestamp</name>
+                    <value>java.lang.String</value>
+                  </property>
+                  <property>
+                    <name>#/components/schemas/org.golang.google.protobuf.types.known.wrapperspb.BoolValue</name>
+                    <value>java.lang.Boolean</value>
+                  </property>
+                  <property>
+                    <name>#/components/schemas/org.golang.google.protobuf.types.known.wrapperspb.DoubleValue</name>
+                    <value>java.lang.Double</value>
+                  </property>
+                  <property>
+                    <name>#/components/schemas/org.golang.google.protobuf.types.known.wrapperspb.Int32Value</name>
+                    <value>java.lang.Integer</value>
+                  </property>
+                  <property>
+                    <name>#/components/schemas/org.golang.google.protobuf.types.known.wrapperspb.UInt32Value</name>
+                    <value>java.lang.Integer</value>
+                  </property>
+                </refToJavaTypeMappings>
+                <fieldNameMappings>
+                  <allowOrigin>deprecatedAllowOrigin</allowOrigin>
+                </fieldNameMappings>
+              </settings>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+</project>
