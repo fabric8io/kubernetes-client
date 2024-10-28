@@ -15,16 +15,19 @@
  */
 package io.fabric8.istio.test.v1alpha3;
 
+import io.fabric8.istio.api.api.networking.v1alpha3.EnvoyFilterEnvoyConfigObjectMatch;
+import io.fabric8.istio.api.api.networking.v1alpha3.EnvoyFilterEnvoyConfigObjectPatch;
+import io.fabric8.istio.api.api.networking.v1alpha3.EnvoyFilterPatchContext;
 import io.fabric8.istio.api.networking.v1alpha3.EnvoyFilter;
-import io.fabric8.istio.api.networking.v1alpha3.EnvoyFilterEnvoyConfigObjectMatch;
-import io.fabric8.istio.api.networking.v1alpha3.EnvoyFilterEnvoyConfigObjectPatch;
-import io.fabric8.istio.api.networking.v1alpha3.EnvoyFilterPatchContext;
+import io.fabric8.kubernetes.api.model.runtime.RawExtension;
 import io.fabric8.kubernetes.client.utils.Serialization;
+import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.Test;
 
 import java.io.InputStream;
-import java.util.Map;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.entry;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
@@ -33,9 +36,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class EnvoyFilterTest {
 
   @Test
-  void loadingFromYAMLIssue99ShouldWork() throws Exception {
+  void loadingFromYAMLIssue99ShouldWork() {
     final InputStream inputStream = EnvoyFilterTest.class.getResourceAsStream("/v1alpha3/envoy-filter-issue99.yaml");
-    final EnvoyFilter filter = Serialization.yamlMapper().readValue(inputStream, EnvoyFilter.class);
+    final EnvoyFilter filter = Serialization.unmarshal(inputStream, EnvoyFilter.class);
 
     final EnvoyFilterEnvoyConfigObjectPatch configObjectPatch = filter.getSpec().getConfigPatches().get(0);
     final EnvoyFilterEnvoyConfigObjectMatch match = configObjectPatch.getMatch();
@@ -62,11 +65,24 @@ class EnvoyFilterTest {
      * runtime: envoy.wasm.runtime.null
      * vm_id: stats_outbound
      */
-    final Map<String, Object> value = configObjectPatch.getPatch().getValue();
-    Map<String, Object> typedConfigStruct = (Map<String, Object>) value.get("typed_config");
-    Map<String, Object> valueStruct = (Map<String, Object>) typedConfigStruct.get("value");
-    Map<String, Object> configStruct = (Map<String, Object>) valueStruct.get("config");
-    final String actual = (String) configStruct.get("root_id");
-    assertEquals("stats_outbound", actual);
+    assertThat(configObjectPatch.getPatch().getValue())
+        .asInstanceOf(InstanceOfAssertFactories.type(RawExtension.class))
+        .extracting(RawExtension::getValue)
+        .asInstanceOf(InstanceOfAssertFactories.map(String.class, Object.class))
+        .contains(
+            entry("name", "istio.stats"))
+        .extracting("typed_config")
+        .asInstanceOf(InstanceOfAssertFactories.map(String.class, Object.class))
+        .contains(
+            entry("@type", "type.googleapis.com/udpa.type.v1.TypedStruct"),
+            entry("type_url", "type.googleapis.com/envoy.extensions.filters.http.wasm.v3.Wasm"))
+        .extracting("value.config")
+        .asInstanceOf(InstanceOfAssertFactories.map(String.class, String.class))
+        .contains(
+            entry("configuration", "{\n" +
+                "  \"debug\": \"false\",\n" +
+                "  \"stat_prefix\": \"istio\"\n" +
+                "}\n"),
+            entry("root_id", "stats_outbound"));
   }
 }

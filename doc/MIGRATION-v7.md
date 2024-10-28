@@ -11,6 +11,7 @@
   - [Removed deprecated types for network.openshift.io (OpenShift-SDN-only)](#openshift-network-removed)
   - [Renamed clusterautoscaling to autoscaling](#openshift-clusterautoscaling-to-autoscaling)
   - [Renamed machineconfig to machineconfiguration](#openshift-machineconfig-to-machineconfiguration)
+  - [Istio Extension](#istio-extension)
   - [Tekton Extension](#tekton-extension)
   - [Vertical Pod Autoscaler Extension](#vertical-pod-autoscaler-extension)
 - [MockWebServer is based on Vert.x](#mockwebserver-vertx)
@@ -107,6 +108,23 @@ The module `openshift-model-machineconfig` has been renamed to `openshift-model-
 The package has also been renamed from `io.fabric8.openshift.api.model.machineconfig` to `io.fabric8.openshift.api.model.machineconfiguration`.
 
 The OpenShiftClient DSL entry-point remains the same: `OpenShiftClient.machineConfigurations()`.
+
+### Istio Extension <a href="#istio-extension" id="istio-extension"/>
+
+All the model modules for the Istio extension have been merged into a single module `io.fabric8:istio-model`.
+You will be able to find the packages from `io:fabric8:istio-model-v1alpha3` and `io:fabric8:istio-model-v1beta1` in the new module artifact.
+
+Many of the classes have also been moved to a nested `api` package following the Go types structure.
+The following packages are now available:
+- `io.fabric8.istio.api.api.meta.v1alpha1`
+- `io.fabric8.istio.api.api.type.v1beta1`
+- `io.fabric8.istio.api.api.analysis.v1alpha1`
+- `io.fabric8.istio.api.api.extensions.v1alpha1`
+- `io.fabric8.istio.api.api.networking.v1alpha3`
+- `io.fabric8.istio.api.api.networking.v1beta1`
+- `io.fabric8.istio.api.api.security.v1alpha1`
+- `io.fabric8.istio.api.api.security.v1beta1`
+- `io.fabric8.istio.api.api.telemetry.v1alpha1`
 
 ### Tekton Extension <a href="#tekton-extension" id="tekton-extension"/>
 

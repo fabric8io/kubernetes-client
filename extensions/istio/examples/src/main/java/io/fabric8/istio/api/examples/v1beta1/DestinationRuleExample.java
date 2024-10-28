@@ -15,11 +15,11 @@
  */
 package io.fabric8.istio.api.examples.v1beta1;
 
+import io.fabric8.istio.api.api.networking.v1alpha3.LoadBalancerSettingsBuilder;
+import io.fabric8.istio.api.api.networking.v1alpha3.LoadBalancerSettingsSimple;
+import io.fabric8.istio.api.api.networking.v1alpha3.LoadBalancerSettingsSimpleLB;
 import io.fabric8.istio.api.networking.v1beta1.DestinationRuleBuilder;
 import io.fabric8.istio.api.networking.v1beta1.DestinationRuleList;
-import io.fabric8.istio.api.networking.v1beta1.LoadBalancerSettingsBuilder;
-import io.fabric8.istio.api.networking.v1beta1.LoadBalancerSettingsSimple;
-import io.fabric8.istio.api.networking.v1beta1.LoadBalancerSettingsSimpleLB;
 import io.fabric8.istio.client.IstioClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 

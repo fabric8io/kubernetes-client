@@ -15,7 +15,7 @@
  */
 package io.fabric8.istio.api.examples.v1beta1;
 
-import io.fabric8.istio.api.networking.v1beta1.IstioEgressListenerBuilder;
+import io.fabric8.istio.api.api.networking.v1alpha3.IstioEgressListenerBuilder;
 import io.fabric8.istio.api.networking.v1beta1.SidecarBuilder;
 import io.fabric8.istio.api.networking.v1beta1.SidecarList;
 import io.fabric8.istio.client.IstioClient;
