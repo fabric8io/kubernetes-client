@@ -15,19 +15,19 @@
  */
 package io.fabric8.istio.test.v1beta1;
 
-import io.fabric8.istio.api.networking.v1beta1.Destination;
-import io.fabric8.istio.api.networking.v1beta1.HTTPFaultInjectionAbort;
-import io.fabric8.istio.api.networking.v1beta1.HTTPFaultInjectionAbortHttpStatus;
-import io.fabric8.istio.api.networking.v1beta1.HTTPMatchRequestBuilder;
-import io.fabric8.istio.api.networking.v1beta1.HTTPRewriteBuilder;
-import io.fabric8.istio.api.networking.v1beta1.HTTPRoute;
-import io.fabric8.istio.api.networking.v1beta1.HTTPRouteBuilder;
-import io.fabric8.istio.api.networking.v1beta1.HTTPRouteDestination;
-import io.fabric8.istio.api.networking.v1beta1.HTTPRouteDestinationBuilder;
-import io.fabric8.istio.api.networking.v1beta1.StringMatch;
-import io.fabric8.istio.api.networking.v1beta1.StringMatchBuilder;
-import io.fabric8.istio.api.networking.v1beta1.StringMatchPrefix;
-import io.fabric8.istio.api.networking.v1beta1.StringMatchRegex;
+import io.fabric8.istio.api.api.networking.v1alpha3.Destination;
+import io.fabric8.istio.api.api.networking.v1alpha3.HTTPFaultInjectionAbort;
+import io.fabric8.istio.api.api.networking.v1alpha3.HTTPFaultInjectionAbortHttpStatus;
+import io.fabric8.istio.api.api.networking.v1alpha3.HTTPMatchRequestBuilder;
+import io.fabric8.istio.api.api.networking.v1alpha3.HTTPRewriteBuilder;
+import io.fabric8.istio.api.api.networking.v1alpha3.HTTPRoute;
+import io.fabric8.istio.api.api.networking.v1alpha3.HTTPRouteBuilder;
+import io.fabric8.istio.api.api.networking.v1alpha3.HTTPRouteDestination;
+import io.fabric8.istio.api.api.networking.v1alpha3.HTTPRouteDestinationBuilder;
+import io.fabric8.istio.api.api.networking.v1alpha3.StringMatch;
+import io.fabric8.istio.api.api.networking.v1alpha3.StringMatchBuilder;
+import io.fabric8.istio.api.api.networking.v1alpha3.StringMatchPrefix;
+import io.fabric8.istio.api.api.networking.v1alpha3.StringMatchRegex;
 import io.fabric8.istio.api.networking.v1beta1.VirtualService;
 import io.fabric8.istio.api.networking.v1beta1.VirtualServiceBuilder;
 import io.fabric8.istio.client.IstioClient;
@@ -345,13 +345,13 @@ spec:
         .addNewHttp()
         .addNewRoute()
         .withNewDestination().withHost(reviewsHost).withSubset("v2").withNewPort()
-        .withNumber(9090).endPort().endDestination()
+        .withNumber(9090L).endPort().endDestination()
         .endRoute()
         .endHttp()
         .addNewHttp()
         .addNewRoute()
         .withNewDestination().withHost(reviewsHost).withSubset("v1").withNewPort()
-        .withNumber(9090).endPort().endDestination()
+        .withNumber(9090L).endPort().endDestination()
         .endRoute()
         .endHttp()
         .endSpec()

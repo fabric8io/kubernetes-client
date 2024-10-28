@@ -15,10 +15,10 @@
  */
 package io.fabric8.istio.test.v1beta1;
 
-import io.fabric8.istio.api.networking.v1beta1.CorsPolicy;
-import io.fabric8.istio.api.networking.v1beta1.CorsPolicyBuilder;
-import io.fabric8.istio.api.networking.v1beta1.StringMatch;
-import io.fabric8.istio.api.networking.v1beta1.StringMatchPrefix;
+import io.fabric8.istio.api.api.networking.v1alpha3.CorsPolicy;
+import io.fabric8.istio.api.api.networking.v1alpha3.CorsPolicyBuilder;
+import io.fabric8.istio.api.api.networking.v1alpha3.StringMatch;
+import io.fabric8.istio.api.api.networking.v1alpha3.StringMatchPrefix;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import org.junit.jupiter.api.Test;
 
@@ -53,8 +53,8 @@ class CorsPolicyTest {
       fail();
     }
 
-    assertEquals(1, reloaded.getDeprecatedAllowOrigin().size());
-    assertEquals(allowOrigin, reloaded.getDeprecatedAllowOrigin().get(0));
+    assertEquals(1, reloaded.getAllowOrigin().size());
+    assertEquals(allowOrigin, reloaded.getAllowOrigin().get(0));
 
     assertEquals(policy, reloaded);
   }

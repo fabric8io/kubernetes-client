@@ -32,7 +32,6 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -132,7 +131,10 @@ class ModelGenerator {
     } else {
       deserializer = null;
     }
-    ret.put("classJsonDeserializeUsing", deserializer);
+    if (deserializer != null) {
+      ret.addImport("com.fasterxml.jackson.databind.annotation.JsonDeserialize");
+      ret.put("classJsonDeserializeUsing", deserializer);
+    }
     if (!ret.getClassInformation().isEnum()) {
       ret.addImport("com.fasterxml.jackson.annotation.JsonInclude");
       ret.put("classJsonInclude", "NON_NULL");
@@ -297,9 +299,8 @@ class ModelGenerator {
   }
 
   private static Set<String> initDefaultImports() {
-    return new HashSet<>(Arrays.asList(
-        "javax.annotation.Generated",
-        "com.fasterxml.jackson.databind.annotation.JsonDeserialize"));
+    return new HashSet<>(Collections.singletonList(
+        "javax.annotation.Generated"));
   }
 
 }

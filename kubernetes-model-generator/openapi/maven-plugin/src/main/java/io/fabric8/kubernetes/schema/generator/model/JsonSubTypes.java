@@ -26,8 +26,8 @@ public class JsonSubTypes {
 
   private final List<String> subTypes;
 
-  JsonSubTypes(Schema<?> classSchema) {
-    this.subTypes = SchemaUtils.interfaceImplementation(classSchema);
+  JsonSubTypes(SchemaUtils schemaUtils, Schema<?> classSchema) {
+    this.subTypes = schemaUtils.interfaceImplementation(classSchema);
   }
 
 }

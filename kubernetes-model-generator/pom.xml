@@ -82,6 +82,7 @@
     <openapi.schema.openshift-generated>${project.parent.basedir}/openapi/schemas/openshift-generated.json</openapi.schema.openshift-generated>
     <openapi.schema.dev.knative>${project.basedir}/../../../kubernetes-model-generator/openapi/schemas/dev.knative.json</openapi.schema.dev.knative>
     <openapi.schema.dev.tekton>${project.basedir}/../../../kubernetes-model-generator/openapi/schemas/dev.tekton.json</openapi.schema.dev.tekton>
+    <openapi.schema.io.istio>${project.basedir}/../../../kubernetes-model-generator/openapi/schemas/io.istio.json</openapi.schema.io.istio>
     <openapi.schema.io.k8s.autoscaling>${project.basedir}/../../../kubernetes-model-generator/openapi/schemas/io.k8s.autoscaling.json</openapi.schema.io.k8s.autoscaling>
     <openapi.schema.io.k8s.storage.snapshot>${project.basedir}/../../../kubernetes-model-generator/openapi/schemas/io.k8s.storage.snapshot.json</openapi.schema.io.k8s.storage.snapshot>
     <openapi.schema.sh.volcano>${project.basedir}/../../../kubernetes-model-generator/openapi/schemas/sh.volcano.json</openapi.schema.sh.volcano>
@@ -173,6 +174,7 @@
                 <com.github.tektoncd.pipeline>io.fabric8.tekton.pipeline</com.github.tektoncd.pipeline>
                 <dev.knative>io.fabric8.knative</dev.knative>
                 <dev.tekton>io.fabric8.tekton</dev.tekton>
+                <io.istio>io.fabric8.istio.api</io.istio>
                 <io.k8s.api.core.v1>io.fabric8.kubernetes.api.model</io.k8s.api.core.v1>
                 <io.k8s.apimachinery.pkg>io.fabric8.kubernetes.api.model</io.k8s.apimachinery.pkg>
                 <io.k8s.apimachinery.pkg.apis.meta.v1>io.fabric8.kubernetes.api.model</io.k8s.apimachinery.pkg.apis.meta.v1>

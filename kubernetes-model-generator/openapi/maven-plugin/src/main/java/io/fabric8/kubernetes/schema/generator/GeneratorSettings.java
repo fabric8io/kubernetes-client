@@ -82,6 +82,19 @@ public class GeneratorSettings {
   @Singular
   private Map<String, String> packageMappings;
   private final AtomicBoolean packageMappingsProcessed = new AtomicBoolean(false);
+  /**
+   * Allows configuring the mapping of OpenAPI references to Java class names.
+   * <p>
+   * We can use this to customize the name of a generated class.
+   */
+  @Builder.Default
+  private Properties refToClassNameMappings = new Properties();
+  /**
+   * Allows configuring the mapping of OpenAPI references to <b>existing</b> Java classes.
+   * <p>
+   * This is useful when the OpenAPI schema references classes that are already present in the classpath and
+   * we don't want to generate.
+   */
   @Builder.Default
   private Properties refToJavaTypeMappings = new Properties();
   /**

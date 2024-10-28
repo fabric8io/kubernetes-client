@@ -15,11 +15,11 @@
  */
 package io.fabric8.istio.api.examples.v1beta1;
 
+import io.fabric8.istio.api.api.security.v1beta1.PeerAuthenticationMutualTLSBuilder;
+import io.fabric8.istio.api.api.security.v1beta1.PeerAuthenticationMutualTLSMode;
+import io.fabric8.istio.api.api.type.v1beta1.WorkloadSelectorBuilder;
 import io.fabric8.istio.api.security.v1beta1.PeerAuthenticationBuilder;
 import io.fabric8.istio.api.security.v1beta1.PeerAuthenticationList;
-import io.fabric8.istio.api.security.v1beta1.PeerAuthenticationMutualTLSBuilder;
-import io.fabric8.istio.api.security.v1beta1.PeerAuthenticationMutualTLSMode;
-import io.fabric8.istio.api.type.v1beta1.WorkloadSelectorBuilder;
 import io.fabric8.istio.client.IstioClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 

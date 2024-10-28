@@ -15,11 +15,11 @@
  */
 package io.fabric8.istio.test.v1beta1;
 
+import io.fabric8.istio.api.api.networking.v1alpha3.PortBuilder;
+import io.fabric8.istio.api.api.networking.v1alpha3.ServerBuilder;
+import io.fabric8.istio.api.api.networking.v1alpha3.ServerTLSSettingsBuilder;
 import io.fabric8.istio.api.networking.v1beta1.Gateway;
 import io.fabric8.istio.api.networking.v1beta1.GatewayBuilder;
-import io.fabric8.istio.api.networking.v1beta1.PortBuilder;
-import io.fabric8.istio.api.networking.v1beta1.ServerBuilder;
-import io.fabric8.istio.api.networking.v1beta1.ServerTLSSettingsBuilder;
 import io.fabric8.istio.client.IstioClient;
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
@@ -36,8 +36,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import static io.fabric8.istio.api.networking.v1beta1.ServerTLSSettingsTLSProtocol.TLSV1_2;
-import static io.fabric8.istio.api.networking.v1beta1.ServerTLSSettingsTLSmode.PASSTHROUGH;
+import static io.fabric8.istio.api.api.networking.v1alpha3.ServerTLSSettingsTLSProtocol.TLSV1_2;
+import static io.fabric8.istio.api.api.networking.v1alpha3.ServerTLSSettingsTLSmode.PASSTHROUGH;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -72,7 +72,7 @@ class GatewayTest {
         .withNewSpec()
         .withSelector(Collections.singletonMap("app", "my-gateway-controller"))
         .withServers(new ServerBuilder()
-            .withPort(new PortBuilder().withNumber(80).withProtocol("HTTP").withName("http").build())
+            .withPort(new PortBuilder().withNumber(80L).withProtocol("HTTP").withName("http").build())
             .withHosts("uk.bookinfo.com", "eu.bookinfo.com")
             .withTls(new ServerTLSSettingsBuilder().withHttpsRedirect(true).build())
             .build())
@@ -134,10 +134,10 @@ class GatewayTest {
         .endMetadata()
         .withNewSpec()
         .addToSelector("istio", "ingressgateway")
-        .addNewServer().withNewPort().withName("http").withProtocol("HTTP").withNumber(80).endPort()
+        .addNewServer().withNewPort().withName("http").withProtocol("HTTP").withNumber(80L).endPort()
         .withHosts("httpbin.example.com").endServer()
-        .addNewServer().withHosts("foobar.com").withNewPort().withName("tls-0").withNumber(443).withProtocol("TLS")
-        .withTargetPort(443).endPort()
+        .addNewServer().withHosts("foobar.com").withNewPort().withName("tls-0").withNumber(443L).withProtocol("TLS")
+        .withTargetPort(443L).endPort()
         .withNewTls().withMode(PASSTHROUGH).withMinProtocolVersion(TLSV1_2).endTls()
         .endServer()
         .endSpec()
