@@ -27,8 +27,6 @@ declare -a modules=(
     "../extensions/certmanager/generator-v1alpha3"
     "../extensions/certmanager/generator-v1beta1"
     "../extensions/chaosmesh/generator"
-    "../extensions/istio/generator-v1alpha3"
-    "../extensions/istio/generator-v1beta1"
     "../extensions/open-cluster-management/generator-apps"
     "../extensions/open-cluster-management/generator-agent"
     "../extensions/open-cluster-management/generator-cluster"
@@ -44,7 +42,6 @@ declare -a modules=(
 declare -a extensionModuleParents=(
     "../extensions/certmanager/pom.xml"
     "../extensions/chaosmesh/pom.xml"
-    "../extensions/istio/pom.xml"
 )
 
 generateAll() {

@@ -15,16 +15,16 @@
  */
 package io.fabric8.istio.test.v1beta1;
 
+import io.fabric8.istio.api.api.security.v1beta1.AuthorizationPolicyAction;
+import io.fabric8.istio.api.api.security.v1beta1.ConditionBuilder;
+import io.fabric8.istio.api.api.security.v1beta1.OperationBuilder;
+import io.fabric8.istio.api.api.security.v1beta1.RuleBuilder;
+import io.fabric8.istio.api.api.security.v1beta1.RuleFromBuilder;
+import io.fabric8.istio.api.api.security.v1beta1.RuleToBuilder;
+import io.fabric8.istio.api.api.security.v1beta1.SourceBuilder;
+import io.fabric8.istio.api.api.type.v1beta1.WorkloadSelectorBuilder;
 import io.fabric8.istio.api.security.v1beta1.AuthorizationPolicy;
-import io.fabric8.istio.api.security.v1beta1.AuthorizationPolicyAction;
 import io.fabric8.istio.api.security.v1beta1.AuthorizationPolicyBuilder;
-import io.fabric8.istio.api.security.v1beta1.ConditionBuilder;
-import io.fabric8.istio.api.security.v1beta1.OperationBuilder;
-import io.fabric8.istio.api.security.v1beta1.RuleBuilder;
-import io.fabric8.istio.api.security.v1beta1.RuleFromBuilder;
-import io.fabric8.istio.api.security.v1beta1.RuleToBuilder;
-import io.fabric8.istio.api.security.v1beta1.SourceBuilder;
-import io.fabric8.istio.api.type.v1beta1.WorkloadSelectorBuilder;
 import io.fabric8.istio.client.IstioClient;
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;

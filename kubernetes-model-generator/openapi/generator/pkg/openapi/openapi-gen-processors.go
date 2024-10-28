@@ -24,6 +24,7 @@ import (
 	"k8s.io/gengo/v2/generator"
 	"k8s.io/gengo/v2/types"
 	"reflect"
+	"sort"
 	"strconv"
 	"strings"
 	"unicode"
@@ -209,7 +210,10 @@ func hasPrefix(commentLines []string, prefix string) (bool, int) {
 
 func addOrAppend(commentLines []string, prefix, value string) []string {
 	if ok, i := hasPrefix(commentLines, prefix); ok {
-		commentLines[i] = commentLines[i] + "," + value
+		currentValues := strings.Split(strings.TrimPrefix(commentLines[i], prefix), ",")
+		currentValues = append(currentValues, value)
+		sort.Strings(currentValues)
+		commentLines[i] = prefix + strings.Join(currentValues, ",")
 	} else {
 		commentLines = append(commentLines, prefix+value)
 	}

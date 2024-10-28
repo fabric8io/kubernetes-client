@@ -15,14 +15,14 @@
  */
 package io.fabric8.istio.test.v1beta1;
 
+import io.fabric8.istio.api.api.networking.v1alpha3.LoadBalancerSettingsBuilder;
+import io.fabric8.istio.api.api.networking.v1alpha3.LoadBalancerSettingsConsistentHash;
+import io.fabric8.istio.api.api.networking.v1alpha3.LoadBalancerSettingsConsistentHashLBBuilder;
+import io.fabric8.istio.api.api.networking.v1alpha3.LoadBalancerSettingsConsistentHashLBHttpHeaderName;
+import io.fabric8.istio.api.api.networking.v1alpha3.LoadBalancerSettingsSimple;
+import io.fabric8.istio.api.api.networking.v1alpha3.LoadBalancerSettingsSimpleLB;
 import io.fabric8.istio.api.networking.v1beta1.DestinationRule;
 import io.fabric8.istio.api.networking.v1beta1.DestinationRuleBuilder;
-import io.fabric8.istio.api.networking.v1beta1.LoadBalancerSettingsBuilder;
-import io.fabric8.istio.api.networking.v1beta1.LoadBalancerSettingsConsistentHash;
-import io.fabric8.istio.api.networking.v1beta1.LoadBalancerSettingsConsistentHashLBBuilder;
-import io.fabric8.istio.api.networking.v1beta1.LoadBalancerSettingsConsistentHashLBHttpHeaderName;
-import io.fabric8.istio.api.networking.v1beta1.LoadBalancerSettingsSimple;
-import io.fabric8.istio.api.networking.v1beta1.LoadBalancerSettingsSimpleLB;
 import io.fabric8.istio.client.IstioClient;
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
@@ -77,7 +77,7 @@ class DestinationRuleTest {
     server.expect().post().withPath("/apis/networking.istio.io/v1beta1/namespaces/ns2/destinationrules")
         .andReturn(HttpURLConnection.HTTP_OK, service)
         .once();
-    service = client.v1beta1().destinationRules().inNamespace("ns2").create(service);
+    service = client.v1beta1().destinationRules().inNamespace("ns2").resource(service).create();
     assertNotNull(service);
 
     RecordedRequest recordedRequest = server.takeRequest();
@@ -113,7 +113,7 @@ class DestinationRuleTest {
     server.expect().post().withPath("/apis/networking.istio.io/v1beta1/namespaces/ns2/destinationrules")
         .andReturn(HttpURLConnection.HTTP_OK, service)
         .once();
-    service = client.v1beta1().destinationRules().inNamespace("ns2").create(service);
+    service = client.v1beta1().destinationRules().inNamespace("ns2").resource(service).create();
     assertNotNull(service);
 
     RecordedRequest recordedRequest = server.takeRequest();
@@ -146,7 +146,7 @@ class DestinationRuleTest {
     server.expect().delete().withPath("/apis/networking.istio.io/v1beta1/namespaces/ns3/destinationrules/service3")
         .andReturn(HttpURLConnection.HTTP_OK, new DestinationRuleBuilder().build())
         .once();
-    Boolean deleted = client.v1beta1().destinationRules().inNamespace("ns3").withName("service3")
+    boolean deleted = client.v1beta1().destinationRules().inNamespace("ns3").withName("service3")
         .withPropagationPolicy(DeletionPropagation.ORPHAN).delete().size() == 1;
     assertTrue(deleted);
 
