@@ -15,11 +15,11 @@
  */
 package io.fabric8.istio.api.examples.v1beta1;
 
+import io.fabric8.istio.api.api.networking.v1alpha3.PortBuilder;
+import io.fabric8.istio.api.api.networking.v1alpha3.ServerBuilder;
+import io.fabric8.istio.api.api.networking.v1alpha3.ServerTLSSettingsBuilder;
 import io.fabric8.istio.api.networking.v1beta1.GatewayBuilder;
 import io.fabric8.istio.api.networking.v1beta1.GatewayList;
-import io.fabric8.istio.api.networking.v1beta1.PortBuilder;
-import io.fabric8.istio.api.networking.v1beta1.ServerBuilder;
-import io.fabric8.istio.api.networking.v1beta1.ServerTLSSettingsBuilder;
 import io.fabric8.istio.client.IstioClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 
@@ -49,7 +49,7 @@ public class GatewayExample {
         .withNewSpec()
         .withSelector(Collections.singletonMap("app", "my-gateway-controller"))
         .withServers(new ServerBuilder()
-            .withPort(new PortBuilder().withNumber(80).withProtocol("HTTP").withName("http").build())
+            .withPort(new PortBuilder().withNumber(80L).withProtocol("HTTP").withName("http").build())
             .withHosts("uk.bookinfo.com", "eu.bookinfo.com")
             .withTls(new ServerTLSSettingsBuilder().withHttpsRedirect(true).build())
             .build())
