@@ -178,7 +178,7 @@ public class SchemaUtils {
    * @return the simple class name associated to the provided Schema reference.
    */
   public String refToClassName(String ref) {
-    final String cleanRef = ref.replaceAll("^#/components/schemas/", "");
+    final String cleanRef = ref.replaceAll("^#/((components/schemas)|(definitions))/", "");
     if (settings.getRefToClassNameMappings().containsKey(cleanRef)) {
       return settings.getRefToClassNameMappings().getProperty(cleanRef);
     }
@@ -262,7 +262,7 @@ public class SchemaUtils {
   }
 
   public static String classType(Schema<?> schema) {
-    if (schema.getExtensions() != null && schema.getExtensions().get("x-kubernetes-fabric8-type") != null) {
+    if (hasExtensionStringValue(schema, "x-kubernetes-fabric8-type")) {
       return schema.getExtensions().get("x-kubernetes-fabric8-type").toString();
     }
     return "class";
@@ -273,7 +273,7 @@ public class SchemaUtils {
   }
 
   public static Collection<String> enumValues(Schema<?> schema) {
-    if (isEnum(schema) && schema.getExtensions().containsKey("x-kubernetes-fabric8-enum-values")) {
+    if (isEnum(schema) && hasExtensionStringValue(schema, "x-kubernetes-fabric8-enum-values")) {
       return Stream.of(schema.getExtensions().get("x-kubernetes-fabric8-enum-values").toString().split(","))
           .sorted()
           .collect(Collectors.toList());
@@ -286,8 +286,7 @@ public class SchemaUtils {
   }
 
   public static boolean hasInterfaceFields(Schema<?> schema) {
-    return schema.getExtensions() != null
-        && schema.getExtensions().containsKey("x-kubernetes-fabric8-interface-fields");
+    return hasExtensionStringValue(schema, "x-kubernetes-fabric8-interface-fields");
   }
 
   public static Set<String> interfaceFields(Schema<?> schema) {
@@ -298,7 +297,7 @@ public class SchemaUtils {
   }
 
   public List<String> interfaceImplementation(Schema<?> schema) {
-    if (schema.getExtensions() != null && schema.getExtensions().containsKey("x-kubernetes-fabric8-implementation")) {
+    if (hasExtensionStringValue(schema, "x-kubernetes-fabric8-implementation")) {
       return Stream.of(schema.getExtensions().get("x-kubernetes-fabric8-implementation").toString().split(","))
           .map(this::refToClassName)
           .sorted()
@@ -308,7 +307,7 @@ public class SchemaUtils {
   }
 
   public String interfaceImplemented(Schema<?> schema) {
-    if (schema.getExtensions() != null && schema.getExtensions().containsKey("x-kubernetes-fabric8-implements")) {
+    if (hasExtensionStringValue(schema, "x-kubernetes-fabric8-implements")) {
       return refToClassName(schema.getExtensions().get("x-kubernetes-fabric8-implements").toString());
     }
     return null;
@@ -559,5 +558,12 @@ public class SchemaUtils {
       return string;
     }
     return string.substring(0, 1).toLowerCase(Locale.ROOT) + string.substring(1);
+  }
+
+  private static boolean hasExtensionStringValue(Schema<?> schema, String key) {
+    return schema.getExtensions() != null
+        && schema.getExtensions().containsKey(key)
+        && schema.getExtensions().get(key) instanceof String
+        && !schema.getExtensions().get(key).toString().isEmpty();
   }
 }
