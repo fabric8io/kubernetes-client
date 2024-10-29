@@ -13,9 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.schema.generator;
+package io.fabric8.kubernetes.schema.generator.schema;
 
-import io.fabric8.kubernetes.schema.generator.schema.SchemaUtils;
+import io.fabric8.kubernetes.schema.generator.GeneratorSettings;
+import io.fabric8.kubernetes.schema.generator.ImportManager;
+import io.fabric8.kubernetes.schema.generator.ImportOrderComparator;
 import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.DateSchema;
 import io.swagger.v3.oas.models.media.DateTimeSchema;
@@ -27,18 +29,25 @@ import io.swagger.v3.oas.models.media.StringSchema;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.File;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.TreeSet;
+import java.util.stream.Stream;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -56,11 +65,17 @@ class SchemaUtilsTest {
   @CsvSource({
       "#/definitions/io.k8s.api.core.v1.Pod, Pod",
       "#/definitions/io.k8s.api.core.v1.PodList, PodList",
-      "#/components/schemas/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta, ListMeta"
+      "#/components/schemas/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta, ListMeta",
+      "#/components/schemas/io.k8s.api.core.v1.toCapitalize, ToCapitalize",
+      "io.k8s.api.core.v1.ToBeMapped, Mapped",
+      "#/components/schemas/io.k8s.api.core.v1.ToBeMapped, Mapped",
+      "#/definitions/io.k8s.api.core.v1.ToBeMapped, Mapped"
   })
   void refToClassName(String ref, String expected) {
-    final String result = new SchemaUtils(generatorSettingsBuilder.build()).refToClassName(ref);
-    assertEquals(expected, result);
+    final var properties = new Properties();
+    properties.put("io.k8s.api.core.v1.ToBeMapped", "Mapped");
+    final var schemaUtils = new SchemaUtils(generatorSettingsBuilder.refToClassNameMappings(properties).build());
+    assertEquals(expected, schemaUtils.refToClassName(ref));
   }
 
   @ParameterizedTest
@@ -135,11 +150,118 @@ class SchemaUtilsTest {
     assertEquals(expected, SchemaUtils.serializerForJavaClass(javaClass));
   }
 
-  @Test
-  void isInterface() {
-    final ObjectSchema schema = new ObjectSchema();
-    schema.setExtensions(Map.of("x-kubernetes-fabric8-type", "interface"));
-    assertTrue(SchemaUtils.isInterface(schema));
+  @Nested
+  @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+  class InterfaceSchemas {
+
+    @Test
+    void classType() {
+      final ObjectSchema schema = new ObjectSchema();
+      schema.setExtensions(Map.of("x-kubernetes-fabric8-type", "interface"));
+      assertThat(SchemaUtils.classType(schema)).isEqualTo("interface");
+    }
+
+    @Test
+    void isInterface() {
+      final ObjectSchema schema = new ObjectSchema();
+      schema.setExtensions(Map.of("x-kubernetes-fabric8-type", "interface"));
+      assertTrue(SchemaUtils.isInterface(schema));
+    }
+
+    @Test
+    void hasInterfaceFields() {
+      final var schema = new ObjectSchema();
+      schema.setExtensions(Map.of("x-kubernetes-fabric8-interface-fields", "field1,field2"));
+      assertTrue(SchemaUtils.hasInterfaceFields(schema));
+    }
+
+    @ParameterizedTest(name = "{index}: x-kubernetes-fabric8-interface-fields={0}")
+    @MethodSource("interfaceFieldsData")
+    void interfaceFields(String extensionValue, String... expected) {
+      final var schema = new ObjectSchema();
+      schema.setExtensions(Collections.singletonMap("x-kubernetes-fabric8-interface-fields", extensionValue));
+      assertThat(SchemaUtils.interfaceFields(schema))
+          .containsExactlyInAnyOrder(expected);
+    }
+
+    Stream<Arguments> interfaceFieldsData() {
+      return Stream.of(
+          Arguments.of("field1,field2", new String[] { "field1", "field2" }),
+          Arguments.of("field2,field1", new String[] { "field1", "field2" }),
+          Arguments.of("", new String[0]),
+          Arguments.of(null, new String[0]));
+    }
+
+    @ParameterizedTest(name = "{index}: x-kubernetes-fabric8-interface-implementation={0}")
+    @MethodSource("interfaceImplementationData")
+    void interfaceImplementation(String extensionValue, String... expected) {
+      final var schema = new ObjectSchema();
+      schema.setExtensions(new HashMap<>());
+      schema.getExtensions().put("x-kubernetes-fabric8-type", "interface");
+      schema.getExtensions().put("x-kubernetes-fabric8-implementation", extensionValue);
+      assertThat(new SchemaUtils(generatorSettingsBuilder.build()).interfaceImplementation(schema))
+          .containsExactly(expected);
+    }
+
+    Stream<Arguments> interfaceImplementationData() {
+      return Stream.of(
+          Arguments.of("InterfaceImpl,AnotherInterfaceImpl", new String[] { "AnotherInterfaceImpl", "InterfaceImpl" }),
+          Arguments.of("AnotherInterfaceImpl,InterfaceImpl", new String[] { "AnotherInterfaceImpl", "InterfaceImpl" }),
+          Arguments.of("", new String[0]),
+          Arguments.of(null, new String[0]));
+    }
+
+    @ParameterizedTest(name = "{index}: x-kubernetes-fabric8-interface-implements={0}")
+    @CsvSource({
+        "InterfaceClass, InterfaceClass",
+        ", ",
+    })
+    void interfaceImplemented(String extensionValue, String expected) {
+      final var schema = new ObjectSchema();
+      schema.setExtensions(Collections.singletonMap("x-kubernetes-fabric8-implements", extensionValue));
+      assertThat(new SchemaUtils(generatorSettingsBuilder.build()).interfaceImplemented(schema))
+          .isEqualTo(expected);
+    }
+
+  }
+
+  @Nested
+  @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+  class EnumSchemas {
+
+    @Test
+    void classType() {
+      final ObjectSchema schema = new ObjectSchema();
+      schema.setExtensions(Map.of("x-kubernetes-fabric8-type", "enum"));
+      assertThat(SchemaUtils.classType(schema)).isEqualTo("enum");
+    }
+
+    @Test
+    void isEnum() {
+      final ObjectSchema schema = new ObjectSchema();
+      schema.setExtensions(Map.of("x-kubernetes-fabric8-type", "enum"));
+      assertTrue(SchemaUtils.isEnum(schema));
+    }
+
+    @ParameterizedTest(name = "{index}: x-kubernetes-fabric8-enum-values={0}")
+    @MethodSource("enumValuesData")
+    void enumValues(String extensionValue, String... expected) {
+      final var schema = new ObjectSchema();
+      schema.setExtensions(new HashMap<>());
+      schema.getExtensions().put("x-kubernetes-fabric8-type", "enum");
+      schema.getExtensions().put("x-kubernetes-fabric8-enum-values", extensionValue);
+      assertThat(SchemaUtils.enumValues(schema))
+          .containsExactly(expected);
+    }
+
+    Stream<Arguments> enumValuesData() {
+      return Stream.of(
+          Arguments.of("ONE(0),TWO(1),THREE(3)", new String[] { "ONE(0)", "THREE(3)", "TWO(1)" }),
+          Arguments.of("A,B,C,Z", new String[] { "A", "B", "C", "Z" }),
+          Arguments.of("", new String[0]),
+          Arguments.of(null, new String[0]));
+    }
+
   }
 
   @Nested
