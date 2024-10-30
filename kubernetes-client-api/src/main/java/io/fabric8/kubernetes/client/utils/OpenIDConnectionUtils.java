@@ -56,15 +56,15 @@ import javax.net.ssl.TrustManager;
 public class OpenIDConnectionUtils {
   private static final Logger LOGGER = LoggerFactory.getLogger(OpenIDConnectionUtils.class);
 
-  public static final String ID_TOKEN_KUBECONFIG = "id-token";
-  public static final String ISSUER_KUBECONFIG = "idp-issuer-url";
-  public static final String REFRESH_TOKEN_KUBECONFIG = "refresh-token";
+  private static final String ID_TOKEN_KUBECONFIG = "id-token";
+  private static final String ISSUER_KUBECONFIG = "idp-issuer-url";
+  private static final String REFRESH_TOKEN_KUBECONFIG = "refresh-token";
   private static final String REFRESH_TOKEN_PARAM = "refresh_token";
-  public static final String GRANT_TYPE_PARAM = "grant_type";
-  public static final String CLIENT_ID_PARAM = "client_id";
-  public static final String CLIENT_SECRET_PARAM = "client_secret";
-  public static final String CLIENT_ID_KUBECONFIG = "client-id";
-  public static final String CLIENT_SECRET_KUBECONFIG = "client-secret";
+  private static final String GRANT_TYPE_PARAM = "grant_type";
+  private static final String CLIENT_ID_PARAM = "client_id";
+  private static final String CLIENT_SECRET_PARAM = "client_secret";
+  private static final String CLIENT_ID_KUBECONFIG = "client-id";
+  private static final String CLIENT_SECRET_KUBECONFIG = "client-secret";
   private static final String IDP_CERT_DATA = "idp-certificate-authority-data";
   private static final String WELL_KNOWN_OPENID_CONFIGURATION = ".well-known/openid-configuration";
   private static final String GRANT_TYPE_REFRESH_TOKEN = "refresh_token";
