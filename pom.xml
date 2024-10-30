@@ -125,7 +125,7 @@
     <lombok.version>1.18.34</lombok.version>
     <snakeyaml.version>2.8</snakeyaml.version>
     <snakeyaml.bundle.version>2.2</snakeyaml.bundle.version> <!-- Transitive Jackson -->
-    <bouncycastle.version>1.78.1</bouncycastle.version>
+    <bouncycastle.version>1.79</bouncycastle.version>
     <bc-fips.version>2.0.0</bc-fips.version>
     <bcpkix-fips.version>2.0.7</bcpkix-fips.version>
     <commons-compress.version>1.27.1</commons-compress.version>
