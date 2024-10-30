@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes.client.http;
 
 import java.nio.charset.StandardCharsets;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -27,17 +28,19 @@ import java.util.Optional;
  */
 public class TestHttpResponse<T> extends StandardHttpHeaders implements HttpResponse<T> {
 
+  private final Map<String, List<String>> headers;
   private int code;
   private T body;
   private HttpRequest request;
   private HttpResponse<T> previousResponse;
 
   public TestHttpResponse() {
-    super();
+    this(new LinkedHashMap<>());
   }
 
   public TestHttpResponse(Map<String, List<String>> headers) {
     super(headers);
+    this.headers = headers;
   }
 
   @Override
@@ -78,7 +81,7 @@ public class TestHttpResponse<T> extends StandardHttpHeaders implements HttpResp
     return this;
   }
 
-  public HttpResponse<T> withRequest(HttpRequest request) {
+  public TestHttpResponse<T> withRequest(HttpRequest request) {
     this.request = request;
     return this;
   }
@@ -87,8 +90,19 @@ public class TestHttpResponse<T> extends StandardHttpHeaders implements HttpResp
     return previousResponse;
   }
 
-  public HttpResponse<T> withPreviousResponse(HttpResponse<T> previousResponse) {
+  public TestHttpResponse<T> withPreviousResponse(HttpResponse<T> previousResponse) {
     this.previousResponse = previousResponse;
+    return this;
+  }
+
+  public TestHttpResponse<T> withHeader(String name, String value) {
+    headers.compute(name, (k, v) -> {
+      if (v == null) {
+        v = new java.util.ArrayList<>();
+      }
+      v.add(value);
+      return v;
+    });
     return this;
   }
 

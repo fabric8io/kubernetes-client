@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.client.http;
 
 import lombok.Getter;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -75,6 +76,10 @@ public class TestStandardHttpClientFactory implements HttpClient.Factory {
 
   public final void expect(String pathRegex, int statusCode, byte[] body) {
     instances.forEach(c -> c.expect(pathRegex, statusCode, body));
+  }
+
+  public final void expect(String pathRegex, CompletableFuture<HttpResponse<AsyncBody>> future) {
+    instances.forEach(c -> c.expect(pathRegex, future));
   }
 
 }
