@@ -202,12 +202,6 @@ public class Config {
   private Long scaleTimeout;
   private Integer loggingInterval;
   private String impersonateUsername;
-
-  /**
-   * @deprecated use impersonateGroups instead
-   */
-  @Deprecated
-  private String impersonateGroup;
   private String[] impersonateGroups;
   private Map<String, List<String>> impersonateExtras;
   /**
