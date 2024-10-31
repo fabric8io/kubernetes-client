@@ -110,7 +110,7 @@
     <assertj.core.version>3.26.3</assertj.core.version>
     <awaitility.version>4.2.2</awaitility.version>
     <approvaltests.version>24.8.0</approvaltests.version>
-    <keycloak.version>26.0.2</keycloak.version><!-- Used by CRD Generator integration tests for verifications -->
+    <keycloak.version>26.0.4</keycloak.version><!-- Used by CRD Generator integration tests for verifications -->
     <mockito.version>5.14.2</mockito.version>
     <mockito-inline.version>5.2.0</mockito-inline.version>
     <spock.version>2.4-M4-groovy-4.0</spock.version>
@@ -125,7 +125,7 @@
     <lombok.version>1.18.34</lombok.version>
     <snakeyaml.version>2.8</snakeyaml.version>
     <snakeyaml.bundle.version>2.2</snakeyaml.bundle.version> <!-- Transitive Jackson -->
-    <bouncycastle.version>1.78.1</bouncycastle.version>
+    <bouncycastle.version>1.79</bouncycastle.version>
     <bc-fips.version>2.0.0</bc-fips.version>
     <bcpkix-fips.version>2.0.7</bcpkix-fips.version>
     <commons-compress.version>1.27.1</commons-compress.version>

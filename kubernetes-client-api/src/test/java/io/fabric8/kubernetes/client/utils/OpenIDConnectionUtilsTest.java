@@ -40,13 +40,9 @@ import java.time.Instant;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import static io.fabric8.kubernetes.client.http.TestStandardHttpClientFactory.Mode.SINGLETON;
-import static io.fabric8.kubernetes.client.utils.OpenIDConnectionUtils.CLIENT_ID_KUBECONFIG;
-import static io.fabric8.kubernetes.client.utils.OpenIDConnectionUtils.CLIENT_SECRET_KUBECONFIG;
-import static io.fabric8.kubernetes.client.utils.OpenIDConnectionUtils.ID_TOKEN_KUBECONFIG;
-import static io.fabric8.kubernetes.client.utils.OpenIDConnectionUtils.ISSUER_KUBECONFIG;
-import static io.fabric8.kubernetes.client.utils.OpenIDConnectionUtils.REFRESH_TOKEN_KUBECONFIG;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -77,10 +73,11 @@ class OpenIDConnectionUtilsTest {
     oAuthTokenResponse.setIdToken("id-token-updated");
     oAuthTokenResponse.setRefreshToken("refresh-token-updated");
     Path kubeConfig = Files.createTempFile(tempDir, "test", "kubeconfig");
-    Files.copy(OpenIDConnectionUtilsTest.class.getResourceAsStream("/test-kubeconfig-oidc"), kubeConfig,
+    Files.copy(
+        Objects.requireNonNull(OpenIDConnectionUtilsTest.class.getResourceAsStream("/test-kubeconfig-oidc")),
+        kubeConfig,
         StandardCopyOption.REPLACE_EXISTING);
-    Config originalConfig = Config.fromKubeconfig(null, new String(Files.readAllBytes(kubeConfig), StandardCharsets.UTF_8),
-        kubeConfig.toFile().getAbsolutePath());
+    Config originalConfig = Config.fromKubeconfig(kubeConfig.toFile());
 
     // When
     OpenIDConnectionUtils.persistOAuthToken(originalConfig, oAuthTokenResponse, null);
@@ -97,20 +94,20 @@ class OpenIDConnectionUtilsTest {
     assertFalse(authProviderConfigInFile.isEmpty());
     Map<String, String> authProviderConfigInMemory = originalConfig.getAuthProvider().getConfig();
     //auth info should be updated in memory
-    assertEquals("id-token-updated", authProviderConfigInMemory.get(ID_TOKEN_KUBECONFIG));
-    assertEquals("refresh-token-updated", authProviderConfigInMemory.get(REFRESH_TOKEN_KUBECONFIG));
+    assertEquals("id-token-updated", authProviderConfigInMemory.get("id-token"));
+    assertEquals("refresh-token-updated", authProviderConfigInMemory.get("refresh-token"));
     //auth info should be updated in kubeConfig
-    assertEquals("id-token-updated", authProviderConfigInFile.get(ID_TOKEN_KUBECONFIG));
-    assertEquals("refresh-token-updated", authProviderConfigInFile.get(REFRESH_TOKEN_KUBECONFIG));
+    assertEquals("id-token-updated", authProviderConfigInFile.get("id-token"));
+    assertEquals("refresh-token-updated", authProviderConfigInFile.get("refresh-token"));
   }
 
   @Test
   void resolveOIDCTokenFromAuthConfigShouldReturnOldTokenWhenRefreshNotSupported() throws Exception {
     // Given
     Map<String, String> currentAuthProviderConfig = new HashMap<>();
-    currentAuthProviderConfig.put(CLIENT_ID_KUBECONFIG, "client-id");
-    currentAuthProviderConfig.put(CLIENT_SECRET_KUBECONFIG, "client-secret");
-    currentAuthProviderConfig.put(ID_TOKEN_KUBECONFIG, "id-token");
+    currentAuthProviderConfig.put("client-id", "client-id");
+    currentAuthProviderConfig.put("client-secret", "client-secret");
+    currentAuthProviderConfig.put("id-token", "id-token");
 
     // When
     String token = OpenIDConnectionUtils.resolveOIDCTokenFromAuthConfig(Config.empty(), currentAuthProviderConfig, null).get();
@@ -124,11 +121,11 @@ class OpenIDConnectionUtilsTest {
     try (MockedStatic<SSLUtils> sslUtilsMockedStatic = mockStatic(SSLUtils.class)) {
       // Given
       Map<String, String> currentAuthProviderConfig = new HashMap<>();
-      currentAuthProviderConfig.put(CLIENT_ID_KUBECONFIG, "client-id");
-      currentAuthProviderConfig.put(CLIENT_SECRET_KUBECONFIG, "client-secret");
-      currentAuthProviderConfig.put(ID_TOKEN_KUBECONFIG, "id-token");
-      currentAuthProviderConfig.put(REFRESH_TOKEN_KUBECONFIG, "refresh-token");
-      currentAuthProviderConfig.put(ISSUER_KUBECONFIG, "https://iam.cloud.example.com/identity");
+      currentAuthProviderConfig.put("client-id", "client-id");
+      currentAuthProviderConfig.put("client-secret", "client-secret");
+      currentAuthProviderConfig.put("id-token", "id-token");
+      currentAuthProviderConfig.put("refresh-token", "refresh-token");
+      currentAuthProviderConfig.put("idp-issuer-url", "https://iam.cloud.example.com/identity");
       Config config = new ConfigBuilder(Config.empty())
           .withCaCertData("cert")
           .withAuthProvider(new AuthProviderConfig())
@@ -164,11 +161,11 @@ class OpenIDConnectionUtilsTest {
       File caCertFile = new File(temporaryFolder, "ca.crt");
       Files.write(caCertFile.toPath(), "cert".getBytes(StandardCharsets.UTF_8));
       Map<String, String> currentAuthProviderConfig = new HashMap<>();
-      currentAuthProviderConfig.put(CLIENT_ID_KUBECONFIG, "client-id");
-      currentAuthProviderConfig.put(CLIENT_SECRET_KUBECONFIG, "client-secret");
-      currentAuthProviderConfig.put(ID_TOKEN_KUBECONFIG, "id-token");
-      currentAuthProviderConfig.put(REFRESH_TOKEN_KUBECONFIG, "refresh-token");
-      currentAuthProviderConfig.put(ISSUER_KUBECONFIG, "https://iam.cloud.example.com/identity");
+      currentAuthProviderConfig.put("client-id", "client-id");
+      currentAuthProviderConfig.put("client-secret", "client-secret");
+      currentAuthProviderConfig.put("id-token", "id-token");
+      currentAuthProviderConfig.put("refresh-token", "refresh-token");
+      currentAuthProviderConfig.put("idp-issuer-url", "https://iam.cloud.example.com/identity");
       Config config = new ConfigBuilder(Config.empty())
           .withCaCertFile(caCertFile.getAbsolutePath())
           .withAuthProvider(new AuthProviderConfig())
@@ -234,7 +231,7 @@ class OpenIDConnectionUtilsTest {
   private Config createNewConfigWithAuthProviderIdToken(String idToken) {
     return new ConfigBuilder(Config.empty())
         .withAuthProvider(new AuthProviderConfigBuilder()
-            .addToConfig(ID_TOKEN_KUBECONFIG, idToken)
+            .addToConfig("id-token", idToken)
             .build())
         .build();
   }

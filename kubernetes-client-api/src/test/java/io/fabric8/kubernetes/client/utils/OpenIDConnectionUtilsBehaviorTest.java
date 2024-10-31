@@ -340,7 +340,7 @@ class OpenIDConnectionUtilsBehaviorTest {
       }
 
       @Test
-      @DisplayName("With valid token repsonse and missing kube config, logs warning")
+      @DisplayName("With valid token response and missing kube config, logs warning")
       void withValidTokenResponseAndMissingKubeConfig() throws Exception {
         Files.delete(originalConfig.getFile().toPath());
         httpClientFactory.expect("/token", 200, "{" +
@@ -497,7 +497,7 @@ class OpenIDConnectionUtilsBehaviorTest {
       persistOAuthToken(originalConfig, oAuthTokenResponse, "fake.token");
       assertThat(systemErr.toString())
           .contains("oidc: failure while persisting new tokens into KUBECONFIG")
-          .contains("FileNotFoundException");
+          .contains("NoSuchFileException");
     }
 
     @Nested
