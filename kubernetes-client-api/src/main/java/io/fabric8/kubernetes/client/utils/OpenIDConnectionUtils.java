@@ -216,7 +216,7 @@ public class OpenIDConnectionUtils {
           namedAuthInfo.getUser().setToken(token);
         }
         KubeConfigUtils.persistKubeConfigIntoFile(kubeConfig, currentConfig.getFile().getAbsolutePath());
-      } catch (IOException ex) {
+      } catch (Exception ex) {
         LOGGER.warn("oidc: failure while persisting new tokens into KUBECONFIG", ex);
       }
     }

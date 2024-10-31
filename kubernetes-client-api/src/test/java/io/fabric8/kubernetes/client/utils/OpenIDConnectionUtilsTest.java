@@ -77,8 +77,7 @@ class OpenIDConnectionUtilsTest {
         Objects.requireNonNull(OpenIDConnectionUtilsTest.class.getResourceAsStream("/test-kubeconfig-oidc")),
         kubeConfig,
         StandardCopyOption.REPLACE_EXISTING);
-    Config originalConfig = Config.fromKubeconfig(null, Files.readString(kubeConfig, StandardCharsets.UTF_8),
-        kubeConfig.toFile().getAbsolutePath());
+    Config originalConfig = Config.fromKubeconfig(kubeConfig.toFile());
 
     // When
     OpenIDConnectionUtils.persistOAuthToken(originalConfig, oAuthTokenResponse, null);
