@@ -112,8 +112,7 @@ class OpenShiftOAuthInterceptorTest {
     // Given
     kubeConfigOriginal.editFirstUser().editUser().withToken("original-token").endUser().endUser();
     Files.writeString(kubeConfigFile, Serialization.asYaml(kubeConfigOriginal.build()), CREATE);
-    final Config initialConfig = Config
-        .fromKubeconfig("current-context", Files.readString(kubeConfigFile), kubeConfigFile.toFile().getAbsolutePath());
+    final Config initialConfig = Config.fromKubeconfig(kubeConfigFile.toFile());
     final var kubeConfigRefreshed = kubeConfigOriginal
         .editFirstUser().editUser().withToken("refreshed-token-from-config").endUser().endUser().build();
     Files.writeString(kubeConfigFile, Serialization.asYaml(kubeConfigRefreshed), CREATE);
@@ -134,8 +133,7 @@ class OpenShiftOAuthInterceptorTest {
     // Given
     kubeConfigOriginal.editFirstUser().editUser().withToken("original-token").endUser().endUser();
     Files.writeString(kubeConfigFile, Serialization.asYaml(kubeConfigOriginal.build()), CREATE);
-    final Config initialConfig = Config
-        .fromKubeconfig("current-context", Files.readString(kubeConfigFile), kubeConfigFile.toFile().getAbsolutePath());
+    final Config initialConfig = Config.fromKubeconfig(kubeConfigFile.toFile());
     final var kubeConfigRefreshed = kubeConfigOriginal
         .editFirstUser().editUser().withToken("refreshed-token-from-config").endUser().endUser().build();
     Files.writeString(kubeConfigFile, Serialization.asYaml(kubeConfigRefreshed), CREATE);
@@ -195,8 +193,7 @@ class OpenShiftOAuthInterceptorTest {
     // Given
     kubeConfigOriginal.editFirstUser().editUser().withUsername("username").withPassword("pa33word").endUser().endUser();
     Files.writeString(kubeConfigFile, Serialization.asYaml(kubeConfigOriginal.build()), CREATE);
-    final var initialConfig = Config
-        .fromKubeconfig("current-context", Files.readString(kubeConfigFile), kubeConfigFile.toFile().getAbsolutePath());
+    final var initialConfig = Config.fromKubeconfig(kubeConfigFile.toFile());
     final var builder = client.newHttpRequestBuilder().uri("https://localhost");
     final var interceptor = new OpenShiftOAuthInterceptor(client, initialConfig);
     clientFactory.expect("/.well-known/oauth-authorization-server", 200,
@@ -213,8 +210,7 @@ class OpenShiftOAuthInterceptorTest {
     // Then
     assertThat(result).isCompletedWithValue(true);
     assertThat(builder.build().headers("Authorization")).containsExactly("Bearer sha256~refreshed");
-    final var updatedConfig = Config
-        .fromKubeconfig("current-context", Files.readString(kubeConfigFile), kubeConfigFile.toFile().getAbsolutePath());
+    final var updatedConfig = Config.fromKubeconfig(kubeConfigFile.toFile());
     assertThat(updatedConfig)
         .returns(null, Config::getOauthToken)
         .returns("sha256~refreshed", Config::getAutoOAuthToken);

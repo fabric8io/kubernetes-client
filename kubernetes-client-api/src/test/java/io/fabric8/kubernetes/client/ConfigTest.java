@@ -15,8 +15,6 @@
  */
 package io.fabric8.kubernetes.client;
 
-import io.fabric8.kubernetes.api.model.ExecConfig;
-import io.fabric8.kubernetes.api.model.ExecConfigBuilder;
 import io.fabric8.kubernetes.api.model.NamedContext;
 import io.fabric8.kubernetes.client.http.TlsVersion;
 import io.fabric8.kubernetes.client.lib.FileSystem;
@@ -1036,80 +1034,6 @@ class ConfigTest {
         .hasFieldOrPropertyWithValue("http2Disable", false)
         .hasFieldOrPropertyWithValue("tlsVersions", new TlsVersion[] { TlsVersion.TLS_1_3 })
         .satisfies(e -> assertThat(e.getUserAgent()).isEqualTo("fabric8-kubernetes-client/ConfigTest"));
-  }
-
-  @Test
-  @DisplayName("should create expected authenticator command for aws")
-  void getAuthenticatorCommandFromExecConfig_whenAwsCommandUsed_thenUseCommandLineArgsInExecCommand() throws IOException {
-    // Given
-    File commandFolder = Files.createTempDirectory("test").toFile();
-    File commandFile = new File(commandFolder, "aws");
-    Files.createFile(commandFile.toPath());
-    String systemPathValue = getTestPathValue(commandFolder);
-    ExecConfig execConfig = new ExecConfigBuilder()
-        .withApiVersion("client.authentication.k8s.io/v1alpha1")
-        .addToArgs("--region", "us-west2", "eks", "get-token", "--cluster-name", "api-eks.example.com")
-        .withCommand("aws")
-        .build();
-
-    // When
-    List<String> processBuilderArgs = Config.getAuthenticatorCommandFromExecConfig(execConfig, new File("~/.kube/config"),
-        systemPathValue);
-
-    // Then
-    assertThat(processBuilderArgs)
-        .isNotNull()
-        .hasSize(3);
-    assertPlatformPrefixes(processBuilderArgs);
-    List<String> commandParts = Arrays.asList(processBuilderArgs.get(2).split(" "));
-    assertThat(commandParts)
-        .containsExactly(commandFile.getAbsolutePath(), "--region", "us-west2", "eks",
-            "get-token", "--cluster-name", "api-eks.example.com");
-  }
-
-  @Test
-  @DisplayName("should generate expected authenticator command for gke-gcloud-auth-plugin")
-  void getAuthenticatorCommandFromExecConfig_whenGkeAuthPluginCommandProvided_thenUseCommandLineArgs() throws IOException {
-    // Given
-    File commandFolder = Files.createTempDirectory("test").toFile();
-    File commandFile = new File(commandFolder, "gke-gcloud-auth-plugin");
-    String systemPathValue = getTestPathValue(commandFolder);
-    ExecConfig execConfigNoArgs = new ExecConfigBuilder()
-        .withApiVersion("client.authentication.k8s.io/v1alpha1")
-        .withCommand(commandFile.getPath())
-        .build();
-    // Simulate "user.exec.args: null" like e.g. in the configuration for the gke-gcloud-auth-plugin.
-    execConfigNoArgs.setArgs(null);
-
-    // When
-    List<String> processBuilderArgs = Config.getAuthenticatorCommandFromExecConfig(
-        execConfigNoArgs, null, systemPathValue);
-
-    // Then
-    assertThat(processBuilderArgs)
-        .isNotNull()
-        .hasSize(3)
-        .satisfies(pb -> assertThat(pb.get(2)).isEqualTo(commandFile.getPath()));
-    assertPlatformPrefixes(processBuilderArgs);
-  }
-
-  private void assertPlatformPrefixes(List<String> processBuilderArgs) {
-    List<String> platformArgsExpected = Utils.getCommandPlatformPrefix();
-    assertThat(processBuilderArgs)
-        .satisfies(p -> assertThat(p.get(0)).isEqualTo(platformArgsExpected.get(0)))
-        .satisfies(p -> assertThat(p.get(1)).isEqualTo(platformArgsExpected.get(1)));
-  }
-
-  private String getTestPathValue(File commandFolder) {
-    if (Utils.isWindowsOperatingSystem()) {
-      return "C:\\Program Files\\Java\\jdk14.0_23\\bin" + File.pathSeparator +
-          commandFolder.getAbsolutePath() + File.pathSeparator +
-          "C:\\Program Files\\Apache Software Foundation\\apache-maven-3.3.1";
-    } else {
-      return "/usr/java/jdk-14.0.1/bin" + File.pathSeparator +
-          commandFolder.getAbsolutePath() + File.pathSeparator +
-          "/opt/apache-maven/bin";
-    }
   }
 
   @Nested
