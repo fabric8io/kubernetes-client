@@ -72,7 +72,7 @@ class CRDGeneratorApprovalTest {
   }
 
   @ParameterizedTest(name = "{1}.{2} parallel={3}")
-  @MethodSource("crdApprovalTests")
+  @MethodSource("crdApprovalTestsApiV1")
   @DisplayName("CRD Generator V1 Approval Tests")
   void apiV1ApprovalTest(
       Class<? extends CustomResource<?, ?>>[] crClasses, String expectedCrd, String version, boolean parallel) {
@@ -97,7 +97,7 @@ class CRDGeneratorApprovalTest {
   }
 
   @ParameterizedTest(name = "{1}.{2} parallel={3}")
-  @MethodSource("crdV1ApprovalTests")
+  @MethodSource("crdApprovalTestsApiV2")
   @DisplayName("CRD Generator V2 Approval Tests")
   void apiV2ApprovalTest(
       Class<? extends CustomResource<?, ?>>[] crClasses, String expectedCrd, String version, boolean parallel) {
@@ -122,17 +122,36 @@ class CRDGeneratorApprovalTest {
         new Namer(expectedCrd, version));
   }
 
-  static Stream<Arguments> crdApprovalTests() {
+  /**
+   * Method source for test cases targeting CRD-Generator api-v1.
+   *
+   * @return the arguments for the test cases
+   */
+  static Stream<Arguments> crdApprovalTestsApiV1() {
     return Stream.concat(
         crdApprovalBaseCases("v1"),
-        crdApprovalBaseCases("v1beta1")).map(tc -> Arguments.of(tc.crClasses, tc.expectedCrd, tc.version, tc.parallel));
-  }
-
-  static Stream<Arguments> crdV1ApprovalTests() {
-    return crdApprovalBaseCases("v1")
+        crdApprovalBaseCases("v1beta1"))
         .map(tc -> Arguments.of(tc.crClasses, tc.expectedCrd, tc.version, tc.parallel));
   }
 
+  /**
+   * Method source for test cases targeting CRD-Generator api-v2.
+   *
+   * @return the arguments for the test cases
+   */
+  static Stream<Arguments> crdApprovalTestsApiV2() {
+    return Stream.concat(
+        crdApprovalBaseCases("v1"),
+        crdApprovalCasesForApiV2Only("v1"))
+        .map(tc -> Arguments.of(tc.crClasses, tc.expectedCrd, tc.version, tc.parallel));
+  }
+
+  /**
+   * Test cases for CRD-Generator api-v1 and api-v2 which must have the exact same results.
+   *
+   * @param crdVersion the CRD version
+   * @return the test cases
+   */
   static Stream<TestCase> crdApprovalBaseCases(String crdVersion) {
     final List<TestCase> cases = new ArrayList<>();
     for (boolean parallel : new boolean[] { false, true }) {
@@ -147,6 +166,20 @@ class CRDGeneratorApprovalTest {
           io.fabric8.crd.generator.approvaltests.multipleversions.v1.Multiple.class,
           io.fabric8.crd.generator.approvaltests.multipleversions.v2.Multiple.class));
       cases.add(new TestCase("nocyclics.sample.fabric8.io", crdVersion, parallel, NoCyclic.class));
+    }
+    return cases.stream();
+  }
+
+  /**
+   * Test cases for CRD-Generator api-v2 only.
+   *
+   * @param crdVersion the CRD version
+   * @return the test cases
+   */
+  static Stream<TestCase> crdApprovalCasesForApiV2Only(String crdVersion) {
+    final List<TestCase> cases = new ArrayList<>();
+    for (boolean parallel : new boolean[] { false, true }) {
+      // add here test cases
     }
     return cases.stream();
   }
