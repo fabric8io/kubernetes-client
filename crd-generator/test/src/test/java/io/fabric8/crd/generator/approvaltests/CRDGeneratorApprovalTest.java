@@ -27,6 +27,7 @@ import io.fabric8.crd.generator.approvaltests.json.ContainingJson;
 import io.fabric8.crd.generator.approvaltests.k8svalidation.K8sValidation;
 import io.fabric8.crd.generator.approvaltests.map.ContainingMaps;
 import io.fabric8.crd.generator.approvaltests.nocyclic.NoCyclic;
+import io.fabric8.crd.generator.approvaltests.printercolum.PrinterColumn;
 import io.fabric8.crd.generator.approvaltests.replica.Replica;
 import io.fabric8.kubernetes.client.CustomResource;
 import io.sundr.utils.Strings;
@@ -129,8 +130,8 @@ class CRDGeneratorApprovalTest {
    */
   static Stream<Arguments> crdApprovalTestsApiV1() {
     return Stream.concat(
-        crdApprovalBaseCases("v1"),
-        crdApprovalBaseCases("v1beta1"))
+        crdApprovalCasesBase("v1"),
+        crdApprovalCasesBase("v1beta1"))
         .map(tc -> Arguments.of(tc.crClasses, tc.expectedCrd, tc.version, tc.parallel));
   }
 
@@ -141,8 +142,8 @@ class CRDGeneratorApprovalTest {
    */
   static Stream<Arguments> crdApprovalTestsApiV2() {
     return Stream.concat(
-        crdApprovalBaseCases("v1"),
-        crdApprovalCasesForApiV2Only("v1"))
+        crdApprovalCasesBase("v1"),
+        crdApprovalCasesApiV2("v1"))
         .map(tc -> Arguments.of(tc.crClasses, tc.expectedCrd, tc.version, tc.parallel));
   }
 
@@ -152,7 +153,7 @@ class CRDGeneratorApprovalTest {
    * @param crdVersion the CRD version
    * @return the test cases
    */
-  static Stream<TestCase> crdApprovalBaseCases(String crdVersion) {
+  static Stream<TestCase> crdApprovalCasesBase(String crdVersion) {
     final List<TestCase> cases = new ArrayList<>();
     for (boolean parallel : new boolean[] { false, true }) {
       cases.add(new TestCase("annotateds.samples.fabric8.io", crdVersion, parallel, Annotated.class));
@@ -176,10 +177,10 @@ class CRDGeneratorApprovalTest {
    * @param crdVersion the CRD version
    * @return the test cases
    */
-  static Stream<TestCase> crdApprovalCasesForApiV2Only(String crdVersion) {
+  static Stream<TestCase> crdApprovalCasesApiV2(String crdVersion) {
     final List<TestCase> cases = new ArrayList<>();
     for (boolean parallel : new boolean[] { false, true }) {
-      // add here test cases
+      cases.add(new TestCase("printercolumns.sample.fabric8.io", crdVersion, parallel, PrinterColumn.class));
     }
     return cases.stream();
   }
