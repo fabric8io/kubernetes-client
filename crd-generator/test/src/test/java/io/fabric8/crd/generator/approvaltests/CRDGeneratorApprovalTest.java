@@ -186,7 +186,7 @@ class CRDGeneratorApprovalTest {
       cases.add(new TestCase("printercolumns.sample.fabric8.io", crdVersion, parallel, PrinterColumn.class));
       cases.add(new TestCase("requireds.samples.fabric8.io", crdVersion, parallel, Required.class));
       cases.add(new TestCase("selectablefields.sample.fabric8.io", crdVersion, parallel, SelectableField.class));
-      cases.add(new TestCase("validations.samples.fabric8.io", crdVersion, parallel, Validation.class));
+      cases.add(new TestCase("validations.sample.fabric8.io", crdVersion, parallel, Validation.class));
     }
     return cases.stream();
   }
