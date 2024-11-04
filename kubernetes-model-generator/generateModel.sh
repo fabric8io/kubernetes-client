@@ -36,7 +36,6 @@ declare -a modules=(
     "../extensions/open-cluster-management/generator-placementruleapps"
     "../extensions/open-cluster-management/generator-policy"
     "../extensions/open-cluster-management/generator-search"
-    "../extensions/open-virtual-networking/generator-v1"
 )
 
 declare -a extensionModuleParents=(

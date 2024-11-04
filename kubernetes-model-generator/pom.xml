@@ -85,6 +85,7 @@
     <openapi.schema.io.istio>${project.basedir}/../../../kubernetes-model-generator/openapi/schemas/io.istio.json</openapi.schema.io.istio>
     <openapi.schema.io.k8s.autoscaling>${project.basedir}/../../../kubernetes-model-generator/openapi/schemas/io.k8s.autoscaling.json</openapi.schema.io.k8s.autoscaling>
     <openapi.schema.io.k8s.storage.snapshot>${project.basedir}/../../../kubernetes-model-generator/openapi/schemas/io.k8s.storage.snapshot.json</openapi.schema.io.k8s.storage.snapshot>
+    <openapi.schema.org.ovn>${project.basedir}/../../../kubernetes-model-generator/openapi/schemas/org.ovn.json</openapi.schema.org.ovn>
     <openapi.schema.sh.volcano>${project.basedir}/../../../kubernetes-model-generator/openapi/schemas/sh.volcano.json</openapi.schema.sh.volcano>
     <openapi.openshift-version>4.17</openapi.openshift-version>
     <openapi.storageversionmigrator-revision>5c8923c5ff96ceb4435f66b986b5aec2dd0cbc22</openapi.storageversionmigrator-revision>
@@ -203,6 +204,7 @@
                 <io.openshift.security.v1>io.fabric8.openshift.api.model</io.openshift.security.v1>
                 <io.openshift.template.v1>io.fabric8.openshift.api.model</io.openshift.template.v1>
                 <io.openshift.user.v1>io.fabric8.openshift.api.model</io.openshift.user.v1>
+                <org.ovn.k8s>io.fabric8.kubernetes.api.model.ovn</org.ovn.k8s>
                 <sh.volcano>io.fabric8.volcano.api.model</sh.volcano>
               </packageMappings>
             </settings>

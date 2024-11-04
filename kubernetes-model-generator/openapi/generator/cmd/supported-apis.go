@@ -31,6 +31,12 @@ import (
 	operatorframeworkv1 "github.com/operator-framework/api/pkg/operators/v1"
 	operatorframeworkv1alpha1 "github.com/operator-framework/api/pkg/operators/v1alpha1"
 	olm "github.com/operator-framework/operator-lifecycle-manager/pkg/package-server/apis/operators/v1"
+	ovnadminpolicybasedroutev1 "github.com/ovn-org/ovn-kubernetes/go-controller/pkg/crd/adminpolicybasedroute/v1"
+	ovnegressfirewallv1 "github.com/ovn-org/ovn-kubernetes/go-controller/pkg/crd/egressfirewall/v1"
+	ovnegressipv1 "github.com/ovn-org/ovn-kubernetes/go-controller/pkg/crd/egressip/v1"
+	ovnegressqosv1 "github.com/ovn-org/ovn-kubernetes/go-controller/pkg/crd/egressqos/v1"
+	ovnegressservicev1 "github.com/ovn-org/ovn-kubernetes/go-controller/pkg/crd/egressservice/v1"
+	ovnuserdefinednetworkv1 "github.com/ovn-org/ovn-kubernetes/go-controller/pkg/crd/userdefinednetwork/v1"
 	prometheusoperatorv1 "github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring/v1"
 	"github.com/spf13/cobra"
 	tektonpipelinev1 "github.com/tektoncd/pipeline/pkg/apis/pipeline/v1"
@@ -77,6 +83,12 @@ var supportedApisRun = func(cobraCmd *cobra.Command, args []string) {
 		"install.openshift.io/" + openshiftinstallerv1.InstallConfigVersion + " (" + strings.Join(openshiftinstallerv1.PlatformNames, ", ") + ")",
 		operatorframeworkv1alpha1.SchemeGroupVersion.String(),
 		operatorframeworkv1.GroupVersion.String(),
+		ovnadminpolicybasedroutev1.SchemeGroupVersion.String(),
+		ovnegressfirewallv1.SchemeGroupVersion.String(),
+		ovnegressipv1.SchemeGroupVersion.String(),
+		ovnegressqosv1.SchemeGroupVersion.String(),
+		ovnegressservicev1.SchemeGroupVersion.String(),
+		ovnuserdefinednetworkv1.SchemeGroupVersion.String(),
 		prometheusoperatorv1.SchemeGroupVersion.String(),
 		volumesnapshotv1.SchemeGroupVersion.String(),
 		volcanov1beta1.SchemeGroupVersion.String(),
