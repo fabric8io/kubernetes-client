@@ -18,6 +18,7 @@ package io.fabric8.crdv2.generator;
 import io.fabric8.crd.generator.annotation.AdditionalPrinterColumn;
 import io.fabric8.crd.generator.annotation.AdditionalPrinterColumn.Format;
 import io.fabric8.crd.generator.annotation.PrinterColumn;
+import io.fabric8.crd.generator.annotation.SelectableField;
 import io.fabric8.crdv2.generator.AbstractJsonSchema.AnnotationMetadata;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.client.utils.Utils;
@@ -42,6 +43,10 @@ public abstract class AbstractCustomResourceHandler {
   public interface PrinterColumnHandler {
     void addPrinterColumn(String path, String column, String format,
         int priority, String type, String description);
+  }
+
+  public interface SelectableFieldHandler {
+    void addSelectableField(String jsonPath);
   }
 
   protected void handlePrinterColumns(AbstractJsonSchema<?, ?> resolver, PrinterColumnHandler handler) {
@@ -76,6 +81,14 @@ public abstract class AbstractCustomResourceHandler {
         handler.addPrinterColumn(path, column, format, priority, type, description);
       }
     });
+  }
+
+  protected void handleSelectableField(AbstractJsonSchema<?, ?> resolver, SelectableFieldHandler handler) {
+    TreeMap<String, AnnotationMetadata> sortedCols = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+    resolver.getAdditionalSelectableFields()
+        .forEach(apc -> sortedCols.put(apc.jsonPath(), new AnnotationMetadata(apc, null)));
+    sortedCols.putAll(resolver.getAllPaths(SelectableField.class));
+    sortedCols.forEach((jsonPath, property) -> handler.addSelectableField(jsonPath));
   }
 
   public abstract Stream<Map.Entry<? extends HasMetadata, Set<String>>> finish();

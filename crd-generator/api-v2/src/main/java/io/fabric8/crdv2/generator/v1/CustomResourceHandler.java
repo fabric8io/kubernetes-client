@@ -85,6 +85,10 @@ public class CustomResourceHandler extends AbstractCustomResourceHandler {
       }
     });
 
+    handleSelectableField(resolver, jsonPath -> builder.addNewSelectableField()
+        .withJsonPath(jsonPath)
+        .endSelectableField());
+
     resolver.getSinglePath(SpecReplicas.class).ifPresent(path -> {
       builder.editOrNewSubresources().editOrNewScale().withSpecReplicasPath(path).endScale().endSubresources();
     });
