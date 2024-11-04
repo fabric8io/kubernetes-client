@@ -17,28 +17,24 @@ package io.fabric8.kubernetes.api.model.apiextensions.v1;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.model.util.Helper;
+import io.fabric8.zjsonpatch.JsonDiff;
 import org.junit.jupiter.api.Test;
 
-import static net.javacrumbs.jsonunit.core.Option.IGNORING_ARRAY_ORDER;
-import static net.javacrumbs.jsonunit.core.Option.IGNORING_EXTRA_FIELDS;
-import static net.javacrumbs.jsonunit.core.Option.TREATING_NULL_AS_ABSENT;
-import static net.javacrumbs.jsonunit.fluent.JsonFluentAssert.assertThatJson;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class ConversionReviewTest {
 
-  private final ObjectMapper objectMapper = new ObjectMapper();
+  private final ObjectMapper mapper = new ObjectMapper();
 
   @Test
   void testDeserializationAndSerialization() throws Exception {
     // Given
     final String originalJson = Helper.loadJson("/valid-conversionreview.json");
-
-    // when
-    final ConversionReview conversionReview = objectMapper.readValue(originalJson, ConversionReview.class);
-    final String serializedJson = objectMapper.writeValueAsString(conversionReview);
-
-    // then
-    assertThatJson(serializedJson).when(IGNORING_ARRAY_ORDER, TREATING_NULL_AS_ABSENT, IGNORING_EXTRA_FIELDS)
-        .isEqualTo(originalJson);
+    final ConversionReview conversionReview = mapper.readValue(originalJson, ConversionReview.class);
+    // When
+    final var diff = JsonDiff.asJson(mapper.readTree(originalJson),
+        mapper.readTree(mapper.writeValueAsString(conversionReview)));
+    // Then
+    assertThat(diff).isEmpty();
   }
-};
+}

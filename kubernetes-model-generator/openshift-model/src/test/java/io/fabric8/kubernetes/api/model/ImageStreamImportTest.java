@@ -19,39 +19,32 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.openshift.api.model.ImageImportSpecBuilder;
 import io.fabric8.openshift.api.model.ImageStreamImport;
 import io.fabric8.openshift.api.model.ImageStreamImportBuilder;
+import io.fabric8.zjsonpatch.JsonDiff;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 
-import static net.javacrumbs.jsonunit.core.Option.IGNORING_ARRAY_ORDER;
-import static net.javacrumbs.jsonunit.core.Option.IGNORING_EXTRA_FIELDS;
-import static net.javacrumbs.jsonunit.core.Option.TREATING_NULL_AS_ABSENT;
-import static net.javacrumbs.jsonunit.fluent.JsonFluentAssert.assertThatJson;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ImageStreamImportTest {
   private final ObjectMapper mapper = new ObjectMapper();
 
   @Test
   public void imageStreamImportTest() throws Exception {
-    // given
+    // Given
     final String originalJson = Helper.loadJson("/valid-imagestreamimport.json");
-
-    // when
     final ImageStreamImport imageStreamImport = mapper.readValue(originalJson, ImageStreamImport.class);
-    final String serializedJson = mapper.writeValueAsString(imageStreamImport);
-
-    // then
-    assertThatJson(serializedJson).when(IGNORING_ARRAY_ORDER, TREATING_NULL_AS_ABSENT, IGNORING_EXTRA_FIELDS)
-        .isEqualTo(originalJson);
+    // When
+    final var diff = JsonDiff.asJson(mapper.readTree(originalJson),
+        mapper.readTree(mapper.writeValueAsString(imageStreamImport)));
+    // Then
+    assertThat(diff).isEmpty();
   }
 
   @Test
   public void imageStreamImportBuilderTest() throws Exception {
-
-    // given
+    // Given
     final String originalJson = Helper.loadJson("/valid-imagestreamimport.json");
-
-    // when
     ImageStreamImport imageStreamImport = new ImageStreamImportBuilder()
         .withNewMetadata()
         .withName("test-isi")
@@ -93,12 +86,10 @@ public class ImageStreamImportTest {
         .endRepository()
         .endSpec()
         .build();
-
-    final String serializedJson = mapper.writeValueAsString(imageStreamImport);
-
-    // then
-    assertThatJson(serializedJson).when(IGNORING_ARRAY_ORDER, TREATING_NULL_AS_ABSENT, IGNORING_EXTRA_FIELDS)
-        .isEqualTo(originalJson);
-
+    // When
+    final var diff = JsonDiff.asJson(mapper.readTree(originalJson),
+        mapper.readTree(mapper.writeValueAsString(imageStreamImport)));
+    // Then
+    assertThat(diff).isEmpty();
   }
 }

@@ -18,19 +18,16 @@ package io.fabric8.kubernetes.api.model.apiextensions.v1beta1;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.model.util.Helper;
+import io.fabric8.zjsonpatch.JsonDiff;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 
-import static net.javacrumbs.jsonunit.core.Option.IGNORING_ARRAY_ORDER;
-import static net.javacrumbs.jsonunit.core.Option.IGNORING_EXTRA_FIELDS;
-import static net.javacrumbs.jsonunit.core.Option.TREATING_NULL_AS_ABSENT;
-import static net.javacrumbs.jsonunit.fluent.JsonFluentAssert.assertThatJson;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class CustomResourceDefinitionTest {
-  private final ObjectMapper objectMapper = new ObjectMapper();
+  private final ObjectMapper mapper = new ObjectMapper();
 
   @Test
   public void testBuilder() {
@@ -68,48 +65,34 @@ class CustomResourceDefinitionTest {
   void testLoadFromJsonSchemaPropsOrBool() throws JsonProcessingException {
     // Given
     final String originalJson = Helper.loadJson("/valid-crd.json");
-
-    // when
-    final CustomResourceDefinition customResourceDefinition = objectMapper.readValue(originalJson,
+    final CustomResourceDefinition customResourceDefinition = mapper.readValue(originalJson,
         CustomResourceDefinition.class);
-    final String serializedJson = objectMapper.writeValueAsString(customResourceDefinition);
-
-    // then
-    assertThatJson(serializedJson).when(IGNORING_ARRAY_ORDER, TREATING_NULL_AS_ABSENT, IGNORING_EXTRA_FIELDS)
-        .isEqualTo(originalJson);
+    // When
+    final var diff = JsonDiff.asJson(mapper.readTree(originalJson),
+        mapper.readTree(mapper.writeValueAsString(customResourceDefinition)));
+    // Then
+    Assertions.assertThat(diff).isEmpty();
   }
 
   @Test
   void testLoadFromJsonSchemaPropsOrArray() throws JsonProcessingException {
     // Given
-    String jsonString = Helper.loadJson("/valid-crd-jsonschemapropsorarray.json");
-
+    final String originalJson = Helper.loadJson("/valid-crd-jsonschemapropsorarray.json");
+    final CustomResourceDefinition result = mapper.readValue(originalJson, CustomResourceDefinition.class);
     // When
-    CustomResourceDefinition result = objectMapper.readValue(jsonString, CustomResourceDefinition.class);
-    final String serializedJson = objectMapper.writeValueAsString(result);
-
+    final var diff = JsonDiff.asJson(mapper.readTree(originalJson), mapper.readTree(mapper.writeValueAsString(result)));
     // Then
-    assertNotNull(result);
-
-    // then
-    assertThatJson(serializedJson).when(IGNORING_ARRAY_ORDER, TREATING_NULL_AS_ABSENT, IGNORING_EXTRA_FIELDS)
-        .isEqualTo(jsonString);
+    Assertions.assertThat(diff).isEmpty();
   }
 
   @Test
   void testLoadFromJsonSchemaPropsOrStringArray() throws JsonProcessingException {
     // Given
-    String jsonString = Helper.loadJson("/valid-crd-jsonschemapropsorstringarray.json");
-
+    String originalJson = Helper.loadJson("/valid-crd-jsonschemapropsorstringarray.json");
+    CustomResourceDefinition result = mapper.readValue(originalJson, CustomResourceDefinition.class);
     // When
-    CustomResourceDefinition result = objectMapper.readValue(jsonString, CustomResourceDefinition.class);
-    final String serializedJson = objectMapper.writeValueAsString(result);
-
+    final var diff = JsonDiff.asJson(mapper.readTree(originalJson), mapper.readTree(mapper.writeValueAsString(result)));
     // Then
-    assertNotNull(result);
-
-    // then
-    assertThatJson(serializedJson).when(IGNORING_ARRAY_ORDER, TREATING_NULL_AS_ABSENT, IGNORING_EXTRA_FIELDS)
-        .isEqualTo(jsonString);
+    Assertions.assertThat(diff).isEmpty();
   }
 }

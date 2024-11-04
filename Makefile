@@ -40,6 +40,8 @@ openapi-generate-schema:
 
 .PHONY: openapi-generate-java-classes
 openapi-generate-java-classes:
+	# Test dependency needed for model de/serialization validation
+	mvn $(MAVEN_ARGS) clean install -pl . -pl zjsonpatch
 	cd kubernetes-model-generator && mvn $(MAVEN_ARGS) -Pgenerate clean install
 	# TODO: run generate from extensions module root once all extensions are migrated
 	cd extensions && mvn $(MAVEN_ARGS) -N clean install

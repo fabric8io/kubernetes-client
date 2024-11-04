@@ -22,12 +22,10 @@ import io.fabric8.openshift.api.model.ImageLayerBuilder;
 import io.fabric8.openshift.api.model.ImageLookupPolicyBuilder;
 import io.fabric8.openshift.api.model.ImageStreamTagBuilder;
 import io.fabric8.openshift.api.model.TagReferenceBuilder;
+import io.fabric8.zjsonpatch.JsonDiff;
 import org.junit.jupiter.api.Test;
 
-import static net.javacrumbs.jsonunit.core.Option.IGNORING_ARRAY_ORDER;
-import static net.javacrumbs.jsonunit.core.Option.IGNORING_EXTRA_FIELDS;
-import static net.javacrumbs.jsonunit.core.Option.TREATING_NULL_AS_ABSENT;
-import static net.javacrumbs.jsonunit.fluent.JsonFluentAssert.assertThatJson;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -38,16 +36,13 @@ public class ImageStreamTagTest {
 
   @Test
   public void imageStreamTagTest() throws Exception {
-    // given
+    // Given
     final String originalJson = Helper.loadJson("/valid-ist.json");
-
-    // when
     final ImageStreamTag ist = mapper.readValue(originalJson, ImageStreamTag.class);
-    final String serializedJson = mapper.writeValueAsString(ist);
-
-    // then
-    assertThatJson(serializedJson).when(IGNORING_ARRAY_ORDER, TREATING_NULL_AS_ABSENT, IGNORING_EXTRA_FIELDS)
-        .isEqualTo(originalJson);
+    // When
+    final var diff = JsonDiff.asJson(mapper.readTree(originalJson), mapper.readTree(mapper.writeValueAsString(ist)));
+    // Then
+    assertThat(diff).isEmpty();
   }
 
   @Test
@@ -123,7 +118,6 @@ public class ImageStreamTagTest {
     assertEquals("jenkins-slave", ist.getTag().getAnnotations().get("role"));
     assertEquals("jenkins-slave", ist.getTag().getAnnotations().get("slave-label"));
     assertEquals("Source", ist.getTag().getReferencePolicy().getType());
-
   }
 
 }

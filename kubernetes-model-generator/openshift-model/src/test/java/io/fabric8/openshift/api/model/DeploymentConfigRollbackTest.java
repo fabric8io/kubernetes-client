@@ -18,15 +18,13 @@ package io.fabric8.openshift.api.model;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.api.model.Helper;
 import io.fabric8.kubernetes.api.model.ObjectReferenceBuilder;
+import io.fabric8.zjsonpatch.JsonDiff;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 
-import static net.javacrumbs.jsonunit.core.Option.IGNORING_ARRAY_ORDER;
-import static net.javacrumbs.jsonunit.core.Option.IGNORING_EXTRA_FIELDS;
-import static net.javacrumbs.jsonunit.core.Option.TREATING_NULL_AS_ABSENT;
-import static net.javacrumbs.jsonunit.fluent.JsonFluentAssert.assertThatJson;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class DeploymentConfigRollbackTest {
 
@@ -34,18 +32,15 @@ class DeploymentConfigRollbackTest {
 
   @Test
   void deploymentConfigRollbackTest() throws Exception {
-    // given
+    // Given
     final String originalJson = Helper.loadJson("/valid-deploymentConfigRollback.json");
-
-    // when
     final DeploymentConfigRollback deploymentConfigRollback = mapper.readValue(originalJson,
         DeploymentConfigRollback.class);
-    final String serializedJson = mapper.writeValueAsString(deploymentConfigRollback);
-
-    // then
-    assertThatJson(serializedJson).when(IGNORING_ARRAY_ORDER, TREATING_NULL_AS_ABSENT,
-        IGNORING_EXTRA_FIELDS)
-        .isEqualTo(originalJson);
+    // When
+    final var diff = JsonDiff.asJson(mapper.readTree(originalJson),
+        mapper.readTree(mapper.writeValueAsString(deploymentConfigRollback)));
+    // Then
+    assertThat(diff).isEmpty();
   }
 
   @Test
