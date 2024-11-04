@@ -35,7 +35,6 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.attribute.PosixFilePermissions;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -171,9 +170,10 @@ class ConfigTest {
     }
 
     @Test
-    @DisplayName("no args Config constructor, should load from properties")
-    void zeroArgumentConstructor_whenInvoked_shouldLoadFromProperties() {
-      assertThat(new Config())
+    @DisplayName("default config, should load from properties")
+    void defaultConfig_whenInvoked_shouldLoadFromProperties() {
+      //noinspection deprecation
+      assertThat(new ConfigBuilder().build())
           .isNotNull()
           .hasFieldOrPropertyWithValue("trustCerts", true)
           .hasFieldOrPropertyWithValue("disableHostnameVerification", true)
@@ -527,9 +527,9 @@ class ConfigTest {
     }
 
     @Test
-    @DisplayName("new Config() should auto configure from kubeconfig")
-    void noArgConstructor_shouldAutoConfigureFromKubeConfig() {
-      assertThat(new Config())
+    @DisplayName("default config should auto configure from kubeconfig")
+    void defaultConfig_shouldAutoConfigureFromKubeConfig() {
+      assertThat(new ConfigBuilder().build())
           .isNotNull()
           .hasFieldOrPropertyWithValue("masterUrl", "https://172.28.128.4:8443/")
           .hasFieldOrPropertyWithValue("namespace", "testns")
@@ -615,11 +615,11 @@ class ConfigTest {
   void whenNamespacePathFilePropertyConfigured_shouldUpdateNamespace() {
     try {
       // Given
-      System.setProperty("kubeconfig", "nokubeconfigfile");
+      System.setProperty("kubeconfig", "no-kubeconfig-file");
       System.setProperty("kubenamespace", TEST_NAMESPACE_FILE);
       System.setProperty("kubernetes.master", "http://somehost:80");
       // When
-      Config config = new Config();
+      Config config = new ConfigBuilder().build();
       // Then
       assertThat(config)
           .isNotNull()
@@ -637,11 +637,11 @@ class ConfigTest {
   void whenNamespacePathFilePropertyConfiguredWithNonExistentFile_shouldNotUpdateNamespace() {
     try {
       // Given
-      System.setProperty("kubeconfig", "nokubeconfigfile");
+      System.setProperty("kubeconfig", "no-kubeconfig-file");
       System.setProperty("kubenamespace", "nonamespace");
       System.setProperty("kubernetes.master", "http://somehost:80");
       // When
-      Config config = new Config();
+      Config config = new ConfigBuilder().build();
       // Then
       assertThat(config)
           .isNotNull()
@@ -663,7 +663,7 @@ class ConfigTest {
       System.setProperty("kubernetes.master", "http://somehost:80");
       System.setProperty("kubernetes.namespace", "testns");
       // When
-      Config config = new Config();
+      Config config = new ConfigBuilder().build();
       // Then
       assertThat(config)
           .isNotNull()
@@ -683,7 +683,7 @@ class ConfigTest {
       // Given
       System.setProperty("kubeconfig", TEST_KUBECONFIG_NO_CURRENT_CONTEXT_FILE);
       // When
-      Config config = new Config();
+      Config config = new ConfigBuilder().build();
       // Then
       assertThat(config)
           .isNotNull()
@@ -773,7 +773,7 @@ class ConfigTest {
       // Given
       System.setProperty("kubeconfig", TEST_KUBECONFIG_EXEC_WIN_FILE);
       // When
-      Config config = Config.autoConfigure(null);
+      Config config = new ConfigBuilder().build();
       // Then
       assertThat(config)
           .isNotNull()
@@ -791,7 +791,7 @@ class ConfigTest {
       Files.setPosixFilePermissions(Paths.get(TEST_TOKEN_GENERATOR_FILE), PosixFilePermissions.fromString("rwxrwxr-x"));
       System.setProperty("kubeconfig", TEST_KUBECONFIG_EXEC_FILE);
       // When
-      Config config = Config.autoConfigure(null);
+      Config config = new ConfigBuilder().build();
       // Then
       assertThat(config)
           .isNotNull()
@@ -941,14 +941,10 @@ class ConfigTest {
   }
 
   @Test
-  @DisplayName("Config.empty() should create an empty non auto-configured instance")
+  @DisplayName("Config.empty() should create an empty non auto-configured instance with default values")
   void emptyConfig() {
-    // Given
-    Config emptyConfig = null;
-
     // When
-    emptyConfig = Config.empty();
-
+    Config emptyConfig = Config.empty();
     // Then
     assertThat(emptyConfig)
         .hasFieldOrPropertyWithValue("masterUrl", "https://kubernetes.default.svc/")
@@ -973,67 +969,6 @@ class ConfigTest {
         .satisfies(e -> assertThat(e.getCurrentContext()).isNull())
         .satisfies(e -> assertThat(e.getImpersonateGroups()).isEmpty())
         .satisfies(e -> assertThat(e.getUserAgent()).isNotNull());
-  }
-
-  @Test
-  void deprecatedOldConfigConstructor() {
-    // Given + When
-    Config config = new Config("https://api.example.testing:6443", "v1", "ns1", true, true,
-        "ca.crt", "certificate-authority-data", "client.crt", "client-authority-data", "client-key.crt",
-        "client-key-data", "EC", "client-key-passphrase", "test-user", "secret", "sha256~secret", "sha256~auto-token",
-        500, 5, 5000, 5000, 0, 100000, 10000, 5, 10, "http://proxy-url", "https://proxy-url",
-        new String[] { "https://noproxy-url1" }, Collections.emptyMap(), "fabric8-kubernetes-client/ConfigTest",
-        new TlsVersion[] { TlsVersion.TLS_1_3 }, 10000L, "proxy-username", "proxy-password", "truststore.jks",
-        "truststore-password", "k8s.keystore", "keystore-password", "jane.doe@example.com", new String[] { "developers" },
-        Collections.singletonMap("scope", Arrays.asList("view", "development")));
-    // Then
-    assertThat(config)
-        .hasFieldOrPropertyWithValue("autoConfigure", false)
-        .hasFieldOrPropertyWithValue("apiVersion", "v1")
-        .hasFieldOrPropertyWithValue("namespace", "ns1")
-        .hasFieldOrPropertyWithValue("masterUrl", "https://api.example.testing:6443/")
-        .hasFieldOrPropertyWithValue("contexts", Collections.emptyList())
-        .hasFieldOrPropertyWithValue("caCertFile", "ca.crt")
-        .hasFieldOrPropertyWithValue("caCertData", "certificate-authority-data")
-        .hasFieldOrPropertyWithValue("clientCertFile", "client.crt")
-        .hasFieldOrPropertyWithValue("clientCertData", "client-authority-data")
-        .hasFieldOrPropertyWithValue("clientKeyFile", "client-key.crt")
-        .hasFieldOrPropertyWithValue("clientKeyData", "client-key-data")
-        .hasFieldOrPropertyWithValue("clientKeyPassphrase", "client-key-passphrase")
-        .hasFieldOrPropertyWithValue("username", "test-user")
-        .hasFieldOrPropertyWithValue("password", "secret")
-        .hasFieldOrPropertyWithValue("oauthToken", "sha256~secret")
-        .hasFieldOrPropertyWithValue("autoOAuthToken", "sha256~auto-token")
-        .hasFieldOrPropertyWithValue("httpProxy", "http://proxy-url")
-        .hasFieldOrPropertyWithValue("httpsProxy", "https://proxy-url")
-        .hasFieldOrPropertyWithValue("noProxy", new String[] { "https://noproxy-url1" })
-        .hasFieldOrPropertyWithValue("proxyUsername", "proxy-username")
-        .hasFieldOrPropertyWithValue("proxyPassword", "proxy-password")
-        .hasFieldOrPropertyWithValue("trustStoreFile", "truststore.jks")
-        .hasFieldOrPropertyWithValue("trustStorePassphrase", "truststore-password")
-        .hasFieldOrPropertyWithValue("keyStoreFile", "k8s.keystore")
-        .hasFieldOrPropertyWithValue("keyStorePassphrase", "keystore-password")
-        .hasFieldOrPropertyWithValue("maxConcurrentRequests", 5)
-        .hasFieldOrPropertyWithValue("maxConcurrentRequestsPerHost", 10)
-        .hasFieldOrPropertyWithValue("trustCerts", true)
-        .hasFieldOrPropertyWithValue("disableHostnameVerification", true)
-        .hasFieldOrPropertyWithValue("clientKeyAlgo", "EC")
-        .hasFieldOrPropertyWithValue("clientKeyPassphrase", "client-key-passphrase")
-        .hasFieldOrPropertyWithValue("watchReconnectInterval", 500)
-        .hasFieldOrPropertyWithValue("watchReconnectLimit", 5)
-        .hasFieldOrPropertyWithValue("connectionTimeout", 5000)
-        .hasFieldOrPropertyWithValue("requestTimeout", 5000)
-        .hasFieldOrPropertyWithValue("scaleTimeout", 100000L)
-        .hasFieldOrPropertyWithValue("loggingInterval", 10000)
-        .hasFieldOrPropertyWithValue("websocketPingInterval", 10000L)
-        .hasFieldOrPropertyWithValue("uploadRequestTimeout", 120000)
-        .hasFieldOrPropertyWithValue("impersonateUsername", "jane.doe@example.com")
-        .satisfies(e -> assertThat(e.getImpersonateGroups()).containsExactly("developers"))
-        .hasFieldOrPropertyWithValue("impersonateExtras",
-            Collections.singletonMap("scope", Arrays.asList("view", "development")))
-        .hasFieldOrPropertyWithValue("http2Disable", false)
-        .hasFieldOrPropertyWithValue("tlsVersions", new TlsVersion[] { TlsVersion.TLS_1_3 })
-        .satisfies(e -> assertThat(e.getUserAgent()).isEqualTo("fabric8-kubernetes-client/ConfigTest"));
   }
 
   @Nested

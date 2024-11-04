@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.client;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -44,7 +45,6 @@ import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -222,19 +222,11 @@ public class Config {
   @JsonIgnore
   protected Map<String, Object> additionalProperties = new HashMap<>();
 
-  /**
-   * @deprecated use {@link #autoConfigure(String)} or {@link ConfigBuilder} instead
-   */
-  @Deprecated
-  public Config() {
-    this(!disableAutoConfig());
-  }
-
-  static boolean disableAutoConfig() {
+  protected static boolean disableAutoConfig() {
     return Utils.getSystemPropertyOrEnvVar(KUBERNETES_DISABLE_AUTO_CONFIG_SYSTEM_PROPERTY, false);
   }
 
-  private Config(boolean autoConfigure) {
+  protected Config(boolean autoConfigure) {
     this(null, null, null, null, null,
         null, null, null, null, null,
         null, null, null, null, null,
@@ -248,15 +240,17 @@ public class Config {
         null, null, null,
         null, null, null,
         null, null, null, null,
-        null, autoConfigure, true);
+        null, null, autoConfigure, true);
   }
 
   /**
    * Create an empty {@link Config} class without any automatic configuration
-   * (i.e. reading system properties/environment variables to load defaults.)
+   * (i.e. reading system properties/environment variables to set values).
+   * <p>
+   * The configuration does include the Kubernetes Client default values for timeouts, etc.
+   * <p>
    * You can also reuse this object to build your own {@link Config} object
    * without any auto configuration like this:
-   *
    *
    * <pre>{@code
    * Config configFromBuilder = new ConfigBuilder(Config.empty())
@@ -264,7 +258,7 @@ public class Config {
    *                               .build();
    * }</pre>
    *
-   * @return a Config object without any automatic configuration
+   * @return a Config object without any automatic configuration.
    */
   public static Config empty() {
     return new Config(false);
@@ -317,42 +311,59 @@ public class Config {
     return masterUrl;
   }
 
-  @Deprecated
-  public Config(String masterUrl, String apiVersion, String namespace, Boolean trustCerts, boolean disableHostnameVerification,
-      String caCertFile, String caCertData, String clientCertFile, String clientCertData, String clientKeyFile,
-      String clientKeyData, String clientKeyAlgo, String clientKeyPassphrase, String username, String password,
-      String oauthToken, String autoOAuthToken, int watchReconnectInterval, int watchReconnectLimit, int connectionTimeout,
-      int requestTimeout,
-      long rollingTimeout, long scaleTimeout, int loggingInterval, int maxConcurrentRequests, int maxConcurrentRequestsPerHost,
-      String httpProxy, String httpsProxy, String[] noProxy, Map<Integer, String> errorMessages, String userAgent,
-      TlsVersion[] tlsVersions, long websocketPingInterval, String proxyUsername, String proxyPassword,
-      String trustStoreFile, String trustStorePassphrase, String keyStoreFile, String keyStorePassphrase,
-      String impersonateUsername, String[] impersonateGroups, Map<String, List<String>> impersonateExtras) {
-    this(masterUrl, apiVersion, namespace, trustCerts, disableHostnameVerification, caCertFile, caCertData, clientCertFile,
-        clientCertData, clientKeyFile, clientKeyData, clientKeyAlgo, clientKeyPassphrase, username, password, oauthToken,
-        autoOAuthToken,
-        watchReconnectInterval, watchReconnectLimit, connectionTimeout, requestTimeout, scaleTimeout,
-        loggingInterval, maxConcurrentRequests, maxConcurrentRequestsPerHost, false, httpProxy, httpsProxy, noProxy,
-        userAgent, tlsVersions, websocketPingInterval, proxyUsername, proxyPassword,
-        trustStoreFile, trustStorePassphrase, keyStoreFile, keyStorePassphrase, impersonateUsername, impersonateGroups,
-        impersonateExtras, null, null, DEFAULT_REQUEST_RETRY_BACKOFFLIMIT, DEFAULT_REQUEST_RETRY_BACKOFFINTERVAL,
-        DEFAULT_UPLOAD_REQUEST_TIMEOUT, false, null, Collections.emptyList());
-  }
-
-  @Deprecated
-  public Config(String masterUrl, String apiVersion, String namespace, Boolean trustCerts, boolean disableHostnameVerification,
-      String caCertFile, String caCertData, String clientCertFile, String clientCertData, String clientKeyFile,
-      String clientKeyData, String clientKeyAlgo, String clientKeyPassphrase, String username, String password,
-      String oauthToken, String autoOAuthToken, int watchReconnectInterval, int watchReconnectLimit, int connectionTimeout,
-      int requestTimeout,
-      long scaleTimeout, int loggingInterval, int maxConcurrentRequests, int maxConcurrentRequestsPerHost,
-      boolean http2Disable, String httpProxy, String httpsProxy, String[] noProxy,
-      String userAgent, TlsVersion[] tlsVersions, long websocketPingInterval, String proxyUsername,
-      String proxyPassword, String trustStoreFile, String trustStorePassphrase, String keyStoreFile, String keyStorePassphrase,
-      String impersonateUsername, String[] impersonateGroups, Map<String, List<String>> impersonateExtras,
-      OAuthTokenProvider oauthTokenProvider, Map<String, String> customHeaders, int requestRetryBackoffLimit,
-      int requestRetryBackoffInterval, int uploadRequestTimeout, boolean onlyHttpWatches, NamedContext currentContext,
-      List<NamedContext> contexts) {
+  @JsonCreator
+  public Config(
+      @JsonProperty("masterUrl") String masterUrl,
+      @JsonProperty("apiVersion") String apiVersion,
+      @JsonProperty("namespace") String namespace,
+      @JsonProperty("trustCerts") Boolean trustCerts,
+      @JsonProperty("disableHostnameVerification") Boolean disableHostnameVerification,
+      @JsonProperty("caCertFile") String caCertFile,
+      @JsonProperty("caCertData") String caCertData,
+      @JsonProperty("clientCertFile") String clientCertFile,
+      @JsonProperty("clientCertData") String clientCertData,
+      @JsonProperty("clientKeyFile") String clientKeyFile,
+      @JsonProperty("clientKeyData") String clientKeyData,
+      @JsonProperty("clientKeyAlgo") String clientKeyAlgo,
+      @JsonProperty("clientKeyPassphrase") String clientKeyPassphrase,
+      @JsonProperty("username") String username,
+      @JsonProperty("password") String password,
+      @JsonProperty("oauthToken") String oauthToken,
+      @JsonProperty("autoOAuthToken") String autoOAuthToken,
+      @JsonProperty("watchReconnectInterval") Integer watchReconnectInterval,
+      @JsonProperty("watchReconnectLimit") Integer watchReconnectLimit,
+      @JsonProperty("connectionTimeout") Integer connectionTimeout,
+      @JsonProperty("requestTimeout") Integer requestTimeout,
+      @JsonProperty("scaleTimeout") Long scaleTimeout,
+      @JsonProperty("loggingInterval") Integer loggingInterval,
+      @JsonProperty("maxConcurrentRequests") Integer maxConcurrentRequests,
+      @JsonProperty("maxConcurrentRequestsPerHost") Integer maxConcurrentRequestsPerHost,
+      @JsonProperty("http2Disable") Boolean http2Disable,
+      @JsonProperty("httpProxy") String httpProxy,
+      @JsonProperty("httpsProxy") String httpsProxy,
+      @JsonProperty("noProxy") String[] noProxy,
+      @JsonProperty("userAgent") String userAgent,
+      @JsonProperty("tlsVersions") TlsVersion[] tlsVersions,
+      @JsonProperty("websocketPingInterval") Long websocketPingInterval,
+      @JsonProperty("proxyUsername") String proxyUsername,
+      @JsonProperty("proxyPassword") String proxyPassword,
+      @JsonProperty("trustStoreFile") String trustStoreFile,
+      @JsonProperty("trustStorePassphrase") String trustStorePassphrase,
+      @JsonProperty("keyStoreFile") String keyStoreFile,
+      @JsonProperty("keyStorePassphrase") String keyStorePassphrase,
+      @JsonProperty("impersonateUsername") String impersonateUsername,
+      @JsonProperty("impersonateGroups") String[] impersonateGroups,
+      @JsonProperty("impersonateExtras") Map<String, List<String>> impersonateExtras,
+      @JsonProperty("oauthTokenProvider") OAuthTokenProvider oauthTokenProvider,
+      @JsonProperty("customHeaders") Map<String, String> customHeaders,
+      @JsonProperty("requestRetryBackoffLimit") Integer requestRetryBackoffLimit,
+      @JsonProperty("requestRetryBackoffInterval") Integer requestRetryBackoffInterval,
+      @JsonProperty("uploadRequestTimeout") Integer uploadRequestTimeout,
+      @JsonProperty("onlyHttpWatches") Boolean onlyHttpWatches,
+      @JsonProperty("currentContext") NamedContext currentContext,
+      @JsonProperty("contexts") List<NamedContext> contexts,
+      @JsonProperty("file") File file,
+      @JsonProperty("autoConfigure") Boolean autoConfigure) {
     this(masterUrl, apiVersion, namespace, trustCerts, disableHostnameVerification, caCertFile, caCertData,
         clientCertFile, clientCertData, clientKeyFile, clientKeyData, clientKeyAlgo, clientKeyPassphrase, username,
         password, oauthToken, autoOAuthToken, watchReconnectInterval, watchReconnectLimit, connectionTimeout, requestTimeout,
@@ -360,31 +371,7 @@ public class Config {
         httpProxy, httpsProxy, noProxy, userAgent, tlsVersions, websocketPingInterval, proxyUsername, proxyPassword,
         trustStoreFile, trustStorePassphrase, keyStoreFile, keyStorePassphrase, impersonateUsername, impersonateGroups,
         impersonateExtras, oauthTokenProvider, customHeaders, requestRetryBackoffLimit, requestRetryBackoffInterval,
-        uploadRequestTimeout, onlyHttpWatches, currentContext, contexts, false, true);
-  }
-
-  public Config(String masterUrl, String apiVersion, String namespace, Boolean trustCerts, Boolean disableHostnameVerification,
-      String caCertFile, String caCertData, String clientCertFile, String clientCertData, String clientKeyFile,
-      String clientKeyData, String clientKeyAlgo, String clientKeyPassphrase, String username, String password,
-      String oauthToken, String autoOAuthToken, Integer watchReconnectInterval, Integer watchReconnectLimit,
-      Integer connectionTimeout,
-      Integer requestTimeout,
-      Long scaleTimeout, Integer loggingInterval, Integer maxConcurrentRequests, Integer maxConcurrentRequestsPerHost,
-      Boolean http2Disable, String httpProxy, String httpsProxy, String[] noProxy,
-      String userAgent, TlsVersion[] tlsVersions, Long websocketPingInterval, String proxyUsername,
-      String proxyPassword, String trustStoreFile, String trustStorePassphrase, String keyStoreFile, String keyStorePassphrase,
-      String impersonateUsername, String[] impersonateGroups, Map<String, List<String>> impersonateExtras,
-      OAuthTokenProvider oauthTokenProvider, Map<String, String> customHeaders, Integer requestRetryBackoffLimit,
-      Integer requestRetryBackoffInterval, Integer uploadRequestTimeout, Boolean onlyHttpWatches, NamedContext currentContext,
-      List<NamedContext> contexts, Boolean autoConfigure) {
-    this(masterUrl, apiVersion, namespace, trustCerts, disableHostnameVerification, caCertFile, caCertData,
-        clientCertFile, clientCertData, clientKeyFile, clientKeyData, clientKeyAlgo, clientKeyPassphrase, username,
-        password, oauthToken, autoOAuthToken, watchReconnectInterval, watchReconnectLimit, connectionTimeout, requestTimeout,
-        scaleTimeout, loggingInterval, maxConcurrentRequests, maxConcurrentRequestsPerHost, http2Disable,
-        httpProxy, httpsProxy, noProxy, userAgent, tlsVersions, websocketPingInterval, proxyUsername, proxyPassword,
-        trustStoreFile, trustStorePassphrase, keyStoreFile, keyStorePassphrase, impersonateUsername, impersonateGroups,
-        impersonateExtras, oauthTokenProvider, customHeaders, requestRetryBackoffLimit, requestRetryBackoffInterval,
-        uploadRequestTimeout, onlyHttpWatches, currentContext, contexts, autoConfigure, true);
+        uploadRequestTimeout, onlyHttpWatches, currentContext, contexts, file, autoConfigure, true);
   }
 
   /*
@@ -403,7 +390,7 @@ public class Config {
       String impersonateUsername, String[] impersonateGroups, Map<String, List<String>> impersonateExtras,
       OAuthTokenProvider oauthTokenProvider, Map<String, String> customHeaders, Integer requestRetryBackoffLimit,
       Integer requestRetryBackoffInterval, Integer uploadRequestTimeout, Boolean onlyHttpWatches, NamedContext currentContext,
-      List<NamedContext> contexts, Boolean autoConfigure, Boolean shouldSetDefaultValues) {
+      List<NamedContext> contexts, File file, Boolean autoConfigure, Boolean shouldSetDefaultValues) {
     if (Boolean.TRUE.equals(shouldSetDefaultValues)) {
       this.masterUrl = DEFAULT_MASTER_URL;
       this.apiVersion = "v1";
@@ -577,6 +564,9 @@ public class Config {
     if (Utils.isNotNull(currentContext)) {
       this.currentContext = currentContext;
     }
+    if (file != null) {
+      this.file = file;
+    }
 
     if (Utils.isNotNullOrEmpty(this.masterUrl)) {
       this.masterUrl = ensureEndsWithSlash(ensureHttps(this.masterUrl, this));
@@ -608,7 +598,7 @@ public class Config {
         Utils.getSystemPropertyOrEnvVar(KUBERNETES_CLIENT_KEY_DATA_SYSTEM_PROPERTY, config.getClientKeyData()));
     config.setClientKeyAlgo(getKeyAlgorithm(config.getClientKeyFile(), config.getClientKeyData()));
     config.setClientKeyPassphrase(Utils.getSystemPropertyOrEnvVar(KUBERNETES_CLIENT_KEY_PASSPHRASE_SYSTEM_PROPERTY,
-        new String(config.getClientKeyPassphrase())));
+        config.getClientKeyPassphrase()));
     config.setUserAgent(Utils.getSystemPropertyOrEnvVar(KUBERNETES_USER_AGENT, config.getUserAgent()));
 
     config.setTrustStorePassphrase(

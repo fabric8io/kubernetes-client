@@ -29,6 +29,7 @@ import io.fabric8.openshift.client.readiness.OpenShiftReadiness;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 
+import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
@@ -57,6 +58,7 @@ public class OpenShiftConfig extends Config {
 
   //This is not meant to be used. This constructor is used only by the generated builder.
   OpenShiftConfig() {
+    super(!disableAutoConfig());
   }
 
   public OpenShiftConfig(Config kubernetesConfig) {
@@ -88,7 +90,8 @@ public class OpenShiftConfig extends Config {
       String[] impersonateGroups, Map<String, List<String>> impersonateExtras, OAuthTokenProvider oauthTokenProvider,
       Map<String, String> customHeaders, Integer requestRetryBackoffLimit, Integer requestRetryBackoffInterval,
       Integer uploadRequestTimeout, Boolean onlyHttpWatches, Long buildTimeout,
-      Boolean disableApiGroupCheck, NamedContext currentContext, List<NamedContext> contexts, Boolean autoConfigure) {
+      Boolean disableApiGroupCheck, NamedContext currentContext, List<NamedContext> contexts, File file,
+      Boolean autoConfigure) {
     super(masterUrl, apiVersion, namespace, trustCerts, disableHostnameVerification, caCertFile, caCertData,
         clientCertFile,
         clientCertData, clientKeyFile, clientKeyData, clientKeyAlgo, clientKeyPassphrase, username, password,
@@ -100,7 +103,7 @@ public class OpenShiftConfig extends Config {
         impersonateExtras, oauthTokenProvider, customHeaders,
         requestRetryBackoffLimit,
         requestRetryBackoffInterval,
-        uploadRequestTimeout, onlyHttpWatches, currentContext, contexts, autoConfigure);
+        uploadRequestTimeout, onlyHttpWatches, currentContext, contexts, file, autoConfigure);
     this.setOapiVersion(oapiVersion);
     this.setBuildTimeout(buildTimeout);
     this.setDisableApiGroupCheck(disableApiGroupCheck);
@@ -145,6 +148,7 @@ public class OpenShiftConfig extends Config {
         false,
         kubernetesConfig.getCurrentContext(),
         kubernetesConfig.getContexts(),
+        kubernetesConfig.getFile(),
         kubernetesConfig.getAutoConfigure());
   }
 

@@ -23,33 +23,22 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.File;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
 
 class ConfigConstructorTest {
-  @Test
-  @DisplayName("empty configuration, no default values, no auto configured values")
-  void emptyConfiguration() {
-    // Given + When
-    Config config = new Config(null, null, null, null, null,
-        null, null, null, null, null,
-        null, null, null, null, null,
-        null, null, null, null, null,
-        null, null, null, null,
-        null,
-        null, null, null, null,
-        null, null, null,
-        null,
-        null, null, null, null, null,
-        null, null, null,
-        null, null, null,
-        null, null, null, null,
-        null, null, false);
 
-    // Then
+  @ParameterizedTest
+  @MethodSource("blankConfigurationProviders")
+  @DisplayName("blank configuration, no default values, no auto configured values")
+  void blankConfiguration(Config config) {
     assertThat(config)
         .isNotNull()
         .satisfies(c -> assertThat(c.getTrustCerts()).isNull())
@@ -91,11 +80,30 @@ class ConfigConstructorTest {
         .hasFieldOrPropertyWithValue("autoOAuthToken", null);
   }
 
+  static Stream<Arguments> blankConfigurationProviders() {
+    return Stream.of(
+        Arguments.of(new Config(null, null, null, null, null,
+            null, null, null, null, null,
+            null, null, null, null, null,
+            null, null, null, null, null,
+            null, null, null, null,
+            null,
+            null, null, null, null,
+            null, null, null,
+            null,
+            null, null, null, null, null,
+            null, null, null,
+            null, null, null,
+            null, null, null, null,
+            null, null, null, false)));
+  }
+
   @Nested
   @DisplayName("Config default values initialization with system properties for auto configuration")
   class DefaultValues {
     @BeforeEach
     void setUp() {
+      System.setProperty("kubeconfig", "i-dont-exist");
       System.setProperty("kubernetes.master", "http://autoconfigured-master:80");
       System.setProperty("kubernetes.namespace", "autoconfigured-namespace");
       System.setProperty("kubernetes.auth.token", "autoconfigured-token");
@@ -135,6 +143,7 @@ class ConfigConstructorTest {
 
     @AfterEach
     void tearDown() {
+      System.clearProperty("kubeconfig");
       System.clearProperty("kubernetes.master");
       System.clearProperty("kubernetes.namespace");
       System.clearProperty("kubernetes.auth.token");
@@ -190,7 +199,7 @@ class ConfigConstructorTest {
           null, null, null,
           null, null, null,
           null, null, null, null,
-          null, true, true);
+          null, null, true, true);
 
       // Then
       assertThat(config)
@@ -237,7 +246,8 @@ class ConfigConstructorTest {
           .hasFieldOrPropertyWithValue("proxyPassword", "autoconfigured-proxyPassword")
           .hasFieldOrPropertyWithValue("noProxy",
               new String[] { "autoconfigured-no-proxy-url1.io", "autoconfigured-no-proxy-url2.io" })
-          .hasFieldOrPropertyWithValue("autoOAuthToken", "autoconfigured-token");
+          .hasFieldOrPropertyWithValue("autoOAuthToken", "autoconfigured-token")
+          .hasFieldOrPropertyWithValue("file", null);
     }
 
     @Test
@@ -256,7 +266,7 @@ class ConfigConstructorTest {
           null, null, null,
           null, null, null,
           null, null, null, null,
-          null, false, true);
+          null, null, false, true);
 
       assertThat(config)
           .isNotNull()
@@ -299,7 +309,8 @@ class ConfigConstructorTest {
           .hasFieldOrPropertyWithValue("proxyUsername", null)
           .hasFieldOrPropertyWithValue("proxyPassword", null)
           .hasFieldOrPropertyWithValue("noProxy", null)
-          .hasFieldOrPropertyWithValue("autoOAuthToken", null);
+          .hasFieldOrPropertyWithValue("autoOAuthToken", null)
+          .hasFieldOrPropertyWithValue("file", null);
     }
   }
 
@@ -364,7 +375,7 @@ class ConfigConstructorTest {
               null, null, null,
               null, null, null,
               null, null, null, null,
-              null, true, true);
+              null, null, true, true);
 
           // Then
           assertThat(config)
@@ -472,7 +483,7 @@ class ConfigConstructorTest {
               null, null, null,
               null, null, null,
               null, null, null, null,
-              null, true, true);
+              null, null, true, true);
 
           // Then
           assertThat(config)
@@ -513,7 +524,7 @@ class ConfigConstructorTest {
               null, null, null,
               null, null, null,
               null, null, null, null,
-              null, true, true);
+              null, null, true, true);
 
           // Then
           assertThat(config)
@@ -563,7 +574,7 @@ class ConfigConstructorTest {
                   null, null, null,
                   null, null, null,
                   null, null, null, null,
-                  null, true, false));
+                  null, null, true, false));
         } finally {
           System.clearProperty("kubeconfig");
         }
