@@ -625,12 +625,12 @@
 
       <dependency>
         <groupId>io.fabric8</groupId>
-        <artifactId>open-virtual-networking-model-v1</artifactId>
+        <artifactId>ovn-model</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>io.fabric8</groupId>
-        <artifactId>open-virtual-networking-client</artifactId>
+        <artifactId>ovn-client</artifactId>
         <version>${project.version}</version>
       </dependency>
 

@@ -93,6 +93,15 @@ var KnativePackagePatterns = []string{
 	"knative.dev/eventing-prometheus/pkg/apis/.../v...",
 }
 
+var OvnPackagePatterns = []string{
+	"github.com/ovn-org/ovn-kubernetes/go-controller/pkg/crd/adminpolicybasedroute/v1",
+	"github.com/ovn-org/ovn-kubernetes/go-controller/pkg/crd/egressfirewall/v1",
+	"github.com/ovn-org/ovn-kubernetes/go-controller/pkg/crd/egressip/v1",
+	"github.com/ovn-org/ovn-kubernetes/go-controller/pkg/crd/egressqos/v1",
+	"github.com/ovn-org/ovn-kubernetes/go-controller/pkg/crd/egressservice/v1",
+	"github.com/ovn-org/ovn-kubernetes/go-controller/pkg/crd/userdefinednetwork/v1",
+}
+
 var TektonPackagePatterns = []string{
 	"github.com/tektoncd/pipeline/pkg/apis/pipeline/v...",
 	"github.com/tektoncd/pipeline/pkg/apis/pipeline/pod",

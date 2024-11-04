@@ -39,7 +39,7 @@
     <module>volcano</module>
     <module>istio</module>
     <module>open-cluster-management</module>
-    <module>open-virtual-networking</module>
+    <module>open-virtual-network</module>
   </modules>
 
   <build>

@@ -1,0 +1,1131 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Kubernetes",
+    "version": "0.0.0"
+  },
+  "paths": null,
+  "definitions": {
+    "org.ovn.k8s.v1.AdminPolicyBasedExternalRoute": {
+      "description": "AdminPolicyBasedExternalRoute is a CRD allowing the cluster administrators to configure policies for external gateway IPs to be applied to all the pods contained in selected namespaces. Egress traffic from the pods that belong to the selected namespaces to outside the cluster is routed through these external gateway IPs.",
+      "type": "object",
+      "required": [
+        "spec"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+        },
+        "spec": {
+          "default": {},
+          "$ref": "#/definitions/org.ovn.k8s.v1.AdminPolicyBasedExternalRouteSpec"
+        },
+        "status": {
+          "default": {},
+          "$ref": "#/definitions/org.ovn.k8s.v1.AdminPolicyBasedRouteStatus"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "object",
+        "Group": "k8s.ovn.org",
+        "Version": "v1",
+        "Kind": "AdminPolicyBasedExternalRoute",
+        "Scope": "Clustered"
+      }
+    },
+    "org.ovn.k8s.v1.AdminPolicyBasedExternalRouteList": {
+      "description": "AdminPolicyBasedExternalRouteList contains a list of AdminPolicyBasedExternalRoutes",
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/org.ovn.k8s.v1.AdminPolicyBasedExternalRoute"
+          }
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "list",
+        "Group": "k8s.ovn.org",
+        "Version": "v1",
+        "Kind": "AdminPolicyBasedExternalRouteList",
+        "Scope": "Namespaced"
+      }
+    },
+    "org.ovn.k8s.v1.AdminPolicyBasedExternalRouteSpec": {
+      "description": "AdminPolicyBasedExternalRouteSpec defines the desired state of AdminPolicyBasedExternalRoute",
+      "type": "object",
+      "required": [
+        "from",
+        "nextHops"
+      ],
+      "properties": {
+        "from": {
+          "description": "From defines the selectors that will determine the target namespaces to this CR.",
+          "default": {},
+          "$ref": "#/definitions/org.ovn.k8s.v1.ExternalNetworkSource"
+        },
+        "nextHops": {
+          "description": "NextHops defines two types of hops: Static and Dynamic. Each hop defines at least one external gateway IP.",
+          "default": {},
+          "$ref": "#/definitions/org.ovn.k8s.v1.ExternalNextHops"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "k8s.ovn.org",
+        "Version": "v1",
+        "Kind": "AdminPolicyBasedExternalRouteSpec",
+        "Scope": "Namespaced"
+      }
+    },
+    "org.ovn.k8s.v1.AdminPolicyBasedRouteStatus": {
+      "description": "AdminPolicyBasedRouteStatus contains the observed status of the AdminPolicyBased route types.",
+      "type": "object",
+      "properties": {
+        "lastTransitionTime": {
+          "description": "Captures the time when the last change was applied.",
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Time"
+        },
+        "messages": {
+          "description": "An array of Human-readable messages indicating details about the status of the object.",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "default": ""
+          },
+          "x-kubernetes-list-type": "set",
+          "x-kubernetes-patch-strategy": "merge"
+        },
+        "status": {
+          "description": "A concise indication of whether the AdminPolicyBasedRoute resource is applied with success",
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "k8s.ovn.org",
+        "Version": "v1",
+        "Kind": "AdminPolicyBasedRouteStatus",
+        "Scope": "Namespaced"
+      }
+    },
+    "org.ovn.k8s.v1.DynamicHop": {
+      "description": "DynamicHop defines the configuration for a dynamic external gateway interface. These interfaces are wrapped around a pod object that resides inside the cluster. The field NetworkAttachmentName captures the name of the multus network name to use when retrieving the gateway IP to use. The PodSelector and the NamespaceSelector are mandatory fields.",
+      "type": "object",
+      "required": [
+        "podSelector",
+        "namespaceSelector"
+      ],
+      "properties": {
+        "bfdEnabled": {
+          "description": "BFDEnabled determines if the interface implements the Bidirectional Forward Detection protocol. Defaults to false.",
+          "type": "boolean",
+          "default": false
+        },
+        "namespaceSelector": {
+          "description": "NamespaceSelector defines a selector to filter the namespaces where the pod gateways are located.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.LabelSelector"
+        },
+        "networkAttachmentName": {
+          "description": "NetworkAttachmentName determines the multus network name to use when retrieving the pod IPs that will be used as the gateway IP. When this field is empty, the logic assumes that the pod is configured with HostNetwork and is using the node's IP as gateway.",
+          "type": "string",
+          "default": ""
+        },
+        "podSelector": {
+          "description": "PodSelector defines the selector to filter the pods that are external gateways.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.LabelSelector"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "k8s.ovn.org",
+        "Version": "v1",
+        "Kind": "DynamicHop",
+        "Scope": "Namespaced"
+      }
+    },
+    "org.ovn.k8s.v1.EgressFirewall": {
+      "description": "EgressFirewall describes the current egress firewall for a Namespace. Traffic from a pod to an IP address outside the cluster will be checked against each EgressFirewallRule in the pod's namespace's EgressFirewall, in order. If no rule matches (or no EgressFirewall is present) then the traffic will be allowed by default.",
+      "type": "object",
+      "required": [
+        "spec"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+        },
+        "spec": {
+          "description": "Specification of the desired behavior of EgressFirewall.",
+          "default": {},
+          "$ref": "#/definitions/org.ovn.k8s.v1.EgressFirewallSpec"
+        },
+        "status": {
+          "description": "Observed status of EgressFirewall",
+          "default": {},
+          "$ref": "#/definitions/org.ovn.k8s.v1.EgressFirewallStatus"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "object",
+        "Group": "k8s.ovn.org",
+        "Version": "v1",
+        "Kind": "EgressFirewall",
+        "Scope": "Namespaced"
+      }
+    },
+    "org.ovn.k8s.v1.EgressFirewallDestination": {
+      "description": "EgressFirewallDestination is the target that traffic is either allowed or denied to",
+      "type": "object",
+      "properties": {
+        "cidrSelector": {
+          "description": "cidrSelector is the CIDR range to allow/deny traffic to. If this is set, dnsName and nodeSelector must be unset.",
+          "type": "string"
+        },
+        "dnsName": {
+          "description": "dnsName is the domain name to allow/deny traffic to. If this is set, cidrSelector and nodeSelector must be unset. For a wildcard DNS name, the '*' will match only one label. Additionally, only a single '*' can be used at the beginning of the wildcard DNS name. For example, '*.example.com' will match 'sub1.example.com' but won't match 'sub2.sub1.example.com'.",
+          "type": "string"
+        },
+        "nodeSelector": {
+          "description": "nodeSelector will allow/deny traffic to the Kubernetes node IP of selected nodes. If this is set, cidrSelector and DNSName must be unset.",
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.LabelSelector"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "k8s.ovn.org",
+        "Version": "v1",
+        "Kind": "EgressFirewallDestination",
+        "Scope": "Namespaced"
+      }
+    },
+    "org.ovn.k8s.v1.EgressFirewallList": {
+      "description": "EgressFirewallList is the list of EgressFirewalls.",
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "description": "List of EgressFirewalls.",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/org.ovn.k8s.v1.EgressFirewall"
+          }
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "list",
+        "Group": "k8s.ovn.org",
+        "Version": "v1",
+        "Kind": "EgressFirewallList",
+        "Scope": "Namespaced"
+      }
+    },
+    "org.ovn.k8s.v1.EgressFirewallPort": {
+      "description": "EgressFirewallPort specifies the port to allow or deny traffic to",
+      "type": "object",
+      "required": [
+        "protocol",
+        "port"
+      ],
+      "properties": {
+        "port": {
+          "description": "port that the traffic must match",
+          "type": "integer",
+          "format": "int32",
+          "default": 0
+        },
+        "protocol": {
+          "description": "protocol (tcp, udp, sctp) that the traffic must match.",
+          "type": "string",
+          "default": ""
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "k8s.ovn.org",
+        "Version": "v1",
+        "Kind": "EgressFirewallPort",
+        "Scope": "Namespaced"
+      }
+    },
+    "org.ovn.k8s.v1.EgressFirewallRule": {
+      "description": "EgressFirewallRule is a single egressfirewall rule object",
+      "type": "object",
+      "required": [
+        "type",
+        "to"
+      ],
+      "properties": {
+        "ports": {
+          "description": "ports specify what ports and protocols the rule applies to",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/org.ovn.k8s.v1.EgressFirewallPort"
+          }
+        },
+        "to": {
+          "description": "to is the target that traffic is allowed/denied to",
+          "default": {},
+          "$ref": "#/definitions/org.ovn.k8s.v1.EgressFirewallDestination"
+        },
+        "type": {
+          "description": "type marks this as an \"Allow\" or \"Deny\" rule",
+          "type": "string",
+          "default": ""
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "k8s.ovn.org",
+        "Version": "v1",
+        "Kind": "EgressFirewallRule",
+        "Scope": "Namespaced"
+      }
+    },
+    "org.ovn.k8s.v1.EgressFirewallSpec": {
+      "description": "EgressFirewallSpec is a desired state description of EgressFirewall.",
+      "type": "object",
+      "required": [
+        "egress"
+      ],
+      "properties": {
+        "egress": {
+          "description": "a collection of egress firewall rule objects",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/org.ovn.k8s.v1.EgressFirewallRule"
+          }
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "k8s.ovn.org",
+        "Version": "v1",
+        "Kind": "EgressFirewallSpec",
+        "Scope": "Namespaced"
+      }
+    },
+    "org.ovn.k8s.v1.EgressFirewallStatus": {
+      "type": "object",
+      "properties": {
+        "messages": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "default": ""
+          },
+          "x-kubernetes-list-type": "set",
+          "x-kubernetes-patch-strategy": "merge"
+        },
+        "status": {
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "k8s.ovn.org",
+        "Version": "v1",
+        "Kind": "EgressFirewallStatus",
+        "Scope": "Namespaced"
+      }
+    },
+    "org.ovn.k8s.v1.EgressIP": {
+      "description": "EgressIP is a CRD allowing the user to define a fixed source IP for all egress traffic originating from any pods which match the EgressIP resource according to its spec definition.",
+      "type": "object",
+      "required": [
+        "spec"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+        },
+        "spec": {
+          "description": "Specification of the desired behavior of EgressIP.",
+          "default": {},
+          "$ref": "#/definitions/org.ovn.k8s.v1.EgressIPSpec"
+        },
+        "status": {
+          "description": "Observed status of EgressIP. Read-only.",
+          "default": {},
+          "$ref": "#/definitions/org.ovn.k8s.v1.EgressIPStatus"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "object",
+        "Group": "k8s.ovn.org",
+        "Version": "v1",
+        "Kind": "EgressIP",
+        "Scope": "Clustered"
+      }
+    },
+    "org.ovn.k8s.v1.EgressIPList": {
+      "description": "EgressIPList is the list of EgressIPList.",
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "description": "List of EgressIP.",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/org.ovn.k8s.v1.EgressIP"
+          }
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "list",
+        "Group": "k8s.ovn.org",
+        "Version": "v1",
+        "Kind": "EgressIPList",
+        "Scope": "Namespaced"
+      }
+    },
+    "org.ovn.k8s.v1.EgressIPSpec": {
+      "description": "EgressIPSpec is a desired state description of EgressIP.",
+      "type": "object",
+      "required": [
+        "egressIPs",
+        "namespaceSelector"
+      ],
+      "properties": {
+        "egressIPs": {
+          "description": "EgressIPs is the list of egress IP addresses requested. Can be IPv4 and/or IPv6. This field is mandatory.",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "default": ""
+          }
+        },
+        "namespaceSelector": {
+          "description": "NamespaceSelector applies the egress IP only to the namespace(s) whose label matches this definition. This field is mandatory.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.LabelSelector"
+        },
+        "podSelector": {
+          "description": "PodSelector applies the egress IP only to the pods whose label matches this definition. This field is optional, and in case it is not set: results in the egress IP being applied to all pods in the namespace(s) matched by the NamespaceSelector. In case it is set: is intersected with the NamespaceSelector, thus applying the egress IP to the pods (in the namespace(s) already matched by the NamespaceSelector) which match this pod selector.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.LabelSelector"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "k8s.ovn.org",
+        "Version": "v1",
+        "Kind": "EgressIPSpec",
+        "Scope": "Namespaced"
+      }
+    },
+    "org.ovn.k8s.v1.EgressIPStatus": {
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "items": {
+          "description": "The list of assigned egress IPs and their corresponding node assignment.",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/org.ovn.k8s.v1.EgressIPStatusItem"
+          }
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "k8s.ovn.org",
+        "Version": "v1",
+        "Kind": "EgressIPStatus",
+        "Scope": "Namespaced"
+      }
+    },
+    "org.ovn.k8s.v1.EgressIPStatusItem": {
+      "description": "The per node status, for those egress IPs who have been assigned.",
+      "type": "object",
+      "required": [
+        "node",
+        "egressIP"
+      ],
+      "properties": {
+        "egressIP": {
+          "description": "Assigned egress IP",
+          "type": "string",
+          "default": ""
+        },
+        "node": {
+          "description": "Assigned node name",
+          "type": "string",
+          "default": ""
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "k8s.ovn.org",
+        "Version": "v1",
+        "Kind": "EgressIPStatusItem",
+        "Scope": "Namespaced"
+      }
+    },
+    "org.ovn.k8s.v1.EgressQoS": {
+      "description": "EgressQoS is a CRD that allows the user to define a DSCP value for pods egress traffic on its namespace to specified CIDRs. Traffic from these pods will be checked against each EgressQoSRule in the namespace's EgressQoS, and if there is a match the traffic is marked with the relevant DSCP value.",
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+        },
+        "spec": {
+          "default": {},
+          "$ref": "#/definitions/org.ovn.k8s.v1.EgressQoSSpec"
+        },
+        "status": {
+          "default": {},
+          "$ref": "#/definitions/org.ovn.k8s.v1.EgressQoSStatus"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "object",
+        "Group": "k8s.ovn.org",
+        "Version": "v1",
+        "Kind": "EgressQoS",
+        "Scope": "Namespaced"
+      }
+    },
+    "org.ovn.k8s.v1.EgressQoSList": {
+      "description": "EgressQoSList contains a list of EgressQoS",
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/org.ovn.k8s.v1.EgressQoS"
+          }
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "list",
+        "Group": "k8s.ovn.org",
+        "Version": "v1",
+        "Kind": "EgressQoSList",
+        "Scope": "Namespaced"
+      }
+    },
+    "org.ovn.k8s.v1.EgressQoSRule": {
+      "type": "object",
+      "required": [
+        "dscp"
+      ],
+      "properties": {
+        "dscp": {
+          "description": "DSCP marking value for matching pods' traffic.",
+          "type": "integer",
+          "format": "int32",
+          "default": 0
+        },
+        "dstCIDR": {
+          "description": "DstCIDR specifies the destination's CIDR. Only traffic heading to this CIDR will be marked with the DSCP value. This field is optional, and in case it is not set the rule is applied to all egress traffic regardless of the destination.",
+          "type": "string"
+        },
+        "podSelector": {
+          "description": "PodSelector applies the QoS rule only to the pods in the namespace whose label matches this definition. This field is optional, and in case it is not set results in the rule being applied to all pods in the namespace.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.LabelSelector"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "k8s.ovn.org",
+        "Version": "v1",
+        "Kind": "EgressQoSRule",
+        "Scope": "Namespaced"
+      }
+    },
+    "org.ovn.k8s.v1.EgressQoSSpec": {
+      "description": "EgressQoSSpec defines the desired state of EgressQoS",
+      "type": "object",
+      "required": [
+        "egress"
+      ],
+      "properties": {
+        "egress": {
+          "description": "a collection of Egress QoS rule objects",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/org.ovn.k8s.v1.EgressQoSRule"
+          }
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "k8s.ovn.org",
+        "Version": "v1",
+        "Kind": "EgressQoSSpec",
+        "Scope": "Namespaced"
+      }
+    },
+    "org.ovn.k8s.v1.EgressQoSStatus": {
+      "description": "EgressQoSStatus defines the observed state of EgressQoS",
+      "type": "object",
+      "properties": {
+        "conditions": {
+          "description": "An array of condition objects indicating details about status of EgressQoS object.",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Condition"
+          },
+          "x-kubernetes-list-map-keys": [
+            "type"
+          ],
+          "x-kubernetes-list-type": "map",
+          "x-kubernetes-patch-merge-key": "type",
+          "x-kubernetes-patch-strategy": "merge"
+        },
+        "status": {
+          "description": "A concise indication of whether the EgressQoS resource is applied with success.",
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "k8s.ovn.org",
+        "Version": "v1",
+        "Kind": "EgressQoSStatus",
+        "Scope": "Namespaced"
+      }
+    },
+    "org.ovn.k8s.v1.EgressService": {
+      "description": "EgressService is a CRD that allows the user to request that the source IP of egress packets originating from all of the pods that are endpoints of the corresponding LoadBalancer Service would be its ingress IP. In addition, it allows the user to request that egress packets originating from all of the pods that are endpoints of the LoadBalancer service would use a different network than the main one.",
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+        },
+        "spec": {
+          "default": {},
+          "$ref": "#/definitions/org.ovn.k8s.v1.EgressServiceSpec"
+        },
+        "status": {
+          "default": {},
+          "$ref": "#/definitions/org.ovn.k8s.v1.EgressServiceStatus"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "object",
+        "Group": "k8s.ovn.org",
+        "Version": "v1",
+        "Kind": "EgressService",
+        "Scope": "Namespaced"
+      }
+    },
+    "org.ovn.k8s.v1.EgressServiceList": {
+      "description": "EgressServiceList contains a list of EgressServices",
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/org.ovn.k8s.v1.EgressService"
+          }
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "list",
+        "Group": "k8s.ovn.org",
+        "Version": "v1",
+        "Kind": "EgressServiceList",
+        "Scope": "Namespaced"
+      }
+    },
+    "org.ovn.k8s.v1.EgressServiceSpec": {
+      "description": "EgressServiceSpec defines the desired state of EgressService",
+      "type": "object",
+      "properties": {
+        "network": {
+          "description": "The network which this service should send egress and corresponding ingress replies to. This is typically implemented as VRF mapping, representing a numeric id or string name of a routing table which by omission uses the default host routing.",
+          "type": "string"
+        },
+        "nodeSelector": {
+          "description": "Allows limiting the nodes that can be selected to handle the service's traffic when sourceIPBy=LoadBalancerIP. When present only a node whose labels match the specified selectors can be selected for handling the service's traffic. When it is not specified any node in the cluster can be chosen to manage the service's traffic.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.LabelSelector"
+        },
+        "sourceIPBy": {
+          "description": "Determines the source IP of egress traffic originating from the pods backing the LoadBalancer Service. When `LoadBalancerIP` the source IP is set to its LoadBalancer ingress IP. When `Network` the source IP is set according to the interface of the Network, leveraging the masquerade rules that are already in place. Typically these rules specify SNAT to the IP of the outgoing interface, which means the packet will typically leave with the IP of the node.",
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "k8s.ovn.org",
+        "Version": "v1",
+        "Kind": "EgressServiceSpec",
+        "Scope": "Namespaced"
+      }
+    },
+    "org.ovn.k8s.v1.EgressServiceStatus": {
+      "description": "EgressServiceStatus defines the observed state of EgressService",
+      "type": "object",
+      "required": [
+        "host"
+      ],
+      "properties": {
+        "host": {
+          "description": "The name of the node selected to handle the service's traffic. In case sourceIPBy=Network the field will be set to \"ALL\".",
+          "type": "string",
+          "default": ""
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "k8s.ovn.org",
+        "Version": "v1",
+        "Kind": "EgressServiceStatus",
+        "Scope": "Namespaced"
+      }
+    },
+    "org.ovn.k8s.v1.ExternalNetworkSource": {
+      "description": "ExternalNetworkSource contains the selectors used to determine the namespaces where the policy will be applied to",
+      "type": "object",
+      "required": [
+        "namespaceSelector"
+      ],
+      "properties": {
+        "namespaceSelector": {
+          "description": "NamespaceSelector defines a selector to be used to determine which namespaces will be targeted by this CR",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.LabelSelector"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "k8s.ovn.org",
+        "Version": "v1",
+        "Kind": "ExternalNetworkSource",
+        "Scope": "Namespaced"
+      }
+    },
+    "org.ovn.k8s.v1.ExternalNextHops": {
+      "description": "ExternalNextHops contains slices of StaticHops and DynamicHops structures. Minimum is one StaticHop or one DynamicHop.",
+      "type": "object",
+      "properties": {
+        "dynamic": {
+          "description": "DynamicHops defines a slices of DynamicHop. This field is optional.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/org.ovn.k8s.v1.DynamicHop"
+          }
+        },
+        "static": {
+          "description": "StaticHops defines a slice of StaticHop. This field is optional.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/org.ovn.k8s.v1.StaticHop"
+          }
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "k8s.ovn.org",
+        "Version": "v1",
+        "Kind": "ExternalNextHops",
+        "Scope": "Namespaced"
+      }
+    },
+    "org.ovn.k8s.v1.Layer2Config": {
+      "type": "object",
+      "required": [
+        "role"
+      ],
+      "properties": {
+        "ipamLifecycle": {
+          "description": "IPAMLifecycle controls IP addresses management lifecycle.\n\nThe only allowed value is Persistent. When set, OVN Kubernetes assigned IP addresses will be persisted in an `ipamclaims.k8s.cni.cncf.io` object. These IP addresses will be reused by other pods if requested. Only supported when \"subnets\" are set.",
+          "type": "string"
+        },
+        "joinSubnets": {
+          "description": "JoinSubnets are used inside the OVN network topology.\n\nDual-stack clusters may set 2 subnets (one for each IP family), otherwise only 1 subnet is allowed. This field is only allowed for \"Primary\" network. It is not recommended to set this field without explicit need and understanding of the OVN network topology. When omitted, the platform will choose a reasonable default which is subject to change over time.",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "default": ""
+          }
+        },
+        "mtu": {
+          "description": "MTU is the maximum transmission unit for a network. MTU is optional, if not provided, the globally configured value in OVN-Kubernetes (defaults to 1400) is used for the network.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "role": {
+          "description": "Role describes the network role in the pod.\n\nAllowed value is \"Secondary\". Secondary network is only assigned to pods that use `k8s.v1.cni.cncf.io/networks` annotation to select given network.",
+          "type": "string",
+          "default": ""
+        },
+        "subnets": {
+          "description": "Subnets are used for the pod network across the cluster. Dual-stack clusters may set 2 subnets (one for each IP family), otherwise only 1 subnet is allowed.\n\nThe format should match standard CIDR notation (for example, \"10.128.0.0/16\"). This field may be omitted. In that case the logical switch implementing the network only provides layer 2 communication, and users must configure IP addresses for the pods. As a consequence, Port security only prevents MAC spoofing.",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "default": ""
+          }
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "k8s.ovn.org",
+        "Version": "v1",
+        "Kind": "Layer2Config",
+        "Scope": "Namespaced"
+      }
+    },
+    "org.ovn.k8s.v1.Layer3Config": {
+      "type": "object",
+      "required": [
+        "role",
+        "subnets"
+      ],
+      "properties": {
+        "joinSubnets": {
+          "description": "JoinSubnets are used inside the OVN network topology.\n\nDual-stack clusters may set 2 subnets (one for each IP family), otherwise only 1 subnet is allowed. This field is only allowed for \"Primary\" network. It is not recommended to set this field without explicit need and understanding of the OVN network topology. When omitted, the platform will choose a reasonable default which is subject to change over time.",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "default": ""
+          }
+        },
+        "mtu": {
+          "description": "MTU is the maximum transmission unit for a network.\n\nMTU is optional, if not provided, the globally configured value in OVN-Kubernetes (defaults to 1400) is used for the network.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "role": {
+          "description": "Role describes the network role in the pod.\n\nAllowed values are \"Primary\" and \"Secondary\". Primary network is automatically assigned to every pod created in the same namespace. Secondary network is only assigned to pods that use `k8s.v1.cni.cncf.io/networks` annotation to select given network.",
+          "type": "string",
+          "default": ""
+        },
+        "subnets": {
+          "description": "Subnets are used for the pod network across the cluster.\n\nDual-stack clusters may set 2 subnets (one for each IP family), otherwise only 1 subnet is allowed. Given subnet is split into smaller subnets for every node.",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/org.ovn.k8s.v1.Layer3Subnet"
+          }
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "k8s.ovn.org",
+        "Version": "v1",
+        "Kind": "Layer3Config",
+        "Scope": "Namespaced"
+      }
+    },
+    "org.ovn.k8s.v1.Layer3Subnet": {
+      "type": "object",
+      "required": [
+        "cidr"
+      ],
+      "properties": {
+        "cidr": {
+          "description": "CIDR specifies L3Subnet, which is split into smaller subnets for every node.",
+          "type": "string"
+        },
+        "hostSubnet": {
+          "description": "HostSubnet specifies the subnet size for every node.\n\nWhen not set, it will be assigned automatically.",
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "k8s.ovn.org",
+        "Version": "v1",
+        "Kind": "Layer3Subnet",
+        "Scope": "Namespaced"
+      }
+    },
+    "org.ovn.k8s.v1.StaticHop": {
+      "description": "StaticHop defines the configuration of a static IP that acts as an external Gateway Interface. IP field is mandatory.",
+      "type": "object",
+      "required": [
+        "ip"
+      ],
+      "properties": {
+        "bfdEnabled": {
+          "description": "BFDEnabled determines if the interface implements the Bidirectional Forward Detection protocol. Defaults to false.",
+          "type": "boolean",
+          "default": false
+        },
+        "ip": {
+          "description": "IP defines the static IP to be used for egress traffic. The IP can be either IPv4 or IPv6.",
+          "type": "string",
+          "default": ""
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "k8s.ovn.org",
+        "Version": "v1",
+        "Kind": "StaticHop",
+        "Scope": "Namespaced"
+      }
+    },
+    "org.ovn.k8s.v1.UserDefinedNetwork": {
+      "description": "UserDefinedNetwork describe network request for a Namespace.",
+      "type": "object",
+      "required": [
+        "spec"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+        },
+        "spec": {
+          "default": {},
+          "$ref": "#/definitions/org.ovn.k8s.v1.UserDefinedNetworkSpec"
+        },
+        "status": {
+          "default": {},
+          "$ref": "#/definitions/org.ovn.k8s.v1.UserDefinedNetworkStatus"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "object",
+        "Group": "k8s.ovn.org",
+        "Version": "v1",
+        "Kind": "UserDefinedNetwork",
+        "Scope": "Namespaced"
+      }
+    },
+    "org.ovn.k8s.v1.UserDefinedNetworkList": {
+      "description": "UserDefinedNetworkList contains a list of UserDefinedNetwork.",
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/org.ovn.k8s.v1.UserDefinedNetwork"
+          }
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "list",
+        "Group": "k8s.ovn.org",
+        "Version": "v1",
+        "Kind": "UserDefinedNetworkList",
+        "Scope": "Namespaced"
+      }
+    },
+    "org.ovn.k8s.v1.UserDefinedNetworkSpec": {
+      "description": "UserDefinedNetworkSpec defines the desired state of UserDefinedNetworkSpec.",
+      "type": "object",
+      "required": [
+        "topology"
+      ],
+      "properties": {
+        "layer2": {
+          "description": "Layer2 is the Layer2 topology configuration.",
+          "$ref": "#/definitions/org.ovn.k8s.v1.Layer2Config"
+        },
+        "layer3": {
+          "description": "Layer3 is the Layer3 topology configuration.",
+          "$ref": "#/definitions/org.ovn.k8s.v1.Layer3Config"
+        },
+        "topology": {
+          "description": "Topology describes network configuration.\n\nAllowed values are \"Layer3\", \"Layer2\". Layer3 topology creates a layer 2 segment per node, each with a different subnet. Layer 3 routing is used to interconnect node subnets. Layer2 topology creates one logical switch shared by all nodes.",
+          "type": "string",
+          "default": ""
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "k8s.ovn.org",
+        "Version": "v1",
+        "Kind": "UserDefinedNetworkSpec",
+        "Scope": "Namespaced"
+      },
+      "x-kubernetes-unions": [
+        {
+          "discriminator": "topology",
+          "fields-to-discriminateBy": {
+            "layer2": "Layer2",
+            "layer3": "Layer3"
+          }
+        }
+      ]
+    },
+    "org.ovn.k8s.v1.UserDefinedNetworkStatus": {
+      "description": "UserDefinedNetworkStatus contains the observed status of the UserDefinedNetwork.",
+      "type": "object",
+      "properties": {
+        "conditions": {
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Condition"
+          },
+          "x-kubernetes-list-map-keys": [
+            "type"
+          ],
+          "x-kubernetes-list-type": "map"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "k8s.ovn.org",
+        "Version": "v1",
+        "Kind": "UserDefinedNetworkStatus",
+        "Scope": "Namespaced"
+      }
+    }
+  }
+}

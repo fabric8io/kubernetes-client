@@ -12,6 +12,7 @@
   - [Renamed clusterautoscaling to autoscaling](#openshift-clusterautoscaling-to-autoscaling)
   - [Renamed machineconfig to machineconfiguration](#openshift-machineconfig-to-machineconfiguration)
   - [Istio Extension](#istio-extension)
+  - [Open Virtual Network OVN Extension](#ovn-extension)
   - [Tekton Extension](#tekton-extension)
   - [Vertical Pod Autoscaler Extension](#vertical-pod-autoscaler-extension)
 - [MockWebServer is based on Vert.x](#mockwebserver-vertx)
@@ -125,6 +126,17 @@ The following packages are now available:
 - `io.fabric8.istio.api.api.security.v1alpha1`
 - `io.fabric8.istio.api.api.security.v1beta1`
 - `io.fabric8.istio.api.api.telemetry.v1alpha1`
+
+### Open Virtual Network OVN Extension <a href="#ovn-extension" id="ovn-extension"/>
+
+The modules and artifacts related to this extension have been renamed:
+
+| Old Artifact Name                             | New Artifact Name       |
+|-----------------------------------------------|-------------------------|
+| `io.fabric8:open-virtual-networking`          | `io.fabric8:ovn`        |
+| `io.fabric8:open-virtual-networking-client`   | `io.fabric8:ovn-client` |
+| `io.fabric8:open-virtual-networking-model-v1` | `io.fabric8:ovn-model`  |
+
 
 ### Tekton Extension <a href="#tekton-extension" id="tekton-extension"/>
 

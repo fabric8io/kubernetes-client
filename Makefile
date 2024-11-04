@@ -47,6 +47,8 @@ openapi-generate-java-classes:
 	cd extensions/istio/model && mvn $(MAVEN_ARGS) -Pgenerate clean install
 	cd extensions/knative && mvn $(MAVEN_ARGS) -N clean install
 	cd extensions/knative/model && mvn $(MAVEN_ARGS) -Pgenerate clean install
+	cd extensions/open-virtual-network && mvn $(MAVEN_ARGS) -N clean install
+	cd extensions/open-virtual-network/model && mvn $(MAVEN_ARGS) -Pgenerate clean install
 	cd extensions/tekton && mvn $(MAVEN_ARGS) -N clean install
 	cd extensions/tekton/model && mvn $(MAVEN_ARGS) -Pgenerate clean install
 	cd extensions/verticalpodautoscaler && mvn $(MAVEN_ARGS) -N clean install
