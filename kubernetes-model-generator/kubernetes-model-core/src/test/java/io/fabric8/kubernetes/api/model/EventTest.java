@@ -18,13 +18,11 @@ package io.fabric8.kubernetes.api.model;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.model.util.Helper;
+import io.fabric8.zjsonpatch.JsonDiff;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static net.javacrumbs.jsonunit.core.Option.IGNORING_ARRAY_ORDER;
-import static net.javacrumbs.jsonunit.core.Option.IGNORING_EXTRA_FIELDS;
-import static net.javacrumbs.jsonunit.core.Option.TREATING_NULL_AS_ABSENT;
-import static net.javacrumbs.jsonunit.fluent.JsonFluentAssert.assertThatJson;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class EventTest {
 
@@ -37,15 +35,12 @@ class EventTest {
 
   @Test
   void testEventSerializationDeserialization() throws JsonProcessingException {
-    // given
+    // Given
     final String originalJson = Helper.loadJson("/valid-event.json");
-
-    // when
     final Event event = mapper.readValue(originalJson, Event.class);
-    final String serializedJson = mapper.writeValueAsString(event);
-
-    // then
-    assertThatJson(serializedJson).when(IGNORING_ARRAY_ORDER, TREATING_NULL_AS_ABSENT, IGNORING_EXTRA_FIELDS)
-        .isEqualTo(originalJson);
+    // When
+    final var diff = JsonDiff.asJson(mapper.readTree(originalJson), mapper.readTree(mapper.writeValueAsString(event)));
+    // Then
+    assertThat(diff).isEmpty();
   }
 }

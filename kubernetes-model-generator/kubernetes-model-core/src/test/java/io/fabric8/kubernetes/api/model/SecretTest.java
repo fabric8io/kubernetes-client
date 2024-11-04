@@ -17,15 +17,13 @@ package io.fabric8.kubernetes.api.model;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.model.util.Helper;
+import io.fabric8.zjsonpatch.JsonDiff;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 
-import static net.javacrumbs.jsonunit.core.Option.IGNORING_ARRAY_ORDER;
-import static net.javacrumbs.jsonunit.core.Option.IGNORING_EXTRA_FIELDS;
-import static net.javacrumbs.jsonunit.core.Option.TREATING_NULL_AS_ABSENT;
-import static net.javacrumbs.jsonunit.fluent.JsonFluentAssert.assertThatJson;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -40,16 +38,13 @@ class SecretTest {
 
   @Test
   void secretTest() throws Exception {
-    // given
+    // Given
     final String originalJson = Helper.loadJson("/valid-secret.json");
-
-    // when
     final Secret secret = mapper.readValue(originalJson, Secret.class);
-    final String serializedJson = mapper.writeValueAsString(secret);
-
-    // then
-    assertThatJson(serializedJson).when(IGNORING_ARRAY_ORDER, TREATING_NULL_AS_ABSENT, IGNORING_EXTRA_FIELDS)
-        .isEqualTo(originalJson);
+    // When
+    final var diff = JsonDiff.asJson(mapper.readTree(originalJson), mapper.readTree(mapper.writeValueAsString(secret)));
+    // Then
+    assertThat(diff).isEmpty();
   }
 
   @Test

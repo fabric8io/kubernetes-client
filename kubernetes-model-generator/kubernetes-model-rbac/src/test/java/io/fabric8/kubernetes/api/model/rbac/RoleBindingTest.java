@@ -17,12 +17,10 @@ package io.fabric8.kubernetes.api.model.rbac;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.model.util.Helper;
+import io.fabric8.zjsonpatch.JsonDiff;
 import org.junit.jupiter.api.Test;
 
-import static net.javacrumbs.jsonunit.core.Option.IGNORING_ARRAY_ORDER;
-import static net.javacrumbs.jsonunit.core.Option.IGNORING_EXTRA_FIELDS;
-import static net.javacrumbs.jsonunit.core.Option.TREATING_NULL_AS_ABSENT;
-import static net.javacrumbs.jsonunit.fluent.JsonFluentAssert.assertThatJson;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class RoleBindingTest {
 
@@ -30,26 +28,21 @@ public class RoleBindingTest {
 
   @Test
   public void kubernetesRoleBindingTest() throws Exception {
-    // given
+    // Given
     final String originalJson = Helper.loadJson("/valid-roleBinding.json");
-
-    // when
     final RoleBinding kubernetesRoleBinding = mapper.readValue(originalJson, RoleBinding.class);
-    final String serializedJson = mapper.writeValueAsString(kubernetesRoleBinding);
-
-    // then
-    assertThatJson(serializedJson).when(IGNORING_ARRAY_ORDER, TREATING_NULL_AS_ABSENT, IGNORING_EXTRA_FIELDS)
-        .isEqualTo(originalJson);
+    // When
+    final var diff = JsonDiff.asJson(mapper.readTree(originalJson),
+        mapper.readTree(mapper.writeValueAsString(kubernetesRoleBinding)));
+    // Then
+    assertThat(diff).isEmpty();
   }
 
   @Test
   public void kubernetesRoleBuilderTest() throws Exception {
-
-    // given
+    // Given
     final String originalJson = Helper.loadJson("/valid-roleBinding.json");
-
-    // when
-    RoleBinding kubernetesRoleBinding = new RoleBindingBuilder()
+    final RoleBinding kubernetesRoleBinding = new RoleBindingBuilder()
         .withNewMetadata()
         .withName("read-jobs")
         .withNamespace("default")
@@ -66,12 +59,11 @@ public class RoleBindingTest {
             .withName("job-reader")
             .build())
         .build();
-
-    final String serializedJson = mapper.writeValueAsString(kubernetesRoleBinding);
-
-    // then
-    assertThatJson(serializedJson).when(IGNORING_ARRAY_ORDER, TREATING_NULL_AS_ABSENT, IGNORING_EXTRA_FIELDS)
-        .isEqualTo(originalJson);
+    // When
+    final var diff = JsonDiff.asJson(mapper.readTree(originalJson),
+        mapper.readTree(mapper.writeValueAsString(kubernetesRoleBinding)));
+    // Then
+    assertThat(diff).isEmpty();
 
   }
 }

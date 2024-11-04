@@ -15,10 +15,9 @@
  */
 package io.fabric8.kubernetes.api.model;
 
-import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.Test;
 
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -60,8 +59,8 @@ class KubernetesListTest {
     assertNotNull(kubernetesList.getApiVersion());
     assertEquals("v1", kubernetesList.getApiVersion());
     assertEquals("List", kubernetesList.getKind());
-    assertThat(kubernetesList.getItems(), CoreMatchers.hasItem(service));
-    assertThat(kubernetesList.getItems(), CoreMatchers.hasItem(replicationController));
+    assertThat(kubernetesList.getItems())
+        .contains(service, replicationController);
   }
 
   @Test

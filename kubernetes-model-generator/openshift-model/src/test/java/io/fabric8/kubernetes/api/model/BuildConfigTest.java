@@ -31,14 +31,12 @@ import io.fabric8.openshift.api.model.SecretBuildSourceBuilder;
 import io.fabric8.openshift.api.model.SourceBuildStrategyBuilder;
 import io.fabric8.openshift.api.model.SourceControlUserBuilder;
 import io.fabric8.openshift.api.model.WebHookTriggerBuilder;
+import io.fabric8.zjsonpatch.JsonDiff;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 
-import static net.javacrumbs.jsonunit.core.Option.IGNORING_ARRAY_ORDER;
-import static net.javacrumbs.jsonunit.core.Option.IGNORING_EXTRA_FIELDS;
-import static net.javacrumbs.jsonunit.core.Option.TREATING_NULL_AS_ABSENT;
-import static net.javacrumbs.jsonunit.fluent.JsonFluentAssert.assertThatJson;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -49,16 +47,13 @@ public class BuildConfigTest {
 
   @Test
   public void buildConfigTest() throws Exception {
-    // given
+    // Given
     final String originalJson = Helper.loadJson("/valid-buildConfig.json");
-
-    // when
     final BuildConfig buildConfig = mapper.readValue(originalJson, BuildConfig.class);
-    final String serializedJson = mapper.writeValueAsString(buildConfig);
-
-    // then
-    assertThatJson(serializedJson).when(IGNORING_ARRAY_ORDER, TREATING_NULL_AS_ABSENT, IGNORING_EXTRA_FIELDS)
-        .isEqualTo(originalJson);
+    // When
+    final var diff = JsonDiff.asJson(mapper.readTree(originalJson), mapper.readTree(mapper.writeValueAsString(buildConfig)));
+    // Then
+    assertThat(diff).isEmpty();
   }
 
   @Test

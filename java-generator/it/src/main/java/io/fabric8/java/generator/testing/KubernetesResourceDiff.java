@@ -40,7 +40,7 @@ public class KubernetesResourceDiff {
   private final String source1;
   private final String source2;
 
-  private ObjectMapper yamlMapper = new ObjectMapper(
+  private final ObjectMapper yamlMapper = new ObjectMapper(
       new YAMLFactory().disable(YAMLGenerator.Feature.WRITE_DOC_START_MARKER));
 
   public KubernetesResourceDiff(String source1, String source2) {
