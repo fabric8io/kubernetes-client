@@ -1499,10 +1499,6 @@ public class Config {
     this.additionalProperties.put(name, value);
   }
 
-  public void setFile(File file) {
-    this.file = file;
-  }
-
   public void setAutoConfigure(boolean autoConfigure) {
     this.autoConfigure = autoConfigure;
   }
