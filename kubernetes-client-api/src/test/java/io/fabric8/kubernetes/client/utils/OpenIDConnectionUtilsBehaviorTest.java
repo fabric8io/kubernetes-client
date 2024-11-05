@@ -484,15 +484,15 @@ class OpenIDConnectionUtilsBehaviorTest {
 
     @Test
     void skipsInFileWhenOriginalConfigHasNoCurrentContext() {
-      originalConfig.setFile(kubeConfig);
+      originalConfig = new ConfigBuilder(originalConfig).withFile(kubeConfig).build();
       persistOAuthToken(originalConfig, oAuthTokenResponse, "fake.token");
       assertThat(kubeConfig).doesNotExist();
     }
 
     @Test
     void logsWarningIfReferencedFileIsMissing() {
-      originalConfig.setFile(kubeConfig);
       originalConfig = new ConfigBuilder(originalConfig)
+          .withFile(kubeConfig)
           .withCurrentContext(new NamedContextBuilder().withName("context").build()).build();
       persistOAuthToken(originalConfig, oAuthTokenResponse, "fake.token");
       assertThat(systemErr.toString())
@@ -511,9 +511,9 @@ class OpenIDConnectionUtilsBehaviorTest {
       }
 
       @Test
-      void persistsTokenInFile() throws IOException {
-        originalConfig.setFile(kubeConfig);
+      void persistsTokenInFile() {
         originalConfig = new ConfigBuilder(originalConfig)
+            .withFile(kubeConfig)
             .withCurrentContext(new NamedContextBuilder()
                 .withName("context")
                 .withNewContext().withUser("user").endContext().build())
@@ -524,9 +524,9 @@ class OpenIDConnectionUtilsBehaviorTest {
       }
 
       @Test
-      void skipsTokenInFileIfNull() throws IOException {
-        originalConfig.setFile(kubeConfig);
+      void skipsTokenInFileIfNull() {
         originalConfig = new ConfigBuilder(originalConfig)
+            .withFile(kubeConfig)
             .withCurrentContext(new NamedContextBuilder()
                 .withName("context")
                 .withNewContext().withUser("user").endContext().build())
@@ -537,9 +537,9 @@ class OpenIDConnectionUtilsBehaviorTest {
       }
 
       @Test
-      void persistsOAuthTokenInFile() throws IOException {
-        originalConfig.setFile(kubeConfig);
+      void persistsOAuthTokenInFile() {
         originalConfig = new ConfigBuilder(originalConfig)
+            .withFile(kubeConfig)
             .withCurrentContext(new NamedContextBuilder()
                 .withName("context")
                 .withNewContext().withUser("user").endContext().build())
