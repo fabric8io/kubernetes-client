@@ -32,7 +32,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -181,10 +180,8 @@ public class KubeConfigUtils {
    * @param kubeConfigPath path to KUBECONFIG
    * @throws IOException in case of failure while writing to file
    */
-  public static void persistKubeConfigIntoFile(Config kubeConfig, String kubeConfigPath) throws IOException {
-    try (FileWriter writer = new FileWriter(kubeConfigPath)) {
-      writer.write(Serialization.asYaml(kubeConfig));
-    }
+  public static void persistKubeConfigIntoFile(Config kubeConfig, File kubeConfigPath) throws IOException {
+    Files.writeString(kubeConfigPath.toPath(), Serialization.asYaml(kubeConfig));
   }
 
   public static void merge(io.fabric8.kubernetes.client.Config clientConfig, Config kubeConfig, String context) {
