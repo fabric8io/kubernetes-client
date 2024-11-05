@@ -1499,10 +1499,6 @@ public class Config {
     this.additionalProperties.put(name, value);
   }
 
-  public void setAutoConfigure(boolean autoConfigure) {
-    this.autoConfigure = autoConfigure;
-  }
-
   public String getAutoOAuthToken() {
     return autoOAuthToken;
   }
