@@ -824,7 +824,7 @@ public class Config {
    */
   public Config refresh() {
     final String currentContextName = this.getCurrentContext() != null ? this.getCurrentContext().getName() : null;
-    if (this.oauthToken != null && !this.oauthToken.isEmpty()) {
+    if (Utils.isNotNullOrEmpty(this.oauthToken)) {
       return this;
     }
     if (this.autoConfigure) {
