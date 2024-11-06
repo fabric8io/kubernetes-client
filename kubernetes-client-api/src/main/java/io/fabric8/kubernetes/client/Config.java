@@ -45,6 +45,7 @@ import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -54,6 +55,7 @@ import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 
+@SuppressWarnings({ "LombokGetterMayBeUsed", "LombokSetterMayBeUsed" })
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(allowGetters = true, allowSetters = true)
 public class Config {
@@ -849,7 +851,13 @@ public class Config {
     if (!Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_TRYKUBECONFIG_SYSTEM_PROPERTY, true)) {
       return null;
     }
-    final File kubeConfigFile = new File(getKubeconfigFilename());
+    final var kubeConfigFilenames = getKubeconfigFilenames();
+    if (kubeConfigFilenames.size() > 1) {
+      LOGGER.warn(
+          "Found multiple Kubernetes config files [{}], using the first one: [{}]. If not desired file, please change it by doing `export KUBECONFIG=/path/to/kubeconfig` on Unix systems or `$Env:KUBECONFIG=/path/to/kubeconfig` on Windows.",
+          kubeConfigFilenames, kubeConfigFilenames.iterator().next());
+    }
+    final File kubeConfigFile = new File(kubeConfigFilenames.iterator().next());
     if (!kubeConfigFile.isFile()) {
       LOGGER.debug("Did not find Kubernetes config at: [{}]. Ignoring.", kubeConfigFile.getPath());
       return null;
@@ -861,21 +869,12 @@ public class Config {
     return kubeConfigFile;
   }
 
-  public static String getKubeconfigFilename() {
-    String fileName = Utils.getSystemPropertyOrEnvVar(KUBERNETES_KUBECONFIG_FILE,
+  public static Collection<String> getKubeconfigFilenames() {
+    final var valueOrDefault = Utils.getSystemPropertyOrEnvVar(KUBERNETES_KUBECONFIG_FILE,
         new File(getHomeDir(), ".kube" + File.separator + "config").toString());
-
     // if system property/env var contains multiple files take the first one based on the environment
     // we are running in (eg. : for Linux, ; for Windows)
-    String[] fileNames = fileName.split(File.pathSeparator);
-
-    if (fileNames.length > 1) {
-      LOGGER.warn(
-          "Found multiple Kubernetes config files [{}], using the first one: [{}]. If not desired file, please change it by doing `export KUBECONFIG=/path/to/kubeconfig` on Unix systems or `$Env:KUBECONFIG=/path/to/kubeconfig` on Windows.",
-          fileNames, fileNames[0]);
-      fileName = fileNames[0];
-    }
-    return fileName;
+    return Arrays.asList(valueOrDefault.split(File.pathSeparator));
   }
 
   private static String loadKubeConfigContents(File kubeConfigFile) {
