@@ -16,9 +16,7 @@
 package io.fabric8.kubernetes.client.internal;
 
 import io.fabric8.kubernetes.api.model.AuthInfo;
-import io.fabric8.kubernetes.api.model.Cluster;
 import io.fabric8.kubernetes.api.model.Config;
-import io.fabric8.kubernetes.api.model.Context;
 import io.fabric8.kubernetes.api.model.ExecConfig;
 import io.fabric8.kubernetes.api.model.ExecEnvVar;
 import io.fabric8.kubernetes.api.model.NamedAuthInfo;
@@ -37,6 +35,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -78,125 +77,44 @@ public class KubeConfigUtils {
   }
 
   /**
-   * Returns the current context in the given config
+   * Persist KUBECONFIG file from the provided {@link io.fabric8.kubernetes.api.model.Config} object.
    *
-   * @param config Config object
-   * @return returns context in config if found, otherwise null
+   * @param kubeconfig modified {@link io.fabric8.kubernetes.api.model.Config} object.
+   * @param kubeConfigPath path to KUBECONFIG.
+   * @throws IOException in case of failure while writing to file.
    */
-  public static NamedContext getCurrentContext(Config config) {
-    final String currentContext = config.getCurrentContext();
-    if (currentContext != null && config.getContexts() != null) {
-      for (NamedContext context : config.getContexts()) {
-        if (Objects.equals(currentContext, context.getName())) {
-          return context;
-        }
+  public static void persistKubeConfigIntoFile(Config kubeconfig, File kubeConfigPath) throws IOException {
+    if (kubeconfig.getAdditionalProperties() != null) {
+      kubeconfig.getAdditionalProperties().remove(KUBERNETES_CONFIG_FILE_KEY);
+    }
+    if (kubeconfig.getContexts() != null) {
+      kubeconfig.getContexts().stream()
+          .filter(ctx -> ctx.getAdditionalProperties() != null)
+          .forEach(ctx -> ctx.getAdditionalProperties().remove(KUBERNETES_CONFIG_FILE_KEY));
+    }
+    Files.writeString(kubeConfigPath.toPath(), Serialization.asYaml(kubeconfig));
+  }
+
+  /**
+   * Merges the provided {@link Config} objects into the provided {@link io.fabric8.kubernetes.client.Config} object.
+   * <p>
+   * The following precedence is followed:
+   * <ol>
+   * <li>Incomplete Contexts, Clusters, and Users are ignored</li>
+   * <li>Context argument provided by the user is used if provided and exists</li>
+   * <li>The first Config object to set a value wins</li>
+   * </ol>
+   */
+  public static void merge(io.fabric8.kubernetes.client.Config clientConfig, String context, Config... kubeconfigs) {
+    final var mergedContexts = mergeContexts(clientConfig, kubeconfigs);
+    clientConfig.setContexts(new ArrayList<>(mergedContexts.values()));
+    // Try to load the context requested by the user, otherwise fallback to the one selected in the first .kube/config
+    NamedContext currentContext = null;
+    for (String contextName : contextPreference(context, kubeconfigs)) {
+      if (mergedContexts.containsKey(contextName)) {
+        currentContext = mergedContexts.get(contextName);
+        break;
       }
-    }
-    return null;
-  }
-
-  public static NamedContext findContext(List<NamedContext> contexts, String context) {
-    if (contexts != null && Utils.isNotNullOrEmpty(context)) {
-      for (var ctx : contexts) {
-        if (Objects.equals(ctx.getName(), context)) {
-          return ctx;
-        }
-      }
-    }
-    return null;
-  }
-
-  /**
-   * Returns the current user token for the config and current context
-   *
-   * @param config Config object
-   * @param context Context object
-   * @return returns current user based upon provided parameters.
-   */
-  public static String getUserToken(Config config, Context context) {
-    AuthInfo authInfo = getUserAuthInfo(config, context);
-    if (authInfo != null) {
-      return authInfo.getToken();
-    }
-    return null;
-  }
-
-  /**
-   * Returns the current {@link AuthInfo} for the current context and user
-   *
-   * @param config Config object
-   * @param context Context object
-   * @return {@link AuthInfo} for current context
-   */
-  public static AuthInfo getUserAuthInfo(Config config, Context context) {
-    if (config != null && config.getUsers() != null && context != null && context.getUser() != null) {
-      return config.getUsers().stream()
-          .filter(u -> Objects.equals(u.getName(), context.getUser()))
-          .findAny()
-          .map(NamedAuthInfo::getUser)
-          .orElse(null);
-    }
-    return null;
-  }
-
-  /**
-   * Returns the current {@link Cluster} for the current context
-   *
-   * @param config {@link Config} config object
-   * @param context {@link Context} context object
-   * @return current {@link Cluster} for current context
-   */
-  public static Cluster getCluster(Config config, Context context) {
-    if (config != null && config.getClusters() != null && context != null && context.getCluster() != null) {
-      return config.getClusters().stream()
-          .filter(c -> Objects.equals(c.getName(), context.getCluster()))
-          .findAny()
-          .map(NamedCluster::getCluster)
-          .orElse(null);
-    }
-    return null;
-  }
-
-  /**
-   * Get User index from Config object
-   *
-   * @param config {@link io.fabric8.kubernetes.api.model.Config} Kube Config
-   * @param userName username inside Config
-   * @return index of user in users array
-   */
-  public static int getNamedUserIndexFromConfig(Config config, String userName) {
-    for (int i = 0; i < config.getUsers().size(); i++) {
-      if (config.getUsers().get(i).getName().equals(userName)) {
-        return i;
-      }
-    }
-    return -1;
-  }
-
-  /**
-   * Modify KUBECONFIG file
-   *
-   * @param kubeConfig modified {@link io.fabric8.kubernetes.api.model.Config} object
-   * @param kubeConfigPath path to KUBECONFIG
-   * @throws IOException in case of failure while writing to file
-   */
-  public static void persistKubeConfigIntoFile(Config kubeConfig, File kubeConfigPath) throws IOException {
-    Files.writeString(kubeConfigPath.toPath(), Serialization.asYaml(kubeConfig));
-  }
-
-  public static void merge(io.fabric8.kubernetes.client.Config clientConfig, Config kubeConfig, String context) {
-    if (clientConfig.getContexts() == null) {
-      clientConfig.setContexts(new ArrayList<>());
-    }
-    if (kubeConfig.getContexts() != null) {
-      clientConfig.getContexts().addAll(kubeConfig.getContexts());
-    }
-    // Try to load the context requested by the user, otherwise fallback to the one selected in the .kube/config
-    final NamedContext currentContext;
-    if (findContext(clientConfig.getContexts(), context) != null) {
-      currentContext = findContext(clientConfig.getContexts(), context);
-    } else {
-      currentContext = findContext(kubeConfig.getContexts(), kubeConfig.getCurrentContext());
     }
     if (currentContext == null || currentContext.getContext() == null) {
       return;
@@ -205,13 +123,14 @@ public class KubeConfigUtils {
     clientConfig.setNamespace(currentContext.getContext().getNamespace());
     // If config was loaded using KubeConfigUtils#parseConfig, then the file is available in the additional properties
     final File configFile;
-    if (kubeConfig.getAdditionalProperties().get(KUBERNETES_CONFIG_FILE_KEY) instanceof File) {
-      configFile = (File) kubeConfig.getAdditionalProperties().get(KUBERNETES_CONFIG_FILE_KEY);
+    if (currentContext.getAdditionalProperties().get(KUBERNETES_CONFIG_FILE_KEY) instanceof File) {
+      configFile = (File) currentContext.getAdditionalProperties().get(KUBERNETES_CONFIG_FILE_KEY);
     } else {
       configFile = null;
     }
-    final var currentCluster = KubeConfigUtils.getCluster(kubeConfig, currentContext.getContext());
-    if (currentCluster != null) {
+    final var mergedClusters = mergeClusters(kubeconfigs);
+    if (mergedClusters.containsKey(currentContext.getContext().getCluster())) {
+      final var currentCluster = mergedClusters.get(currentContext.getContext().getCluster()).getCluster();
       clientConfig.setMasterUrl(currentCluster.getServer());
       clientConfig.setTrustCerts(Objects.equals(currentCluster.getInsecureSkipTlsVerify(), true));
       clientConfig.setDisableHostnameVerification(Objects.equals(currentCluster.getInsecureSkipTlsVerify(), true));
@@ -232,8 +151,9 @@ public class KubeConfigUtils {
         }
       }
     }
-    final var currentAuthInfo = KubeConfigUtils.getUserAuthInfo(kubeConfig, currentContext.getContext());
-    if (currentAuthInfo != null) {
+    final var mergedUsers = mergeUsers(kubeconfigs);
+    if (mergedUsers.containsKey(currentContext.getContext().getUser())) {
+      final var currentAuthInfo = mergedUsers.get(currentContext.getContext().getUser()).getUser();
       String clientCertFile = currentAuthInfo.getClientCertificate();
       String clientKeyFile = currentAuthInfo.getClientKey();
       if (configFile != null) {
@@ -254,6 +174,71 @@ public class KubeConfigUtils {
         mergeKubeConfigExecCredential(clientConfig, currentAuthInfo.getExec(), configFile);
       }
     }
+  }
+
+  private static Map<String, NamedContext> mergeContexts(io.fabric8.kubernetes.client.Config config, Config... kubeconfigs) {
+    final Map<String, NamedContext> mergedContexts = new HashMap<>();
+    // process kubeconfigs in inverse order, so that the first kubeconfig has precedence
+    for (int i = kubeconfigs.length - 1; i >= 0; i--) {
+      if (kubeconfigs[i].getContexts() != null) {
+        for (NamedContext ctx : kubeconfigs[i].getContexts()) {
+          if (ctx.getContext() != null) {
+            // Contains KUBERNETES_CONFIG_FILE_KEY if config was parsed using KubeConfigUtils#parseConfig
+            ctx.getAdditionalProperties().putAll(kubeconfigs[i].getAdditionalProperties());
+            mergedContexts.put(ctx.getName(), ctx);
+          }
+        }
+      }
+    }
+    if (config.getContexts() != null) {
+      for (NamedContext ctx : config.getContexts()) {
+        mergedContexts.put(ctx.getName(), ctx);
+      }
+    }
+    return mergedContexts;
+  }
+
+  private static Map<String, NamedCluster> mergeClusters(Config... kubeconfigs) {
+    final Map<String, NamedCluster> mergedClusters = new HashMap<>();
+    // process kubeconfigs in inverse order, so that the first kubeconfig has precedence
+    for (int i = kubeconfigs.length - 1; i >= 0; i--) {
+      if (kubeconfigs[i].getClusters() != null) {
+        for (NamedCluster cluster : kubeconfigs[i].getClusters()) {
+          if (cluster.getCluster() != null) {
+            mergedClusters.put(cluster.getName(), cluster);
+          }
+        }
+      }
+    }
+    return mergedClusters;
+  }
+
+  private static Map<String, NamedAuthInfo> mergeUsers(Config... kubeconfigs) {
+    final Map<String, NamedAuthInfo> mergedUsers = new HashMap<>();
+    // process kubeconfigs in inverse order, so that the first kubeconfig has precedence
+    for (int i = kubeconfigs.length - 1; i >= 0; i--) {
+      if (kubeconfigs[i].getUsers() != null) {
+        for (NamedAuthInfo user : kubeconfigs[i].getUsers()) {
+          if (user.getUser() != null) {
+            mergedUsers.put(user.getName(), user);
+          }
+        }
+      }
+    }
+    return mergedUsers;
+  }
+
+  private static List<String> contextPreference(String context, Config... kubeconfigs) {
+    final List<String> contextPreference = new ArrayList<>();
+    if (Utils.isNotNullOrEmpty(context)) {
+      contextPreference.add(context);
+    }
+    for (Config kubeconfig : kubeconfigs) {
+      if (Utils.isNotNullOrEmpty(kubeconfig.getCurrentContext())) {
+        contextPreference.add(kubeconfig.getCurrentContext());
+      }
+    }
+    return contextPreference;
   }
 
   private static void mergeKubeConfigAuthProviderConfig(io.fabric8.kubernetes.client.Config config, AuthInfo currentAuthInfo) {

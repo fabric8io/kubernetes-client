@@ -15,67 +15,38 @@
  */
 package io.fabric8.kubernetes.client.internal;
 
-import io.fabric8.kubernetes.api.model.AuthInfo;
-import io.fabric8.kubernetes.api.model.Cluster;
 import io.fabric8.kubernetes.api.model.Config;
 import io.fabric8.kubernetes.api.model.ConfigBuilder;
-import io.fabric8.kubernetes.api.model.Context;
 import io.fabric8.kubernetes.api.model.ExecConfig;
 import io.fabric8.kubernetes.api.model.ExecConfigBuilder;
-import io.fabric8.kubernetes.api.model.NamedContext;
 import io.fabric8.kubernetes.client.utils.Utils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class KubeConfigUtilsTest {
-  @Test
-  void testGetNamedUserIndexFromConfig() {
-    // Given
-    Config config = getTestKubeConfig();
 
-    // When
-    int index = KubeConfigUtils.getNamedUserIndexFromConfig(config, "test/test-cluster:443");
-
-    // Then
-    assertEquals(2, index);
-  }
-
-  @Test
-  void testGetCurrentContext() {
-    // Given
-    Config config = getTestKubeConfig();
-
-    // When
-    NamedContext namedContext = KubeConfigUtils.getCurrentContext(config);
-
-    // Then
-    assertNotNull(namedContext);
-    assertEquals("test-context", namedContext.getName());
-    assertEquals("ns1", namedContext.getContext().getNamespace());
-    assertEquals("system:admin/api-testing:6334", namedContext.getContext().getUser());
-    assertEquals("api-testing:6334", namedContext.getContext().getCluster());
-  }
+  @TempDir
+  private Path tempDir;
 
   @Test
   void testParseConfig() {
     // Given
     File configFile = new File(getClass().getResource("/test-kubeconfig").getPath());
-
     // When
     Config config = KubeConfigUtils.parseConfig(configFile);
-
     // Then
     assertNotNull(config);
     assertEquals(1, config.getClusters().size());
@@ -84,53 +55,11 @@ class KubeConfigUtilsTest {
   }
 
   @Test
-  void testGetUserToken() {
-    // Given
-    Config config = getTestKubeConfig();
-    Context context = Objects.requireNonNull(KubeConfigUtils.getCurrentContext(config)).getContext();
-
-    // When
-    String token = KubeConfigUtils.getUserToken(config, context);
-
-    // Then
-    assertEquals("test-token-2", token);
-  }
-
-  @Test
-  void testGetCluster() {
-    // Given
-    Config config = getTestKubeConfig();
-    Context context = Objects.requireNonNull(KubeConfigUtils.getCurrentContext(config)).getContext();
-
-    // When
-    Cluster cluster = KubeConfigUtils.getCluster(config, context);
-
-    // Then
-    assertNotNull(cluster);
-  }
-
-  @Test
-  void testGetUserAuthInfo() {
-    // Given
-    Config config = getTestKubeConfig();
-    Context context = config.getContexts().get(0).getContext();
-
-    // When
-    AuthInfo authInfo = KubeConfigUtils.getUserAuthInfo(config, context);
-
-    // Then
-    assertNotNull(authInfo);
-    assertEquals("test-token-2", authInfo.getToken());
-  }
-
-  @Test
   @DisplayName("should create expected authenticator command for aws")
   void getAuthenticatorCommandFromExecConfig_whenAwsCommandUsed_thenUseCommandLineArgsInExecCommand() throws IOException {
     // Given
-    File commandFolder = Files.createTempDirectory("test").toFile();
-    File commandFile = new File(commandFolder, "aws");
-    Files.createFile(commandFile.toPath());
-    String systemPathValue = getTestPathValue(commandFolder);
+    Path commandFile = Files.createFile(tempDir.resolve("aws"));
+    String systemPathValue = getTestPathValue(tempDir.toFile());
     ExecConfig execConfig = new ExecConfigBuilder()
         .withApiVersion("client.authentication.k8s.io/v1alpha1")
         .addToArgs("--region", "us-west2", "eks", "get-token", "--cluster-name", "api-eks.example.com")
@@ -149,7 +78,7 @@ class KubeConfigUtilsTest {
     assertPlatformPrefixes(processBuilderArgs);
     List<String> commandParts = Arrays.asList(processBuilderArgs.get(2).split(" "));
     assertThat(commandParts)
-        .containsExactly(commandFile.getAbsolutePath(), "--region", "us-west2", "eks",
+        .containsExactly(commandFile.toFile().getAbsolutePath(), "--region", "us-west2", "eks",
             "get-token", "--cluster-name", "api-eks.example.com");
   }
 
@@ -157,12 +86,11 @@ class KubeConfigUtilsTest {
   @DisplayName("should generate expected authenticator command for gke-gcloud-auth-plugin")
   void getAuthenticatorCommandFromExecConfig_whenGkeAuthPluginCommandProvided_thenUseCommandLineArgs() throws IOException {
     // Given
-    File commandFolder = Files.createTempDirectory("test").toFile();
-    File commandFile = new File(commandFolder, "gke-gcloud-auth-plugin");
-    String systemPathValue = getTestPathValue(commandFolder);
+    Path commandFile = Files.createFile(tempDir.resolve("gke-gcloud-auth-plugin"));
+    String systemPathValue = getTestPathValue(tempDir.toFile());
     ExecConfig execConfigNoArgs = new ExecConfigBuilder()
         .withApiVersion("client.authentication.k8s.io/v1alpha1")
-        .withCommand(commandFile.getPath())
+        .withCommand(commandFile.toFile().getPath())
         .build();
     // Simulate "user.exec.args: null" like e.g. in the configuration for the gke-gcloud-auth-plugin.
     execConfigNoArgs.setArgs(null);
@@ -175,7 +103,7 @@ class KubeConfigUtilsTest {
     assertThat(processBuilderArgs)
         .isNotNull()
         .hasSize(3)
-        .satisfies(pb -> assertThat(pb.get(2)).isEqualTo(commandFile.getPath()));
+        .satisfies(pb -> assertThat(pb.get(2)).isEqualTo(commandFile.toFile().getPath()));
     assertPlatformPrefixes(processBuilderArgs);
   }
 
