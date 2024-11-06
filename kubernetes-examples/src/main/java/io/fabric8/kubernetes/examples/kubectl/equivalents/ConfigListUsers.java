@@ -34,9 +34,9 @@ public class ConfigListUsers {
 
   public static void main(String[] args) throws FileNotFoundException {
     // Gets KubeConfig via reading KubeConfig environment variable or ~/.kube/config
-    String kubeConfigFileName = io.fabric8.kubernetes.client.Config.getKubeconfigFilename();
-    if (kubeConfigFileName != null) {
-      File kubeConfigFile = new File(kubeConfigFileName);
+    final var kubeConfigFileNames = io.fabric8.kubernetes.client.Config.getKubeconfigFilenames();
+    if (!kubeConfigFileNames.isEmpty()) {
+      File kubeConfigFile = new File(kubeConfigFileNames.iterator().next());
       Config kubeConfigObj = Serialization.unmarshal(new FileInputStream(kubeConfigFile), Config.class);
 
       // Print users
