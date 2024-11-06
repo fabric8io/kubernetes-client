@@ -823,19 +823,22 @@ public class Config {
    * @return this Config instance with the refreshed values (if applicable)
    */
   public Config refresh() {
-    final String currentContextName = this.getCurrentContext() != null ? this.getCurrentContext().getName() : null;
-    if (Utils.isNotNullOrEmpty(this.oauthToken)) {
+    final String currentContextName = getCurrentContext() != null ? getCurrentContext().getName() : null;
+    if (Utils.isNotNullOrEmpty(oauthToken)) {
       return this;
     }
-    if (this.autoConfigure) {
+    if (autoConfigure) {
       return Config.autoConfigure(currentContextName);
     }
-    if (this.file != null) {
-      String kubeconfigContents = getKubeconfigContents(this.file);
-      if (kubeconfigContents == null) {
-        return this; // getKubeconfigContents will have logged an exception
+    if (file != null) {
+      if (loadKubeConfigContents(file) == null) {
+        return this; // loadKubeConfigContents will have logged an exception
       }
-      return Config.fromKubeconfig(currentContextName, kubeconfigContents, this.file.getPath());
+      final var refreshedConfig = Config.fromKubeconfig(currentContextName, file);
+      if (!disableAutoConfig()) {
+        postAutoConfigure(refreshedConfig);
+      }
+      return refreshedConfig;
     }
     // nothing to refresh - the kubeconfig was directly supplied
     return this;
@@ -852,7 +855,7 @@ public class Config {
       return null;
     }
     LOGGER.debug("Found for Kubernetes config at: [{}].", kubeConfigFile.getPath());
-    if (Utils.isNullOrEmpty(getKubeconfigContents(kubeConfigFile))) {
+    if (Utils.isNullOrEmpty(loadKubeConfigContents(kubeConfigFile))) {
       return null;
     }
     return kubeConfigFile;
@@ -875,15 +878,13 @@ public class Config {
     return fileName;
   }
 
-  private static String getKubeconfigContents(File kubeConfigFile) {
-    String kubeconfigContents = null;
+  private static String loadKubeConfigContents(File kubeConfigFile) {
     try (FileReader reader = new FileReader(kubeConfigFile)) {
-      kubeconfigContents = IOHelpers.readFully(reader);
+      return IOHelpers.readFully(reader);
     } catch (IOException e) {
       LOGGER.error("Could not load Kubernetes config file from {}", kubeConfigFile.getPath(), e);
       return null;
     }
-    return kubeconfigContents;
   }
 
   @JsonIgnoreProperties(ignoreUnknown = true)
