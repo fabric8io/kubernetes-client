@@ -17,14 +17,11 @@ package io.fabric8.kubernetes.client.utils;
 
 import io.fabric8.kubernetes.api.model.AuthProviderConfig;
 import io.fabric8.kubernetes.api.model.AuthProviderConfigBuilder;
-import io.fabric8.kubernetes.api.model.NamedAuthInfo;
-import io.fabric8.kubernetes.api.model.NamedContext;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.http.TestStandardHttpClient;
 import io.fabric8.kubernetes.client.http.TestStandardHttpClientBuilder;
 import io.fabric8.kubernetes.client.http.TestStandardHttpClientFactory;
-import io.fabric8.kubernetes.client.internal.KubeConfigUtils;
 import io.fabric8.kubernetes.client.internal.SSLUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,22 +29,16 @@ import org.junit.jupiter.api.io.TempDir;
 import org.mockito.MockedStatic;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.time.Instant;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 import static io.fabric8.kubernetes.client.http.TestStandardHttpClientFactory.Mode.SINGLETON;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
@@ -63,48 +54,6 @@ class OpenIDConnectionUtilsTest {
     final TestStandardHttpClientFactory factory = new TestStandardHttpClientFactory(SINGLETON);
     httpClient = factory.newBuilder().build();
     singletonHttpClientBuilder = factory.newBuilder();
-  }
-
-  @Test
-  // TODO: remove in favor of specific tests, kept for checking compatibility
-  void persistOAuthTokenWithUpdatedToken(@TempDir Path tempDir) throws IOException {
-    // Given
-    final OpenIDConnectionUtils.OAuthToken oAuthTokenResponse = new OpenIDConnectionUtils.OAuthToken();
-    oAuthTokenResponse.setIdToken("id-token-updated");
-    oAuthTokenResponse.setRefreshToken("refresh-token-updated");
-    Path kubeConfig = Files.createTempFile(tempDir, "test", "kubeconfig");
-    Files.copy(
-        Objects.requireNonNull(OpenIDConnectionUtilsTest.class.getResourceAsStream("/test-kubeconfig-oidc")),
-        kubeConfig,
-        StandardCopyOption.REPLACE_EXISTING);
-    Config originalConfig = Config.fromKubeconfig(kubeConfig.toFile());
-
-    // When
-    OpenIDConnectionUtils.persistOAuthToken(originalConfig, oAuthTokenResponse, null);
-
-    // Then
-    io.fabric8.kubernetes.api.model.Config config = KubeConfigUtils.parseConfig(kubeConfig.toFile());
-    assertNotNull(config);
-    NamedContext currentNamedContext = config.getContexts().stream()
-        .filter(ctx -> ctx.getName().equals(config.getCurrentContext()))
-        .findFirst()
-        .orElse(null);
-    assertNotNull(currentNamedContext);
-    NamedAuthInfo currentUser = config.getUsers().stream()
-        .filter(user -> user.getName().equals(currentNamedContext.getContext().getUser()))
-        .findFirst()
-        .orElse(null);
-    assertNotNull(currentUser);
-    Map<String, String> authProviderConfigInFile = currentUser.getUser().getAuthProvider()
-        .getConfig();
-    assertFalse(authProviderConfigInFile.isEmpty());
-    Map<String, String> authProviderConfigInMemory = originalConfig.getAuthProvider().getConfig();
-    //auth info should be updated in memory
-    assertEquals("id-token-updated", authProviderConfigInMemory.get("id-token"));
-    assertEquals("refresh-token-updated", authProviderConfigInMemory.get("refresh-token"));
-    //auth info should be updated in kubeConfig
-    assertEquals("id-token-updated", authProviderConfigInFile.get("id-token"));
-    assertEquals("refresh-token-updated", authProviderConfigInFile.get("refresh-token"));
   }
 
   @Test

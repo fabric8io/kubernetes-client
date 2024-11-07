@@ -15,12 +15,14 @@
  */
 package io.fabric8.kubernetes.client.internal;
 
-import io.fabric8.kubernetes.api.model.Config;
 import io.fabric8.kubernetes.api.model.ConfigBuilder;
 import io.fabric8.kubernetes.api.model.ExecConfig;
 import io.fabric8.kubernetes.api.model.ExecConfigBuilder;
+import io.fabric8.kubernetes.api.model.NamedContext;
+import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.utils.Utils;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -29,29 +31,141 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
+import static java.nio.file.StandardOpenOption.CREATE;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 class KubeConfigUtilsTest {
 
   @TempDir
   private Path tempDir;
 
-  @Test
-  void testParseConfig() {
-    // Given
-    File configFile = new File(getClass().getResource("/test-kubeconfig").getPath());
-    // When
-    Config config = KubeConfigUtils.parseConfig(configFile);
-    // Then
-    assertNotNull(config);
-    assertEquals(1, config.getClusters().size());
-    assertEquals(3, config.getContexts().size());
-    assertEquals(3, config.getUsers().size());
+  @Nested
+  class ParseConfig {
+
+    @Test
+    void throwsExceptionIfNullFile() {
+      assertThatExceptionOfType(KubernetesClientException.class)
+          .isThrownBy(() -> KubeConfigUtils.parseConfig(null))
+          .withMessage("kubeconfig (File) cannot be null");
+    }
+
+    @Test
+    void throwsExceptionIfInvalidFile() throws IOException {
+      final var file = tempDir.resolve("invalid-file");
+      Files.writeString(file, "invalid-yaml-content", CREATE);
+      assertThatIllegalArgumentException()
+          .isThrownBy(() -> KubeConfigUtils.parseConfig(file.toFile()))
+          .withMessageContaining("Cannot construct instance of `io.fabric8.kubernetes.api.model.Config`");
+    }
+
+    @Test
+    void addsAdditionalPropertyWithFileLocation() {
+      final var file = new File(Objects
+          .requireNonNull(KubeConfigUtilsTest.class.getResource("/internal/kube-config-utils-parse/config-1.yaml")).getPath());
+      final var config = KubeConfigUtils.parseConfig(file);
+      assertThat(config)
+          .hasFieldOrPropertyWithValue("additionalProperties.KUBERNETES_CONFIG_FILE_KEY", file);
+    }
+
+    @Test
+    void parsesConfiguration() {
+      final var result = KubeConfigUtils.parseConfig(new File(Objects
+          .requireNonNull(KubeConfigUtilsTest.class.getResource("/internal/kube-config-utils-parse/config-1.yaml")).getPath()));
+      assertThat(result)
+          .isNotNull()
+          .hasFieldOrPropertyWithValue("currentContext", "selected-context")
+          .returns(1, c -> c.getClusters().size())
+          .returns(1, c -> c.getContexts().size())
+          .returns(1, c -> c.getUsers().size());
+    }
+
+  }
+
+  @Nested
+  class PersistKubeConfigIntoFile {
+
+    @Test
+    void writesTheKubeconfigIntoFile() throws IOException {
+      // Given
+      final var file = tempDir.resolve("kubeconfig");
+      final var config = new ConfigBuilder()
+          .withCurrentContext("selected-context")
+          .build();
+      // When
+      KubeConfigUtils.persistKubeConfigIntoFile(config, file.toFile());
+      // Then
+      assertThat(file)
+          .content()
+          .contains("---")
+          .contains("current-context: \"selected-context\"");
+    }
+
+    @Test
+    void doesntPersistAdditionalProperties() throws IOException {
+      // Given
+      final var file = new File(Objects
+          .requireNonNull(KubeConfigUtilsTest.class.getResource("/internal/kube-config-utils-parse/config-1.yaml")).getPath());
+      final var config = KubeConfigUtils.parseConfig(file);
+      config.getAdditionalProperties().put("KUBERNETES_CONFIG_FILE_KEY", file);
+      config.getContexts().iterator().next().getAdditionalProperties()
+          .put("KUBERNETES_CONFIG_FILE_KEY", file);
+      // When
+      KubeConfigUtils.persistKubeConfigIntoFile(config, file);
+      // Then
+      assertThat(file)
+          .content()
+          .doesNotContain("KUBERNETES_CONFIG_FILE_KEY");
+    }
+  }
+
+  @Nested
+  @DisplayName("getFileFromContext")
+  class GetFileFromContext {
+
+    @Test
+    void withNullNamedContext() {
+      assertThat(KubeConfigUtils.getFileFromContext(null)).isNull();
+    }
+
+    @Test
+    void withNullAdditionalProperties() {
+      final var context = new NamedContext();
+      context.setAdditionalProperties(null);
+      assertThat(KubeConfigUtils.getFileFromContext(context)).isNull();
+    }
+
+    @Test
+    void withEmptyAdditionalProperties() {
+      final var context = new NamedContext();
+      assertThat(KubeConfigUtils.getFileFromContext(context)).isNull();
+    }
+
+    @Test
+    void withNullValue() {
+      final var context = new NamedContext();
+      context.setAdditionalProperty("KUBERNETES_CONFIG_FILE_KEY", null);
+      assertThat(KubeConfigUtils.getFileFromContext(context)).isNull();
+    }
+
+    @Test
+    void withInvalidValue() {
+      final var context = new NamedContext();
+      context.setAdditionalProperty("KUBERNETES_CONFIG_FILE_KEY", "not-file");
+      assertThat(KubeConfigUtils.getFileFromContext(context)).isNull();
+    }
+
+    @Test
+    void withValidValue() {
+      final var context = new NamedContext();
+      context.setAdditionalProperty("KUBERNETES_CONFIG_FILE_KEY", new File("."));
+      assertThat(KubeConfigUtils.getFileFromContext(context)).isEqualTo(new File("."));
+    }
+
   }
 
   @Test
@@ -124,60 +238,5 @@ class KubeConfigUtilsTest {
           commandFolder.getAbsolutePath() + File.pathSeparator +
           "/opt/apache-maven/bin";
     }
-  }
-
-  private Config getTestKubeConfig() {
-    return new ConfigBuilder()
-        .withCurrentContext("test-context")
-        .addNewCluster()
-        .withName("api-testing:6334")
-        .withNewCluster()
-        .withServer("https://api-testing:6334")
-        .withInsecureSkipTlsVerify(true)
-        .endCluster()
-        .endCluster()
-        .addNewContext()
-        .withName("test-context")
-        .withNewContext()
-        .withCluster("api-testing:6334")
-        .withNamespace("ns1")
-        .withUser("system:admin/api-testing:6334")
-        .endContext()
-        .endContext()
-        .addNewContext()
-        .withNewContext()
-        .withCluster("minikube")
-        .withUser("minikube")
-        .endContext()
-        .withName("minikube")
-        .endContext()
-        .addNewUser()
-        .withName("test/api-test-com:443")
-        .withNewUser()
-        .withToken("token")
-        .endUser()
-        .endUser()
-        .addNewUser()
-        .withName("minikube")
-        .withNewUser()
-        .withClientCertificate("/home/.minikube/profiles/minikube/client.crt")
-        .withClientKey("/home/.minikube/profiles/minikube/client.key")
-        .endUser()
-        .endUser()
-        .addNewUser()
-        .withName("test/test-cluster:443")
-        .withNewUser()
-        .withNewAuthProvider()
-        .withConfig(Collections.singletonMap("id-token", "token"))
-        .endAuthProvider()
-        .endUser()
-        .endUser()
-        .addNewUser()
-        .withName("system:admin/api-testing:6334")
-        .withNewUser()
-        .withToken("test-token-2")
-        .endUser()
-        .endUser()
-        .build();
   }
 }

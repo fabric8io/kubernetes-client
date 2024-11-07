@@ -31,6 +31,6 @@ class SundrioConfigBuilderTest {
         .collect(Collectors.toList()))
         .withFailMessage("You've probably modified Config and SundrioConfig constructor annotated with @Buildable," +
             "please update the ConfigFluent.copyInstance method too")
-        .hasSize(52);
+        .hasSize(51);
   }
 }

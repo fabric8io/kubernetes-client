@@ -78,7 +78,6 @@ public class ConfigFluent<A extends ConfigFluent<A>> extends SundrioConfigFluent
       this.withContexts(instance.getContexts());
       this.withAutoConfigure(instance.getAutoConfigure());
       this.withAuthProvider(instance.getAuthProvider());
-      this.withFile(instance.getFile());
     }
   }
 

@@ -111,10 +111,7 @@ class OpenIDConnectionUtilsBehaviorTest {
         .withCurrentContext("default")
         .build();
     Files.write(kubeConfigFile, Serialization.asYaml(kubeConfig).getBytes(StandardCharsets.UTF_8));
-    originalConfig = new ConfigBuilder(Config.empty())
-        .withFile(tempDir.resolve("kube-config").toFile())
-        .build()
-        .refresh();
+    originalConfig = Config.fromKubeconfig(kubeConfigFile.toFile());
     // Auth provider configuration (minimal)
     authProviderConfig = new HashMap<>();
     authProviderConfig.put("id-token", "original-token");
@@ -390,7 +387,7 @@ class OpenIDConnectionUtilsBehaviorTest {
         @DisplayName("Updates current config auth provider config with new token in file")
         void updatesCurrentConfigAuthProviderConfigWithNewTokenInFile() throws Exception {
           assertThat(
-              Serialization.unmarshal(new String(Files.readAllBytes(originalConfig.getFile().toPath()), StandardCharsets.UTF_8),
+              Serialization.unmarshal(Files.readString(originalConfig.getFile().toPath()),
                   io.fabric8.kubernetes.api.model.Config.class))
               .extracting(io.fabric8.kubernetes.api.model.Config::getUsers)
               .asInstanceOf(InstanceOfAssertFactories.list(NamedAuthInfo.class))
@@ -484,20 +481,9 @@ class OpenIDConnectionUtilsBehaviorTest {
 
     @Test
     void skipsInFileWhenOriginalConfigHasNoCurrentContext() {
-      originalConfig = new ConfigBuilder(originalConfig).withFile(kubeConfig).build();
+      originalConfig = new ConfigBuilder(originalConfig).withCurrentContext(null).build();
       persistOAuthToken(originalConfig, oAuthTokenResponse, "fake.token");
       assertThat(kubeConfig).doesNotExist();
-    }
-
-    @Test
-    void logsWarningIfReferencedFileIsMissing() {
-      originalConfig = new ConfigBuilder(originalConfig)
-          .withFile(kubeConfig)
-          .withCurrentContext(new NamedContextBuilder().withName("context").build()).build();
-      persistOAuthToken(originalConfig, oAuthTokenResponse, "fake.token");
-      assertThat(systemErr.toString())
-          .contains("oidc: failure while persisting new tokens into KUBECONFIG")
-          .contains("NoSuchFileException");
     }
 
     @Nested
@@ -505,45 +491,52 @@ class OpenIDConnectionUtilsBehaviorTest {
     class WithValidKubeConfig {
       @BeforeEach
       void setUp() throws IOException {
-        Files.write(kubeConfig.toPath(), ("---" +
+        Files.write(kubeConfig.toPath(), ("---\n" +
+            "clusters:\n" +
+            "- name: cluster\n" +
+            "  cluster:\n" +
+            "    server: https://cluster.example.com\n" +
             "users:\n" +
-            "- name: user\n").getBytes(StandardCharsets.UTF_8));
+            "- name: user\n" +
+            "  user:\n" +
+            "    token: original-token\n" +
+            "contexts:\n" +
+            "- name: context\n" +
+            "  context:\n" +
+            "    cluster: cluster\n" +
+            "    user: user\n" +
+            "current-context: context\n").getBytes(StandardCharsets.UTF_8));
+      }
+
+      @Test
+      void logsWarningIfReferencedFileIsMissing() throws IOException {
+        originalConfig = Config.fromKubeconfig(kubeConfig);
+        Files.delete(kubeConfig.toPath());
+        persistOAuthToken(originalConfig, oAuthTokenResponse, "fake.token");
+        assertThat(systemErr.toString())
+            .contains("oidc: failure while persisting new tokens into KUBECONFIG")
+            .contains("NoSuchFileException");
       }
 
       @Test
       void persistsTokenInFile() {
-        originalConfig = new ConfigBuilder(originalConfig)
-            .withFile(kubeConfig)
-            .withCurrentContext(new NamedContextBuilder()
-                .withName("context")
-                .withNewContext().withUser("user").endContext().build())
-            .build();
-        persistOAuthToken(originalConfig, oAuthTokenResponse, "fake.token");
+        originalConfig = Config.fromKubeconfig(kubeConfig);
+        persistOAuthToken(originalConfig, oAuthTokenResponse, "updated-token");
         assertThat(KubeConfigUtils.parseConfig(kubeConfig))
-            .returns("fake.token", c -> c.getUsers().iterator().next().getUser().getToken());
+            .returns("updated-token", c -> c.getUsers().iterator().next().getUser().getToken());
       }
 
       @Test
       void skipsTokenInFileIfNull() {
-        originalConfig = new ConfigBuilder(originalConfig)
-            .withFile(kubeConfig)
-            .withCurrentContext(new NamedContextBuilder()
-                .withName("context")
-                .withNewContext().withUser("user").endContext().build())
-            .build();
+        originalConfig = Config.fromKubeconfig(kubeConfig);
         persistOAuthToken(originalConfig, oAuthTokenResponse, null);
         assertThat(KubeConfigUtils.parseConfig(kubeConfig))
-            .returns(null, c -> c.getUsers().iterator().next().getUser().getToken());
+            .returns("original-token", c -> c.getUsers().iterator().next().getUser().getToken());
       }
 
       @Test
       void persistsOAuthTokenInFile() {
-        originalConfig = new ConfigBuilder(originalConfig)
-            .withFile(kubeConfig)
-            .withCurrentContext(new NamedContextBuilder()
-                .withName("context")
-                .withNewContext().withUser("user").endContext().build())
-            .build();
+        originalConfig = Config.fromKubeconfig(kubeConfig);
         persistOAuthToken(originalConfig, oAuthTokenResponse, "fake.token");
         assertThat(KubeConfigUtils.parseConfig(kubeConfig))
             .extracting(c -> c.getUsers().iterator().next().getUser().getAuthProvider().getConfig())
