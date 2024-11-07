@@ -62,13 +62,16 @@ public class KubeConfigUtils {
   private KubeConfigUtils() {
   }
 
-  public static Config parseConfig(File kubeconfigFile) {
-    try (var fis = Files.newInputStream(kubeconfigFile.toPath())) {
+  public static Config parseConfig(File kubeconfig) {
+    if (kubeconfig == null) {
+      throw new KubernetesClientException("kubeconfig (File) cannot be null");
+    }
+    try (var fis = Files.newInputStream(kubeconfig.toPath())) {
       final var ret = Serialization.unmarshal(fis, Config.class);
-      ret.setAdditionalProperty(KUBERNETES_CONFIG_FILE_KEY, kubeconfigFile);
+      ret.setAdditionalProperty(KUBERNETES_CONFIG_FILE_KEY, kubeconfig);
       return ret;
-    } catch (IOException e) {
-      throw KubernetesClientException.launderThrowable(kubeconfigFile + " is not a parseable Kubernetes Config", e);
+    } catch (Exception e) {
+      throw KubernetesClientException.launderThrowable(kubeconfig + " (File) is not a parseable Kubernetes Config", e);
     }
   }
 
@@ -93,6 +96,13 @@ public class KubeConfigUtils {
           .forEach(ctx -> ctx.getAdditionalProperties().remove(KUBERNETES_CONFIG_FILE_KEY));
     }
     Files.writeString(kubeConfigPath.toPath(), Serialization.asYaml(kubeconfig));
+  }
+
+  public static File getFileFromContext(NamedContext namedContext) {
+    return namedContext != null && namedContext.getAdditionalProperties() != null
+        && namedContext.getAdditionalProperties().get(KUBERNETES_CONFIG_FILE_KEY) instanceof File
+            ? (File) namedContext.getAdditionalProperties().get(KUBERNETES_CONFIG_FILE_KEY)
+            : null;
   }
 
   /**

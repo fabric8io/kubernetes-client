@@ -95,7 +95,7 @@ class ConfigConstructorTest {
             null, null, null,
             null, null, null,
             null, null, null, null,
-            null, null, null, false)));
+            null, null, false)));
   }
 
   @Nested
@@ -199,7 +199,7 @@ class ConfigConstructorTest {
           null, null, null,
           null, null, null,
           null, null, null, null,
-          null, null, true, true);
+          null, true, true);
 
       // Then
       assertThat(config)
@@ -266,7 +266,7 @@ class ConfigConstructorTest {
           null, null, null,
           null, null, null,
           null, null, null, null,
-          null, null, false, true);
+          null, false, true);
 
       assertThat(config)
           .isNotNull()
@@ -375,7 +375,7 @@ class ConfigConstructorTest {
               null, null, null,
               null, null, null,
               null, null, null, null,
-              null, null, true, true);
+              null, true, true);
 
           // Then
           assertThat(config)
@@ -483,7 +483,7 @@ class ConfigConstructorTest {
               null, null, null,
               null, null, null,
               null, null, null, null,
-              null, null, true, true);
+              null, true, true);
 
           // Then
           assertThat(config)
@@ -524,7 +524,7 @@ class ConfigConstructorTest {
               null, null, null,
               null, null, null,
               null, null, null, null,
-              null, null, true, true);
+              null, true, true);
 
           // Then
           assertThat(config)
@@ -574,7 +574,7 @@ class ConfigConstructorTest {
                   null, null, null,
                   null, null, null,
                   null, null, null, null,
-                  null, null, true, false));
+                  null, true, false));
         } finally {
           System.clearProperty("kubeconfig");
         }

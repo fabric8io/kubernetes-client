@@ -219,8 +219,6 @@ public class Config {
 
   private Boolean autoConfigure;
 
-  private File file;
-
   @JsonIgnore
   protected Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -242,7 +240,7 @@ public class Config {
         null, null, null,
         null, null, null,
         null, null, null, null,
-        null, null, autoConfigure, true);
+        null, autoConfigure, true);
   }
 
   /**
@@ -280,7 +278,6 @@ public class Config {
   private static Config autoConfigure(Config config, String context) {
     final var kubeConfigFile = findKubeConfigFile();
     if (kubeConfigFile != null) {
-      config.file = kubeConfigFile;
       KubeConfigUtils.merge(config, context, KubeConfigUtils.parseConfig(kubeConfigFile));
     } else {
       tryServiceAccount(config);
@@ -364,7 +361,6 @@ public class Config {
       @JsonProperty("onlyHttpWatches") Boolean onlyHttpWatches,
       @JsonProperty("currentContext") NamedContext currentContext,
       @JsonProperty("contexts") List<NamedContext> contexts,
-      @JsonProperty("file") File file,
       @JsonProperty("autoConfigure") Boolean autoConfigure) {
     this(masterUrl, apiVersion, namespace, trustCerts, disableHostnameVerification, caCertFile, caCertData,
         clientCertFile, clientCertData, clientKeyFile, clientKeyData, clientKeyAlgo, clientKeyPassphrase, username,
@@ -373,7 +369,7 @@ public class Config {
         httpProxy, httpsProxy, noProxy, userAgent, tlsVersions, websocketPingInterval, proxyUsername, proxyPassword,
         trustStoreFile, trustStorePassphrase, keyStoreFile, keyStorePassphrase, impersonateUsername, impersonateGroups,
         impersonateExtras, oauthTokenProvider, customHeaders, requestRetryBackoffLimit, requestRetryBackoffInterval,
-        uploadRequestTimeout, onlyHttpWatches, currentContext, contexts, file, autoConfigure, true);
+        uploadRequestTimeout, onlyHttpWatches, currentContext, contexts, autoConfigure, true);
   }
 
   /*
@@ -392,7 +388,7 @@ public class Config {
       String impersonateUsername, String[] impersonateGroups, Map<String, List<String>> impersonateExtras,
       OAuthTokenProvider oauthTokenProvider, Map<String, String> customHeaders, Integer requestRetryBackoffLimit,
       Integer requestRetryBackoffInterval, Integer uploadRequestTimeout, Boolean onlyHttpWatches, NamedContext currentContext,
-      List<NamedContext> contexts, File file, Boolean autoConfigure, Boolean shouldSetDefaultValues) {
+      List<NamedContext> contexts, Boolean autoConfigure, Boolean shouldSetDefaultValues) {
     if (Boolean.TRUE.equals(shouldSetDefaultValues)) {
       this.masterUrl = DEFAULT_MASTER_URL;
       this.apiVersion = "v1";
@@ -566,10 +562,6 @@ public class Config {
     if (Utils.isNotNull(currentContext)) {
       this.currentContext = currentContext;
     }
-    if (file != null) {
-      this.file = file;
-    }
-
     if (Utils.isNotNullOrEmpty(this.masterUrl)) {
       this.masterUrl = ensureEndsWithSlash(ensureHttps(this.masterUrl, this));
     }
@@ -782,13 +774,8 @@ public class Config {
     return fromKubeconfig(null, kubeconfigFile);
   }
 
-  public static Config fromKubeconfig(String context, File kubeconfigFile) {
-    if (kubeconfigFile == null) {
-      throw new KubernetesClientException("kubeconfigFile cannot be null");
-    }
-    final var ret = fromKubeconfig(context, KubeConfigUtils.parseConfig(kubeconfigFile));
-    ret.file = kubeconfigFile;
-    return ret;
+  public static Config fromKubeconfig(String context, File kubeconfig) {
+    return fromKubeconfig(context, KubeConfigUtils.parseConfig(kubeconfig));
   }
 
   private static Config fromKubeconfig(String context, io.fabric8.kubernetes.api.model.Config... kubeconfigs) {
@@ -805,13 +792,15 @@ public class Config {
   public static Config fromKubeconfig(String context, String kubeconfigContents, String kubeconfigPath) {
     // we allow passing context along here, since downstream accepts it
     Config config = new Config(false);
-    if (kubeconfigPath != null) {
-      config.file = new File(kubeconfigPath);
-    }
     if (Utils.isNullOrEmpty(kubeconfigContents)) {
       throw new KubernetesClientException("Could not create Config from kubeconfig");
     }
-    KubeConfigUtils.merge(config, context, KubeConfigUtils.parseConfigFromString(kubeconfigContents));
+    final var kubeconfig = KubeConfigUtils.parseConfigFromString(kubeconfigContents);
+    if (kubeconfigPath != null) {
+      // TODO: temp workaround until the method is removed (marked for removal in 7.0.0)
+      kubeconfig.setAdditionalProperty("KUBERNETES_CONFIG_FILE_KEY", new File(kubeconfigPath));
+    }
+    KubeConfigUtils.merge(config, context, kubeconfig);
     if (!disableAutoConfig()) {
       postAutoConfigure(config);
     }
@@ -832,11 +821,11 @@ public class Config {
     if (autoConfigure) {
       return Config.autoConfigure(currentContextName);
     }
-    if (file != null) {
-      if (loadKubeConfigContents(file) == null) {
+    if (getFile() != null) {
+      if (loadKubeConfigContents(getFile()) == null) {
         return this; // loadKubeConfigContents will have logged an exception
       }
-      final var refreshedConfig = Config.fromKubeconfig(currentContextName, file);
+      final var refreshedConfig = Config.fromKubeconfig(currentContextName, getFile());
       if (!disableAutoConfig()) {
         postAutoConfigure(refreshedConfig);
       }
@@ -1473,7 +1462,7 @@ public class Config {
    * @return the path to the kubeConfig file
    */
   public File getFile() {
-    return file;
+    return KubeConfigUtils.getFileFromContext(getCurrentContext());
   }
 
   @JsonIgnore
