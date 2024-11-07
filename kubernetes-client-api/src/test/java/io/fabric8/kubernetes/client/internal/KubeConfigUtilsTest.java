@@ -64,12 +64,33 @@ class KubeConfigUtilsTest {
     }
 
     @Test
-    void addsAdditionalPropertyWithFileLocation() {
+    void addsNamedContextAdditionalPropertyWithFileLocation() {
       final var file = new File(Objects
           .requireNonNull(KubeConfigUtilsTest.class.getResource("/internal/kube-config-utils-parse/config-1.yaml")).getPath());
       final var config = KubeConfigUtils.parseConfig(file);
-      assertThat(config)
-          .hasFieldOrPropertyWithValue("additionalProperties.KUBERNETES_CONFIG_FILE_KEY", file);
+      assertThat(config.getContexts())
+          .singleElement()
+          .hasFieldOrPropertyWithValue("additionalProperties.KUBERNETES_CONFIG_CONTEXT_FILE_KEY", file);
+    }
+
+    @Test
+    void addsNamedClusterAdditionalPropertyWithFileLocation() {
+      final var file = new File(Objects
+          .requireNonNull(KubeConfigUtilsTest.class.getResource("/internal/kube-config-utils-parse/config-1.yaml")).getPath());
+      final var config = KubeConfigUtils.parseConfig(file);
+      assertThat(config.getClusters())
+          .singleElement()
+          .hasFieldOrPropertyWithValue("additionalProperties.KUBERNETES_CONFIG_CLUSTER_FILE_KEY", file);
+    }
+
+    @Test
+    void addsNamedAuthInfoAdditionalPropertyWithFileLocation() {
+      final var file = new File(Objects
+          .requireNonNull(KubeConfigUtilsTest.class.getResource("/internal/kube-config-utils-parse/config-1.yaml")).getPath());
+      final var config = KubeConfigUtils.parseConfig(file);
+      assertThat(config.getUsers())
+          .singleElement()
+          .hasFieldOrPropertyWithValue("additionalProperties.KUBERNETES_CONFIG_AUTH_INFO_FILE_KEY", file);
     }
 
     @Test
@@ -111,61 +132,66 @@ class KubeConfigUtilsTest {
       final var file = new File(Objects
           .requireNonNull(KubeConfigUtilsTest.class.getResource("/internal/kube-config-utils-parse/config-1.yaml")).getPath());
       final var config = KubeConfigUtils.parseConfig(file);
-      config.getAdditionalProperties().put("KUBERNETES_CONFIG_FILE_KEY", file);
+      // Should already be set by the parser, but just to test reassurance
       config.getContexts().iterator().next().getAdditionalProperties()
-          .put("KUBERNETES_CONFIG_FILE_KEY", file);
+          .put("KUBERNETES_CONFIG_CONTEXT_FILE_KEY", file);
+      config.getClusters().iterator().next().getAdditionalProperties()
+          .put("KUBERNETES_CONFIG_CLUSTER_FILE_KEY", file);
       config.getUsers().iterator().next().getAdditionalProperties()
-          .put("KUBERNETES_CONFIG_FILE_KEY", file);
+          .put("KUBERNETES_CONFIG_AUTH_INFO_FILE_KEY", file);
       // When
       KubeConfigUtils.persistKubeConfigIntoFile(config, file);
       // Then
       assertThat(file)
           .content()
-          .doesNotContain("KUBERNETES_CONFIG_FILE_KEY");
+          .doesNotContain("KUBERNETES_CONFIG_CONTEXT_FILE_KEY")
+          .doesNotContain("KUBERNETES_CONFIG_CLUSTER_FILE_KEY")
+          .doesNotContain("KUBERNETES_CONFIG_AUTH_INFO_FILE_KEY")
+          .doesNotContain("KUBERNETES_CONFIG");
     }
   }
 
   @Nested
-  @DisplayName("getFileFromContext")
-  class GetFileFromContext {
+  @DisplayName("getFileWithNamedContextInfo")
+  class GetFileWithNamedContextInfo {
 
     @Test
     void withNullNamedContext() {
-      assertThat(KubeConfigUtils.getFileFromContext(null)).isNull();
+      assertThat(KubeConfigUtils.getFileWithNamedContext(null)).isNull();
     }
 
     @Test
     void withNullAdditionalProperties() {
       final var context = new NamedContext();
       context.setAdditionalProperties(null);
-      assertThat(KubeConfigUtils.getFileFromContext(context)).isNull();
+      assertThat(KubeConfigUtils.getFileWithNamedContext(context)).isNull();
     }
 
     @Test
     void withEmptyAdditionalProperties() {
       final var context = new NamedContext();
-      assertThat(KubeConfigUtils.getFileFromContext(context)).isNull();
+      assertThat(KubeConfigUtils.getFileWithNamedContext(context)).isNull();
     }
 
     @Test
     void withNullValue() {
       final var context = new NamedContext();
-      context.setAdditionalProperty("KUBERNETES_CONFIG_FILE_KEY", null);
-      assertThat(KubeConfigUtils.getFileFromContext(context)).isNull();
+      context.setAdditionalProperty("KUBERNETES_CONFIG_CONTEXT_FILE_KEY", null);
+      assertThat(KubeConfigUtils.getFileWithNamedContext(context)).isNull();
     }
 
     @Test
     void withInvalidValue() {
       final var context = new NamedContext();
-      context.setAdditionalProperty("KUBERNETES_CONFIG_FILE_KEY", "not-file");
-      assertThat(KubeConfigUtils.getFileFromContext(context)).isNull();
+      context.setAdditionalProperty("KUBERNETES_CONFIG_CONTEXT_FILE_KEY", "not-file");
+      assertThat(KubeConfigUtils.getFileWithNamedContext(context)).isNull();
     }
 
     @Test
     void withValidValue() {
       final var context = new NamedContext();
-      context.setAdditionalProperty("KUBERNETES_CONFIG_FILE_KEY", new File("."));
-      assertThat(KubeConfigUtils.getFileFromContext(context)).isEqualTo(new File("."));
+      context.setAdditionalProperty("KUBERNETES_CONFIG_CONTEXT_FILE_KEY", new File("."));
+      assertThat(KubeConfigUtils.getFileWithNamedContext(context)).isEqualTo(new File("."));
     }
 
   }

@@ -39,6 +39,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static io.fabric8.kubernetes.client.Config.HTTPS_PROTOCOL_PREFIX;
@@ -55,7 +56,9 @@ public class KubeConfigUtils {
 
   private static final Logger logger = LoggerFactory.getLogger(io.fabric8.kubernetes.client.Config.class);
 
-  private static final String KUBERNETES_CONFIG_FILE_KEY = "KUBERNETES_CONFIG_FILE_KEY";
+  private static final String KUBERNETES_CONFIG_CONTEXT_FILE_KEY = "KUBERNETES_CONFIG_CONTEXT_FILE_KEY";
+  private static final String KUBERNETES_CONFIG_CLUSTER_FILE_KEY = "KUBERNETES_CONFIG_CLUSTER_FILE_KEY";
+  private static final String KUBERNETES_CONFIG_AUTH_INFO_FILE_KEY = "KUBERNETES_CONFIG_AUTH_INFO_FILE_KEY";
   private static final String ACCESS_TOKEN = "access-token";
   private static final String ID_TOKEN = "id-token";
 
@@ -68,7 +71,16 @@ public class KubeConfigUtils {
     }
     try (var fis = Files.newInputStream(kubeconfig.toPath())) {
       final var ret = Serialization.unmarshal(fis, Config.class);
-      ret.setAdditionalProperty(KUBERNETES_CONFIG_FILE_KEY, kubeconfig);
+      if (ret.getContexts() != null) {
+        ret.getContexts().forEach(ctx -> ctx.getAdditionalProperties().put(KUBERNETES_CONFIG_CONTEXT_FILE_KEY, kubeconfig));
+      }
+      if (ret.getClusters() != null) {
+        ret.getClusters()
+            .forEach(cluster -> cluster.getAdditionalProperties().put(KUBERNETES_CONFIG_CLUSTER_FILE_KEY, kubeconfig));
+      }
+      if (ret.getUsers() != null) {
+        ret.getUsers().forEach(user -> user.getAdditionalProperties().put(KUBERNETES_CONFIG_AUTH_INFO_FILE_KEY, kubeconfig));
+      }
       return ret;
     } catch (Exception e) {
       throw KubernetesClientException.launderThrowable(kubeconfig + " (File) is not a parseable Kubernetes Config", e);
@@ -87,34 +99,60 @@ public class KubeConfigUtils {
    * @throws IOException in case of failure while writing to file.
    */
   public static void persistKubeConfigIntoFile(Config kubeconfig, File kubeConfigPath) throws IOException {
-    if (kubeconfig.getAdditionalProperties() != null) {
-      kubeconfig.getAdditionalProperties().remove(KUBERNETES_CONFIG_FILE_KEY);
-    }
     if (kubeconfig.getContexts() != null) {
-      kubeconfig.getContexts().stream()
-          .filter(ctx -> ctx.getAdditionalProperties() != null)
-          .forEach(ctx -> ctx.getAdditionalProperties().remove(KUBERNETES_CONFIG_FILE_KEY));
+      kubeconfig.getContexts().forEach(c -> removeAdditionalProperties(c::getAdditionalProperties));
+    }
+    if (kubeconfig.getClusters() != null) {
+      kubeconfig.getClusters().forEach(c -> removeAdditionalProperties(c::getAdditionalProperties));
     }
     if (kubeconfig.getUsers() != null) {
-      kubeconfig.getUsers().stream()
-          .filter(u -> u.getAdditionalProperties() != null)
-          .forEach(u -> u.getAdditionalProperties().remove(KUBERNETES_CONFIG_FILE_KEY));
+      kubeconfig.getUsers().forEach(c -> removeAdditionalProperties(c::getAdditionalProperties));
     }
     Files.writeString(kubeConfigPath.toPath(), Serialization.asYaml(kubeconfig));
   }
 
-  public static File getFileFromContext(NamedContext namedContext) {
-    return namedContext != null && namedContext.getAdditionalProperties() != null
-        && namedContext.getAdditionalProperties().get(KUBERNETES_CONFIG_FILE_KEY) instanceof File
-            ? (File) namedContext.getAdditionalProperties().get(KUBERNETES_CONFIG_FILE_KEY)
-            : null;
+  /**
+   * Returns the file containing the context information if it was loaded using KubeConfigUtils#parseConfig.
+   *
+   * @param namedContext the context to get the file from.
+   * @return the file containing the context information if it was loaded using KubeConfigUtils#parseConfig or null.
+   */
+  public static File getFileWithNamedContext(NamedContext namedContext) {
+    return getFile(namedContext != null ? namedContext::getAdditionalProperties : null, KUBERNETES_CONFIG_CONTEXT_FILE_KEY);
   }
 
-  public static File getFileFromAuthInfo(NamedAuthInfo namedAuthInfo) {
-    return namedAuthInfo != null && namedAuthInfo.getAdditionalProperties() != null
-        && namedAuthInfo.getAdditionalProperties().get(KUBERNETES_CONFIG_FILE_KEY) instanceof File
-            ? (File) namedAuthInfo.getAdditionalProperties().get(KUBERNETES_CONFIG_FILE_KEY)
-            : null;
+  /**
+   * Returns the file containing the cluster information if it was loaded using KubeConfigUtils#parseConfig.
+   *
+   * @param namedContext the context to get the file from.
+   * @return the file containing the cluster information if it was loaded using KubeConfigUtils#parseConfig or null.
+   */
+  public static File getFileWithNamedCluster(NamedContext namedContext) {
+    return getFile(namedContext != null ? namedContext::getAdditionalProperties : null, KUBERNETES_CONFIG_CLUSTER_FILE_KEY);
+  }
+
+  /**
+   * Returns the file containing the auth info information if it was loaded using KubeConfigUtils#parseConfig.
+   *
+   * @param namedContext the context to get the file from.
+   * @return the file containing the auth info information if it was loaded using KubeConfigUtils#parseConfig or null.
+   */
+  public static File getFileWithNamedAuthInfo(NamedContext namedContext) {
+    return getFile(namedContext != null ? namedContext::getAdditionalProperties : null, KUBERNETES_CONFIG_AUTH_INFO_FILE_KEY);
+  }
+
+  private static File getFileWithNamedCluster(NamedCluster namedCluster) {
+    return getFile(namedCluster != null ? namedCluster::getAdditionalProperties : null, KUBERNETES_CONFIG_CLUSTER_FILE_KEY);
+  }
+
+  private static File getFileWithNamedAuthInfo(NamedAuthInfo namedAuthInfo) {
+    return getFile(namedAuthInfo != null ? namedAuthInfo::getAdditionalProperties : null, KUBERNETES_CONFIG_AUTH_INFO_FILE_KEY);
+  }
+
+  private static File getFile(Supplier<Map<String, Object>> provider, String key) {
+    return provider != null && provider.get() != null && provider.get().get(key) instanceof File
+        ? (File) provider.get().get(key)
+        : null;
   }
 
   /**
@@ -144,10 +182,12 @@ public class KubeConfigUtils {
     clientConfig.setCurrentContext(currentContext);
     clientConfig.setNamespace(currentContext.getContext().getNamespace());
     final var mergedClusters = mergeClusters(kubeconfigs);
-    if (mergedClusters.containsKey(currentContext.getContext().getCluster())) {
+    final var currentNamedCluster = mergedClusters.get(currentContext.getContext().getCluster());
+    if (currentNamedCluster != null) {
       // If config was loaded using KubeConfigUtils#parseConfig, then the file is available in the additional properties
-      final File configFile = getFileFromContext(currentContext);
-      final var currentCluster = mergedClusters.get(currentContext.getContext().getCluster()).getCluster();
+      final var configFile = getFileWithNamedCluster(currentNamedCluster);
+      currentContext.setAdditionalProperty(KUBERNETES_CONFIG_CLUSTER_FILE_KEY, configFile);
+      final var currentCluster = currentNamedCluster.getCluster();
       clientConfig.setMasterUrl(currentCluster.getServer());
       clientConfig.setTrustCerts(Objects.equals(currentCluster.getInsecureSkipTlsVerify(), true));
       clientConfig.setDisableHostnameVerification(Objects.equals(currentCluster.getInsecureSkipTlsVerify(), true));
@@ -169,10 +209,11 @@ public class KubeConfigUtils {
       }
     }
     final var mergedUsers = mergeUsers(kubeconfigs);
-    if (mergedUsers.containsKey(currentContext.getContext().getUser())) {
-      final var currentNamedAuthInfo = mergedUsers.get(currentContext.getContext().getUser());
+    final var currentNamedAuthInfo = mergedUsers.get(currentContext.getContext().getUser());
+    if (currentNamedAuthInfo != null) {
       // If config was loaded using KubeConfigUtils#parseConfig, then the file is available in the additional properties
-      final File configFile = getFileFromAuthInfo(currentNamedAuthInfo);
+      final var configFile = getFileWithNamedAuthInfo(currentNamedAuthInfo);
+      currentContext.setAdditionalProperty(KUBERNETES_CONFIG_AUTH_INFO_FILE_KEY, configFile);
       final var currentAuthInfo = currentNamedAuthInfo.getUser();
       String clientCertFile = currentAuthInfo.getClientCertificate();
       String clientKeyFile = currentAuthInfo.getClientKey();
@@ -203,8 +244,6 @@ public class KubeConfigUtils {
       if (kubeconfigs[i].getContexts() != null) {
         for (NamedContext ctx : kubeconfigs[i].getContexts()) {
           if (ctx.getContext() != null) {
-            // Contains KUBERNETES_CONFIG_FILE_KEY if config was parsed using KubeConfigUtils#parseConfig
-            ctx.getAdditionalProperties().putAll(kubeconfigs[i].getAdditionalProperties());
             mergedContexts.put(ctx.getName(), ctx);
           }
         }
@@ -240,8 +279,6 @@ public class KubeConfigUtils {
       if (kubeconfigs[i].getUsers() != null) {
         for (NamedAuthInfo user : kubeconfigs[i].getUsers()) {
           if (user.getUser() != null) {
-            // Contains KUBERNETES_CONFIG_FILE_KEY if config was parsed using KubeConfigUtils#parseConfig
-            user.getAdditionalProperties().putAll(kubeconfigs[i].getAdditionalProperties());
             mergedUsers.put(user.getName(), user);
           }
         }
@@ -386,5 +423,14 @@ public class KubeConfigUtils {
       return file.getAbsolutePath();
     }
     return new File(relativeTo.getParentFile(), filename).getAbsolutePath();
+  }
+
+  private static void removeAdditionalProperties(Supplier<Map<String, Object>> provider) {
+    if (provider == null) {
+      return;
+    }
+    provider.get().remove(KUBERNETES_CONFIG_CONTEXT_FILE_KEY);
+    provider.get().remove(KUBERNETES_CONFIG_CLUSTER_FILE_KEY);
+    provider.get().remove(KUBERNETES_CONFIG_AUTH_INFO_FILE_KEY);
   }
 }

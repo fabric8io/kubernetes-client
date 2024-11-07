@@ -799,10 +799,12 @@ public class Config {
     if (Utils.isNullOrEmpty(kubeconfigContents)) {
       throw new KubernetesClientException("Could not create Config from kubeconfig");
     }
-    final var kubeconfig = KubeConfigUtils.parseConfigFromString(kubeconfigContents);
+    final io.fabric8.kubernetes.api.model.Config kubeconfig;
     if (kubeconfigPath != null) {
       // TODO: temp workaround until the method is removed (marked for removal in 7.0.0)
-      kubeconfig.setAdditionalProperty("KUBERNETES_CONFIG_FILE_KEY", new File(kubeconfigPath));
+      kubeconfig = KubeConfigUtils.parseConfig(new File(kubeconfigPath));
+    } else {
+      kubeconfig = KubeConfigUtils.parseConfigFromString(kubeconfigContents);
     }
     KubeConfigUtils.merge(config, context, kubeconfig);
     if (!disableAutoConfig()) {
@@ -1463,7 +1465,29 @@ public class Config {
    * @return the path to the kubeconfig file.
    */
   public File getFile() {
-    return KubeConfigUtils.getFileFromContext(getCurrentContext());
+    return KubeConfigUtils.getFileWithNamedContext(getCurrentContext());
+  }
+
+  /**
+   * Returns the path to the file that contains the cluster information from which this configuration was loaded from.
+   * <p>
+   * Returns {@code null} if no file was used.
+   *
+   * @return the path to the kubeconfig file.
+   */
+  public File getFileWithCluster() {
+    return KubeConfigUtils.getFileWithNamedCluster(getCurrentContext());
+  }
+
+  /**
+   * Returns the path to the file that contains the user information from which this configuration was loaded from.
+   * <p>
+   * Returns {@code null} if no file was used.
+   *
+   * @return the path to the kubeconfig file.
+   */
+  public File getFileWithAuthInfo() {
+    return KubeConfigUtils.getFileWithNamedAuthInfo(getCurrentContext());
   }
 
   @JsonIgnore

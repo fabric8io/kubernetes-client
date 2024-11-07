@@ -195,9 +195,10 @@ public class OpenIDConnectionUtils {
           .ifPresent(c -> c.putAll(authProviderConfig));
     }
     // Persist in file
-    if (currentConfig.getFile() != null && currentConfig.getCurrentContext() != null) {
+    if (currentConfig.getFileWithAuthInfo() != null && currentConfig.getCurrentContext() != null) {
       try {
-        final io.fabric8.kubernetes.api.model.Config kubeConfig = KubeConfigUtils.parseConfig(currentConfig.getFile());
+        final io.fabric8.kubernetes.api.model.Config kubeConfig = KubeConfigUtils
+            .parseConfig(currentConfig.getFileWithAuthInfo());
         final String userName = currentConfig.getCurrentContext().getContext().getUser();
         NamedAuthInfo namedAuthInfo = kubeConfig.getUsers().stream().filter(n -> n.getName().equals(userName)).findFirst()
             .orElseGet(() -> {
@@ -215,7 +216,7 @@ public class OpenIDConnectionUtils {
         if (Utils.isNotNullOrEmpty(token)) {
           namedAuthInfo.getUser().setToken(token);
         }
-        KubeConfigUtils.persistKubeConfigIntoFile(kubeConfig, currentConfig.getFile());
+        KubeConfigUtils.persistKubeConfigIntoFile(kubeConfig, currentConfig.getFileWithAuthInfo());
       } catch (Exception ex) {
         LOGGER.warn("oidc: failure while persisting new tokens into KUBECONFIG", ex);
       }
