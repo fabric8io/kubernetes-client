@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.client.utils;
 
 import io.fabric8.kubernetes.api.model.AuthProviderConfig;
 import io.fabric8.kubernetes.api.model.AuthProviderConfigBuilder;
+import io.fabric8.kubernetes.api.model.NamedAuthInfo;
 import io.fabric8.kubernetes.api.model.NamedContext;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
@@ -47,7 +48,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
@@ -85,11 +85,17 @@ class OpenIDConnectionUtilsTest {
     // Then
     io.fabric8.kubernetes.api.model.Config config = KubeConfigUtils.parseConfig(kubeConfig.toFile());
     assertNotNull(config);
-    NamedContext currentNamedContext = KubeConfigUtils.getCurrentContext(config);
+    NamedContext currentNamedContext = config.getContexts().stream()
+        .filter(ctx -> ctx.getName().equals(config.getCurrentContext()))
+        .findFirst()
+        .orElse(null);
     assertNotNull(currentNamedContext);
-    int currentUserIndex = KubeConfigUtils.getNamedUserIndexFromConfig(config, currentNamedContext.getContext().getUser());
-    assertTrue(currentUserIndex > 0);
-    Map<String, String> authProviderConfigInFile = config.getUsers().get(currentUserIndex).getUser().getAuthProvider()
+    NamedAuthInfo currentUser = config.getUsers().stream()
+        .filter(user -> user.getName().equals(currentNamedContext.getContext().getUser()))
+        .findFirst()
+        .orElse(null);
+    assertNotNull(currentUser);
+    Map<String, String> authProviderConfigInFile = currentUser.getUser().getAuthProvider()
         .getConfig();
     assertFalse(authProviderConfigInFile.isEmpty());
     Map<String, String> authProviderConfigInMemory = originalConfig.getAuthProvider().getConfig();

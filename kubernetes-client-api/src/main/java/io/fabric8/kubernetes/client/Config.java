@@ -281,7 +281,7 @@ public class Config {
     final var kubeConfigFile = findKubeConfigFile();
     if (kubeConfigFile != null) {
       config.file = kubeConfigFile;
-      KubeConfigUtils.merge(config, KubeConfigUtils.parseConfig(kubeConfigFile), context);
+      KubeConfigUtils.merge(config, context, KubeConfigUtils.parseConfig(kubeConfigFile));
     } else {
       tryServiceAccount(config);
       tryNamespaceFromPath(config);
@@ -791,9 +791,9 @@ public class Config {
     return ret;
   }
 
-  private static Config fromKubeconfig(String context, io.fabric8.kubernetes.api.model.Config kubeconfig) {
+  private static Config fromKubeconfig(String context, io.fabric8.kubernetes.api.model.Config... kubeconfigs) {
     final Config ret = Config.empty();
-    KubeConfigUtils.merge(ret, kubeconfig, context);
+    KubeConfigUtils.merge(ret, context, kubeconfigs);
     return ret;
   }
 
@@ -811,7 +811,7 @@ public class Config {
     if (Utils.isNullOrEmpty(kubeconfigContents)) {
       throw new KubernetesClientException("Could not create Config from kubeconfig");
     }
-    KubeConfigUtils.merge(config, KubeConfigUtils.parseConfigFromString(kubeconfigContents), context);
+    KubeConfigUtils.merge(config, context, KubeConfigUtils.parseConfigFromString(kubeconfigContents));
     if (!disableAutoConfig()) {
       postAutoConfigure(config);
     }
