@@ -46,6 +46,7 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -63,7 +64,7 @@ public class Config {
   private static final Logger LOGGER = LoggerFactory.getLogger(Config.class);
 
   /**
-   * Disables auto-configuration based on opinionated defaults in a {@link Config} object in the all arguments constructor
+   * Disables autoconfiguration based on opinionated defaults in a {@link Config} object in the all arguments constructor
    */
   public static final String KUBERNETES_DISABLE_AUTO_CONFIG_SYSTEM_PROPERTY = "kubernetes.disable.autoConfig";
   public static final String KUBERNETES_MASTER_SYSTEM_PROPERTY = "kubernetes.master";
@@ -226,23 +227,6 @@ public class Config {
     return Utils.getSystemPropertyOrEnvVar(KUBERNETES_DISABLE_AUTO_CONFIG_SYSTEM_PROPERTY, false);
   }
 
-  protected Config(boolean autoConfigure) {
-    this(null, null, null, null, null,
-        null, null, null, null, null,
-        null, null, null, null, null,
-        null, null, null, null, null,
-        null, null, null, null,
-        null,
-        null, null, null, null,
-        null, null, null,
-        null,
-        null, null, null, null, null,
-        null, null, null,
-        null, null, null,
-        null, null, null, null,
-        null, autoConfigure, true);
-  }
-
   /**
    * Create an empty {@link Config} class without any automatic configuration
    * (i.e. reading system properties/environment variables to set values).
@@ -265,27 +249,30 @@ public class Config {
   }
 
   /**
-   * Does auto detection with some opinionated defaults.
+   * Does auto-detection with some opinionated defaults.
    *
    * @param context if null will use current-context
    * @return Config object
    */
   public static Config autoConfigure(String context) {
-    Config config = new Config(false);
-    return autoConfigure(config, context);
+    final Config config = new Config(false);
+    autoConfigure(config, context);
+    return config;
   }
 
-  private static Config autoConfigure(Config config, String context) {
-    final var kubeConfigFile = findKubeConfigFile();
-    if (kubeConfigFile != null) {
-      KubeConfigUtils.merge(config, context, KubeConfigUtils.parseConfig(kubeConfigFile));
+  private static void autoConfigure(Config config, String context) {
+    final var kubeConfigFiles = findKubeConfigFiles();
+    if (!kubeConfigFiles.isEmpty()) {
+      final var kubeconfigs = kubeConfigFiles.stream()
+          .map(KubeConfigUtils::parseConfig)
+          .toArray(io.fabric8.kubernetes.api.model.Config[]::new);
+      KubeConfigUtils.merge(config, context, kubeconfigs);
     } else {
       tryServiceAccount(config);
       tryNamespaceFromPath(config);
     }
     postAutoConfigure(config);
     config.autoConfigure = true;
-    return config;
   }
 
   private static void postAutoConfigure(Config config) {
@@ -308,6 +295,23 @@ public class Config {
       masterUrl = (SSLUtils.isHttpsAvailable(config) ? HTTPS_PROTOCOL_PREFIX : HTTP_PROTOCOL_PREFIX) + masterUrl;
     }
     return masterUrl;
+  }
+
+  protected Config(boolean autoConfigure) {
+    this(null, null, null, null, null,
+        null, null, null, null, null,
+        null, null, null, null, null,
+        null, null, null, null, null,
+        null, null, null, null,
+        null,
+        null, null, null, null,
+        null, null, null,
+        null,
+        null, null, null, null, null,
+        null, null, null,
+        null, null, null,
+        null, null, null, null,
+        null, autoConfigure, true);
   }
 
   @JsonCreator
@@ -821,6 +825,7 @@ public class Config {
     if (autoConfigure) {
       return Config.autoConfigure(currentContextName);
     }
+    // Only possible if the Config was created using Config.fromKubeconfig, otherwise autoConfigure would have been called
     if (getFile() != null) {
       if (loadKubeConfigContents(getFile()) == null) {
         return this; // loadKubeConfigContents will have logged an exception
@@ -831,31 +836,26 @@ public class Config {
       }
       return refreshedConfig;
     }
-    // nothing to refresh - the kubeconfig was directly supplied
+    // nothing to refresh - the Config values were directly supplied
     return this;
   }
 
-  private static File findKubeConfigFile() {
+  private static Collection<File> findKubeConfigFiles() {
     LOGGER.debug("Trying to configure client from Kubernetes config...");
     if (!Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_TRYKUBECONFIG_SYSTEM_PROPERTY, true)) {
-      return null;
+      return Collections.emptyList();
     }
-    final var kubeConfigFilenames = getKubeconfigFilenames();
-    if (kubeConfigFilenames.size() > 1) {
-      LOGGER.warn(
-          "Found multiple Kubernetes config files [{}], using the first one: [{}]. If not desired file, please change it by doing `export KUBECONFIG=/path/to/kubeconfig` on Unix systems or `$Env:KUBECONFIG=/path/to/kubeconfig` on Windows.",
-          kubeConfigFilenames, kubeConfigFilenames.iterator().next());
-    }
-    final File kubeConfigFile = new File(kubeConfigFilenames.iterator().next());
-    if (!kubeConfigFile.isFile()) {
-      LOGGER.debug("Did not find Kubernetes config at: [{}]. Ignoring.", kubeConfigFile.getPath());
-      return null;
-    }
-    LOGGER.debug("Found for Kubernetes config at: [{}].", kubeConfigFile.getPath());
-    if (Utils.isNullOrEmpty(loadKubeConfigContents(kubeConfigFile))) {
-      return null;
-    }
-    return kubeConfigFile;
+    return getKubeconfigFilenames().stream()
+        .map(File::new)
+        .filter(f -> {
+          if (!f.isFile()) {
+            LOGGER.debug("Did not find Kubernetes config at: [{}]. Ignoring.", f.getPath());
+            return false;
+          }
+          return true;
+        })
+        .filter(f -> Utils.isNotNullOrEmpty(loadKubeConfigContents(f)))
+        .collect(Collectors.toList());
   }
 
   public static Collection<String> getKubeconfigFilenames() {
@@ -1456,10 +1456,11 @@ public class Config {
   }
 
   /**
+   * Returns the path to the file that contains the context from which this configuration was loaded from.
+   * <p>
+   * Returns {@code null} if no file was used.
    *
-   * Returns the path to the file that this configuration was loaded from. Returns {@code null} if no file was used.
-   *
-   * @return the path to the kubeConfig file
+   * @return the path to the kubeconfig file.
    */
   public File getFile() {
     return KubeConfigUtils.getFileFromContext(getCurrentContext());

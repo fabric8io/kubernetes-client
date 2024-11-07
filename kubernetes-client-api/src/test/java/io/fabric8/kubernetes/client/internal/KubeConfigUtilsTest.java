@@ -114,6 +114,8 @@ class KubeConfigUtilsTest {
       config.getAdditionalProperties().put("KUBERNETES_CONFIG_FILE_KEY", file);
       config.getContexts().iterator().next().getAdditionalProperties()
           .put("KUBERNETES_CONFIG_FILE_KEY", file);
+      config.getUsers().iterator().next().getAdditionalProperties()
+          .put("KUBERNETES_CONFIG_FILE_KEY", file);
       // When
       KubeConfigUtils.persistKubeConfigIntoFile(config, file);
       // Then
