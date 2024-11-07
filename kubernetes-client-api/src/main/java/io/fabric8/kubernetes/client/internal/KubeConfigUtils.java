@@ -95,6 +95,11 @@ public class KubeConfigUtils {
           .filter(ctx -> ctx.getAdditionalProperties() != null)
           .forEach(ctx -> ctx.getAdditionalProperties().remove(KUBERNETES_CONFIG_FILE_KEY));
     }
+    if (kubeconfig.getUsers() != null) {
+      kubeconfig.getUsers().stream()
+          .filter(u -> u.getAdditionalProperties() != null)
+          .forEach(u -> u.getAdditionalProperties().remove(KUBERNETES_CONFIG_FILE_KEY));
+    }
     Files.writeString(kubeConfigPath.toPath(), Serialization.asYaml(kubeconfig));
   }
 
@@ -102,6 +107,13 @@ public class KubeConfigUtils {
     return namedContext != null && namedContext.getAdditionalProperties() != null
         && namedContext.getAdditionalProperties().get(KUBERNETES_CONFIG_FILE_KEY) instanceof File
             ? (File) namedContext.getAdditionalProperties().get(KUBERNETES_CONFIG_FILE_KEY)
+            : null;
+  }
+
+  public static File getFileFromAuthInfo(NamedAuthInfo namedAuthInfo) {
+    return namedAuthInfo != null && namedAuthInfo.getAdditionalProperties() != null
+        && namedAuthInfo.getAdditionalProperties().get(KUBERNETES_CONFIG_FILE_KEY) instanceof File
+            ? (File) namedAuthInfo.getAdditionalProperties().get(KUBERNETES_CONFIG_FILE_KEY)
             : null;
   }
 
@@ -131,15 +143,10 @@ public class KubeConfigUtils {
     }
     clientConfig.setCurrentContext(currentContext);
     clientConfig.setNamespace(currentContext.getContext().getNamespace());
-    // If config was loaded using KubeConfigUtils#parseConfig, then the file is available in the additional properties
-    final File configFile;
-    if (currentContext.getAdditionalProperties().get(KUBERNETES_CONFIG_FILE_KEY) instanceof File) {
-      configFile = (File) currentContext.getAdditionalProperties().get(KUBERNETES_CONFIG_FILE_KEY);
-    } else {
-      configFile = null;
-    }
     final var mergedClusters = mergeClusters(kubeconfigs);
     if (mergedClusters.containsKey(currentContext.getContext().getCluster())) {
+      // If config was loaded using KubeConfigUtils#parseConfig, then the file is available in the additional properties
+      final File configFile = getFileFromContext(currentContext);
       final var currentCluster = mergedClusters.get(currentContext.getContext().getCluster()).getCluster();
       clientConfig.setMasterUrl(currentCluster.getServer());
       clientConfig.setTrustCerts(Objects.equals(currentCluster.getInsecureSkipTlsVerify(), true));
@@ -163,7 +170,10 @@ public class KubeConfigUtils {
     }
     final var mergedUsers = mergeUsers(kubeconfigs);
     if (mergedUsers.containsKey(currentContext.getContext().getUser())) {
-      final var currentAuthInfo = mergedUsers.get(currentContext.getContext().getUser()).getUser();
+      final var currentNamedAuthInfo = mergedUsers.get(currentContext.getContext().getUser());
+      // If config was loaded using KubeConfigUtils#parseConfig, then the file is available in the additional properties
+      final File configFile = getFileFromAuthInfo(currentNamedAuthInfo);
+      final var currentAuthInfo = currentNamedAuthInfo.getUser();
       String clientCertFile = currentAuthInfo.getClientCertificate();
       String clientKeyFile = currentAuthInfo.getClientKey();
       if (configFile != null) {
@@ -230,6 +240,8 @@ public class KubeConfigUtils {
       if (kubeconfigs[i].getUsers() != null) {
         for (NamedAuthInfo user : kubeconfigs[i].getUsers()) {
           if (user.getUser() != null) {
+            // Contains KUBERNETES_CONFIG_FILE_KEY if config was parsed using KubeConfigUtils#parseConfig
+            user.getAdditionalProperties().putAll(kubeconfigs[i].getAdditionalProperties());
             mergedUsers.put(user.getName(), user);
           }
         }

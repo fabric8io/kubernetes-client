@@ -124,6 +124,62 @@ class KubeConfigUtilsMergeTest {
   }
 
   @Nested
+  @DisplayName("When merging multiple Configs with null context, use context from first Config and read context from other")
+  class NullContextArgumentScattered {
+
+    @BeforeEach
+    void setUp() {
+      result = Config.empty();
+      KubeConfigUtils.merge(result, null,
+          parseConfig("/internal/kube-config-utils-merge/just-current-context.yaml"),
+          parseConfig("/internal/kube-config-utils-merge/config-1.yaml"),
+          parseConfig("/internal/kube-config-utils-merge/config-2.yaml"),
+          parseConfig("/internal/kube-config-utils-merge/config-3.yaml"),
+          parseConfig("/internal/kube-config-utils-merge/config-4.yaml"));
+    }
+
+    @Test
+    void contextsContainsAllValidConfigContexts() {
+      // Contexts that don't contain a valid nested Context object are ignored
+      assertThat(result.getContexts())
+          .allMatch(ctx -> ctx.getContext() != null);
+    }
+
+    @Test
+    void contextsContainInformationFromFile() {
+      // Parser adds additional properties to context to be able to retrieve the file where it was loaded from
+      assertThat(result.getContexts())
+          .allMatch(ctx -> ctx.getAdditionalProperties() != null)
+          .allMatch(ctx -> ctx.getAdditionalProperties().get("KUBERNETES_CONFIG_FILE_KEY") != null);
+    }
+
+    @Test
+    void currentContextLoadedFromFirstConfig() {
+      assertThat(result.getCurrentContext())
+          .hasFieldOrPropertyWithValue("name", "context-in-config-3")
+          .hasFieldOrPropertyWithValue("context.cluster", "config-3-special-cluster")
+          .hasFieldOrPropertyWithValue("context.namespace", "config-3-namespace")
+          .hasFieldOrPropertyWithValue("context.user", "config-3-special-user");
+    }
+
+    @Test
+    void clusterInfoFromFirstConfig() {
+      assertThat(result)
+          .hasFieldOrPropertyWithValue("masterUrl", "https://config-3-special-cluster.example.com/")
+          .hasFieldOrPropertyWithValue("httpsProxy", "socks5://proxy.config-3-special-cluster.example.com");
+    }
+
+    @Test
+    void userInfoFromFirstConfig() {
+      assertThat(result)
+          .hasFieldOrPropertyWithValue("username", null)
+          .hasFieldOrPropertyWithValue("password", null)
+          .hasFieldOrPropertyWithValue("autoOAuthToken", "config-3-special-user-token");
+    }
+
+  }
+
+  @Nested
   @DisplayName("When merging multiple Configs with context argument, use context from Config that matches context argument")
   class MatchingContextArgument {
 
