@@ -501,6 +501,10 @@ class OpenIDConnectionUtilsBehaviorTest {
             "- name: user\n" +
             "  user:\n" +
             "    token: original-token\n" +
+            "    auth-provider:\n" +
+            "      config:\n" +
+            "        id-token: original-token\n" +
+            "        refresh-token: original-refresh-token\n" +
             "contexts:\n" +
             "- name: context\n" +
             "  context:\n" +
@@ -546,6 +550,18 @@ class OpenIDConnectionUtilsBehaviorTest {
                 entry("id-token", "new-token"),
                 entry("refresh-token", "new-refresh-token"));
       }
+
+      @Test
+      void skipsOAuthTokenInFileIfNull() {
+        originalConfig = Config.fromKubeconfig(kubeConfig);
+        persistOAuthToken(originalConfig, null, "fake.token");
+        assertThat(KubeConfigUtils.parseConfig(kubeConfig))
+            .extracting(c -> c.getUsers().iterator().next().getUser().getAuthProvider().getConfig())
+            .asInstanceOf(InstanceOfAssertFactories.map(String.class, String.class))
+            .containsOnly(
+                entry("id-token", "original-token"),
+                entry("refresh-token", "original-refresh-token"));
+      }
     }
 
     @Nested
@@ -573,7 +589,11 @@ class OpenIDConnectionUtilsBehaviorTest {
             "users:\n" +
             "- name: user\n" +
             "  user:\n" +
-            "    token: original-token\n").getBytes(StandardCharsets.UTF_8));
+            "    token: original-token\n" +
+            "    auth-provider:\n" +
+            "      config:\n" +
+            "        id-token: original-token\n" +
+            "        refresh-token: original-refresh-token\n").getBytes(StandardCharsets.UTF_8));
         System.setProperty("kubeconfig", kubeConfig.getAbsolutePath() + File.pathSeparator + userConfig.getAbsolutePath());
         originalConfig = new ConfigBuilder().withAutoConfigure().build();
         persistOAuthToken(originalConfig, oAuthTokenResponse, "updated-token");
@@ -588,6 +608,16 @@ class OpenIDConnectionUtilsBehaviorTest {
       void persistsTokenInUserFile() {
         assertThat(KubeConfigUtils.parseConfig(userConfig))
             .returns("updated-token", c -> c.getUsers().iterator().next().getUser().getToken());
+      }
+
+      @Test
+      void persistsOAuthTokenInUserFile() {
+        assertThat(KubeConfigUtils.parseConfig(userConfig))
+            .extracting(c -> c.getUsers().iterator().next().getUser().getAuthProvider().getConfig())
+            .asInstanceOf(InstanceOfAssertFactories.map(String.class, String.class))
+            .containsOnly(
+                entry("id-token", "new-token"),
+                entry("refresh-token", "new-refresh-token"));
       }
 
       @Test
