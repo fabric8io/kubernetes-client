@@ -17,9 +17,7 @@ package io.fabric8.kubernetes.client.utils;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.fabric8.kubernetes.api.model.AuthInfo;
 import io.fabric8.kubernetes.api.model.AuthProviderConfig;
-import io.fabric8.kubernetes.api.model.NamedAuthInfo;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.http.HttpClient;
@@ -197,23 +195,20 @@ public class OpenIDConnectionUtils {
     // Persist in file
     if (currentConfig.getFileWithAuthInfo() != null && currentConfig.getCurrentContext() != null) {
       try {
-        final io.fabric8.kubernetes.api.model.Config kubeConfig = KubeConfigUtils
-            .parseConfig(currentConfig.getFileWithAuthInfo());
-        final String userName = currentConfig.getCurrentContext().getContext().getUser();
-        NamedAuthInfo namedAuthInfo = kubeConfig.getUsers().stream().filter(n -> n.getName().equals(userName)).findFirst()
-            .orElseGet(() -> {
-              NamedAuthInfo result = new NamedAuthInfo(userName, new AuthInfo());
-              kubeConfig.getUsers().add(result);
-              return result;
-            });
-        if (namedAuthInfo.getUser() == null) {
-          namedAuthInfo.setUser(new AuthInfo());
+        final var kubeConfig = KubeConfigUtils.parseConfig(currentConfig.getFileWithAuthInfo());
+        final var userName = currentConfig.getCurrentContext().getContext().getUser();
+        final var namedAuthInfo = kubeConfig.getUsers().stream()
+            .filter(n -> n.getName().equals(userName))
+            .findFirst()
+            .orElse(null);
+        // Update-persist only fields that are still present in the kubeconfig file
+        if (namedAuthInfo != null
+            && namedAuthInfo.getUser() != null
+            && namedAuthInfo.getUser().getAuthProvider() != null
+            && namedAuthInfo.getUser().getAuthProvider().getConfig() != null) {
+          namedAuthInfo.getUser().getAuthProvider().getConfig().putAll(authProviderConfig);
         }
-        if (namedAuthInfo.getUser().getAuthProvider() == null) {
-          namedAuthInfo.getUser().setAuthProvider(new AuthProviderConfig());
-        }
-        namedAuthInfo.getUser().getAuthProvider().getConfig().putAll(authProviderConfig);
-        if (Utils.isNotNullOrEmpty(token)) {
+        if (Utils.isNotNullOrEmpty(token) && namedAuthInfo != null && namedAuthInfo.getUser() != null) {
           namedAuthInfo.getUser().setToken(token);
         }
         KubeConfigUtils.persistKubeConfigIntoFile(kubeConfig, currentConfig.getFileWithAuthInfo());

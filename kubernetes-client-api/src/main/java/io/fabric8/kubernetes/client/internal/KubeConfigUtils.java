@@ -54,7 +54,7 @@ import static io.fabric8.kubernetes.client.Config.getKeyAlgorithm;
  */
 public class KubeConfigUtils {
 
-  private static final Logger logger = LoggerFactory.getLogger(io.fabric8.kubernetes.client.Config.class);
+  private static final Logger logger = LoggerFactory.getLogger(KubeConfigUtils.class);
 
   private static final String KUBERNETES_CONFIG_CONTEXT_FILE_KEY = "KUBERNETES_CONFIG_CONTEXT_FILE_KEY";
   private static final String KUBERNETES_CONFIG_CLUSTER_FILE_KEY = "KUBERNETES_CONFIG_CLUSTER_FILE_KEY";
