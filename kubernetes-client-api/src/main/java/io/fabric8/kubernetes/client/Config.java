@@ -187,16 +187,27 @@ public class Config {
   /**
    * fields not used but needed for builder generation.
    */
+  @SuppressWarnings("unused")
   private Integer watchReconnectInterval;
+  @SuppressWarnings("unused")
   private Integer watchReconnectLimit;
+  @SuppressWarnings("unused")
   private Integer uploadRequestTimeout;
+  @SuppressWarnings("unused")
   private Integer requestRetryBackoffLimit;
+  @SuppressWarnings("unused")
   private Integer requestRetryBackoffInterval;
+  @SuppressWarnings("unused")
   private Integer requestTimeout;
+  @SuppressWarnings("unused")
   private Long scaleTimeout;
+  @SuppressWarnings("unused")
   private Integer loggingInterval;
+  @SuppressWarnings("unused")
   private String impersonateUsername;
+  @SuppressWarnings("unused")
   private String[] impersonateGroups;
+  @SuppressWarnings("unused")
   private Map<String, List<String>> impersonateExtras;
   /**
    * end of fields not used but needed for builder generation.
@@ -408,19 +419,17 @@ public class Config {
       this.maxConcurrentRequests = DEFAULT_MAX_CONCURRENT_REQUESTS;
       this.maxConcurrentRequestsPerHost = DEFAULT_MAX_CONCURRENT_REQUESTS_PER_HOST;
       this.contexts = new ArrayList<>();
-      this.watchReconnectInterval = DEFAULT_WATCH_RECONNECT_INTERVAL;
-      this.watchReconnectLimit = -1;
-      this.uploadRequestTimeout = DEFAULT_UPLOAD_REQUEST_TIMEOUT;
-      this.requestRetryBackoffInterval = DEFAULT_REQUEST_RETRY_BACKOFFINTERVAL;
-      this.requestRetryBackoffLimit = DEFAULT_REQUEST_RETRY_BACKOFFLIMIT;
-      this.requestTimeout = DEFAULT_REQUEST_TIMEOUT;
-      this.scaleTimeout = DEFAULT_SCALE_TIMEOUT;
-      this.loggingInterval = DEFAULT_LOGGING_INTERVAL;
       this.userAgent = "fabric8-kubernetes-client/" + Version.clientVersion();
       this.tlsVersions = new TlsVersion[] { TlsVersion.TLS_1_3, TlsVersion.TLS_1_2 };
-      this.requestConfig = new RequestConfig(this.watchReconnectLimit, this.watchReconnectInterval,
-          this.requestTimeout, this.scaleTimeout, this.loggingInterval,
-          this.requestRetryBackoffLimit, this.requestRetryBackoffInterval, this.uploadRequestTimeout);
+      this.requestConfig = new RequestConfig(
+          -1,
+          DEFAULT_WATCH_RECONNECT_INTERVAL,
+          DEFAULT_REQUEST_TIMEOUT,
+          DEFAULT_SCALE_TIMEOUT,
+          DEFAULT_LOGGING_INTERVAL,
+          DEFAULT_REQUEST_RETRY_BACKOFFLIMIT,
+          DEFAULT_REQUEST_RETRY_BACKOFFINTERVAL,
+          DEFAULT_UPLOAD_REQUEST_TIMEOUT);
     } else {
       this.requestConfig = new RequestConfig(null, null, null, null, null, null, null, null);
     }
