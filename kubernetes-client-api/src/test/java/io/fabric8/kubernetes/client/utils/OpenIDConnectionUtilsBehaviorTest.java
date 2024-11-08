@@ -52,6 +52,7 @@ import java.security.Principal;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.Base64;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -545,6 +546,56 @@ class OpenIDConnectionUtilsBehaviorTest {
                 entry("id-token", "new-token"),
                 entry("refresh-token", "new-refresh-token"));
       }
+    }
+
+    @Nested
+    @DisplayName("With valid kube config")
+    class WithScatteredKubeConfig {
+
+      private File userConfig;
+
+      @BeforeEach
+      void setUp() throws IOException {
+        kubeConfig = tempDir.resolve("main-config").toFile();
+        userConfig = tempDir.resolve("user-config").toFile();
+        Files.write(kubeConfig.toPath(), ("---\n" +
+            "clusters:\n" +
+            "- name: cluster\n" +
+            "  cluster:\n" +
+            "    server: https://cluster.example.com\n" +
+            "contexts:\n" +
+            "- name: context\n" +
+            "  context:\n" +
+            "    cluster: cluster\n" +
+            "    user: user\n" +
+            "current-context: context\n").getBytes(StandardCharsets.UTF_8));
+        Files.write(userConfig.toPath(), ("---\n" +
+            "users:\n" +
+            "- name: user\n" +
+            "  user:\n" +
+            "    token: original-token\n").getBytes(StandardCharsets.UTF_8));
+        System.setProperty("kubeconfig", kubeConfig.getAbsolutePath() + File.pathSeparator + userConfig.getAbsolutePath());
+        originalConfig = new ConfigBuilder().withAutoConfigure().build();
+        persistOAuthToken(originalConfig, oAuthTokenResponse, "updated-token");
+      }
+
+      @AfterEach
+      void tearDown() {
+        System.clearProperty("kubeconfig");
+      }
+
+      @Test
+      void persistsTokenInUserFile() {
+        assertThat(KubeConfigUtils.parseConfig(userConfig))
+            .returns("updated-token", c -> c.getUsers().iterator().next().getUser().getToken());
+      }
+
+      @Test
+      void leavesOtherConfigUntouched() {
+        assertThat(KubeConfigUtils.parseConfig(kubeConfig))
+            .returns(Collections.emptyList(), io.fabric8.kubernetes.api.model.Config::getUsers);
+      }
+
     }
 
   }

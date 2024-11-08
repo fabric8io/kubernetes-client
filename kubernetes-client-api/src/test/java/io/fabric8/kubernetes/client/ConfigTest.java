@@ -985,6 +985,11 @@ class ConfigTest {
         System.setProperty("os.name", "Windows");
       }
 
+      @AfterEach
+      void tearDown() {
+        System.setProperty("os.name", osNamePropToRestore);
+      }
+
       @Test
       void shouldUseHomeDriveHomePathOnWindows_WhenHomeEnvVariableIsNotSet() {
         // Given
@@ -1021,10 +1026,6 @@ class ConfigTest {
             .isEqualTo("C:\\Users\\user\\workspace\\myworkspace\\tools\\cygwin\\");
       }
 
-      @AfterEach
-      void tearDown() {
-        System.setProperty("os.name", osNamePropToRestore);
-      }
     }
 
     @Test

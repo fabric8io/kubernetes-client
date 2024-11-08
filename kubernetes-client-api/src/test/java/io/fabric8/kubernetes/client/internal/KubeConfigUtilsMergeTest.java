@@ -91,11 +91,27 @@ class KubeConfigUtilsMergeTest {
     }
 
     @Test
-    void contextsContainInformationFromFile() {
+    void contextsContainInformationFromUsedFile() {
       // Parser adds additional properties to context to be able to retrieve the file where it was loaded from
       assertThat(result.getContexts())
           .allMatch(ctx -> ctx.getAdditionalProperties() != null)
-          .allMatch(ctx -> ctx.getAdditionalProperties().get("KUBERNETES_CONFIG_FILE_KEY") != null);
+          .allMatch(ctx -> ctx.getAdditionalProperties().get("KUBERNETES_CONFIG_CONTEXT_FILE_KEY") != null)
+          // This information is only available for the applicable/current context
+          .anyMatch(ctx -> ctx.getAdditionalProperties().get("KUBERNETES_CONFIG_CLUSTER_FILE_KEY") == null)
+          .anyMatch(ctx -> ctx.getAdditionalProperties().get("KUBERNETES_CONFIG_AUTH_INFO_FILE_KEY") != null)
+          .anyMatch(ctx -> ctx.getAdditionalProperties().get("KUBERNETES_CONFIG_CLUSTER_FILE_KEY") == null)
+          .anyMatch(ctx -> ctx.getAdditionalProperties().get("KUBERNETES_CONFIG_AUTH_INFO_FILE_KEY") != null);
+    }
+
+    @Test
+    void currentContextContainsInformationFromUsedFiles() {
+      assertThat(result.getCurrentContext())
+          .extracting("additionalProperties")
+          .asInstanceOf(InstanceOfAssertFactories.map(String.class, Object.class))
+          .containsKeys(
+              "KUBERNETES_CONFIG_CONTEXT_FILE_KEY",
+              "KUBERNETES_CONFIG_CLUSTER_FILE_KEY",
+              "KUBERNETES_CONFIG_AUTH_INFO_FILE_KEY");
     }
 
     @Test
@@ -150,7 +166,23 @@ class KubeConfigUtilsMergeTest {
       // Parser adds additional properties to context to be able to retrieve the file where it was loaded from
       assertThat(result.getContexts())
           .allMatch(ctx -> ctx.getAdditionalProperties() != null)
-          .allMatch(ctx -> ctx.getAdditionalProperties().get("KUBERNETES_CONFIG_FILE_KEY") != null);
+          .allMatch(ctx -> ctx.getAdditionalProperties().get("KUBERNETES_CONFIG_CONTEXT_FILE_KEY") != null)
+          // This information is only available for the applicable/current context
+          .anyMatch(ctx -> ctx.getAdditionalProperties().get("KUBERNETES_CONFIG_CLUSTER_FILE_KEY") == null)
+          .anyMatch(ctx -> ctx.getAdditionalProperties().get("KUBERNETES_CONFIG_AUTH_INFO_FILE_KEY") != null)
+          .anyMatch(ctx -> ctx.getAdditionalProperties().get("KUBERNETES_CONFIG_CLUSTER_FILE_KEY") == null)
+          .anyMatch(ctx -> ctx.getAdditionalProperties().get("KUBERNETES_CONFIG_AUTH_INFO_FILE_KEY") != null);
+    }
+
+    @Test
+    void currentContextContainsInformationFromUsedFiles() {
+      assertThat(result.getCurrentContext())
+          .extracting("additionalProperties")
+          .asInstanceOf(InstanceOfAssertFactories.map(String.class, Object.class))
+          .containsKeys(
+              "KUBERNETES_CONFIG_CONTEXT_FILE_KEY",
+              "KUBERNETES_CONFIG_CLUSTER_FILE_KEY",
+              "KUBERNETES_CONFIG_AUTH_INFO_FILE_KEY");
     }
 
     @Test

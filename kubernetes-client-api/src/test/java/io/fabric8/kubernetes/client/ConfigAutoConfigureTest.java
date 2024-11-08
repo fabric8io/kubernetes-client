@@ -46,7 +46,9 @@ class ConfigAutoConfigureTest {
       final var result = new ConfigBuilder().withAutoConfigure().build();
       assertThat(result)
           .hasFieldOrPropertyWithValue("autoConfigure", true)
-          .returns(null, Config::getFile);
+          .returns(null, Config::getFile)
+          .returns(null, Config::getFileWithCluster)
+          .returns(null, Config::getFileWithAuthInfo);
     }
 
     @Test
@@ -55,7 +57,9 @@ class ConfigAutoConfigureTest {
       final var result = new ConfigBuilder().withAutoConfigure().build();
       assertThat(result)
           .hasFieldOrPropertyWithValue("autoConfigure", true)
-          .returns(null, Config::getFile);
+          .returns(null, Config::getFile)
+          .returns(null, Config::getFileWithCluster)
+          .returns(null, Config::getFileWithAuthInfo);
     }
 
     @Test
@@ -65,7 +69,9 @@ class ConfigAutoConfigureTest {
       final var result = new ConfigBuilder().withAutoConfigure().build();
       assertThat(result)
           .hasFieldOrPropertyWithValue("autoConfigure", true)
-          .returns(null, Config::getFile);
+          .returns(null, Config::getFile)
+          .returns(null, Config::getFileWithCluster)
+          .returns(null, Config::getFileWithAuthInfo);
     }
 
     @Test
@@ -75,6 +81,8 @@ class ConfigAutoConfigureTest {
       assertThat(result)
           .hasFieldOrPropertyWithValue("autoConfigure", true)
           .returns(resolveFile("/config-auto-configure/config-2.yaml"), Config::getFile)
+          .returns(resolveFile("/config-auto-configure/config-2.yaml"), Config::getFileWithCluster)
+          .returns(resolveFile("/config-auto-configure/config-2.yaml"), Config::getFileWithAuthInfo)
           .hasFieldOrPropertyWithValue("masterUrl", "https://config-2.example.com/")
           .hasFieldOrPropertyWithValue("currentContext.name", "context-in-all-configs");
 
@@ -90,6 +98,8 @@ class ConfigAutoConfigureTest {
       assertThat(result)
           .hasFieldOrPropertyWithValue("autoConfigure", true)
           .returns(resolveFile("/config-auto-configure/config-1.yaml"), Config::getFile)
+          .returns(resolveFile("/config-auto-configure/config-1.yaml"), Config::getFileWithCluster)
+          .returns(resolveFile("/config-auto-configure/config-1.yaml"), Config::getFileWithAuthInfo)
           .hasFieldOrPropertyWithValue("masterUrl", "https://config-1.example.com/")
           .hasFieldOrPropertyWithValue("currentContext.name", "context-in-all-configs");
 
@@ -106,12 +116,29 @@ class ConfigAutoConfigureTest {
       assertThat(result)
           .hasFieldOrPropertyWithValue("autoConfigure", true)
           .returns(resolveFile("/config-auto-configure/config-3.yaml"), Config::getFile)
+          .returns(resolveFile("/config-auto-configure/config-3.yaml"), Config::getFileWithCluster)
+          .returns(resolveFile("/config-auto-configure/config-3.yaml"), Config::getFileWithAuthInfo)
           .hasFieldOrPropertyWithValue("masterUrl", "https://config-3-special-cluster.example.com/")
           .hasFieldOrPropertyWithValue("currentContext.name", "context-in-config-3");
-
     }
 
-    // TODO: What if the user info is in a different file
+    @Test
+    void withMultipleConfigFilesAndScattered() {
+      System.setProperty("kubeconfig",
+          resolveFile("/config-auto-configure/scattered.yaml").getAbsolutePath() + File.pathSeparator +
+              resolveFile("/config-auto-configure/scattered-context.yaml").getAbsolutePath() + File.pathSeparator +
+              resolveFile("/config-auto-configure/scattered-cluster.yaml").getAbsolutePath() + File.pathSeparator +
+              resolveFile("/config-auto-configure/scattered-user.yaml").getAbsolutePath() + File.pathSeparator);
+      final var result = new ConfigBuilder().withAutoConfigure().build();
+      assertThat(result)
+          .hasFieldOrPropertyWithValue("autoConfigure", true)
+          .returns(resolveFile("/config-auto-configure/scattered-context.yaml"), Config::getFile)
+          .returns(resolveFile("/config-auto-configure/scattered-cluster.yaml"), Config::getFileWithCluster)
+          .returns(resolveFile("/config-auto-configure/scattered-user.yaml"), Config::getFileWithAuthInfo)
+          .hasFieldOrPropertyWithValue("masterUrl", "https://scattered-cluster.example.com/")
+          .hasFieldOrPropertyWithValue("currentContext.name", "scattered-context");
+
+    }
   }
 
   private static File resolveFile(String path) {
