@@ -233,7 +233,7 @@ public class Utils {
    * Utility method to generate UUIDs.
    * This is taken from Spring Framework's <a href=
    * "https://github.com/spring-projects/spring-framework/blob/a4db0e7448287028d228d46fe7b4df202150958a/spring-core/src/main/java/org/springframework/util/SimpleIdGenerator.java#L35">SimpleIdGenerator</a>
-   * 
+   *
    * @return generated UUID
    */
   public static UUID generateId() {
