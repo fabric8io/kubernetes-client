@@ -57,9 +57,8 @@ public class ConfigBuilder extends ConfigFluent<ConfigBuilder> implements Visita
         fluent.getOauthTokenProvider(), fluent.getCustomHeaders(), fluent.getRequestRetryBackoffLimit(),
         fluent.getRequestRetryBackoffInterval(), fluent.getUploadRequestTimeout(), fluent.getOnlyHttpWatches(),
         fluent.getCurrentContext(), fluent.getContexts(),
-        Optional.ofNullable(fluent.getAutoConfigure()).orElse(!disableAutoConfig()), true, fluent.getKubeConfigFiles());
+        Optional.ofNullable(fluent.getAutoConfigure()).orElse(!disableAutoConfig()), true);
     buildable.setAuthProvider(fluent.getAuthProvider());
     return buildable;
   }
-
 }

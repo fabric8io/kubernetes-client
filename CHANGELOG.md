@@ -15,7 +15,7 @@
 * Fix #6281: use GitHub binary repo for Kube API Tests
 * Fix #6282: Allow annotated types with Pattern, Min, and Max with Lists and Maps and CRD generation
 * Fix #5480: Move `io.fabric8:zjsonpatch` to KubernetesClient project
-* Fix #6240: Use kubeconfig files listed in the KUBECONFIG env var
+* Fix #6240: Support for multiple files listed in the KUBECONFIG env var
 
 #### Dependency Upgrade
 * Fix #2632: Bumped OkHttp from 3.12.12 to 4.12.0

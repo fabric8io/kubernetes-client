@@ -76,7 +76,7 @@ class ConfigTest {
       .filePath(ConfigTest.class.getResource("/test-kubeconfig-exec-args-with-spaces"));
 
   private static final String TEST_KUBECONFIG_NO_CURRENT_CONTEXT_FILE = Utils
-      .filePath(ConfigTest.class.getResource("/test-kubeconfig-nocurrentctxt.yml"));
+      .filePath(ConfigTest.class.getResource("/test-kubeconfig-nocurrentctxt"));
 
   private static final String TEST_KUBECONFIG_EXEC_FILE_CERT_AUTH = Utils
       .filePath(ConfigTest.class.getResource("/test-kubeconfig-exec-cert-auth"));
