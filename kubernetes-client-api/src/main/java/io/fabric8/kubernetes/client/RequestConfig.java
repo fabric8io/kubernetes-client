@@ -30,6 +30,7 @@ import static io.fabric8.kubernetes.client.Config.DEFAULT_REQUEST_TIMEOUT;
 import static io.fabric8.kubernetes.client.Config.DEFAULT_SCALE_TIMEOUT;
 import static io.fabric8.kubernetes.client.Config.DEFAULT_UPLOAD_REQUEST_TIMEOUT;
 
+@SuppressWarnings({ "LombokGetterMayBeUsed", "LombokSetterMayBeUsed" })
 public class RequestConfig {
 
   private String impersonateUsername;
