@@ -196,12 +196,6 @@
 
     <dependency>
       <groupId>io.fabric8</groupId>
-      <artifactId>openshift-server-mock</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>io.fabric8</groupId>
       <artifactId>zjsonpatch</artifactId>
       <version>${project.version}</version>
     </dependency>
@@ -303,7 +297,6 @@
                   <include>io.fabric8:kubernetes-client</include>
                   <include>io.fabric8:kubernetes-server-mock</include>
                   <include>io.fabric8:openshift-client</include>
-                  <include>io.fabric8:openshift-server-mock</include>
                 </includes>
               </artifactSet>
               <transformers>
@@ -364,7 +357,6 @@
                   <include>io.fabric8:kubernetes-client</include>
                   <include>io.fabric8:kubernetes-server-mock</include>
                   <include>io.fabric8:openshift-client</include>
-                  <include>io.fabric8:openshift-server-mock</include>
                 </includes>
               </artifactSet>
               <relocations>
