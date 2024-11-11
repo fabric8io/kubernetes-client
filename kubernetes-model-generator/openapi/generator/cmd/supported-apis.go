@@ -17,6 +17,7 @@ package main
 
 import (
 	"fmt"
+	certmanagerv1 "github.com/cert-manager/cert-manager/pkg/apis/certmanager/v1"
 	chaosmeshv1alpha1 "github.com/chaos-mesh/chaos-mesh/api/v1alpha1"
 	networkattachmentdefinition "github.com/k8snetworkplumbingwg/network-attachment-definition-client/pkg/apis/k8s.cni.cncf.io/v1"
 	volumesnapshotv1 "github.com/kubernetes-csi/external-snapshotter/client/v8/apis/volumesnapshot/v1"
@@ -70,6 +71,7 @@ func init() {
 // Forces imports so that modules are present in go.mod
 var supportedApisRun = func(cobraCmd *cobra.Command, args []string) {
 	fmt.Printf("This generator generates OpenAPI schemas for the following supported APIs:\n%s\n", strings.Join([]string{
+		certmanagerv1.SchemeGroupVersion.String(),
 		chaosmeshv1alpha1.GroupVersion.String(),
 		networkattachmentdefinition.SchemeGroupVersion.String(),
 		olm.SchemeGroupVersion.String(),

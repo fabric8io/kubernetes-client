@@ -34,6 +34,7 @@ type module struct {
 var modules = []module{
 	{patterns: packages.OpenShiftPackagePatterns, outputName: "generated_openshift_openapi"},
 	{patterns: packages.AutoscalingPackagePatterns, outputName: "generated_autoscaling_openapi"},
+	{patterns: packages.CertManagerPackagePatterns, outputName: "generated_certmanager_openapi"},
 	// https://github.com/chaos-mesh/chaos-mesh/issues/4517
 	//{patterns: packages.ChaosMeshPackagePatterns, outputName: "generated_chaosmesh_openapi"},
 	{patterns: packages.IstioPackagePatterns, outputName: "generated_istio_openapi"},

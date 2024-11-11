@@ -45,6 +45,8 @@ openapi-generate-java-classes:
 	cd kubernetes-model-generator && mvn $(MAVEN_ARGS) -Pgenerate clean install
 	# TODO: run generate from extensions module root once all extensions are migrated
 	cd extensions && mvn $(MAVEN_ARGS) -N clean install
+	cd extensions/certmanager && mvn $(MAVEN_ARGS) -N clean install
+	cd extensions/certmanager/model && mvn $(MAVEN_ARGS) -Pgenerate clean install
 	cd extensions/istio && mvn $(MAVEN_ARGS) -N clean install
 	cd extensions/istio/model && mvn $(MAVEN_ARGS) -Pgenerate clean install
 	cd extensions/knative && mvn $(MAVEN_ARGS) -N clean install

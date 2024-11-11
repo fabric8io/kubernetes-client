@@ -82,6 +82,7 @@
     <openapi.schema.openshift-generated>${project.parent.basedir}/openapi/schemas/openshift-generated.json</openapi.schema.openshift-generated>
     <openapi.schema.dev.knative>${project.basedir}/../../../kubernetes-model-generator/openapi/schemas/dev.knative.json</openapi.schema.dev.knative>
     <openapi.schema.dev.tekton>${project.basedir}/../../../kubernetes-model-generator/openapi/schemas/dev.tekton.json</openapi.schema.dev.tekton>
+    <openapi.schema.io.cert-manager>${project.basedir}/../../../kubernetes-model-generator/openapi/schemas/io.cert-manager.json</openapi.schema.io.cert-manager>
     <openapi.schema.io.istio>${project.basedir}/../../../kubernetes-model-generator/openapi/schemas/io.istio.json</openapi.schema.io.istio>
     <openapi.schema.io.k8s.autoscaling>${project.basedir}/../../../kubernetes-model-generator/openapi/schemas/io.k8s.autoscaling.json</openapi.schema.io.k8s.autoscaling>
     <openapi.schema.io.k8s.storage.snapshot>${project.basedir}/../../../kubernetes-model-generator/openapi/schemas/io.k8s.storage.snapshot.json</openapi.schema.io.k8s.storage.snapshot>
@@ -182,6 +183,7 @@
                 <com.github.tektoncd.pipeline>io.fabric8.tekton.pipeline</com.github.tektoncd.pipeline>
                 <dev.knative>io.fabric8.knative</dev.knative>
                 <dev.tekton>io.fabric8.tekton</dev.tekton>
+                <io.cert-manager>io.fabric8.certmanager.api.model</io.cert-manager>
                 <io.istio>io.fabric8.istio.api</io.istio>
                 <io.k8s.api.core.v1>io.fabric8.kubernetes.api.model</io.k8s.api.core.v1>
                 <io.k8s.apimachinery.pkg>io.fabric8.kubernetes.api.model</io.k8s.apimachinery.pkg>
@@ -192,7 +194,9 @@
                 <io.k8s.autoscaling>io.fabric8.autoscaling.api.model</io.k8s.autoscaling>
                 <io.k8s.client-go.tools.clientcmd.api.v1>io.fabric8.kubernetes.api.model</io.k8s.client-go.tools.clientcmd.api.v1>
                 <io.k8s.kube-aggregator.pkg.apis.apiregistration.v1>io.fabric8.kubernetes.api.model</io.k8s.kube-aggregator.pkg.apis.apiregistration.v1>
+                <io.k8s.networking.gateway>io.fabric8.kubernetes.api.model.gatewayapi</io.k8s.networking.gateway>
                 <io.k8s.sigs.cluster-api.api>io.fabric8.kubernetes.api.model.clusterapi</io.k8s.sigs.cluster-api.api>
+                <io.k8s.sigs.gateway-api.apis>io.fabric8.kubernetes.api.model.gatewayapi</io.k8s.sigs.gateway-api.apis>
                 <io.k8s.storage.snapshot.v1>io.fabric8.volumesnapshot.api.model</io.k8s.storage.snapshot.v1>
                 <io.openshift>io.fabric8.openshift.api.model</io.openshift>
                 <io.openshift.apiserver>io.fabric8.openshift.api.model.miscellaneous.apiserver</io.openshift.apiserver>

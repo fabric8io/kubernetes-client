@@ -25,31 +25,20 @@
     <version>7.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>certmanager-client</artifactId>
+  <artifactId>certmanager-model</artifactId>
   <packaging>bundle</packaging>
-  <name>Fabric8 :: Cert Manager :: Client</name>
+  <name>Fabric8 :: Cert Manager :: Model</name>
 
   <properties>
-    <osgi.require-capability>
-      osgi.extender;
-      filter:="(osgi.extender=osgi.serviceloader.registrar)"
-    </osgi.require-capability>
-    <osgi.provide-capability>
-      osgi.serviceloader;
-      osgi.serviceloader=io.fabric8.kubernetes.client.extension.ExtensionAdapter
-    </osgi.provide-capability>
     <osgi.import>
       io.fabric8.kubernetes.api.builder,
-      !io.fabric8.certmanager.client.*,
+      !io.fabric8.certmanager.api.model.*,
       *
     </osgi.import>
     <osgi.export>
-      io.fabric8.certmanager.client.*
+      io.fabric8.certmanager.api.model.*
     </osgi.export>
-    <osgi.include.resources>
-      ${osgi.include.resources.default},
-      /META-INF/services/io.fabric8.kubernetes.client.extension.ExtensionAdapter=target/classes/META-INF/services/io.fabric8.kubernetes.client.extension.ExtensionAdapter
-    </osgi.include.resources>
+    <clone-kube>true</clone-kube>
   </properties>
 
   <dependencies>
@@ -58,18 +47,49 @@
       <artifactId>transform-annotations</artifactId>
     </dependency>
     <dependency>
-      <groupId>io.fabric8</groupId>
-      <artifactId>certmanager-model</artifactId>
+      <groupId>io.sundr</groupId>
+      <artifactId>sundr-codegen-velocity-nodeps</artifactId>
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
-      <artifactId>kubernetes-client-api</artifactId>
+      <artifactId>kubernetes-model-core</artifactId>
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
-      <artifactId>kubernetes-client</artifactId>
-      <scope>runtime</scope>
+      <artifactId>kubernetes-model-apiextensions</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>kubernetes-model-gatewayapi</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
     </dependency>
   </dependencies>
+
+  <profiles>
+    <profile>
+      <id>generate</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>io.fabric8</groupId>
+            <artifactId>openapi-model-generator-maven-plugin</artifactId>
+            <configuration>
+              <settings combine.self="append">
+                <schemas>
+                  <schema>${openapi.schema.io.cert-manager}</schema>
+                </schemas>
+                <includeGenerationRegexes>
+                  <includeGenerationRegex>^io\.cert-manager\..*$</includeGenerationRegex>
+                </includeGenerationRegexes>
+              </settings>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 
 </project>

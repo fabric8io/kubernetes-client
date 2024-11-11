@@ -56,6 +56,12 @@ var AutoscalingPackagePatterns = []string{
 	"k8s.io/autoscaler/vertical-pod-autoscaler/pkg/apis/autoscaling.k8s.io/v...",
 }
 
+var CertManagerPackagePatterns = []string{
+	"github.com/cert-manager/cert-manager/pkg/apis/acme/v...",
+	"github.com/cert-manager/cert-manager/pkg/apis/meta/v...",
+	"github.com/cert-manager/cert-manager/pkg/apis/certmanager/v...",
+}
+
 var ChaosMeshPackagePatterns = []string{
 	"github.com/chaos-mesh/chaos-mesh/api/v1alpha1",
 }

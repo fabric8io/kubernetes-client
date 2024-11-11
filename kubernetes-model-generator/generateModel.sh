@@ -22,10 +22,6 @@ ABSOLUTE_BASEDIR=$(realpath "$BASEDIR")
 
 # Array for all existing modules
 declare -a modules=(
-    "../extensions/certmanager/generator-v1"
-    "../extensions/certmanager/generator-v1alpha2"
-    "../extensions/certmanager/generator-v1alpha3"
-    "../extensions/certmanager/generator-v1beta1"
     "../extensions/chaosmesh/generator"
     "../extensions/open-cluster-management/generator-apps"
     "../extensions/open-cluster-management/generator-agent"
@@ -39,7 +35,6 @@ declare -a modules=(
 )
 
 declare -a extensionModuleParents=(
-    "../extensions/certmanager/pom.xml"
     "../extensions/chaosmesh/pom.xml"
 )
 

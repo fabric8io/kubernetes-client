@@ -12,6 +12,7 @@
   - [Removed deprecated types for network.openshift.io (OpenShift-SDN-only)](#openshift-network-removed)
   - [Renamed clusterautoscaling to autoscaling](#openshift-clusterautoscaling-to-autoscaling)
   - [Renamed machineconfig to machineconfiguration](#openshift-machineconfig-to-machineconfiguration)
+  - [Cert Manager Extension](#cert-manager-extension)
   - [Istio Extension](#istio-extension)
   - [Open Virtual Network OVN Extension](#ovn-extension)
   - [Tekton Extension](#tekton-extension)
@@ -120,6 +121,13 @@ The module `openshift-model-machineconfig` has been renamed to `openshift-model-
 The package has also been renamed from `io.fabric8.openshift.api.model.machineconfig` to `io.fabric8.openshift.api.model.machineconfiguration`.
 
 The OpenShiftClient DSL entry-point remains the same: `OpenShiftClient.machineConfigurations()`.
+
+### Cert Manager Extension <a href="#cert-manager-extension" id="cert-manager-extension"/>
+
+The deprecated Alpha and Beta model types have been removed.
+This means that the `io.fabric8:cert-manager-model-v1alpha2`, `io.fabric8:cert-manager-model-v1alpha3`, and `io.fabric8:cert-manager-model-v1beta1` modules are no longer available.
+
+The module `io.fabric8:cert-manager-model-v1` has been renamed to `io.fabric8:cert-manager-model`.
 
 ### Istio Extension <a href="#istio-extension" id="istio-extension"/>
 

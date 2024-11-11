@@ -19,6 +19,7 @@ import io.fabric8.certmanager.api.model.v1.Certificate;
 import io.fabric8.certmanager.api.model.v1.CertificateBuilder;
 import io.fabric8.certmanager.api.model.v1.CertificateList;
 import io.fabric8.certmanager.client.CertManagerClient;
+import io.fabric8.kubernetes.client.dsl.NonDeletingOperation;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import org.junit.jupiter.api.Test;
 
@@ -76,8 +77,8 @@ class V1CertificateCrudTest {
         "    name: selfsigned-issuer",
         "    kind: Issuer",
         "    group: cert-manager.io"));
-    io.fabric8.certmanager.api.model.v1beta1.Certificate certificate = client.v1beta1().certificates().inNamespace("ns4")
-        .load(new ByteArrayInputStream(certificateDefinition.getBytes())).createOrReplace();
+    io.fabric8.certmanager.api.model.v1.Certificate certificate = client.v1().certificates().inNamespace("ns4")
+        .load(new ByteArrayInputStream(certificateDefinition.getBytes())).createOr(NonDeletingOperation::update);
     assertEquals("ca-issuer", certificate.getMetadata().getName());
     assertEquals("ca-key-pair", certificate.getSpec().getSecretName());
     assertEquals("my-csi-app", certificate.getSpec().getCommonName());
