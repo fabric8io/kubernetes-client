@@ -223,7 +223,6 @@
     <module>openshift-client-api</module>
     <module>openshift-client</module>
     <module>extensions</module>
-    <module>junit/openshift-server-mock</module>
     <module>platforms</module>
     <module>kubernetes-tests</module>
     <module>uberjar</module>
@@ -523,11 +522,6 @@
       <dependency>
         <groupId>io.fabric8</groupId>
         <artifactId>kubernetes-server-mock</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>io.fabric8</groupId>
-        <artifactId>openshift-server-mock</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>

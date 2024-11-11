@@ -31,6 +31,7 @@
 * Fix #5264: `Config.errorMessages` has been removed. Please use Kubernetes status messages directly.
 * Fix #6081: Moved Java baseline from 8 (1.8) to 11
 * Fix #6138: Removed unused `io:fabric8:kubernetes-model` artifact
+* Fix #5351: Removed deprecated `io.fabric8:openshift-server-mock` artifact
 * Fix #6156: Removed deprecated extension `io:fabric8:service-catalog`
 * Fix #6158: Removed deprecated methods from `io.fabric8.kubernetes.client.utils.IOHelpers`
 * Fix #6361: Renamed SettableBeanPropertyDelegate to SettableBeanPropertyDelegating

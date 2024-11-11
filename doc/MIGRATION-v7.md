@@ -22,6 +22,7 @@
   - [SSL/TLS certificates](#mockwebserver-ssl-tls-certificates)
 - [Deprecations and Removals](#deprecations-and-removals)
   - [Apache Felix SCR Annotations removed](#apache-felix-scr-annotations)
+  - [OpenShift Server Mock removed](#openshift-server-mock-removed)
   - [Service Catalog API (extension) removed](#service-catalog-extension)
 
 
@@ -225,6 +226,14 @@ If you need the certificates (public and private), you can retrieve them by usin
 [Apache Felix SCR annotations](https://felix.apache.org/documentation/subprojects/apache-felix-maven-scr-plugin/scr-annotations.html) are not supported anymore by community. Fabric8 Kubernetes Client no longer uses Apache Felix SCR annotations for OSGi
 Declarative Services. Fabric8 Kubernetes Client is now using official OSGi annotations instead. If you're using Apache Felix SCR
 annotations, you need to switch to [Official OSGi Component annotations](https://docs.osgi.org/javadoc/r6/cmpn/org/osgi/service/component/annotations/package-summary.html).
+
+### OpenShift Server Mock removed <a href="#openshift-server-mock-removed" id="openshift-server-mock-removed"/>
+
+The `io.fabric8:openshift-server-mock` module has been removed from the project after being deprecated for a long time.
+
+The usage of the `@EnableOpenShiftMockClient` annotation should be replaced with the `@EnableKubernetesMockClient` annotation.
+
+The use of the `OpenShiftMockServer` class should be replaced with the `KubernetesMockServer` class.
 
 ### Service Catalog API (extension) removed <a href="#service-catalog-extension" id="service-catalog-extension"/>
 
