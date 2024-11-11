@@ -16,9 +16,6 @@
 package io.fabric8.certmanager.client;
 
 import io.fabric8.certmanager.client.dsl.V1APIGroupDSL;
-import io.fabric8.certmanager.client.dsl.V1alpha2APIGroupDSL;
-import io.fabric8.certmanager.client.dsl.V1alpha3APIGroupDSL;
-import io.fabric8.certmanager.client.dsl.V1beta1APIGroupDSL;
 import io.fabric8.kubernetes.client.Client;
 
 /**
@@ -26,10 +23,4 @@ import io.fabric8.kubernetes.client.Client;
  */
 public interface CertManagerClient extends Client {
   V1APIGroupDSL v1();
-
-  V1alpha2APIGroupDSL v1alpha2();
-
-  V1alpha3APIGroupDSL v1alpha3();
-
-  V1beta1APIGroupDSL v1beta1();
 }

@@ -16,9 +16,6 @@
 package io.fabric8.certmanager.client;
 
 import io.fabric8.certmanager.client.dsl.V1APIGroupDSL;
-import io.fabric8.certmanager.client.dsl.V1alpha2APIGroupDSL;
-import io.fabric8.certmanager.client.dsl.V1alpha3APIGroupDSL;
-import io.fabric8.certmanager.client.dsl.V1beta1APIGroupDSL;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.RequestConfig;
@@ -54,21 +51,6 @@ public class DefaultCertManagerClient extends ExtensionRootClientAdapter<Default
   @Override
   public V1APIGroupDSL v1() {
     return adapt(V1APIGroupClient.class);
-  }
-
-  @Override
-  public V1alpha2APIGroupDSL v1alpha2() {
-    return adapt(V1alpha2APIGroupClient.class);
-  }
-
-  @Override
-  public V1alpha3APIGroupDSL v1alpha3() {
-    return adapt(V1alpha3APIGroupClient.class);
-  }
-
-  @Override
-  public V1beta1APIGroupDSL v1beta1() {
-    return adapt(V1beta1APIGroupClient.class);
   }
 
 }

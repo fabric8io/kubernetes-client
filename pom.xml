@@ -636,22 +636,7 @@
 
       <dependency>
         <groupId>io.fabric8</groupId>
-        <artifactId>certmanager-model-v1alpha2</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>io.fabric8</groupId>
-        <artifactId>certmanager-model-v1alpha3</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>io.fabric8</groupId>
-        <artifactId>certmanager-model-v1beta1</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>io.fabric8</groupId>
-        <artifactId>certmanager-model-v1</artifactId>
+        <artifactId>certmanager-model</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>

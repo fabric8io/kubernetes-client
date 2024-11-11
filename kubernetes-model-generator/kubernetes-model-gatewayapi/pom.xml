@@ -63,9 +63,6 @@
                 <schemas>
                   <schema>${project.basedir}/../openapi/schemas/gateway-api.json</schema>
                 </schemas>
-                <packageMappings combine.self="append">
-                  <io.k8s.sigs.gateway-api.apis>io.fabric8.kubernetes.api.model.gatewayapi</io.k8s.sigs.gateway-api.apis>
-                </packageMappings>
                 <includeGenerationRegexes>
                   <includeGenerationRegex>^io\.k8s\.sigs\.gateway-api\.apis\..*$</includeGenerationRegex>
                 </includeGenerationRegexes>

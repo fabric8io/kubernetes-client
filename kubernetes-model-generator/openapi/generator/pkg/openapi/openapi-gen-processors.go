@@ -17,6 +17,7 @@
 package openapi
 
 import (
+	"fmt"
 	"go/ast"
 	"go/parser"
 	"go/token"
@@ -59,17 +60,18 @@ func processOmitPrivateFields(_ *generator.Context, _ *types.Package, t *types.T
 
 var patchTags = []string{"patchStrategy", "patchMergeKey"}
 
-// processPatchComments function to process the patchStrategy and patchMergeKey comment tags and add them to the field tags if necessary
+// processPatchComments function to process the patchStrategy and patchMergeKey comment tags and add them to the field or comment tags if necessary
 // See https://github.com/fabric8io/kubernetes-client/issues/6426#issuecomment-2431653451
 func processPatchComments(_ *generator.Context, _ *types.Package, t *types.Type, m *types.Member, memberIndex int) {
 	for _, patchTag := range patchTags {
 		tag := reflect.StructTag(m.Tags).Get(patchTag)
-		if tag != "" {
-			continue // Value already set, there is no problem
-		}
-		tags, ok := gengo.ExtractCommentTags("+", m.CommentLines)[patchTag]
-		if ok {
-			t.Members[memberIndex].Tags = t.Members[memberIndex].Tags + " " + patchTag + ":\"" + tags[0] + "\""
+		commentTags, hasCommentTags := gengo.ExtractCommentTags("+", m.CommentLines)[patchTag]
+		if tag != "" && !hasCommentTags {
+			t.Members[memberIndex].CommentLines = append(t.Members[memberIndex].CommentLines, "+"+patchTag+"="+tag)
+		} else if tag != "" && tag != commentTags[0] {
+			panic(fmt.Errorf("mismatching patch tag or comment tag for %s", m.Name))
+		} else if tag == "" && hasCommentTags {
+			t.Members[memberIndex].Tags = t.Members[memberIndex].Tags + " " + patchTag + ":\"" + commentTags[0] + "\""
 		}
 	}
 }
