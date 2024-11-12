@@ -99,6 +99,29 @@ var KnativePackagePatterns = []string{
 	"knative.dev/eventing-prometheus/pkg/apis/.../v...",
 }
 
+var OpenClusterManagementPackagePatterns = []string{
+	// agent.open-cluster-management.io
+	"github.com/stolostron/klusterlet-addon-controller/pkg/apis/agent/v...",
+	// apps.open-cluster-management.io
+	"open-cluster-management.io/multicloud-operators-channel/pkg/apis/apps/v...",
+	"open-cluster-management.io/multicloud-operators-subscription/pkg/apis/apps/placementrule/v1",
+	"open-cluster-management.io/multicloud-operators-subscription/pkg/apis/apps/v1",
+	// cluster.open-cluster-management.io
+	"open-cluster-management.io/api/cluster/v...",
+	// discovery.open-cluster-management.io
+	"github.com/stolostron/discovery/api/v...",
+	// observability.open-cluster-management.io
+	"github.com/stolostron/multicluster-observability-operator/operators/multiclusterobservability/api/shared",
+	"github.com/stolostron/multicluster-observability-operator/operators/multiclusterobservability/api/v...",
+	// operator.open-cluster-management.io
+	"github.com/stolostron/multiclusterhub-operator/api/v...",
+	"open-cluster-management.io/api/operator/v...",
+	// policy.open-cluster-management.io
+	"open-cluster-management.io/governance-policy-propagator/api/v...",
+	// search.open-cluster-management.io
+	"github.com/stolostron/search-v2-operator/api/v...",
+}
+
 var OvnPackagePatterns = []string{
 	"github.com/ovn-org/ovn-kubernetes/go-controller/pkg/crd/adminpolicybasedroute/v1",
 	"github.com/ovn-org/ovn-kubernetes/go-controller/pkg/crd/egressfirewall/v1",

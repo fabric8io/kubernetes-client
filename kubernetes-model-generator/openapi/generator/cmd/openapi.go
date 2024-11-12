@@ -22,6 +22,7 @@ import (
 	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/cmd/generated_certmanager_openapi"
 	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/cmd/generated_istio_openapi"
 	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/cmd/generated_knative_openapi"
+	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/cmd/generated_openclustermanagement_openapi"
 	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/cmd/generated_openshift_openapi"
 	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/cmd/generated_ovn_openapi"
 	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/cmd/generated_tekton_openapi"
@@ -58,6 +59,7 @@ var modules = []module{
 	{outputName: "io.istio", getDefinitionsFunc: generated_istio_openapi.GetOpenAPIDefinitions, patterns: packages.IstioPackagePatterns},
 	{outputName: "io.k8s.autoscaling", getDefinitionsFunc: generated_autoscaling_openapi.GetOpenAPIDefinitions, patterns: packages.AutoscalingPackagePatterns},
 	{outputName: "io.k8s.storage.snapshot", getDefinitionsFunc: generated_volumesnapshot_openapi.GetOpenAPIDefinitions, patterns: packages.VolumeSnapshotPackagePatterns},
+	{outputName: "io.open-cluster-management", getDefinitionsFunc: generated_openclustermanagement_openapi.GetOpenAPIDefinitions, patterns: packages.OvnPackagePatterns},
 	{outputName: "org.ovn", getDefinitionsFunc: generated_ovn_openapi.GetOpenAPIDefinitions, patterns: packages.OvnPackagePatterns},
 	{outputName: "sh.volcano", getDefinitionsFunc: generated_volcano_openapi.GetOpenAPIDefinitions, patterns: packages.VolcanoPackagePatterns},
 }
