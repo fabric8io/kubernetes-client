@@ -28,10 +28,6 @@
   <packaging>pom</packaging>
   <name>Fabric8 :: Tekton :: Extension</name>
 
-  <properties>
-    <jsonschema2pojo.targetPackage>io.fabric8.tekton.api.model</jsonschema2pojo.targetPackage>
-  </properties>
-
   <modules>
     <module>model</module>
     <module>client</module>
