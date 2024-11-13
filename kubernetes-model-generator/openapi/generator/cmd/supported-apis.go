@@ -40,6 +40,11 @@ import (
 	ovnuserdefinednetworkv1 "github.com/ovn-org/ovn-kubernetes/go-controller/pkg/crd/userdefinednetwork/v1"
 	prometheusoperatorv1 "github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring/v1"
 	"github.com/spf13/cobra"
+	openclustermanagementdiscoveryv1 "github.com/stolostron/discovery/api/v1"
+	openclustermanagementagentv1 "github.com/stolostron/klusterlet-addon-controller/pkg/apis/agent/v1"
+	openclustermanagementobservabilityv1beta1 "github.com/stolostron/multicluster-observability-operator/operators/multiclusterobservability/api/v1beta1"
+	openclustermanagementoperatormulticlusterv1 "github.com/stolostron/multiclusterhub-operator/api/v1"
+	openclustermanagementsearchv1alpha1 "github.com/stolostron/search-v2-operator/api/v1alpha1"
 	tektonpipelinev1 "github.com/tektoncd/pipeline/pkg/apis/pipeline/v1"
 	tektontriggersv1beta1 "github.com/tektoncd/triggers/pkg/apis/triggers/v1beta1"
 	istioapiclientextensions "istio.io/client-go/pkg/apis/extensions/v1alpha1"
@@ -54,6 +59,11 @@ import (
 	knativeeventing "knative.dev/eventing/pkg/apis/eventing/v1"
 	knativenetworking "knative.dev/networking/pkg/apis/networking/v1alpha1"
 	knativeserving "knative.dev/serving/pkg/apis/serving/v1"
+	openclustermanagementclusterv1 "open-cluster-management.io/api/cluster/v1"
+	openclustermanagementoperatorv1 "open-cluster-management.io/api/operator/v1"
+	openclustermanagementpolicyv1 "open-cluster-management.io/governance-policy-propagator/api/v1"
+	openclustermanagementappschannelv1 "open-cluster-management.io/multicloud-operators-channel/pkg/apis/apps/v1"
+	openclustermanagementappssubscriptionv1 "open-cluster-management.io/multicloud-operators-subscription/pkg/apis/apps/v1"
 	"strings"
 	volcanov1beta1 "volcano.sh/apis/pkg/apis/scheduling/v1beta1"
 )
@@ -108,5 +118,15 @@ var supportedApisRun = func(cobraCmd *cobra.Command, args []string) {
 		tektonpipelinev1.SchemeGroupVersion.String(),
 		tektontriggersv1beta1.SchemeGroupVersion.String(),
 		verticalpodautoscalerv1.SchemeGroupVersion.String(),
+		openclustermanagementagentv1.SchemeGroupVersion.String(),
+		openclustermanagementappschannelv1.SchemeGroupVersion.String(),
+		openclustermanagementappssubscriptionv1.SchemeGroupVersion.String(),
+		openclustermanagementclusterv1.SchemeGroupVersion.String(),
+		openclustermanagementdiscoveryv1.GroupVersion.String(),
+		openclustermanagementobservabilityv1beta1.GroupVersion.String(),
+		openclustermanagementoperatorv1.SchemeGroupVersion.String(),
+		openclustermanagementoperatormulticlusterv1.GroupVersion.String(),
+		openclustermanagementpolicyv1.SchemeGroupVersion.String(),
+		openclustermanagementsearchv1alpha1.GroupVersion.String(),
 	}, "\n"))
 }

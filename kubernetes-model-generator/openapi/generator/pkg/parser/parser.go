@@ -20,8 +20,12 @@ package parser
 import (
 	"fmt"
 	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/pkg/kubernetes"
+	goparser "go/parser"
+	"go/token"
+	"k8s.io/gengo/v2"
 	"k8s.io/gengo/v2/parser"
 	"k8s.io/gengo/v2/types"
+	"path"
 	"strings"
 )
 
@@ -29,6 +33,8 @@ const genClient = "+genclient"
 const genClientPrefix = genClient + ":"
 const groupNamePrefix = "+groupName="
 const versionNamePrefix = "+versionName="
+
+var astFileSet = token.NewFileSet()
 
 type Module struct {
 	patterns []string
@@ -114,8 +120,25 @@ func (oam *Module) resolvePackage(definitionName string) *types.Package {
 	return pkg
 }
 
+// groupName returns the (kubernetes) group name for the given package.
+// The group name is defined by the +groupName tag in the package comments.
+// This function supports having the tag either in doc.go or groupversion_info.go files.
 func groupName(pkg *types.Package) string {
-	return findTag(pkg, groupNamePrefix)
+	// gengo assumes that all packages have a doc.go file, the pkg comments are only considered from that file.
+	// However, some kubernetes operators have this info in the groupversion_info.go file.
+	tag := findTag(pkg, groupNamePrefix)
+	if tag != "" {
+		return tag
+	}
+	f, _ := goparser.ParseFile(astFileSet, path.Join(pkg.Dir, "groupversion_info.go"), nil, goparser.ParseComments)
+	if f != nil {
+		for _, c := range f.Doc.List {
+			if strings.HasPrefix(c.Text, "// "+groupNamePrefix) {
+				return strings.TrimPrefix(c.Text, "// "+groupNamePrefix)
+			}
+		}
+	}
+	return ""
 }
 
 func versionName(pkg *types.Package) string {
@@ -170,15 +193,22 @@ func resolveType(typ *types.Type) string {
 	return "nested"
 }
 
+// scope returns the scope of the type (Clustered or Namespaced).
+// The scope is defined by the +genclient tag in the type comments.
+// For some CRDs, the scope is defined by the kubebuilder:resource:path tag.
 func scope(typ *types.Type) string {
-	scope := "Namespaced"
-	for _, c := range append(typ.CommentLines, typ.SecondClosestCommentLines...) {
-		if strings.Contains(c, genClientPrefix+"nonNamespaced") {
-			scope = "Clustered"
-			break
+	commentTags := gengo.ExtractCommentTags("+", append(typ.CommentLines, typ.SecondClosestCommentLines...))
+	_, hasGenclientNonNamespaced := commentTags["genclient:nonNamespaced"]
+	if hasGenclientNonNamespaced {
+		return "Clustered"
+	}
+	kubeBuilderResourcePath, hasKubeBuilderResourcePath := commentTags["kubebuilder:resource:path"]
+	if hasKubeBuilderResourcePath {
+		if strings.Contains(kubeBuilderResourcePath[0], "scope=Cluster") {
+			return "Clustered"
 		}
 	}
-	return scope
+	return "Namespaced"
 }
 
 // FriendlyName returns an OpenAPI friendly name for the given name.

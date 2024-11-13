@@ -19,31 +19,31 @@ import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.openclustermanagement.api.model.multiclusterhub.operator.v1.MultiClusterHub;
-import io.fabric8.openclustermanagement.api.model.multiclusterhub.operator.v1.MultiClusterHubList;
 import io.fabric8.openclustermanagement.api.model.operator.v1.ClusterManager;
 import io.fabric8.openclustermanagement.api.model.operator.v1.ClusterManagerList;
 import io.fabric8.openclustermanagement.api.model.operator.v1.Klusterlet;
 import io.fabric8.openclustermanagement.api.model.operator.v1.KlusterletList;
+import io.fabric8.openclustermanagement.api.model.operator.v1.MultiClusterHub;
+import io.fabric8.openclustermanagement.api.model.operator.v1.MultiClusterHubList;
 
 public interface OpenClusterManagementOperatorAPIGroupDSL extends Client {
   /**
    * API entrypoint for MultiClusterHub (operator.open-cluster-management.io/v1)
-   * 
+   *
    * @return {@link MixedOperation} for MultiClusterHub
    */
   MixedOperation<MultiClusterHub, MultiClusterHubList, Resource<MultiClusterHub>> multiClusterHubs();
 
   /**
    * API entrypoint for Klusterlet (operator.open-cluster-management.io/v1)
-   * 
+   *
    * @return {@link NonNamespaceOperation} for Klusterlet
    */
   NonNamespaceOperation<Klusterlet, KlusterletList, Resource<Klusterlet>> klusterlets();
 
   /**
    * API entrypoint for ClusterManager (operator.open-cluster-management.io/v1)
-   * 
+   *
    * @return {@link NonNamespaceOperation} for ClusterManager
    */
   NonNamespaceOperation<ClusterManager, ClusterManagerList, Resource<ClusterManager>> clusterManagers();

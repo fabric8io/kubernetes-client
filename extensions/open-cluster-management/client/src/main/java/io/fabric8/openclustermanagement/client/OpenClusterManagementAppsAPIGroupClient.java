@@ -18,18 +18,12 @@ package io.fabric8.openclustermanagement.client;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.extension.ClientAdapter;
-import io.fabric8.openclustermanagement.api.model.app.k8s.v1beta1.Application;
-import io.fabric8.openclustermanagement.api.model.app.k8s.v1beta1.ApplicationList;
-import io.fabric8.openclustermanagement.api.model.multicloudintegration.apps.v1beta1.GitOpsCluster;
-import io.fabric8.openclustermanagement.api.model.multicloudintegration.apps.v1beta1.GitOpsClusterList;
-import io.fabric8.openclustermanagement.api.model.multicloudoperatorschannel.apps.v1.Channel;
-import io.fabric8.openclustermanagement.api.model.multicloudoperatorschannel.apps.v1.ChannelList;
-import io.fabric8.openclustermanagement.api.model.multicloudoperatorsplacementrule.apps.v1.PlacementRule;
-import io.fabric8.openclustermanagement.api.model.multicloudoperatorsplacementrule.apps.v1.PlacementRuleList;
-import io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.helmrelease.v1.HelmRelease;
-import io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.helmrelease.v1.HelmReleaseList;
-import io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.v1.Subscription;
-import io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.v1.SubscriptionList;
+import io.fabric8.openclustermanagement.api.model.apps.v1.Channel;
+import io.fabric8.openclustermanagement.api.model.apps.v1.ChannelList;
+import io.fabric8.openclustermanagement.api.model.apps.v1.PlacementRule;
+import io.fabric8.openclustermanagement.api.model.apps.v1.PlacementRuleList;
+import io.fabric8.openclustermanagement.api.model.apps.v1.Subscription;
+import io.fabric8.openclustermanagement.api.model.apps.v1.SubscriptionList;
 import io.fabric8.openclustermanagement.client.dsl.OpenClusterManagementAppsAPIGroupDSL;
 
 public class OpenClusterManagementAppsAPIGroupClient extends ClientAdapter<OpenClusterManagementAppsAPIGroupClient>
@@ -51,22 +45,7 @@ public class OpenClusterManagementAppsAPIGroupClient extends ClientAdapter<OpenC
   }
 
   @Override
-  public MixedOperation<HelmRelease, HelmReleaseList, Resource<HelmRelease>> helmReleases() {
-    return resources(HelmRelease.class, HelmReleaseList.class);
-  }
-
-  @Override
-  public MixedOperation<Application, ApplicationList, Resource<Application>> applications() {
-    return resources(Application.class, ApplicationList.class);
-  }
-
-  @Override
   public MixedOperation<PlacementRule, PlacementRuleList, Resource<PlacementRule>> placementRules() {
     return resources(PlacementRule.class, PlacementRuleList.class);
-  }
-
-  @Override
-  public MixedOperation<GitOpsCluster, GitOpsClusterList, Resource<GitOpsCluster>> gitOpsClusters() {
-    return resources(GitOpsCluster.class, GitOpsClusterList.class);
   }
 }

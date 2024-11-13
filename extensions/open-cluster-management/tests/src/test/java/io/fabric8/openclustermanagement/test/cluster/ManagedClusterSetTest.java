@@ -17,10 +17,10 @@ package io.fabric8.openclustermanagement.test.cluster;
 
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
-import io.fabric8.openclustermanagement.api.model.cluster.v1beta1.ManagedClusterSet;
-import io.fabric8.openclustermanagement.api.model.cluster.v1beta1.ManagedClusterSetBuilder;
-import io.fabric8.openclustermanagement.api.model.cluster.v1beta1.ManagedClusterSetList;
-import io.fabric8.openclustermanagement.api.model.cluster.v1beta1.ManagedClusterSetListBuilder;
+import io.fabric8.openclustermanagement.api.model.cluster.v1beta2.ManagedClusterSet;
+import io.fabric8.openclustermanagement.api.model.cluster.v1beta2.ManagedClusterSetBuilder;
+import io.fabric8.openclustermanagement.api.model.cluster.v1beta2.ManagedClusterSetList;
+import io.fabric8.openclustermanagement.api.model.cluster.v1beta2.ManagedClusterSetListBuilder;
 import io.fabric8.openclustermanagement.client.OpenClusterManagementClient;
 import org.junit.jupiter.api.Test;
 
@@ -30,13 +30,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @EnableKubernetesMockClient
 class ManagedClusterSetTest {
-  private OpenClusterManagementClient client;
+  OpenClusterManagementClient client;
   KubernetesMockServer server;
 
   @Test
   void get() {
     // Given
-    server.expect().get().withPath("/apis/cluster.open-cluster-management.io/v1beta1/managedclustersets/test-get")
+    server.expect().get().withPath("/apis/cluster.open-cluster-management.io/v1beta2/managedclustersets/test-get")
         .andReturn(HttpURLConnection.HTTP_OK, createNewManagedClusterSet("test-get"))
         .once();
 
@@ -52,7 +52,7 @@ class ManagedClusterSetTest {
   @Test
   void list() {
     // Given
-    server.expect().get().withPath("/apis/cluster.open-cluster-management.io/v1beta1/managedclustersets")
+    server.expect().get().withPath("/apis/cluster.open-cluster-management.io/v1beta2/managedclustersets")
         .andReturn(HttpURLConnection.HTTP_OK, new ManagedClusterSetListBuilder()
             .addToItems(createNewManagedClusterSet("test-list"))
             .build())
@@ -71,7 +71,7 @@ class ManagedClusterSetTest {
   @Test
   void delete() {
     // Given
-    server.expect().delete().withPath("/apis/cluster.open-cluster-management.io/v1beta1/managedclustersets/clusterset")
+    server.expect().delete().withPath("/apis/cluster.open-cluster-management.io/v1beta2/managedclustersets/clusterset")
         .andReturn(HttpURLConnection.HTTP_OK, createNewManagedClusterSet("clusterset"))
         .once();
 

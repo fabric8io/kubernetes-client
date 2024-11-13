@@ -17,10 +17,10 @@ package io.fabric8.openclustermanagement.test.apps;
 
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
-import io.fabric8.openclustermanagement.api.model.multicloudoperatorsplacementrule.apps.v1.PlacementRule;
-import io.fabric8.openclustermanagement.api.model.multicloudoperatorsplacementrule.apps.v1.PlacementRuleBuilder;
-import io.fabric8.openclustermanagement.api.model.multicloudoperatorsplacementrule.apps.v1.PlacementRuleList;
-import io.fabric8.openclustermanagement.api.model.multicloudoperatorsplacementrule.apps.v1.PlacementRuleListBuilder;
+import io.fabric8.openclustermanagement.api.model.apps.v1.PlacementRule;
+import io.fabric8.openclustermanagement.api.model.apps.v1.PlacementRuleBuilder;
+import io.fabric8.openclustermanagement.api.model.apps.v1.PlacementRuleList;
+import io.fabric8.openclustermanagement.api.model.apps.v1.PlacementRuleListBuilder;
 import io.fabric8.openclustermanagement.client.OpenClusterManagementClient;
 import org.junit.jupiter.api.Test;
 
@@ -30,7 +30,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @EnableKubernetesMockClient
 class PlacementRuleTest {
-  private OpenClusterManagementClient client;
+  OpenClusterManagementClient client;
   KubernetesMockServer server;
 
   @Test

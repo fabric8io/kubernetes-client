@@ -19,10 +19,10 @@ import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.extension.ClientAdapter;
-import io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta1.ObservabilityAddon;
-import io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta1.ObservabilityAddonList;
-import io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta2.MultiClusterObservability;
-import io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta2.MultiClusterObservabilityList;
+import io.fabric8.openclustermanagement.api.model.observability.v1beta1.ObservabilityAddon;
+import io.fabric8.openclustermanagement.api.model.observability.v1beta1.ObservabilityAddonList;
+import io.fabric8.openclustermanagement.api.model.observability.v1beta2.MultiClusterObservability;
+import io.fabric8.openclustermanagement.api.model.observability.v1beta2.MultiClusterObservabilityList;
 import io.fabric8.openclustermanagement.client.dsl.OpenClusterManagementObservabilityAPIGroupDSL;
 
 public class OpenClusterManagementObservabilityAPIGroupClient extends

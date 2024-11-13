@@ -17,21 +17,22 @@ package io.fabric8.openclustermanagement.test.policy;
 
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
-import io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1beta1.PolicyAutomation;
-import io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1beta1.PolicyAutomationBuilder;
-import io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1beta1.PolicyAutomationList;
-import io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1beta1.PolicyAutomationListBuilder;
+import io.fabric8.openclustermanagement.api.model.policy.v1beta1.PolicyAutomation;
+import io.fabric8.openclustermanagement.api.model.policy.v1beta1.PolicyAutomationBuilder;
+import io.fabric8.openclustermanagement.api.model.policy.v1beta1.PolicyAutomationList;
+import io.fabric8.openclustermanagement.api.model.policy.v1beta1.PolicyAutomationListBuilder;
 import io.fabric8.openclustermanagement.client.OpenClusterManagementClient;
 import org.junit.jupiter.api.Test;
 
 import java.net.HttpURLConnection;
 import java.util.Collections;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @EnableKubernetesMockClient
 class PolicyAutomationTest {
-  private OpenClusterManagementClient client;
+  OpenClusterManagementClient client;
   KubernetesMockServer server;
 
   @Test
@@ -94,9 +95,11 @@ class PolicyAutomationTest {
         .withNewAutomationDef()
         .withName("Demo Job Template")
         .withSecret("toweraccess")
-        .addToExtraVars("sn_severity", 1)
-        .addToExtraVars("sn_priority", 1)
-        .addToExtraVars("target_clusters", Collections.singletonList("cluster1"))
+        .withExtraVars(
+            Map.of(
+                "sn_severity", 1,
+                "sn_priority", 1,
+                "target_clusters", Collections.singletonList("cluster1")))
         .endAutomationDef()
         .endSpec()
         .build();

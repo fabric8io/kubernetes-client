@@ -15,8 +15,8 @@
  */
 package io.fabric8.openclustermanagement.examples.cluster;
 
-import io.fabric8.openclustermanagement.api.model.cluster.v1beta1.ManagedClusterSet;
-import io.fabric8.openclustermanagement.api.model.cluster.v1beta1.ManagedClusterSetBuilder;
+import io.fabric8.openclustermanagement.api.model.cluster.v1beta2.ManagedClusterSet;
+import io.fabric8.openclustermanagement.api.model.cluster.v1beta2.ManagedClusterSetBuilder;
 import io.fabric8.openclustermanagement.client.DefaultOpenClusterManagementClient;
 import io.fabric8.openclustermanagement.client.OpenClusterManagementClient;
 import org.slf4j.Logger;

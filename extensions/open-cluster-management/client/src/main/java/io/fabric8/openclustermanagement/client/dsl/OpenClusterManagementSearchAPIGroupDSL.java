@@ -18,23 +18,14 @@ package io.fabric8.openclustermanagement.client.dsl;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.openclustermanagement.api.model.searchoperator.v1alpha1.SearchCustomization;
-import io.fabric8.openclustermanagement.api.model.searchoperator.v1alpha1.SearchCustomizationList;
-import io.fabric8.openclustermanagement.api.model.searchoperator.v1alpha1.SearchOperator;
-import io.fabric8.openclustermanagement.api.model.searchoperator.v1alpha1.SearchOperatorList;
+import io.fabric8.openclustermanagement.api.model.search.v1alpha1.Search;
+import io.fabric8.openclustermanagement.api.model.search.v1alpha1.SearchList;
 
 public interface OpenClusterManagementSearchAPIGroupDSL extends Client {
   /**
    * API entrypoint for SearchCustomization (search.open-cluster-management.io/v1alpha1)
-   * 
-   * @return {@link MixedOperation} for SearchCustomization
+   *
+   * @return {@link MixedOperation} for Search
    */
-  MixedOperation<SearchCustomization, SearchCustomizationList, Resource<SearchCustomization>> searchCustomizations();
-
-  /**
-   * API entrypoint for SearchOperator (search.open-cluster-management.io/v1alpha1
-   * 
-   * @return {@link MixedOperation} for SearchOperator
-   */
-  MixedOperation<SearchOperator, SearchOperatorList, Resource<SearchOperator>> searchOperators();
+  MixedOperation<Search, SearchList, Resource<Search>> searches();
 }
