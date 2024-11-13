@@ -40,6 +40,7 @@ import lombok.experimental.Accessors;
     "containerNames",
     "duration",
     "mode",
+    "remoteCluster",
     "selector",
     "stressngStressors",
     "stressors",
@@ -72,21 +73,23 @@ public class StressChaosSpec implements Editable<StressChaosSpecBuilder> , Kuber
 
     @JsonProperty("containerNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> containerNames = new ArrayList<>();
+    private List<String> containerNames = new ArrayList<>();
     @JsonProperty("duration")
     private String duration;
     @JsonProperty("mode")
-    private java.lang.String mode;
+    private String mode;
+    @JsonProperty("remoteCluster")
+    private String remoteCluster;
     @JsonProperty("selector")
     private PodSelectorSpec selector;
     @JsonProperty("stressngStressors")
-    private java.lang.String stressngStressors;
+    private String stressngStressors;
     @JsonProperty("stressors")
     private Stressors stressors;
     @JsonProperty("value")
-    private java.lang.String value;
+    private String value;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -95,11 +98,12 @@ public class StressChaosSpec implements Editable<StressChaosSpecBuilder> , Kuber
     public StressChaosSpec() {
     }
 
-    public StressChaosSpec(List<java.lang.String> containerNames, String duration, java.lang.String mode, PodSelectorSpec selector, java.lang.String stressngStressors, Stressors stressors, java.lang.String value) {
+    public StressChaosSpec(List<String> containerNames, String duration, String mode, String remoteCluster, PodSelectorSpec selector, String stressngStressors, Stressors stressors, String value) {
         super();
         this.containerNames = containerNames;
         this.duration = duration;
         this.mode = mode;
+        this.remoteCluster = remoteCluster;
         this.selector = selector;
         this.stressngStressors = stressngStressors;
         this.stressors = stressors;
@@ -108,12 +112,12 @@ public class StressChaosSpec implements Editable<StressChaosSpecBuilder> , Kuber
 
     @JsonProperty("containerNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<java.lang.String> getContainerNames() {
+    public List<String> getContainerNames() {
         return containerNames;
     }
 
     @JsonProperty("containerNames")
-    public void setContainerNames(List<java.lang.String> containerNames) {
+    public void setContainerNames(List<String> containerNames) {
         this.containerNames = containerNames;
     }
 
@@ -128,13 +132,23 @@ public class StressChaosSpec implements Editable<StressChaosSpecBuilder> , Kuber
     }
 
     @JsonProperty("mode")
-    public java.lang.String getMode() {
+    public String getMode() {
         return mode;
     }
 
     @JsonProperty("mode")
-    public void setMode(java.lang.String mode) {
+    public void setMode(String mode) {
         this.mode = mode;
+    }
+
+    @JsonProperty("remoteCluster")
+    public String getRemoteCluster() {
+        return remoteCluster;
+    }
+
+    @JsonProperty("remoteCluster")
+    public void setRemoteCluster(String remoteCluster) {
+        this.remoteCluster = remoteCluster;
     }
 
     @JsonProperty("selector")
@@ -148,12 +162,12 @@ public class StressChaosSpec implements Editable<StressChaosSpecBuilder> , Kuber
     }
 
     @JsonProperty("stressngStressors")
-    public java.lang.String getStressngStressors() {
+    public String getStressngStressors() {
         return stressngStressors;
     }
 
     @JsonProperty("stressngStressors")
-    public void setStressngStressors(java.lang.String stressngStressors) {
+    public void setStressngStressors(String stressngStressors) {
         this.stressngStressors = stressngStressors;
     }
 
@@ -168,12 +182,12 @@ public class StressChaosSpec implements Editable<StressChaosSpecBuilder> , Kuber
     }
 
     @JsonProperty("value")
-    public java.lang.String getValue() {
+    public String getValue() {
         return value;
     }
 
     @JsonProperty("value")
-    public void setValue(java.lang.String value) {
+    public void setValue(String value) {
         this.value = value;
     }
 
@@ -188,16 +202,16 @@ public class StressChaosSpec implements Editable<StressChaosSpecBuilder> , Kuber
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 

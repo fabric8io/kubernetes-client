@@ -37,7 +37,8 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "rules"
+    "rules",
+    "tls"
 })
 @ToString
 @EqualsAndHashCode
@@ -67,6 +68,8 @@ public class PodHttpChaosSpec implements Editable<PodHttpChaosSpecBuilder> , Kub
     @JsonProperty("rules")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<PodHttpChaosRule> rules = new ArrayList<>();
+    @JsonProperty("tls")
+    private PodHttpChaosTLS tls;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -77,9 +80,10 @@ public class PodHttpChaosSpec implements Editable<PodHttpChaosSpecBuilder> , Kub
     public PodHttpChaosSpec() {
     }
 
-    public PodHttpChaosSpec(List<PodHttpChaosRule> rules) {
+    public PodHttpChaosSpec(List<PodHttpChaosRule> rules, PodHttpChaosTLS tls) {
         super();
         this.rules = rules;
+        this.tls = tls;
     }
 
     @JsonProperty("rules")
@@ -91,6 +95,16 @@ public class PodHttpChaosSpec implements Editable<PodHttpChaosSpecBuilder> , Kub
     @JsonProperty("rules")
     public void setRules(List<PodHttpChaosRule> rules) {
         this.rules = rules;
+    }
+
+    @JsonProperty("tls")
+    public PodHttpChaosTLS getTls() {
+        return tls;
+    }
+
+    @JsonProperty("tls")
+    public void setTls(PodHttpChaosTLS tls) {
+        this.tls = tls;
     }
 
     @JsonIgnore

@@ -20,6 +20,7 @@ import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.Namespaced;
+import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
@@ -52,7 +53,7 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
+    @BuildableReference(ObjectMeta.class),
     @BuildableReference(LabelSelector.class),
     @BuildableReference(Container.class),
     @BuildableReference(PodTemplateSpec.class),
@@ -90,7 +91,7 @@ public class TimeChaos implements Editable<TimeChaosBuilder> , HasMetadata, Name
     @JsonProperty("kind")
     private String kind = "TimeChaos";
     @JsonProperty("metadata")
-    private io.fabric8.kubernetes.api.model.ObjectMeta metadata;
+    private ObjectMeta metadata;
     @JsonProperty("spec")
     private TimeChaosSpec spec;
     @JsonProperty("status")
@@ -105,7 +106,7 @@ public class TimeChaos implements Editable<TimeChaosBuilder> , HasMetadata, Name
     public TimeChaos() {
     }
 
-    public TimeChaos(String apiVersion, String kind, io.fabric8.kubernetes.api.model.ObjectMeta metadata, TimeChaosSpec spec, TimeChaosStatus status) {
+    public TimeChaos(String apiVersion, String kind, ObjectMeta metadata, TimeChaosSpec spec, TimeChaosStatus status) {
         super();
         this.apiVersion = apiVersion;
         this.kind = kind;
@@ -155,12 +156,12 @@ public class TimeChaos implements Editable<TimeChaosBuilder> , HasMetadata, Name
     }
 
     @JsonProperty("metadata")
-    public io.fabric8.kubernetes.api.model.ObjectMeta getMetadata() {
+    public ObjectMeta getMetadata() {
         return metadata;
     }
 
     @JsonProperty("metadata")
-    public void setMetadata(io.fabric8.kubernetes.api.model.ObjectMeta metadata) {
+    public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 

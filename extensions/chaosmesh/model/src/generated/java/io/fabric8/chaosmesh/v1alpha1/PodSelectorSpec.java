@@ -20,7 +20,6 @@ import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
-import io.fabric8.kubernetes.api.model.LabelSelectorRequirement;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
@@ -39,7 +38,6 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "annotationSelectors",
-    "expressionSelectors",
     "fieldSelectors",
     "labelSelectors",
     "namespaces",
@@ -76,9 +74,6 @@ public class PodSelectorSpec implements Editable<PodSelectorSpecBuilder> , Kuber
     @JsonProperty("annotationSelectors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> annotationSelectors = new LinkedHashMap<>();
-    @JsonProperty("expressionSelectors")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<LabelSelectorRequirement> expressionSelectors = new ArrayList<>();
     @JsonProperty("fieldSelectors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> fieldSelectors = new LinkedHashMap<>();
@@ -87,21 +82,21 @@ public class PodSelectorSpec implements Editable<PodSelectorSpecBuilder> , Kuber
     private Map<String, String> labelSelectors = new LinkedHashMap<>();
     @JsonProperty("namespaces")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> namespaces = new ArrayList<>();
+    private List<String> namespaces = new ArrayList<>();
     @JsonProperty("nodeSelectors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> nodeSelectors = new LinkedHashMap<>();
     @JsonProperty("nodes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> nodes = new ArrayList<>();
+    private List<String> nodes = new ArrayList<>();
     @JsonProperty("podPhaseSelectors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> podPhaseSelectors = new ArrayList<>();
+    private List<String> podPhaseSelectors = new ArrayList<>();
     @JsonProperty("pods")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, List<java.lang.String>> pods = new LinkedHashMap<>();
+    private Map<String, List<String>> pods = new LinkedHashMap<>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -110,10 +105,9 @@ public class PodSelectorSpec implements Editable<PodSelectorSpecBuilder> , Kuber
     public PodSelectorSpec() {
     }
 
-    public PodSelectorSpec(Map<String, String> annotationSelectors, List<LabelSelectorRequirement> expressionSelectors, Map<String, String> fieldSelectors, Map<String, String> labelSelectors, List<java.lang.String> namespaces, Map<String, String> nodeSelectors, List<java.lang.String> nodes, List<java.lang.String> podPhaseSelectors, Map<String, List<java.lang.String>> pods) {
+    public PodSelectorSpec(Map<String, String> annotationSelectors, Map<String, String> fieldSelectors, Map<String, String> labelSelectors, List<String> namespaces, Map<String, String> nodeSelectors, List<String> nodes, List<String> podPhaseSelectors, Map<String, List<String>> pods) {
         super();
         this.annotationSelectors = annotationSelectors;
-        this.expressionSelectors = expressionSelectors;
         this.fieldSelectors = fieldSelectors;
         this.labelSelectors = labelSelectors;
         this.namespaces = namespaces;
@@ -132,17 +126,6 @@ public class PodSelectorSpec implements Editable<PodSelectorSpecBuilder> , Kuber
     @JsonProperty("annotationSelectors")
     public void setAnnotationSelectors(Map<String, String> annotationSelectors) {
         this.annotationSelectors = annotationSelectors;
-    }
-
-    @JsonProperty("expressionSelectors")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<LabelSelectorRequirement> getExpressionSelectors() {
-        return expressionSelectors;
-    }
-
-    @JsonProperty("expressionSelectors")
-    public void setExpressionSelectors(List<LabelSelectorRequirement> expressionSelectors) {
-        this.expressionSelectors = expressionSelectors;
     }
 
     @JsonProperty("fieldSelectors")
@@ -169,12 +152,12 @@ public class PodSelectorSpec implements Editable<PodSelectorSpecBuilder> , Kuber
 
     @JsonProperty("namespaces")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<java.lang.String> getNamespaces() {
+    public List<String> getNamespaces() {
         return namespaces;
     }
 
     @JsonProperty("namespaces")
-    public void setNamespaces(List<java.lang.String> namespaces) {
+    public void setNamespaces(List<String> namespaces) {
         this.namespaces = namespaces;
     }
 
@@ -191,34 +174,34 @@ public class PodSelectorSpec implements Editable<PodSelectorSpecBuilder> , Kuber
 
     @JsonProperty("nodes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<java.lang.String> getNodes() {
+    public List<String> getNodes() {
         return nodes;
     }
 
     @JsonProperty("nodes")
-    public void setNodes(List<java.lang.String> nodes) {
+    public void setNodes(List<String> nodes) {
         this.nodes = nodes;
     }
 
     @JsonProperty("podPhaseSelectors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<java.lang.String> getPodPhaseSelectors() {
+    public List<String> getPodPhaseSelectors() {
         return podPhaseSelectors;
     }
 
     @JsonProperty("podPhaseSelectors")
-    public void setPodPhaseSelectors(List<java.lang.String> podPhaseSelectors) {
+    public void setPodPhaseSelectors(List<String> podPhaseSelectors) {
         this.podPhaseSelectors = podPhaseSelectors;
     }
 
     @JsonProperty("pods")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Map<String, List<java.lang.String>> getPods() {
+    public Map<String, List<String>> getPods() {
         return pods;
     }
 
     @JsonProperty("pods")
-    public void setPods(Map<String, List<java.lang.String>> pods) {
+    public void setPods(Map<String, List<String>> pods) {
         this.pods = pods;
     }
 
@@ -233,16 +216,16 @@ public class PodSelectorSpec implements Editable<PodSelectorSpecBuilder> , Kuber
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 

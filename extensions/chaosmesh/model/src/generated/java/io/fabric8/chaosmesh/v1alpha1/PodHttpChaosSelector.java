@@ -77,12 +77,12 @@ public class PodHttpChaosSelector implements Editable<PodHttpChaosSelectorBuilde
     private Integer port;
     @JsonProperty("request_headers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> requestHeaders = new LinkedHashMap<>();
+    private Map<String, String> request_headers = new LinkedHashMap<>();
     @JsonProperty("response_headers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> responseHeaders = new LinkedHashMap<>();
+    private Map<String, String> response_headers = new LinkedHashMap<>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -91,14 +91,14 @@ public class PodHttpChaosSelector implements Editable<PodHttpChaosSelectorBuilde
     public PodHttpChaosSelector() {
     }
 
-    public PodHttpChaosSelector(Integer code, String method, String path, Integer port, Map<String, String> requestHeaders, Map<String, String> responseHeaders) {
+    public PodHttpChaosSelector(Integer code, String method, String path, Integer port, Map<String, String> request_headers, Map<String, String> response_headers) {
         super();
         this.code = code;
         this.method = method;
         this.path = path;
         this.port = port;
-        this.requestHeaders = requestHeaders;
-        this.responseHeaders = responseHeaders;
+        this.request_headers = request_headers;
+        this.response_headers = response_headers;
     }
 
     @JsonProperty("code")
@@ -143,24 +143,24 @@ public class PodHttpChaosSelector implements Editable<PodHttpChaosSelectorBuilde
 
     @JsonProperty("request_headers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Map<String, String> getRequestHeaders() {
-        return requestHeaders;
+    public Map<String, String> getRequest_headers() {
+        return request_headers;
     }
 
     @JsonProperty("request_headers")
-    public void setRequestHeaders(Map<String, String> requestHeaders) {
-        this.requestHeaders = requestHeaders;
+    public void setRequest_headers(Map<String, String> request_headers) {
+        this.request_headers = request_headers;
     }
 
     @JsonProperty("response_headers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Map<String, String> getResponseHeaders() {
-        return responseHeaders;
+    public Map<String, String> getResponse_headers() {
+        return response_headers;
     }
 
     @JsonProperty("response_headers")
-    public void setResponseHeaders(Map<String, String> responseHeaders) {
-        this.responseHeaders = responseHeaders;
+    public void setResponse_headers(Map<String, String> response_headers) {
+        this.response_headers = response_headers;
     }
 
     @JsonIgnore
@@ -174,16 +174,16 @@ public class PodHttpChaosSelector implements Editable<PodHttpChaosSelectorBuilde
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 

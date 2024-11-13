@@ -70,7 +70,7 @@ public class NetworkBandwidthSpec implements Editable<NetworkBandwidthSpecBuilde
 {
 
     @JsonProperty("buffer")
-    private Integer buffer;
+    private Long buffer;
     @JsonProperty("device")
     private String device;
     @JsonProperty("hostname")
@@ -78,7 +78,7 @@ public class NetworkBandwidthSpec implements Editable<NetworkBandwidthSpecBuilde
     @JsonProperty("ip-address")
     private String ipAddress;
     @JsonProperty("limit")
-    private Integer limit;
+    private Long limit;
     @JsonProperty("minburst")
     private Long minburst;
     @JsonProperty("peakrate")
@@ -95,7 +95,7 @@ public class NetworkBandwidthSpec implements Editable<NetworkBandwidthSpecBuilde
     public NetworkBandwidthSpec() {
     }
 
-    public NetworkBandwidthSpec(Integer buffer, String device, String hostname, String ipAddress, Integer limit, Long minburst, Long peakrate, String rate) {
+    public NetworkBandwidthSpec(Long buffer, String device, String hostname, String ipAddress, Long limit, Long minburst, Long peakrate, String rate) {
         super();
         this.buffer = buffer;
         this.device = device;
@@ -108,12 +108,12 @@ public class NetworkBandwidthSpec implements Editable<NetworkBandwidthSpecBuilde
     }
 
     @JsonProperty("buffer")
-    public Integer getBuffer() {
+    public Long getBuffer() {
         return buffer;
     }
 
     @JsonProperty("buffer")
-    public void setBuffer(Integer buffer) {
+    public void setBuffer(Long buffer) {
         this.buffer = buffer;
     }
 
@@ -148,12 +148,12 @@ public class NetworkBandwidthSpec implements Editable<NetworkBandwidthSpecBuilde
     }
 
     @JsonProperty("limit")
-    public Integer getLimit() {
+    public Long getLimit() {
         return limit;
     }
 
     @JsonProperty("limit")
-    public void setLimit(Integer limit) {
+    public void setLimit(Long limit) {
         this.limit = limit;
     }
 

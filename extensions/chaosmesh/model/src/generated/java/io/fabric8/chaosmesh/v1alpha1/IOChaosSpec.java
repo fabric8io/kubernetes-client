@@ -48,6 +48,7 @@ import lombok.experimental.Accessors;
     "mode",
     "path",
     "percent",
+    "remoteCluster",
     "selector",
     "value",
     "volumePath"
@@ -78,37 +79,39 @@ public class IOChaosSpec implements Editable<IOChaosSpecBuilder> , KubernetesRes
 {
 
     @JsonProperty("action")
-    private java.lang.String action;
+    private String action;
     @JsonProperty("attr")
     private AttrOverrideSpec attr;
     @JsonProperty("containerNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> containerNames = new ArrayList<>();
+    private List<String> containerNames = new ArrayList<>();
     @JsonProperty("delay")
-    private java.lang.String delay;
+    private String delay;
     @JsonProperty("duration")
     private String duration;
     @JsonProperty("errno")
-    private Integer errno;
+    private Long errno;
     @JsonProperty("methods")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> methods = new ArrayList<>();
+    private List<String> methods = new ArrayList<>();
     @JsonProperty("mistake")
     private MistakeSpec mistake;
     @JsonProperty("mode")
-    private java.lang.String mode;
+    private String mode;
     @JsonProperty("path")
-    private java.lang.String path;
+    private String path;
     @JsonProperty("percent")
     private Integer percent;
+    @JsonProperty("remoteCluster")
+    private String remoteCluster;
     @JsonProperty("selector")
     private PodSelectorSpec selector;
     @JsonProperty("value")
-    private java.lang.String value;
+    private String value;
     @JsonProperty("volumePath")
-    private java.lang.String volumePath;
+    private String volumePath;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -117,7 +120,7 @@ public class IOChaosSpec implements Editable<IOChaosSpecBuilder> , KubernetesRes
     public IOChaosSpec() {
     }
 
-    public IOChaosSpec(java.lang.String action, AttrOverrideSpec attr, List<java.lang.String> containerNames, java.lang.String delay, String duration, Integer errno, List<java.lang.String> methods, MistakeSpec mistake, java.lang.String mode, java.lang.String path, Integer percent, PodSelectorSpec selector, java.lang.String value, java.lang.String volumePath) {
+    public IOChaosSpec(String action, AttrOverrideSpec attr, List<String> containerNames, String delay, String duration, Long errno, List<String> methods, MistakeSpec mistake, String mode, String path, Integer percent, String remoteCluster, PodSelectorSpec selector, String value, String volumePath) {
         super();
         this.action = action;
         this.attr = attr;
@@ -130,18 +133,19 @@ public class IOChaosSpec implements Editable<IOChaosSpecBuilder> , KubernetesRes
         this.mode = mode;
         this.path = path;
         this.percent = percent;
+        this.remoteCluster = remoteCluster;
         this.selector = selector;
         this.value = value;
         this.volumePath = volumePath;
     }
 
     @JsonProperty("action")
-    public java.lang.String getAction() {
+    public String getAction() {
         return action;
     }
 
     @JsonProperty("action")
-    public void setAction(java.lang.String action) {
+    public void setAction(String action) {
         this.action = action;
     }
 
@@ -157,22 +161,22 @@ public class IOChaosSpec implements Editable<IOChaosSpecBuilder> , KubernetesRes
 
     @JsonProperty("containerNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<java.lang.String> getContainerNames() {
+    public List<String> getContainerNames() {
         return containerNames;
     }
 
     @JsonProperty("containerNames")
-    public void setContainerNames(List<java.lang.String> containerNames) {
+    public void setContainerNames(List<String> containerNames) {
         this.containerNames = containerNames;
     }
 
     @JsonProperty("delay")
-    public java.lang.String getDelay() {
+    public String getDelay() {
         return delay;
     }
 
     @JsonProperty("delay")
-    public void setDelay(java.lang.String delay) {
+    public void setDelay(String delay) {
         this.delay = delay;
     }
 
@@ -187,23 +191,23 @@ public class IOChaosSpec implements Editable<IOChaosSpecBuilder> , KubernetesRes
     }
 
     @JsonProperty("errno")
-    public Integer getErrno() {
+    public Long getErrno() {
         return errno;
     }
 
     @JsonProperty("errno")
-    public void setErrno(Integer errno) {
+    public void setErrno(Long errno) {
         this.errno = errno;
     }
 
     @JsonProperty("methods")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<java.lang.String> getMethods() {
+    public List<String> getMethods() {
         return methods;
     }
 
     @JsonProperty("methods")
-    public void setMethods(List<java.lang.String> methods) {
+    public void setMethods(List<String> methods) {
         this.methods = methods;
     }
 
@@ -218,22 +222,22 @@ public class IOChaosSpec implements Editable<IOChaosSpecBuilder> , KubernetesRes
     }
 
     @JsonProperty("mode")
-    public java.lang.String getMode() {
+    public String getMode() {
         return mode;
     }
 
     @JsonProperty("mode")
-    public void setMode(java.lang.String mode) {
+    public void setMode(String mode) {
         this.mode = mode;
     }
 
     @JsonProperty("path")
-    public java.lang.String getPath() {
+    public String getPath() {
         return path;
     }
 
     @JsonProperty("path")
-    public void setPath(java.lang.String path) {
+    public void setPath(String path) {
         this.path = path;
     }
 
@@ -247,6 +251,16 @@ public class IOChaosSpec implements Editable<IOChaosSpecBuilder> , KubernetesRes
         this.percent = percent;
     }
 
+    @JsonProperty("remoteCluster")
+    public String getRemoteCluster() {
+        return remoteCluster;
+    }
+
+    @JsonProperty("remoteCluster")
+    public void setRemoteCluster(String remoteCluster) {
+        this.remoteCluster = remoteCluster;
+    }
+
     @JsonProperty("selector")
     public PodSelectorSpec getSelector() {
         return selector;
@@ -258,22 +272,22 @@ public class IOChaosSpec implements Editable<IOChaosSpecBuilder> , KubernetesRes
     }
 
     @JsonProperty("value")
-    public java.lang.String getValue() {
+    public String getValue() {
         return value;
     }
 
     @JsonProperty("value")
-    public void setValue(java.lang.String value) {
+    public void setValue(String value) {
         this.value = value;
     }
 
     @JsonProperty("volumePath")
-    public java.lang.String getVolumePath() {
+    public String getVolumePath() {
         return volumePath;
     }
 
     @JsonProperty("volumePath")
-    public void setVolumePath(java.lang.String volumePath) {
+    public void setVolumePath(String volumePath) {
         this.volumePath = volumePath;
     }
 
@@ -288,16 +302,16 @@ public class IOChaosSpec implements Editable<IOChaosSpecBuilder> , KubernetesRes
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 

@@ -44,26 +44,49 @@ import lombok.experimental.Accessors;
     "disk-read-payload",
     "disk-write-payload",
     "duration",
+    "file-append",
+    "file-create",
+    "file-delete",
+    "file-modify",
+    "file-rename",
+    "file-replace",
+    "http-abort",
+    "http-config",
+    "http-delay",
+    "http-request",
     "jvm-exception",
     "jvm-gc",
     "jvm-latency",
+    "jvm-mysql",
     "jvm-return",
     "jvm-rule-data",
     "jvm-stress",
+    "kafka-fill",
+    "kafka-flood",
+    "kafka-io",
     "mode",
     "network-bandwidth",
     "network-corrupt",
     "network-delay",
     "network-dns",
+    "network-down",
     "network-duplicate",
+    "network-flood",
     "network-loss",
     "network-partition",
     "process",
+    "redis-cacheLimit",
+    "redis-expiration",
+    "redis-penetration",
+    "redis-restart",
+    "redis-stop",
+    "remoteCluster",
     "selector",
     "stress-cpu",
     "stress-mem",
-    "uid",
-    "value"
+    "user_defined",
+    "value",
+    "vm"
 })
 @ToString
 @EqualsAndHashCode
@@ -91,10 +114,10 @@ public class PhysicalMachineChaosSpec implements Editable<PhysicalMachineChaosSp
 {
 
     @JsonProperty("action")
-    private java.lang.String action;
+    private String action;
     @JsonProperty("address")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> address = new ArrayList<>();
+    private List<String> address = new ArrayList<>();
     @JsonProperty("clock")
     private ClockSpec clock;
     @JsonProperty("disk-fill")
@@ -105,20 +128,48 @@ public class PhysicalMachineChaosSpec implements Editable<PhysicalMachineChaosSp
     private DiskPayloadSpec diskWritePayload;
     @JsonProperty("duration")
     private String duration;
+    @JsonProperty("file-append")
+    private FileAppendSpec fileAppend;
+    @JsonProperty("file-create")
+    private FileCreateSpec fileCreate;
+    @JsonProperty("file-delete")
+    private FileDeleteSpec fileDelete;
+    @JsonProperty("file-modify")
+    private FileModifyPrivilegeSpec fileModify;
+    @JsonProperty("file-rename")
+    private FileRenameSpec fileRename;
+    @JsonProperty("file-replace")
+    private FileReplaceSpec fileReplace;
+    @JsonProperty("http-abort")
+    private HTTPAbortSpec httpAbort;
+    @JsonProperty("http-config")
+    private HTTPConfigSpec httpConfig;
+    @JsonProperty("http-delay")
+    private HTTPDelaySpec httpDelay;
+    @JsonProperty("http-request")
+    private HTTPRequestSpec httpRequest;
     @JsonProperty("jvm-exception")
     private JVMExceptionSpec jvmException;
     @JsonProperty("jvm-gc")
     private JVMGCSpec jvmGc;
     @JsonProperty("jvm-latency")
     private JVMLatencySpec jvmLatency;
+    @JsonProperty("jvm-mysql")
+    private PMJVMMySQLSpec jvmMysql;
     @JsonProperty("jvm-return")
     private JVMReturnSpec jvmReturn;
     @JsonProperty("jvm-rule-data")
     private JVMRuleDataSpec jvmRuleData;
     @JsonProperty("jvm-stress")
     private JVMStressSpec jvmStress;
+    @JsonProperty("kafka-fill")
+    private KafkaFillSpec kafkaFill;
+    @JsonProperty("kafka-flood")
+    private KafkaFloodSpec kafkaFlood;
+    @JsonProperty("kafka-io")
+    private KafkaIOSpec kafkaIo;
     @JsonProperty("mode")
-    private java.lang.String mode;
+    private String mode;
     @JsonProperty("network-bandwidth")
     private NetworkBandwidthSpec networkBandwidth;
     @JsonProperty("network-corrupt")
@@ -127,26 +178,44 @@ public class PhysicalMachineChaosSpec implements Editable<PhysicalMachineChaosSp
     private NetworkDelaySpec networkDelay;
     @JsonProperty("network-dns")
     private NetworkDNSSpec networkDns;
+    @JsonProperty("network-down")
+    private NetworkDownSpec networkDown;
     @JsonProperty("network-duplicate")
     private NetworkDuplicateSpec networkDuplicate;
+    @JsonProperty("network-flood")
+    private NetworkFloodSpec networkFlood;
     @JsonProperty("network-loss")
     private NetworkLossSpec networkLoss;
     @JsonProperty("network-partition")
     private NetworkPartitionSpec networkPartition;
     @JsonProperty("process")
     private ProcessSpec process;
+    @JsonProperty("redis-cacheLimit")
+    private RedisCacheLimitSpec redisCacheLimit;
+    @JsonProperty("redis-expiration")
+    private RedisExpirationSpec redisExpiration;
+    @JsonProperty("redis-penetration")
+    private RedisPenetrationSpec redisPenetration;
+    @JsonProperty("redis-restart")
+    private RedisSentinelRestartSpec redisRestart;
+    @JsonProperty("redis-stop")
+    private RedisSentinelStopSpec redisStop;
+    @JsonProperty("remoteCluster")
+    private String remoteCluster;
     @JsonProperty("selector")
     private PhysicalMachineSelectorSpec selector;
     @JsonProperty("stress-cpu")
     private StressCPUSpec stressCpu;
     @JsonProperty("stress-mem")
     private StressMemorySpec stressMem;
-    @JsonProperty("uid")
-    private java.lang.String uid;
+    @JsonProperty("user_defined")
+    private UserDefinedSpec user_defined;
     @JsonProperty("value")
-    private java.lang.String value;
+    private String value;
+    @JsonProperty("vm")
+    private VMSpec vm;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -155,7 +224,7 @@ public class PhysicalMachineChaosSpec implements Editable<PhysicalMachineChaosSp
     public PhysicalMachineChaosSpec() {
     }
 
-    public PhysicalMachineChaosSpec(java.lang.String action, List<java.lang.String> address, ClockSpec clock, DiskFillSpec diskFill, DiskPayloadSpec diskReadPayload, DiskPayloadSpec diskWritePayload, String duration, JVMExceptionSpec jvmException, JVMGCSpec jvmGc, JVMLatencySpec jvmLatency, JVMReturnSpec jvmReturn, JVMRuleDataSpec jvmRuleData, JVMStressSpec jvmStress, java.lang.String mode, NetworkBandwidthSpec networkBandwidth, NetworkCorruptSpec networkCorrupt, NetworkDelaySpec networkDelay, NetworkDNSSpec networkDns, NetworkDuplicateSpec networkDuplicate, NetworkLossSpec networkLoss, NetworkPartitionSpec networkPartition, ProcessSpec process, PhysicalMachineSelectorSpec selector, StressCPUSpec stressCpu, StressMemorySpec stressMem, java.lang.String uid, java.lang.String value) {
+    public PhysicalMachineChaosSpec(String action, List<String> address, ClockSpec clock, DiskFillSpec diskFill, DiskPayloadSpec diskReadPayload, DiskPayloadSpec diskWritePayload, String duration, FileAppendSpec fileAppend, FileCreateSpec fileCreate, FileDeleteSpec fileDelete, FileModifyPrivilegeSpec fileModify, FileRenameSpec fileRename, FileReplaceSpec fileReplace, HTTPAbortSpec httpAbort, HTTPConfigSpec httpConfig, HTTPDelaySpec httpDelay, HTTPRequestSpec httpRequest, JVMExceptionSpec jvmException, JVMGCSpec jvmGc, JVMLatencySpec jvmLatency, PMJVMMySQLSpec jvmMysql, JVMReturnSpec jvmReturn, JVMRuleDataSpec jvmRuleData, JVMStressSpec jvmStress, KafkaFillSpec kafkaFill, KafkaFloodSpec kafkaFlood, KafkaIOSpec kafkaIo, String mode, NetworkBandwidthSpec networkBandwidth, NetworkCorruptSpec networkCorrupt, NetworkDelaySpec networkDelay, NetworkDNSSpec networkDns, NetworkDownSpec networkDown, NetworkDuplicateSpec networkDuplicate, NetworkFloodSpec networkFlood, NetworkLossSpec networkLoss, NetworkPartitionSpec networkPartition, ProcessSpec process, RedisCacheLimitSpec redisCacheLimit, RedisExpirationSpec redisExpiration, RedisPenetrationSpec redisPenetration, RedisSentinelRestartSpec redisRestart, RedisSentinelStopSpec redisStop, String remoteCluster, PhysicalMachineSelectorSpec selector, StressCPUSpec stressCpu, StressMemorySpec stressMem, UserDefinedSpec user_defined, String value, VMSpec vm) {
         super();
         this.action = action;
         this.address = address;
@@ -164,46 +233,69 @@ public class PhysicalMachineChaosSpec implements Editable<PhysicalMachineChaosSp
         this.diskReadPayload = diskReadPayload;
         this.diskWritePayload = diskWritePayload;
         this.duration = duration;
+        this.fileAppend = fileAppend;
+        this.fileCreate = fileCreate;
+        this.fileDelete = fileDelete;
+        this.fileModify = fileModify;
+        this.fileRename = fileRename;
+        this.fileReplace = fileReplace;
+        this.httpAbort = httpAbort;
+        this.httpConfig = httpConfig;
+        this.httpDelay = httpDelay;
+        this.httpRequest = httpRequest;
         this.jvmException = jvmException;
         this.jvmGc = jvmGc;
         this.jvmLatency = jvmLatency;
+        this.jvmMysql = jvmMysql;
         this.jvmReturn = jvmReturn;
         this.jvmRuleData = jvmRuleData;
         this.jvmStress = jvmStress;
+        this.kafkaFill = kafkaFill;
+        this.kafkaFlood = kafkaFlood;
+        this.kafkaIo = kafkaIo;
         this.mode = mode;
         this.networkBandwidth = networkBandwidth;
         this.networkCorrupt = networkCorrupt;
         this.networkDelay = networkDelay;
         this.networkDns = networkDns;
+        this.networkDown = networkDown;
         this.networkDuplicate = networkDuplicate;
+        this.networkFlood = networkFlood;
         this.networkLoss = networkLoss;
         this.networkPartition = networkPartition;
         this.process = process;
+        this.redisCacheLimit = redisCacheLimit;
+        this.redisExpiration = redisExpiration;
+        this.redisPenetration = redisPenetration;
+        this.redisRestart = redisRestart;
+        this.redisStop = redisStop;
+        this.remoteCluster = remoteCluster;
         this.selector = selector;
         this.stressCpu = stressCpu;
         this.stressMem = stressMem;
-        this.uid = uid;
+        this.user_defined = user_defined;
         this.value = value;
+        this.vm = vm;
     }
 
     @JsonProperty("action")
-    public java.lang.String getAction() {
+    public String getAction() {
         return action;
     }
 
     @JsonProperty("action")
-    public void setAction(java.lang.String action) {
+    public void setAction(String action) {
         this.action = action;
     }
 
     @JsonProperty("address")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<java.lang.String> getAddress() {
+    public List<String> getAddress() {
         return address;
     }
 
     @JsonProperty("address")
-    public void setAddress(List<java.lang.String> address) {
+    public void setAddress(List<String> address) {
         this.address = address;
     }
 
@@ -257,6 +349,106 @@ public class PhysicalMachineChaosSpec implements Editable<PhysicalMachineChaosSp
         this.duration = duration;
     }
 
+    @JsonProperty("file-append")
+    public FileAppendSpec getFileAppend() {
+        return fileAppend;
+    }
+
+    @JsonProperty("file-append")
+    public void setFileAppend(FileAppendSpec fileAppend) {
+        this.fileAppend = fileAppend;
+    }
+
+    @JsonProperty("file-create")
+    public FileCreateSpec getFileCreate() {
+        return fileCreate;
+    }
+
+    @JsonProperty("file-create")
+    public void setFileCreate(FileCreateSpec fileCreate) {
+        this.fileCreate = fileCreate;
+    }
+
+    @JsonProperty("file-delete")
+    public FileDeleteSpec getFileDelete() {
+        return fileDelete;
+    }
+
+    @JsonProperty("file-delete")
+    public void setFileDelete(FileDeleteSpec fileDelete) {
+        this.fileDelete = fileDelete;
+    }
+
+    @JsonProperty("file-modify")
+    public FileModifyPrivilegeSpec getFileModify() {
+        return fileModify;
+    }
+
+    @JsonProperty("file-modify")
+    public void setFileModify(FileModifyPrivilegeSpec fileModify) {
+        this.fileModify = fileModify;
+    }
+
+    @JsonProperty("file-rename")
+    public FileRenameSpec getFileRename() {
+        return fileRename;
+    }
+
+    @JsonProperty("file-rename")
+    public void setFileRename(FileRenameSpec fileRename) {
+        this.fileRename = fileRename;
+    }
+
+    @JsonProperty("file-replace")
+    public FileReplaceSpec getFileReplace() {
+        return fileReplace;
+    }
+
+    @JsonProperty("file-replace")
+    public void setFileReplace(FileReplaceSpec fileReplace) {
+        this.fileReplace = fileReplace;
+    }
+
+    @JsonProperty("http-abort")
+    public HTTPAbortSpec getHttpAbort() {
+        return httpAbort;
+    }
+
+    @JsonProperty("http-abort")
+    public void setHttpAbort(HTTPAbortSpec httpAbort) {
+        this.httpAbort = httpAbort;
+    }
+
+    @JsonProperty("http-config")
+    public HTTPConfigSpec getHttpConfig() {
+        return httpConfig;
+    }
+
+    @JsonProperty("http-config")
+    public void setHttpConfig(HTTPConfigSpec httpConfig) {
+        this.httpConfig = httpConfig;
+    }
+
+    @JsonProperty("http-delay")
+    public HTTPDelaySpec getHttpDelay() {
+        return httpDelay;
+    }
+
+    @JsonProperty("http-delay")
+    public void setHttpDelay(HTTPDelaySpec httpDelay) {
+        this.httpDelay = httpDelay;
+    }
+
+    @JsonProperty("http-request")
+    public HTTPRequestSpec getHttpRequest() {
+        return httpRequest;
+    }
+
+    @JsonProperty("http-request")
+    public void setHttpRequest(HTTPRequestSpec httpRequest) {
+        this.httpRequest = httpRequest;
+    }
+
     @JsonProperty("jvm-exception")
     public JVMExceptionSpec getJvmException() {
         return jvmException;
@@ -285,6 +477,16 @@ public class PhysicalMachineChaosSpec implements Editable<PhysicalMachineChaosSp
     @JsonProperty("jvm-latency")
     public void setJvmLatency(JVMLatencySpec jvmLatency) {
         this.jvmLatency = jvmLatency;
+    }
+
+    @JsonProperty("jvm-mysql")
+    public PMJVMMySQLSpec getJvmMysql() {
+        return jvmMysql;
+    }
+
+    @JsonProperty("jvm-mysql")
+    public void setJvmMysql(PMJVMMySQLSpec jvmMysql) {
+        this.jvmMysql = jvmMysql;
     }
 
     @JsonProperty("jvm-return")
@@ -317,13 +519,43 @@ public class PhysicalMachineChaosSpec implements Editable<PhysicalMachineChaosSp
         this.jvmStress = jvmStress;
     }
 
+    @JsonProperty("kafka-fill")
+    public KafkaFillSpec getKafkaFill() {
+        return kafkaFill;
+    }
+
+    @JsonProperty("kafka-fill")
+    public void setKafkaFill(KafkaFillSpec kafkaFill) {
+        this.kafkaFill = kafkaFill;
+    }
+
+    @JsonProperty("kafka-flood")
+    public KafkaFloodSpec getKafkaFlood() {
+        return kafkaFlood;
+    }
+
+    @JsonProperty("kafka-flood")
+    public void setKafkaFlood(KafkaFloodSpec kafkaFlood) {
+        this.kafkaFlood = kafkaFlood;
+    }
+
+    @JsonProperty("kafka-io")
+    public KafkaIOSpec getKafkaIo() {
+        return kafkaIo;
+    }
+
+    @JsonProperty("kafka-io")
+    public void setKafkaIo(KafkaIOSpec kafkaIo) {
+        this.kafkaIo = kafkaIo;
+    }
+
     @JsonProperty("mode")
-    public java.lang.String getMode() {
+    public String getMode() {
         return mode;
     }
 
     @JsonProperty("mode")
-    public void setMode(java.lang.String mode) {
+    public void setMode(String mode) {
         this.mode = mode;
     }
 
@@ -367,6 +599,16 @@ public class PhysicalMachineChaosSpec implements Editable<PhysicalMachineChaosSp
         this.networkDns = networkDns;
     }
 
+    @JsonProperty("network-down")
+    public NetworkDownSpec getNetworkDown() {
+        return networkDown;
+    }
+
+    @JsonProperty("network-down")
+    public void setNetworkDown(NetworkDownSpec networkDown) {
+        this.networkDown = networkDown;
+    }
+
     @JsonProperty("network-duplicate")
     public NetworkDuplicateSpec getNetworkDuplicate() {
         return networkDuplicate;
@@ -375,6 +617,16 @@ public class PhysicalMachineChaosSpec implements Editable<PhysicalMachineChaosSp
     @JsonProperty("network-duplicate")
     public void setNetworkDuplicate(NetworkDuplicateSpec networkDuplicate) {
         this.networkDuplicate = networkDuplicate;
+    }
+
+    @JsonProperty("network-flood")
+    public NetworkFloodSpec getNetworkFlood() {
+        return networkFlood;
+    }
+
+    @JsonProperty("network-flood")
+    public void setNetworkFlood(NetworkFloodSpec networkFlood) {
+        this.networkFlood = networkFlood;
     }
 
     @JsonProperty("network-loss")
@@ -407,6 +659,66 @@ public class PhysicalMachineChaosSpec implements Editable<PhysicalMachineChaosSp
         this.process = process;
     }
 
+    @JsonProperty("redis-cacheLimit")
+    public RedisCacheLimitSpec getRedisCacheLimit() {
+        return redisCacheLimit;
+    }
+
+    @JsonProperty("redis-cacheLimit")
+    public void setRedisCacheLimit(RedisCacheLimitSpec redisCacheLimit) {
+        this.redisCacheLimit = redisCacheLimit;
+    }
+
+    @JsonProperty("redis-expiration")
+    public RedisExpirationSpec getRedisExpiration() {
+        return redisExpiration;
+    }
+
+    @JsonProperty("redis-expiration")
+    public void setRedisExpiration(RedisExpirationSpec redisExpiration) {
+        this.redisExpiration = redisExpiration;
+    }
+
+    @JsonProperty("redis-penetration")
+    public RedisPenetrationSpec getRedisPenetration() {
+        return redisPenetration;
+    }
+
+    @JsonProperty("redis-penetration")
+    public void setRedisPenetration(RedisPenetrationSpec redisPenetration) {
+        this.redisPenetration = redisPenetration;
+    }
+
+    @JsonProperty("redis-restart")
+    public RedisSentinelRestartSpec getRedisRestart() {
+        return redisRestart;
+    }
+
+    @JsonProperty("redis-restart")
+    public void setRedisRestart(RedisSentinelRestartSpec redisRestart) {
+        this.redisRestart = redisRestart;
+    }
+
+    @JsonProperty("redis-stop")
+    public RedisSentinelStopSpec getRedisStop() {
+        return redisStop;
+    }
+
+    @JsonProperty("redis-stop")
+    public void setRedisStop(RedisSentinelStopSpec redisStop) {
+        this.redisStop = redisStop;
+    }
+
+    @JsonProperty("remoteCluster")
+    public String getRemoteCluster() {
+        return remoteCluster;
+    }
+
+    @JsonProperty("remoteCluster")
+    public void setRemoteCluster(String remoteCluster) {
+        this.remoteCluster = remoteCluster;
+    }
+
     @JsonProperty("selector")
     public PhysicalMachineSelectorSpec getSelector() {
         return selector;
@@ -437,24 +749,34 @@ public class PhysicalMachineChaosSpec implements Editable<PhysicalMachineChaosSp
         this.stressMem = stressMem;
     }
 
-    @JsonProperty("uid")
-    public java.lang.String getUid() {
-        return uid;
+    @JsonProperty("user_defined")
+    public UserDefinedSpec getUser_defined() {
+        return user_defined;
     }
 
-    @JsonProperty("uid")
-    public void setUid(java.lang.String uid) {
-        this.uid = uid;
+    @JsonProperty("user_defined")
+    public void setUser_defined(UserDefinedSpec user_defined) {
+        this.user_defined = user_defined;
     }
 
     @JsonProperty("value")
-    public java.lang.String getValue() {
+    public String getValue() {
         return value;
     }
 
     @JsonProperty("value")
-    public void setValue(java.lang.String value) {
+    public void setValue(String value) {
         this.value = value;
+    }
+
+    @JsonProperty("vm")
+    public VMSpec getVm() {
+        return vm;
+    }
+
+    @JsonProperty("vm")
+    public void setVm(VMSpec vm) {
+        this.vm = vm;
     }
 
     @JsonIgnore
@@ -468,16 +790,16 @@ public class PhysicalMachineChaosSpec implements Editable<PhysicalMachineChaosSp
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 

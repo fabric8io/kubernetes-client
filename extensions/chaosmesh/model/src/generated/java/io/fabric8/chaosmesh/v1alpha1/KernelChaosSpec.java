@@ -1,7 +1,9 @@
 
 package io.fabric8.chaosmesh.v1alpha1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -35,9 +37,11 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "containerNames",
     "duration",
     "failKernRequest",
     "mode",
+    "remoteCluster",
     "selector",
     "value"
 })
@@ -66,18 +70,23 @@ import lombok.experimental.Accessors;
 public class KernelChaosSpec implements Editable<KernelChaosSpecBuilder> , KubernetesResource
 {
 
+    @JsonProperty("containerNames")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> containerNames = new ArrayList<>();
     @JsonProperty("duration")
     private String duration;
     @JsonProperty("failKernRequest")
     private FailKernRequest failKernRequest;
     @JsonProperty("mode")
-    private java.lang.String mode;
+    private String mode;
+    @JsonProperty("remoteCluster")
+    private String remoteCluster;
     @JsonProperty("selector")
     private PodSelectorSpec selector;
     @JsonProperty("value")
-    private java.lang.String value;
+    private String value;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -86,13 +95,26 @@ public class KernelChaosSpec implements Editable<KernelChaosSpecBuilder> , Kuber
     public KernelChaosSpec() {
     }
 
-    public KernelChaosSpec(String duration, FailKernRequest failKernRequest, java.lang.String mode, PodSelectorSpec selector, java.lang.String value) {
+    public KernelChaosSpec(List<String> containerNames, String duration, FailKernRequest failKernRequest, String mode, String remoteCluster, PodSelectorSpec selector, String value) {
         super();
+        this.containerNames = containerNames;
         this.duration = duration;
         this.failKernRequest = failKernRequest;
         this.mode = mode;
+        this.remoteCluster = remoteCluster;
         this.selector = selector;
         this.value = value;
+    }
+
+    @JsonProperty("containerNames")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<String> getContainerNames() {
+        return containerNames;
+    }
+
+    @JsonProperty("containerNames")
+    public void setContainerNames(List<String> containerNames) {
+        this.containerNames = containerNames;
     }
 
     @JsonProperty("duration")
@@ -116,13 +138,23 @@ public class KernelChaosSpec implements Editable<KernelChaosSpecBuilder> , Kuber
     }
 
     @JsonProperty("mode")
-    public java.lang.String getMode() {
+    public String getMode() {
         return mode;
     }
 
     @JsonProperty("mode")
-    public void setMode(java.lang.String mode) {
+    public void setMode(String mode) {
         this.mode = mode;
+    }
+
+    @JsonProperty("remoteCluster")
+    public String getRemoteCluster() {
+        return remoteCluster;
+    }
+
+    @JsonProperty("remoteCluster")
+    public void setRemoteCluster(String remoteCluster) {
+        this.remoteCluster = remoteCluster;
     }
 
     @JsonProperty("selector")
@@ -136,12 +168,12 @@ public class KernelChaosSpec implements Editable<KernelChaosSpecBuilder> , Kuber
     }
 
     @JsonProperty("value")
-    public java.lang.String getValue() {
+    public String getValue() {
         return value;
     }
 
     @JsonProperty("value")
-    public void setValue(java.lang.String value) {
+    public void setValue(String value) {
         this.value = value;
     }
 
@@ -156,16 +188,16 @@ public class KernelChaosSpec implements Editable<KernelChaosSpecBuilder> , Kuber
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 

@@ -44,11 +44,13 @@ import lombok.experimental.Accessors;
     "patch",
     "path",
     "port",
+    "remoteCluster",
     "replace",
     "request_headers",
     "response_headers",
     "selector",
     "target",
+    "tls",
     "value"
 })
 @ToString
@@ -87,29 +89,33 @@ public class HTTPChaosSpec implements Editable<HTTPChaosSpecBuilder> , Kubernete
     @JsonProperty("method")
     private String method;
     @JsonProperty("mode")
-    private java.lang.String mode;
+    private String mode;
     @JsonProperty("patch")
     private PodHttpChaosPatchActions patch;
     @JsonProperty("path")
     private String path;
     @JsonProperty("port")
-    private java.lang.Integer port;
+    private Integer port;
+    @JsonProperty("remoteCluster")
+    private String remoteCluster;
     @JsonProperty("replace")
     private PodHttpChaosReplaceActions replace;
     @JsonProperty("request_headers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> requestHeaders = new LinkedHashMap<>();
+    private Map<String, String> request_headers = new LinkedHashMap<>();
     @JsonProperty("response_headers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> responseHeaders = new LinkedHashMap<>();
+    private Map<String, String> response_headers = new LinkedHashMap<>();
     @JsonProperty("selector")
     private PodSelectorSpec selector;
     @JsonProperty("target")
-    private java.lang.String target;
+    private String target;
+    @JsonProperty("tls")
+    private PodHttpChaosTLS tls;
     @JsonProperty("value")
-    private java.lang.String value;
+    private String value;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -118,7 +124,7 @@ public class HTTPChaosSpec implements Editable<HTTPChaosSpecBuilder> , Kubernete
     public HTTPChaosSpec() {
     }
 
-    public HTTPChaosSpec(Boolean abort, Integer code, String delay, String duration, String method, java.lang.String mode, PodHttpChaosPatchActions patch, String path, java.lang.Integer port, PodHttpChaosReplaceActions replace, Map<String, String> requestHeaders, Map<String, String> responseHeaders, PodSelectorSpec selector, java.lang.String target, java.lang.String value) {
+    public HTTPChaosSpec(Boolean abort, Integer code, String delay, String duration, String method, String mode, PodHttpChaosPatchActions patch, String path, Integer port, String remoteCluster, PodHttpChaosReplaceActions replace, Map<String, String> request_headers, Map<String, String> response_headers, PodSelectorSpec selector, String target, PodHttpChaosTLS tls, String value) {
         super();
         this.abort = abort;
         this.code = code;
@@ -129,11 +135,13 @@ public class HTTPChaosSpec implements Editable<HTTPChaosSpecBuilder> , Kubernete
         this.patch = patch;
         this.path = path;
         this.port = port;
+        this.remoteCluster = remoteCluster;
         this.replace = replace;
-        this.requestHeaders = requestHeaders;
-        this.responseHeaders = responseHeaders;
+        this.request_headers = request_headers;
+        this.response_headers = response_headers;
         this.selector = selector;
         this.target = target;
+        this.tls = tls;
         this.value = value;
     }
 
@@ -188,12 +196,12 @@ public class HTTPChaosSpec implements Editable<HTTPChaosSpecBuilder> , Kubernete
     }
 
     @JsonProperty("mode")
-    public java.lang.String getMode() {
+    public String getMode() {
         return mode;
     }
 
     @JsonProperty("mode")
-    public void setMode(java.lang.String mode) {
+    public void setMode(String mode) {
         this.mode = mode;
     }
 
@@ -218,13 +226,23 @@ public class HTTPChaosSpec implements Editable<HTTPChaosSpecBuilder> , Kubernete
     }
 
     @JsonProperty("port")
-    public java.lang.Integer getPort() {
+    public Integer getPort() {
         return port;
     }
 
     @JsonProperty("port")
-    public void setPort(java.lang.Integer port) {
+    public void setPort(Integer port) {
         this.port = port;
+    }
+
+    @JsonProperty("remoteCluster")
+    public String getRemoteCluster() {
+        return remoteCluster;
+    }
+
+    @JsonProperty("remoteCluster")
+    public void setRemoteCluster(String remoteCluster) {
+        this.remoteCluster = remoteCluster;
     }
 
     @JsonProperty("replace")
@@ -239,24 +257,24 @@ public class HTTPChaosSpec implements Editable<HTTPChaosSpecBuilder> , Kubernete
 
     @JsonProperty("request_headers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Map<String, String> getRequestHeaders() {
-        return requestHeaders;
+    public Map<String, String> getRequest_headers() {
+        return request_headers;
     }
 
     @JsonProperty("request_headers")
-    public void setRequestHeaders(Map<String, String> requestHeaders) {
-        this.requestHeaders = requestHeaders;
+    public void setRequest_headers(Map<String, String> request_headers) {
+        this.request_headers = request_headers;
     }
 
     @JsonProperty("response_headers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Map<String, String> getResponseHeaders() {
-        return responseHeaders;
+    public Map<String, String> getResponse_headers() {
+        return response_headers;
     }
 
     @JsonProperty("response_headers")
-    public void setResponseHeaders(Map<String, String> responseHeaders) {
-        this.responseHeaders = responseHeaders;
+    public void setResponse_headers(Map<String, String> response_headers) {
+        this.response_headers = response_headers;
     }
 
     @JsonProperty("selector")
@@ -270,22 +288,32 @@ public class HTTPChaosSpec implements Editable<HTTPChaosSpecBuilder> , Kubernete
     }
 
     @JsonProperty("target")
-    public java.lang.String getTarget() {
+    public String getTarget() {
         return target;
     }
 
     @JsonProperty("target")
-    public void setTarget(java.lang.String target) {
+    public void setTarget(String target) {
         this.target = target;
     }
 
+    @JsonProperty("tls")
+    public PodHttpChaosTLS getTls() {
+        return tls;
+    }
+
+    @JsonProperty("tls")
+    public void setTls(PodHttpChaosTLS tls) {
+        this.tls = tls;
+    }
+
     @JsonProperty("value")
-    public java.lang.String getValue() {
+    public String getValue() {
         return value;
     }
 
     @JsonProperty("value")
-    public void setValue(java.lang.String value) {
+    public void setValue(String value) {
         this.value = value;
     }
 
@@ -300,16 +328,16 @@ public class HTTPChaosSpec implements Editable<HTTPChaosSpecBuilder> , Kubernete
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 

@@ -41,8 +41,8 @@ import lombok.experimental.Accessors;
     "containerNames",
     "delay",
     "duration",
-    "iops",
     "mode",
+    "remoteCluster",
     "selector",
     "value",
     "volumeName"
@@ -73,26 +73,26 @@ public class BlockChaosSpec implements Editable<BlockChaosSpecBuilder> , Kuberne
 {
 
     @JsonProperty("action")
-    private java.lang.String action;
+    private String action;
     @JsonProperty("containerNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> containerNames = new ArrayList<>();
+    private List<String> containerNames = new ArrayList<>();
     @JsonProperty("delay")
     private BlockDelaySpec delay;
     @JsonProperty("duration")
     private String duration;
-    @JsonProperty("iops")
-    private Integer iops;
     @JsonProperty("mode")
-    private java.lang.String mode;
+    private String mode;
+    @JsonProperty("remoteCluster")
+    private String remoteCluster;
     @JsonProperty("selector")
     private PodSelectorSpec selector;
     @JsonProperty("value")
-    private java.lang.String value;
+    private String value;
     @JsonProperty("volumeName")
-    private java.lang.String volumeName;
+    private String volumeName;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -101,37 +101,37 @@ public class BlockChaosSpec implements Editable<BlockChaosSpecBuilder> , Kuberne
     public BlockChaosSpec() {
     }
 
-    public BlockChaosSpec(java.lang.String action, List<java.lang.String> containerNames, BlockDelaySpec delay, String duration, Integer iops, java.lang.String mode, PodSelectorSpec selector, java.lang.String value, java.lang.String volumeName) {
+    public BlockChaosSpec(String action, List<String> containerNames, BlockDelaySpec delay, String duration, String mode, String remoteCluster, PodSelectorSpec selector, String value, String volumeName) {
         super();
         this.action = action;
         this.containerNames = containerNames;
         this.delay = delay;
         this.duration = duration;
-        this.iops = iops;
         this.mode = mode;
+        this.remoteCluster = remoteCluster;
         this.selector = selector;
         this.value = value;
         this.volumeName = volumeName;
     }
 
     @JsonProperty("action")
-    public java.lang.String getAction() {
+    public String getAction() {
         return action;
     }
 
     @JsonProperty("action")
-    public void setAction(java.lang.String action) {
+    public void setAction(String action) {
         this.action = action;
     }
 
     @JsonProperty("containerNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<java.lang.String> getContainerNames() {
+    public List<String> getContainerNames() {
         return containerNames;
     }
 
     @JsonProperty("containerNames")
-    public void setContainerNames(List<java.lang.String> containerNames) {
+    public void setContainerNames(List<String> containerNames) {
         this.containerNames = containerNames;
     }
 
@@ -155,24 +155,24 @@ public class BlockChaosSpec implements Editable<BlockChaosSpecBuilder> , Kuberne
         this.duration = duration;
     }
 
-    @JsonProperty("iops")
-    public Integer getIops() {
-        return iops;
-    }
-
-    @JsonProperty("iops")
-    public void setIops(Integer iops) {
-        this.iops = iops;
-    }
-
     @JsonProperty("mode")
-    public java.lang.String getMode() {
+    public String getMode() {
         return mode;
     }
 
     @JsonProperty("mode")
-    public void setMode(java.lang.String mode) {
+    public void setMode(String mode) {
         this.mode = mode;
+    }
+
+    @JsonProperty("remoteCluster")
+    public String getRemoteCluster() {
+        return remoteCluster;
+    }
+
+    @JsonProperty("remoteCluster")
+    public void setRemoteCluster(String remoteCluster) {
+        this.remoteCluster = remoteCluster;
     }
 
     @JsonProperty("selector")
@@ -186,22 +186,22 @@ public class BlockChaosSpec implements Editable<BlockChaosSpecBuilder> , Kuberne
     }
 
     @JsonProperty("value")
-    public java.lang.String getValue() {
+    public String getValue() {
         return value;
     }
 
     @JsonProperty("value")
-    public void setValue(java.lang.String value) {
+    public void setValue(String value) {
         this.value = value;
     }
 
     @JsonProperty("volumeName")
-    public java.lang.String getVolumeName() {
+    public String getVolumeName() {
         return volumeName;
     }
 
     @JsonProperty("volumeName")
-    public void setVolumeName(java.lang.String volumeName) {
+    public void setVolumeName(String volumeName) {
         this.volumeName = volumeName;
     }
 
@@ -216,16 +216,16 @@ public class BlockChaosSpec implements Editable<BlockChaosSpecBuilder> , Kuberne
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 

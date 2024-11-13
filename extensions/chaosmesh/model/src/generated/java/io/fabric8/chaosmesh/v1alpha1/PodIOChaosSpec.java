@@ -72,9 +72,9 @@ public class PodIOChaosSpec implements Editable<PodIOChaosSpecBuilder> , Kuberne
     @JsonProperty("container")
     private String container;
     @JsonProperty("volumeMountPath")
-    private java.lang.String volumeMountPath;
+    private String volumeMountPath;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -83,7 +83,7 @@ public class PodIOChaosSpec implements Editable<PodIOChaosSpecBuilder> , Kuberne
     public PodIOChaosSpec() {
     }
 
-    public PodIOChaosSpec(List<IOChaosAction> actions, String container, java.lang.String volumeMountPath) {
+    public PodIOChaosSpec(List<IOChaosAction> actions, String container, String volumeMountPath) {
         super();
         this.actions = actions;
         this.container = container;
@@ -112,12 +112,12 @@ public class PodIOChaosSpec implements Editable<PodIOChaosSpecBuilder> , Kuberne
     }
 
     @JsonProperty("volumeMountPath")
-    public java.lang.String getVolumeMountPath() {
+    public String getVolumeMountPath() {
         return volumeMountPath;
     }
 
     @JsonProperty("volumeMountPath")
-    public void setVolumeMountPath(java.lang.String volumeMountPath) {
+    public void setVolumeMountPath(String volumeMountPath) {
         this.volumeMountPath = volumeMountPath;
     }
 
@@ -132,16 +132,16 @@ public class PodIOChaosSpec implements Editable<PodIOChaosSpecBuilder> , Kuberne
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 

@@ -37,8 +37,11 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "cidrAndPorts",
     "cidrs",
+    "ipsetType",
     "name",
+    "setNames",
     "source"
 })
 @ToString
@@ -66,11 +69,19 @@ import lombok.experimental.Accessors;
 public class RawIPSet implements Editable<RawIPSetBuilder> , KubernetesResource
 {
 
+    @JsonProperty("cidrAndPorts")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<CidrAndPort> cidrAndPorts = new ArrayList<>();
     @JsonProperty("cidrs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> cidrs = new ArrayList<>();
+    @JsonProperty("ipsetType")
+    private String ipsetType;
     @JsonProperty("name")
     private String name;
+    @JsonProperty("setNames")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> setNames = new ArrayList<>();
     @JsonProperty("source")
     private String source;
     @JsonIgnore
@@ -83,11 +94,25 @@ public class RawIPSet implements Editable<RawIPSetBuilder> , KubernetesResource
     public RawIPSet() {
     }
 
-    public RawIPSet(List<String> cidrs, String name, String source) {
+    public RawIPSet(List<CidrAndPort> cidrAndPorts, List<String> cidrs, String ipsetType, String name, List<String> setNames, String source) {
         super();
+        this.cidrAndPorts = cidrAndPorts;
         this.cidrs = cidrs;
+        this.ipsetType = ipsetType;
         this.name = name;
+        this.setNames = setNames;
         this.source = source;
+    }
+
+    @JsonProperty("cidrAndPorts")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<CidrAndPort> getCidrAndPorts() {
+        return cidrAndPorts;
+    }
+
+    @JsonProperty("cidrAndPorts")
+    public void setCidrAndPorts(List<CidrAndPort> cidrAndPorts) {
+        this.cidrAndPorts = cidrAndPorts;
     }
 
     @JsonProperty("cidrs")
@@ -101,6 +126,16 @@ public class RawIPSet implements Editable<RawIPSetBuilder> , KubernetesResource
         this.cidrs = cidrs;
     }
 
+    @JsonProperty("ipsetType")
+    public String getIpsetType() {
+        return ipsetType;
+    }
+
+    @JsonProperty("ipsetType")
+    public void setIpsetType(String ipsetType) {
+        this.ipsetType = ipsetType;
+    }
+
     @JsonProperty("name")
     public String getName() {
         return name;
@@ -109,6 +144,17 @@ public class RawIPSet implements Editable<RawIPSetBuilder> , KubernetesResource
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
+    }
+
+    @JsonProperty("setNames")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<String> getSetNames() {
+        return setNames;
+    }
+
+    @JsonProperty("setNames")
+    public void setSetNames(List<String> setNames) {
+        this.setNames = setNames;
     }
 
     @JsonProperty("source")

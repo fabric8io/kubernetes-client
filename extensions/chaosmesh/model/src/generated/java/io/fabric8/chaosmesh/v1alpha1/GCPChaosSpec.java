@@ -42,6 +42,7 @@ import lombok.experimental.Accessors;
     "duration",
     "instance",
     "project",
+    "remoteCluster",
     "secretName",
     "zone"
 })
@@ -71,22 +72,24 @@ public class GCPChaosSpec implements Editable<GCPChaosSpecBuilder> , KubernetesR
 {
 
     @JsonProperty("action")
-    private java.lang.String action;
+    private String action;
     @JsonProperty("deviceNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> deviceNames = new ArrayList<>();
+    private List<String> deviceNames = new ArrayList<>();
     @JsonProperty("duration")
     private String duration;
     @JsonProperty("instance")
-    private java.lang.String instance;
+    private String instance;
     @JsonProperty("project")
-    private java.lang.String project;
+    private String project;
+    @JsonProperty("remoteCluster")
+    private String remoteCluster;
     @JsonProperty("secretName")
     private String secretName;
     @JsonProperty("zone")
-    private java.lang.String zone;
+    private String zone;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -95,35 +98,36 @@ public class GCPChaosSpec implements Editable<GCPChaosSpecBuilder> , KubernetesR
     public GCPChaosSpec() {
     }
 
-    public GCPChaosSpec(java.lang.String action, List<java.lang.String> deviceNames, String duration, java.lang.String instance, java.lang.String project, String secretName, java.lang.String zone) {
+    public GCPChaosSpec(String action, List<String> deviceNames, String duration, String instance, String project, String remoteCluster, String secretName, String zone) {
         super();
         this.action = action;
         this.deviceNames = deviceNames;
         this.duration = duration;
         this.instance = instance;
         this.project = project;
+        this.remoteCluster = remoteCluster;
         this.secretName = secretName;
         this.zone = zone;
     }
 
     @JsonProperty("action")
-    public java.lang.String getAction() {
+    public String getAction() {
         return action;
     }
 
     @JsonProperty("action")
-    public void setAction(java.lang.String action) {
+    public void setAction(String action) {
         this.action = action;
     }
 
     @JsonProperty("deviceNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<java.lang.String> getDeviceNames() {
+    public List<String> getDeviceNames() {
         return deviceNames;
     }
 
     @JsonProperty("deviceNames")
-    public void setDeviceNames(List<java.lang.String> deviceNames) {
+    public void setDeviceNames(List<String> deviceNames) {
         this.deviceNames = deviceNames;
     }
 
@@ -138,23 +142,33 @@ public class GCPChaosSpec implements Editable<GCPChaosSpecBuilder> , KubernetesR
     }
 
     @JsonProperty("instance")
-    public java.lang.String getInstance() {
+    public String getInstance() {
         return instance;
     }
 
     @JsonProperty("instance")
-    public void setInstance(java.lang.String instance) {
+    public void setInstance(String instance) {
         this.instance = instance;
     }
 
     @JsonProperty("project")
-    public java.lang.String getProject() {
+    public String getProject() {
         return project;
     }
 
     @JsonProperty("project")
-    public void setProject(java.lang.String project) {
+    public void setProject(String project) {
         this.project = project;
+    }
+
+    @JsonProperty("remoteCluster")
+    public String getRemoteCluster() {
+        return remoteCluster;
+    }
+
+    @JsonProperty("remoteCluster")
+    public void setRemoteCluster(String remoteCluster) {
+        this.remoteCluster = remoteCluster;
     }
 
     @JsonProperty("secretName")
@@ -168,12 +182,12 @@ public class GCPChaosSpec implements Editable<GCPChaosSpecBuilder> , KubernetesR
     }
 
     @JsonProperty("zone")
-    public java.lang.String getZone() {
+    public String getZone() {
         return zone;
     }
 
     @JsonProperty("zone")
-    public void setZone(java.lang.String zone) {
+    public void setZone(String zone) {
         this.zone = zone;
     }
 
@@ -188,16 +202,16 @@ public class GCPChaosSpec implements Editable<GCPChaosSpecBuilder> , KubernetesR
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 

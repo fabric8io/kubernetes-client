@@ -1,7 +1,9 @@
 
 package io.fabric8.chaosmesh.v1alpha1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -64,7 +66,8 @@ public class StressMemorySpec implements Editable<StressMemorySpecBuilder> , Kub
 {
 
     @JsonProperty("options")
-    private String options;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> options = new ArrayList<>();
     @JsonProperty("size")
     private String size;
     @JsonIgnore
@@ -77,19 +80,20 @@ public class StressMemorySpec implements Editable<StressMemorySpecBuilder> , Kub
     public StressMemorySpec() {
     }
 
-    public StressMemorySpec(String options, String size) {
+    public StressMemorySpec(List<String> options, String size) {
         super();
         this.options = options;
         this.size = size;
     }
 
     @JsonProperty("options")
-    public String getOptions() {
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<String> getOptions() {
         return options;
     }
 
     @JsonProperty("options")
-    public void setOptions(String options) {
+    public void setOptions(List<String> options) {
         this.options = options;
     }
 

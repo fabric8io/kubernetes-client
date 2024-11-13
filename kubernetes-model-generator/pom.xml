@@ -87,6 +87,7 @@
     <openapi.schema.io.k8s.autoscaling>${project.basedir}/../../../kubernetes-model-generator/openapi/schemas/io.k8s.autoscaling.json</openapi.schema.io.k8s.autoscaling>
     <openapi.schema.io.k8s.storage.snapshot>${project.basedir}/../../../kubernetes-model-generator/openapi/schemas/io.k8s.storage.snapshot.json</openapi.schema.io.k8s.storage.snapshot>
     <openapi.schema.io.open-cluster-management>${project.basedir}/../../../kubernetes-model-generator/openapi/schemas/io.open-cluster-management.json</openapi.schema.io.open-cluster-management>
+    <openapi.schema.org.chaos-mesh>${project.basedir}/../../../kubernetes-model-generator/openapi/schemas/org.chaos-mesh.json</openapi.schema.org.chaos-mesh>
     <openapi.schema.org.ovn>${project.basedir}/../../../kubernetes-model-generator/openapi/schemas/org.ovn.json</openapi.schema.org.ovn>
     <openapi.schema.sh.volcano>${project.basedir}/../../../kubernetes-model-generator/openapi/schemas/sh.volcano.json</openapi.schema.sh.volcano>
     <openapi.openshift-version>4.17</openapi.openshift-version>
@@ -218,6 +219,7 @@
                 <io.openshift.template.v1>io.fabric8.openshift.api.model</io.openshift.template.v1>
                 <io.openshift.user.v1>io.fabric8.openshift.api.model</io.openshift.user.v1>
                 <io.x-k8s.cluster>io.fabric8.kubernetes.api.model.clusterapi</io.x-k8s.cluster>
+                <org.chaos-mesh>io.fabric8.chaosmesh</org.chaos-mesh>
                 <org.ovn.k8s>io.fabric8.kubernetes.api.model.ovn</org.ovn.k8s>
                 <sh.volcano>io.fabric8.volcano.api.model</sh.volcano>
               </packageMappings>

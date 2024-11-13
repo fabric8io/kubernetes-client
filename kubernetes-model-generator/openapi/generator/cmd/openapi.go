@@ -20,6 +20,7 @@ import (
 	"fmt"
 	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/cmd/generated_autoscaling_openapi"
 	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/cmd/generated_certmanager_openapi"
+	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/cmd/generated_chaosmesh_openapi"
 	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/cmd/generated_istio_openapi"
 	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/cmd/generated_knative_openapi"
 	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/cmd/generated_openclustermanagement_openapi"
@@ -60,6 +61,7 @@ var modules = []module{
 	{outputName: "io.k8s.autoscaling", getDefinitionsFunc: generated_autoscaling_openapi.GetOpenAPIDefinitions, patterns: packages.AutoscalingPackagePatterns},
 	{outputName: "io.k8s.storage.snapshot", getDefinitionsFunc: generated_volumesnapshot_openapi.GetOpenAPIDefinitions, patterns: packages.VolumeSnapshotPackagePatterns},
 	{outputName: "io.open-cluster-management", getDefinitionsFunc: generated_openclustermanagement_openapi.GetOpenAPIDefinitions, patterns: packages.OvnPackagePatterns},
+	{outputName: "org.chaos-mesh", getDefinitionsFunc: generated_chaosmesh_openapi.GetOpenAPIDefinitions, patterns: packages.ChaosMeshPackagePatterns},
 	{outputName: "org.ovn", getDefinitionsFunc: generated_ovn_openapi.GetOpenAPIDefinitions, patterns: packages.OvnPackagePatterns},
 	{outputName: "sh.volcano", getDefinitionsFunc: generated_volcano_openapi.GetOpenAPIDefinitions, patterns: packages.VolcanoPackagePatterns},
 }

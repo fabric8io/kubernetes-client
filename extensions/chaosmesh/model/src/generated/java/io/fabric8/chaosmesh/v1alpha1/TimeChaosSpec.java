@@ -41,6 +41,7 @@ import lombok.experimental.Accessors;
     "containerNames",
     "duration",
     "mode",
+    "remoteCluster",
     "selector",
     "timeOffset",
     "value"
@@ -72,22 +73,24 @@ public class TimeChaosSpec implements Editable<TimeChaosSpecBuilder> , Kubernete
 
     @JsonProperty("clockIds")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> clockIds = new ArrayList<>();
+    private List<String> clockIds = new ArrayList<>();
     @JsonProperty("containerNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> containerNames = new ArrayList<>();
+    private List<String> containerNames = new ArrayList<>();
     @JsonProperty("duration")
     private String duration;
     @JsonProperty("mode")
-    private java.lang.String mode;
+    private String mode;
+    @JsonProperty("remoteCluster")
+    private String remoteCluster;
     @JsonProperty("selector")
     private PodSelectorSpec selector;
     @JsonProperty("timeOffset")
-    private java.lang.String timeOffset;
+    private String timeOffset;
     @JsonProperty("value")
-    private java.lang.String value;
+    private String value;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -96,12 +99,13 @@ public class TimeChaosSpec implements Editable<TimeChaosSpecBuilder> , Kubernete
     public TimeChaosSpec() {
     }
 
-    public TimeChaosSpec(List<java.lang.String> clockIds, List<java.lang.String> containerNames, String duration, java.lang.String mode, PodSelectorSpec selector, java.lang.String timeOffset, java.lang.String value) {
+    public TimeChaosSpec(List<String> clockIds, List<String> containerNames, String duration, String mode, String remoteCluster, PodSelectorSpec selector, String timeOffset, String value) {
         super();
         this.clockIds = clockIds;
         this.containerNames = containerNames;
         this.duration = duration;
         this.mode = mode;
+        this.remoteCluster = remoteCluster;
         this.selector = selector;
         this.timeOffset = timeOffset;
         this.value = value;
@@ -109,23 +113,23 @@ public class TimeChaosSpec implements Editable<TimeChaosSpecBuilder> , Kubernete
 
     @JsonProperty("clockIds")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<java.lang.String> getClockIds() {
+    public List<String> getClockIds() {
         return clockIds;
     }
 
     @JsonProperty("clockIds")
-    public void setClockIds(List<java.lang.String> clockIds) {
+    public void setClockIds(List<String> clockIds) {
         this.clockIds = clockIds;
     }
 
     @JsonProperty("containerNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<java.lang.String> getContainerNames() {
+    public List<String> getContainerNames() {
         return containerNames;
     }
 
     @JsonProperty("containerNames")
-    public void setContainerNames(List<java.lang.String> containerNames) {
+    public void setContainerNames(List<String> containerNames) {
         this.containerNames = containerNames;
     }
 
@@ -140,13 +144,23 @@ public class TimeChaosSpec implements Editable<TimeChaosSpecBuilder> , Kubernete
     }
 
     @JsonProperty("mode")
-    public java.lang.String getMode() {
+    public String getMode() {
         return mode;
     }
 
     @JsonProperty("mode")
-    public void setMode(java.lang.String mode) {
+    public void setMode(String mode) {
         this.mode = mode;
+    }
+
+    @JsonProperty("remoteCluster")
+    public String getRemoteCluster() {
+        return remoteCluster;
+    }
+
+    @JsonProperty("remoteCluster")
+    public void setRemoteCluster(String remoteCluster) {
+        this.remoteCluster = remoteCluster;
     }
 
     @JsonProperty("selector")
@@ -160,22 +174,22 @@ public class TimeChaosSpec implements Editable<TimeChaosSpecBuilder> , Kubernete
     }
 
     @JsonProperty("timeOffset")
-    public java.lang.String getTimeOffset() {
+    public String getTimeOffset() {
         return timeOffset;
     }
 
     @JsonProperty("timeOffset")
-    public void setTimeOffset(java.lang.String timeOffset) {
+    public void setTimeOffset(String timeOffset) {
         this.timeOffset = timeOffset;
     }
 
     @JsonProperty("value")
-    public java.lang.String getValue() {
+    public String getValue() {
         return value;
     }
 
     @JsonProperty("value")
-    public void setValue(java.lang.String value) {
+    public void setValue(String value) {
         this.value = value;
     }
 
@@ -190,16 +204,16 @@ public class TimeChaosSpec implements Editable<TimeChaosSpecBuilder> , Kubernete
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 

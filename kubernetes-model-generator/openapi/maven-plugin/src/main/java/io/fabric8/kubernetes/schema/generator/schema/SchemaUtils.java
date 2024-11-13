@@ -132,6 +132,7 @@ public class SchemaUtils {
   private static final Map<String, String> TYPE_MAP = new LinkedHashMap<>();
   static {
     TYPE_MAP.put("boolean", "Boolean");
+    TYPE_MAP.put("byte", "Integer");
     TYPE_MAP.put("int32", "Integer");
     TYPE_MAP.put("integer", "Integer");
     TYPE_MAP.put("int64", "Long");
