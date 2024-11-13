@@ -43,28 +43,19 @@ openapi-generate-java-classes:
 	# Test dependency needed for model de/serialization validation
 	mvn $(MAVEN_ARGS) clean install -pl . -pl zjsonpatch
 	cd kubernetes-model-generator && mvn $(MAVEN_ARGS) -Pgenerate clean install
-	# TODO: run generate from extensions module root once all extensions are migrated
-	cd extensions && mvn $(MAVEN_ARGS) -N clean install
-	cd extensions/certmanager && mvn $(MAVEN_ARGS) -N clean install
-	cd extensions/certmanager/model && mvn $(MAVEN_ARGS) -Pgenerate clean install
-	cd extensions/chaosmesh && mvn $(MAVEN_ARGS) -N clean install
-	cd extensions/chaosmesh/model && mvn $(MAVEN_ARGS) -Pgenerate clean install
-	cd extensions/istio && mvn $(MAVEN_ARGS) -N clean install
-	cd extensions/istio/model && mvn $(MAVEN_ARGS) -Pgenerate clean install
-	cd extensions/knative && mvn $(MAVEN_ARGS) -N clean install
-	cd extensions/knative/model && mvn $(MAVEN_ARGS) -Pgenerate clean install
-	cd extensions/open-virtual-network && mvn $(MAVEN_ARGS) -N clean install
-	cd extensions/open-virtual-network/model && mvn $(MAVEN_ARGS) -Pgenerate clean install
-	cd extensions/open-cluster-management && mvn $(MAVEN_ARGS) -N clean install
-	cd extensions/open-cluster-management/model && mvn $(MAVEN_ARGS) -Pgenerate clean install
-	cd extensions/tekton && mvn $(MAVEN_ARGS) -N clean install
-	cd extensions/tekton/model && mvn $(MAVEN_ARGS) -Pgenerate clean install
-	cd extensions/verticalpodautoscaler && mvn $(MAVEN_ARGS) -N clean install
-	cd extensions/verticalpodautoscaler/model && mvn $(MAVEN_ARGS) -Pgenerate clean install
-	cd extensions/volcano && mvn $(MAVEN_ARGS) -N clean install
-	cd extensions/volcano/model && mvn $(MAVEN_ARGS) -Pgenerate clean install
-	cd extensions/volumesnapshot && mvn $(MAVEN_ARGS) -N clean install
-	cd extensions/volumesnapshot/model && mvn $(MAVEN_ARGS) -Pgenerate clean install
+	cd extensions && mvn $(MAVEN_ARGS) \
+		-pl . \
+		-pl certmanager/model \
+		-pl chaosmesh/model \
+		-pl istio/model \
+		-pl knative/model \
+		-pl open-cluster-management/model \
+		-pl open-virtual-network/model \
+		-pl tekton/model \
+		-pl verticalpodautoscaler/model \
+		-pl volcano/model \
+		-pl volumesnapshot/model \
+		-Pgenerate clean install
 
 .PHONY: generate-model
 generate-model: openapi-generate-schema openapi-generate-java-classes
