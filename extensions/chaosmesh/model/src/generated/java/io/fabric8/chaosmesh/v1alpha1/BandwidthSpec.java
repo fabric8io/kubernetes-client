@@ -67,9 +67,9 @@ public class BandwidthSpec implements Editable<BandwidthSpecBuilder> , Kubernete
 {
 
     @JsonProperty("buffer")
-    private Integer buffer;
+    private Long buffer;
     @JsonProperty("limit")
-    private Integer limit;
+    private Long limit;
     @JsonProperty("minburst")
     private Long minburst;
     @JsonProperty("peakrate")
@@ -86,7 +86,7 @@ public class BandwidthSpec implements Editable<BandwidthSpecBuilder> , Kubernete
     public BandwidthSpec() {
     }
 
-    public BandwidthSpec(Integer buffer, Integer limit, Long minburst, Long peakrate, String rate) {
+    public BandwidthSpec(Long buffer, Long limit, Long minburst, Long peakrate, String rate) {
         super();
         this.buffer = buffer;
         this.limit = limit;
@@ -96,22 +96,22 @@ public class BandwidthSpec implements Editable<BandwidthSpecBuilder> , Kubernete
     }
 
     @JsonProperty("buffer")
-    public Integer getBuffer() {
+    public Long getBuffer() {
         return buffer;
     }
 
     @JsonProperty("buffer")
-    public void setBuffer(Integer buffer) {
+    public void setBuffer(Long buffer) {
         this.buffer = buffer;
     }
 
     @JsonProperty("limit")
-    public Integer getLimit() {
+    public Long getLimit() {
         return limit;
     }
 
     @JsonProperty("limit")
-    public void setLimit(Integer limit) {
+    public void setLimit(Long limit) {
         this.limit = limit;
     }
 

@@ -64,7 +64,7 @@ public class IoFault implements Editable<IoFaultBuilder> , KubernetesResource
 {
 
     @JsonProperty("errno")
-    private Integer errno;
+    private Long errno;
     @JsonProperty("weight")
     private Integer weight;
     @JsonIgnore
@@ -77,19 +77,19 @@ public class IoFault implements Editable<IoFaultBuilder> , KubernetesResource
     public IoFault() {
     }
 
-    public IoFault(Integer errno, Integer weight) {
+    public IoFault(Long errno, Integer weight) {
         super();
         this.errno = errno;
         this.weight = weight;
     }
 
     @JsonProperty("errno")
-    public Integer getErrno() {
+    public Long getErrno() {
         return errno;
     }
 
     @JsonProperty("errno")
-    public void setErrno(Integer errno) {
+    public void setErrno(Long errno) {
         this.errno = errno;
     }
 

@@ -20,7 +20,6 @@ import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
-import io.fabric8.kubernetes.api.model.LabelSelectorRequirement;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
@@ -39,7 +38,6 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "annotationSelectors",
-    "expressionSelectors",
     "fieldSelectors",
     "labelSelectors",
     "namespaces",
@@ -73,9 +71,6 @@ public class PhysicalMachineSelectorSpec implements Editable<PhysicalMachineSele
     @JsonProperty("annotationSelectors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> annotationSelectors = new LinkedHashMap<>();
-    @JsonProperty("expressionSelectors")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<LabelSelectorRequirement> expressionSelectors = new ArrayList<>();
     @JsonProperty("fieldSelectors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> fieldSelectors = new LinkedHashMap<>();
@@ -84,12 +79,12 @@ public class PhysicalMachineSelectorSpec implements Editable<PhysicalMachineSele
     private Map<String, String> labelSelectors = new LinkedHashMap<>();
     @JsonProperty("namespaces")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> namespaces = new ArrayList<>();
+    private List<String> namespaces = new ArrayList<>();
     @JsonProperty("physicalMachines")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, List<java.lang.String>> physicalMachines = new LinkedHashMap<>();
+    private Map<String, List<String>> physicalMachines = new LinkedHashMap<>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -98,10 +93,9 @@ public class PhysicalMachineSelectorSpec implements Editable<PhysicalMachineSele
     public PhysicalMachineSelectorSpec() {
     }
 
-    public PhysicalMachineSelectorSpec(Map<String, String> annotationSelectors, List<LabelSelectorRequirement> expressionSelectors, Map<String, String> fieldSelectors, Map<String, String> labelSelectors, List<java.lang.String> namespaces, Map<String, List<java.lang.String>> physicalMachines) {
+    public PhysicalMachineSelectorSpec(Map<String, String> annotationSelectors, Map<String, String> fieldSelectors, Map<String, String> labelSelectors, List<String> namespaces, Map<String, List<String>> physicalMachines) {
         super();
         this.annotationSelectors = annotationSelectors;
-        this.expressionSelectors = expressionSelectors;
         this.fieldSelectors = fieldSelectors;
         this.labelSelectors = labelSelectors;
         this.namespaces = namespaces;
@@ -117,17 +111,6 @@ public class PhysicalMachineSelectorSpec implements Editable<PhysicalMachineSele
     @JsonProperty("annotationSelectors")
     public void setAnnotationSelectors(Map<String, String> annotationSelectors) {
         this.annotationSelectors = annotationSelectors;
-    }
-
-    @JsonProperty("expressionSelectors")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<LabelSelectorRequirement> getExpressionSelectors() {
-        return expressionSelectors;
-    }
-
-    @JsonProperty("expressionSelectors")
-    public void setExpressionSelectors(List<LabelSelectorRequirement> expressionSelectors) {
-        this.expressionSelectors = expressionSelectors;
     }
 
     @JsonProperty("fieldSelectors")
@@ -154,23 +137,23 @@ public class PhysicalMachineSelectorSpec implements Editable<PhysicalMachineSele
 
     @JsonProperty("namespaces")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<java.lang.String> getNamespaces() {
+    public List<String> getNamespaces() {
         return namespaces;
     }
 
     @JsonProperty("namespaces")
-    public void setNamespaces(List<java.lang.String> namespaces) {
+    public void setNamespaces(List<String> namespaces) {
         this.namespaces = namespaces;
     }
 
     @JsonProperty("physicalMachines")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Map<String, List<java.lang.String>> getPhysicalMachines() {
+    public Map<String, List<String>> getPhysicalMachines() {
         return physicalMachines;
     }
 
     @JsonProperty("physicalMachines")
-    public void setPhysicalMachines(Map<String, List<java.lang.String>> physicalMachines) {
+    public void setPhysicalMachines(Map<String, List<String>> physicalMachines) {
         this.physicalMachines = physicalMachines;
     }
 
@@ -185,16 +168,16 @@ public class PhysicalMachineSelectorSpec implements Editable<PhysicalMachineSele
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 

@@ -36,6 +36,7 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "process",
+    "recoverCmd",
     "signal"
 })
 @ToString
@@ -65,6 +66,8 @@ public class ProcessSpec implements Editable<ProcessSpecBuilder> , KubernetesRes
 
     @JsonProperty("process")
     private String process;
+    @JsonProperty("recoverCmd")
+    private String recoverCmd;
     @JsonProperty("signal")
     private Integer signal;
     @JsonIgnore
@@ -77,9 +80,10 @@ public class ProcessSpec implements Editable<ProcessSpecBuilder> , KubernetesRes
     public ProcessSpec() {
     }
 
-    public ProcessSpec(String process, Integer signal) {
+    public ProcessSpec(String process, String recoverCmd, Integer signal) {
         super();
         this.process = process;
+        this.recoverCmd = recoverCmd;
         this.signal = signal;
     }
 
@@ -91,6 +95,16 @@ public class ProcessSpec implements Editable<ProcessSpecBuilder> , KubernetesRes
     @JsonProperty("process")
     public void setProcess(String process) {
         this.process = process;
+    }
+
+    @JsonProperty("recoverCmd")
+    public String getRecoverCmd() {
+        return recoverCmd;
+    }
+
+    @JsonProperty("recoverCmd")
+    public void setRecoverCmd(String recoverCmd) {
+        this.recoverCmd = recoverCmd;
     }
 
     @JsonProperty("signal")

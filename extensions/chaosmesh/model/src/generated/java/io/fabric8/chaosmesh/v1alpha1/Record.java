@@ -1,7 +1,9 @@
 
 package io.fabric8.chaosmesh.v1alpha1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -35,8 +37,11 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "events",
     "id",
+    "injectedCount",
     "phase",
+    "recoveredCount",
     "selectorKey"
 })
 @ToString
@@ -64,10 +69,17 @@ import lombok.experimental.Accessors;
 public class Record implements Editable<RecordBuilder> , KubernetesResource
 {
 
+    @JsonProperty("events")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<RecordEvent> events = new ArrayList<>();
     @JsonProperty("id")
     private String id;
+    @JsonProperty("injectedCount")
+    private Integer injectedCount;
     @JsonProperty("phase")
     private String phase;
+    @JsonProperty("recoveredCount")
+    private Integer recoveredCount;
     @JsonProperty("selectorKey")
     private String selectorKey;
     @JsonIgnore
@@ -80,11 +92,25 @@ public class Record implements Editable<RecordBuilder> , KubernetesResource
     public Record() {
     }
 
-    public Record(String id, String phase, String selectorKey) {
+    public Record(List<RecordEvent> events, String id, Integer injectedCount, String phase, Integer recoveredCount, String selectorKey) {
         super();
+        this.events = events;
         this.id = id;
+        this.injectedCount = injectedCount;
         this.phase = phase;
+        this.recoveredCount = recoveredCount;
         this.selectorKey = selectorKey;
+    }
+
+    @JsonProperty("events")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<RecordEvent> getEvents() {
+        return events;
+    }
+
+    @JsonProperty("events")
+    public void setEvents(List<RecordEvent> events) {
+        this.events = events;
     }
 
     @JsonProperty("id")
@@ -97,6 +123,16 @@ public class Record implements Editable<RecordBuilder> , KubernetesResource
         this.id = id;
     }
 
+    @JsonProperty("injectedCount")
+    public Integer getInjectedCount() {
+        return injectedCount;
+    }
+
+    @JsonProperty("injectedCount")
+    public void setInjectedCount(Integer injectedCount) {
+        this.injectedCount = injectedCount;
+    }
+
     @JsonProperty("phase")
     public String getPhase() {
         return phase;
@@ -105,6 +141,16 @@ public class Record implements Editable<RecordBuilder> , KubernetesResource
     @JsonProperty("phase")
     public void setPhase(String phase) {
         this.phase = phase;
+    }
+
+    @JsonProperty("recoveredCount")
+    public Integer getRecoveredCount() {
+        return recoveredCount;
+    }
+
+    @JsonProperty("recoveredCount")
+    public void setRecoveredCount(Integer recoveredCount) {
+        this.recoveredCount = recoveredCount;
     }
 
     @JsonProperty("selectorKey")

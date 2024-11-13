@@ -42,6 +42,7 @@ import lombok.experimental.Accessors;
     "duplicate",
     "ipset",
     "loss",
+    "rate",
     "source",
     "type"
 })
@@ -84,6 +85,8 @@ public class RawTrafficControl implements Editable<RawTrafficControlBuilder> , K
     private String ipset;
     @JsonProperty("loss")
     private LossSpec loss;
+    @JsonProperty("rate")
+    private RateSpec rate;
     @JsonProperty("source")
     private String source;
     @JsonProperty("type")
@@ -98,7 +101,7 @@ public class RawTrafficControl implements Editable<RawTrafficControlBuilder> , K
     public RawTrafficControl() {
     }
 
-    public RawTrafficControl(BandwidthSpec bandwidth, CorruptSpec corrupt, DelaySpec delay, String device, DuplicateSpec duplicate, String ipset, LossSpec loss, String source, String type) {
+    public RawTrafficControl(BandwidthSpec bandwidth, CorruptSpec corrupt, DelaySpec delay, String device, DuplicateSpec duplicate, String ipset, LossSpec loss, RateSpec rate, String source, String type) {
         super();
         this.bandwidth = bandwidth;
         this.corrupt = corrupt;
@@ -107,6 +110,7 @@ public class RawTrafficControl implements Editable<RawTrafficControlBuilder> , K
         this.duplicate = duplicate;
         this.ipset = ipset;
         this.loss = loss;
+        this.rate = rate;
         this.source = source;
         this.type = type;
     }
@@ -179,6 +183,16 @@ public class RawTrafficControl implements Editable<RawTrafficControlBuilder> , K
     @JsonProperty("loss")
     public void setLoss(LossSpec loss) {
         this.loss = loss;
+    }
+
+    @JsonProperty("rate")
+    public RateSpec getRate() {
+        return rate;
+    }
+
+    @JsonProperty("rate")
+    public void setRate(RateSpec rate) {
+        this.rate = rate;
     }
 
     @JsonProperty("source")

@@ -41,6 +41,7 @@ import lombok.experimental.Accessors;
     "duration",
     "ec2Instance",
     "endpoint",
+    "remoteCluster",
     "secretName",
     "volumeID"
 })
@@ -70,23 +71,25 @@ public class AWSChaosSpec implements Editable<AWSChaosSpecBuilder> , KubernetesR
 {
 
     @JsonProperty("action")
-    private java.lang.String action;
+    private String action;
     @JsonProperty("awsRegion")
-    private java.lang.String awsRegion;
+    private String awsRegion;
     @JsonProperty("deviceName")
     private String deviceName;
     @JsonProperty("duration")
     private String duration;
     @JsonProperty("ec2Instance")
-    private java.lang.String ec2Instance;
+    private String ec2Instance;
     @JsonProperty("endpoint")
     private String endpoint;
+    @JsonProperty("remoteCluster")
+    private String remoteCluster;
     @JsonProperty("secretName")
     private String secretName;
     @JsonProperty("volumeID")
     private String volumeID;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -95,7 +98,7 @@ public class AWSChaosSpec implements Editable<AWSChaosSpecBuilder> , KubernetesR
     public AWSChaosSpec() {
     }
 
-    public AWSChaosSpec(java.lang.String action, java.lang.String awsRegion, String deviceName, String duration, java.lang.String ec2Instance, String endpoint, String secretName, String volumeID) {
+    public AWSChaosSpec(String action, String awsRegion, String deviceName, String duration, String ec2Instance, String endpoint, String remoteCluster, String secretName, String volumeID) {
         super();
         this.action = action;
         this.awsRegion = awsRegion;
@@ -103,27 +106,28 @@ public class AWSChaosSpec implements Editable<AWSChaosSpecBuilder> , KubernetesR
         this.duration = duration;
         this.ec2Instance = ec2Instance;
         this.endpoint = endpoint;
+        this.remoteCluster = remoteCluster;
         this.secretName = secretName;
         this.volumeID = volumeID;
     }
 
     @JsonProperty("action")
-    public java.lang.String getAction() {
+    public String getAction() {
         return action;
     }
 
     @JsonProperty("action")
-    public void setAction(java.lang.String action) {
+    public void setAction(String action) {
         this.action = action;
     }
 
     @JsonProperty("awsRegion")
-    public java.lang.String getAwsRegion() {
+    public String getAwsRegion() {
         return awsRegion;
     }
 
     @JsonProperty("awsRegion")
-    public void setAwsRegion(java.lang.String awsRegion) {
+    public void setAwsRegion(String awsRegion) {
         this.awsRegion = awsRegion;
     }
 
@@ -148,12 +152,12 @@ public class AWSChaosSpec implements Editable<AWSChaosSpecBuilder> , KubernetesR
     }
 
     @JsonProperty("ec2Instance")
-    public java.lang.String getEc2Instance() {
+    public String getEc2Instance() {
         return ec2Instance;
     }
 
     @JsonProperty("ec2Instance")
-    public void setEc2Instance(java.lang.String ec2Instance) {
+    public void setEc2Instance(String ec2Instance) {
         this.ec2Instance = ec2Instance;
     }
 
@@ -165,6 +169,16 @@ public class AWSChaosSpec implements Editable<AWSChaosSpecBuilder> , KubernetesR
     @JsonProperty("endpoint")
     public void setEndpoint(String endpoint) {
         this.endpoint = endpoint;
+    }
+
+    @JsonProperty("remoteCluster")
+    public String getRemoteCluster() {
+        return remoteCluster;
+    }
+
+    @JsonProperty("remoteCluster")
+    public void setRemoteCluster(String remoteCluster) {
+        this.remoteCluster = remoteCluster;
     }
 
     @JsonProperty("secretName")
@@ -198,16 +212,16 @@ public class AWSChaosSpec implements Editable<AWSChaosSpecBuilder> , KubernetesR
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 

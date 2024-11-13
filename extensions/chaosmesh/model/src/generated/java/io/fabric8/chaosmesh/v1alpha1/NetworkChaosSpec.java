@@ -48,6 +48,8 @@ import lombok.experimental.Accessors;
     "externalTargets",
     "loss",
     "mode",
+    "rate",
+    "remoteCluster",
     "selector",
     "target",
     "targetDevice",
@@ -79,7 +81,7 @@ public class NetworkChaosSpec implements Editable<NetworkChaosSpecBuilder> , Kub
 {
 
     @JsonProperty("action")
-    private java.lang.String action;
+    private String action;
     @JsonProperty("bandwidth")
     private BandwidthSpec bandwidth;
     @JsonProperty("corrupt")
@@ -87,30 +89,34 @@ public class NetworkChaosSpec implements Editable<NetworkChaosSpecBuilder> , Kub
     @JsonProperty("delay")
     private DelaySpec delay;
     @JsonProperty("device")
-    private java.lang.String device;
+    private String device;
     @JsonProperty("direction")
-    private java.lang.String direction;
+    private String direction;
     @JsonProperty("duplicate")
     private DuplicateSpec duplicate;
     @JsonProperty("duration")
     private String duration;
     @JsonProperty("externalTargets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> externalTargets = new ArrayList<>();
+    private List<String> externalTargets = new ArrayList<>();
     @JsonProperty("loss")
     private LossSpec loss;
     @JsonProperty("mode")
-    private java.lang.String mode;
+    private String mode;
+    @JsonProperty("rate")
+    private RateSpec rate;
+    @JsonProperty("remoteCluster")
+    private String remoteCluster;
     @JsonProperty("selector")
     private PodSelectorSpec selector;
     @JsonProperty("target")
     private PodSelector target;
     @JsonProperty("targetDevice")
-    private java.lang.String targetDevice;
+    private String targetDevice;
     @JsonProperty("value")
-    private java.lang.String value;
+    private String value;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -119,7 +125,7 @@ public class NetworkChaosSpec implements Editable<NetworkChaosSpecBuilder> , Kub
     public NetworkChaosSpec() {
     }
 
-    public NetworkChaosSpec(java.lang.String action, BandwidthSpec bandwidth, CorruptSpec corrupt, DelaySpec delay, java.lang.String device, java.lang.String direction, DuplicateSpec duplicate, String duration, List<java.lang.String> externalTargets, LossSpec loss, java.lang.String mode, PodSelectorSpec selector, PodSelector target, java.lang.String targetDevice, java.lang.String value) {
+    public NetworkChaosSpec(String action, BandwidthSpec bandwidth, CorruptSpec corrupt, DelaySpec delay, String device, String direction, DuplicateSpec duplicate, String duration, List<String> externalTargets, LossSpec loss, String mode, RateSpec rate, String remoteCluster, PodSelectorSpec selector, PodSelector target, String targetDevice, String value) {
         super();
         this.action = action;
         this.bandwidth = bandwidth;
@@ -132,6 +138,8 @@ public class NetworkChaosSpec implements Editable<NetworkChaosSpecBuilder> , Kub
         this.externalTargets = externalTargets;
         this.loss = loss;
         this.mode = mode;
+        this.rate = rate;
+        this.remoteCluster = remoteCluster;
         this.selector = selector;
         this.target = target;
         this.targetDevice = targetDevice;
@@ -139,12 +147,12 @@ public class NetworkChaosSpec implements Editable<NetworkChaosSpecBuilder> , Kub
     }
 
     @JsonProperty("action")
-    public java.lang.String getAction() {
+    public String getAction() {
         return action;
     }
 
     @JsonProperty("action")
-    public void setAction(java.lang.String action) {
+    public void setAction(String action) {
         this.action = action;
     }
 
@@ -179,22 +187,22 @@ public class NetworkChaosSpec implements Editable<NetworkChaosSpecBuilder> , Kub
     }
 
     @JsonProperty("device")
-    public java.lang.String getDevice() {
+    public String getDevice() {
         return device;
     }
 
     @JsonProperty("device")
-    public void setDevice(java.lang.String device) {
+    public void setDevice(String device) {
         this.device = device;
     }
 
     @JsonProperty("direction")
-    public java.lang.String getDirection() {
+    public String getDirection() {
         return direction;
     }
 
     @JsonProperty("direction")
-    public void setDirection(java.lang.String direction) {
+    public void setDirection(String direction) {
         this.direction = direction;
     }
 
@@ -220,12 +228,12 @@ public class NetworkChaosSpec implements Editable<NetworkChaosSpecBuilder> , Kub
 
     @JsonProperty("externalTargets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<java.lang.String> getExternalTargets() {
+    public List<String> getExternalTargets() {
         return externalTargets;
     }
 
     @JsonProperty("externalTargets")
-    public void setExternalTargets(List<java.lang.String> externalTargets) {
+    public void setExternalTargets(List<String> externalTargets) {
         this.externalTargets = externalTargets;
     }
 
@@ -240,13 +248,33 @@ public class NetworkChaosSpec implements Editable<NetworkChaosSpecBuilder> , Kub
     }
 
     @JsonProperty("mode")
-    public java.lang.String getMode() {
+    public String getMode() {
         return mode;
     }
 
     @JsonProperty("mode")
-    public void setMode(java.lang.String mode) {
+    public void setMode(String mode) {
         this.mode = mode;
+    }
+
+    @JsonProperty("rate")
+    public RateSpec getRate() {
+        return rate;
+    }
+
+    @JsonProperty("rate")
+    public void setRate(RateSpec rate) {
+        this.rate = rate;
+    }
+
+    @JsonProperty("remoteCluster")
+    public String getRemoteCluster() {
+        return remoteCluster;
+    }
+
+    @JsonProperty("remoteCluster")
+    public void setRemoteCluster(String remoteCluster) {
+        this.remoteCluster = remoteCluster;
     }
 
     @JsonProperty("selector")
@@ -270,22 +298,22 @@ public class NetworkChaosSpec implements Editable<NetworkChaosSpecBuilder> , Kub
     }
 
     @JsonProperty("targetDevice")
-    public java.lang.String getTargetDevice() {
+    public String getTargetDevice() {
         return targetDevice;
     }
 
     @JsonProperty("targetDevice")
-    public void setTargetDevice(java.lang.String targetDevice) {
+    public void setTargetDevice(String targetDevice) {
         this.targetDevice = targetDevice;
     }
 
     @JsonProperty("value")
-    public java.lang.String getValue() {
+    public String getValue() {
         return value;
     }
 
     @JsonProperty("value")
-    public void setValue(java.lang.String value) {
+    public void setValue(String value) {
         this.value = value;
     }
 
@@ -300,16 +328,16 @@ public class NetworkChaosSpec implements Editable<NetworkChaosSpecBuilder> , Kub
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 

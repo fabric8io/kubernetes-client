@@ -42,6 +42,7 @@ import lombok.experimental.Accessors;
     "duration",
     "gracePeriod",
     "mode",
+    "remoteCluster",
     "selector",
     "value"
 })
@@ -71,22 +72,24 @@ public class PodChaosSpec implements Editable<PodChaosSpecBuilder> , KubernetesR
 {
 
     @JsonProperty("action")
-    private java.lang.String action;
+    private String action;
     @JsonProperty("containerNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> containerNames = new ArrayList<>();
+    private List<String> containerNames = new ArrayList<>();
     @JsonProperty("duration")
     private String duration;
     @JsonProperty("gracePeriod")
     private Long gracePeriod;
     @JsonProperty("mode")
-    private java.lang.String mode;
+    private String mode;
+    @JsonProperty("remoteCluster")
+    private String remoteCluster;
     @JsonProperty("selector")
     private PodSelectorSpec selector;
     @JsonProperty("value")
-    private java.lang.String value;
+    private String value;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -95,35 +98,36 @@ public class PodChaosSpec implements Editable<PodChaosSpecBuilder> , KubernetesR
     public PodChaosSpec() {
     }
 
-    public PodChaosSpec(java.lang.String action, List<java.lang.String> containerNames, String duration, Long gracePeriod, java.lang.String mode, PodSelectorSpec selector, java.lang.String value) {
+    public PodChaosSpec(String action, List<String> containerNames, String duration, Long gracePeriod, String mode, String remoteCluster, PodSelectorSpec selector, String value) {
         super();
         this.action = action;
         this.containerNames = containerNames;
         this.duration = duration;
         this.gracePeriod = gracePeriod;
         this.mode = mode;
+        this.remoteCluster = remoteCluster;
         this.selector = selector;
         this.value = value;
     }
 
     @JsonProperty("action")
-    public java.lang.String getAction() {
+    public String getAction() {
         return action;
     }
 
     @JsonProperty("action")
-    public void setAction(java.lang.String action) {
+    public void setAction(String action) {
         this.action = action;
     }
 
     @JsonProperty("containerNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<java.lang.String> getContainerNames() {
+    public List<String> getContainerNames() {
         return containerNames;
     }
 
     @JsonProperty("containerNames")
-    public void setContainerNames(List<java.lang.String> containerNames) {
+    public void setContainerNames(List<String> containerNames) {
         this.containerNames = containerNames;
     }
 
@@ -148,13 +152,23 @@ public class PodChaosSpec implements Editable<PodChaosSpecBuilder> , KubernetesR
     }
 
     @JsonProperty("mode")
-    public java.lang.String getMode() {
+    public String getMode() {
         return mode;
     }
 
     @JsonProperty("mode")
-    public void setMode(java.lang.String mode) {
+    public void setMode(String mode) {
         this.mode = mode;
+    }
+
+    @JsonProperty("remoteCluster")
+    public String getRemoteCluster() {
+        return remoteCluster;
+    }
+
+    @JsonProperty("remoteCluster")
+    public void setRemoteCluster(String remoteCluster) {
+        this.remoteCluster = remoteCluster;
     }
 
     @JsonProperty("selector")
@@ -168,12 +182,12 @@ public class PodChaosSpec implements Editable<PodChaosSpecBuilder> , KubernetesR
     }
 
     @JsonProperty("value")
-    public java.lang.String getValue() {
+    public String getValue() {
         return value;
     }
 
     @JsonProperty("value")
-    public void setValue(java.lang.String value) {
+    public void setValue(String value) {
         this.value = value;
     }
 
@@ -188,16 +202,16 @@ public class PodChaosSpec implements Editable<PodChaosSpecBuilder> , KubernetesR
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 

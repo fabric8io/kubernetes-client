@@ -47,6 +47,8 @@ openapi-generate-java-classes:
 	cd extensions && mvn $(MAVEN_ARGS) -N clean install
 	cd extensions/certmanager && mvn $(MAVEN_ARGS) -N clean install
 	cd extensions/certmanager/model && mvn $(MAVEN_ARGS) -Pgenerate clean install
+	cd extensions/chaosmesh && mvn $(MAVEN_ARGS) -N clean install
+	cd extensions/chaosmesh/model && mvn $(MAVEN_ARGS) -Pgenerate clean install
 	cd extensions/istio && mvn $(MAVEN_ARGS) -N clean install
 	cd extensions/istio/model && mvn $(MAVEN_ARGS) -Pgenerate clean install
 	cd extensions/knative && mvn $(MAVEN_ARGS) -N clean install
@@ -64,13 +66,8 @@ openapi-generate-java-classes:
 	cd extensions/volumesnapshot && mvn $(MAVEN_ARGS) -N clean install
 	cd extensions/volumesnapshot/model && mvn $(MAVEN_ARGS) -Pgenerate clean install
 
-# Legacy generation of the model: TODO: remove
-.PHONY: generate-model-legacy
-generate-model-legacy:
-	cd kubernetes-model-generator && ./generateModel.sh
-
 .PHONY: generate-model
-generate-model: openapi-generate-schema openapi-generate-java-classes generate-model-legacy
+generate-model: openapi-generate-schema openapi-generate-java-classes
 
 .PHONY: sonar
 sonar: clean

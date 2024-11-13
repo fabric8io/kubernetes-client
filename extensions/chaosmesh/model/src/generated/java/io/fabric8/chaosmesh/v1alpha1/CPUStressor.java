@@ -72,7 +72,7 @@ public class CPUStressor implements Editable<CPUStressorBuilder> , KubernetesRes
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> options = new ArrayList<>();
     @JsonProperty("workers")
-    private java.lang.Integer workers;
+    private Integer workers;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -83,7 +83,7 @@ public class CPUStressor implements Editable<CPUStressorBuilder> , KubernetesRes
     public CPUStressor() {
     }
 
-    public CPUStressor(Integer load, List<String> options, java.lang.Integer workers) {
+    public CPUStressor(Integer load, List<String> options, Integer workers) {
         super();
         this.load = load;
         this.options = options;
@@ -112,12 +112,12 @@ public class CPUStressor implements Editable<CPUStressorBuilder> , KubernetesRes
     }
 
     @JsonProperty("workers")
-    public java.lang.Integer getWorkers() {
+    public Integer getWorkers() {
         return workers;
     }
 
     @JsonProperty("workers")
-    public void setWorkers(java.lang.Integer workers) {
+    public void setWorkers(Integer workers) {
         this.workers = workers;
     }
 

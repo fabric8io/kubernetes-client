@@ -99,10 +99,10 @@ public class IOChaosAction implements Editable<IOChaosActionBuilder> , Kubernete
     @JsonProperty("kind")
     private String kind;
     @JsonProperty("latency")
-    private java.lang.String latency;
+    private String latency;
     @JsonProperty("methods")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> methods = new ArrayList<>();
+    private List<String> methods = new ArrayList<>();
     @JsonProperty("mistake")
     private MistakeSpec mistake;
     @JsonProperty("mtime")
@@ -110,9 +110,9 @@ public class IOChaosAction implements Editable<IOChaosActionBuilder> , Kubernete
     @JsonProperty("nlink")
     private Long nlink;
     @JsonProperty("path")
-    private java.lang.String path;
+    private String path;
     @JsonProperty("percent")
-    private java.lang.Integer percent;
+    private Integer percent;
     @JsonProperty("perm")
     private Integer perm;
     @JsonProperty("rdev")
@@ -120,13 +120,13 @@ public class IOChaosAction implements Editable<IOChaosActionBuilder> , Kubernete
     @JsonProperty("size")
     private Long size;
     @JsonProperty("source")
-    private java.lang.String source;
+    private String source;
     @JsonProperty("type")
-    private java.lang.String type;
+    private String type;
     @JsonProperty("uid")
     private Long uid;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -135,7 +135,7 @@ public class IOChaosAction implements Editable<IOChaosActionBuilder> , Kubernete
     public IOChaosAction() {
     }
 
-    public IOChaosAction(Timespec atime, Long blocks, Timespec ctime, List<IoFault> faults, Long gid, Long ino, String kind, java.lang.String latency, List<java.lang.String> methods, MistakeSpec mistake, Timespec mtime, Long nlink, java.lang.String path, java.lang.Integer percent, Integer perm, Long rdev, Long size, java.lang.String source, java.lang.String type, Long uid) {
+    public IOChaosAction(Timespec atime, Long blocks, Timespec ctime, List<IoFault> faults, Long gid, Long ino, String kind, String latency, List<String> methods, MistakeSpec mistake, Timespec mtime, Long nlink, String path, Integer percent, Integer perm, Long rdev, Long size, String source, String type, Long uid) {
         super();
         this.atime = atime;
         this.blocks = blocks;
@@ -231,23 +231,23 @@ public class IOChaosAction implements Editable<IOChaosActionBuilder> , Kubernete
     }
 
     @JsonProperty("latency")
-    public java.lang.String getLatency() {
+    public String getLatency() {
         return latency;
     }
 
     @JsonProperty("latency")
-    public void setLatency(java.lang.String latency) {
+    public void setLatency(String latency) {
         this.latency = latency;
     }
 
     @JsonProperty("methods")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<java.lang.String> getMethods() {
+    public List<String> getMethods() {
         return methods;
     }
 
     @JsonProperty("methods")
-    public void setMethods(List<java.lang.String> methods) {
+    public void setMethods(List<String> methods) {
         this.methods = methods;
     }
 
@@ -282,22 +282,22 @@ public class IOChaosAction implements Editable<IOChaosActionBuilder> , Kubernete
     }
 
     @JsonProperty("path")
-    public java.lang.String getPath() {
+    public String getPath() {
         return path;
     }
 
     @JsonProperty("path")
-    public void setPath(java.lang.String path) {
+    public void setPath(String path) {
         this.path = path;
     }
 
     @JsonProperty("percent")
-    public java.lang.Integer getPercent() {
+    public Integer getPercent() {
         return percent;
     }
 
     @JsonProperty("percent")
-    public void setPercent(java.lang.Integer percent) {
+    public void setPercent(Integer percent) {
         this.percent = percent;
     }
 
@@ -332,22 +332,22 @@ public class IOChaosAction implements Editable<IOChaosActionBuilder> , Kubernete
     }
 
     @JsonProperty("source")
-    public java.lang.String getSource() {
+    public String getSource() {
         return source;
     }
 
     @JsonProperty("source")
-    public void setSource(java.lang.String source) {
+    public void setSource(String source) {
         this.source = source;
     }
 
     @JsonProperty("type")
-    public java.lang.String getType() {
+    public String getType() {
         return type;
     }
 
     @JsonProperty("type")
-    public void setType(java.lang.String type) {
+    public void setType(String type) {
         this.type = type;
     }
 
@@ -372,16 +372,16 @@ public class IOChaosAction implements Editable<IOChaosActionBuilder> , Kubernete
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 

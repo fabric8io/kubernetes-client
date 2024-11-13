@@ -1,7 +1,9 @@
 
 package io.fabric8.chaosmesh.v1alpha1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -67,7 +69,8 @@ public class StressCPUSpec implements Editable<StressCPUSpecBuilder> , Kubernete
     @JsonProperty("load")
     private Integer load;
     @JsonProperty("options")
-    private String options;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> options = new ArrayList<>();
     @JsonProperty("workers")
     private Integer workers;
     @JsonIgnore
@@ -80,7 +83,7 @@ public class StressCPUSpec implements Editable<StressCPUSpecBuilder> , Kubernete
     public StressCPUSpec() {
     }
 
-    public StressCPUSpec(Integer load, String options, Integer workers) {
+    public StressCPUSpec(Integer load, List<String> options, Integer workers) {
         super();
         this.load = load;
         this.options = options;
@@ -98,12 +101,13 @@ public class StressCPUSpec implements Editable<StressCPUSpecBuilder> , Kubernete
     }
 
     @JsonProperty("options")
-    public String getOptions() {
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<String> getOptions() {
         return options;
     }
 
     @JsonProperty("options")
-    public void setOptions(String options) {
+    public void setOptions(List<String> options) {
         this.options = options;
     }
 

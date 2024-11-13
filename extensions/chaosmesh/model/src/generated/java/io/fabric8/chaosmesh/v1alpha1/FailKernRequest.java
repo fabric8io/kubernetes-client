@@ -77,9 +77,9 @@ public class FailKernRequest implements Editable<FailKernRequestBuilder> , Kuber
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> headers = new ArrayList<>();
     @JsonProperty("probability")
-    private Integer probability;
+    private Long probability;
     @JsonProperty("times")
-    private Integer times;
+    private Long times;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -90,7 +90,7 @@ public class FailKernRequest implements Editable<FailKernRequestBuilder> , Kuber
     public FailKernRequest() {
     }
 
-    public FailKernRequest(List<Frame> callchain, Integer failtype, List<String> headers, Integer probability, Integer times) {
+    public FailKernRequest(List<Frame> callchain, Integer failtype, List<String> headers, Long probability, Long times) {
         super();
         this.callchain = callchain;
         this.failtype = failtype;
@@ -132,22 +132,22 @@ public class FailKernRequest implements Editable<FailKernRequestBuilder> , Kuber
     }
 
     @JsonProperty("probability")
-    public Integer getProbability() {
+    public Long getProbability() {
         return probability;
     }
 
     @JsonProperty("probability")
-    public void setProbability(Integer probability) {
+    public void setProbability(Long probability) {
         this.probability = probability;
     }
 
     @JsonProperty("times")
-    public Integer getTimes() {
+    public Long getTimes() {
         return times;
     }
 
     @JsonProperty("times")
-    public void setTimes(Integer times) {
+    public void setTimes(Long times) {
         this.times = times;
     }
 

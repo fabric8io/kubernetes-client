@@ -41,16 +41,23 @@ import lombok.experimental.Accessors;
     "class",
     "containerNames",
     "cpuCount",
+    "database",
     "duration",
     "exception",
     "latency",
     "memType",
     "method",
     "mode",
+    "mysqlConnectorVersion",
     "name",
+    "pid",
     "port",
+    "remoteCluster",
+    "returnValue",
     "ruleData",
     "selector",
+    "sqlType",
+    "table",
     "value"
 })
 @ToString
@@ -79,38 +86,52 @@ public class JVMChaosSpec implements Editable<JVMChaosSpecBuilder> , KubernetesR
 {
 
     @JsonProperty("action")
-    private java.lang.String action;
+    private String action;
     @JsonProperty("class")
-    private java.lang.String className;
+    private String className;
     @JsonProperty("containerNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> containerNames = new ArrayList<>();
+    private List<String> containerNames = new ArrayList<>();
     @JsonProperty("cpuCount")
     private Integer cpuCount;
+    @JsonProperty("database")
+    private String database;
     @JsonProperty("duration")
     private String duration;
     @JsonProperty("exception")
-    private java.lang.String exception;
+    private String exception;
     @JsonProperty("latency")
     private Integer latency;
     @JsonProperty("memType")
-    private java.lang.String memType;
+    private String memType;
     @JsonProperty("method")
-    private java.lang.String method;
+    private String method;
     @JsonProperty("mode")
-    private java.lang.String mode;
+    private String mode;
+    @JsonProperty("mysqlConnectorVersion")
+    private String mysqlConnectorVersion;
     @JsonProperty("name")
-    private java.lang.String name;
+    private String name;
+    @JsonProperty("pid")
+    private Integer pid;
     @JsonProperty("port")
     private Integer port;
+    @JsonProperty("remoteCluster")
+    private String remoteCluster;
+    @JsonProperty("returnValue")
+    private String returnValue;
     @JsonProperty("ruleData")
-    private java.lang.String ruleData;
+    private String ruleData;
     @JsonProperty("selector")
     private PodSelectorSpec selector;
+    @JsonProperty("sqlType")
+    private String sqlType;
+    @JsonProperty("table")
+    private String table;
     @JsonProperty("value")
-    private java.lang.String value;
+    private String value;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -119,53 +140,60 @@ public class JVMChaosSpec implements Editable<JVMChaosSpecBuilder> , KubernetesR
     public JVMChaosSpec() {
     }
 
-    public JVMChaosSpec(java.lang.String action, java.lang.String className, List<java.lang.String> containerNames, Integer cpuCount, String duration, java.lang.String exception, Integer latency, java.lang.String memType, java.lang.String method, java.lang.String mode, java.lang.String name, Integer port, java.lang.String ruleData, PodSelectorSpec selector, java.lang.String value) {
+    public JVMChaosSpec(String action, String className, List<String> containerNames, Integer cpuCount, String database, String duration, String exception, Integer latency, String memType, String method, String mode, String mysqlConnectorVersion, String name, Integer pid, Integer port, String remoteCluster, String returnValue, String ruleData, PodSelectorSpec selector, String sqlType, String table, String value) {
         super();
         this.action = action;
         this.className = className;
         this.containerNames = containerNames;
         this.cpuCount = cpuCount;
+        this.database = database;
         this.duration = duration;
         this.exception = exception;
         this.latency = latency;
         this.memType = memType;
         this.method = method;
         this.mode = mode;
+        this.mysqlConnectorVersion = mysqlConnectorVersion;
         this.name = name;
+        this.pid = pid;
         this.port = port;
+        this.remoteCluster = remoteCluster;
+        this.returnValue = returnValue;
         this.ruleData = ruleData;
         this.selector = selector;
+        this.sqlType = sqlType;
+        this.table = table;
         this.value = value;
     }
 
     @JsonProperty("action")
-    public java.lang.String getAction() {
+    public String getAction() {
         return action;
     }
 
     @JsonProperty("action")
-    public void setAction(java.lang.String action) {
+    public void setAction(String action) {
         this.action = action;
     }
 
     @JsonProperty("class")
-    public java.lang.String getClassName() {
+    public String getClassName() {
         return className;
     }
 
     @JsonProperty("class")
-    public void setClassName(java.lang.String className) {
+    public void setClassName(String className) {
         this.className = className;
     }
 
     @JsonProperty("containerNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<java.lang.String> getContainerNames() {
+    public List<String> getContainerNames() {
         return containerNames;
     }
 
     @JsonProperty("containerNames")
-    public void setContainerNames(List<java.lang.String> containerNames) {
+    public void setContainerNames(List<String> containerNames) {
         this.containerNames = containerNames;
     }
 
@@ -179,6 +207,16 @@ public class JVMChaosSpec implements Editable<JVMChaosSpecBuilder> , KubernetesR
         this.cpuCount = cpuCount;
     }
 
+    @JsonProperty("database")
+    public String getDatabase() {
+        return database;
+    }
+
+    @JsonProperty("database")
+    public void setDatabase(String database) {
+        this.database = database;
+    }
+
     @JsonProperty("duration")
     public String getDuration() {
         return duration;
@@ -190,12 +228,12 @@ public class JVMChaosSpec implements Editable<JVMChaosSpecBuilder> , KubernetesR
     }
 
     @JsonProperty("exception")
-    public java.lang.String getException() {
+    public String getException() {
         return exception;
     }
 
     @JsonProperty("exception")
-    public void setException(java.lang.String exception) {
+    public void setException(String exception) {
         this.exception = exception;
     }
 
@@ -210,43 +248,63 @@ public class JVMChaosSpec implements Editable<JVMChaosSpecBuilder> , KubernetesR
     }
 
     @JsonProperty("memType")
-    public java.lang.String getMemType() {
+    public String getMemType() {
         return memType;
     }
 
     @JsonProperty("memType")
-    public void setMemType(java.lang.String memType) {
+    public void setMemType(String memType) {
         this.memType = memType;
     }
 
     @JsonProperty("method")
-    public java.lang.String getMethod() {
+    public String getMethod() {
         return method;
     }
 
     @JsonProperty("method")
-    public void setMethod(java.lang.String method) {
+    public void setMethod(String method) {
         this.method = method;
     }
 
     @JsonProperty("mode")
-    public java.lang.String getMode() {
+    public String getMode() {
         return mode;
     }
 
     @JsonProperty("mode")
-    public void setMode(java.lang.String mode) {
+    public void setMode(String mode) {
         this.mode = mode;
     }
 
+    @JsonProperty("mysqlConnectorVersion")
+    public String getMysqlConnectorVersion() {
+        return mysqlConnectorVersion;
+    }
+
+    @JsonProperty("mysqlConnectorVersion")
+    public void setMysqlConnectorVersion(String mysqlConnectorVersion) {
+        this.mysqlConnectorVersion = mysqlConnectorVersion;
+    }
+
     @JsonProperty("name")
-    public java.lang.String getName() {
+    public String getName() {
         return name;
     }
 
     @JsonProperty("name")
-    public void setName(java.lang.String name) {
+    public void setName(String name) {
         this.name = name;
+    }
+
+    @JsonProperty("pid")
+    public Integer getPid() {
+        return pid;
+    }
+
+    @JsonProperty("pid")
+    public void setPid(Integer pid) {
+        this.pid = pid;
     }
 
     @JsonProperty("port")
@@ -259,13 +317,33 @@ public class JVMChaosSpec implements Editable<JVMChaosSpecBuilder> , KubernetesR
         this.port = port;
     }
 
+    @JsonProperty("remoteCluster")
+    public String getRemoteCluster() {
+        return remoteCluster;
+    }
+
+    @JsonProperty("remoteCluster")
+    public void setRemoteCluster(String remoteCluster) {
+        this.remoteCluster = remoteCluster;
+    }
+
+    @JsonProperty("returnValue")
+    public String getReturnValue() {
+        return returnValue;
+    }
+
+    @JsonProperty("returnValue")
+    public void setReturnValue(String returnValue) {
+        this.returnValue = returnValue;
+    }
+
     @JsonProperty("ruleData")
-    public java.lang.String getRuleData() {
+    public String getRuleData() {
         return ruleData;
     }
 
     @JsonProperty("ruleData")
-    public void setRuleData(java.lang.String ruleData) {
+    public void setRuleData(String ruleData) {
         this.ruleData = ruleData;
     }
 
@@ -279,13 +357,33 @@ public class JVMChaosSpec implements Editable<JVMChaosSpecBuilder> , KubernetesR
         this.selector = selector;
     }
 
+    @JsonProperty("sqlType")
+    public String getSqlType() {
+        return sqlType;
+    }
+
+    @JsonProperty("sqlType")
+    public void setSqlType(String sqlType) {
+        this.sqlType = sqlType;
+    }
+
+    @JsonProperty("table")
+    public String getTable() {
+        return table;
+    }
+
+    @JsonProperty("table")
+    public void setTable(String table) {
+        this.table = table;
+    }
+
     @JsonProperty("value")
-    public java.lang.String getValue() {
+    public String getValue() {
         return value;
     }
 
     @JsonProperty("value")
-    public void setValue(java.lang.String value) {
+    public void setValue(String value) {
         this.value = value;
     }
 
@@ -300,16 +398,16 @@ public class JVMChaosSpec implements Editable<JVMChaosSpecBuilder> , KubernetesR
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 

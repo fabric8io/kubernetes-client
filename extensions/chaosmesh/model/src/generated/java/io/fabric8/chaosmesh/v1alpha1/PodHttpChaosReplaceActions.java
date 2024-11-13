@@ -68,7 +68,7 @@ public class PodHttpChaosReplaceActions implements Editable<PodHttpChaosReplaceA
 {
 
     @JsonProperty("body")
-    private java.lang.String body;
+    private String body;
     @JsonProperty("code")
     private Integer code;
     @JsonProperty("headers")
@@ -82,7 +82,7 @@ public class PodHttpChaosReplaceActions implements Editable<PodHttpChaosReplaceA
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> queries = new LinkedHashMap<>();
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new LinkedHashMap<java.lang.String, Object>();
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -91,7 +91,7 @@ public class PodHttpChaosReplaceActions implements Editable<PodHttpChaosReplaceA
     public PodHttpChaosReplaceActions() {
     }
 
-    public PodHttpChaosReplaceActions(java.lang.String body, Integer code, Map<String, String> headers, String method, String path, Map<String, String> queries) {
+    public PodHttpChaosReplaceActions(String body, Integer code, Map<String, String> headers, String method, String path, Map<String, String> queries) {
         super();
         this.body = body;
         this.code = code;
@@ -102,12 +102,12 @@ public class PodHttpChaosReplaceActions implements Editable<PodHttpChaosReplaceA
     }
 
     @JsonProperty("body")
-    public java.lang.String getBody() {
+    public String getBody() {
         return body;
     }
 
     @JsonProperty("body")
-    public void setBody(java.lang.String body) {
+    public void setBody(String body) {
         this.body = body;
     }
 
@@ -174,16 +174,16 @@ public class PodHttpChaosReplaceActions implements Editable<PodHttpChaosReplaceA
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(java.lang.String name, Object value) {
+    public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
-    public void setAdditionalProperties(Map<java.lang.String, Object> additionalProperties) {
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
 

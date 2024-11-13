@@ -35,6 +35,7 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "accept-tcp-flags",
     "correlation",
     "device",
     "egress-port",
@@ -70,6 +71,8 @@ import lombok.experimental.Accessors;
 public class NetworkDelaySpec implements Editable<NetworkDelaySpecBuilder> , KubernetesResource
 {
 
+    @JsonProperty("accept-tcp-flags")
+    private String acceptTcpFlags;
     @JsonProperty("correlation")
     private String correlation;
     @JsonProperty("device")
@@ -98,8 +101,9 @@ public class NetworkDelaySpec implements Editable<NetworkDelaySpecBuilder> , Kub
     public NetworkDelaySpec() {
     }
 
-    public NetworkDelaySpec(String correlation, String device, String egressPort, String hostname, String ipAddress, String ipProtocol, String jitter, String latency, String sourcePort) {
+    public NetworkDelaySpec(String acceptTcpFlags, String correlation, String device, String egressPort, String hostname, String ipAddress, String ipProtocol, String jitter, String latency, String sourcePort) {
         super();
+        this.acceptTcpFlags = acceptTcpFlags;
         this.correlation = correlation;
         this.device = device;
         this.egressPort = egressPort;
@@ -109,6 +113,16 @@ public class NetworkDelaySpec implements Editable<NetworkDelaySpecBuilder> , Kub
         this.jitter = jitter;
         this.latency = latency;
         this.sourcePort = sourcePort;
+    }
+
+    @JsonProperty("accept-tcp-flags")
+    public String getAcceptTcpFlags() {
+        return acceptTcpFlags;
+    }
+
+    @JsonProperty("accept-tcp-flags")
+    public void setAcceptTcpFlags(String acceptTcpFlags) {
+        this.acceptTcpFlags = acceptTcpFlags;
     }
 
     @JsonProperty("correlation")

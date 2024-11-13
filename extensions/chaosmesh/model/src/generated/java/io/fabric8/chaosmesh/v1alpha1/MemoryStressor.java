@@ -37,6 +37,7 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "oomScoreAdj",
     "options",
     "size",
     "workers"
@@ -66,6 +67,8 @@ import lombok.experimental.Accessors;
 public class MemoryStressor implements Editable<MemoryStressorBuilder> , KubernetesResource
 {
 
+    @JsonProperty("oomScoreAdj")
+    private Integer oomScoreAdj;
     @JsonProperty("options")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> options = new ArrayList<>();
@@ -83,11 +86,22 @@ public class MemoryStressor implements Editable<MemoryStressorBuilder> , Kuberne
     public MemoryStressor() {
     }
 
-    public MemoryStressor(List<String> options, String size, Integer workers) {
+    public MemoryStressor(Integer oomScoreAdj, List<String> options, String size, Integer workers) {
         super();
+        this.oomScoreAdj = oomScoreAdj;
         this.options = options;
         this.size = size;
         this.workers = workers;
+    }
+
+    @JsonProperty("oomScoreAdj")
+    public Integer getOomScoreAdj() {
+        return oomScoreAdj;
+    }
+
+    @JsonProperty("oomScoreAdj")
+    public void setOomScoreAdj(Integer oomScoreAdj) {
+        this.oomScoreAdj = oomScoreAdj;
     }
 
     @JsonProperty("options")
