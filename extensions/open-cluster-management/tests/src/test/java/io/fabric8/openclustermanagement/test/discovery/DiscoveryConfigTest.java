@@ -30,7 +30,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @EnableKubernetesMockClient
 class DiscoveryConfigTest {
-  private OpenClusterManagementClient client;
+  OpenClusterManagementClient client;
   KubernetesMockServer server;
 
   @Test

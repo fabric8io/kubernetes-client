@@ -17,10 +17,10 @@ package io.fabric8.openclustermanagement.test.cluster;
 
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
-import io.fabric8.openclustermanagement.api.model.cluster.v1alpha1.Placement;
-import io.fabric8.openclustermanagement.api.model.cluster.v1alpha1.PlacementBuilder;
-import io.fabric8.openclustermanagement.api.model.cluster.v1alpha1.PlacementList;
-import io.fabric8.openclustermanagement.api.model.cluster.v1alpha1.PlacementListBuilder;
+import io.fabric8.openclustermanagement.api.model.cluster.v1beta1.Placement;
+import io.fabric8.openclustermanagement.api.model.cluster.v1beta1.PlacementBuilder;
+import io.fabric8.openclustermanagement.api.model.cluster.v1beta1.PlacementList;
+import io.fabric8.openclustermanagement.api.model.cluster.v1beta1.PlacementListBuilder;
 import io.fabric8.openclustermanagement.client.OpenClusterManagementClient;
 import org.junit.jupiter.api.Test;
 
@@ -30,13 +30,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @EnableKubernetesMockClient
 class PlacementTest {
-  private OpenClusterManagementClient client;
+  OpenClusterManagementClient client;
   KubernetesMockServer server;
 
   @Test
   void get() {
     // Given
-    server.expect().get().withPath("/apis/cluster.open-cluster-management.io/v1alpha1/namespaces/ns1/placements/test-get")
+    server.expect().get().withPath("/apis/cluster.open-cluster-management.io/v1beta1/namespaces/ns1/placements/test-get")
         .andReturn(HttpURLConnection.HTTP_OK, createNewPlacement("test-get"))
         .once();
 
@@ -52,7 +52,7 @@ class PlacementTest {
   @Test
   void list() {
     // Given
-    server.expect().get().withPath("/apis/cluster.open-cluster-management.io/v1alpha1/namespaces/ns1/placements")
+    server.expect().get().withPath("/apis/cluster.open-cluster-management.io/v1beta1/namespaces/ns1/placements")
         .andReturn(HttpURLConnection.HTTP_OK, new PlacementListBuilder()
             .addToItems(createNewPlacement("test-list"))
             .build())
@@ -71,7 +71,7 @@ class PlacementTest {
   @Test
   void delete() {
     // Given
-    server.expect().delete().withPath("/apis/cluster.open-cluster-management.io/v1alpha1/namespaces/ns1/placements/placement1")
+    server.expect().delete().withPath("/apis/cluster.open-cluster-management.io/v1beta1/namespaces/ns1/placements/placement1")
         .andReturn(HttpURLConnection.HTTP_OK, createNewPlacement("placement1"))
         .once();
 

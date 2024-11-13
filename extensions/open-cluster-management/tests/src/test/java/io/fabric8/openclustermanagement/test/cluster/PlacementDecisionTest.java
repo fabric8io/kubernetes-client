@@ -17,10 +17,10 @@ package io.fabric8.openclustermanagement.test.cluster;
 
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
-import io.fabric8.openclustermanagement.api.model.cluster.v1alpha1.PlacementDecision;
-import io.fabric8.openclustermanagement.api.model.cluster.v1alpha1.PlacementDecisionBuilder;
-import io.fabric8.openclustermanagement.api.model.cluster.v1alpha1.PlacementDecisionList;
-import io.fabric8.openclustermanagement.api.model.cluster.v1alpha1.PlacementDecisionListBuilder;
+import io.fabric8.openclustermanagement.api.model.cluster.v1beta1.PlacementDecision;
+import io.fabric8.openclustermanagement.api.model.cluster.v1beta1.PlacementDecisionBuilder;
+import io.fabric8.openclustermanagement.api.model.cluster.v1beta1.PlacementDecisionList;
+import io.fabric8.openclustermanagement.api.model.cluster.v1beta1.PlacementDecisionListBuilder;
 import io.fabric8.openclustermanagement.client.OpenClusterManagementClient;
 import org.junit.jupiter.api.Test;
 
@@ -30,14 +30,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @EnableKubernetesMockClient
 class PlacementDecisionTest {
-  private OpenClusterManagementClient client;
+  OpenClusterManagementClient client;
   KubernetesMockServer server;
 
   @Test
   void get() {
     // Given
     server.expect().get()
-        .withPath("/apis/cluster.open-cluster-management.io/v1alpha1/namespaces/ns1/placementdecisions/test-get")
+        .withPath("/apis/cluster.open-cluster-management.io/v1beta1/namespaces/ns1/placementdecisions/test-get")
         .andReturn(HttpURLConnection.HTTP_OK, createNewPlacementDecision("test-get"))
         .once();
 
@@ -53,7 +53,7 @@ class PlacementDecisionTest {
   @Test
   void list() {
     // Given
-    server.expect().get().withPath("/apis/cluster.open-cluster-management.io/v1alpha1/namespaces/ns1/placementdecisions")
+    server.expect().get().withPath("/apis/cluster.open-cluster-management.io/v1beta1/namespaces/ns1/placementdecisions")
         .andReturn(HttpURLConnection.HTTP_OK, new PlacementDecisionListBuilder()
             .addToItems(createNewPlacementDecision("test-list"))
             .build())
@@ -73,7 +73,7 @@ class PlacementDecisionTest {
   void delete() {
     // Given
     server.expect().delete()
-        .withPath("/apis/cluster.open-cluster-management.io/v1alpha1/namespaces/ns1/placementdecisions/placement1")
+        .withPath("/apis/cluster.open-cluster-management.io/v1beta1/namespaces/ns1/placementdecisions/placement1")
         .andReturn(HttpURLConnection.HTTP_OK, createNewPlacementDecision("placement1"))
         .once();
 

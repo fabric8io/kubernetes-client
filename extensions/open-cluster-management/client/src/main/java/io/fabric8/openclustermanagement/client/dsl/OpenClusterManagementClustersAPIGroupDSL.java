@@ -21,47 +21,47 @@ import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.openclustermanagement.api.model.cluster.v1.ManagedCluster;
 import io.fabric8.openclustermanagement.api.model.cluster.v1.ManagedClusterList;
-import io.fabric8.openclustermanagement.api.model.cluster.v1alpha1.Placement;
-import io.fabric8.openclustermanagement.api.model.cluster.v1alpha1.PlacementDecision;
-import io.fabric8.openclustermanagement.api.model.cluster.v1alpha1.PlacementDecisionList;
-import io.fabric8.openclustermanagement.api.model.cluster.v1alpha1.PlacementList;
-import io.fabric8.openclustermanagement.api.model.cluster.v1beta1.ManagedClusterSet;
-import io.fabric8.openclustermanagement.api.model.cluster.v1beta1.ManagedClusterSetBinding;
-import io.fabric8.openclustermanagement.api.model.cluster.v1beta1.ManagedClusterSetBindingList;
-import io.fabric8.openclustermanagement.api.model.cluster.v1beta1.ManagedClusterSetList;
+import io.fabric8.openclustermanagement.api.model.cluster.v1beta1.Placement;
+import io.fabric8.openclustermanagement.api.model.cluster.v1beta1.PlacementDecision;
+import io.fabric8.openclustermanagement.api.model.cluster.v1beta1.PlacementDecisionList;
+import io.fabric8.openclustermanagement.api.model.cluster.v1beta1.PlacementList;
+import io.fabric8.openclustermanagement.api.model.cluster.v1beta2.ManagedClusterSet;
+import io.fabric8.openclustermanagement.api.model.cluster.v1beta2.ManagedClusterSetBinding;
+import io.fabric8.openclustermanagement.api.model.cluster.v1beta2.ManagedClusterSetBindingList;
+import io.fabric8.openclustermanagement.api.model.cluster.v1beta2.ManagedClusterSetList;
 
 public interface OpenClusterManagementClustersAPIGroupDSL extends Client {
   /**
    * API entrypoint for ManagedCluster (cluster.open-cluster-management.io/v1)
-   * 
+   *
    * @return {@link NonNamespaceOperation} for ManagedCluster
    */
   NonNamespaceOperation<ManagedCluster, ManagedClusterList, Resource<ManagedCluster>> managedClusters();
 
   /**
-   * API entrypoint for ManagedClusterSet (cluster.open-cluster-management.io/v1beta1)
-   * 
+   * API entrypoint for ManagedClusterSet (cluster.open-cluster-management.io/v1beta2)
+   *
    * @return {@link NonNamespaceOperation} for ManagedClusterSet
    */
   NonNamespaceOperation<ManagedClusterSet, ManagedClusterSetList, Resource<ManagedClusterSet>> managedClusterSets();
 
   /**
-   * API entrypoint for ManagedClusterSetBinding (cluster.open-cluster-management.io/v1beta1)
-   * 
+   * API entrypoint for ManagedClusterSetBinding (cluster.open-cluster-management.io/v1beta2)
+   *
    * @return {@link MixedOperation} for ManagedClusterSetBinding
    */
   MixedOperation<ManagedClusterSetBinding, ManagedClusterSetBindingList, Resource<ManagedClusterSetBinding>> managedClusterSetBindings();
 
   /**
-   * API entrypoint for Placement (cluster.open-cluster-management.io/v1alpha1)
-   * 
+   * API entrypoint for Placement (cluster.open-cluster-management.io/v1beta1)
+   *
    * @return {@link MixedOperation} for Placement
    */
   MixedOperation<Placement, PlacementList, Resource<Placement>> placements();
 
   /**
-   * API entrypoint for PlacementDecision (cluster.open-cluster-management.io/v1alpha1)
-   * 
+   * API entrypoint for PlacementDecision (cluster.open-cluster-management.io/v1beta1)
+   *
    * @return {@link MixedOperation} for PlacementDecision
    */
   MixedOperation<PlacementDecision, PlacementDecisionList, Resource<PlacementDecision>> placementDecisions();

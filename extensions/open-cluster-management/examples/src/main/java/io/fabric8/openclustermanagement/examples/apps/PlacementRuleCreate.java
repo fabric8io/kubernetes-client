@@ -15,8 +15,8 @@
  */
 package io.fabric8.openclustermanagement.examples.apps;
 
-import io.fabric8.openclustermanagement.api.model.multicloudoperatorsplacementrule.apps.v1.PlacementRule;
-import io.fabric8.openclustermanagement.api.model.multicloudoperatorsplacementrule.apps.v1.PlacementRuleBuilder;
+import io.fabric8.openclustermanagement.api.model.apps.v1.PlacementRule;
+import io.fabric8.openclustermanagement.api.model.apps.v1.PlacementRuleBuilder;
 import io.fabric8.openclustermanagement.client.DefaultOpenClusterManagementClient;
 import io.fabric8.openclustermanagement.client.OpenClusterManagementClient;
 import org.slf4j.Logger;
@@ -38,7 +38,7 @@ public class PlacementRuleCreate {
           .endSpec()
           .build();
       logger.info("Creating PlacementRule {}", placementRule.getMetadata().getName());
-      ocmClient.apps().placementRules().inNamespace("default").create(placementRule);
+      ocmClient.apps().placementRules().inNamespace("default").resource(placementRule).create();
       logger.info("Success.");
     }
   }

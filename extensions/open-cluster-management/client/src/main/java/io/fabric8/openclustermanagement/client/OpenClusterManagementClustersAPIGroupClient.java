@@ -21,14 +21,14 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.extension.ClientAdapter;
 import io.fabric8.openclustermanagement.api.model.cluster.v1.ManagedCluster;
 import io.fabric8.openclustermanagement.api.model.cluster.v1.ManagedClusterList;
-import io.fabric8.openclustermanagement.api.model.cluster.v1alpha1.Placement;
-import io.fabric8.openclustermanagement.api.model.cluster.v1alpha1.PlacementDecision;
-import io.fabric8.openclustermanagement.api.model.cluster.v1alpha1.PlacementDecisionList;
-import io.fabric8.openclustermanagement.api.model.cluster.v1alpha1.PlacementList;
-import io.fabric8.openclustermanagement.api.model.cluster.v1beta1.ManagedClusterSet;
-import io.fabric8.openclustermanagement.api.model.cluster.v1beta1.ManagedClusterSetBinding;
-import io.fabric8.openclustermanagement.api.model.cluster.v1beta1.ManagedClusterSetBindingList;
-import io.fabric8.openclustermanagement.api.model.cluster.v1beta1.ManagedClusterSetList;
+import io.fabric8.openclustermanagement.api.model.cluster.v1beta1.Placement;
+import io.fabric8.openclustermanagement.api.model.cluster.v1beta1.PlacementDecision;
+import io.fabric8.openclustermanagement.api.model.cluster.v1beta1.PlacementDecisionList;
+import io.fabric8.openclustermanagement.api.model.cluster.v1beta1.PlacementList;
+import io.fabric8.openclustermanagement.api.model.cluster.v1beta2.ManagedClusterSet;
+import io.fabric8.openclustermanagement.api.model.cluster.v1beta2.ManagedClusterSetBinding;
+import io.fabric8.openclustermanagement.api.model.cluster.v1beta2.ManagedClusterSetBindingList;
+import io.fabric8.openclustermanagement.api.model.cluster.v1beta2.ManagedClusterSetList;
 import io.fabric8.openclustermanagement.client.dsl.OpenClusterManagementClustersAPIGroupDSL;
 
 public class OpenClusterManagementClustersAPIGroupClient extends ClientAdapter<OpenClusterManagementClustersAPIGroupClient>

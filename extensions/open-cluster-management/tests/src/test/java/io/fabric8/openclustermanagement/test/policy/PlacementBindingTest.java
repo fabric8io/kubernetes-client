@@ -17,10 +17,10 @@ package io.fabric8.openclustermanagement.test.policy;
 
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
-import io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1.PlacementBinding;
-import io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1.PlacementBindingBuilder;
-import io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1.PlacementBindingList;
-import io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1.PlacementBindingListBuilder;
+import io.fabric8.openclustermanagement.api.model.policy.v1.PlacementBinding;
+import io.fabric8.openclustermanagement.api.model.policy.v1.PlacementBindingBuilder;
+import io.fabric8.openclustermanagement.api.model.policy.v1.PlacementBindingList;
+import io.fabric8.openclustermanagement.api.model.policy.v1.PlacementBindingListBuilder;
 import io.fabric8.openclustermanagement.client.OpenClusterManagementClient;
 import org.junit.jupiter.api.Test;
 
@@ -30,7 +30,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @EnableKubernetesMockClient
 class PlacementBindingTest {
-  private OpenClusterManagementClient client;
+  OpenClusterManagementClient client;
   KubernetesMockServer server;
 
   @Test

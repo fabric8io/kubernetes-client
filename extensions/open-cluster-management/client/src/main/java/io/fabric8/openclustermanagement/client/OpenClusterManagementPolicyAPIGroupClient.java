@@ -18,12 +18,12 @@ package io.fabric8.openclustermanagement.client;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.extension.ClientAdapter;
-import io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1.PlacementBinding;
-import io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1.PlacementBindingList;
-import io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1.Policy;
-import io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1.PolicyList;
-import io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1beta1.PolicyAutomation;
-import io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1beta1.PolicyAutomationList;
+import io.fabric8.openclustermanagement.api.model.policy.v1.PlacementBinding;
+import io.fabric8.openclustermanagement.api.model.policy.v1.PlacementBindingList;
+import io.fabric8.openclustermanagement.api.model.policy.v1.Policy;
+import io.fabric8.openclustermanagement.api.model.policy.v1.PolicyList;
+import io.fabric8.openclustermanagement.api.model.policy.v1beta1.PolicyAutomation;
+import io.fabric8.openclustermanagement.api.model.policy.v1beta1.PolicyAutomationList;
 import io.fabric8.openclustermanagement.client.dsl.OpenClusterManagementPolicyAPIGroupDSL;
 
 public class OpenClusterManagementPolicyAPIGroupClient extends ClientAdapter<OpenClusterManagementPolicyAPIGroupClient>

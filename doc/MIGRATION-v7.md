@@ -14,6 +14,7 @@
   - [Renamed machineconfig to machineconfiguration](#openshift-machineconfig-to-machineconfiguration)
   - [Cert Manager Extension](#cert-manager-extension)
   - [Istio Extension](#istio-extension)
+  - [Open Cluster Management Extension](#open-cluster-management-extension)
   - [Open Virtual Network OVN Extension](#ovn-extension)
   - [Tekton Extension](#tekton-extension)
   - [Vertical Pod Autoscaler Extension](#vertical-pod-autoscaler-extension)
@@ -146,6 +147,42 @@ The following packages are now available:
 - `io.fabric8.istio.api.api.security.v1alpha1`
 - `io.fabric8.istio.api.api.security.v1beta1`
 - `io.fabric8.istio.api.api.telemetry.v1alpha1`
+
+### Open Cluster Management Extension <a href="#open-cluster-management-extension" id="open-cluster-management-extension"/>
+
+All the model modules for the Open Cluster Management extension have been merged into a single module `io.fabric8:open-cluster-management`.
+
+The following table contains the resulting package changes:
+
+| Old Package                                                                                        | New Package                                                        |
+|----------------------------------------------------------------------------------------------------|--------------------------------------------------------------------|
+| `io.fabric8.openclustermanagement.api.model.agent.v1`                                              | `io.fabric8.openclustermanagement.api.model.agent.v1`              |
+| `io.fabric8.openclustermanagement.api.model.app.k8s.v1beta1`                                       | Deprecated and removed                                             |
+| `io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.helmrelease.v1`   | Deprecated and removed                                             |
+| `io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.placementrule.v1` | `io.fabric8.openclustermanagement.api.model.apps.v1`               |
+| `io.fabric8.openclustermanagement.api.model.multicloudoperatorschannel.apps.v1`                    | `io.fabric8.openclustermanagement.api.model.apps.v1`               |
+| `io.fabric8.openclustermanagement.api.model.cluster.v1`                                            | `io.fabric8.openclustermanagement.api.model.cluster.v1`            |
+| `io.fabric8.openclustermanagement.api.model.cluster.v1alpha1`                                      | `io.fabric8.openclustermanagement.api.model.cluster.v1alpha1`      |
+| `io.fabric8.openclustermanagement.api.model.cluster.v1beta1`                                       | `io.fabric8.openclustermanagement.api.model.cluster.v1beta1`       |
+| `io.fabric8.openclustermanagement.api.model.discovery.v1alpha1`                                    | `io.fabric8.openclustermanagement.api.model.discovery.v1alpha1`    |
+| `io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta1`        | `io.fabric8.openclustermanagement.api.model.observability.v1beta1` |
+| `io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta2`        | `io.fabric8.openclustermanagement.api.model.observability.v1beta2` |
+| `io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.shared`              | `io.fabric8.openclustermanagement.api.model.shared`                |
+| `io.fabric8.openclustermanagement.api.model.multiclusterhub.operator.v1`                           | `io.fabric8.openclustermanagement.api.model.operator.v1`           |
+| `io.fabric8.openclustermanagement.api.model.operator.v1`                                           | `io.fabric8.openclustermanagement.api.model.operator.v1`           |
+| `io.fabric8.openclustermanagement.api.model.multicloudintegration.apps.v1beta1`                    | Deprecated and removed                                             |
+| `io.fabric8.openclustermanagement.api.model.multicloudoperatorsplacementrule.apps.v1`              | `io.fabric8.openclustermanagement.api.model.apps.v1`               |
+| `io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1`                  | `io.fabric8.openclustermanagement.api.model.policy.v1`             |
+| `io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1beta1`             | `io.fabric8.openclustermanagement.api.model.policy.v1beta1`        |
+| `io.fabric8.openclustermanagement.api.model.multicloudoperatorsplacementrule.apps.v1`              | `io.fabric8.openclustermanagement.api.model.apps.v1`               |
+| `io.fabric8.openclustermanagement.api.model.searchoperator.v1alpha1`                               | Deprecated and removed                                             |
+
+In addition, the following DSL entry-points have been removed to adapt the `io.fabric8:open-cluster-management-client` to the new model structure:
+- `OpenClusterManagementAppsAPIGroupClient.helmReleases()`
+- `OpenClusterManagementAppsAPIGroupClient.applications()`
+- `OpenClusterManagementAppsAPIGroupClient.gitOpsClusters()`
+- `OpenClusterManagementSearchAPIGroupDSL.searchCustomizations()`
+- `OpenClusterManagementSearchAPIGroupDSL.searchOperators()`
 
 ### Open Virtual Network OVN Extension <a href="#ovn-extension" id="ovn-extension"/>
 

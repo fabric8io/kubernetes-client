@@ -23,15 +23,6 @@ ABSOLUTE_BASEDIR=$(realpath "$BASEDIR")
 # Array for all existing modules
 declare -a modules=(
     "../extensions/chaosmesh/generator"
-    "../extensions/open-cluster-management/generator-apps"
-    "../extensions/open-cluster-management/generator-agent"
-    "../extensions/open-cluster-management/generator-cluster"
-    "../extensions/open-cluster-management/generator-discovery"
-    "../extensions/open-cluster-management/generator-observability"
-    "../extensions/open-cluster-management/generator-operator"
-    "../extensions/open-cluster-management/generator-placementruleapps"
-    "../extensions/open-cluster-management/generator-policy"
-    "../extensions/open-cluster-management/generator-search"
 )
 
 declare -a extensionModuleParents=(

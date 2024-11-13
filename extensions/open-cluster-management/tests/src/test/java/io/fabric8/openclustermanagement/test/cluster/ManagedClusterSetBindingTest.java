@@ -17,10 +17,10 @@ package io.fabric8.openclustermanagement.test.cluster;
 
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
-import io.fabric8.openclustermanagement.api.model.cluster.v1beta1.ManagedClusterSetBinding;
-import io.fabric8.openclustermanagement.api.model.cluster.v1beta1.ManagedClusterSetBindingBuilder;
-import io.fabric8.openclustermanagement.api.model.cluster.v1beta1.ManagedClusterSetBindingList;
-import io.fabric8.openclustermanagement.api.model.cluster.v1beta1.ManagedClusterSetBindingListBuilder;
+import io.fabric8.openclustermanagement.api.model.cluster.v1beta2.ManagedClusterSetBinding;
+import io.fabric8.openclustermanagement.api.model.cluster.v1beta2.ManagedClusterSetBindingBuilder;
+import io.fabric8.openclustermanagement.api.model.cluster.v1beta2.ManagedClusterSetBindingList;
+import io.fabric8.openclustermanagement.api.model.cluster.v1beta2.ManagedClusterSetBindingListBuilder;
 import io.fabric8.openclustermanagement.client.OpenClusterManagementClient;
 import org.junit.jupiter.api.Test;
 
@@ -30,14 +30,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @EnableKubernetesMockClient
 class ManagedClusterSetBindingTest {
-  private OpenClusterManagementClient client;
+  OpenClusterManagementClient client;
   KubernetesMockServer server;
 
   @Test
   void get() {
     // Given
     server.expect().get()
-        .withPath("/apis/cluster.open-cluster-management.io/v1beta1/namespaces/ns1/managedclustersetbindings/test-get")
+        .withPath("/apis/cluster.open-cluster-management.io/v1beta2/namespaces/ns1/managedclustersetbindings/test-get")
         .andReturn(HttpURLConnection.HTTP_OK, createNewManagedClusterSetBinding("test-get"))
         .once();
 
@@ -54,7 +54,7 @@ class ManagedClusterSetBindingTest {
   @Test
   void list() {
     // Given
-    server.expect().get().withPath("/apis/cluster.open-cluster-management.io/v1beta1/namespaces/ns1/managedclustersetbindings")
+    server.expect().get().withPath("/apis/cluster.open-cluster-management.io/v1beta2/namespaces/ns1/managedclustersetbindings")
         .andReturn(HttpURLConnection.HTTP_OK, new ManagedClusterSetBindingListBuilder()
             .addToItems(createNewManagedClusterSetBinding("test-list"))
             .build())
@@ -75,7 +75,7 @@ class ManagedClusterSetBindingTest {
   void delete() {
     // Given
     server.expect().delete()
-        .withPath("/apis/cluster.open-cluster-management.io/v1beta1/namespaces/ns1/managedclustersetbindings/clustersetbinding")
+        .withPath("/apis/cluster.open-cluster-management.io/v1beta2/namespaces/ns1/managedclustersetbindings/clustersetbinding")
         .andReturn(HttpURLConnection.HTTP_OK, createNewManagedClusterSetBinding("clustersetbinding"))
         .once();
 

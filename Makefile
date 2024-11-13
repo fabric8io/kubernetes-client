@@ -53,6 +53,8 @@ openapi-generate-java-classes:
 	cd extensions/knative/model && mvn $(MAVEN_ARGS) -Pgenerate clean install
 	cd extensions/open-virtual-network && mvn $(MAVEN_ARGS) -N clean install
 	cd extensions/open-virtual-network/model && mvn $(MAVEN_ARGS) -Pgenerate clean install
+	cd extensions/open-cluster-management && mvn $(MAVEN_ARGS) -N clean install
+	cd extensions/open-cluster-management/model && mvn $(MAVEN_ARGS) -Pgenerate clean install
 	cd extensions/tekton && mvn $(MAVEN_ARGS) -N clean install
 	cd extensions/tekton/model && mvn $(MAVEN_ARGS) -Pgenerate clean install
 	cd extensions/verticalpodautoscaler && mvn $(MAVEN_ARGS) -N clean install

@@ -18,10 +18,8 @@ package io.fabric8.openclustermanagement.client;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.extension.ClientAdapter;
-import io.fabric8.openclustermanagement.api.model.searchoperator.v1alpha1.SearchCustomization;
-import io.fabric8.openclustermanagement.api.model.searchoperator.v1alpha1.SearchCustomizationList;
-import io.fabric8.openclustermanagement.api.model.searchoperator.v1alpha1.SearchOperator;
-import io.fabric8.openclustermanagement.api.model.searchoperator.v1alpha1.SearchOperatorList;
+import io.fabric8.openclustermanagement.api.model.search.v1alpha1.Search;
+import io.fabric8.openclustermanagement.api.model.search.v1alpha1.SearchList;
 import io.fabric8.openclustermanagement.client.dsl.OpenClusterManagementSearchAPIGroupDSL;
 
 public class OpenClusterManagementSearchAPIGroupClient extends ClientAdapter<OpenClusterManagementSearchAPIGroupClient>
@@ -33,12 +31,7 @@ public class OpenClusterManagementSearchAPIGroupClient extends ClientAdapter<Ope
   }
 
   @Override
-  public MixedOperation<SearchCustomization, SearchCustomizationList, Resource<SearchCustomization>> searchCustomizations() {
-    return resources(SearchCustomization.class, SearchCustomizationList.class);
-  }
-
-  @Override
-  public MixedOperation<SearchOperator, SearchOperatorList, Resource<SearchOperator>> searchOperators() {
-    return resources(SearchOperator.class, SearchOperatorList.class);
+  public MixedOperation<Search, SearchList, Resource<Search>> searches() {
+    return resources(Search.class, SearchList.class);
   }
 }

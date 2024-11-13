@@ -16,7 +16,6 @@
 package io.fabric8.openclustermanagement.test.crud;
 
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
-import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.openclustermanagement.api.model.cluster.v1.ManagedCluster;
 import io.fabric8.openclustermanagement.api.model.cluster.v1.ManagedClusterBuilder;
 import io.fabric8.openclustermanagement.api.model.cluster.v1.ManagedClusterList;
@@ -27,13 +26,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @EnableKubernetesMockClient(crud = true)
 class ManagedClusterCrudTest {
-  private OpenClusterManagementClient client;
-  KubernetesMockServer server;
+
+  OpenClusterManagementClient client;
 
   @Test
   void get() {
     // Given
-    client.clusters().managedClusters().create(createNewManagedCluster("test-get"));
+    client.clusters().managedClusters().resource(createNewManagedCluster("test-get")).create();
 
     // When
     ManagedCluster managedCluster = client.clusters().managedClusters().withName("test-get").get();
@@ -47,7 +46,7 @@ class ManagedClusterCrudTest {
   @Test
   void list() {
     // Given
-    client.clusters().managedClusters().create(createNewManagedCluster("test-list"));
+    client.clusters().managedClusters().resource(createNewManagedCluster("test-list")).create();
 
     // When
     ManagedClusterList managedClusterList = client.clusters().managedClusters().list();
@@ -62,7 +61,7 @@ class ManagedClusterCrudTest {
   @Test
   void delete() {
     // Given
-    client.clusters().managedClusters().create(createNewManagedCluster("test-delete"));
+    client.clusters().managedClusters().resource(createNewManagedCluster("test-delete")).create();
 
     // When
     boolean isDeleted = client.clusters().managedClusters().withName("test-delete").delete().size() == 1;
