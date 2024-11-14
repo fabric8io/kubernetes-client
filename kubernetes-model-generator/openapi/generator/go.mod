@@ -45,7 +45,7 @@ require (
 	knative.dev/eventing-prometheus v0.28.0
 	knative.dev/networking v0.0.0-20241022012959-60e29ff520dc
 	knative.dev/serving v0.43.0
-	sigs.k8s.io/cluster-api v1.8.3
+	sigs.k8s.io/cluster-api v1.8.5
 	sigs.k8s.io/gateway-api v1.1.0
 	sigs.k8s.io/kustomize/api v0.17.2
 	volcano.sh/apis v1.10.0
