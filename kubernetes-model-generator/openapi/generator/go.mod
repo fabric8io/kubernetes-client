@@ -26,7 +26,7 @@ require (
 	github.com/spf13/cobra v1.8.1
 	github.com/tektoncd/pipeline v0.65.1
 	github.com/tektoncd/triggers v0.30.0
-	istio.io/client-go v1.23.2
+	istio.io/client-go v1.24.0
 	k8s.io/api v0.31.2
 	k8s.io/apiextensions-apiserver v0.31.2
 	k8s.io/apimachinery v0.31.2
@@ -211,7 +211,7 @@ require (
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
-	istio.io/api v1.23.2 // indirect
+	istio.io/api v1.24.0-rc.0.0.20241101200753-9397ebf09c3a // indirect
 	k8s.io/klog/v2 v2.130.1 // indirect
 	k8s.io/utils v0.0.0-20240921022957-49e7df575cb6 // indirect
 	knative.dev/pkg v0.0.0-20241021183759-9b9d535af5ad // indirect
