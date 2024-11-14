@@ -35,9 +35,7 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "backendRef",
-    "fraction",
-    "percent"
+    "clientCertificateRef"
 })
 @ToString
 @EqualsAndHashCode
@@ -61,15 +59,11 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class HTTPRequestMirrorFilter implements Editable<HTTPRequestMirrorFilterBuilder> , KubernetesResource
+public class GatewayBackendTLS implements Editable<GatewayBackendTLSBuilder> , KubernetesResource
 {
 
-    @JsonProperty("backendRef")
-    private BackendObjectReference backendRef;
-    @JsonProperty("fraction")
-    private Fraction fraction;
-    @JsonProperty("percent")
-    private Integer percent;
+    @JsonProperty("clientCertificateRef")
+    private SecretObjectReference clientCertificateRef;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -77,53 +71,31 @@ public class HTTPRequestMirrorFilter implements Editable<HTTPRequestMirrorFilter
      * No args constructor for use in serialization
      * 
      */
-    public HTTPRequestMirrorFilter() {
+    public GatewayBackendTLS() {
     }
 
-    public HTTPRequestMirrorFilter(BackendObjectReference backendRef, Fraction fraction, Integer percent) {
+    public GatewayBackendTLS(SecretObjectReference clientCertificateRef) {
         super();
-        this.backendRef = backendRef;
-        this.fraction = fraction;
-        this.percent = percent;
+        this.clientCertificateRef = clientCertificateRef;
     }
 
-    @JsonProperty("backendRef")
-    public BackendObjectReference getBackendRef() {
-        return backendRef;
+    @JsonProperty("clientCertificateRef")
+    public SecretObjectReference getClientCertificateRef() {
+        return clientCertificateRef;
     }
 
-    @JsonProperty("backendRef")
-    public void setBackendRef(BackendObjectReference backendRef) {
-        this.backendRef = backendRef;
-    }
-
-    @JsonProperty("fraction")
-    public Fraction getFraction() {
-        return fraction;
-    }
-
-    @JsonProperty("fraction")
-    public void setFraction(Fraction fraction) {
-        this.fraction = fraction;
-    }
-
-    @JsonProperty("percent")
-    public Integer getPercent() {
-        return percent;
-    }
-
-    @JsonProperty("percent")
-    public void setPercent(Integer percent) {
-        this.percent = percent;
+    @JsonProperty("clientCertificateRef")
+    public void setClientCertificateRef(SecretObjectReference clientCertificateRef) {
+        this.clientCertificateRef = clientCertificateRef;
     }
 
     @JsonIgnore
-    public HTTPRequestMirrorFilterBuilder edit() {
-        return new HTTPRequestMirrorFilterBuilder(this);
+    public GatewayBackendTLSBuilder edit() {
+        return new GatewayBackendTLSBuilder(this);
     }
 
     @JsonIgnore
-    public HTTPRequestMirrorFilterBuilder toBuilder() {
+    public GatewayBackendTLSBuilder toBuilder() {
         return edit();
     }
 

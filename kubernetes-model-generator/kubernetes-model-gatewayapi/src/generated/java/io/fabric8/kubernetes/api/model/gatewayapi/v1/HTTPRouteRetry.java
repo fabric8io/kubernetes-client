@@ -1,7 +1,9 @@
 
 package io.fabric8.kubernetes.api.model.gatewayapi.v1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -35,9 +37,9 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "backendRef",
-    "fraction",
-    "percent"
+    "attempts",
+    "backoff",
+    "codes"
 })
 @ToString
 @EqualsAndHashCode
@@ -61,15 +63,16 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class HTTPRequestMirrorFilter implements Editable<HTTPRequestMirrorFilterBuilder> , KubernetesResource
+public class HTTPRouteRetry implements Editable<HTTPRouteRetryBuilder> , KubernetesResource
 {
 
-    @JsonProperty("backendRef")
-    private BackendObjectReference backendRef;
-    @JsonProperty("fraction")
-    private Fraction fraction;
-    @JsonProperty("percent")
-    private Integer percent;
+    @JsonProperty("attempts")
+    private Integer attempts;
+    @JsonProperty("backoff")
+    private String backoff;
+    @JsonProperty("codes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<Integer> codes = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -77,53 +80,54 @@ public class HTTPRequestMirrorFilter implements Editable<HTTPRequestMirrorFilter
      * No args constructor for use in serialization
      * 
      */
-    public HTTPRequestMirrorFilter() {
+    public HTTPRouteRetry() {
     }
 
-    public HTTPRequestMirrorFilter(BackendObjectReference backendRef, Fraction fraction, Integer percent) {
+    public HTTPRouteRetry(Integer attempts, String backoff, List<Integer> codes) {
         super();
-        this.backendRef = backendRef;
-        this.fraction = fraction;
-        this.percent = percent;
+        this.attempts = attempts;
+        this.backoff = backoff;
+        this.codes = codes;
     }
 
-    @JsonProperty("backendRef")
-    public BackendObjectReference getBackendRef() {
-        return backendRef;
+    @JsonProperty("attempts")
+    public Integer getAttempts() {
+        return attempts;
     }
 
-    @JsonProperty("backendRef")
-    public void setBackendRef(BackendObjectReference backendRef) {
-        this.backendRef = backendRef;
+    @JsonProperty("attempts")
+    public void setAttempts(Integer attempts) {
+        this.attempts = attempts;
     }
 
-    @JsonProperty("fraction")
-    public Fraction getFraction() {
-        return fraction;
+    @JsonProperty("backoff")
+    public String getBackoff() {
+        return backoff;
     }
 
-    @JsonProperty("fraction")
-    public void setFraction(Fraction fraction) {
-        this.fraction = fraction;
+    @JsonProperty("backoff")
+    public void setBackoff(String backoff) {
+        this.backoff = backoff;
     }
 
-    @JsonProperty("percent")
-    public Integer getPercent() {
-        return percent;
+    @JsonProperty("codes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<Integer> getCodes() {
+        return codes;
     }
 
-    @JsonProperty("percent")
-    public void setPercent(Integer percent) {
-        this.percent = percent;
-    }
-
-    @JsonIgnore
-    public HTTPRequestMirrorFilterBuilder edit() {
-        return new HTTPRequestMirrorFilterBuilder(this);
+    @JsonProperty("codes")
+    public void setCodes(List<Integer> codes) {
+        this.codes = codes;
     }
 
     @JsonIgnore
-    public HTTPRequestMirrorFilterBuilder toBuilder() {
+    public HTTPRouteRetryBuilder edit() {
+        return new HTTPRouteRetryBuilder(this);
+    }
+
+    @JsonIgnore
+    public HTTPRouteRetryBuilder toBuilder() {
         return edit();
     }
 

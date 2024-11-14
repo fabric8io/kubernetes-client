@@ -35,9 +35,7 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "backendRef",
-    "fraction",
-    "percent"
+    "name"
 })
 @ToString
 @EqualsAndHashCode
@@ -61,15 +59,11 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class HTTPRequestMirrorFilter implements Editable<HTTPRequestMirrorFilterBuilder> , KubernetesResource
+public class SupportedFeature implements Editable<SupportedFeatureBuilder> , KubernetesResource
 {
 
-    @JsonProperty("backendRef")
-    private BackendObjectReference backendRef;
-    @JsonProperty("fraction")
-    private Fraction fraction;
-    @JsonProperty("percent")
-    private Integer percent;
+    @JsonProperty("name")
+    private String name;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -77,53 +71,31 @@ public class HTTPRequestMirrorFilter implements Editable<HTTPRequestMirrorFilter
      * No args constructor for use in serialization
      * 
      */
-    public HTTPRequestMirrorFilter() {
+    public SupportedFeature() {
     }
 
-    public HTTPRequestMirrorFilter(BackendObjectReference backendRef, Fraction fraction, Integer percent) {
+    public SupportedFeature(String name) {
         super();
-        this.backendRef = backendRef;
-        this.fraction = fraction;
-        this.percent = percent;
+        this.name = name;
     }
 
-    @JsonProperty("backendRef")
-    public BackendObjectReference getBackendRef() {
-        return backendRef;
+    @JsonProperty("name")
+    public String getName() {
+        return name;
     }
 
-    @JsonProperty("backendRef")
-    public void setBackendRef(BackendObjectReference backendRef) {
-        this.backendRef = backendRef;
-    }
-
-    @JsonProperty("fraction")
-    public Fraction getFraction() {
-        return fraction;
-    }
-
-    @JsonProperty("fraction")
-    public void setFraction(Fraction fraction) {
-        this.fraction = fraction;
-    }
-
-    @JsonProperty("percent")
-    public Integer getPercent() {
-        return percent;
-    }
-
-    @JsonProperty("percent")
-    public void setPercent(Integer percent) {
-        this.percent = percent;
+    @JsonProperty("name")
+    public void setName(String name) {
+        this.name = name;
     }
 
     @JsonIgnore
-    public HTTPRequestMirrorFilterBuilder edit() {
-        return new HTTPRequestMirrorFilterBuilder(this);
+    public SupportedFeatureBuilder edit() {
+        return new SupportedFeatureBuilder(this);
     }
 
     @JsonIgnore
-    public HTTPRequestMirrorFilterBuilder toBuilder() {
+    public SupportedFeatureBuilder toBuilder() {
         return edit();
     }
 

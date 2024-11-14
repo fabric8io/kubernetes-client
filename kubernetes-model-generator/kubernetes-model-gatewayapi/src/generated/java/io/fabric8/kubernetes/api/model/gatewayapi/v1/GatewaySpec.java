@@ -38,6 +38,7 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "addresses",
+    "backendTLS",
     "gatewayClassName",
     "infrastructure",
     "listeners"
@@ -70,6 +71,8 @@ public class GatewaySpec implements Editable<GatewaySpecBuilder> , KubernetesRes
     @JsonProperty("addresses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<GatewayAddress> addresses = new ArrayList<>();
+    @JsonProperty("backendTLS")
+    private GatewayBackendTLS backendTLS;
     @JsonProperty("gatewayClassName")
     private String gatewayClassName;
     @JsonProperty("infrastructure")
@@ -87,9 +90,10 @@ public class GatewaySpec implements Editable<GatewaySpecBuilder> , KubernetesRes
     public GatewaySpec() {
     }
 
-    public GatewaySpec(List<GatewayAddress> addresses, String gatewayClassName, GatewayInfrastructure infrastructure, List<Listener> listeners) {
+    public GatewaySpec(List<GatewayAddress> addresses, GatewayBackendTLS backendTLS, String gatewayClassName, GatewayInfrastructure infrastructure, List<Listener> listeners) {
         super();
         this.addresses = addresses;
+        this.backendTLS = backendTLS;
         this.gatewayClassName = gatewayClassName;
         this.infrastructure = infrastructure;
         this.listeners = listeners;
@@ -104,6 +108,16 @@ public class GatewaySpec implements Editable<GatewaySpecBuilder> , KubernetesRes
     @JsonProperty("addresses")
     public void setAddresses(List<GatewayAddress> addresses) {
         this.addresses = addresses;
+    }
+
+    @JsonProperty("backendTLS")
+    public GatewayBackendTLS getBackendTLS() {
+        return backendTLS;
+    }
+
+    @JsonProperty("backendTLS")
+    public void setBackendTLS(GatewayBackendTLS backendTLS) {
+        this.backendTLS = backendTLS;
     }
 
     @JsonProperty("gatewayClassName")
