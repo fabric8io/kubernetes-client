@@ -133,7 +133,6 @@
     <guava.version>33.3.1-jre</guava.version> <!-- Required by Gradle Testing Toolkit -->
     <osgi.annotations.version>1.5.1</osgi.annotations.version>
     <felix.scr.version>2.0.6</felix.scr.version>
-    <jsonschema2pojo.version>1.2.2</jsonschema2pojo.version>
     <picocli.version>4.7.6</picocli.version>
     <properties.maven.plugin.version>1.0.0</properties.maven.plugin.version>
 
@@ -203,8 +202,6 @@
     <karaf.itest.skip>false</karaf.itest.skip>
     <project.build.outputTimestamp>2024-07-02T08:01:57Z</project.build.outputTimestamp>
     <validation-api.version>2.0.1.Final</validation-api.version>
-
-    <jsonschema2pojo.targetPackage>io.fabric8.kubernetes.api.model</jsonschema2pojo.targetPackage>
   </properties>
   <modules>
     <module>zjsonpatch</module>
@@ -1039,32 +1036,6 @@
           <groupId>org.sonarsource.scanner.maven</groupId>
           <artifactId>sonar-maven-plugin</artifactId>
           <version>${sonar-maven-plugin.version}</version>
-        </plugin>
-        <plugin>
-          <groupId>org.jsonschema2pojo</groupId>
-          <artifactId>jsonschema2pojo-maven-plugin</artifactId>
-          <version>${jsonschema2pojo.version}</version>
-          <configuration>
-            <targetVersion>1.8</targetVersion><!-- TODO: Remove and use javax.annotation.processing.Generated annotation instead -->
-            <customAnnotator>io.fabric8.kubernetes.jsonschema2pojo.KubernetesTypeAnnotator</customAnnotator>
-            <customRuleFactory>io.fabric8.kubernetes.jsonschema2pojo.Fabric8RuleFactory</customRuleFactory>
-            <sourceDirectory>${project.basedir}/src/main/resources/schema</sourceDirectory>
-            <targetPackage>${jsonschema2pojo.targetPackage}</targetPackage>
-            <includeConstructors>true</includeConstructors>
-            <includeJsr303Annotations>false</includeJsr303Annotations>
-            <includeToString>false</includeToString>
-            <includeHashcodeAndEquals>false</includeHashcodeAndEquals>
-            <removeOldOutput>true</removeOldOutput>
-            <outputDirectory>${generate.targetDirectory}</outputDirectory>
-            <annotationStyle>none</annotationStyle>
-          </configuration>
-          <executions>
-            <execution>
-              <goals>
-                <goal>generate</goal>
-              </goals>
-            </execution>
-          </executions>
         </plugin>
         <plugin>
           <groupId>com.marcnuri.plugins</groupId>

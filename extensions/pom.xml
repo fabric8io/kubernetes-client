@@ -46,13 +46,6 @@
     <pluginManagement>
       <plugins>
         <plugin>
-          <groupId>org.jsonschema2pojo</groupId>
-          <artifactId>jsonschema2pojo-maven-plugin</artifactId>
-          <configuration>
-            <customAnnotator>io.fabric8.kubernetes.jsonschema2pojo.ExtensionTypeAnnotator</customAnnotator>
-          </configuration>
-        </plugin>
-        <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>build-helper-maven-plugin</artifactId>
           <executions>
