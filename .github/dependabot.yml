@@ -31,12 +31,13 @@ updates:
     versions:
     - ">= 3.13.a"
     - "< 3.14"
-  - dependency-name: com.squareup.okhttp3:okhttp
-    versions:
-    - ">= 3.13.a"
-    - "< 3.14"
 - package-ecosystem: "github-actions"
   directory: "/"
   schedule:
     interval: daily
+    time: "11:00"
+- package-ecosystem: "gomod"
+  directory: "/kubernetes-model-generator/openapi/generator"
+  schedule:
+    interval: "daily"
     time: "11:00"
