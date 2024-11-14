@@ -41,6 +41,7 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "imagePullSecrets",
     "nodeSelector",
+    "priorityClassName",
     "securityContext",
     "tolerations"
 })
@@ -75,6 +76,8 @@ public class AffinityAssistantTemplate implements Editable<AffinityAssistantTemp
     @JsonProperty("nodeSelector")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> nodeSelector = new LinkedHashMap<>();
+    @JsonProperty("priorityClassName")
+    private String priorityClassName;
     @JsonProperty("securityContext")
     private PodSecurityContext securityContext;
     @JsonProperty("tolerations")
@@ -90,10 +93,11 @@ public class AffinityAssistantTemplate implements Editable<AffinityAssistantTemp
     public AffinityAssistantTemplate() {
     }
 
-    public AffinityAssistantTemplate(List<LocalObjectReference> imagePullSecrets, Map<String, String> nodeSelector, PodSecurityContext securityContext, List<Toleration> tolerations) {
+    public AffinityAssistantTemplate(List<LocalObjectReference> imagePullSecrets, Map<String, String> nodeSelector, String priorityClassName, PodSecurityContext securityContext, List<Toleration> tolerations) {
         super();
         this.imagePullSecrets = imagePullSecrets;
         this.nodeSelector = nodeSelector;
+        this.priorityClassName = priorityClassName;
         this.securityContext = securityContext;
         this.tolerations = tolerations;
     }
@@ -118,6 +122,16 @@ public class AffinityAssistantTemplate implements Editable<AffinityAssistantTemp
     @JsonProperty("nodeSelector")
     public void setNodeSelector(Map<String, String> nodeSelector) {
         this.nodeSelector = nodeSelector;
+    }
+
+    @JsonProperty("priorityClassName")
+    public String getPriorityClassName() {
+        return priorityClassName;
+    }
+
+    @JsonProperty("priorityClassName")
+    public void setPriorityClassName(String priorityClassName) {
+        this.priorityClassName = priorityClassName;
     }
 
     @JsonProperty("securityContext")
