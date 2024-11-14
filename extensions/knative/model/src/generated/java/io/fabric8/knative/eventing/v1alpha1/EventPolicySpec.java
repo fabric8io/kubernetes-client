@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.knative.eventing.v1.SubscriptionsAPIFilter;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -37,6 +38,7 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "filters",
     "from",
     "to"
 })
@@ -65,6 +67,9 @@ import lombok.experimental.Accessors;
 public class EventPolicySpec implements Editable<EventPolicySpecBuilder> , KubernetesResource
 {
 
+    @JsonProperty("filters")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<SubscriptionsAPIFilter> filters = new ArrayList<>();
     @JsonProperty("from")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<EventPolicySpecFrom> from = new ArrayList<>();
@@ -81,10 +86,22 @@ public class EventPolicySpec implements Editable<EventPolicySpecBuilder> , Kuber
     public EventPolicySpec() {
     }
 
-    public EventPolicySpec(List<EventPolicySpecFrom> from, List<EventPolicySpecTo> to) {
+    public EventPolicySpec(List<SubscriptionsAPIFilter> filters, List<EventPolicySpecFrom> from, List<EventPolicySpecTo> to) {
         super();
+        this.filters = filters;
         this.from = from;
         this.to = to;
+    }
+
+    @JsonProperty("filters")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<SubscriptionsAPIFilter> getFilters() {
+        return filters;
+    }
+
+    @JsonProperty("filters")
+    public void setFilters(List<SubscriptionsAPIFilter> filters) {
+        this.filters = filters;
     }
 
     @JsonProperty("from")
