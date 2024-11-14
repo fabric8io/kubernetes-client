@@ -21,6 +21,7 @@ import (
 	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/cmd/generated_autoscaling_openapi"
 	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/cmd/generated_certmanager_openapi"
 	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/cmd/generated_chaosmesh_openapi"
+	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/cmd/generated_gatewayapi_openapi"
 	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/cmd/generated_istio_openapi"
 	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/cmd/generated_knative_openapi"
 	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/cmd/generated_openclustermanagement_openapi"
@@ -56,6 +57,7 @@ var modules = []module{
 	{outputName: "openshift-generated", getDefinitionsFunc: generated_openshift_openapi.GetOpenAPIDefinitions, patterns: packages.OpenShiftPackagePatterns},
 	{outputName: "dev.knative", getDefinitionsFunc: generated_knative_openapi.GetOpenAPIDefinitions, patterns: packages.KnativePackagePatterns},
 	{outputName: "dev.tekton", getDefinitionsFunc: generated_tekton_openapi.GetOpenAPIDefinitions, patterns: packages.TektonPackagePatterns},
+	{outputName: "gateway-api", getDefinitionsFunc: generated_gatewayapi_openapi.GetOpenAPIDefinitions, patterns: packages.GatewayApiPackagePatterns},
 	{outputName: "io.cert-manager", getDefinitionsFunc: generated_certmanager_openapi.GetOpenAPIDefinitions, patterns: packages.CertManagerPackagePatterns},
 	{outputName: "io.istio", getDefinitionsFunc: generated_istio_openapi.GetOpenAPIDefinitions, patterns: packages.IstioPackagePatterns},
 	{outputName: "io.k8s.autoscaling", getDefinitionsFunc: generated_autoscaling_openapi.GetOpenAPIDefinitions, patterns: packages.AutoscalingPackagePatterns},

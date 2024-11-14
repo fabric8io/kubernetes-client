@@ -191,7 +191,6 @@
                 <io.k8s.kube-aggregator.pkg.apis.apiregistration.v1>io.fabric8.kubernetes.api.model</io.k8s.kube-aggregator.pkg.apis.apiregistration.v1>
                 <io.k8s.networking.gateway>io.fabric8.kubernetes.api.model.gatewayapi</io.k8s.networking.gateway>
                 <io.k8s.sigs.cluster-api.api>io.fabric8.kubernetes.api.model.clusterapi</io.k8s.sigs.cluster-api.api>
-                <io.k8s.sigs.gateway-api.apis>io.fabric8.kubernetes.api.model.gatewayapi</io.k8s.sigs.gateway-api.apis>
                 <io.k8s.storage.snapshot.v1>io.fabric8.volumesnapshot.api.model</io.k8s.storage.snapshot.v1>
                 <io.open-cluster-management>io.fabric8.openclustermanagement.api.model</io.open-cluster-management>
                 <io.openshift>io.fabric8.openshift.api.model</io.openshift>

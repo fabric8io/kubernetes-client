@@ -64,6 +64,7 @@ import (
 	openclustermanagementpolicyv1 "open-cluster-management.io/governance-policy-propagator/api/v1"
 	openclustermanagementappschannelv1 "open-cluster-management.io/multicloud-operators-channel/pkg/apis/apps/v1"
 	openclustermanagementappssubscriptionv1 "open-cluster-management.io/multicloud-operators-subscription/pkg/apis/apps/v1"
+	gatewayApiV1 "sigs.k8s.io/gateway-api/apis/v1"
 	"strings"
 	volcanov1beta1 "volcano.sh/apis/pkg/apis/scheduling/v1beta1"
 )
@@ -128,5 +129,6 @@ var supportedApisRun = func(cobraCmd *cobra.Command, args []string) {
 		openclustermanagementoperatormulticlusterv1.GroupVersion.String(),
 		openclustermanagementpolicyv1.SchemeGroupVersion.String(),
 		openclustermanagementsearchv1alpha1.GroupVersion.String(),
+		gatewayApiV1.GroupVersion.String(),
 	}, "\n"))
 }
