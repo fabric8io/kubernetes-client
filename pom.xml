@@ -1065,13 +1065,6 @@
               </goals>
             </execution>
           </executions>
-          <dependencies>
-            <dependency>
-              <groupId>io.fabric8</groupId>
-              <artifactId>kubernetes-model-jsonschema2pojo</artifactId>
-              <version>${project.version}</version>
-            </dependency>
-          </dependencies>
         </plugin>
         <plugin>
           <groupId>com.marcnuri.plugins</groupId>
