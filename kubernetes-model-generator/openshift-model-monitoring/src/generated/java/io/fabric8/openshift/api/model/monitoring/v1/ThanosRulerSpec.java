@@ -51,6 +51,8 @@ import lombok.experimental.Accessors;
     "alertmanagersConfig",
     "alertmanagersUrl",
     "containers",
+    "dnsConfig",
+    "dnsPolicy",
     "enforcedNamespaceLabel",
     "evaluationInterval",
     "excludedFromEnforcement",
@@ -141,6 +143,10 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder> , Kuber
     @JsonProperty("containers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Container> containers = new ArrayList<>();
+    @JsonProperty("dnsConfig")
+    private PodDNSConfig dnsConfig;
+    @JsonProperty("dnsPolicy")
+    private String dnsPolicy;
     @JsonProperty("enforcedNamespaceLabel")
     private String enforcedNamespaceLabel;
     @JsonProperty("evaluationInterval")
@@ -247,7 +253,7 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder> , Kuber
     public ThanosRulerSpec() {
     }
 
-    public ThanosRulerSpec(List<Argument> additionalArgs, Affinity affinity, List<String> alertDropLabels, String alertQueryUrl, String alertRelabelConfigFile, SecretKeySelector alertRelabelConfigs, SecretKeySelector alertmanagersConfig, List<String> alertmanagersUrl, List<Container> containers, String enforcedNamespaceLabel, String evaluationInterval, List<ObjectReference> excludedFromEnforcement, String externalPrefix, TLSConfig grpcServerTlsConfig, List<HostAlias> hostAliases, String image, String imagePullPolicy, List<LocalObjectReference> imagePullSecrets, List<Container> initContainers, Map<String, String> labels, Boolean listenLocal, String logFormat, String logLevel, Long minReadySeconds, Map<String, String> nodeSelector, SecretKeySelector objectStorageConfig, String objectStorageConfigFile, Boolean paused, EmbeddedObjectMetadata podMetadata, String portName, String priorityClassName, List<PrometheusRuleExcludeConfig> prometheusRulesExcludedFromEnforce, SecretKeySelector queryConfig, List<String> queryEndpoints, Integer replicas, ResourceRequirements resources, String retention, String routePrefix, LabelSelector ruleNamespaceSelector, LabelSelector ruleSelector, PodSecurityContext securityContext, String serviceAccountName, StorageSpec storage, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, SecretKeySelector tracingConfig, String tracingConfigFile, String version, List<VolumeMount> volumeMounts, List<Volume> volumes, ThanosRulerWebSpec web) {
+    public ThanosRulerSpec(List<Argument> additionalArgs, Affinity affinity, List<String> alertDropLabels, String alertQueryUrl, String alertRelabelConfigFile, SecretKeySelector alertRelabelConfigs, SecretKeySelector alertmanagersConfig, List<String> alertmanagersUrl, List<Container> containers, PodDNSConfig dnsConfig, String dnsPolicy, String enforcedNamespaceLabel, String evaluationInterval, List<ObjectReference> excludedFromEnforcement, String externalPrefix, TLSConfig grpcServerTlsConfig, List<HostAlias> hostAliases, String image, String imagePullPolicy, List<LocalObjectReference> imagePullSecrets, List<Container> initContainers, Map<String, String> labels, Boolean listenLocal, String logFormat, String logLevel, Long minReadySeconds, Map<String, String> nodeSelector, SecretKeySelector objectStorageConfig, String objectStorageConfigFile, Boolean paused, EmbeddedObjectMetadata podMetadata, String portName, String priorityClassName, List<PrometheusRuleExcludeConfig> prometheusRulesExcludedFromEnforce, SecretKeySelector queryConfig, List<String> queryEndpoints, Integer replicas, ResourceRequirements resources, String retention, String routePrefix, LabelSelector ruleNamespaceSelector, LabelSelector ruleSelector, PodSecurityContext securityContext, String serviceAccountName, StorageSpec storage, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, SecretKeySelector tracingConfig, String tracingConfigFile, String version, List<VolumeMount> volumeMounts, List<Volume> volumes, ThanosRulerWebSpec web) {
         super();
         this.additionalArgs = additionalArgs;
         this.affinity = affinity;
@@ -258,6 +264,8 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder> , Kuber
         this.alertmanagersConfig = alertmanagersConfig;
         this.alertmanagersUrl = alertmanagersUrl;
         this.containers = containers;
+        this.dnsConfig = dnsConfig;
+        this.dnsPolicy = dnsPolicy;
         this.enforcedNamespaceLabel = enforcedNamespaceLabel;
         this.evaluationInterval = evaluationInterval;
         this.excludedFromEnforcement = excludedFromEnforcement;
@@ -394,6 +402,26 @@ public class ThanosRulerSpec implements Editable<ThanosRulerSpecBuilder> , Kuber
     @JsonProperty("containers")
     public void setContainers(List<Container> containers) {
         this.containers = containers;
+    }
+
+    @JsonProperty("dnsConfig")
+    public PodDNSConfig getDnsConfig() {
+        return dnsConfig;
+    }
+
+    @JsonProperty("dnsConfig")
+    public void setDnsConfig(PodDNSConfig dnsConfig) {
+        this.dnsConfig = dnsConfig;
+    }
+
+    @JsonProperty("dnsPolicy")
+    public String getDnsPolicy() {
+        return dnsPolicy;
+    }
+
+    @JsonProperty("dnsPolicy")
+    public void setDnsPolicy(String dnsPolicy) {
+        this.dnsPolicy = dnsPolicy;
     }
 
     @JsonProperty("enforcedNamespaceLabel")

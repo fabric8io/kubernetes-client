@@ -57,6 +57,8 @@ import lombok.experimental.Accessors;
     "configMaps",
     "configSecret",
     "containers",
+    "dnsConfig",
+    "dnsPolicy",
     "enableFeatures",
     "externalUrl",
     "forceEnableClusterMode",
@@ -151,6 +153,10 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder> , Kub
     @JsonProperty("containers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Container> containers = new ArrayList<>();
+    @JsonProperty("dnsConfig")
+    private PodDNSConfig dnsConfig;
+    @JsonProperty("dnsPolicy")
+    private String dnsPolicy;
     @JsonProperty("enableFeatures")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> enableFeatures = new ArrayList<>();
@@ -237,7 +243,7 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder> , Kub
     public AlertmanagerSpec() {
     }
 
-    public AlertmanagerSpec(List<String> additionalPeers, Affinity affinity, AlertmanagerConfigMatcherStrategy alertmanagerConfigMatcherStrategy, LabelSelector alertmanagerConfigNamespaceSelector, LabelSelector alertmanagerConfigSelector, AlertmanagerConfiguration alertmanagerConfiguration, Boolean automountServiceAccountToken, String baseImage, String clusterAdvertiseAddress, String clusterGossipInterval, String clusterLabel, String clusterPeerTimeout, String clusterPushpullInterval, List<String> configMaps, String configSecret, List<Container> containers, List<String> enableFeatures, String externalUrl, Boolean forceEnableClusterMode, List<HostAlias> hostAliases, String image, String imagePullPolicy, List<LocalObjectReference> imagePullSecrets, List<Container> initContainers, Boolean listenLocal, String logFormat, String logLevel, Long minReadySeconds, Map<String, String> nodeSelector, Boolean paused, EmbeddedObjectMetadata podMetadata, String portName, String priorityClassName, Integer replicas, ResourceRequirements resources, String retention, String routePrefix, List<String> secrets, PodSecurityContext securityContext, String serviceAccountName, String sha, StorageSpec storage, String tag, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, String version, List<VolumeMount> volumeMounts, List<Volume> volumes, AlertmanagerWebSpec web) {
+    public AlertmanagerSpec(List<String> additionalPeers, Affinity affinity, AlertmanagerConfigMatcherStrategy alertmanagerConfigMatcherStrategy, LabelSelector alertmanagerConfigNamespaceSelector, LabelSelector alertmanagerConfigSelector, AlertmanagerConfiguration alertmanagerConfiguration, Boolean automountServiceAccountToken, String baseImage, String clusterAdvertiseAddress, String clusterGossipInterval, String clusterLabel, String clusterPeerTimeout, String clusterPushpullInterval, List<String> configMaps, String configSecret, List<Container> containers, PodDNSConfig dnsConfig, String dnsPolicy, List<String> enableFeatures, String externalUrl, Boolean forceEnableClusterMode, List<HostAlias> hostAliases, String image, String imagePullPolicy, List<LocalObjectReference> imagePullSecrets, List<Container> initContainers, Boolean listenLocal, String logFormat, String logLevel, Long minReadySeconds, Map<String, String> nodeSelector, Boolean paused, EmbeddedObjectMetadata podMetadata, String portName, String priorityClassName, Integer replicas, ResourceRequirements resources, String retention, String routePrefix, List<String> secrets, PodSecurityContext securityContext, String serviceAccountName, String sha, StorageSpec storage, String tag, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, String version, List<VolumeMount> volumeMounts, List<Volume> volumes, AlertmanagerWebSpec web) {
         super();
         this.additionalPeers = additionalPeers;
         this.affinity = affinity;
@@ -255,6 +261,8 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder> , Kub
         this.configMaps = configMaps;
         this.configSecret = configSecret;
         this.containers = containers;
+        this.dnsConfig = dnsConfig;
+        this.dnsPolicy = dnsPolicy;
         this.enableFeatures = enableFeatures;
         this.externalUrl = externalUrl;
         this.forceEnableClusterMode = forceEnableClusterMode;
@@ -451,6 +459,26 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder> , Kub
     @JsonProperty("containers")
     public void setContainers(List<Container> containers) {
         this.containers = containers;
+    }
+
+    @JsonProperty("dnsConfig")
+    public PodDNSConfig getDnsConfig() {
+        return dnsConfig;
+    }
+
+    @JsonProperty("dnsConfig")
+    public void setDnsConfig(PodDNSConfig dnsConfig) {
+        this.dnsConfig = dnsConfig;
+    }
+
+    @JsonProperty("dnsPolicy")
+    public String getDnsPolicy() {
+        return dnsPolicy;
+    }
+
+    @JsonProperty("dnsPolicy")
+    public void setDnsPolicy(String dnsPolicy) {
+        this.dnsPolicy = dnsPolicy;
     }
 
     @JsonProperty("enableFeatures")

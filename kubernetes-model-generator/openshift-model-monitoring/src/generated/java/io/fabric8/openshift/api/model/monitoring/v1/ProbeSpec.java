@@ -25,6 +25,7 @@ import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
+import io.fabric8.kubernetes.api.model.Quantity;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.SecretKeySelector;
 import io.fabric8.kubernetes.api.model.Volume;
@@ -49,10 +50,13 @@ import lombok.experimental.Accessors;
     "labelValueLengthLimit",
     "metricRelabelings",
     "module",
+    "nativeHistogramBucketLimit",
+    "nativeHistogramMinBucketFactor",
     "oauth2",
     "prober",
     "sampleLimit",
     "scrapeClass",
+    "scrapeClassicHistograms",
     "scrapeProtocols",
     "scrapeTimeout",
     "targetLimit",
@@ -107,6 +111,10 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder> , KubernetesResourc
     private List<RelabelConfig> metricRelabelings = new ArrayList<>();
     @JsonProperty("module")
     private String module;
+    @JsonProperty("nativeHistogramBucketLimit")
+    private Long nativeHistogramBucketLimit;
+    @JsonProperty("nativeHistogramMinBucketFactor")
+    private Quantity nativeHistogramMinBucketFactor;
     @JsonProperty("oauth2")
     private OAuth2 oauth2;
     @JsonProperty("prober")
@@ -115,6 +123,8 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder> , KubernetesResourc
     private Long sampleLimit;
     @JsonProperty("scrapeClass")
     private String scrapeClass;
+    @JsonProperty("scrapeClassicHistograms")
+    private Boolean scrapeClassicHistograms;
     @JsonProperty("scrapeProtocols")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> scrapeProtocols = new ArrayList<>();
@@ -136,7 +146,7 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder> , KubernetesResourc
     public ProbeSpec() {
     }
 
-    public ProbeSpec(SafeAuthorization authorization, BasicAuth basicAuth, SecretKeySelector bearerTokenSecret, String interval, String jobName, Long keepDroppedTargets, Long labelLimit, Long labelNameLengthLimit, Long labelValueLengthLimit, List<RelabelConfig> metricRelabelings, String module, OAuth2 oauth2, ProberSpec prober, Long sampleLimit, String scrapeClass, List<String> scrapeProtocols, String scrapeTimeout, Long targetLimit, ProbeTargets targets, SafeTLSConfig tlsConfig) {
+    public ProbeSpec(SafeAuthorization authorization, BasicAuth basicAuth, SecretKeySelector bearerTokenSecret, String interval, String jobName, Long keepDroppedTargets, Long labelLimit, Long labelNameLengthLimit, Long labelValueLengthLimit, List<RelabelConfig> metricRelabelings, String module, Long nativeHistogramBucketLimit, Quantity nativeHistogramMinBucketFactor, OAuth2 oauth2, ProberSpec prober, Long sampleLimit, String scrapeClass, Boolean scrapeClassicHistograms, List<String> scrapeProtocols, String scrapeTimeout, Long targetLimit, ProbeTargets targets, SafeTLSConfig tlsConfig) {
         super();
         this.authorization = authorization;
         this.basicAuth = basicAuth;
@@ -149,10 +159,13 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder> , KubernetesResourc
         this.labelValueLengthLimit = labelValueLengthLimit;
         this.metricRelabelings = metricRelabelings;
         this.module = module;
+        this.nativeHistogramBucketLimit = nativeHistogramBucketLimit;
+        this.nativeHistogramMinBucketFactor = nativeHistogramMinBucketFactor;
         this.oauth2 = oauth2;
         this.prober = prober;
         this.sampleLimit = sampleLimit;
         this.scrapeClass = scrapeClass;
+        this.scrapeClassicHistograms = scrapeClassicHistograms;
         this.scrapeProtocols = scrapeProtocols;
         this.scrapeTimeout = scrapeTimeout;
         this.targetLimit = targetLimit;
@@ -271,6 +284,26 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder> , KubernetesResourc
         this.module = module;
     }
 
+    @JsonProperty("nativeHistogramBucketLimit")
+    public Long getNativeHistogramBucketLimit() {
+        return nativeHistogramBucketLimit;
+    }
+
+    @JsonProperty("nativeHistogramBucketLimit")
+    public void setNativeHistogramBucketLimit(Long nativeHistogramBucketLimit) {
+        this.nativeHistogramBucketLimit = nativeHistogramBucketLimit;
+    }
+
+    @JsonProperty("nativeHistogramMinBucketFactor")
+    public Quantity getNativeHistogramMinBucketFactor() {
+        return nativeHistogramMinBucketFactor;
+    }
+
+    @JsonProperty("nativeHistogramMinBucketFactor")
+    public void setNativeHistogramMinBucketFactor(Quantity nativeHistogramMinBucketFactor) {
+        this.nativeHistogramMinBucketFactor = nativeHistogramMinBucketFactor;
+    }
+
     @JsonProperty("oauth2")
     public OAuth2 getOauth2() {
         return oauth2;
@@ -309,6 +342,16 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder> , KubernetesResourc
     @JsonProperty("scrapeClass")
     public void setScrapeClass(String scrapeClass) {
         this.scrapeClass = scrapeClass;
+    }
+
+    @JsonProperty("scrapeClassicHistograms")
+    public Boolean getScrapeClassicHistograms() {
+        return scrapeClassicHistograms;
+    }
+
+    @JsonProperty("scrapeClassicHistograms")
+    public void setScrapeClassicHistograms(Boolean scrapeClassicHistograms) {
+        this.scrapeClassicHistograms = scrapeClassicHistograms;
     }
 
     @JsonProperty("scrapeProtocols")

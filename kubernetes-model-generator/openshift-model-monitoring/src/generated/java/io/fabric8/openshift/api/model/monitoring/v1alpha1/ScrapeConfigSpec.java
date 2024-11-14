@@ -25,6 +25,7 @@ import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
+import io.fabric8.kubernetes.api.model.Quantity;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.SecretKeySelector;
 import io.fabric8.kubernetes.api.model.Volume;
@@ -72,6 +73,8 @@ import lombok.experimental.Accessors;
     "linodeSDConfigs",
     "metricRelabelings",
     "metricsPath",
+    "nativeHistogramBucketLimit",
+    "nativeHistogramMinBucketFactor",
     "noProxy",
     "nomadSDConfigs",
     "oauth2",
@@ -87,6 +90,7 @@ import lombok.experimental.Accessors;
     "scalewaySDConfigs",
     "scheme",
     "scrapeClass",
+    "scrapeClassicHistograms",
     "scrapeInterval",
     "scrapeProtocols",
     "scrapeTimeout",
@@ -196,6 +200,10 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder> , Kub
     private List<RelabelConfig> metricRelabelings = new ArrayList<>();
     @JsonProperty("metricsPath")
     private String metricsPath;
+    @JsonProperty("nativeHistogramBucketLimit")
+    private Long nativeHistogramBucketLimit;
+    @JsonProperty("nativeHistogramMinBucketFactor")
+    private Quantity nativeHistogramMinBucketFactor;
     @JsonProperty("noProxy")
     private String noProxy;
     @JsonProperty("nomadSDConfigs")
@@ -234,6 +242,8 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder> , Kub
     private String scheme;
     @JsonProperty("scrapeClass")
     private String scrapeClass;
+    @JsonProperty("scrapeClassicHistograms")
+    private Boolean scrapeClassicHistograms;
     @JsonProperty("scrapeInterval")
     private String scrapeInterval;
     @JsonProperty("scrapeProtocols")
@@ -260,7 +270,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder> , Kub
     public ScrapeConfigSpec() {
     }
 
-    public ScrapeConfigSpec(SafeAuthorization authorization, List<AzureSDConfig> azureSDConfigs, BasicAuth basicAuth, List<ConsulSDConfig> consulSDConfigs, List<DigitalOceanSDConfig> digitalOceanSDConfigs, List<DNSSDConfig> dnsSDConfigs, List<DockerSDConfig> dockerSDConfigs, List<DockerSwarmSDConfig> dockerSwarmSDConfigs, List<EC2SDConfig> ec2SDConfigs, Boolean enableCompression, List<EurekaSDConfig> eurekaSDConfigs, List<FileSDConfig> fileSDConfigs, List<GCESDConfig> gceSDConfigs, List<HetznerSDConfig> hetznerSDConfigs, Boolean honorLabels, Boolean honorTimestamps, List<HTTPSDConfig> httpSDConfigs, List<IonosSDConfig> ionosSDConfigs, String jobName, Long keepDroppedTargets, List<KubernetesSDConfig> kubernetesSDConfigs, List<KumaSDConfig> kumaSDConfigs, Long labelLimit, Long labelNameLengthLimit, Long labelValueLengthLimit, List<LightSailSDConfig> lightSailSDConfigs, List<LinodeSDConfig> linodeSDConfigs, List<RelabelConfig> metricRelabelings, String metricsPath, String noProxy, List<NomadSDConfig> nomadSDConfigs, OAuth2 oauth2, List<OpenStackSDConfig> openstackSDConfigs, List<OVHCloudSDConfig> ovhcloudSDConfigs, Map<String, List<String>> params, Map<String, List<SecretKeySelector>> proxyConnectHeader, Boolean proxyFromEnvironment, String proxyUrl, List<PuppetDBSDConfig> puppetDBSDConfigs, List<RelabelConfig> relabelings, Long sampleLimit, List<ScalewaySDConfig> scalewaySDConfigs, String scheme, String scrapeClass, String scrapeInterval, List<String> scrapeProtocols, String scrapeTimeout, List<StaticConfig> staticConfigs, Long targetLimit, SafeTLSConfig tlsConfig, Boolean trackTimestampsStaleness) {
+    public ScrapeConfigSpec(SafeAuthorization authorization, List<AzureSDConfig> azureSDConfigs, BasicAuth basicAuth, List<ConsulSDConfig> consulSDConfigs, List<DigitalOceanSDConfig> digitalOceanSDConfigs, List<DNSSDConfig> dnsSDConfigs, List<DockerSDConfig> dockerSDConfigs, List<DockerSwarmSDConfig> dockerSwarmSDConfigs, List<EC2SDConfig> ec2SDConfigs, Boolean enableCompression, List<EurekaSDConfig> eurekaSDConfigs, List<FileSDConfig> fileSDConfigs, List<GCESDConfig> gceSDConfigs, List<HetznerSDConfig> hetznerSDConfigs, Boolean honorLabels, Boolean honorTimestamps, List<HTTPSDConfig> httpSDConfigs, List<IonosSDConfig> ionosSDConfigs, String jobName, Long keepDroppedTargets, List<KubernetesSDConfig> kubernetesSDConfigs, List<KumaSDConfig> kumaSDConfigs, Long labelLimit, Long labelNameLengthLimit, Long labelValueLengthLimit, List<LightSailSDConfig> lightSailSDConfigs, List<LinodeSDConfig> linodeSDConfigs, List<RelabelConfig> metricRelabelings, String metricsPath, Long nativeHistogramBucketLimit, Quantity nativeHistogramMinBucketFactor, String noProxy, List<NomadSDConfig> nomadSDConfigs, OAuth2 oauth2, List<OpenStackSDConfig> openstackSDConfigs, List<OVHCloudSDConfig> ovhcloudSDConfigs, Map<String, List<String>> params, Map<String, List<SecretKeySelector>> proxyConnectHeader, Boolean proxyFromEnvironment, String proxyUrl, List<PuppetDBSDConfig> puppetDBSDConfigs, List<RelabelConfig> relabelings, Long sampleLimit, List<ScalewaySDConfig> scalewaySDConfigs, String scheme, String scrapeClass, Boolean scrapeClassicHistograms, String scrapeInterval, List<String> scrapeProtocols, String scrapeTimeout, List<StaticConfig> staticConfigs, Long targetLimit, SafeTLSConfig tlsConfig, Boolean trackTimestampsStaleness) {
         super();
         this.authorization = authorization;
         this.azureSDConfigs = azureSDConfigs;
@@ -291,6 +301,8 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder> , Kub
         this.linodeSDConfigs = linodeSDConfigs;
         this.metricRelabelings = metricRelabelings;
         this.metricsPath = metricsPath;
+        this.nativeHistogramBucketLimit = nativeHistogramBucketLimit;
+        this.nativeHistogramMinBucketFactor = nativeHistogramMinBucketFactor;
         this.noProxy = noProxy;
         this.nomadSDConfigs = nomadSDConfigs;
         this.oauth2 = oauth2;
@@ -306,6 +318,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder> , Kub
         this.scalewaySDConfigs = scalewaySDConfigs;
         this.scheme = scheme;
         this.scrapeClass = scrapeClass;
+        this.scrapeClassicHistograms = scrapeClassicHistograms;
         this.scrapeInterval = scrapeInterval;
         this.scrapeProtocols = scrapeProtocols;
         this.scrapeTimeout = scrapeTimeout;
@@ -623,6 +636,26 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder> , Kub
         this.metricsPath = metricsPath;
     }
 
+    @JsonProperty("nativeHistogramBucketLimit")
+    public Long getNativeHistogramBucketLimit() {
+        return nativeHistogramBucketLimit;
+    }
+
+    @JsonProperty("nativeHistogramBucketLimit")
+    public void setNativeHistogramBucketLimit(Long nativeHistogramBucketLimit) {
+        this.nativeHistogramBucketLimit = nativeHistogramBucketLimit;
+    }
+
+    @JsonProperty("nativeHistogramMinBucketFactor")
+    public Quantity getNativeHistogramMinBucketFactor() {
+        return nativeHistogramMinBucketFactor;
+    }
+
+    @JsonProperty("nativeHistogramMinBucketFactor")
+    public void setNativeHistogramMinBucketFactor(Quantity nativeHistogramMinBucketFactor) {
+        this.nativeHistogramMinBucketFactor = nativeHistogramMinBucketFactor;
+    }
+
     @JsonProperty("noProxy")
     public String getNoProxy() {
         return noProxy;
@@ -779,6 +812,16 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder> , Kub
     @JsonProperty("scrapeClass")
     public void setScrapeClass(String scrapeClass) {
         this.scrapeClass = scrapeClass;
+    }
+
+    @JsonProperty("scrapeClassicHistograms")
+    public Boolean getScrapeClassicHistograms() {
+        return scrapeClassicHistograms;
+    }
+
+    @JsonProperty("scrapeClassicHistograms")
+    public void setScrapeClassicHistograms(Boolean scrapeClassicHistograms) {
+        this.scrapeClassicHistograms = scrapeClassicHistograms;
     }
 
     @JsonProperty("scrapeInterval")

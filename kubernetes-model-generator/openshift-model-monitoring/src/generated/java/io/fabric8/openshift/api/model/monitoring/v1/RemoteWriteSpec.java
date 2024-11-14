@@ -46,6 +46,7 @@ import lombok.experimental.Accessors;
     "enableHTTP2",
     "followRedirects",
     "headers",
+    "messageVersion",
     "metadataConfig",
     "name",
     "noProxy",
@@ -104,6 +105,8 @@ public class RemoteWriteSpec implements Editable<RemoteWriteSpecBuilder> , Kuber
     @JsonProperty("headers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> headers = new LinkedHashMap<>();
+    @JsonProperty("messageVersion")
+    private String messageVersion;
     @JsonProperty("metadataConfig")
     private MetadataConfig metadataConfig;
     @JsonProperty("name")
@@ -146,7 +149,7 @@ public class RemoteWriteSpec implements Editable<RemoteWriteSpecBuilder> , Kuber
     public RemoteWriteSpec() {
     }
 
-    public RemoteWriteSpec(Authorization authorization, AzureAD azureAd, BasicAuth basicAuth, String bearerToken, String bearerTokenFile, Boolean enableHTTP2, Boolean followRedirects, Map<String, String> headers, MetadataConfig metadataConfig, String name, String noProxy, OAuth2 oauth2, Map<String, List<SecretKeySelector>> proxyConnectHeader, Boolean proxyFromEnvironment, String proxyUrl, QueueConfig queueConfig, String remoteTimeout, Boolean sendExemplars, Boolean sendNativeHistograms, Sigv4 sigv4, TLSConfig tlsConfig, String url, List<RelabelConfig> writeRelabelConfigs) {
+    public RemoteWriteSpec(Authorization authorization, AzureAD azureAd, BasicAuth basicAuth, String bearerToken, String bearerTokenFile, Boolean enableHTTP2, Boolean followRedirects, Map<String, String> headers, String messageVersion, MetadataConfig metadataConfig, String name, String noProxy, OAuth2 oauth2, Map<String, List<SecretKeySelector>> proxyConnectHeader, Boolean proxyFromEnvironment, String proxyUrl, QueueConfig queueConfig, String remoteTimeout, Boolean sendExemplars, Boolean sendNativeHistograms, Sigv4 sigv4, TLSConfig tlsConfig, String url, List<RelabelConfig> writeRelabelConfigs) {
         super();
         this.authorization = authorization;
         this.azureAd = azureAd;
@@ -156,6 +159,7 @@ public class RemoteWriteSpec implements Editable<RemoteWriteSpecBuilder> , Kuber
         this.enableHTTP2 = enableHTTP2;
         this.followRedirects = followRedirects;
         this.headers = headers;
+        this.messageVersion = messageVersion;
         this.metadataConfig = metadataConfig;
         this.name = name;
         this.noProxy = noProxy;
@@ -252,6 +256,16 @@ public class RemoteWriteSpec implements Editable<RemoteWriteSpecBuilder> , Kuber
     @JsonProperty("headers")
     public void setHeaders(Map<String, String> headers) {
         this.headers = headers;
+    }
+
+    @JsonProperty("messageVersion")
+    public String getMessageVersion() {
+        return messageVersion;
+    }
+
+    @JsonProperty("messageVersion")
+    public void setMessageVersion(String messageVersion) {
+        this.messageVersion = messageVersion;
     }
 
     @JsonProperty("metadataConfig")
