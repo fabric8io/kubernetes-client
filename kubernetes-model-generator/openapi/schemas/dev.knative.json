@@ -4024,6 +4024,14 @@
     "dev.knative.eventing.v1alpha1.EventPolicySpec": {
       "type": "object",
       "properties": {
+        "filters": {
+          "description": "Filters is the list of SubscriptoinsApi filters which determine whether or not the event is accepted. It is an array of filter expressions that evaluate to true or false. If any filter expression in the array evaluates to false, the event will not pass the target resource's ingress. Absence of any filters implies that the filters always evaluate to true.",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/dev.knative.eventing.v1.SubscriptionsAPIFilter"
+          }
+        },
         "from": {
           "description": "From is the list of sources or oidc identities, which are allowed to send events to the targets (.spec.to).",
           "type": "array",
