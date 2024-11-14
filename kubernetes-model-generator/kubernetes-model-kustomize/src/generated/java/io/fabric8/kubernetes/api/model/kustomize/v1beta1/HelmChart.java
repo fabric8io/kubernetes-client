@@ -39,6 +39,7 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "additionalValuesFiles",
     "apiVersions",
+    "debug",
     "includeCRDs",
     "kubeVersion",
     "name",
@@ -84,6 +85,8 @@ public class HelmChart implements Editable<HelmChartBuilder> , KubernetesResourc
     @JsonProperty("apiVersions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> apiVersions = new ArrayList<>();
+    @JsonProperty("debug")
+    private Boolean debug;
     @JsonProperty("includeCRDs")
     private Boolean includeCRDs;
     @JsonProperty("kubeVersion")
@@ -122,10 +125,11 @@ public class HelmChart implements Editable<HelmChartBuilder> , KubernetesResourc
     public HelmChart() {
     }
 
-    public HelmChart(List<String> additionalValuesFiles, List<String> apiVersions, Boolean includeCRDs, String kubeVersion, String name, String nameTemplate, String namespace, String releaseName, String repo, Boolean skipHooks, Boolean skipTests, String valuesFile, Map<String, Object> valuesInline, String valuesMerge, String version) {
+    public HelmChart(List<String> additionalValuesFiles, List<String> apiVersions, Boolean debug, Boolean includeCRDs, String kubeVersion, String name, String nameTemplate, String namespace, String releaseName, String repo, Boolean skipHooks, Boolean skipTests, String valuesFile, Map<String, Object> valuesInline, String valuesMerge, String version) {
         super();
         this.additionalValuesFiles = additionalValuesFiles;
         this.apiVersions = apiVersions;
+        this.debug = debug;
         this.includeCRDs = includeCRDs;
         this.kubeVersion = kubeVersion;
         this.name = name;
@@ -161,6 +165,16 @@ public class HelmChart implements Editable<HelmChartBuilder> , KubernetesResourc
     @JsonProperty("apiVersions")
     public void setApiVersions(List<String> apiVersions) {
         this.apiVersions = apiVersions;
+    }
+
+    @JsonProperty("debug")
+    public Boolean getDebug() {
+        return debug;
+    }
+
+    @JsonProperty("debug")
+    public void setDebug(Boolean debug) {
+        this.debug = debug;
     }
 
     @JsonProperty("includeCRDs")
