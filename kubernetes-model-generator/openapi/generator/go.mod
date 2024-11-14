@@ -34,7 +34,7 @@ require (
 	k8s.io/client-go v12.0.0+incompatible
 	k8s.io/gengo/v2 v2.0.0-20240911193312-2b36238f13e9
 	k8s.io/kube-openapi v0.0.0-20240903163716-9e1beecbcb38
-	k8s.io/metrics v0.31.0
+	k8s.io/metrics v0.31.2
 	knative.dev/caching v0.0.0-20241022012359-41bbaf964d16
 	knative.dev/eventing v0.43.1
 	knative.dev/eventing-awssqs v0.29.0
