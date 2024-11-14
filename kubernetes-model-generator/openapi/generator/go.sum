@@ -694,8 +694,8 @@ github.com/jstemmer/go-junit-report v0.9.1/go.mod h1:Brl9GWCQeLvo8nXZwPNNblvFj/X
 github.com/jtolds/gls v4.20.0+incompatible/go.mod h1:QJZ7F/aHp+rZTRtaJ1ow/lLfFfVYBRgL+9YlvaHOwJU=
 github.com/julienschmidt/httprouter v1.2.0/go.mod h1:SYymIcj16QtmaHHD7aYtjjsJG7VTCxuUUipMqKk8s4w=
 github.com/julienschmidt/httprouter v1.3.0/go.mod h1:JR6WtHb+2LUe8TCKY3cZOxFyyO8IZAc4RVcycCCAKdM=
-github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.7.4 h1:vn0d/47rWzEHpDl3Ac7MiD9DfKK3gNBezI5khPKE7AQ=
-github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.7.4/go.mod h1:CM7HAH5PNuIsqjMN0fGc1ydM74Uj+0VZFhob620nklw=
+github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.7.5 h1:CELpSMPSyicFBaVsxROmfrWlu9yr3Dduk+y7vGrIsx8=
+github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.7.5/go.mod h1:CM7HAH5PNuIsqjMN0fGc1ydM74Uj+0VZFhob620nklw=
 github.com/kdomanski/iso9660 v0.2.1 h1:IepyfCeEqx77rZeOM4XZgWB4XJWEF7Jp+1ehMTrSElg=
 github.com/kdomanski/iso9660 v0.2.1/go.mod h1:LY50s7BlG+ES6V99oxYGd0ub9giLrKdHZb3LLOweBj0=
 github.com/kelseyhightower/envconfig v1.4.0 h1:Im6hONhd3pLkfDFsbRgu68RDNkGF1r3dvMUtDTo2cv8=
