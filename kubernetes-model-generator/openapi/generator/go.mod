@@ -7,7 +7,7 @@ toolchain go1.23.1
 require (
 	github.com/cert-manager/cert-manager v1.16.1
 	github.com/chaos-mesh/chaos-mesh/api v0.0.0
-	github.com/getkin/kin-openapi v0.125.0
+	github.com/getkin/kin-openapi v0.128.0
 	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.7.4
 	github.com/kubernetes-csi/external-snapshotter/client/v8 v8.0.0
 	github.com/metal3-io/baremetal-operator/apis v0.4.0
@@ -152,7 +152,7 @@ require (
 	github.com/hashicorp/golang-lru/v2 v2.0.6 // indirect
 	github.com/imdario/mergo v0.3.16 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
-	github.com/invopop/yaml v0.2.0 // indirect
+	github.com/invopop/yaml v0.3.1 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/kdomanski/iso9660 v0.2.1 // indirect
