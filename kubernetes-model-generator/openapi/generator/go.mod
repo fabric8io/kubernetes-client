@@ -24,7 +24,7 @@ require (
 	github.com/ovn-org/ovn-kubernetes/go-controller v0.0.0-20241030140127-a68ef49d9441
 	github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.77.1
 	github.com/spf13/cobra v1.8.1
-	github.com/tektoncd/pipeline v0.65.0
+	github.com/tektoncd/pipeline v0.65.1
 	github.com/tektoncd/triggers v0.30.0
 	istio.io/client-go v1.23.2
 	k8s.io/api v0.31.2
