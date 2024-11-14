@@ -26,11 +26,6 @@ updates:
   - oscerd
   - rohanKanojia
   - manusa
-  ignore:
-  - dependency-name: com.squareup.okhttp3:logging-interceptor
-    versions:
-    - ">= 3.13.a"
-    - "< 3.14"
 - package-ecosystem: "github-actions"
   directory: "/"
   schedule:
