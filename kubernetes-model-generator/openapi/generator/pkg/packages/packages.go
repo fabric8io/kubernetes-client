@@ -66,6 +66,11 @@ var ChaosMeshPackagePatterns = []string{
 	"github.com/chaos-mesh/chaos-mesh/api/v1alpha1",
 }
 
+var GatewayApiPackagePatterns = []string{
+	"sigs.k8s.io/gateway-api/apis/v1",
+	"sigs.k8s.io/gateway-api/apis/v1beta1",
+}
+
 var IstioPackagePatterns = []string{
 	"istio.io/api/analysis/v...",
 	"istio.io/api/extensions/v...",

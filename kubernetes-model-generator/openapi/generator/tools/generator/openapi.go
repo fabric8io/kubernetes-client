@@ -36,6 +36,7 @@ var modules = []module{
 	{patterns: packages.AutoscalingPackagePatterns, outputName: "generated_autoscaling_openapi"},
 	{patterns: packages.CertManagerPackagePatterns, outputName: "generated_certmanager_openapi"},
 	{patterns: packages.ChaosMeshPackagePatterns, outputName: "generated_chaosmesh_openapi"},
+	{patterns: packages.GatewayApiPackagePatterns, outputName: "generated_gatewayapi_openapi"},
 	{patterns: packages.IstioPackagePatterns, outputName: "generated_istio_openapi"},
 	{patterns: packages.KnativePackagePatterns, outputName: "generated_knative_openapi"},
 	{patterns: packages.OpenClusterManagementPackagePatterns, outputName: "generated_openclustermanagement_openapi"},

@@ -59,7 +59,7 @@
                   <schema>${project.basedir}/../openapi/schemas/gateway-api.json</schema>
                 </schemas>
                 <includeGenerationRegexes>
-                  <includeGenerationRegex>^io\.k8s\.sigs\.gateway-api\.apis\..*$</includeGenerationRegex>
+                  <includeGenerationRegex>^io\.k8s\.networking\.gateway\..*$</includeGenerationRegex>
                 </includeGenerationRegexes>
               </settings>
             </configuration>

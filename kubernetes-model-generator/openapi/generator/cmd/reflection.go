@@ -31,8 +31,6 @@ import (
 	"path/filepath"
 	"reflect"
 	clusterapiv1beta1 "sigs.k8s.io/cluster-api/api/v1beta1"
-	gatewayApiV1 "sigs.k8s.io/gateway-api/apis/v1"
-	gatewayApiV1Beta1 "sigs.k8s.io/gateway-api/apis/v1beta1"
 	kustomize "sigs.k8s.io/kustomize/api/types"
 	"strings"
 	"time"
@@ -97,22 +95,6 @@ var reflectionRun = func(cmd *cobra.Command, args []string) {
 			reflect.TypeOf(clusterapiv1beta1.Condition{}),
 			reflect.TypeOf(clusterapiv1beta1.Machine{}),
 		}, "cluster-api"),
-		NewPathSchema(map[reflect.Type]ApiVersion{
-			reflect.TypeOf(gatewayApiV1.GatewayList{}):             {true, gatewayApiV1.GroupVersion.String(), "gateways", true},
-			reflect.TypeOf(gatewayApiV1.Gateway{}):                 {false, gatewayApiV1.GroupVersion.String(), "gateways", true},
-			reflect.TypeOf(gatewayApiV1.GatewayClassList{}):        {true, gatewayApiV1.GroupVersion.String(), "gatewayclasses", false},
-			reflect.TypeOf(gatewayApiV1.GatewayClass{}):            {false, gatewayApiV1.GroupVersion.String(), "gatewayclasses", false},
-			reflect.TypeOf(gatewayApiV1.HTTPRouteList{}):           {true, gatewayApiV1.GroupVersion.String(), "httproutes", true},
-			reflect.TypeOf(gatewayApiV1.HTTPRoute{}):               {false, gatewayApiV1.GroupVersion.String(), "httproutes", true},
-			reflect.TypeOf(gatewayApiV1Beta1.GatewayList{}):        {true, gatewayApiV1Beta1.GroupVersion.String(), "gateways", true},
-			reflect.TypeOf(gatewayApiV1Beta1.Gateway{}):            {false, gatewayApiV1Beta1.GroupVersion.String(), "gateways", true},
-			reflect.TypeOf(gatewayApiV1Beta1.GatewayClassList{}):   {true, gatewayApiV1Beta1.GroupVersion.String(), "gatewayclasses", false},
-			reflect.TypeOf(gatewayApiV1Beta1.GatewayClass{}):       {false, gatewayApiV1Beta1.GroupVersion.String(), "gatewayclasses", false},
-			reflect.TypeOf(gatewayApiV1Beta1.HTTPRouteList{}):      {true, gatewayApiV1Beta1.GroupVersion.String(), "httproutes", true},
-			reflect.TypeOf(gatewayApiV1Beta1.HTTPRoute{}):          {false, gatewayApiV1Beta1.GroupVersion.String(), "httproutes", true},
-			reflect.TypeOf(gatewayApiV1Beta1.ReferenceGrantList{}): {true, gatewayApiV1Beta1.GroupVersion.String(), "referencegrants", true},
-			reflect.TypeOf(gatewayApiV1Beta1.ReferenceGrant{}):     {false, gatewayApiV1Beta1.GroupVersion.String(), "referencegrants", true},
-		}, "gateway-api"),
 		NewTypeSchema([]reflect.Type{
 			reflect.TypeOf(kustomize.Kustomization{}),
 		}, "kustomize"),
