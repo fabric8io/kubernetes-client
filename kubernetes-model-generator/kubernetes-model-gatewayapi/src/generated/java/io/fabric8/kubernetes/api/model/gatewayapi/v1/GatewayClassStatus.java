@@ -71,7 +71,7 @@ public class GatewayClassStatus implements Editable<GatewayClassStatusBuilder> ,
     private List<Condition> conditions = new ArrayList<>();
     @JsonProperty("supportedFeatures")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> supportedFeatures = new ArrayList<>();
+    private List<SupportedFeature> supportedFeatures = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -82,7 +82,7 @@ public class GatewayClassStatus implements Editable<GatewayClassStatusBuilder> ,
     public GatewayClassStatus() {
     }
 
-    public GatewayClassStatus(List<Condition> conditions, List<String> supportedFeatures) {
+    public GatewayClassStatus(List<Condition> conditions, List<SupportedFeature> supportedFeatures) {
         super();
         this.conditions = conditions;
         this.supportedFeatures = supportedFeatures;
@@ -101,12 +101,12 @@ public class GatewayClassStatus implements Editable<GatewayClassStatusBuilder> ,
 
     @JsonProperty("supportedFeatures")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<String> getSupportedFeatures() {
+    public List<SupportedFeature> getSupportedFeatures() {
         return supportedFeatures;
     }
 
     @JsonProperty("supportedFeatures")
-    public void setSupportedFeatures(List<String> supportedFeatures) {
+    public void setSupportedFeatures(List<SupportedFeature> supportedFeatures) {
         this.supportedFeatures = supportedFeatures;
     }
 

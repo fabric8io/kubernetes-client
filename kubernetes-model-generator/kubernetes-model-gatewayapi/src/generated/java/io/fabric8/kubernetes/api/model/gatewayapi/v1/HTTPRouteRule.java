@@ -40,6 +40,8 @@ import lombok.experimental.Accessors;
     "backendRefs",
     "filters",
     "matches",
+    "name",
+    "retry",
     "sessionPersistence",
     "timeouts"
 })
@@ -77,6 +79,10 @@ public class HTTPRouteRule implements Editable<HTTPRouteRuleBuilder> , Kubernete
     @JsonProperty("matches")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<HTTPRouteMatch> matches = new ArrayList<>();
+    @JsonProperty("name")
+    private String name;
+    @JsonProperty("retry")
+    private HTTPRouteRetry retry;
     @JsonProperty("sessionPersistence")
     private SessionPersistence sessionPersistence;
     @JsonProperty("timeouts")
@@ -91,11 +97,13 @@ public class HTTPRouteRule implements Editable<HTTPRouteRuleBuilder> , Kubernete
     public HTTPRouteRule() {
     }
 
-    public HTTPRouteRule(List<HTTPBackendRef> backendRefs, List<HTTPRouteFilter> filters, List<HTTPRouteMatch> matches, SessionPersistence sessionPersistence, HTTPRouteTimeouts timeouts) {
+    public HTTPRouteRule(List<HTTPBackendRef> backendRefs, List<HTTPRouteFilter> filters, List<HTTPRouteMatch> matches, String name, HTTPRouteRetry retry, SessionPersistence sessionPersistence, HTTPRouteTimeouts timeouts) {
         super();
         this.backendRefs = backendRefs;
         this.filters = filters;
         this.matches = matches;
+        this.name = name;
+        this.retry = retry;
         this.sessionPersistence = sessionPersistence;
         this.timeouts = timeouts;
     }
@@ -131,6 +139,26 @@ public class HTTPRouteRule implements Editable<HTTPRouteRuleBuilder> , Kubernete
     @JsonProperty("matches")
     public void setMatches(List<HTTPRouteMatch> matches) {
         this.matches = matches;
+    }
+
+    @JsonProperty("name")
+    public String getName() {
+        return name;
+    }
+
+    @JsonProperty("name")
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @JsonProperty("retry")
+    public HTTPRouteRetry getRetry() {
+        return retry;
+    }
+
+    @JsonProperty("retry")
+    public void setRetry(HTTPRouteRetry retry) {
+        this.retry = retry;
     }
 
     @JsonProperty("sessionPersistence")
