@@ -47,7 +47,7 @@ require (
 	knative.dev/serving v0.43.0
 	sigs.k8s.io/cluster-api v1.8.3
 	sigs.k8s.io/gateway-api v1.1.0
-	sigs.k8s.io/kustomize/api v0.17.2
+	sigs.k8s.io/kustomize/api v0.18.0
 	volcano.sh/apis v1.10.0
 )
 
@@ -217,7 +217,7 @@ require (
 	knative.dev/pkg v0.0.0-20241021183759-9b9d535af5ad // indirect
 	sigs.k8s.io/controller-runtime v0.19.0 // indirect
 	sigs.k8s.io/json v0.0.0-20221116044647-bc3834ca7abd // indirect
-	sigs.k8s.io/kustomize/kyaml v0.17.1 // indirect
+	sigs.k8s.io/kustomize/kyaml v0.18.1 // indirect
 	sigs.k8s.io/structured-merge-diff/v4 v4.4.1 // indirect
 	sigs.k8s.io/yaml v1.4.0 // indirect
 )
