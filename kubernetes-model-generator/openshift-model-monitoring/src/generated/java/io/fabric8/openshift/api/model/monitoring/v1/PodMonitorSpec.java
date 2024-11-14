@@ -25,6 +25,7 @@ import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
+import io.fabric8.kubernetes.api.model.Quantity;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
@@ -45,10 +46,13 @@ import lombok.experimental.Accessors;
     "labelNameLengthLimit",
     "labelValueLengthLimit",
     "namespaceSelector",
+    "nativeHistogramBucketLimit",
+    "nativeHistogramMinBucketFactor",
     "podMetricsEndpoints",
     "podTargetLabels",
     "sampleLimit",
     "scrapeClass",
+    "scrapeClassicHistograms",
     "scrapeProtocols",
     "selector",
     "targetLimit"
@@ -94,6 +98,10 @@ public class PodMonitorSpec implements Editable<PodMonitorSpecBuilder> , Kuberne
     private Long labelValueLengthLimit;
     @JsonProperty("namespaceSelector")
     private NamespaceSelector namespaceSelector;
+    @JsonProperty("nativeHistogramBucketLimit")
+    private Long nativeHistogramBucketLimit;
+    @JsonProperty("nativeHistogramMinBucketFactor")
+    private Quantity nativeHistogramMinBucketFactor;
     @JsonProperty("podMetricsEndpoints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<PodMetricsEndpoint> podMetricsEndpoints = new ArrayList<>();
@@ -104,6 +112,8 @@ public class PodMonitorSpec implements Editable<PodMonitorSpecBuilder> , Kuberne
     private Long sampleLimit;
     @JsonProperty("scrapeClass")
     private String scrapeClass;
+    @JsonProperty("scrapeClassicHistograms")
+    private Boolean scrapeClassicHistograms;
     @JsonProperty("scrapeProtocols")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> scrapeProtocols = new ArrayList<>();
@@ -121,7 +131,7 @@ public class PodMonitorSpec implements Editable<PodMonitorSpecBuilder> , Kuberne
     public PodMonitorSpec() {
     }
 
-    public PodMonitorSpec(AttachMetadata attachMetadata, String bodySizeLimit, String jobLabel, Long keepDroppedTargets, Long labelLimit, Long labelNameLengthLimit, Long labelValueLengthLimit, NamespaceSelector namespaceSelector, List<PodMetricsEndpoint> podMetricsEndpoints, List<String> podTargetLabels, Long sampleLimit, String scrapeClass, List<String> scrapeProtocols, LabelSelector selector, Long targetLimit) {
+    public PodMonitorSpec(AttachMetadata attachMetadata, String bodySizeLimit, String jobLabel, Long keepDroppedTargets, Long labelLimit, Long labelNameLengthLimit, Long labelValueLengthLimit, NamespaceSelector namespaceSelector, Long nativeHistogramBucketLimit, Quantity nativeHistogramMinBucketFactor, List<PodMetricsEndpoint> podMetricsEndpoints, List<String> podTargetLabels, Long sampleLimit, String scrapeClass, Boolean scrapeClassicHistograms, List<String> scrapeProtocols, LabelSelector selector, Long targetLimit) {
         super();
         this.attachMetadata = attachMetadata;
         this.bodySizeLimit = bodySizeLimit;
@@ -131,10 +141,13 @@ public class PodMonitorSpec implements Editable<PodMonitorSpecBuilder> , Kuberne
         this.labelNameLengthLimit = labelNameLengthLimit;
         this.labelValueLengthLimit = labelValueLengthLimit;
         this.namespaceSelector = namespaceSelector;
+        this.nativeHistogramBucketLimit = nativeHistogramBucketLimit;
+        this.nativeHistogramMinBucketFactor = nativeHistogramMinBucketFactor;
         this.podMetricsEndpoints = podMetricsEndpoints;
         this.podTargetLabels = podTargetLabels;
         this.sampleLimit = sampleLimit;
         this.scrapeClass = scrapeClass;
+        this.scrapeClassicHistograms = scrapeClassicHistograms;
         this.scrapeProtocols = scrapeProtocols;
         this.selector = selector;
         this.targetLimit = targetLimit;
@@ -220,6 +233,26 @@ public class PodMonitorSpec implements Editable<PodMonitorSpecBuilder> , Kuberne
         this.namespaceSelector = namespaceSelector;
     }
 
+    @JsonProperty("nativeHistogramBucketLimit")
+    public Long getNativeHistogramBucketLimit() {
+        return nativeHistogramBucketLimit;
+    }
+
+    @JsonProperty("nativeHistogramBucketLimit")
+    public void setNativeHistogramBucketLimit(Long nativeHistogramBucketLimit) {
+        this.nativeHistogramBucketLimit = nativeHistogramBucketLimit;
+    }
+
+    @JsonProperty("nativeHistogramMinBucketFactor")
+    public Quantity getNativeHistogramMinBucketFactor() {
+        return nativeHistogramMinBucketFactor;
+    }
+
+    @JsonProperty("nativeHistogramMinBucketFactor")
+    public void setNativeHistogramMinBucketFactor(Quantity nativeHistogramMinBucketFactor) {
+        this.nativeHistogramMinBucketFactor = nativeHistogramMinBucketFactor;
+    }
+
     @JsonProperty("podMetricsEndpoints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PodMetricsEndpoint> getPodMetricsEndpoints() {
@@ -260,6 +293,16 @@ public class PodMonitorSpec implements Editable<PodMonitorSpecBuilder> , Kuberne
     @JsonProperty("scrapeClass")
     public void setScrapeClass(String scrapeClass) {
         this.scrapeClass = scrapeClass;
+    }
+
+    @JsonProperty("scrapeClassicHistograms")
+    public Boolean getScrapeClassicHistograms() {
+        return scrapeClassicHistograms;
+    }
+
+    @JsonProperty("scrapeClassicHistograms")
+    public void setScrapeClassicHistograms(Boolean scrapeClassicHistograms) {
+        this.scrapeClassicHistograms = scrapeClassicHistograms;
     }
 
     @JsonProperty("scrapeProtocols")

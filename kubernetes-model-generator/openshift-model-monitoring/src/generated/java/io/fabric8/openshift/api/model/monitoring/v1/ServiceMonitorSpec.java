@@ -25,6 +25,7 @@ import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
+import io.fabric8.kubernetes.api.model.Quantity;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
@@ -46,9 +47,12 @@ import lombok.experimental.Accessors;
     "labelNameLengthLimit",
     "labelValueLengthLimit",
     "namespaceSelector",
+    "nativeHistogramBucketLimit",
+    "nativeHistogramMinBucketFactor",
     "podTargetLabels",
     "sampleLimit",
     "scrapeClass",
+    "scrapeClassicHistograms",
     "scrapeProtocols",
     "selector",
     "targetLabels",
@@ -98,6 +102,10 @@ public class ServiceMonitorSpec implements Editable<ServiceMonitorSpecBuilder> ,
     private Long labelValueLengthLimit;
     @JsonProperty("namespaceSelector")
     private NamespaceSelector namespaceSelector;
+    @JsonProperty("nativeHistogramBucketLimit")
+    private Long nativeHistogramBucketLimit;
+    @JsonProperty("nativeHistogramMinBucketFactor")
+    private Quantity nativeHistogramMinBucketFactor;
     @JsonProperty("podTargetLabels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> podTargetLabels = new ArrayList<>();
@@ -105,6 +113,8 @@ public class ServiceMonitorSpec implements Editable<ServiceMonitorSpecBuilder> ,
     private Long sampleLimit;
     @JsonProperty("scrapeClass")
     private String scrapeClass;
+    @JsonProperty("scrapeClassicHistograms")
+    private Boolean scrapeClassicHistograms;
     @JsonProperty("scrapeProtocols")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> scrapeProtocols = new ArrayList<>();
@@ -125,7 +135,7 @@ public class ServiceMonitorSpec implements Editable<ServiceMonitorSpecBuilder> ,
     public ServiceMonitorSpec() {
     }
 
-    public ServiceMonitorSpec(AttachMetadata attachMetadata, String bodySizeLimit, List<Endpoint> endpoints, String jobLabel, Long keepDroppedTargets, Long labelLimit, Long labelNameLengthLimit, Long labelValueLengthLimit, NamespaceSelector namespaceSelector, List<String> podTargetLabels, Long sampleLimit, String scrapeClass, List<String> scrapeProtocols, LabelSelector selector, List<String> targetLabels, Long targetLimit) {
+    public ServiceMonitorSpec(AttachMetadata attachMetadata, String bodySizeLimit, List<Endpoint> endpoints, String jobLabel, Long keepDroppedTargets, Long labelLimit, Long labelNameLengthLimit, Long labelValueLengthLimit, NamespaceSelector namespaceSelector, Long nativeHistogramBucketLimit, Quantity nativeHistogramMinBucketFactor, List<String> podTargetLabels, Long sampleLimit, String scrapeClass, Boolean scrapeClassicHistograms, List<String> scrapeProtocols, LabelSelector selector, List<String> targetLabels, Long targetLimit) {
         super();
         this.attachMetadata = attachMetadata;
         this.bodySizeLimit = bodySizeLimit;
@@ -136,9 +146,12 @@ public class ServiceMonitorSpec implements Editable<ServiceMonitorSpecBuilder> ,
         this.labelNameLengthLimit = labelNameLengthLimit;
         this.labelValueLengthLimit = labelValueLengthLimit;
         this.namespaceSelector = namespaceSelector;
+        this.nativeHistogramBucketLimit = nativeHistogramBucketLimit;
+        this.nativeHistogramMinBucketFactor = nativeHistogramMinBucketFactor;
         this.podTargetLabels = podTargetLabels;
         this.sampleLimit = sampleLimit;
         this.scrapeClass = scrapeClass;
+        this.scrapeClassicHistograms = scrapeClassicHistograms;
         this.scrapeProtocols = scrapeProtocols;
         this.selector = selector;
         this.targetLabels = targetLabels;
@@ -236,6 +249,26 @@ public class ServiceMonitorSpec implements Editable<ServiceMonitorSpecBuilder> ,
         this.namespaceSelector = namespaceSelector;
     }
 
+    @JsonProperty("nativeHistogramBucketLimit")
+    public Long getNativeHistogramBucketLimit() {
+        return nativeHistogramBucketLimit;
+    }
+
+    @JsonProperty("nativeHistogramBucketLimit")
+    public void setNativeHistogramBucketLimit(Long nativeHistogramBucketLimit) {
+        this.nativeHistogramBucketLimit = nativeHistogramBucketLimit;
+    }
+
+    @JsonProperty("nativeHistogramMinBucketFactor")
+    public Quantity getNativeHistogramMinBucketFactor() {
+        return nativeHistogramMinBucketFactor;
+    }
+
+    @JsonProperty("nativeHistogramMinBucketFactor")
+    public void setNativeHistogramMinBucketFactor(Quantity nativeHistogramMinBucketFactor) {
+        this.nativeHistogramMinBucketFactor = nativeHistogramMinBucketFactor;
+    }
+
     @JsonProperty("podTargetLabels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getPodTargetLabels() {
@@ -265,6 +298,16 @@ public class ServiceMonitorSpec implements Editable<ServiceMonitorSpecBuilder> ,
     @JsonProperty("scrapeClass")
     public void setScrapeClass(String scrapeClass) {
         this.scrapeClass = scrapeClass;
+    }
+
+    @JsonProperty("scrapeClassicHistograms")
+    public Boolean getScrapeClassicHistograms() {
+        return scrapeClassicHistograms;
+    }
+
+    @JsonProperty("scrapeClassicHistograms")
+    public void setScrapeClassicHistograms(Boolean scrapeClassicHistograms) {
+        this.scrapeClassicHistograms = scrapeClassicHistograms;
     }
 
     @JsonProperty("scrapeProtocols")

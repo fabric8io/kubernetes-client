@@ -41,6 +41,7 @@ import lombok.experimental.Accessors;
     "limit",
     "name",
     "partial_response_strategy",
+    "query_offset",
     "rules"
 })
 @ToString
@@ -76,6 +77,8 @@ public class RuleGroup implements Editable<RuleGroupBuilder> , KubernetesResourc
     private String name;
     @JsonProperty("partial_response_strategy")
     private String partial_response_strategy;
+    @JsonProperty("query_offset")
+    private String query_offset;
     @JsonProperty("rules")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Rule> rules = new ArrayList<>();
@@ -89,12 +92,13 @@ public class RuleGroup implements Editable<RuleGroupBuilder> , KubernetesResourc
     public RuleGroup() {
     }
 
-    public RuleGroup(String interval, Integer limit, String name, String partial_response_strategy, List<Rule> rules) {
+    public RuleGroup(String interval, Integer limit, String name, String partial_response_strategy, String query_offset, List<Rule> rules) {
         super();
         this.interval = interval;
         this.limit = limit;
         this.name = name;
         this.partial_response_strategy = partial_response_strategy;
+        this.query_offset = query_offset;
         this.rules = rules;
     }
 
@@ -136,6 +140,16 @@ public class RuleGroup implements Editable<RuleGroupBuilder> , KubernetesResourc
     @JsonProperty("partial_response_strategy")
     public void setPartial_response_strategy(String partial_response_strategy) {
         this.partial_response_strategy = partial_response_strategy;
+    }
+
+    @JsonProperty("query_offset")
+    public String getQuery_offset() {
+        return query_offset;
+    }
+
+    @JsonProperty("query_offset")
+    public void setQuery_offset(String query_offset) {
+        this.query_offset = query_offset;
     }
 
     @JsonProperty("rules")

@@ -39,6 +39,7 @@ import io.fabric8.openshift.api.model.monitoring.v1.EmbeddedObjectMetadata;
 import io.fabric8.openshift.api.model.monitoring.v1.HostAlias;
 import io.fabric8.openshift.api.model.monitoring.v1.OTLPConfig;
 import io.fabric8.openshift.api.model.monitoring.v1.ObjectReference;
+import io.fabric8.openshift.api.model.monitoring.v1.PodDNSConfig;
 import io.fabric8.openshift.api.model.monitoring.v1.PrometheusTracingConfig;
 import io.fabric8.openshift.api.model.monitoring.v1.PrometheusWebSpec;
 import io.fabric8.openshift.api.model.monitoring.v1.RemoteWriteSpec;
@@ -64,6 +65,8 @@ import lombok.experimental.Accessors;
     "bodySizeLimit",
     "configMaps",
     "containers",
+    "dnsConfig",
+    "dnsPolicy",
     "enableFeatures",
     "enableRemoteWriteReceiver",
     "enforcedBodySizeLimit",
@@ -111,6 +114,7 @@ import lombok.experimental.Accessors;
     "prometheusExternalLabelName",
     "reloadStrategy",
     "remoteWrite",
+    "remoteWriteReceiverMessageVersions",
     "replicaExternalLabelName",
     "replicas",
     "resources",
@@ -187,6 +191,10 @@ public class PrometheusAgentSpec implements Editable<PrometheusAgentSpecBuilder>
     @JsonProperty("containers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Container> containers = new ArrayList<>();
+    @JsonProperty("dnsConfig")
+    private PodDNSConfig dnsConfig;
+    @JsonProperty("dnsPolicy")
+    private String dnsPolicy;
     @JsonProperty("enableFeatures")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> enableFeatures = new ArrayList<>();
@@ -290,6 +298,9 @@ public class PrometheusAgentSpec implements Editable<PrometheusAgentSpecBuilder>
     @JsonProperty("remoteWrite")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<RemoteWriteSpec> remoteWrite = new ArrayList<>();
+    @JsonProperty("remoteWriteReceiverMessageVersions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> remoteWriteReceiverMessageVersions = new ArrayList<>();
     @JsonProperty("replicaExternalLabelName")
     private String replicaExternalLabelName;
     @JsonProperty("replicas")
@@ -365,7 +376,7 @@ public class PrometheusAgentSpec implements Editable<PrometheusAgentSpecBuilder>
     public PrometheusAgentSpec() {
     }
 
-    public PrometheusAgentSpec(List<Argument> additionalArgs, SecretKeySelector additionalScrapeConfigs, Affinity affinity, APIServerConfig apiserverConfig, ArbitraryFSAccessThroughSMsConfig arbitraryFSAccessThroughSMs, Boolean automountServiceAccountToken, String bodySizeLimit, List<String> configMaps, List<Container> containers, List<String> enableFeatures, Boolean enableRemoteWriteReceiver, String enforcedBodySizeLimit, Long enforcedKeepDroppedTargets, Long enforcedLabelLimit, Long enforcedLabelNameLengthLimit, Long enforcedLabelValueLengthLimit, String enforcedNamespaceLabel, Long enforcedSampleLimit, Long enforcedTargetLimit, List<ObjectReference> excludedFromEnforcement, Map<String, String> externalLabels, String externalUrl, List<HostAlias> hostAliases, Boolean hostNetwork, Boolean ignoreNamespaceSelectors, String image, String imagePullPolicy, List<LocalObjectReference> imagePullSecrets, List<Container> initContainers, Long keepDroppedTargets, Long labelLimit, Long labelNameLengthLimit, Long labelValueLengthLimit, Boolean listenLocal, String logFormat, String logLevel, Integer maximumStartupDurationSeconds, Long minReadySeconds, String mode, Map<String, String> nodeSelector, OTLPConfig otlp, Boolean overrideHonorLabels, Boolean overrideHonorTimestamps, Boolean paused, StatefulSetPersistentVolumeClaimRetentionPolicy persistentVolumeClaimRetentionPolicy, EmbeddedObjectMetadata podMetadata, LabelSelector podMonitorNamespaceSelector, LabelSelector podMonitorSelector, List<String> podTargetLabels, String portName, String priorityClassName, LabelSelector probeNamespaceSelector, LabelSelector probeSelector, String prometheusExternalLabelName, String reloadStrategy, List<RemoteWriteSpec> remoteWrite, String replicaExternalLabelName, Integer replicas, ResourceRequirements resources, String routePrefix, Long sampleLimit, List<ScrapeClass> scrapeClasses, LabelSelector scrapeConfigNamespaceSelector, LabelSelector scrapeConfigSelector, String scrapeInterval, List<String> scrapeProtocols, String scrapeTimeout, List<String> secrets, PodSecurityContext securityContext, String serviceAccountName, String serviceDiscoveryRole, LabelSelector serviceMonitorNamespaceSelector, LabelSelector serviceMonitorSelector, Integer shards, StorageSpec storage, Long targetLimit, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, PrometheusTracingConfig tracingConfig, TSDBSpec tsdb, String version, List<VolumeMount> volumeMounts, List<Volume> volumes, Boolean walCompression, PrometheusWebSpec web) {
+    public PrometheusAgentSpec(List<Argument> additionalArgs, SecretKeySelector additionalScrapeConfigs, Affinity affinity, APIServerConfig apiserverConfig, ArbitraryFSAccessThroughSMsConfig arbitraryFSAccessThroughSMs, Boolean automountServiceAccountToken, String bodySizeLimit, List<String> configMaps, List<Container> containers, PodDNSConfig dnsConfig, String dnsPolicy, List<String> enableFeatures, Boolean enableRemoteWriteReceiver, String enforcedBodySizeLimit, Long enforcedKeepDroppedTargets, Long enforcedLabelLimit, Long enforcedLabelNameLengthLimit, Long enforcedLabelValueLengthLimit, String enforcedNamespaceLabel, Long enforcedSampleLimit, Long enforcedTargetLimit, List<ObjectReference> excludedFromEnforcement, Map<String, String> externalLabels, String externalUrl, List<HostAlias> hostAliases, Boolean hostNetwork, Boolean ignoreNamespaceSelectors, String image, String imagePullPolicy, List<LocalObjectReference> imagePullSecrets, List<Container> initContainers, Long keepDroppedTargets, Long labelLimit, Long labelNameLengthLimit, Long labelValueLengthLimit, Boolean listenLocal, String logFormat, String logLevel, Integer maximumStartupDurationSeconds, Long minReadySeconds, String mode, Map<String, String> nodeSelector, OTLPConfig otlp, Boolean overrideHonorLabels, Boolean overrideHonorTimestamps, Boolean paused, StatefulSetPersistentVolumeClaimRetentionPolicy persistentVolumeClaimRetentionPolicy, EmbeddedObjectMetadata podMetadata, LabelSelector podMonitorNamespaceSelector, LabelSelector podMonitorSelector, List<String> podTargetLabels, String portName, String priorityClassName, LabelSelector probeNamespaceSelector, LabelSelector probeSelector, String prometheusExternalLabelName, String reloadStrategy, List<RemoteWriteSpec> remoteWrite, List<String> remoteWriteReceiverMessageVersions, String replicaExternalLabelName, Integer replicas, ResourceRequirements resources, String routePrefix, Long sampleLimit, List<ScrapeClass> scrapeClasses, LabelSelector scrapeConfigNamespaceSelector, LabelSelector scrapeConfigSelector, String scrapeInterval, List<String> scrapeProtocols, String scrapeTimeout, List<String> secrets, PodSecurityContext securityContext, String serviceAccountName, String serviceDiscoveryRole, LabelSelector serviceMonitorNamespaceSelector, LabelSelector serviceMonitorSelector, Integer shards, StorageSpec storage, Long targetLimit, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, PrometheusTracingConfig tracingConfig, TSDBSpec tsdb, String version, List<VolumeMount> volumeMounts, List<Volume> volumes, Boolean walCompression, PrometheusWebSpec web) {
         super();
         this.additionalArgs = additionalArgs;
         this.additionalScrapeConfigs = additionalScrapeConfigs;
@@ -376,6 +387,8 @@ public class PrometheusAgentSpec implements Editable<PrometheusAgentSpecBuilder>
         this.bodySizeLimit = bodySizeLimit;
         this.configMaps = configMaps;
         this.containers = containers;
+        this.dnsConfig = dnsConfig;
+        this.dnsPolicy = dnsPolicy;
         this.enableFeatures = enableFeatures;
         this.enableRemoteWriteReceiver = enableRemoteWriteReceiver;
         this.enforcedBodySizeLimit = enforcedBodySizeLimit;
@@ -423,6 +436,7 @@ public class PrometheusAgentSpec implements Editable<PrometheusAgentSpecBuilder>
         this.prometheusExternalLabelName = prometheusExternalLabelName;
         this.reloadStrategy = reloadStrategy;
         this.remoteWrite = remoteWrite;
+        this.remoteWriteReceiverMessageVersions = remoteWriteReceiverMessageVersions;
         this.replicaExternalLabelName = replicaExternalLabelName;
         this.replicas = replicas;
         this.resources = resources;
@@ -545,6 +559,26 @@ public class PrometheusAgentSpec implements Editable<PrometheusAgentSpecBuilder>
     @JsonProperty("containers")
     public void setContainers(List<Container> containers) {
         this.containers = containers;
+    }
+
+    @JsonProperty("dnsConfig")
+    public PodDNSConfig getDnsConfig() {
+        return dnsConfig;
+    }
+
+    @JsonProperty("dnsConfig")
+    public void setDnsConfig(PodDNSConfig dnsConfig) {
+        this.dnsConfig = dnsConfig;
+    }
+
+    @JsonProperty("dnsPolicy")
+    public String getDnsPolicy() {
+        return dnsPolicy;
+    }
+
+    @JsonProperty("dnsPolicy")
+    public void setDnsPolicy(String dnsPolicy) {
+        this.dnsPolicy = dnsPolicy;
     }
 
     @JsonProperty("enableFeatures")
@@ -1024,6 +1058,17 @@ public class PrometheusAgentSpec implements Editable<PrometheusAgentSpecBuilder>
     @JsonProperty("remoteWrite")
     public void setRemoteWrite(List<RemoteWriteSpec> remoteWrite) {
         this.remoteWrite = remoteWrite;
+    }
+
+    @JsonProperty("remoteWriteReceiverMessageVersions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<String> getRemoteWriteReceiverMessageVersions() {
+        return remoteWriteReceiverMessageVersions;
+    }
+
+    @JsonProperty("remoteWriteReceiverMessageVersions")
+    public void setRemoteWriteReceiverMessageVersions(List<String> remoteWriteReceiverMessageVersions) {
+        this.remoteWriteReceiverMessageVersions = remoteWriteReceiverMessageVersions;
     }
 
     @JsonProperty("replicaExternalLabelName")

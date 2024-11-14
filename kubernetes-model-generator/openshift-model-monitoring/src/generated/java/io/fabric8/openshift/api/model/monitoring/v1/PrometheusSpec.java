@@ -57,6 +57,8 @@ import lombok.experimental.Accessors;
     "configMaps",
     "containers",
     "disableCompaction",
+    "dnsConfig",
+    "dnsPolicy",
     "enableAdminAPI",
     "enableFeatures",
     "enableRemoteWriteReceiver",
@@ -110,6 +112,7 @@ import lombok.experimental.Accessors;
     "reloadStrategy",
     "remoteRead",
     "remoteWrite",
+    "remoteWriteReceiverMessageVersions",
     "replicaExternalLabelName",
     "replicas",
     "resources",
@@ -117,8 +120,10 @@ import lombok.experimental.Accessors;
     "retentionSize",
     "routePrefix",
     "ruleNamespaceSelector",
+    "ruleQueryOffset",
     "ruleSelector",
     "rules",
+    "runtime",
     "sampleLimit",
     "scrapeClasses",
     "scrapeConfigNamespaceSelector",
@@ -206,6 +211,10 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder> , Kuberne
     private List<Container> containers = new ArrayList<>();
     @JsonProperty("disableCompaction")
     private Boolean disableCompaction;
+    @JsonProperty("dnsConfig")
+    private PodDNSConfig dnsConfig;
+    @JsonProperty("dnsPolicy")
+    private String dnsPolicy;
     @JsonProperty("enableAdminAPI")
     private Boolean enableAdminAPI;
     @JsonProperty("enableFeatures")
@@ -323,6 +332,9 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder> , Kuberne
     @JsonProperty("remoteWrite")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<RemoteWriteSpec> remoteWrite = new ArrayList<>();
+    @JsonProperty("remoteWriteReceiverMessageVersions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> remoteWriteReceiverMessageVersions = new ArrayList<>();
     @JsonProperty("replicaExternalLabelName")
     private String replicaExternalLabelName;
     @JsonProperty("replicas")
@@ -337,10 +349,14 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder> , Kuberne
     private String routePrefix;
     @JsonProperty("ruleNamespaceSelector")
     private LabelSelector ruleNamespaceSelector;
+    @JsonProperty("ruleQueryOffset")
+    private String ruleQueryOffset;
     @JsonProperty("ruleSelector")
     private LabelSelector ruleSelector;
     @JsonProperty("rules")
     private Rules rules;
+    @JsonProperty("runtime")
+    private RuntimeConfig runtime;
     @JsonProperty("sampleLimit")
     private Long sampleLimit;
     @JsonProperty("scrapeClasses")
@@ -414,7 +430,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder> , Kuberne
     public PrometheusSpec() {
     }
 
-    public PrometheusSpec(SecretKeySelector additionalAlertManagerConfigs, SecretKeySelector additionalAlertRelabelConfigs, List<Argument> additionalArgs, SecretKeySelector additionalScrapeConfigs, Affinity affinity, AlertingSpec alerting, Boolean allowOverlappingBlocks, APIServerConfig apiserverConfig, ArbitraryFSAccessThroughSMsConfig arbitraryFSAccessThroughSMs, Boolean automountServiceAccountToken, String baseImage, String bodySizeLimit, List<String> configMaps, List<Container> containers, Boolean disableCompaction, Boolean enableAdminAPI, List<String> enableFeatures, Boolean enableRemoteWriteReceiver, String enforcedBodySizeLimit, Long enforcedKeepDroppedTargets, Long enforcedLabelLimit, Long enforcedLabelNameLengthLimit, Long enforcedLabelValueLengthLimit, String enforcedNamespaceLabel, Long enforcedSampleLimit, Long enforcedTargetLimit, String evaluationInterval, List<ObjectReference> excludedFromEnforcement, Exemplars exemplars, Map<String, String> externalLabels, String externalUrl, List<HostAlias> hostAliases, Boolean hostNetwork, Boolean ignoreNamespaceSelectors, String image, String imagePullPolicy, List<LocalObjectReference> imagePullSecrets, List<Container> initContainers, Long keepDroppedTargets, Long labelLimit, Long labelNameLengthLimit, Long labelValueLengthLimit, Boolean listenLocal, String logFormat, String logLevel, Integer maximumStartupDurationSeconds, Long minReadySeconds, Map<String, String> nodeSelector, OTLPConfig otlp, Boolean overrideHonorLabels, Boolean overrideHonorTimestamps, Boolean paused, StatefulSetPersistentVolumeClaimRetentionPolicy persistentVolumeClaimRetentionPolicy, EmbeddedObjectMetadata podMetadata, LabelSelector podMonitorNamespaceSelector, LabelSelector podMonitorSelector, List<String> podTargetLabels, String portName, String priorityClassName, LabelSelector probeNamespaceSelector, LabelSelector probeSelector, String prometheusExternalLabelName, List<PrometheusRuleExcludeConfig> prometheusRulesExcludedFromEnforce, QuerySpec query, String queryLogFile, String reloadStrategy, List<RemoteReadSpec> remoteRead, List<RemoteWriteSpec> remoteWrite, String replicaExternalLabelName, Integer replicas, ResourceRequirements resources, String retention, String retentionSize, String routePrefix, LabelSelector ruleNamespaceSelector, LabelSelector ruleSelector, Rules rules, Long sampleLimit, List<ScrapeClass> scrapeClasses, LabelSelector scrapeConfigNamespaceSelector, LabelSelector scrapeConfigSelector, String scrapeInterval, List<String> scrapeProtocols, String scrapeTimeout, List<String> secrets, PodSecurityContext securityContext, String serviceAccountName, String serviceDiscoveryRole, LabelSelector serviceMonitorNamespaceSelector, LabelSelector serviceMonitorSelector, String sha, Integer shards, StorageSpec storage, String tag, Long targetLimit, ThanosSpec thanos, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, PrometheusTracingConfig tracingConfig, TSDBSpec tsdb, String version, List<VolumeMount> volumeMounts, List<Volume> volumes, Boolean walCompression, PrometheusWebSpec web) {
+    public PrometheusSpec(SecretKeySelector additionalAlertManagerConfigs, SecretKeySelector additionalAlertRelabelConfigs, List<Argument> additionalArgs, SecretKeySelector additionalScrapeConfigs, Affinity affinity, AlertingSpec alerting, Boolean allowOverlappingBlocks, APIServerConfig apiserverConfig, ArbitraryFSAccessThroughSMsConfig arbitraryFSAccessThroughSMs, Boolean automountServiceAccountToken, String baseImage, String bodySizeLimit, List<String> configMaps, List<Container> containers, Boolean disableCompaction, PodDNSConfig dnsConfig, String dnsPolicy, Boolean enableAdminAPI, List<String> enableFeatures, Boolean enableRemoteWriteReceiver, String enforcedBodySizeLimit, Long enforcedKeepDroppedTargets, Long enforcedLabelLimit, Long enforcedLabelNameLengthLimit, Long enforcedLabelValueLengthLimit, String enforcedNamespaceLabel, Long enforcedSampleLimit, Long enforcedTargetLimit, String evaluationInterval, List<ObjectReference> excludedFromEnforcement, Exemplars exemplars, Map<String, String> externalLabels, String externalUrl, List<HostAlias> hostAliases, Boolean hostNetwork, Boolean ignoreNamespaceSelectors, String image, String imagePullPolicy, List<LocalObjectReference> imagePullSecrets, List<Container> initContainers, Long keepDroppedTargets, Long labelLimit, Long labelNameLengthLimit, Long labelValueLengthLimit, Boolean listenLocal, String logFormat, String logLevel, Integer maximumStartupDurationSeconds, Long minReadySeconds, Map<String, String> nodeSelector, OTLPConfig otlp, Boolean overrideHonorLabels, Boolean overrideHonorTimestamps, Boolean paused, StatefulSetPersistentVolumeClaimRetentionPolicy persistentVolumeClaimRetentionPolicy, EmbeddedObjectMetadata podMetadata, LabelSelector podMonitorNamespaceSelector, LabelSelector podMonitorSelector, List<String> podTargetLabels, String portName, String priorityClassName, LabelSelector probeNamespaceSelector, LabelSelector probeSelector, String prometheusExternalLabelName, List<PrometheusRuleExcludeConfig> prometheusRulesExcludedFromEnforce, QuerySpec query, String queryLogFile, String reloadStrategy, List<RemoteReadSpec> remoteRead, List<RemoteWriteSpec> remoteWrite, List<String> remoteWriteReceiverMessageVersions, String replicaExternalLabelName, Integer replicas, ResourceRequirements resources, String retention, String retentionSize, String routePrefix, LabelSelector ruleNamespaceSelector, String ruleQueryOffset, LabelSelector ruleSelector, Rules rules, RuntimeConfig runtime, Long sampleLimit, List<ScrapeClass> scrapeClasses, LabelSelector scrapeConfigNamespaceSelector, LabelSelector scrapeConfigSelector, String scrapeInterval, List<String> scrapeProtocols, String scrapeTimeout, List<String> secrets, PodSecurityContext securityContext, String serviceAccountName, String serviceDiscoveryRole, LabelSelector serviceMonitorNamespaceSelector, LabelSelector serviceMonitorSelector, String sha, Integer shards, StorageSpec storage, String tag, Long targetLimit, ThanosSpec thanos, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, PrometheusTracingConfig tracingConfig, TSDBSpec tsdb, String version, List<VolumeMount> volumeMounts, List<Volume> volumes, Boolean walCompression, PrometheusWebSpec web) {
         super();
         this.additionalAlertManagerConfigs = additionalAlertManagerConfigs;
         this.additionalAlertRelabelConfigs = additionalAlertRelabelConfigs;
@@ -431,6 +447,8 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder> , Kuberne
         this.configMaps = configMaps;
         this.containers = containers;
         this.disableCompaction = disableCompaction;
+        this.dnsConfig = dnsConfig;
+        this.dnsPolicy = dnsPolicy;
         this.enableAdminAPI = enableAdminAPI;
         this.enableFeatures = enableFeatures;
         this.enableRemoteWriteReceiver = enableRemoteWriteReceiver;
@@ -484,6 +502,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder> , Kuberne
         this.reloadStrategy = reloadStrategy;
         this.remoteRead = remoteRead;
         this.remoteWrite = remoteWrite;
+        this.remoteWriteReceiverMessageVersions = remoteWriteReceiverMessageVersions;
         this.replicaExternalLabelName = replicaExternalLabelName;
         this.replicas = replicas;
         this.resources = resources;
@@ -491,8 +510,10 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder> , Kuberne
         this.retentionSize = retentionSize;
         this.routePrefix = routePrefix;
         this.ruleNamespaceSelector = ruleNamespaceSelector;
+        this.ruleQueryOffset = ruleQueryOffset;
         this.ruleSelector = ruleSelector;
         this.rules = rules;
+        this.runtime = runtime;
         this.sampleLimit = sampleLimit;
         this.scrapeClasses = scrapeClasses;
         this.scrapeConfigNamespaceSelector = scrapeConfigNamespaceSelector;
@@ -674,6 +695,26 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder> , Kuberne
     @JsonProperty("disableCompaction")
     public void setDisableCompaction(Boolean disableCompaction) {
         this.disableCompaction = disableCompaction;
+    }
+
+    @JsonProperty("dnsConfig")
+    public PodDNSConfig getDnsConfig() {
+        return dnsConfig;
+    }
+
+    @JsonProperty("dnsConfig")
+    public void setDnsConfig(PodDNSConfig dnsConfig) {
+        this.dnsConfig = dnsConfig;
+    }
+
+    @JsonProperty("dnsPolicy")
+    public String getDnsPolicy() {
+        return dnsPolicy;
+    }
+
+    @JsonProperty("dnsPolicy")
+    public void setDnsPolicy(String dnsPolicy) {
+        this.dnsPolicy = dnsPolicy;
     }
 
     @JsonProperty("enableAdminAPI")
@@ -1217,6 +1258,17 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder> , Kuberne
         this.remoteWrite = remoteWrite;
     }
 
+    @JsonProperty("remoteWriteReceiverMessageVersions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<String> getRemoteWriteReceiverMessageVersions() {
+        return remoteWriteReceiverMessageVersions;
+    }
+
+    @JsonProperty("remoteWriteReceiverMessageVersions")
+    public void setRemoteWriteReceiverMessageVersions(List<String> remoteWriteReceiverMessageVersions) {
+        this.remoteWriteReceiverMessageVersions = remoteWriteReceiverMessageVersions;
+    }
+
     @JsonProperty("replicaExternalLabelName")
     public String getReplicaExternalLabelName() {
         return replicaExternalLabelName;
@@ -1287,6 +1339,16 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder> , Kuberne
         this.ruleNamespaceSelector = ruleNamespaceSelector;
     }
 
+    @JsonProperty("ruleQueryOffset")
+    public String getRuleQueryOffset() {
+        return ruleQueryOffset;
+    }
+
+    @JsonProperty("ruleQueryOffset")
+    public void setRuleQueryOffset(String ruleQueryOffset) {
+        this.ruleQueryOffset = ruleQueryOffset;
+    }
+
     @JsonProperty("ruleSelector")
     public LabelSelector getRuleSelector() {
         return ruleSelector;
@@ -1305,6 +1367,16 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder> , Kuberne
     @JsonProperty("rules")
     public void setRules(Rules rules) {
         this.rules = rules;
+    }
+
+    @JsonProperty("runtime")
+    public RuntimeConfig getRuntime() {
+        return runtime;
+    }
+
+    @JsonProperty("runtime")
+    public void setRuntime(RuntimeConfig runtime) {
+        this.runtime = runtime;
     }
 
     @JsonProperty("sampleLimit")
