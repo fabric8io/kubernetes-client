@@ -27,7 +27,7 @@ require (
 	github.com/stolostron/discovery v0.0.0-20241023180217-47cd9895f600
 	github.com/stolostron/klusterlet-addon-controller v0.0.0-20240912124113-fe0b6574a401
 	github.com/stolostron/multicluster-observability-operator v1.0.1-2020-06-08-14-28-27
-	github.com/stolostron/multiclusterhub-operator v0.0.0-20240626140553-4f1ed6be3b84
+	github.com/stolostron/multiclusterhub-operator v1.0.1-2020-06-08-14-28-27
 	github.com/stolostron/search-v2-operator v0.0.0-20241029125341-1a376a062a45
 	github.com/tektoncd/pipeline v0.65.1
 	github.com/tektoncd/triggers v0.30.0
@@ -81,6 +81,7 @@ replace (
 // Issues with dependabot, force pseudo-versions as replacements since dependabot will try to replace with invalid tagged major versions
 replace (
 	github.com/stolostron/multicluster-observability-operator => github.com/stolostron/multicluster-observability-operator v0.0.0-20241107140827-cef6b049dcef
+	github.com/stolostron/multiclusterhub-operator => github.com/stolostron/multiclusterhub-operator v0.0.0-20240626140553-4f1ed6be3b84
 	volcano.sh/apis => volcano.sh/apis v1.10.0
 )
 
