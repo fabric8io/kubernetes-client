@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
@@ -33,13 +32,12 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
-@JsonDeserialize(using = io.fabric8.kubernetes.model.jackson.JsonUnwrappedDeserializer.class)
+@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "LbPolicy",
-    "localityLbSetting",
-    "warmup",
-    "warmupDurationSecs"
+    "aggression",
+    "duration",
+    "minimumPercent"
 })
 @ToString
 @EqualsAndHashCode
@@ -63,18 +61,15 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class LoadBalancerSettings implements Editable<LoadBalancerSettingsBuilder> , KubernetesResource
+public class WarmupConfiguration implements Editable<WarmupConfigurationBuilder> , KubernetesResource
 {
 
-    @JsonProperty("LbPolicy")
-    @JsonUnwrapped
-    private IsLoadBalancerSettingsLbPolicy lbPolicy;
-    @JsonProperty("localityLbSetting")
-    private LocalityLoadBalancerSetting localityLbSetting;
-    @JsonProperty("warmup")
-    private WarmupConfiguration warmup;
-    @JsonProperty("warmupDurationSecs")
-    private String warmupDurationSecs;
+    @JsonProperty("aggression")
+    private Double aggression;
+    @JsonProperty("duration")
+    private String duration;
+    @JsonProperty("minimumPercent")
+    private Double minimumPercent;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -82,65 +77,53 @@ public class LoadBalancerSettings implements Editable<LoadBalancerSettingsBuilde
      * No args constructor for use in serialization
      * 
      */
-    public LoadBalancerSettings() {
+    public WarmupConfiguration() {
     }
 
-    public LoadBalancerSettings(IsLoadBalancerSettingsLbPolicy lbPolicy, LocalityLoadBalancerSetting localityLbSetting, WarmupConfiguration warmup, String warmupDurationSecs) {
+    public WarmupConfiguration(Double aggression, String duration, Double minimumPercent) {
         super();
-        this.lbPolicy = lbPolicy;
-        this.localityLbSetting = localityLbSetting;
-        this.warmup = warmup;
-        this.warmupDurationSecs = warmupDurationSecs;
+        this.aggression = aggression;
+        this.duration = duration;
+        this.minimumPercent = minimumPercent;
     }
 
-    @JsonProperty("LbPolicy")
-    @JsonUnwrapped
-    public IsLoadBalancerSettingsLbPolicy getLbPolicy() {
-        return lbPolicy;
+    @JsonProperty("aggression")
+    public Double getAggression() {
+        return aggression;
     }
 
-    @JsonProperty("LbPolicy")
-    public void setLbPolicy(IsLoadBalancerSettingsLbPolicy lbPolicy) {
-        this.lbPolicy = lbPolicy;
+    @JsonProperty("aggression")
+    public void setAggression(Double aggression) {
+        this.aggression = aggression;
     }
 
-    @JsonProperty("localityLbSetting")
-    public LocalityLoadBalancerSetting getLocalityLbSetting() {
-        return localityLbSetting;
+    @JsonProperty("duration")
+    public String getDuration() {
+        return duration;
     }
 
-    @JsonProperty("localityLbSetting")
-    public void setLocalityLbSetting(LocalityLoadBalancerSetting localityLbSetting) {
-        this.localityLbSetting = localityLbSetting;
+    @JsonProperty("duration")
+    public void setDuration(String duration) {
+        this.duration = duration;
     }
 
-    @JsonProperty("warmup")
-    public WarmupConfiguration getWarmup() {
-        return warmup;
+    @JsonProperty("minimumPercent")
+    public Double getMinimumPercent() {
+        return minimumPercent;
     }
 
-    @JsonProperty("warmup")
-    public void setWarmup(WarmupConfiguration warmup) {
-        this.warmup = warmup;
-    }
-
-    @JsonProperty("warmupDurationSecs")
-    public String getWarmupDurationSecs() {
-        return warmupDurationSecs;
-    }
-
-    @JsonProperty("warmupDurationSecs")
-    public void setWarmupDurationSecs(String warmupDurationSecs) {
-        this.warmupDurationSecs = warmupDurationSecs;
+    @JsonProperty("minimumPercent")
+    public void setMinimumPercent(Double minimumPercent) {
+        this.minimumPercent = minimumPercent;
     }
 
     @JsonIgnore
-    public LoadBalancerSettingsBuilder edit() {
-        return new LoadBalancerSettingsBuilder(this);
+    public WarmupConfigurationBuilder edit() {
+        return new WarmupConfigurationBuilder(this);
     }
 
     @JsonIgnore
-    public LoadBalancerSettingsBuilder toBuilder() {
+    public WarmupConfigurationBuilder toBuilder() {
         return edit();
     }
 
