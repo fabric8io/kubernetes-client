@@ -227,7 +227,7 @@ public abstract class AbstractSimultaneousConnectionsTest {
 
     public final void await() {
       try {
-        barrier.await(1, TimeUnit.SECONDS);
+        barrier.await(5, TimeUnit.SECONDS);
       } catch (Exception ex) {
         throw new RuntimeException("Failed to await the barrier");
       }

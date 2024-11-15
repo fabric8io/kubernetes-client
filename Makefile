@@ -80,6 +80,10 @@ format-java:
 .PHONY: format
 format: format-license format-java
 
-.PHONY:
+.PHONY: quickly
 quickly: clean
 	mvn $(MAVEN_ARGS) install -DskipTests -Djacoco.skip=true
+
+.PHONY: install
+install: clean
+	mvn $(MAVEN_ARGS) install

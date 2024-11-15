@@ -30,6 +30,18 @@
   <name>Fabric8 :: Java generator :: Integration Tests</name>
 
   <dependencies>
+    <!-- Force installation before running the ITs -->
+    <dependency>
+      <groupId>io.fabric8.java-generator</groupId>
+      <artifactId>io.fabric8.java-generator.gradle.plugin</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>java-generator-maven-plugin</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- // -->
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
@@ -82,7 +94,6 @@
     <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
-      <version>${commons-io.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>

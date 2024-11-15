@@ -57,7 +57,7 @@ class DefaultMockServerWebSocketTest extends Specification {
 		server.expect().withPath("/websocket")
 				.andUpgradeToWebSocket()
 				.open()
-				.waitFor(10L).andEmit("A text message from the server")
+				.waitFor(50L).andEmit("A text message from the server")
 				.done()
 				.always()
 		and:
@@ -98,6 +98,8 @@ class DefaultMockServerWebSocketTest extends Specification {
 		when: "The request is sent and completed"
 		conditions.eventually {
 			assert wsReq.isComplete()
+			assert wsReq.result() != null
+			assert wsReq.result().closeReason() != null
 		}
 
 		then: "Expect the onClose reason"
@@ -140,7 +142,7 @@ class DefaultMockServerWebSocketTest extends Specification {
 		given: "A WebSocket expectation"
 		server.expect()
 				.withPath("/websocket")
-				.andUpgradeToWebSocket().open().waitFor(10L)
+				.andUpgradeToWebSocket().open().waitFor(50L)
 				.andEmit("A text message from the server")
 				.done().always()
 		and: "A list to store the received messages"
@@ -180,7 +182,7 @@ class DefaultMockServerWebSocketTest extends Specification {
 		given: "A WebSocket expectation"
 		server.expect()
 				.withPath("/websocket")
-				.andUpgradeToWebSocket().open().waitFor(10L).andEmit("done").done().always()
+				.andUpgradeToWebSocket().open().waitFor(50L).andEmit("done").done().always()
 		and: "An HTTP client"
 		def httpClient = vertx.createHttpClient(new HttpClientOptions()
 				.setProtocolVersion(HttpVersion.HTTP_1_1))
@@ -207,6 +209,8 @@ class DefaultMockServerWebSocketTest extends Specification {
 		when: "The request is completed"
 		conditions.eventually {
 			assert request.isComplete()
+			assert request.result() != null
+			assert request.result().statusCode() > 0
 		}
 
 		then: "Expect the response to contain a matching header"
@@ -221,7 +225,7 @@ class DefaultMockServerWebSocketTest extends Specification {
 		given: "A WebSocket expectation"
 		server.expect()
 				.withPath("/websocket")
-				.andUpgradeToWebSocket().open().waitFor(10L).andEmit("done").done().always()
+				.andUpgradeToWebSocket().open().waitFor(50L).andEmit("done").done().always()
 		and: "An HTTP client"
 		def httpClient = vertx.createHttpClient(new HttpClientOptions()
 				.setProtocolVersion(HttpVersion.HTTP_1_1))
@@ -243,6 +247,8 @@ class DefaultMockServerWebSocketTest extends Specification {
 		when: "The request is completed"
 		conditions.eventually {
 			assert request.isComplete()
+			assert request.result() != null
+			assert request.result().statusCode() > 0
 		}
 
 		then: "Expect the response to have a client error status code"
