@@ -36,7 +36,6 @@ import io.fabric8.kubernetes.client.dsl.RbacAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.SchedulingAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.StorageAPIGroupDSL;
-import io.fabric8.kubernetes.client.extension.SupportTestingClient;
 import io.fabric8.openshift.api.model.BrokerTemplateInstance;
 import io.fabric8.openshift.api.model.BrokerTemplateInstanceList;
 import io.fabric8.openshift.api.model.Build;
@@ -147,9 +146,9 @@ import io.fabric8.openshift.client.dsl.TemplateResource;
 
 import java.net.URL;
 
-public interface OpenShiftClient extends KubernetesClient, SupportTestingClient {
+public interface OpenShiftClient extends KubernetesClient {
 
-  public static final String BASE_API_GROUP = "openshift.io";
+  String BASE_API_GROUP = "openshift.io";
 
   /**
    * Get Url of the cluster

@@ -33,7 +33,7 @@ import java.net.URL;
 public interface Client extends Closeable {
 
   /**
-   * Checks if the client can be adapted to an other client type and if that target client is supported.
+   * Checks if the client can be adapted to another client type and if that target client is supported.
    *
    * @param type The target client class.
    * @param <C> The target client type.

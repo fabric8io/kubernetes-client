@@ -21,13 +21,12 @@ import io.fabric8.kubernetes.client.RequestConfig;
 import io.fabric8.kubernetes.client.WithRequestCallable;
 import io.fabric8.kubernetes.client.dsl.FunctionCallable;
 import io.fabric8.kubernetes.client.extension.ExtensionRootClientAdapter;
-import io.fabric8.kubernetes.client.extension.SupportTestingClient;
 import io.fabric8.tekton.client.dsl.V1APIGroupDSL;
 import io.fabric8.tekton.client.dsl.V1alpha1APIGroupDSL;
 import io.fabric8.tekton.client.dsl.V1beta1APIGroupDSL;
 
 public class DefaultTektonClient extends ExtensionRootClientAdapter<DefaultTektonClient>
-    implements NamespacedTektonClient, SupportTestingClient {
+    implements NamespacedTektonClient {
 
   public DefaultTektonClient() {
     super();
@@ -64,11 +63,6 @@ public class DefaultTektonClient extends ExtensionRootClientAdapter<DefaultTekto
   @Override
   public V1alpha1APIGroupDSL v1alpha1() {
     return adapt(V1alpha1APIGroupClient.class);
-  }
-
-  @Override
-  public boolean isSupported() {
-    return hasApiGroup("tekton.dev", false);
   }
 
 }

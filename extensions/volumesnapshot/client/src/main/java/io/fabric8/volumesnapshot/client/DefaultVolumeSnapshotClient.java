@@ -23,7 +23,6 @@ import io.fabric8.kubernetes.client.dsl.FunctionCallable;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.extension.ExtensionRootClientAdapter;
-import io.fabric8.kubernetes.client.extension.SupportTestingClient;
 import io.fabric8.volumesnapshot.api.model.VolumeSnapshot;
 import io.fabric8.volumesnapshot.api.model.VolumeSnapshotClass;
 import io.fabric8.volumesnapshot.api.model.VolumeSnapshotClassList;
@@ -32,7 +31,7 @@ import io.fabric8.volumesnapshot.api.model.VolumeSnapshotContentList;
 import io.fabric8.volumesnapshot.api.model.VolumeSnapshotList;
 
 public class DefaultVolumeSnapshotClient extends ExtensionRootClientAdapter<DefaultVolumeSnapshotClient>
-    implements NamespacedVolumeSnapshotClient, SupportTestingClient {
+    implements NamespacedVolumeSnapshotClient {
 
   public DefaultVolumeSnapshotClient() {
     super();
@@ -69,10 +68,5 @@ public class DefaultVolumeSnapshotClient extends ExtensionRootClientAdapter<Defa
   @Override
   public FunctionCallable<NamespacedVolumeSnapshotClient> withRequestConfig(RequestConfig requestConfig) {
     return new WithRequestCallable<>(this, requestConfig);
-  }
-
-  @Override
-  public boolean isSupported() {
-    return getClient().hasApiGroup(VolumeSnapshotExtensionAdapter.API_GROUP, false);
   }
 }

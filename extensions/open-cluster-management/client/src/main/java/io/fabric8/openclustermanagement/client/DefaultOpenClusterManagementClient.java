@@ -21,7 +21,6 @@ import io.fabric8.kubernetes.client.RequestConfig;
 import io.fabric8.kubernetes.client.WithRequestCallable;
 import io.fabric8.kubernetes.client.dsl.FunctionCallable;
 import io.fabric8.kubernetes.client.extension.ExtensionRootClientAdapter;
-import io.fabric8.kubernetes.client.extension.SupportTestingClient;
 import io.fabric8.openclustermanagement.client.dsl.OpenClusterManagementAgentAPIGroupDSL;
 import io.fabric8.openclustermanagement.client.dsl.OpenClusterManagementAppsAPIGroupDSL;
 import io.fabric8.openclustermanagement.client.dsl.OpenClusterManagementClustersAPIGroupDSL;
@@ -31,7 +30,7 @@ import io.fabric8.openclustermanagement.client.dsl.OpenClusterManagementPolicyAP
 import io.fabric8.openclustermanagement.client.dsl.OpenClusterManagementSearchAPIGroupDSL;
 
 public class DefaultOpenClusterManagementClient extends ExtensionRootClientAdapter<DefaultOpenClusterManagementClient>
-    implements NamespacedOpenClusterManagementClient, SupportTestingClient {
+    implements NamespacedOpenClusterManagementClient {
 
   public DefaultOpenClusterManagementClient() {
     super();
@@ -93,10 +92,5 @@ public class DefaultOpenClusterManagementClient extends ExtensionRootClientAdapt
   @Override
   public OpenClusterManagementSearchAPIGroupDSL search() {
     return adapt(OpenClusterManagementSearchAPIGroupClient.class);
-  }
-
-  @Override
-  public boolean isSupported() {
-    return hasApiGroup("open-cluster-management.io", false);
   }
 }

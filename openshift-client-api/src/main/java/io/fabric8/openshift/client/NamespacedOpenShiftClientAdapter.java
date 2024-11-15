@@ -513,11 +513,6 @@ public class NamespacedOpenShiftClientAdapter extends NamespacedKubernetesClient
   }
 
   @Override
-  public boolean isSupported() {
-    return getClient().isSupported();
-  }
-
-  @Override
   public NamespacedOpenShiftClientAdapter newInstance() {
     // subclasses need not further refine this
     return new NamespacedOpenShiftClientAdapter();
