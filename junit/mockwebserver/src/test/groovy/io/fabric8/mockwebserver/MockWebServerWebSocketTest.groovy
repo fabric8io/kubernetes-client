@@ -209,6 +209,7 @@ class MockWebServerWebSocketTest extends Specification {
 		server.enqueue(new MockResponse().withWebSocketUpgrade(new WebSocketListener() {
 					@Override
 					void onOpen(WebSocket webSocket, Response response) {
+						Thread.sleep(100L)
 						webSocket.close(1000, "Normal closure")
 					}
 				}))

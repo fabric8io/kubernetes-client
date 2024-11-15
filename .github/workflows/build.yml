@@ -54,7 +54,7 @@ jobs:
           java-version: ${{ matrix.java }}
           distribution: 'temurin'
       - name: Build Project
-        run: ./mvnw ${MAVEN_ARGS} clean install
+        run: make install MAVEN_ARGS="${MAVEN_ARGS}"
 
       - name: Check java-generator CLI
         run: |

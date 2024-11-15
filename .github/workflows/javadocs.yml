@@ -50,4 +50,4 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
       - name: Check Java Docs
-        run: make javadoc
+        run: make javadoc MAVEN_ARGS="${MAVEN_ARGS}"
