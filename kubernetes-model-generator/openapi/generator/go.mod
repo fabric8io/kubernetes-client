@@ -24,6 +24,11 @@ require (
 	github.com/ovn-org/ovn-kubernetes/go-controller v0.0.0-20241030140127-a68ef49d9441
 	github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.78.1
 	github.com/spf13/cobra v1.8.1
+	github.com/stolostron/discovery v0.0.0-20241023180217-47cd9895f600
+	github.com/stolostron/klusterlet-addon-controller v0.0.0-20240912124113-fe0b6574a401
+	github.com/stolostron/multicluster-observability-operator v1.0.1
+	github.com/stolostron/multiclusterhub-operator v0.0.0-20240626140553-4f1ed6be3b84
+	github.com/stolostron/search-v2-operator v0.0.0-20241029125341-1a376a062a45
 	github.com/tektoncd/pipeline v0.65.1
 	github.com/tektoncd/triggers v0.30.0
 	istio.io/client-go v1.24.0
@@ -45,10 +50,15 @@ require (
 	knative.dev/eventing-prometheus v0.28.0
 	knative.dev/networking v0.0.0-20241022012959-60e29ff520dc
 	knative.dev/serving v0.43.0
+	open-cluster-management.io/api v0.15.0
+	open-cluster-management.io/governance-policy-propagator v0.15.0
+	open-cluster-management.io/multicloud-operators-channel v0.15.0
+	open-cluster-management.io/multicloud-operators-subscription v0.15.0
 	sigs.k8s.io/cluster-api v1.8.5
 	sigs.k8s.io/gateway-api v1.2.0
 	sigs.k8s.io/kustomize/api v0.18.0
-	volcano.sh/apis v1.10.0
+	// This version is older than v1.10.0 see replacements below
+	volcano.sh/apis v1.19.6
 )
 
 // Required by some openshift operator dependencies
@@ -59,12 +69,19 @@ replace (
 	github.com/openshift/assisted-service/models => github.com/openshift/assisted-service/models v0.0.0-20241003070528-341f9860c455
 	github.com/openshift/hive => github.com/openshift/hive v1.1.17-0.20240930213556-2d25383963db // Latest Master
 	github.com/openshift/installer => github.com/openshift/installer v0.91.0 // Most up-to-date tag https://issues.redhat.com/browse/OCPBUGS-42448
+
 	k8s.io/api => k8s.io/api v0.31.1
 	k8s.io/client-go => k8s.io/client-go v0.31.1
 	k8s.io/cloud-provider => k8s.io/cloud-provider v0.31.1
 	k8s.io/csi-translation-lib => k8s.io/csi-translation-lib v0.31.1
 	k8s.io/kube-scheduler => k8s.io/kube-scheduler v0.31.1
 	k8s.io/mount-utils => k8s.io/mount-utils v0.31.1
+)
+
+// Issues with dependabot, force pseudo-versions as replacements since dependabot will try to replace with invalid tagged major versions
+replace (
+	github.com/stolostron/multicluster-observability-operator => github.com/stolostron/multicluster-observability-operator v0.0.0-20241107140827-cef6b049dcef
+	volcano.sh/apis => volcano.sh/apis v1.10.0
 )
 
 replace (
@@ -80,18 +97,6 @@ replace (
 	github.com/operator-framework/operator-lifecycle-manager => github.com/marcnuri-forks/operator-lifecycle-manager v0.0.0-20241002090802-7539192fbf96
 	// TODO: WIP while this gets merged or fixed https://github.com/kubernetes/autoscaler/pull/7393 (Merged only pending release)
 	k8s.io/autoscaler/vertical-pod-autoscaler => github.com/marcnuri-forks/kubernetes-autoscaler/vertical-pod-autoscaler v0.0.0-20241015073945-66b859601d68
-)
-
-require (
-	github.com/stolostron/discovery v0.0.0-20241023180217-47cd9895f600
-	github.com/stolostron/klusterlet-addon-controller v0.0.0-20240912124113-fe0b6574a401
-	github.com/stolostron/multicluster-observability-operator v0.0.0-20241107140827-cef6b049dcef
-	github.com/stolostron/multiclusterhub-operator v0.0.0-20240626140553-4f1ed6be3b84
-	github.com/stolostron/search-v2-operator v0.0.0-20241029125341-1a376a062a45
-	open-cluster-management.io/api v0.15.0
-	open-cluster-management.io/governance-policy-propagator v0.15.0
-	open-cluster-management.io/multicloud-operators-channel v0.15.0
-	open-cluster-management.io/multicloud-operators-subscription v0.15.0
 )
 
 require (
