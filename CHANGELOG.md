@@ -35,6 +35,7 @@
 * Fix #6156: Removed deprecated extension `io:fabric8:service-catalog`
 * Fix #6158: Removed deprecated methods from `io.fabric8.kubernetes.client.utils.IOHelpers`
 * Fix #6361: Renamed SettableBeanPropertyDelegate to SettableBeanPropertyDelegating
+* Fix #6603: Removed deprecated `io.fabric8.openshift.api.model.runtime.RawExtension` class
 
 ### 6.13.4 (2024-09-25)
 
