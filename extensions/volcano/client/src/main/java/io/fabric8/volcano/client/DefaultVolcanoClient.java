@@ -23,7 +23,6 @@ import io.fabric8.kubernetes.client.dsl.FunctionCallable;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.extension.ExtensionRootClientAdapter;
-import io.fabric8.kubernetes.client.extension.SupportTestingClient;
 import io.fabric8.volcano.api.model.scheduling.v1beta1.PodGroup;
 import io.fabric8.volcano.api.model.scheduling.v1beta1.PodGroupList;
 import io.fabric8.volcano.api.model.scheduling.v1beta1.Queue;
@@ -31,7 +30,7 @@ import io.fabric8.volcano.api.model.scheduling.v1beta1.QueueList;
 import io.fabric8.volcano.client.dsl.V1beta1APIGroupDSL;
 
 public class DefaultVolcanoClient extends ExtensionRootClientAdapter<DefaultVolcanoClient>
-    implements NamespacedVolcanoClient, SupportTestingClient {
+    implements NamespacedVolcanoClient {
 
   public DefaultVolcanoClient() {
     super();
@@ -71,10 +70,5 @@ public class DefaultVolcanoClient extends ExtensionRootClientAdapter<DefaultVolc
   public V1beta1APIGroupDSL v1beta1() {
     // User can specify client.v1beta1().podGroups() to use v1beta1 API
     return adapt(V1beta1APIGroupClient.class);
-  }
-
-  @Override
-  public boolean isSupported() {
-    return getClient().hasApiGroup(VolcanoExtensionAdapter.API_GROUP, false);
   }
 }

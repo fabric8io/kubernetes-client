@@ -21,10 +21,9 @@ import io.fabric8.kubernetes.client.RequestConfig;
 import io.fabric8.kubernetes.client.WithRequestCallable;
 import io.fabric8.kubernetes.client.dsl.FunctionCallable;
 import io.fabric8.kubernetes.client.extension.ExtensionRootClientAdapter;
-import io.fabric8.kubernetes.client.extension.SupportTestingClient;
 
 public class DefaultIstioClient extends ExtensionRootClientAdapter<DefaultIstioClient>
-    implements NamespacedIstioClient, SupportTestingClient {
+    implements NamespacedIstioClient {
 
   public DefaultIstioClient() {
     super();
@@ -56,10 +55,5 @@ public class DefaultIstioClient extends ExtensionRootClientAdapter<DefaultIstioC
   @Override
   public V1beta1APIGroupDSL v1beta1() {
     return adapt(V1beta1APIGroupClient.class);
-  }
-
-  @Override
-  public boolean isSupported() {
-    return hasApiGroup("istio.io", false);
   }
 }

@@ -47,10 +47,9 @@ import io.fabric8.kubernetes.client.dsl.FunctionCallable;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.extension.ExtensionRootClientAdapter;
-import io.fabric8.kubernetes.client.extension.SupportTestingClient;
 
 public class DefaultChaosMeshClient extends ExtensionRootClientAdapter<DefaultChaosMeshClient>
-    implements NamespacedChaosMeshClient, SupportTestingClient {
+    implements NamespacedChaosMeshClient {
 
   public DefaultChaosMeshClient() {
     super();
@@ -134,8 +133,4 @@ public class DefaultChaosMeshClient extends ExtensionRootClientAdapter<DefaultCh
     return resources(AWSChaos.class, AWSChaosList.class);
   }
 
-  @Override
-  public boolean isSupported() {
-    return hasApiGroup("chaos-mesh.org", false);
-  }
 }

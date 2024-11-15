@@ -24,6 +24,7 @@
 - [Deprecations and Removals](#deprecations-and-removals)
   - [Apache Felix SCR Annotations removed](#apache-felix-scr-annotations)
   - [OpenShift Server Mock removed](#openshift-server-mock-removed)
+  - [SupportTestingClient removed](#supporttestingclient-removed)
   - [Service Catalog API (extension) removed](#service-catalog-extension)
 
 
@@ -271,6 +272,14 @@ The `io.fabric8:openshift-server-mock` module has been removed from the project 
 The usage of the `@EnableOpenShiftMockClient` annotation should be replaced with the `@EnableKubernetesMockClient` annotation.
 
 The use of the `OpenShiftMockServer` class should be replaced with the `KubernetesMockServer` class.
+
+### SupportTestingClient removed <a href="#supporttestingclient-removed" id="supporttestingclient-removed"/>
+
+The deprecated interface `SupportTestingClient` has been removed from the project.
+
+The method `client.isSupported` is no longer available.
+You can replace it with the `Client.hasApiGroup` method or one of the `Client.supports` alternative methods.
+For OpenShift, you can also leverage the `OpenShiftClient.supportsOpenShiftAPIGroup` method.
 
 ### Service Catalog API (extension) removed <a href="#service-catalog-extension" id="service-catalog-extension"/>
 

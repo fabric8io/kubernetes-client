@@ -36,7 +36,6 @@ import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.OperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.OperationSupport;
 import io.fabric8.kubernetes.client.extension.ExtensionAdapter;
-import io.fabric8.kubernetes.client.extension.SupportTestingClient;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.utils.ApiVersionUtil;
 import io.fabric8.kubernetes.client.utils.KubernetesSerialization;
@@ -219,12 +218,7 @@ public abstract class BaseClient implements Client {
 
   @Override
   public <C extends Client> Boolean isAdaptable(Class<C> type) {
-    // if type is an instanceof SupportTestingClient, then it's a proper
-    // test, otherwise it could be legacy support on an extension client
-    C toTest = adapt(type);
-    if (toTest instanceof SupportTestingClient) {
-      return ((SupportTestingClient) toTest).isSupported();
-    }
+    adapt(type);
     return true;
   }
 

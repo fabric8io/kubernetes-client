@@ -162,7 +162,6 @@ import io.fabric8.openshift.client.dsl.internal.project.ProjectOperationsImpl;
 import io.fabric8.openshift.client.internal.OpenShiftOAuthInterceptor;
 
 import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URL;
 import java.text.ParseException;
 import java.util.List;
@@ -694,30 +693,6 @@ public class OpenShiftClientImpl extends KubernetesClientImpl
   @Override
   public NamespacedOpenShiftClient inAnyNamespace() {
     return super.inAnyNamespace().adapt(NamespacedOpenShiftClient.class);
-  }
-
-  /**
-   * Checks if a custom URL for OpenShift has been used.
-   *
-   * @param config The openshift configuration.
-   * @return True if both master and openshift url have the same root.
-   */
-  static boolean hasCustomOpenShiftUrl(OpenShiftConfig config) {
-    try {
-      URI masterUri = new URI(config.getMasterUrl()).resolve("/");
-      URI openshfitUri = new URI(config.getOpenShiftUrl()).resolve("/");
-      return !masterUri.equals(openshfitUri);
-    } catch (Exception e) {
-      throw KubernetesClientException.launderThrowable(e);
-    }
-  }
-
-  @Override
-  public boolean isSupported() {
-    OpenShiftConfig oConfig = getConfiguration();
-    return hasCustomOpenShiftUrl(oConfig)
-        || oConfig.isDisableApiGroupCheck()
-        || hasApiGroup(BASE_API_GROUP, false);
   }
 
 }

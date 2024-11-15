@@ -77,10 +77,9 @@ import io.fabric8.kubernetes.client.dsl.FunctionCallable;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.extension.ExtensionRootClientAdapter;
-import io.fabric8.kubernetes.client.extension.SupportTestingClient;
 
 public class DefaultKnativeClient extends ExtensionRootClientAdapter<DefaultKnativeClient>
-    implements NamespacedKnativeClient, SupportTestingClient {
+    implements NamespacedKnativeClient {
 
   public DefaultKnativeClient() {
     super();
@@ -237,10 +236,5 @@ public class DefaultKnativeClient extends ExtensionRootClientAdapter<DefaultKnat
   @Override
   public MixedOperation<KafkaBinding, KafkaBindingList, Resource<KafkaBinding>> kafkaBindings() {
     return resources(KafkaBinding.class, KafkaBindingList.class);
-  }
-
-  @Override
-  public boolean isSupported() {
-    return hasApiGroup("knative.dev", false);
   }
 }
