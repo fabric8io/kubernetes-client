@@ -334,7 +334,7 @@
           "$ref": "#/definitions/io.istio.api.type.v1beta1.PolicyTargetReference"
         },
         "targetRefs": {
-          "description": "Optional. The targetRefs specifies a list of resources the policy should be applied to. The targeted resources specified will determine which workloads the policy applies to.\n\nCurrently, the following resource attachment types are supported: * `kind: Gateway` with `group: gateway.networking.k8s.io` in the same namespace. * `kind: Service` with `\"\"` in the same namespace. This type is only supported for waypoints.\n\nIf not set, the policy is applied as defined by the selector. At most one of the selector and targetRefs can be set.\n\nNOTE: If you are using the `targetRefs` field in a multi-revision environment with Istio versions prior to 1.22, it is highly recommended that you pin the policy to a revision running 1.22+ via the `istio.io/rev` label. This is to prevent proxies connected to older control planes (that don't know about the `targetRefs` field) from misinterpreting the policy as namespace-wide during the upgrade process.\n\nNOTE: Waypoint proxies are required to use this field for policies to apply; `selector` policies will be ignored.",
+          "description": "Optional. The targetRefs specifies a list of resources the policy should be applied to. The targeted resources specified will determine which workloads the policy applies to.\n\nCurrently, the following resource attachment types are supported: * `kind: Gateway` with `group: gateway.networking.k8s.io` in the same namespace. * `kind: Service` with `group: \"\"` or `group: \"core\"` in the same namespace. This type is only supported for waypoints.\n\nIf not set, the policy is applied as defined by the selector. At most one of the selector and targetRefs can be set.\n\nNOTE: If you are using the `targetRefs` field in a multi-revision environment with Istio versions prior to 1.22, it is highly recommended that you pin the policy to a revision running 1.22+ via the `istio.io/rev` label. This is to prevent proxies connected to older control planes (that don't know about the `targetRefs` field) from misinterpreting the policy as namespace-wide during the upgrade process.\n\nNOTE: Waypoint proxies are required to use this field for policies to apply; `selector` policies will be ignored.",
           "type": "array",
           "items": {
             "$ref": "#/definitions/io.istio.api.type.v1beta1.PolicyTargetReference"
@@ -488,7 +488,7 @@
           "type": "string"
         },
         "caCrl": {
-          "description": "OPTIONAL: The path to the file containing the certificate revocation list (CRL) to use in verifying a presented server certificate. `CRL` is a list of certificates that have been revoked by the CA (Certificate Authority) before their scheduled expiration date. If specified, the proxy will verify if the presented certificate is part of the revoked list of certificates. If omitted, the proxy will not verify the certificate against the `crl`.",
+          "description": "OPTIONAL: The path to the file containing the certificate revocation list (CRL) to use in verifying a presented server certificate. `CRL` is a list of certificates that have been revoked by the CA (Certificate Authority) before their scheduled expiration date. If specified, the proxy will verify if the presented certificate is part of the revoked list of certificates. If omitted, the proxy will not verify the certificate against the `crl`. Note that if `credentialName` is set, `CRL` cannot be specified using `caCrl`, rather it has to be specified inside the credential.",
           "type": "string"
         },
         "clientCertificate": {
@@ -2406,8 +2406,12 @@
           "description": "Locality load balancer settings, this will override mesh wide settings in entirety, meaning no merging would be performed between this object and the object one in MeshConfig",
           "$ref": "#/definitions/io.istio.api.networking.v1alpha3.LocalityLoadBalancerSetting"
         },
+        "warmup": {
+          "description": "Represents the warmup configuration of Service. If set, the newly created endpoint of service remains in warmup mode starting from its creation time for the duration of this window and Istio progressively increases amount of traffic for that endpoint instead of sending proportional amount of traffic. This should be enabled for services that require warm up time to serve full production load with reasonable latency. Please note that this is most effective when few new endpoints come up like scale event in Kubernetes. When all the endpoints are relatively new like new deployment, this is not very effective as all endpoints end up getting same amount of requests. Currently this is only supported for ROUND_ROBIN and LEAST_REQUEST load balancers.",
+          "$ref": "#/definitions/io.istio.api.networking.v1alpha3.WarmupConfiguration"
+        },
         "warmupDurationSecs": {
-          "description": "Represents the warmup duration of Service. If set, the newly created endpoint of service remains in warmup mode starting from its creation time for the duration of this window and Istio progressively increases amount of traffic for that endpoint instead of sending proportional amount of traffic. This should be enabled for services that require warm up time to serve full production load with reasonable latency. Please note that this is most effective when few new endpoints come up like scale event in Kubernetes. When all the endpoints are relatively new like new deployment, this is not very effective as all endpoints end up getting same amount of requests. Currently this is only supported for ROUND_ROBIN and LEAST_REQUEST load balancers.",
+          "description": "Deprecated: use `warmup` instead.",
           "$ref": "#/definitions/org.golang.google.protobuf.types.known.durationpb.Duration"
         }
       },
@@ -2780,7 +2784,7 @@
       }
     },
     "io.istio.api.networking.v1alpha3.OutboundTrafficPolicy": {
-      "description": "`OutboundTrafficPolicy` sets the default behavior of the sidecar for handling outbound traffic from the application. If your application uses one or more external services that are not known apriori, setting the policy to `ALLOW_ANY` will cause the sidecars to route any unknown traffic originating from the application to its requested destination.  Users are strongly encouraged to use `ServiceEntry` configurations to explicitly declare any external dependencies, instead of using `ALLOW_ANY`, so that traffic to these services can be monitored.",
+      "description": "`OutboundTrafficPolicy` sets the default behavior of the sidecar for handling unknown outbound traffic from the application.",
       "type": "object",
       "properties": {
         "egressProxy": {
@@ -3276,7 +3280,11 @@
           "type": "array",
           "items": {
             "$ref": "#/definitions/io.istio.api.networking.v1alpha3.ServicePort"
-          }
+          },
+          "x-kubernetes-list-map-keys": [
+            "name"
+          ],
+          "x-kubernetes-list-type": "map"
         },
         "resolution": {
           "description": "Service resolution mode for the hosts. Care must be taken when setting the resolution mode to NONE for a TCP port without accompanying IP addresses. In such cases, traffic to any IP on said port will be allowed (i.e. `0.0.0.0:\u003cport\u003e`).",
@@ -3436,7 +3444,7 @@
           }
         },
         "inboundConnectionPool": {
-          "description": "Settings controlling the volume of connections Envoy will accept from the network. This default will apply for all inbound listeners and can be overridden per-port in the `Ingress` field. This configuration mirrors the `DestinationRule`'s [`connectionPool`](https://istio.io/latest/docs/reference/config/networking/destination-rule/#ConnectionPoolSettings) field.\n\nBy default, Istio applies a service's `DestinationRule` to client sidecars for outbound traffic directed at the service -- the usual case folks think of when configuring a `DestinationRule` -- but also to the server's inbound sidecar. The `Sidecar`'s connection pool configures the server's inbound sidecar directly, so its settings can be different than clients'. This is valuable, for example, when you have many clients calling few servers: a `DestinationRule` can limit the concurrency of any single client, while the `Sidecar` allows you to configure much higher concurrency on the server side.\n\nConnection pool settings for a server's inbound sidecar are configured in the following precedence, highest to lowest: - per-port `ConnectionPool` from the `Sidecar` - top level `InboundConnectionPool` from the `Sidecar` - per-port `TrafficPolicy.ConnectionPool` from the `DestinationRule` - top level `TrafficPolicy.ConnectionPool` from the `DestinationRule` - default connection pool settings (essentially unlimited)\n\nIn every case, the connection pool settings are overriden, not merged.",
+          "description": "Settings controlling the volume of connections Envoy will accept from the network. This default will apply for all inbound listeners and can be overridden per-port in the `Ingress` field. This configuration mirrors the `DestinationRule`'s [`connectionPool`](https://istio.io/latest/docs/reference/config/networking/destination-rule/#ConnectionPoolSettings) field.\n\nBy default, Istio applies a service's `DestinationRule` to client sidecars for outbound traffic directed at the service -- the usual case folks think of when configuring a `DestinationRule` -- but also to the server's inbound sidecar. The `Sidecar`'s connection pool configures the server's inbound sidecar directly, so its settings can be different than clients'. This is valuable, for example, when you have many clients calling few servers: a `DestinationRule` can limit the concurrency of any single client, while the `Sidecar` allows you to configure much higher concurrency on the server side.\n\nConnection pool settings for a server's inbound sidecar are configured in the following precedence, highest to lowest: - per-port `ConnectionPool` from the `Sidecar` - top level `InboundConnectionPool` from the `Sidecar` - per-port `TrafficPolicy.ConnectionPool` from the `DestinationRule` - top level `TrafficPolicy.ConnectionPool` from the `DestinationRule` - default connection pool settings (essentially unlimited)\n\nIn every case, the connection pool settings are overridden, not merged.",
           "$ref": "#/definitions/io.istio.api.networking.v1alpha3.ConnectionPoolSettings"
         },
         "ingress": {
@@ -3447,7 +3455,7 @@
           }
         },
         "outboundTrafficPolicy": {
-          "description": "Configuration for the outbound traffic policy.  If your application uses one or more external services that are not known apriori, setting the policy to `ALLOW_ANY` will cause the sidecars to route any unknown traffic originating from the application to its requested destination. If not specified, inherits the system detected defaults from the namespace-wide or the global default Sidecar.",
+          "description": "Set the default behavior of the sidecar for handling outbound traffic from the application.\n\nDefault mode is `ALLOW_ANY`, which means outbound traffic to unknown destinations will be allowed.",
           "$ref": "#/definitions/io.istio.api.networking.v1alpha3.OutboundTrafficPolicy"
         },
         "workloadSelector": {
@@ -3929,6 +3937,30 @@
         "Scope": "Namespaced"
       }
     },
+    "io.istio.api.networking.v1alpha3.WarmupConfiguration": {
+      "type": "object",
+      "properties": {
+        "aggression": {
+          "description": "This parameter controls the speed of traffic increase over the warmup duration. Defaults to 1.0, so that endpoints would get linearly increasing amount of traffic. When increasing the value for this parameter, the speed of traffic ramp-up increases non-linearly.",
+          "$ref": "#/definitions/org.golang.google.protobuf.types.known.wrapperspb.DoubleValue"
+        },
+        "duration": {
+          "description": "Duration of warmup mode",
+          "$ref": "#/definitions/org.golang.google.protobuf.types.known.durationpb.Duration"
+        },
+        "minimumPercent": {
+          "description": "Configures the minimum percentage of origin weight If unspecified, defaults to 10",
+          "$ref": "#/definitions/org.golang.google.protobuf.types.known.wrapperspb.DoubleValue"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "",
+        "Version": "v1alpha3",
+        "Kind": "WarmupConfiguration",
+        "Scope": "Namespaced"
+      }
+    },
     "io.istio.api.networking.v1alpha3.WorkloadEntry": {
       "description": "WorkloadEntry enables specifying the properties of a single non-Kubernetes workload such a VM or a bare metal services that can be referred to by service entries.\n\n\u003c!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata\" --\u003e\n\n\u003c!-- go code generation tags --\u003e",
       "type": "object",
@@ -4153,7 +4185,7 @@
       }
     },
     "io.istio.api.security.v1alpha1.UnimplementedIstioCertificateServiceServer": {
-      "description": "UnimplementedIstioCertificateServiceServer must be embedded to have forward compatible implementations.",
+      "description": "UnimplementedIstioCertificateServiceServer must be embedded to have forward compatible implementations.\n\nNOTE: this should be embedded by value instead of pointer to avoid a nil pointer dereference when methods are called.",
       "type": "object",
       "x-fabric8-info": {
         "Type": "nested",
@@ -4196,7 +4228,7 @@
           "$ref": "#/definitions/io.istio.api.type.v1beta1.PolicyTargetReference"
         },
         "targetRefs": {
-          "description": "Optional. The targetRefs specifies a list of resources the policy should be applied to. The targeted resources specified will determine which workloads the policy applies to.\n\nCurrently, the following resource attachment types are supported: * `kind: Gateway` with `group: gateway.networking.k8s.io` in the same namespace. * `kind: Service` with `\"\"` in the same namespace. This type is only supported for waypoints.\n\nIf not set, the policy is applied as defined by the selector. At most one of the selector and targetRefs can be set.\n\nNOTE: If you are using the `targetRefs` field in a multi-revision environment with Istio versions prior to 1.22, it is highly recommended that you pin the policy to a revision running 1.22+ via the `istio.io/rev` label. This is to prevent proxies connected to older control planes (that don't know about the `targetRefs` field) from misinterpreting the policy as namespace-wide during the upgrade process.\n\nNOTE: Waypoint proxies are required to use this field for policies to apply; `selector` policies will be ignored.",
+          "description": "Optional. The targetRefs specifies a list of resources the policy should be applied to. The targeted resources specified will determine which workloads the policy applies to.\n\nCurrently, the following resource attachment types are supported: * `kind: Gateway` with `group: gateway.networking.k8s.io` in the same namespace. * `kind: Service` with `group: \"\"` or `group: \"core\"` in the same namespace. This type is only supported for waypoints.\n\nIf not set, the policy is applied as defined by the selector. At most one of the selector and targetRefs can be set.\n\nNOTE: If you are using the `targetRefs` field in a multi-revision environment with Istio versions prior to 1.22, it is highly recommended that you pin the policy to a revision running 1.22+ via the `istio.io/rev` label. This is to prevent proxies connected to older control planes (that don't know about the `targetRefs` field) from misinterpreting the policy as namespace-wide during the upgrade process.\n\nNOTE: Waypoint proxies are required to use this field for policies to apply; `selector` policies will be ignored.",
           "type": "array",
           "items": {
             "$ref": "#/definitions/io.istio.api.type.v1beta1.PolicyTargetReference"
@@ -4578,7 +4610,7 @@
           "$ref": "#/definitions/io.istio.api.type.v1beta1.PolicyTargetReference"
         },
         "targetRefs": {
-          "description": "Optional. The targetRefs specifies a list of resources the policy should be applied to. The targeted resources specified will determine which workloads the policy applies to.\n\nCurrently, the following resource attachment types are supported: * `kind: Gateway` with `group: gateway.networking.k8s.io` in the same namespace. * `kind: Service` with `\"\"` in the same namespace. This type is only supported for waypoints.\n\nIf not set, the policy is applied as defined by the selector. At most one of the selector and targetRefs can be set.\n\nNOTE: If you are using the `targetRefs` field in a multi-revision environment with Istio versions prior to 1.22, it is highly recommended that you pin the policy to a revision running 1.22+ via the `istio.io/rev` label. This is to prevent proxies connected to older control planes (that don't know about the `targetRefs` field) from misinterpreting the policy as namespace-wide during the upgrade process.\n\nNOTE: Waypoint proxies are required to use this field for policies to apply; `selector` policies will be ignored.",
+          "description": "Optional. The targetRefs specifies a list of resources the policy should be applied to. The targeted resources specified will determine which workloads the policy applies to.\n\nCurrently, the following resource attachment types are supported: * `kind: Gateway` with `group: gateway.networking.k8s.io` in the same namespace. * `kind: Service` with `group: \"\"` or `group: \"core\"` in the same namespace. This type is only supported for waypoints.\n\nIf not set, the policy is applied as defined by the selector. At most one of the selector and targetRefs can be set.\n\nNOTE: If you are using the `targetRefs` field in a multi-revision environment with Istio versions prior to 1.22, it is highly recommended that you pin the policy to a revision running 1.22+ via the `istio.io/rev` label. This is to prevent proxies connected to older control planes (that don't know about the `targetRefs` field) from misinterpreting the policy as namespace-wide during the upgrade process.\n\nNOTE: Waypoint proxies are required to use this field for policies to apply; `selector` policies will be ignored.",
           "type": "array",
           "items": {
             "$ref": "#/definitions/io.istio.api.type.v1beta1.PolicyTargetReference"
@@ -5064,7 +5096,7 @@
           "$ref": "#/definitions/io.istio.api.type.v1beta1.PolicyTargetReference"
         },
         "targetRefs": {
-          "description": "Optional. The targetRefs specifies a list of resources the policy should be applied to. The targeted resources specified will determine which workloads the policy applies to.\n\nCurrently, the following resource attachment types are supported: * `kind: Gateway` with `group: gateway.networking.k8s.io` in the same namespace. * `kind: Service` with `\"\"` in the same namespace. This type is only supported for waypoints.\n\nIf not set, the policy is applied as defined by the selector. At most one of the selector and targetRefs can be set.\n\nNOTE: If you are using the `targetRefs` field in a multi-revision environment with Istio versions prior to 1.22, it is highly recommended that you pin the policy to a revision running 1.22+ via the `istio.io/rev` label. This is to prevent proxies connected to older control planes (that don't know about the `targetRefs` field) from misinterpreting the policy as namespace-wide during the upgrade process.\n\nNOTE: Waypoint proxies are required to use this field for policies to apply; `selector` policies will be ignored.",
+          "description": "Optional. The targetRefs specifies a list of resources the policy should be applied to. The targeted resources specified will determine which workloads the policy applies to.\n\nCurrently, the following resource attachment types are supported: * `kind: Gateway` with `group: gateway.networking.k8s.io` in the same namespace. * `kind: Service` with `group: \"\"` or `group: \"core\"` in the same namespace. This type is only supported for waypoints.\n\nIf not set, the policy is applied as defined by the selector. At most one of the selector and targetRefs can be set.\n\nNOTE: If you are using the `targetRefs` field in a multi-revision environment with Istio versions prior to 1.22, it is highly recommended that you pin the policy to a revision running 1.22+ via the `istio.io/rev` label. This is to prevent proxies connected to older control planes (that don't know about the `targetRefs` field) from misinterpreting the policy as namespace-wide during the upgrade process.\n\nNOTE: Waypoint proxies are required to use this field for policies to apply; `selector` policies will be ignored.",
           "type": "array",
           "items": {
             "$ref": "#/definitions/io.istio.api.type.v1beta1.PolicyTargetReference"
