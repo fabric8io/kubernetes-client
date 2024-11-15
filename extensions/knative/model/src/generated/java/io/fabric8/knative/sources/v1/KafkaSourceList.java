@@ -1,5 +1,5 @@
 
-package io.fabric8.knative.eventing.v1alpha1;
+package io.fabric8.knative.sources.v1;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -13,16 +13,15 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import io.fabric8.knative.duck.v1.AddressStatus;
-import io.fabric8.knative.duck.v1.AppliedEventPolicyRef;
-import io.fabric8.knative.pkg.apis.Condition;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
+import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.LabelSelector;
+import io.fabric8.kubernetes.api.model.ListMeta;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
@@ -31,8 +30,12 @@ import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
+import io.fabric8.kubernetes.model.annotation.Group;
+import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
+import io.sundr.transform.annotations.TemplateTransformation;
+import io.sundr.transform.annotations.TemplateTransformations;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
@@ -40,11 +43,10 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "AddressStatus",
-    "annotations",
-    "conditions",
-    "observedGeneration",
-    "policies"
+    "apiVersion",
+    "kind",
+    "metadata",
+    "items"
 })
 @ToString
 @EqualsAndHashCode
@@ -67,23 +69,34 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@TemplateTransformations({
+    @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource", gather = true)
+})
+@Version("v1")
+@Group("sources.knative.dev")
 @Generated("jsonschema2pojo")
-public class KafkaSinkStatus implements Editable<KafkaSinkStatusBuilder> , KubernetesResource
+public class KafkaSourceList implements Editable<KafkaSourceListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.knative.sources.v1.KafkaSource>
 {
 
-    @JsonProperty("AddressStatus")
-    private AddressStatus addressStatus;
-    @JsonProperty("annotations")
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("apiVersion")
+    private String apiVersion = "sources.knative.dev/v1";
+    @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> annotations = new LinkedHashMap<>();
-    @JsonProperty("conditions")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Condition> conditions = new ArrayList<>();
-    @JsonProperty("observedGeneration")
-    private Long observedGeneration;
-    @JsonProperty("policies")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<AppliedEventPolicyRef> policies = new ArrayList<>();
+    private List<io.fabric8.knative.sources.v1.KafkaSource> items = new ArrayList<>();
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("kind")
+    private String kind = "KafkaSourceList";
+    @JsonProperty("metadata")
+    private ListMeta metadata;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -91,78 +104,85 @@ public class KafkaSinkStatus implements Editable<KafkaSinkStatusBuilder> , Kuber
      * No args constructor for use in serialization
      * 
      */
-    public KafkaSinkStatus() {
+    public KafkaSourceList() {
     }
 
-    public KafkaSinkStatus(AddressStatus addressStatus, Map<String, String> annotations, List<Condition> conditions, Long observedGeneration, List<AppliedEventPolicyRef> policies) {
+    public KafkaSourceList(String apiVersion, List<io.fabric8.knative.sources.v1.KafkaSource> items, String kind, ListMeta metadata) {
         super();
-        this.addressStatus = addressStatus;
-        this.annotations = annotations;
-        this.conditions = conditions;
-        this.observedGeneration = observedGeneration;
-        this.policies = policies;
+        this.apiVersion = apiVersion;
+        this.items = items;
+        this.kind = kind;
+        this.metadata = metadata;
     }
 
-    @JsonProperty("AddressStatus")
-    public AddressStatus getAddressStatus() {
-        return addressStatus;
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("apiVersion")
+    public String getApiVersion() {
+        return apiVersion;
     }
 
-    @JsonProperty("AddressStatus")
-    public void setAddressStatus(AddressStatus addressStatus) {
-        this.addressStatus = addressStatus;
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("apiVersion")
+    public void setApiVersion(String apiVersion) {
+        this.apiVersion = apiVersion;
     }
 
-    @JsonProperty("annotations")
+    @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Map<String, String> getAnnotations() {
-        return annotations;
+    public List<io.fabric8.knative.sources.v1.KafkaSource> getItems() {
+        return items;
     }
 
-    @JsonProperty("annotations")
-    public void setAnnotations(Map<String, String> annotations) {
-        this.annotations = annotations;
+    @JsonProperty("items")
+    public void setItems(List<io.fabric8.knative.sources.v1.KafkaSource> items) {
+        this.items = items;
     }
 
-    @JsonProperty("conditions")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<Condition> getConditions() {
-        return conditions;
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("kind")
+    public String getKind() {
+        return kind;
     }
 
-    @JsonProperty("conditions")
-    public void setConditions(List<Condition> conditions) {
-        this.conditions = conditions;
+    /**
+     * 
+     * (Required)
+     * 
+     */
+    @JsonProperty("kind")
+    public void setKind(String kind) {
+        this.kind = kind;
     }
 
-    @JsonProperty("observedGeneration")
-    public Long getObservedGeneration() {
-        return observedGeneration;
+    @JsonProperty("metadata")
+    public ListMeta getMetadata() {
+        return metadata;
     }
 
-    @JsonProperty("observedGeneration")
-    public void setObservedGeneration(Long observedGeneration) {
-        this.observedGeneration = observedGeneration;
-    }
-
-    @JsonProperty("policies")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<AppliedEventPolicyRef> getPolicies() {
-        return policies;
-    }
-
-    @JsonProperty("policies")
-    public void setPolicies(List<AppliedEventPolicyRef> policies) {
-        this.policies = policies;
+    @JsonProperty("metadata")
+    public void setMetadata(ListMeta metadata) {
+        this.metadata = metadata;
     }
 
     @JsonIgnore
-    public KafkaSinkStatusBuilder edit() {
-        return new KafkaSinkStatusBuilder(this);
+    public KafkaSourceListBuilder edit() {
+        return new KafkaSourceListBuilder(this);
     }
 
     @JsonIgnore
-    public KafkaSinkStatusBuilder toBuilder() {
+    public KafkaSourceListBuilder toBuilder() {
         return edit();
     }
 

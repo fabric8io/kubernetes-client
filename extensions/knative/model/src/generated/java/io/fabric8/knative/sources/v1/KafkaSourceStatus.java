@@ -1,5 +1,5 @@
 
-package io.fabric8.knative.eventing.v1alpha1;
+package io.fabric8.knative.sources.v1;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -13,8 +13,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import io.fabric8.knative.duck.v1.AddressStatus;
-import io.fabric8.knative.duck.v1.AppliedEventPolicyRef;
+import io.fabric8.knative.duck.v1.AuthStatus;
+import io.fabric8.knative.duck.v1.CloudEventAttributes;
+import io.fabric8.knative.duck.v1alpha1.Placement;
 import io.fabric8.knative.pkg.apis.Condition;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
@@ -40,11 +41,19 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "AddressStatus",
     "annotations",
+    "auth",
+    "ceAttributes",
+    "claims",
     "conditions",
+    "consumers",
+    "maxAllowedVReplicas",
     "observedGeneration",
-    "policies"
+    "placements",
+    "selector",
+    "sinkAudience",
+    "sinkCACerts",
+    "sinkUri"
 })
 @ToString
 @EqualsAndHashCode
@@ -68,22 +77,39 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class KafkaSinkStatus implements Editable<KafkaSinkStatusBuilder> , KubernetesResource
+public class KafkaSourceStatus implements Editable<KafkaSourceStatusBuilder> , KubernetesResource
 {
 
-    @JsonProperty("AddressStatus")
-    private AddressStatus addressStatus;
     @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> annotations = new LinkedHashMap<>();
+    @JsonProperty("auth")
+    private AuthStatus auth;
+    @JsonProperty("ceAttributes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<CloudEventAttributes> ceAttributes = new ArrayList<>();
+    @JsonProperty("claims")
+    private String claims;
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Condition> conditions = new ArrayList<>();
+    @JsonProperty("consumers")
+    private Integer consumers;
+    @JsonProperty("maxAllowedVReplicas")
+    private Integer maxAllowedVReplicas;
     @JsonProperty("observedGeneration")
     private Long observedGeneration;
-    @JsonProperty("policies")
+    @JsonProperty("placements")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<AppliedEventPolicyRef> policies = new ArrayList<>();
+    private List<Placement> placements = new ArrayList<>();
+    @JsonProperty("selector")
+    private String selector;
+    @JsonProperty("sinkAudience")
+    private String sinkAudience;
+    @JsonProperty("sinkCACerts")
+    private String sinkCACerts;
+    @JsonProperty("sinkUri")
+    private String sinkUri;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -91,26 +117,24 @@ public class KafkaSinkStatus implements Editable<KafkaSinkStatusBuilder> , Kuber
      * No args constructor for use in serialization
      * 
      */
-    public KafkaSinkStatus() {
+    public KafkaSourceStatus() {
     }
 
-    public KafkaSinkStatus(AddressStatus addressStatus, Map<String, String> annotations, List<Condition> conditions, Long observedGeneration, List<AppliedEventPolicyRef> policies) {
+    public KafkaSourceStatus(Map<String, String> annotations, AuthStatus auth, List<CloudEventAttributes> ceAttributes, String claims, List<Condition> conditions, Integer consumers, Integer maxAllowedVReplicas, Long observedGeneration, List<Placement> placements, String selector, String sinkAudience, String sinkCACerts, String sinkUri) {
         super();
-        this.addressStatus = addressStatus;
         this.annotations = annotations;
+        this.auth = auth;
+        this.ceAttributes = ceAttributes;
+        this.claims = claims;
         this.conditions = conditions;
+        this.consumers = consumers;
+        this.maxAllowedVReplicas = maxAllowedVReplicas;
         this.observedGeneration = observedGeneration;
-        this.policies = policies;
-    }
-
-    @JsonProperty("AddressStatus")
-    public AddressStatus getAddressStatus() {
-        return addressStatus;
-    }
-
-    @JsonProperty("AddressStatus")
-    public void setAddressStatus(AddressStatus addressStatus) {
-        this.addressStatus = addressStatus;
+        this.placements = placements;
+        this.selector = selector;
+        this.sinkAudience = sinkAudience;
+        this.sinkCACerts = sinkCACerts;
+        this.sinkUri = sinkUri;
     }
 
     @JsonProperty("annotations")
@@ -124,6 +148,37 @@ public class KafkaSinkStatus implements Editable<KafkaSinkStatusBuilder> , Kuber
         this.annotations = annotations;
     }
 
+    @JsonProperty("auth")
+    public AuthStatus getAuth() {
+        return auth;
+    }
+
+    @JsonProperty("auth")
+    public void setAuth(AuthStatus auth) {
+        this.auth = auth;
+    }
+
+    @JsonProperty("ceAttributes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<CloudEventAttributes> getCeAttributes() {
+        return ceAttributes;
+    }
+
+    @JsonProperty("ceAttributes")
+    public void setCeAttributes(List<CloudEventAttributes> ceAttributes) {
+        this.ceAttributes = ceAttributes;
+    }
+
+    @JsonProperty("claims")
+    public String getClaims() {
+        return claims;
+    }
+
+    @JsonProperty("claims")
+    public void setClaims(String claims) {
+        this.claims = claims;
+    }
+
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
@@ -133,6 +188,26 @@ public class KafkaSinkStatus implements Editable<KafkaSinkStatusBuilder> , Kuber
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
+    }
+
+    @JsonProperty("consumers")
+    public Integer getConsumers() {
+        return consumers;
+    }
+
+    @JsonProperty("consumers")
+    public void setConsumers(Integer consumers) {
+        this.consumers = consumers;
+    }
+
+    @JsonProperty("maxAllowedVReplicas")
+    public Integer getMaxAllowedVReplicas() {
+        return maxAllowedVReplicas;
+    }
+
+    @JsonProperty("maxAllowedVReplicas")
+    public void setMaxAllowedVReplicas(Integer maxAllowedVReplicas) {
+        this.maxAllowedVReplicas = maxAllowedVReplicas;
     }
 
     @JsonProperty("observedGeneration")
@@ -145,24 +220,64 @@ public class KafkaSinkStatus implements Editable<KafkaSinkStatusBuilder> , Kuber
         this.observedGeneration = observedGeneration;
     }
 
-    @JsonProperty("policies")
+    @JsonProperty("placements")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<AppliedEventPolicyRef> getPolicies() {
-        return policies;
+    public List<Placement> getPlacements() {
+        return placements;
     }
 
-    @JsonProperty("policies")
-    public void setPolicies(List<AppliedEventPolicyRef> policies) {
-        this.policies = policies;
+    @JsonProperty("placements")
+    public void setPlacements(List<Placement> placements) {
+        this.placements = placements;
+    }
+
+    @JsonProperty("selector")
+    public String getSelector() {
+        return selector;
+    }
+
+    @JsonProperty("selector")
+    public void setSelector(String selector) {
+        this.selector = selector;
+    }
+
+    @JsonProperty("sinkAudience")
+    public String getSinkAudience() {
+        return sinkAudience;
+    }
+
+    @JsonProperty("sinkAudience")
+    public void setSinkAudience(String sinkAudience) {
+        this.sinkAudience = sinkAudience;
+    }
+
+    @JsonProperty("sinkCACerts")
+    public String getSinkCACerts() {
+        return sinkCACerts;
+    }
+
+    @JsonProperty("sinkCACerts")
+    public void setSinkCACerts(String sinkCACerts) {
+        this.sinkCACerts = sinkCACerts;
+    }
+
+    @JsonProperty("sinkUri")
+    public String getSinkUri() {
+        return sinkUri;
+    }
+
+    @JsonProperty("sinkUri")
+    public void setSinkUri(String sinkUri) {
+        this.sinkUri = sinkUri;
     }
 
     @JsonIgnore
-    public KafkaSinkStatusBuilder edit() {
-        return new KafkaSinkStatusBuilder(this);
+    public KafkaSourceStatusBuilder edit() {
+        return new KafkaSourceStatusBuilder(this);
     }
 
     @JsonIgnore
-    public KafkaSinkStatusBuilder toBuilder() {
+    public KafkaSourceStatusBuilder toBuilder() {
         return edit();
     }
 

@@ -1,5 +1,5 @@
 
-package io.fabric8.knative.eventing.v1alpha1;
+package io.fabric8.knative.bindings.v1;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -13,8 +13,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import io.fabric8.knative.duck.v1.AddressStatus;
-import io.fabric8.knative.duck.v1.AppliedEventPolicyRef;
 import io.fabric8.knative.pkg.apis.Condition;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
@@ -40,11 +38,9 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "AddressStatus",
     "annotations",
     "conditions",
-    "observedGeneration",
-    "policies"
+    "observedGeneration"
 })
 @ToString
 @EqualsAndHashCode
@@ -68,11 +64,9 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class KafkaSinkStatus implements Editable<KafkaSinkStatusBuilder> , KubernetesResource
+public class KafkaBindingStatus implements Editable<KafkaBindingStatusBuilder> , KubernetesResource
 {
 
-    @JsonProperty("AddressStatus")
-    private AddressStatus addressStatus;
     @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> annotations = new LinkedHashMap<>();
@@ -81,9 +75,6 @@ public class KafkaSinkStatus implements Editable<KafkaSinkStatusBuilder> , Kuber
     private List<Condition> conditions = new ArrayList<>();
     @JsonProperty("observedGeneration")
     private Long observedGeneration;
-    @JsonProperty("policies")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<AppliedEventPolicyRef> policies = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -91,26 +82,14 @@ public class KafkaSinkStatus implements Editable<KafkaSinkStatusBuilder> , Kuber
      * No args constructor for use in serialization
      * 
      */
-    public KafkaSinkStatus() {
+    public KafkaBindingStatus() {
     }
 
-    public KafkaSinkStatus(AddressStatus addressStatus, Map<String, String> annotations, List<Condition> conditions, Long observedGeneration, List<AppliedEventPolicyRef> policies) {
+    public KafkaBindingStatus(Map<String, String> annotations, List<Condition> conditions, Long observedGeneration) {
         super();
-        this.addressStatus = addressStatus;
         this.annotations = annotations;
         this.conditions = conditions;
         this.observedGeneration = observedGeneration;
-        this.policies = policies;
-    }
-
-    @JsonProperty("AddressStatus")
-    public AddressStatus getAddressStatus() {
-        return addressStatus;
-    }
-
-    @JsonProperty("AddressStatus")
-    public void setAddressStatus(AddressStatus addressStatus) {
-        this.addressStatus = addressStatus;
     }
 
     @JsonProperty("annotations")
@@ -145,24 +124,13 @@ public class KafkaSinkStatus implements Editable<KafkaSinkStatusBuilder> , Kuber
         this.observedGeneration = observedGeneration;
     }
 
-    @JsonProperty("policies")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<AppliedEventPolicyRef> getPolicies() {
-        return policies;
-    }
-
-    @JsonProperty("policies")
-    public void setPolicies(List<AppliedEventPolicyRef> policies) {
-        this.policies = policies;
+    @JsonIgnore
+    public KafkaBindingStatusBuilder edit() {
+        return new KafkaBindingStatusBuilder(this);
     }
 
     @JsonIgnore
-    public KafkaSinkStatusBuilder edit() {
-        return new KafkaSinkStatusBuilder(this);
-    }
-
-    @JsonIgnore
-    public KafkaSinkStatusBuilder toBuilder() {
+    public KafkaBindingStatusBuilder toBuilder() {
         return edit();
     }
 
