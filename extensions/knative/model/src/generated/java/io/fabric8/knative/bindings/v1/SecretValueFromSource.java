@@ -1,9 +1,7 @@
 
-package io.fabric8.knative.eventing.v1alpha1;
+package io.fabric8.knative.bindings.v1;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -13,9 +11,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import io.fabric8.knative.duck.v1.AddressStatus;
-import io.fabric8.knative.duck.v1.AppliedEventPolicyRef;
-import io.fabric8.knative.pkg.apis.Condition;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -29,6 +24,7 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
+import io.fabric8.kubernetes.api.model.SecretKeySelector;
 import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
@@ -40,11 +36,7 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "AddressStatus",
-    "annotations",
-    "conditions",
-    "observedGeneration",
-    "policies"
+    "secretKeyRef"
 })
 @ToString
 @EqualsAndHashCode
@@ -68,22 +60,11 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class KafkaSinkStatus implements Editable<KafkaSinkStatusBuilder> , KubernetesResource
+public class SecretValueFromSource implements Editable<SecretValueFromSourceBuilder> , KubernetesResource
 {
 
-    @JsonProperty("AddressStatus")
-    private AddressStatus addressStatus;
-    @JsonProperty("annotations")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> annotations = new LinkedHashMap<>();
-    @JsonProperty("conditions")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Condition> conditions = new ArrayList<>();
-    @JsonProperty("observedGeneration")
-    private Long observedGeneration;
-    @JsonProperty("policies")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<AppliedEventPolicyRef> policies = new ArrayList<>();
+    @JsonProperty("secretKeyRef")
+    private SecretKeySelector secretKeyRef;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -91,78 +72,31 @@ public class KafkaSinkStatus implements Editable<KafkaSinkStatusBuilder> , Kuber
      * No args constructor for use in serialization
      * 
      */
-    public KafkaSinkStatus() {
+    public SecretValueFromSource() {
     }
 
-    public KafkaSinkStatus(AddressStatus addressStatus, Map<String, String> annotations, List<Condition> conditions, Long observedGeneration, List<AppliedEventPolicyRef> policies) {
+    public SecretValueFromSource(SecretKeySelector secretKeyRef) {
         super();
-        this.addressStatus = addressStatus;
-        this.annotations = annotations;
-        this.conditions = conditions;
-        this.observedGeneration = observedGeneration;
-        this.policies = policies;
+        this.secretKeyRef = secretKeyRef;
     }
 
-    @JsonProperty("AddressStatus")
-    public AddressStatus getAddressStatus() {
-        return addressStatus;
+    @JsonProperty("secretKeyRef")
+    public SecretKeySelector getSecretKeyRef() {
+        return secretKeyRef;
     }
 
-    @JsonProperty("AddressStatus")
-    public void setAddressStatus(AddressStatus addressStatus) {
-        this.addressStatus = addressStatus;
-    }
-
-    @JsonProperty("annotations")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Map<String, String> getAnnotations() {
-        return annotations;
-    }
-
-    @JsonProperty("annotations")
-    public void setAnnotations(Map<String, String> annotations) {
-        this.annotations = annotations;
-    }
-
-    @JsonProperty("conditions")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<Condition> getConditions() {
-        return conditions;
-    }
-
-    @JsonProperty("conditions")
-    public void setConditions(List<Condition> conditions) {
-        this.conditions = conditions;
-    }
-
-    @JsonProperty("observedGeneration")
-    public Long getObservedGeneration() {
-        return observedGeneration;
-    }
-
-    @JsonProperty("observedGeneration")
-    public void setObservedGeneration(Long observedGeneration) {
-        this.observedGeneration = observedGeneration;
-    }
-
-    @JsonProperty("policies")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<AppliedEventPolicyRef> getPolicies() {
-        return policies;
-    }
-
-    @JsonProperty("policies")
-    public void setPolicies(List<AppliedEventPolicyRef> policies) {
-        this.policies = policies;
+    @JsonProperty("secretKeyRef")
+    public void setSecretKeyRef(SecretKeySelector secretKeyRef) {
+        this.secretKeyRef = secretKeyRef;
     }
 
     @JsonIgnore
-    public KafkaSinkStatusBuilder edit() {
-        return new KafkaSinkStatusBuilder(this);
+    public SecretValueFromSourceBuilder edit() {
+        return new SecretValueFromSourceBuilder(this);
     }
 
     @JsonIgnore
-    public KafkaSinkStatusBuilder toBuilder() {
+    public SecretValueFromSourceBuilder toBuilder() {
         return edit();
     }
 

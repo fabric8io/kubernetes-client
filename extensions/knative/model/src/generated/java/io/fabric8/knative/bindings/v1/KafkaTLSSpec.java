@@ -1,9 +1,7 @@
 
-package io.fabric8.knative.eventing.v1alpha1;
+package io.fabric8.knative.bindings.v1;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -13,9 +11,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import io.fabric8.knative.duck.v1.AddressStatus;
-import io.fabric8.knative.duck.v1.AppliedEventPolicyRef;
-import io.fabric8.knative.pkg.apis.Condition;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -40,11 +35,10 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "AddressStatus",
-    "annotations",
-    "conditions",
-    "observedGeneration",
-    "policies"
+    "caCert",
+    "cert",
+    "enable",
+    "key"
 })
 @ToString
 @EqualsAndHashCode
@@ -68,22 +62,17 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("jsonschema2pojo")
-public class KafkaSinkStatus implements Editable<KafkaSinkStatusBuilder> , KubernetesResource
+public class KafkaTLSSpec implements Editable<KafkaTLSSpecBuilder> , KubernetesResource
 {
 
-    @JsonProperty("AddressStatus")
-    private AddressStatus addressStatus;
-    @JsonProperty("annotations")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> annotations = new LinkedHashMap<>();
-    @JsonProperty("conditions")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Condition> conditions = new ArrayList<>();
-    @JsonProperty("observedGeneration")
-    private Long observedGeneration;
-    @JsonProperty("policies")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<AppliedEventPolicyRef> policies = new ArrayList<>();
+    @JsonProperty("caCert")
+    private SecretValueFromSource caCert;
+    @JsonProperty("cert")
+    private SecretValueFromSource cert;
+    @JsonProperty("enable")
+    private Boolean enable;
+    @JsonProperty("key")
+    private SecretValueFromSource key;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -91,78 +80,64 @@ public class KafkaSinkStatus implements Editable<KafkaSinkStatusBuilder> , Kuber
      * No args constructor for use in serialization
      * 
      */
-    public KafkaSinkStatus() {
+    public KafkaTLSSpec() {
     }
 
-    public KafkaSinkStatus(AddressStatus addressStatus, Map<String, String> annotations, List<Condition> conditions, Long observedGeneration, List<AppliedEventPolicyRef> policies) {
+    public KafkaTLSSpec(SecretValueFromSource caCert, SecretValueFromSource cert, Boolean enable, SecretValueFromSource key) {
         super();
-        this.addressStatus = addressStatus;
-        this.annotations = annotations;
-        this.conditions = conditions;
-        this.observedGeneration = observedGeneration;
-        this.policies = policies;
+        this.caCert = caCert;
+        this.cert = cert;
+        this.enable = enable;
+        this.key = key;
     }
 
-    @JsonProperty("AddressStatus")
-    public AddressStatus getAddressStatus() {
-        return addressStatus;
+    @JsonProperty("caCert")
+    public SecretValueFromSource getCaCert() {
+        return caCert;
     }
 
-    @JsonProperty("AddressStatus")
-    public void setAddressStatus(AddressStatus addressStatus) {
-        this.addressStatus = addressStatus;
+    @JsonProperty("caCert")
+    public void setCaCert(SecretValueFromSource caCert) {
+        this.caCert = caCert;
     }
 
-    @JsonProperty("annotations")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Map<String, String> getAnnotations() {
-        return annotations;
+    @JsonProperty("cert")
+    public SecretValueFromSource getCert() {
+        return cert;
     }
 
-    @JsonProperty("annotations")
-    public void setAnnotations(Map<String, String> annotations) {
-        this.annotations = annotations;
+    @JsonProperty("cert")
+    public void setCert(SecretValueFromSource cert) {
+        this.cert = cert;
     }
 
-    @JsonProperty("conditions")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<Condition> getConditions() {
-        return conditions;
+    @JsonProperty("enable")
+    public Boolean getEnable() {
+        return enable;
     }
 
-    @JsonProperty("conditions")
-    public void setConditions(List<Condition> conditions) {
-        this.conditions = conditions;
+    @JsonProperty("enable")
+    public void setEnable(Boolean enable) {
+        this.enable = enable;
     }
 
-    @JsonProperty("observedGeneration")
-    public Long getObservedGeneration() {
-        return observedGeneration;
+    @JsonProperty("key")
+    public SecretValueFromSource getKey() {
+        return key;
     }
 
-    @JsonProperty("observedGeneration")
-    public void setObservedGeneration(Long observedGeneration) {
-        this.observedGeneration = observedGeneration;
-    }
-
-    @JsonProperty("policies")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<AppliedEventPolicyRef> getPolicies() {
-        return policies;
-    }
-
-    @JsonProperty("policies")
-    public void setPolicies(List<AppliedEventPolicyRef> policies) {
-        this.policies = policies;
+    @JsonProperty("key")
+    public void setKey(SecretValueFromSource key) {
+        this.key = key;
     }
 
     @JsonIgnore
-    public KafkaSinkStatusBuilder edit() {
-        return new KafkaSinkStatusBuilder(this);
+    public KafkaTLSSpecBuilder edit() {
+        return new KafkaTLSSpecBuilder(this);
     }
 
     @JsonIgnore
-    public KafkaSinkStatusBuilder toBuilder() {
+    public KafkaTLSSpecBuilder toBuilder() {
         return edit();
     }
 

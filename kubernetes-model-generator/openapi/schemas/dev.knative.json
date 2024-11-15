@@ -6,6 +6,268 @@
   },
   "paths": null,
   "definitions": {
+    "dev.knative.bindings.v1.KafkaAuthSpec": {
+      "type": "object",
+      "required": [
+        "bootstrapServers"
+      ],
+      "properties": {
+        "bootstrapServers": {
+          "description": "Bootstrap servers are the Kafka servers the consumer will connect to.",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "default": ""
+          }
+        },
+        "net": {
+          "default": {},
+          "$ref": "#/definitions/dev.knative.bindings.v1.KafkaNetSpec"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "bindings.knative.dev",
+        "Version": "v1",
+        "Kind": "KafkaAuthSpec",
+        "Scope": "Namespaced"
+      }
+    },
+    "dev.knative.bindings.v1.KafkaBinding": {
+      "description": "KafkaBinding is the Schema for the kafkasources API.",
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+        },
+        "spec": {
+          "default": {},
+          "$ref": "#/definitions/dev.knative.bindings.v1.KafkaBindingSpec"
+        },
+        "status": {
+          "default": {},
+          "$ref": "#/definitions/dev.knative.bindings.v1.KafkaBindingStatus"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "object",
+        "Group": "bindings.knative.dev",
+        "Version": "v1",
+        "Kind": "KafkaBinding",
+        "Scope": "Namespaced"
+      }
+    },
+    "dev.knative.bindings.v1.KafkaBindingList": {
+      "description": "KafkaBindingList contains a list of KafkaBindings.",
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/dev.knative.bindings.v1.KafkaBinding"
+          }
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "list",
+        "Group": "bindings.knative.dev",
+        "Version": "v1",
+        "Kind": "KafkaBindingList",
+        "Scope": "Namespaced"
+      }
+    },
+    "dev.knative.bindings.v1.KafkaBindingSpec": {
+      "description": "KafkaBindingSpec defines the desired state of the KafkaBinding.",
+      "type": "object",
+      "required": [
+        "subject",
+        "bootstrapServers"
+      ],
+      "properties": {
+        "bootstrapServers": {
+          "description": "Bootstrap servers are the Kafka servers the consumer will connect to.",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "default": ""
+          }
+        },
+        "net": {
+          "default": {},
+          "$ref": "#/definitions/dev.knative.bindings.v1.KafkaNetSpec"
+        },
+        "subject": {
+          "description": "Subject references the resource(s) whose \"runtime contract\" should be augmented by Binding implementations.",
+          "default": {},
+          "$ref": "#/definitions/dev.knative.pkg.tracker.Reference"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "bindings.knative.dev",
+        "Version": "v1",
+        "Kind": "KafkaBindingSpec",
+        "Scope": "Namespaced"
+      }
+    },
+    "dev.knative.bindings.v1.KafkaBindingStatus": {
+      "description": "KafkaBindingStatus defines the observed state of KafkaBinding.",
+      "type": "object",
+      "properties": {
+        "annotations": {
+          "description": "Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.",
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "default": ""
+          }
+        },
+        "conditions": {
+          "description": "Conditions the latest available observations of a resource's current state.",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/dev.knative.pkg.apis.Condition"
+          },
+          "x-kubernetes-patch-merge-key": "type",
+          "x-kubernetes-patch-strategy": "merge"
+        },
+        "observedGeneration": {
+          "description": "ObservedGeneration is the 'Generation' of the Service that was last processed by the controller.",
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "bindings.knative.dev",
+        "Version": "v1",
+        "Kind": "KafkaBindingStatus",
+        "Scope": "Namespaced"
+      }
+    },
+    "dev.knative.bindings.v1.KafkaNetSpec": {
+      "type": "object",
+      "properties": {
+        "sasl": {
+          "default": {},
+          "$ref": "#/definitions/dev.knative.bindings.v1.KafkaSASLSpec"
+        },
+        "tls": {
+          "default": {},
+          "$ref": "#/definitions/dev.knative.bindings.v1.KafkaTLSSpec"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "bindings.knative.dev",
+        "Version": "v1",
+        "Kind": "KafkaNetSpec",
+        "Scope": "Namespaced"
+      }
+    },
+    "dev.knative.bindings.v1.KafkaSASLSpec": {
+      "type": "object",
+      "properties": {
+        "enable": {
+          "type": "boolean"
+        },
+        "password": {
+          "description": "Password is the Kubernetes secret containing the SASL password.",
+          "default": {},
+          "$ref": "#/definitions/dev.knative.bindings.v1.SecretValueFromSource"
+        },
+        "type": {
+          "description": "Type of saslType, defaults to plain (vs SCRAM-SHA-512 or SCRAM-SHA-256)",
+          "default": {},
+          "$ref": "#/definitions/dev.knative.bindings.v1.SecretValueFromSource"
+        },
+        "user": {
+          "description": "User is the Kubernetes secret containing the SASL username.",
+          "default": {},
+          "$ref": "#/definitions/dev.knative.bindings.v1.SecretValueFromSource"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "bindings.knative.dev",
+        "Version": "v1",
+        "Kind": "KafkaSASLSpec",
+        "Scope": "Namespaced"
+      }
+    },
+    "dev.knative.bindings.v1.KafkaTLSSpec": {
+      "type": "object",
+      "properties": {
+        "caCert": {
+          "description": "CACert is the Kubernetes secret containing the server CA cert.",
+          "default": {},
+          "$ref": "#/definitions/dev.knative.bindings.v1.SecretValueFromSource"
+        },
+        "cert": {
+          "description": "Cert is the Kubernetes secret containing the client certificate.",
+          "default": {},
+          "$ref": "#/definitions/dev.knative.bindings.v1.SecretValueFromSource"
+        },
+        "enable": {
+          "type": "boolean"
+        },
+        "key": {
+          "description": "Key is the Kubernetes secret containing the client key.",
+          "default": {},
+          "$ref": "#/definitions/dev.knative.bindings.v1.SecretValueFromSource"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "bindings.knative.dev",
+        "Version": "v1",
+        "Kind": "KafkaTLSSpec",
+        "Scope": "Namespaced"
+      }
+    },
+    "dev.knative.bindings.v1.SecretValueFromSource": {
+      "description": "SecretValueFromSource represents the source of a secret value",
+      "type": "object",
+      "properties": {
+        "secretKeyRef": {
+          "description": "The Secret key to select from.",
+          "$ref": "#/definitions/io.k8s.api.core.v1.SecretKeySelector"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "bindings.knative.dev",
+        "Version": "v1",
+        "Kind": "SecretValueFromSource",
+        "Scope": "Namespaced"
+      }
+    },
     "dev.knative.bindings.v1alpha1.GitHubBinding": {
       "description": "GitHubBinding describes a Binding that is also a Source. The `sink` (from the Source duck) is resolved to a URL and then projected into the `subject` by augmenting the runtime contract of the referenced containers to have a `K_SINK` environment variable holding the endpoint to which to send cloud events.",
       "type": "object",
@@ -4323,6 +4585,14 @@
           "description": "ObservedGeneration is the 'Generation' of the Service that was last processed by the controller.",
           "type": "integer",
           "format": "int64"
+        },
+        "policies": {
+          "description": "Policies holds the list of applied EventPolicies",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/dev.knative.duck.v1.AppliedEventPolicyRef"
+          }
         }
       },
       "x-fabric8-info": {
@@ -9617,6 +9887,225 @@
         "Group": "sources.knative.dev",
         "Version": "v1",
         "Kind": "ContainerSourceStatus",
+        "Scope": "Namespaced"
+      }
+    },
+    "dev.knative.sources.v1.KafkaSource": {
+      "description": "KafkaSource is the Schema for the kafkasources API.",
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+        },
+        "spec": {
+          "default": {},
+          "$ref": "#/definitions/dev.knative.sources.v1.KafkaSourceSpec"
+        },
+        "status": {
+          "default": {},
+          "$ref": "#/definitions/dev.knative.sources.v1.KafkaSourceStatus"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "object",
+        "Group": "sources.knative.dev",
+        "Version": "v1",
+        "Kind": "KafkaSource",
+        "Scope": "Namespaced"
+      }
+    },
+    "dev.knative.sources.v1.KafkaSourceList": {
+      "description": "KafkaSourceList contains a list of KafkaSources.",
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/dev.knative.sources.v1.KafkaSource"
+          }
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "list",
+        "Group": "sources.knative.dev",
+        "Version": "v1",
+        "Kind": "KafkaSourceList",
+        "Scope": "Namespaced"
+      }
+    },
+    "dev.knative.sources.v1.KafkaSourceSpec": {
+      "description": "KafkaSourceSpec defines the desired state of the KafkaSource.",
+      "type": "object",
+      "required": [
+        "bootstrapServers",
+        "topics"
+      ],
+      "properties": {
+        "bootstrapServers": {
+          "description": "Bootstrap servers are the Kafka servers the consumer will connect to.",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "default": ""
+          }
+        },
+        "ceOverrides": {
+          "description": "CloudEventOverrides defines overrides to control the output format and modifications of the event sent to the sink.",
+          "$ref": "#/definitions/dev.knative.duck.v1.CloudEventOverrides"
+        },
+        "consumerGroup": {
+          "description": "ConsumerGroupID is the consumer group ID.",
+          "type": "string"
+        },
+        "consumers": {
+          "description": "Number of desired consumers running in the consumer group. Defaults to 1.\n\nThis is a pointer to distinguish between explicit zero and not specified.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "delivery": {
+          "description": "Delivery contains the delivery spec for this source",
+          "$ref": "#/definitions/dev.knative.duck.v1.DeliverySpec"
+        },
+        "initialOffset": {
+          "description": "InitialOffset is the Initial Offset for the consumer group. should be earliest or latest",
+          "type": "string"
+        },
+        "net": {
+          "default": {},
+          "$ref": "#/definitions/dev.knative.bindings.v1.KafkaNetSpec"
+        },
+        "ordering": {
+          "description": "Ordering is the type of the consumer verticle. Should be ordered or unordered. By default, it is ordered.",
+          "type": "string"
+        },
+        "sink": {
+          "description": "Sink is a reference to an object that will resolve to a uri to use as the sink.",
+          "default": {},
+          "$ref": "#/definitions/dev.knative.duck.v1.Destination"
+        },
+        "topics": {
+          "description": "Topic topics to consume messages from",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "default": ""
+          }
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "sources.knative.dev",
+        "Version": "v1",
+        "Kind": "KafkaSourceSpec",
+        "Scope": "Namespaced"
+      }
+    },
+    "dev.knative.sources.v1.KafkaSourceStatus": {
+      "description": "KafkaSourceStatus defines the observed state of KafkaSource.",
+      "type": "object",
+      "properties": {
+        "annotations": {
+          "description": "Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.",
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "default": ""
+          }
+        },
+        "auth": {
+          "description": "Auth defines the attributes that provide the generated service account name in the resource status.",
+          "$ref": "#/definitions/dev.knative.duck.v1.AuthStatus"
+        },
+        "ceAttributes": {
+          "description": "CloudEventAttributes are the specific attributes that the Source uses as part of its CloudEvents.",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/dev.knative.duck.v1.CloudEventAttributes"
+          }
+        },
+        "claims": {
+          "description": "Claims consumed by this KafkaSource instance",
+          "type": "string"
+        },
+        "conditions": {
+          "description": "Conditions the latest available observations of a resource's current state.",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/dev.knative.pkg.apis.Condition"
+          },
+          "x-kubernetes-patch-merge-key": "type",
+          "x-kubernetes-patch-strategy": "merge"
+        },
+        "consumers": {
+          "description": "Total number of consumers actually running in the consumer group.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "maxAllowedVReplicas": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "observedGeneration": {
+          "description": "ObservedGeneration is the 'Generation' of the Service that was last processed by the controller.",
+          "type": "integer",
+          "format": "int64"
+        },
+        "placements": {
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/dev.knative.duck.v1alpha1.Placement"
+          }
+        },
+        "selector": {
+          "description": "Use for labelSelectorPath when scaling Kafka source",
+          "type": "string"
+        },
+        "sinkAudience": {
+          "description": "SinkAudience is the OIDC audience of the sink.",
+          "type": "string"
+        },
+        "sinkCACerts": {
+          "description": "SinkCACerts are Certification Authority (CA) certificates in PEM format according to https://www.rfc-editor.org/rfc/rfc7468.",
+          "type": "string"
+        },
+        "sinkUri": {
+          "description": "SinkURI is the current active sink URI that has been configured for the Source.",
+          "$ref": "#/definitions/dev.knative.pkg.apis.URL"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "sources.knative.dev",
+        "Version": "v1",
+        "Kind": "KafkaSourceStatus",
         "Scope": "Namespaced"
       }
     },
