@@ -15,6 +15,7 @@
  */
 package io.fabric8.crd.generator;
 
+import io.fabric8.crd.generator.annotation.PrinterColumnFormat;
 import io.fabric8.crd.generator.decorator.Decorator;
 import io.fabric8.crd.generator.visitor.*;
 import io.fabric8.kubernetes.client.utils.Utils;
@@ -82,8 +83,10 @@ public abstract class AbstractCustomResourceHandler {
     Map<String, Property> additionalPrinterColumns = new HashMap<>(additionalPrinterColumnDetector.getProperties());
     additionalPrinterColumns.forEach((path, property) -> {
       Map<String, Object> parameters = property.getAnnotations().stream()
-          .filter(a -> a.getClassRef().getName().equals("PrinterColumn")).map(AnnotationRef::getParameters)
-          .findFirst().orElse(Collections.emptyMap());
+          .filter(a -> a.getClassRef().getName().equals("PrinterColumn"))
+          .map(AnnotationRef::getParameters)
+          .findFirst()
+          .orElse(Collections.emptyMap());
       String type = AbstractJsonSchema.getSchemaTypeFor(property.getTypeRef());
       String column = (String) parameters.get("name");
       if (Utils.isNullOrEmpty(column)) {
@@ -92,6 +95,12 @@ public abstract class AbstractCustomResourceHandler {
       String description = property.getComments().stream().filter(l -> !l.trim().startsWith("@"))
           .collect(Collectors.joining(" ")).trim();
       String format = (String) parameters.get("format");
+
+      String format = parameters.get("format") != null
+                      && !PrinterColumnFormat.NONE.equals(parameters.get("format"))
+        ? ((PrinterColumnFormat) parameters.get("format")).getValue()
+        : null;
+
       int priority = (int) parameters.getOrDefault("priority", 0);
 
       resources.decorate(

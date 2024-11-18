@@ -37,7 +37,7 @@ public @interface PrinterColumn {
    *
    * @return the format or empty string if no format is specified.
    */
-  String format() default "";
+  PrinterColumnFormat format() default PrinterColumnFormat.NONE;
 
   /**
    * The printer column priority.
