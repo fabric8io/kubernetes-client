@@ -164,6 +164,7 @@
     <sonar-maven-plugin.version>4.0.0.4121</sonar-maven-plugin.version>
     <nexus-staging-maven-plugin>1.7.0</nexus-staging-maven-plugin>
     <spotless-maven-plugin.version>2.43.0</spotless-maven-plugin.version>
+    <really-executable-jar-maven-plugin.version>2.1.1</really-executable-jar-maven-plugin.version>
 
     <!-- Other options -->
     <maven.compiler.source>11</maven.compiler.source>
@@ -980,6 +981,10 @@
           <version>${maven.resources.plugin.version}</version>
         </plugin>
         <plugin>
+          <artifactId>maven-shade-plugin</artifactId>
+          <version>${maven.shade.plugin.version}</version>
+        </plugin>
+        <plugin>
           <artifactId>maven-install-plugin</artifactId>
           <version>${maven.install.plugin.version}</version>
         </plugin>
@@ -1043,6 +1048,11 @@
           <version>${gradle-api-maven-plugin.version}</version>
           <extensions>true</extensions>
         </plugin>
+        <plugin>
+          <groupId>org.skife.maven</groupId>
+          <artifactId>really-executable-jar-maven-plugin</artifactId>
+          <version>${really-executable-jar-maven-plugin.version}</version>
+        </plugin>
       </plugins>
     </pluginManagement>
     <plugins>
@@ -1104,6 +1114,7 @@
               <file>ide-config/eclipse.importorder</file>
             </importOrder>
             <removeUnusedImports/>
+            <toggleOffOn/>
           </java>
           <groovy>
             <includes>
