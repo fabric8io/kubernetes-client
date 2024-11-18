@@ -24,6 +24,7 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.Executor;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.locks.ReadWriteLock;
@@ -172,6 +173,32 @@ public class SharedProcessor<T> {
       return listener;
     } finally {
       lock.writeLock().unlock();
+    }
+  }
+
+  public Optional<ProcessorListener<T>> removeProcessorListener(ResourceEventHandler<? super T> handler) {
+    lock.writeLock().lock();
+    try {
+      var targetListener = this.listeners.stream().filter(l->l.getHandler() == handler).findFirst();
+      targetListener.ifPresent(l->{
+        this.listeners.remove(l);
+        if (l.isReSync()) {
+          this.syncingListeners.remove(l);
+        }
+      });
+      return targetListener;
+    } finally {
+      lock.writeLock().unlock();
+    }
+  }
+
+  public Optional<Long> getMinimalNonZeroResyncPeriod() {
+    lock.readLock().lock();
+    try {
+     return this.listeners.stream().map(ProcessorListener::getResyncPeriodInMillis)
+        .filter(p->p > 0L).min(Long::compareTo);
+    } finally {
+      lock.readLock().unlock();
     }
   }
 
