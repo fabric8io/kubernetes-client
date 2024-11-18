@@ -73,6 +73,11 @@ public interface SharedIndexInformer<T> extends AutoCloseable {
    */
   SharedIndexInformer<T> addEventHandler(ResourceEventHandler<? super T> handler);
 
+  /**
+   * Remove event handler.
+   *
+   * @param handler event handler
+   */
   SharedIndexInformer<T> removeEventHandler(ResourceEventHandler<? super T> handler);
 
 
