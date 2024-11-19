@@ -9,7 +9,7 @@ package io.fabric8.crd.generator.annotation;
  */
 public enum PrinterColumnFormat {
 
-  NONE(""),
+  NONE(null),
   INT32("int32"),
   INT64("int64"),
   FLOAT("float"),
