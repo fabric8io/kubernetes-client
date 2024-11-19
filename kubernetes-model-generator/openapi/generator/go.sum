@@ -1107,8 +1107,8 @@ github.com/stvp/go-udp-testing v0.0.0-20201019212854-469649b16807/go.mod h1:7jxm
 github.com/subosito/gotenv v1.2.0/go.mod h1:N0PQaV/YGNqwC0u51sEeR/aUtSLEXKX9iv69rRypqCw=
 github.com/syndtr/gocapability v0.0.0-20200815063812-42c35b437635 h1:kdXcSzyDtseVEc4yCz2qF8ZrQvIDBJLl4S1c3GCXmoI=
 github.com/syndtr/gocapability v0.0.0-20200815063812-42c35b437635/go.mod h1:hkRG7XYTFWNJGYcbNJQlaLq0fg1yr4J4t/NcTQtrfww=
-github.com/tektoncd/pipeline v0.65.1 h1:7Ee/nqG+QWE25NGzwKZdFE0p5COb/aljfDysUFv8+0o=
-github.com/tektoncd/pipeline v0.65.1/go.mod h1:V3cyfxxc7b3GLT2a13GX2mWA86qmxWhh4mOp4gfFQwQ=
+github.com/tektoncd/pipeline v0.65.2 h1:N63Xb9uiunewPVDTz4nGamJOtVg+Q38Cy4LRpvr+2e4=
+github.com/tektoncd/pipeline v0.65.2/go.mod h1:V3cyfxxc7b3GLT2a13GX2mWA86qmxWhh4mOp4gfFQwQ=
 github.com/tektoncd/triggers v0.30.0 h1:1RV3yxRlEN565qHYG8vIKyfrU3QVZkPuv67qurLeSYg=
 github.com/tektoncd/triggers v0.30.0/go.mod h1:YkhGaFuL+z4aErBHz66di1dwuDjowmryTq6OAfQvpus=
 github.com/tidwall/gjson v1.12.1 h1:ikuZsLdhr8Ws0IdROXUS1Gi4v9Z4pGqpX/CvJkxvfpo=
