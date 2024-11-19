@@ -97,7 +97,6 @@ public abstract class AbstractCustomResourceHandler {
           .collect(Collectors.joining(" ")).trim();
 
       String format = findPrinterColumnFormat(parameters.get("format"))
-          .filter(f -> f.equals(PrinterColumnFormat.NONE))
           .map(PrinterColumnFormat::getValue)
           .orElse(null);
 
