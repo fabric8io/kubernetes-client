@@ -39,6 +39,9 @@
 * Fix #6158: Removed deprecated methods from `io.fabric8.kubernetes.client.utils.IOHelpers`
 * Fix #6361: Renamed SettableBeanPropertyDelegate to SettableBeanPropertyDelegating
 * Fix #6603: Removed deprecated `io.fabric8.openshift.api.model.runtime.RawExtension` class
+* Fix #6605: Removed deprecated `ApiVersionUtil` classes in extension modules
+* Fix #6609: Removed deprecated `io.fabric8.crd.generator.CRDInfo.getVersion` method
+* Fix #6612: Removed deprecated `io.fabric8.kubernetes.client.Client.isAdaptable` method
 
 ### 6.13.4 (2024-09-25)
 

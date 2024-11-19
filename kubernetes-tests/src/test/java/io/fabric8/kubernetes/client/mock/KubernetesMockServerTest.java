@@ -31,7 +31,6 @@ import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.fabric8.openshift.api.model.Route;
-import io.fabric8.openshift.client.OpenShiftClient;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -62,11 +61,9 @@ class KubernetesMockServerTest {
   @Test
   void testOpenShiftSupport() {
     server.setUnsupported("openshift.io");
-    assertTrue(client.isAdaptable(OpenShiftClient.class));
     assertFalse(client.supports(Route.class));
     assertTrue(client.supports(Pod.class));
     server.reset();
-    assertTrue(client.isAdaptable(OpenShiftClient.class));
     assertTrue(client.supports(Route.class));
   }
 

@@ -217,12 +217,6 @@ public abstract class BaseClient implements Client {
   }
 
   @Override
-  public <C extends Client> Boolean isAdaptable(Class<C> type) {
-    adapt(type);
-    return true;
-  }
-
-  @Override
   public <R extends KubernetesResource> boolean supports(Class<R> type) {
     final String typeApiVersion = HasMetadata.getApiVersion(type);
     if (matchingGroupPredicate != null) {
