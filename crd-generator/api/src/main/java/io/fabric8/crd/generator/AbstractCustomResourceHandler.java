@@ -26,6 +26,7 @@ import io.sundr.model.TypeDef;
 import io.sundr.model.TypeDefBuilder;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -94,12 +95,10 @@ public abstract class AbstractCustomResourceHandler {
       }
       String description = property.getComments().stream().filter(l -> !l.trim().startsWith("@"))
           .collect(Collectors.joining(" ")).trim();
-      String format = (String) parameters.get("format");
 
-      String format = parameters.get("format") != null
-                      && !PrinterColumnFormat.NONE.equals(parameters.get("format"))
-        ? ((PrinterColumnFormat) parameters.get("format")).getValue()
-        : null;
+      String format = findPrinterColumnFormat(parameters.get("format"))
+          .map(PrinterColumnFormat::getValue)
+          .orElse(null);
 
       int priority = (int) parameters.getOrDefault("priority", 0);
 
@@ -186,4 +185,19 @@ public abstract class AbstractCustomResourceHandler {
   protected abstract void addDecorators(CustomResourceInfo config, TypeDef def,
       Optional<String> specReplicasPath, Optional<String> statusReplicasPath,
       Optional<String> labelSelectorPath);
+
+  private static Optional<PrinterColumnFormat> findPrinterColumnFormat(Object o) {
+    if (o == null) {
+      return Optional.empty();
+    }
+
+    if (o instanceof PrinterColumnFormat) {
+      return Optional.of((PrinterColumnFormat) o);
+    }
+
+    String symbol = o.toString();
+    return Arrays.stream(PrinterColumnFormat.values())
+        .filter(f -> f.name().equals(symbol))
+        .findFirst();
+  }
 }

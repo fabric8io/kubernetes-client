@@ -16,6 +16,7 @@
 package io.fabric8.crd.generator.zookeeper.v1;
 
 import io.fabric8.crd.generator.annotation.PrinterColumn;
+import io.fabric8.crd.generator.annotation.PrinterColumnFormat;
 import io.fabric8.kubernetes.model.annotation.LabelSelector;
 import io.fabric8.kubernetes.model.annotation.StatusReplicas;
 
@@ -34,6 +35,9 @@ public class ZookeeperStatus {
 
   @PrinterColumn
   private long uptime;
+
+  @PrinterColumn(format = PrinterColumnFormat.DATE)
+  private String uptimeDate;
 
   public long getUptime() {
     return this.uptime;

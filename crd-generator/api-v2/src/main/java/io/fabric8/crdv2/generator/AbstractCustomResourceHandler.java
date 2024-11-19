@@ -21,7 +21,6 @@ import io.fabric8.crd.generator.annotation.PrinterColumnFormat;
 import io.fabric8.crd.generator.annotation.SelectableField;
 import io.fabric8.crdv2.generator.AbstractJsonSchema.AnnotationMetadata;
 import io.fabric8.kubernetes.api.model.HasMetadata;
-import io.fabric8.kubernetes.client.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
