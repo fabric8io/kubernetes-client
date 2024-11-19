@@ -23,19 +23,8 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class AdaptTest {
-
-  @Test
-  void testAdaptDisabledCheck() {
-    // Given
-    OpenShiftClient client = new KubernetesClientBuilder()
-        .withConfig(new OpenShiftConfigBuilder().withDisableApiGroupCheck(true).build()).build().adapt(OpenShiftClient.class);
-
-    // When + Then
-    assertTrue(client.isAdaptable(OpenShiftClient.class));
-  }
 
   @Test
   void testAdaptDSLs() {

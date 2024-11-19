@@ -36,7 +36,7 @@ public class URLFromOpenshiftRouteImpl implements ServiceToURLProvider {
   public String getURL(Service service, String portName, String namespace, KubernetesClient client) {
     String serviceName = service.getMetadata().getName();
     ServicePort port = URLFromServiceUtil.getServicePortByName(service, portName);
-    if (port != null && port.getName() != null && client.isAdaptable(OpenShiftClient.class)) {
+    if (port != null && port.getName() != null) {
       try {
         String serviceProtocol = port.getProtocol();
         OpenShiftClient openShiftClient = client.adapt(OpenShiftClient.class);

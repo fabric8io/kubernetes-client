@@ -24,7 +24,6 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Tag("OSCI")
 @KubernetesTest(createEphemeralNamespace = false)
@@ -37,11 +36,5 @@ class AdaptIT {
   void testAdaptToOpenShift() {
     // When + Then
     assertNotNull(client.adapt(OpenShiftClient.class));
-  }
-
-  @Test
-  void testIsAdaptable() {
-    // When + Then
-    assertTrue(client.isAdaptable(OpenShiftClient.class));
   }
 }

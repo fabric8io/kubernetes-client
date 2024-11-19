@@ -33,17 +33,6 @@ import java.net.URL;
 public interface Client extends Closeable {
 
   /**
-   * Checks if the client can be adapted to another client type and if that target client is supported.
-   *
-   * @param type The target client class.
-   * @param <C> The target client type.
-   * @return Returns true if a working {@link io.fabric8.kubernetes.client.extension.ExtensionAdapter} is found.
-   * @deprecated if the client can test for support, then use adapt(type).isSupported() instead.
-   */
-  @Deprecated
-  <C extends Client> Boolean isAdaptable(Class<C> type);
-
-  /**
    * Checks the Kubernetes server for support for the given KubernetesResource type.
    *
    * <p>

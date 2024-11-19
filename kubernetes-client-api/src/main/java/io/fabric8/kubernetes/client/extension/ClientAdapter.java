@@ -59,11 +59,6 @@ public abstract class ClientAdapter<C extends ClientAdapter<C>> implements Clien
   }
 
   @Override
-  public <A extends Client> Boolean isAdaptable(Class<A> type) {
-    return client.isAdaptable(type);
-  }
-
-  @Override
   public <T extends KubernetesResource> boolean supports(Class<T> type) {
     return client.supports(type);
   }
