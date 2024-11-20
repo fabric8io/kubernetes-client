@@ -22,7 +22,6 @@ import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
 import io.fabric8.kubernetes.client.NamespacedKubernetesClientAdapter;
 import io.fabric8.kubernetes.client.OAuthTokenProvider;
 import io.fabric8.kubernetes.client.impl.KubernetesClientImpl;
-import io.fabric8.kubernetes.client.impl.ResourceHandler;
 
 import java.util.Map;
 
@@ -158,22 +157,6 @@ public class ManagedKubernetesClient extends NamespacedKubernetesClientAdapter<K
   @org.osgi.service.component.annotations.Deactivate
   public void deactivate() {
     this.close();
-  }
-
-  /**
-   * @deprecated ResourceHandlers to not need bound
-   */
-  @Deprecated
-  public void bindResourceHandler(ResourceHandler resourceHandler) {
-    // not used
-  }
-
-  /**
-   * @deprecated ResourceHandlers to not need bound
-   */
-  @Deprecated
-  public void unbindResourceHandler(ResourceHandler resourceHandler) {
-    // not used
   }
 
   public void bindOAuthTokenProvider(OAuthTokenProvider provider) {
