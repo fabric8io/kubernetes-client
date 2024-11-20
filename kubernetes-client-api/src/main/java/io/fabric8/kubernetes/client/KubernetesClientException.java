@@ -63,25 +63,7 @@ public class KubernetesClientException extends RuntimeException {
     this.requestMetadata = requestMetadata == null ? RequestMetadata.EMPTY : requestMetadata;
   }
 
-  /**
-   * @deprecated use {@link #KubernetesClientException(String, Throwable, int, Status, HttpRequest)} instead
-   */
-  @Deprecated
-  public KubernetesClientException(String message, int code, Status status, String group, String version, String resourcePlural,
-      String namespace) {
-    this(message, null, code, status,
-        RequestMetadata.builder().group(group).version(version).plural(resourcePlural).namespace(namespace).build());
-  }
-
-  /**
-   * @deprecated use {@link #KubernetesClientException(String, Throwable, int, Status, HttpRequest)} instead
-   */
-  @Deprecated
-  public KubernetesClientException(String message, Throwable t, String group, String version, String resourcePlural,
-      String namespace) {
-    this(message, t, -1, null,
-        RequestMetadata.builder().group(group).version(version).plural(resourcePlural).namespace(namespace).build());
-  }
+   // Removed deprecated constructors and methods
 
   public Status getStatus() {
     return status;
@@ -159,18 +141,7 @@ public class KubernetesClientException extends RuntimeException {
         .namespace(spec.getNamespace()).name(spec.getName()).build());
   }
 
-  /**
-   * @deprecated Use {@link #launderThrowable(OperationInfo, Throwable)} instead
-   */
-  @Deprecated
-  public static RuntimeException launderThrowable(OperationInfo spec, Status status, Throwable cause) {
-    StringBuilder sb = new StringBuilder();
-    sb.append(describeOperation(spec)).append(" failed.");
-    if (status != null && Utils.isNotNullOrEmpty(status.getMessage())) {
-      sb.append("Reason: ").append(status.getMessage());
-    }
-    return launderThrowable(sb.toString(), cause);
-  }
+   // Removed deprecated constructors and methods
 
   private static String describeOperation(OperationInfo operation) {
     StringBuilder sb = new StringBuilder();
