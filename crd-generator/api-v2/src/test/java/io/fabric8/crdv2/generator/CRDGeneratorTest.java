@@ -408,6 +408,7 @@ class CRDGeneratorTest {
       assertEquals(".status.category", columnDefinition.getJsonPath());
       assertEquals("jokeCategory", columnDefinition.getName());
       assertEquals(0, columnDefinition.getPriority());
+      assertEquals(".spec.category", version.getSelectableFields().get(0).getJsonPath());
       CustomResourceValidation schema = version.getSchema();
       assertNotNull(schema);
       Map<String, JSONSchemaProps> properties = schema.getOpenAPIV3Schema().getProperties();

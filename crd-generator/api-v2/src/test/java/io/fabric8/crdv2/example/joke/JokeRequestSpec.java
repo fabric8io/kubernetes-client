@@ -17,6 +17,7 @@ package io.fabric8.crdv2.example.joke;
 
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 import io.fabric8.crd.generator.annotation.PrinterColumn;
+import io.fabric8.crd.generator.annotation.SelectableField;
 
 public class JokeRequestSpec {
 
@@ -39,6 +40,7 @@ public class JokeRequestSpec {
     explicit
   }
 
+  @SelectableField
   @PrinterColumn(name = "jokeCategory", priority = 1)
   @JsonPropertyDescription("category-description")
   private Category category = Category.Any;

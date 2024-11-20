@@ -29,10 +29,12 @@ import com.fasterxml.jackson.module.jsonSchema.types.ReferenceSchema;
 import com.fasterxml.jackson.module.jsonSchema.types.StringSchema;
 import com.fasterxml.jackson.module.jsonSchema.types.ValueTypeSchema;
 import io.fabric8.crd.generator.annotation.AdditionalPrinterColumn;
+import io.fabric8.crd.generator.annotation.AdditionalSelectableField;
 import io.fabric8.crd.generator.annotation.PreserveUnknownFields;
 import io.fabric8.crd.generator.annotation.PrinterColumn;
 import io.fabric8.crd.generator.annotation.SchemaFrom;
 import io.fabric8.crd.generator.annotation.SchemaSwap;
+import io.fabric8.crd.generator.annotation.SelectableField;
 import io.fabric8.crdv2.generator.InternalSchemaSwaps.SwapResult;
 import io.fabric8.crdv2.generator.ResolvingContext.GeneratorObjectSchema;
 import io.fabric8.generator.annotation.Default;
@@ -95,6 +97,7 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
   private T root;
   private Set<String> dependentClasses = new HashSet<>();
   private Set<AdditionalPrinterColumn> additionalPrinterColumns = new HashSet<>();
+  private Set<AdditionalSelectableField> additionalSelectableFields = new HashSet<>();
 
   public static class AnnotationMetadata {
     public final Annotation annotation;
@@ -111,8 +114,12 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
   public AbstractJsonSchema(ResolvingContext resolvingContext, Class<?> def) {
     this.resolvingContext = resolvingContext;
     // TODO: could make this configurable, and could stop looking for single valued ones - or warn
-    Stream.of(SpecReplicas.class, StatusReplicas.class, LabelSelector.class, PrinterColumn.class)
-        .forEach(clazz -> pathMetadata.put(clazz, new LinkedHashMap<>()));
+    Stream.of(
+        SpecReplicas.class,
+        StatusReplicas.class,
+        LabelSelector.class,
+        PrinterColumn.class,
+        SelectableField.class).forEach(clazz -> pathMetadata.put(clazz, new LinkedHashMap<>()));
 
     this.root = resolveRoot(def);
   }
@@ -129,7 +136,7 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
     return ofNullable(pathMetadata.get(clazz)).flatMap(m -> m.keySet().stream().findFirst());
   }
 
-  public Map<String, AnnotationMetadata> getAllPaths(Class<PrinterColumn> clazz) {
+  public Map<String, AnnotationMetadata> getAllPaths(Class<? extends Annotation> clazz) {
     return ofNullable(pathMetadata.get(clazz)).orElse(new LinkedHashMap<>());
   }
 
@@ -145,6 +152,8 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
     JsonSchema schema = resolvingContext.toJsonSchema(definition);
     consumeRepeatingAnnotation(definition, AdditionalPrinterColumn.class,
         additionalPrinterColumns::add);
+    consumeRepeatingAnnotation(definition, AdditionalSelectableField.class,
+        additionalSelectableFields::add);
     if (schema instanceof GeneratorObjectSchema) {
       return resolveObject(new LinkedHashMap<>(), schemaSwaps, schema, "kind", "apiVersion", "metadata");
     }
@@ -604,6 +613,10 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
 
   public Set<AdditionalPrinterColumn> getAdditionalPrinterColumns() {
     return additionalPrinterColumns;
+  }
+
+  public Set<AdditionalSelectableField> getAdditionalSelectableFields() {
+    return additionalSelectableFields;
   }
 
 }
