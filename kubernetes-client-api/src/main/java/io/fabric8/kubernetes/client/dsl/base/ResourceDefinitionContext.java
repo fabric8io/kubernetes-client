@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client.dsl.base;
 
+import io.fabric8.kubernetes.api.Pluralize;
 import io.fabric8.kubernetes.api.model.APIResource;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -22,6 +23,7 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.utils.ApiVersionUtil;
 import io.fabric8.kubernetes.client.utils.Utils;
 
+import java.util.Locale;
 import java.util.Optional;
 
 public class ResourceDefinitionContext {
@@ -56,7 +58,7 @@ public class ResourceDefinitionContext {
       if (kind == null) {
         throw new IllegalArgumentException("Neither kind nor plural was set, at least one is required");
       }
-      plural = Utils.getPluralFromKind(kind);
+      plural = Pluralize.toPlural(kind.toLowerCase(Locale.ROOT));
     }
   }
 

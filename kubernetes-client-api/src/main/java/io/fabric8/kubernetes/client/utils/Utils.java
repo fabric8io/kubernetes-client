@@ -15,7 +15,6 @@
  */
 package io.fabric8.kubernetes.client.utils;
 
-import io.fabric8.kubernetes.api.Pluralize;
 import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.model.annotation.Group;
@@ -339,17 +338,6 @@ public class Utils {
       // Ignore
     }
     return null;
-  }
-
-  /**
-   *
-   * @param kind
-   * @return
-   * @deprecated use {@link io.fabric8.kubernetes.api.model.HasMetadata#getPlural(Class)}
-   */
-  @Deprecated
-  public static String getPluralFromKind(String kind) {
-    return Pluralize.toPlural(kind.toLowerCase(Locale.ROOT));
   }
 
   /**
