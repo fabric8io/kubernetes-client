@@ -63,7 +63,7 @@ public class KubernetesClientException extends RuntimeException {
     this.requestMetadata = requestMetadata == null ? RequestMetadata.EMPTY : requestMetadata;
   }
 
-   // Removed deprecated constructors and methods
+  // Removed deprecated constructors and methods
 
   public Status getStatus() {
     return status;
@@ -141,7 +141,7 @@ public class KubernetesClientException extends RuntimeException {
         .namespace(spec.getNamespace()).name(spec.getName()).build());
   }
 
-   // Removed deprecated constructors and methods
+  // Removed deprecated constructors and methods
 
   private static String describeOperation(OperationInfo operation) {
     StringBuilder sb = new StringBuilder();
