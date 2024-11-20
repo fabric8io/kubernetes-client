@@ -5,7 +5,7 @@ go 1.23
 toolchain go1.23.1
 
 require (
-	github.com/cert-manager/cert-manager v1.16.1
+	github.com/cert-manager/cert-manager v1.16.2
 	github.com/chaos-mesh/chaos-mesh/api v0.0.0
 	github.com/getkin/kin-openapi v0.128.0
 	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.7.5
