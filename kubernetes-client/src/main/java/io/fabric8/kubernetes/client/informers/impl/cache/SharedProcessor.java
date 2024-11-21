@@ -179,8 +179,8 @@ public class SharedProcessor<T> {
   public Optional<ProcessorListener<T>> removeProcessorListener(ResourceEventHandler<? super T> handler) {
     lock.writeLock().lock();
     try {
-      var targetListener = this.listeners.stream().filter(l->l.getHandler() == handler).findFirst();
-      targetListener.ifPresent(l->{
+      var targetListener = this.listeners.stream().filter(l -> l.getHandler() == handler).findFirst();
+      targetListener.ifPresent(l -> {
         this.listeners.remove(l);
         if (l.isReSync()) {
           this.syncingListeners.remove(l);
@@ -195,8 +195,8 @@ public class SharedProcessor<T> {
   public Optional<Long> getMinimalNonZeroResyncPeriod() {
     lock.readLock().lock();
     try {
-     return this.listeners.stream().map(ProcessorListener::getResyncPeriodInMillis)
-        .filter(p->p > 0L).min(Long::compareTo);
+      return this.listeners.stream().map(ProcessorListener::getResyncPeriodInMillis)
+          .filter(p -> p > 0L).min(Long::compareTo);
     } finally {
       lock.readLock().unlock();
     }

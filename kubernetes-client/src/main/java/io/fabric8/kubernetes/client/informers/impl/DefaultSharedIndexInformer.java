@@ -106,11 +106,11 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
   public SharedIndexInformer<T> removeEventHandler(ResourceEventHandler<? super T> handler) {
     var listener = this.processor.removeProcessorListener(handler);
     if (!started.get() && listener.isPresent()) {
-       var listenerResyncPeriod = listener.orElseThrow().getResyncPeriodInMillis();
-       if (listenerResyncPeriod != 0 && resyncCheckPeriodMillis == listenerResyncPeriod) {
-         this.processor.getMinimalNonZeroResyncPeriod()
-            .ifPresent(aLong -> this.resyncCheckPeriodMillis = aLong);
-       }
+      var listenerResyncPeriod = listener.orElseThrow().getResyncPeriodInMillis();
+      if (listenerResyncPeriod != 0 && resyncCheckPeriodMillis == listenerResyncPeriod) {
+        this.processor.getMinimalNonZeroResyncPeriod()
+            .ifPresent(l -> this.resyncCheckPeriodMillis = l);
+      }
     }
     return this;
   }
