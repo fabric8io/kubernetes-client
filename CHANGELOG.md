@@ -24,10 +24,11 @@
 * Fix #6052: Removed dependency on no longer maintained com.github.mifmif:generex
 
 #### New Features
-* Fix #6150: Config uses `proxy-url` in kubeconfig's cluster configuration
+* Fix #5719: io.fabric8:mockwebserver is now based on Vert.x
 * Fix #5944: (crd-generator) Add CRD-Generator Maven Plugin
 * Fix #5958: (crd-generator) Add CRD-Generator CLI Application
-* Fix #5719: io.fabric8:mockwebserver is now based on Vert.x
+* Fix #6145: Introduced `io.fabric8:kubernetes-model-validator` module to validate Kubernetes resources
+* Fix #6150: Config uses `proxy-url` in kubeconfig's cluster configuration
 
 #### _**Note**_: Breaking changes
 * Check detailed migration documentation for breaking changes in [7.0.0](./doc/MIGRATION-v7.md)
