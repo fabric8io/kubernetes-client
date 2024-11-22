@@ -20,7 +20,6 @@ import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.client.informers.cache.BasicItemStore;
 import io.fabric8.kubernetes.client.informers.cache.Cache;
 import io.fabric8.kubernetes.client.informers.cache.ItemStore;
-import io.fabric8.kubernetes.client.utils.ReflectUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
 
 import java.util.ArrayList;
@@ -322,26 +321,22 @@ public class CacheImpl<T extends HasMetadata> implements Cache<T> {
    * @return the key
    */
   public static String metaNamespaceKeyFunc(Object obj) {
-    try {
-      if (obj == null) {
-        return "";
-      }
-      ObjectMeta metadata;
-      if (obj instanceof String) {
-        return (String) obj;
-      } else if (obj instanceof ObjectMeta) {
-        metadata = (ObjectMeta) obj;
-      } else {
-        metadata = ReflectUtils.objectMetadata(obj);
-        if (metadata == null) {
-          throw new RuntimeException("Object is bad :" + obj);
-        }
-      }
-
-      return namespaceKeyFunc(metadata.getNamespace(), metadata.getName());
-    } catch (ReflectiveOperationException e) {
-      throw new RuntimeException(e);
+    if (obj == null) {
+      return "";
     }
+    ObjectMeta metadata = null;
+    if (obj instanceof String) {
+      return (String) obj;
+    } else if (obj instanceof ObjectMeta) {
+      metadata = (ObjectMeta) obj;
+    } else if (obj instanceof HasMetadata) {
+      metadata = ((HasMetadata) obj).getMetadata();
+    }
+    if (metadata == null) {
+      throw new RuntimeException("Object is bad :" + obj);
+    }
+
+    return namespaceKeyFunc(metadata.getNamespace(), metadata.getName());
   }
 
   /**
@@ -363,12 +358,15 @@ public class CacheImpl<T extends HasMetadata> implements Cache<T> {
    * @return the indexed value
    */
   public static List<String> metaNamespaceIndexFunc(Object obj) {
-    try {
-      ObjectMeta metadata = ReflectUtils.objectMetadata(obj);
-      return metadata == null ? Collections.emptyList() : Collections.singletonList(metadata.getNamespace());
-    } catch (ReflectiveOperationException e) {
-      throw new RuntimeException(e);
+    final ObjectMeta metadata;
+    if (obj instanceof HasMetadata) {
+      metadata = ((HasMetadata) obj).getMetadata();
+    } else if (obj instanceof ObjectMeta) {
+      metadata = (ObjectMeta) obj;
+    } else {
+      metadata = null;
     }
+    return metadata == null ? Collections.emptyList() : Collections.singletonList(metadata.getNamespace());
   }
 
   @Override
