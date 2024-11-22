@@ -81,7 +81,7 @@ public class InterceptorRequest implements Editable<InterceptorRequestBuilder> ,
     @JsonProperty("interceptor_params")
     @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializerForMap.class)
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Object> interceptor_params = new LinkedHashMap<>();
+    private Map<String, Object> interceptorParams = new LinkedHashMap<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -92,13 +92,13 @@ public class InterceptorRequest implements Editable<InterceptorRequestBuilder> ,
     public InterceptorRequest() {
     }
 
-    public InterceptorRequest(String body, TriggerContext context, Map<String, Object> extensions, Map<String, List<String>> header, Map<String, Object> interceptor_params) {
+    public InterceptorRequest(String body, TriggerContext context, Map<String, Object> extensions, Map<String, List<String>> header, Map<String, Object> interceptorParams) {
         super();
         this.body = body;
         this.context = context;
         this.extensions = extensions;
         this.header = header;
-        this.interceptor_params = interceptor_params;
+        this.interceptorParams = interceptorParams;
     }
 
     @JsonProperty("body")
@@ -146,14 +146,14 @@ public class InterceptorRequest implements Editable<InterceptorRequestBuilder> ,
 
     @JsonProperty("interceptor_params")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Map<String, Object> getInterceptor_params() {
-        return interceptor_params;
+    public Map<String, Object> getInterceptorParams() {
+        return interceptorParams;
     }
 
     @JsonProperty("interceptor_params")
     @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializerForMap.class)
-    public void setInterceptor_params(Map<String, Object> interceptor_params) {
-        this.interceptor_params = interceptor_params;
+    public void setInterceptorParams(Map<String, Object> interceptorParams) {
+        this.interceptorParams = interceptorParams;
     }
 
     @JsonIgnore

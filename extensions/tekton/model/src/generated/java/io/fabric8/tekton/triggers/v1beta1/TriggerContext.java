@@ -65,11 +65,11 @@ public class TriggerContext implements Editable<TriggerContextBuilder> , Kuberne
 {
 
     @JsonProperty("event_id")
-    private String event_id;
+    private String eventId;
     @JsonProperty("event_url")
-    private String event_url;
+    private String eventUrl;
     @JsonProperty("trigger_id")
-    private String trigger_id;
+    private String triggerId;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -80,41 +80,41 @@ public class TriggerContext implements Editable<TriggerContextBuilder> , Kuberne
     public TriggerContext() {
     }
 
-    public TriggerContext(String event_id, String event_url, String trigger_id) {
+    public TriggerContext(String eventId, String eventUrl, String triggerId) {
         super();
-        this.event_id = event_id;
-        this.event_url = event_url;
-        this.trigger_id = trigger_id;
+        this.eventId = eventId;
+        this.eventUrl = eventUrl;
+        this.triggerId = triggerId;
     }
 
     @JsonProperty("event_id")
-    public String getEvent_id() {
-        return event_id;
+    public String getEventId() {
+        return eventId;
     }
 
     @JsonProperty("event_id")
-    public void setEvent_id(String event_id) {
-        this.event_id = event_id;
+    public void setEventId(String eventId) {
+        this.eventId = eventId;
     }
 
     @JsonProperty("event_url")
-    public String getEvent_url() {
-        return event_url;
+    public String getEventUrl() {
+        return eventUrl;
     }
 
     @JsonProperty("event_url")
-    public void setEvent_url(String event_url) {
-        this.event_url = event_url;
+    public void setEventUrl(String eventUrl) {
+        this.eventUrl = eventUrl;
     }
 
     @JsonProperty("trigger_id")
-    public String getTrigger_id() {
-        return trigger_id;
+    public String getTriggerId() {
+        return triggerId;
     }
 
     @JsonProperty("trigger_id")
-    public void setTrigger_id(String trigger_id) {
-        this.trigger_id = trigger_id;
+    public void setTriggerId(String triggerId) {
+        this.triggerId = triggerId;
     }
 
     @JsonIgnore

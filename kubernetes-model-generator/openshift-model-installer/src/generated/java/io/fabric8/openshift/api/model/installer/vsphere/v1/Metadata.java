@@ -74,7 +74,7 @@ public class Metadata implements Editable<MetadataBuilder> , KubernetesResource
     @JsonProperty("password")
     private String password;
     @JsonProperty("terraform_platform")
-    private String terraform_platform;
+    private String terraformPlatform;
     @JsonProperty("username")
     private String username;
     @JsonProperty("vCenter")
@@ -89,11 +89,11 @@ public class Metadata implements Editable<MetadataBuilder> , KubernetesResource
     public Metadata() {
     }
 
-    public Metadata(List<VCenters> vCenters, String password, String terraform_platform, String username, String vCenter) {
+    public Metadata(List<VCenters> vCenters, String password, String terraformPlatform, String username, String vCenter) {
         super();
         this.vCenters = vCenters;
         this.password = password;
-        this.terraform_platform = terraform_platform;
+        this.terraformPlatform = terraformPlatform;
         this.username = username;
         this.vCenter = vCenter;
     }
@@ -120,13 +120,13 @@ public class Metadata implements Editable<MetadataBuilder> , KubernetesResource
     }
 
     @JsonProperty("terraform_platform")
-    public String getTerraform_platform() {
-        return terraform_platform;
+    public String getTerraformPlatform() {
+        return terraformPlatform;
     }
 
     @JsonProperty("terraform_platform")
-    public void setTerraform_platform(String terraform_platform) {
-        this.terraform_platform = terraform_platform;
+    public void setTerraformPlatform(String terraformPlatform) {
+        this.terraformPlatform = terraformPlatform;
     }
 
     @JsonProperty("username")

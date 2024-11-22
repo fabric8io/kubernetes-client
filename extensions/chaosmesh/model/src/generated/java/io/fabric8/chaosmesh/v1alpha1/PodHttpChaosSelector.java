@@ -77,10 +77,10 @@ public class PodHttpChaosSelector implements Editable<PodHttpChaosSelectorBuilde
     private Integer port;
     @JsonProperty("request_headers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> request_headers = new LinkedHashMap<>();
+    private Map<String, String> requestHeaders = new LinkedHashMap<>();
     @JsonProperty("response_headers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> response_headers = new LinkedHashMap<>();
+    private Map<String, String> responseHeaders = new LinkedHashMap<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -91,14 +91,14 @@ public class PodHttpChaosSelector implements Editable<PodHttpChaosSelectorBuilde
     public PodHttpChaosSelector() {
     }
 
-    public PodHttpChaosSelector(Integer code, String method, String path, Integer port, Map<String, String> request_headers, Map<String, String> response_headers) {
+    public PodHttpChaosSelector(Integer code, String method, String path, Integer port, Map<String, String> requestHeaders, Map<String, String> responseHeaders) {
         super();
         this.code = code;
         this.method = method;
         this.path = path;
         this.port = port;
-        this.request_headers = request_headers;
-        this.response_headers = response_headers;
+        this.requestHeaders = requestHeaders;
+        this.responseHeaders = responseHeaders;
     }
 
     @JsonProperty("code")
@@ -143,24 +143,24 @@ public class PodHttpChaosSelector implements Editable<PodHttpChaosSelectorBuilde
 
     @JsonProperty("request_headers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Map<String, String> getRequest_headers() {
-        return request_headers;
+    public Map<String, String> getRequestHeaders() {
+        return requestHeaders;
     }
 
     @JsonProperty("request_headers")
-    public void setRequest_headers(Map<String, String> request_headers) {
-        this.request_headers = request_headers;
+    public void setRequestHeaders(Map<String, String> requestHeaders) {
+        this.requestHeaders = requestHeaders;
     }
 
     @JsonProperty("response_headers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Map<String, String> getResponse_headers() {
-        return response_headers;
+    public Map<String, String> getResponseHeaders() {
+        return responseHeaders;
     }
 
     @JsonProperty("response_headers")
-    public void setResponse_headers(Map<String, String> response_headers) {
-        this.response_headers = response_headers;
+    public void setResponseHeaders(Map<String, String> responseHeaders) {
+        this.responseHeaders = responseHeaders;
     }
 
     @JsonIgnore

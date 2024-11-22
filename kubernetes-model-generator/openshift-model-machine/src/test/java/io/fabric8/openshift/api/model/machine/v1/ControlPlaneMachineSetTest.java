@@ -58,7 +58,7 @@ class ControlPlaneMachineSetTest {
         .hasFieldOrPropertyWithValue("state", "Active")
         .extracting(ControlPlaneMachineSetSpec::getTemplate)
         .hasFieldOrPropertyWithValue("machineType", "machines_v1beta1_machine_openshift_io")
-        .extracting(ControlPlaneMachineSetTemplate::getMachines_v1beta1_machine_openshift_io)
+        .extracting(ControlPlaneMachineSetTemplate::getMachinesV1beta1MachineOpenshiftIo)
         .hasFieldOrPropertyWithValue("failureDomains.openstack",
             Collections.singletonList(new OpenStackFailureDomainBuilder()
                 .withAvailabilityZone("nova-one")
@@ -176,7 +176,7 @@ class ControlPlaneMachineSetTest {
         .hasFieldOrPropertyWithValue("state", "Active")
         .hasFieldOrPropertyWithValue("template.machineType", "machines_v1beta1_machine_openshift_io")
         .extracting(ControlPlaneMachineSetSpec::getTemplate)
-        .extracting(ControlPlaneMachineSetTemplate::getMachines_v1beta1_machine_openshift_io)
+        .extracting(ControlPlaneMachineSetTemplate::getMachinesV1beta1MachineOpenshiftIo)
         .hasFieldOrPropertyWithValue("failureDomains.openstack",
             Collections.singletonList(new OpenStackFailureDomainBuilder()
                 .withAvailabilityZone("nova-one")

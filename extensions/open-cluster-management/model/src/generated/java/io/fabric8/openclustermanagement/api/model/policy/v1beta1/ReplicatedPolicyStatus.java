@@ -72,7 +72,7 @@ public class ReplicatedPolicyStatus implements Editable<ReplicatedPolicyStatusBu
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ReplicatedDetailsPerTemplate> details = new ArrayList<>();
     @JsonProperty("violation_message")
-    private String violation_message;
+    private String violationMessage;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -83,11 +83,11 @@ public class ReplicatedPolicyStatus implements Editable<ReplicatedPolicyStatusBu
     public ReplicatedPolicyStatus() {
     }
 
-    public ReplicatedPolicyStatus(String compliant, List<ReplicatedDetailsPerTemplate> details, String violation_message) {
+    public ReplicatedPolicyStatus(String compliant, List<ReplicatedDetailsPerTemplate> details, String violationMessage) {
         super();
         this.compliant = compliant;
         this.details = details;
-        this.violation_message = violation_message;
+        this.violationMessage = violationMessage;
     }
 
     @JsonProperty("compliant")
@@ -112,13 +112,13 @@ public class ReplicatedPolicyStatus implements Editable<ReplicatedPolicyStatusBu
     }
 
     @JsonProperty("violation_message")
-    public String getViolation_message() {
-        return violation_message;
+    public String getViolationMessage() {
+        return violationMessage;
     }
 
     @JsonProperty("violation_message")
-    public void setViolation_message(String violation_message) {
-        this.violation_message = violation_message;
+    public void setViolationMessage(String violationMessage) {
+        this.violationMessage = violationMessage;
     }
 
     @JsonIgnore

@@ -418,8 +418,16 @@ public class SchemaUtils {
   }
 
   public static String removeDashes(String variable) {
+    return removeSeparator("-", variable);
+  }
+
+  public static String removeUnderscores(String variable) {
+    return removeSeparator("_", variable);
+  }
+
+  public static String removeSeparator(String separator, String variable) {
     final StringBuilder sanitized = new StringBuilder();
-    for (String part : variable.split("-")) {
+    for (String part : variable.split(separator)) {
       if (sanitized.length() == 0) {
         sanitized.append(part);
       } else {
@@ -430,20 +438,20 @@ public class SchemaUtils {
   }
 
   public String sanitizeFieldName(String fieldName) {
-    final String sanitized = uncapitalize(removeDashes(fieldName));
+    final String sanitized = uncapitalize(removeUnderscores(removeDashes(fieldName)));
     final String mapped = MAPPED_WORDS.getOrDefault(sanitized, sanitized);
     final String userMapped = settings.getFieldNameMappings().getOrDefault(mapped, mapped);
     return PROTECTED_WORDS.contains(userMapped) ? "_" + userMapped : userMapped;
   }
 
   public static String getterName(String variable) {
-    final String property = removeDashes(variable);
+    final String property = removeUnderscores(removeDashes(variable));
     final String mapped = MAPPED_WORDS.getOrDefault(property, property);
     return "get".concat(capitalize(mapped));
   }
 
   public static String setterName(String variable) {
-    final String property = removeDashes(variable);
+    final String property = removeUnderscores(removeDashes(variable));
     final String mapped = MAPPED_WORDS.getOrDefault(property, property);
     return "set".concat(capitalize(mapped));
   }

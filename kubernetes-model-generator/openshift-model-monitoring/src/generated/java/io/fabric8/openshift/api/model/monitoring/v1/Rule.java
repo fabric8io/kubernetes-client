@@ -78,7 +78,7 @@ public class Rule implements Editable<RuleBuilder> , KubernetesResource
     @JsonProperty("for")
     private String _for;
     @JsonProperty("keep_firing_for")
-    private String keep_firing_for;
+    private String keepFiringFor;
     @JsonProperty("labels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> labels = new LinkedHashMap<>();
@@ -94,13 +94,13 @@ public class Rule implements Editable<RuleBuilder> , KubernetesResource
     public Rule() {
     }
 
-    public Rule(String alert, Map<String, String> annotations, IntOrString expr, String _for, String keep_firing_for, Map<String, String> labels, String record) {
+    public Rule(String alert, Map<String, String> annotations, IntOrString expr, String _for, String keepFiringFor, Map<String, String> labels, String record) {
         super();
         this.alert = alert;
         this.annotations = annotations;
         this.expr = expr;
         this._for = _for;
-        this.keep_firing_for = keep_firing_for;
+        this.keepFiringFor = keepFiringFor;
         this.labels = labels;
         this.record = record;
     }
@@ -147,13 +147,13 @@ public class Rule implements Editable<RuleBuilder> , KubernetesResource
     }
 
     @JsonProperty("keep_firing_for")
-    public String getKeep_firing_for() {
-        return keep_firing_for;
+    public String getKeepFiringFor() {
+        return keepFiringFor;
     }
 
     @JsonProperty("keep_firing_for")
-    public void setKeep_firing_for(String keep_firing_for) {
-        this.keep_firing_for = keep_firing_for;
+    public void setKeepFiringFor(String keepFiringFor) {
+        this.keepFiringFor = keepFiringFor;
     }
 
     @JsonProperty("labels")

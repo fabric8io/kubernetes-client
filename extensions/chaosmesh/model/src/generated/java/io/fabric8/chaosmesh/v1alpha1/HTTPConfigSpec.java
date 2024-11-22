@@ -63,7 +63,7 @@ public class HTTPConfigSpec implements Editable<HTTPConfigSpecBuilder> , Kuberne
 {
 
     @JsonProperty("file_path")
-    private String file_path;
+    private String filePath;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -74,19 +74,19 @@ public class HTTPConfigSpec implements Editable<HTTPConfigSpecBuilder> , Kuberne
     public HTTPConfigSpec() {
     }
 
-    public HTTPConfigSpec(String file_path) {
+    public HTTPConfigSpec(String filePath) {
         super();
-        this.file_path = file_path;
+        this.filePath = filePath;
     }
 
     @JsonProperty("file_path")
-    public String getFile_path() {
-        return file_path;
+    public String getFilePath() {
+        return filePath;
     }
 
     @JsonProperty("file_path")
-    public void setFile_path(String file_path) {
-        this.file_path = file_path;
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
     }
 
     @JsonIgnore
