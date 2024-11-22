@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1alpha1")
 @Group("bus.volcano.sh")
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public class Command implements Editable<CommandBuilder> , HasMetadata, Namespaced
 {
 

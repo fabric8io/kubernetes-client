@@ -71,7 +71,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1")
 @io.fabric8.kubernetes.model.annotation.Group("user.openshift.io")
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public class Group implements Editable<GroupBuilder> , HasMetadata
 {
 

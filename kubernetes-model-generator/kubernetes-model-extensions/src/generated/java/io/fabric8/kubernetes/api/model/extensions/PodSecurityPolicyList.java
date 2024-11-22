@@ -74,7 +74,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1beta1")
 @Group("extensions")
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public class PodSecurityPolicyList implements Editable<PodSecurityPolicyListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.extensions.PodSecurityPolicy>
 {
 

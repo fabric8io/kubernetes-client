@@ -73,7 +73,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1alpha1")
 @Group("telemetry.istio.io")
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public class Telemetry implements Editable<TelemetryBuilder> , HasMetadata, Namespaced
 {
 

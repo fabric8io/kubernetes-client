@@ -74,7 +74,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1alpha1")
 @Group("network.openshift.io")
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public class DNSNameResolverList implements Editable<DNSNameResolverListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.miscellaneous.network.v1alpha1.DNSNameResolver>
 {
 

@@ -74,7 +74,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1")
 @Group("operator.open-cluster-management.io")
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public class ClusterManagerList implements Editable<ClusterManagerListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openclustermanagement.api.model.operator.v1.ClusterManager>
 {
 

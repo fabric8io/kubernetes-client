@@ -74,7 +74,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1")
 @Group("messaging.knative.dev")
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public class InMemoryChannelList implements Editable<InMemoryChannelListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.knative.messaging.v1.InMemoryChannel>
 {
 

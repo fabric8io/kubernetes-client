@@ -74,7 +74,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1")
 @Group("acme.cert-manager.io")
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public class ChallengeList implements Editable<ChallengeListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.certmanager.api.model.acme.v1.Challenge>
 {
 

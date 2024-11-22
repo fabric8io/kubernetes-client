@@ -74,7 +74,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1beta1")
 @Group("resolution.tekton.dev")
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public class ResolutionRequestList implements Editable<ResolutionRequestListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.tekton.resolution.v1beta1.ResolutionRequest>
 {
 

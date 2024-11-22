@@ -71,7 +71,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1")
 @Group("quota.openshift.io")
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public class ClusterResourceQuota implements Editable<ClusterResourceQuotaBuilder> , HasMetadata
 {
 

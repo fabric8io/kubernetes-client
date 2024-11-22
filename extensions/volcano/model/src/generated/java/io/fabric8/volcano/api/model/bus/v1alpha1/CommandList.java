@@ -74,7 +74,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1alpha1")
 @Group("bus.volcano.sh")
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public class CommandList implements Editable<CommandListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.volcano.api.model.bus.v1alpha1.Command>
 {
 
