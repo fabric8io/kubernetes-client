@@ -87,7 +87,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1alpha1")
 @Group("")
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public class WasmPlugin implements Editable<WasmPluginBuilder> , KubernetesResource, Namespaced
 {
 

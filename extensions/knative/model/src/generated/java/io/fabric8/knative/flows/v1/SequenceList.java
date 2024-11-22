@@ -74,7 +74,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1")
 @Group("flows.knative.dev")
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public class SequenceList implements Editable<SequenceListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.knative.flows.v1.Sequence>
 {
 

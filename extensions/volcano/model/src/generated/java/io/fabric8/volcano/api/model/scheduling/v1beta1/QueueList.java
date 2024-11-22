@@ -74,7 +74,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1beta1")
 @Group("scheduling.volcano.sh")
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public class QueueList implements Editable<QueueListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.volcano.api.model.scheduling.v1beta1.Queue>
 {
 

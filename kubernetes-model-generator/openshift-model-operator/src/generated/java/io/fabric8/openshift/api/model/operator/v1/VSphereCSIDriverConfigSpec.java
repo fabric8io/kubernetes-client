@@ -63,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public class VSphereCSIDriverConfigSpec implements Editable<VSphereCSIDriverConfigSpecBuilder> , KubernetesResource
 {
 

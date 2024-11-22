@@ -72,7 +72,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v2")
 @Group("autoscaling")
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public class HorizontalPodAutoscaler implements Editable<HorizontalPodAutoscalerBuilder> , HasMetadata, Namespaced
 {
 

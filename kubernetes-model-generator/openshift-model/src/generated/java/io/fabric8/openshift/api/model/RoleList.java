@@ -74,7 +74,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1")
 @Group("authorization.openshift.io")
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public class RoleList implements Editable<RoleListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.Role>
 {
 

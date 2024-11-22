@@ -74,7 +74,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1alpha1")
 @Group("storagemigration.k8s.io")
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public class StorageVersionMigrationList implements Editable<StorageVersionMigrationListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.storagemigration.v1alpha1.StorageVersionMigration>
 {
 

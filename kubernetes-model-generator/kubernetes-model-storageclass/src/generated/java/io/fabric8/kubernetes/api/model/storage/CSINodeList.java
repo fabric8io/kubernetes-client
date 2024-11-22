@@ -74,7 +74,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1")
 @Group("storage.k8s.io")
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public class CSINodeList implements Editable<CSINodeListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.storage.CSINode>
 {
 

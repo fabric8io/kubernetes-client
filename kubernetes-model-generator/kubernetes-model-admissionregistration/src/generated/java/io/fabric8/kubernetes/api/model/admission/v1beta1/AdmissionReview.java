@@ -70,7 +70,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1beta1")
 @Group("admission.k8s.io")
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public class AdmissionReview implements Editable<AdmissionReviewBuilder> , KubernetesResource
 {
 

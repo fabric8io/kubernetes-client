@@ -94,7 +94,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1alpha1")
 @Group("machine.openshift.io")
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public class OpenstackProviderSpec implements Editable<OpenstackProviderSpecBuilder> , HasMetadata, Namespaced
 {
 

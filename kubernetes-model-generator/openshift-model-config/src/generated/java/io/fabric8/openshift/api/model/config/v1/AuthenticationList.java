@@ -74,7 +74,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1")
 @Group("config.openshift.io")
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public class AuthenticationList implements Editable<AuthenticationListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.config.v1.Authentication>
 {
 

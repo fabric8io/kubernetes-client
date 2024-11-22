@@ -74,7 +74,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1alpha1")
 @Group("extensions.istio.io")
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public class WasmPluginList implements Editable<WasmPluginListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.istio.api.extensions.v1alpha1.WasmPlugin>
 {
 

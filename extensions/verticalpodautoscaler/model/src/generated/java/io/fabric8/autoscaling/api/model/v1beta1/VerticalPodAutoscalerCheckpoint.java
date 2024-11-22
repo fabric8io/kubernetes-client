@@ -72,7 +72,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1beta1")
 @Group("autoscaling.k8s.io")
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public class VerticalPodAutoscalerCheckpoint implements Editable<VerticalPodAutoscalerCheckpointBuilder> , HasMetadata, Namespaced
 {
 

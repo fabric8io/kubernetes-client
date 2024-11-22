@@ -72,7 +72,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1alpha1")
 @Group("operators.coreos.com")
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public class CatalogSource implements Editable<CatalogSourceBuilder> , HasMetadata, Namespaced
 {
 

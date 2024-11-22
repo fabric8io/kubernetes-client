@@ -71,7 +71,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1alpha1")
 @Group("migration.k8s.io")
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public class StorageVersionMigration implements Editable<StorageVersionMigrationBuilder> , HasMetadata
 {
 

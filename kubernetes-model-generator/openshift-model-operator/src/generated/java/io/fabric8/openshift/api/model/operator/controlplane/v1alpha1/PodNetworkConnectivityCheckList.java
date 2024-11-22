@@ -74,7 +74,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1alpha1")
 @Group("controlplane.operator.openshift.io")
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public class PodNetworkConnectivityCheckList implements Editable<PodNetworkConnectivityCheckListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.operator.controlplane.v1alpha1.PodNetworkConnectivityCheck>
 {
 

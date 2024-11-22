@@ -72,7 +72,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1")
 @Group("monitoring.coreos.com")
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public class Alertmanager implements Editable<AlertmanagerBuilder> , HasMetadata, Namespaced
 {
 

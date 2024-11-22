@@ -72,7 +72,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1alpha1")
 @Group("sinks.knative.dev")
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public class JobSink implements Editable<JobSinkBuilder> , HasMetadata, Namespaced
 {
 
