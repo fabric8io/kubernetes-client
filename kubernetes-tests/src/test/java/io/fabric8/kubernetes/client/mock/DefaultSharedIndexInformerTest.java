@@ -45,6 +45,7 @@ import io.fabric8.kubernetes.client.dsl.base.ResourceDefinitionContext;
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
 import io.fabric8.kubernetes.client.informers.SharedIndexInformer;
 import io.fabric8.kubernetes.client.informers.SharedInformerFactory;
+import io.fabric8.kubernetes.client.informers.impl.DefaultSharedIndexInformer;
 import io.fabric8.kubernetes.client.mock.crd.Animal;
 import io.fabric8.kubernetes.client.mock.crd.AnimalSpec;
 import io.fabric8.kubernetes.client.mock.crd.CronTab;
@@ -74,6 +75,7 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -1159,6 +1161,31 @@ class DefaultSharedIndexInformerTest {
   }
 
   @Test
+  void removeEventHandlerBeforeStartAdjustsResyncPeriod() {
+    var longResyncPeriod = 3000;
+    var shorterResyncPeriod = 2000;
+    var eventHandlerLongResync = emptyEventHandler();
+    var eventHandlerShorterResync = emptyEventHandler();
+
+    SharedIndexInformer<Pod> podInformer = factory.sharedIndexInformerFor(Pod.class, 4000);
+    podInformer.addEventHandlerWithResyncPeriod(eventHandlerLongResync, longResyncPeriod);
+    podInformer.addEventHandlerWithResyncPeriod(eventHandlerShorterResync, shorterResyncPeriod);
+
+    assertThat(((DefaultSharedIndexInformer<?, ?>) podInformer).getFullResyncPeriod())
+        .isEqualTo(shorterResyncPeriod);
+
+    podInformer.removeEventHandler(eventHandlerShorterResync);
+
+    assertThat(((DefaultSharedIndexInformer<?, ?>) podInformer).getFullResyncPeriod())
+        .isEqualTo(longResyncPeriod);
+  }
+
+  @Test
+  void stopReceivingEventsWhenEventHandlerRemoved() {
+    fail();
+  }
+
+  @Test
   void testGenericKubernetesResourceSharedIndexInformerWithAdditionalDeserializers() throws InterruptedException {
     // Given
     setupMockServerExpectations(Animal.class, "ns1", this::getList,
@@ -1350,6 +1377,22 @@ class DefaultSharedIndexInformerTest {
     @Override
     public void onDelete(T obj, boolean deletedFinalStateUnknown) {
     }
+  }
+
+  private static ResourceEventHandler<Object> emptyEventHandler() {
+    return new ResourceEventHandler<>() {
+      @Override
+      public void onAdd(Object obj) {
+      }
+
+      @Override
+      public void onUpdate(Object oldObj, Object newObj) {
+      }
+
+      @Override
+      public void onDelete(Object obj, boolean deletedFinalStateUnknown) {
+      }
+    };
   }
 
   private Star getStar(String name, String resourceVersion) {
