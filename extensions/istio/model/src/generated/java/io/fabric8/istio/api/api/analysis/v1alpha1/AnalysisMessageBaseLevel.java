@@ -4,7 +4,7 @@ package io.fabric8.istio.api.api.analysis.v1alpha1;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public enum AnalysisMessageBaseLevel 
 {
     ERROR(3),

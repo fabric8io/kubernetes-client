@@ -17,7 +17,7 @@ import io.fabric8.kubernetes.api.model.KubernetesResource;
     @JsonSubTypes.Type(MetricSelectorMetric.class),
 })
 @JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public interface IsMetricSelectorMetricMatch extends KubernetesResource
 {
 

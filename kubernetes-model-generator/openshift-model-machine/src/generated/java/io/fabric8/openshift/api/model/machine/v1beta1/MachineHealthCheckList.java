@@ -74,7 +74,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1beta1")
 @Group("machine.openshift.io")
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public class MachineHealthCheckList implements Editable<MachineHealthCheckListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.machine.v1beta1.MachineHealthCheck>
 {
 

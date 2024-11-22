@@ -74,7 +74,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1alpha1")
 @Group("nodeinfo.volcano.sh")
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public class NumatopologyList implements Editable<NumatopologyListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.volcano.api.model.nodeinfo.v1alpha1.Numatopology>
 {
 

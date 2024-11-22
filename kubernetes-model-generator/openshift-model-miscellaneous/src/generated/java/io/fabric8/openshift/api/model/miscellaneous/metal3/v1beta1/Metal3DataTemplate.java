@@ -72,7 +72,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1beta1")
 @Group("infrastructure.cluster.x-k8s.io")
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public class Metal3DataTemplate implements Editable<Metal3DataTemplateBuilder> , HasMetadata, Namespaced
 {
 

@@ -74,7 +74,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1beta2")
 @Group("cluster.open-cluster-management.io")
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public class ManagedClusterSetBindingList implements Editable<ManagedClusterSetBindingListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openclustermanagement.api.model.cluster.v1beta2.ManagedClusterSetBinding>
 {
 

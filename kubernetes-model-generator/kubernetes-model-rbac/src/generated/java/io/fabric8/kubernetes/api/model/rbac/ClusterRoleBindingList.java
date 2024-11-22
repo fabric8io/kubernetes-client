@@ -74,7 +74,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1")
 @Group("rbac.authorization.k8s.io")
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public class ClusterRoleBindingList implements Editable<ClusterRoleBindingListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.rbac.ClusterRoleBinding>
 {
 

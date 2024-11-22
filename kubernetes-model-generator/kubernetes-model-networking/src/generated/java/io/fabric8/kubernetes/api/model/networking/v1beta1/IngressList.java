@@ -74,7 +74,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1beta1")
 @Group("networking.k8s.io")
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public class IngressList implements Editable<IngressListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.networking.v1beta1.Ingress>
 {
 

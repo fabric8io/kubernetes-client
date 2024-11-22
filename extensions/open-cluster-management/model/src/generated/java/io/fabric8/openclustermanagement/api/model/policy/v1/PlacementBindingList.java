@@ -74,7 +74,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1")
 @Group("policy.open-cluster-management.io")
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public class PlacementBindingList implements Editable<PlacementBindingListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openclustermanagement.api.model.policy.v1.PlacementBinding>
 {
 

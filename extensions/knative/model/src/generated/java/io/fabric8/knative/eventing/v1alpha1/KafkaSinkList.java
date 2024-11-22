@@ -74,7 +74,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1alpha1")
 @Group("eventing.knative.dev")
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public class KafkaSinkList implements Editable<KafkaSinkListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.knative.eventing.v1alpha1.KafkaSink>
 {
 

@@ -74,7 +74,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1alpha1")
 @Group("sources.knative.dev")
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public class CouchDbSourceList implements Editable<CouchDbSourceListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.knative.sources.v1alpha1.CouchDbSource>
 {
 

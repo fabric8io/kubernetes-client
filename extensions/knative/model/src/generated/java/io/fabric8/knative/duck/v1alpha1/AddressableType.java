@@ -71,7 +71,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1alpha1")
 @Group("duck.knative.dev")
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public class AddressableType implements Editable<AddressableTypeBuilder> , HasMetadata, Namespaced
 {
 

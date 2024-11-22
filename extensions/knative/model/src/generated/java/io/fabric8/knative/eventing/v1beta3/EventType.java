@@ -72,7 +72,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1beta3")
 @Group("eventing.knative.dev")
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public class EventType implements Editable<EventTypeBuilder> , HasMetadata, Namespaced
 {
 

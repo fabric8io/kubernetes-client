@@ -70,7 +70,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1alpha1")
 @Group("nodeinfo.volcano.sh")
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public class Numatopology implements Editable<NumatopologyBuilder> , HasMetadata
 {
 

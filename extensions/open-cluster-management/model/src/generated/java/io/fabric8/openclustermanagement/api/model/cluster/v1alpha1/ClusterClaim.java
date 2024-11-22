@@ -70,7 +70,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1alpha1")
 @Group("cluster.open-cluster-management.io")
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public class ClusterClaim implements Editable<ClusterClaimBuilder> , HasMetadata
 {
 

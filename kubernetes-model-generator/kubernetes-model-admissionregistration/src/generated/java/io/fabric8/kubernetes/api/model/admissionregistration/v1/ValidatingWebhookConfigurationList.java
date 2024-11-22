@@ -74,7 +74,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1")
 @Group("admissionregistration.k8s.io")
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public class ValidatingWebhookConfigurationList implements Editable<ValidatingWebhookConfigurationListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.admissionregistration.v1.ValidatingWebhookConfiguration>
 {
 

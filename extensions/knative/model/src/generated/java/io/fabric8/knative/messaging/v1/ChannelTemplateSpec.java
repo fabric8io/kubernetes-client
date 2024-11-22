@@ -70,7 +70,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1")
 @Group("messaging.knative.dev")
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public class ChannelTemplateSpec implements Editable<ChannelTemplateSpecBuilder> , KubernetesResource, Namespaced
 {
 
