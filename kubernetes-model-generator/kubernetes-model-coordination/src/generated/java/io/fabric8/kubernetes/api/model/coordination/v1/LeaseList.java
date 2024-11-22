@@ -74,7 +74,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1")
 @Group("coordination.k8s.io")
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public class LeaseList implements Editable<LeaseListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.coordination.v1.Lease>
 {
 

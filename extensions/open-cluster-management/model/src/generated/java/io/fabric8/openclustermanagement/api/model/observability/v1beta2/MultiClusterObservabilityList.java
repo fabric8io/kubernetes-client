@@ -74,7 +74,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1beta2")
 @Group("observability.open-cluster-management.io")
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public class MultiClusterObservabilityList implements Editable<MultiClusterObservabilityListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openclustermanagement.api.model.observability.v1beta2.MultiClusterObservability>
 {
 

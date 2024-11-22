@@ -74,7 +74,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1alpha1")
 @Group("metal3.io")
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public class PreprovisioningImageList implements Editable<PreprovisioningImageListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1.PreprovisioningImage>
 {
 

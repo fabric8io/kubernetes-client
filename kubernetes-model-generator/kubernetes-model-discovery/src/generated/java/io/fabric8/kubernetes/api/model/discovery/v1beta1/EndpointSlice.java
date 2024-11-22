@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1beta1")
 @Group("discovery.k8s.io")
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public class EndpointSlice implements Editable<EndpointSliceBuilder> , HasMetadata, Namespaced
 {
 

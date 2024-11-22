@@ -74,7 +74,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1alpha2")
 @Group("resource.k8s.io")
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public class ResourceClaimParametersList implements Editable<ResourceClaimParametersListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.resource.v1alpha2.ResourceClaimParameters>
 {
 

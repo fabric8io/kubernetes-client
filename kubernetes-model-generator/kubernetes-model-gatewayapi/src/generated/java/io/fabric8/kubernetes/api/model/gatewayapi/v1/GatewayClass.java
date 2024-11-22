@@ -71,7 +71,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1")
 @Group("gateway.networking.k8s.io")
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public class GatewayClass implements Editable<GatewayClassBuilder> , HasMetadata
 {
 

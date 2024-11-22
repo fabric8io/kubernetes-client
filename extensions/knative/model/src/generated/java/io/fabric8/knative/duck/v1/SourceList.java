@@ -74,7 +74,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1")
 @Group("duck.knative.dev")
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public class SourceList implements Editable<SourceListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.knative.duck.v1.Source>
 {
 

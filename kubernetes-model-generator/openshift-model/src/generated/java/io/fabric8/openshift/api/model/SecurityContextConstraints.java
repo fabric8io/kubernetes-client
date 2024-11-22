@@ -96,7 +96,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1")
 @Group("security.openshift.io")
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public class SecurityContextConstraints implements Editable<SecurityContextConstraintsBuilder> , HasMetadata
 {
 

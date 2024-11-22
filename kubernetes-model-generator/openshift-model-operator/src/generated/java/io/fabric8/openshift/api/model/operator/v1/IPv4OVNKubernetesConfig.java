@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public class IPv4OVNKubernetesConfig implements Editable<IPv4OVNKubernetesConfigBuilder> , KubernetesResource
 {
 

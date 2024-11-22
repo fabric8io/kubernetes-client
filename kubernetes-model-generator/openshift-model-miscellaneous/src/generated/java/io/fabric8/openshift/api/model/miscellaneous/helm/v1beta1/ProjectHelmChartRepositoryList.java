@@ -74,7 +74,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1beta1")
 @Group("helm.openshift.io")
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public class ProjectHelmChartRepositoryList implements Editable<ProjectHelmChartRepositoryListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.miscellaneous.helm.v1beta1.ProjectHelmChartRepository>
 {
 

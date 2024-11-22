@@ -73,7 +73,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1alpha1")
 @Group("scheduling.k8s.io")
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public class PriorityClass implements Editable<PriorityClassBuilder> , HasMetadata
 {
 

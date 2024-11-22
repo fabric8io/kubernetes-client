@@ -101,7 +101,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1beta1")
 @Group("machine.openshift.io")
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public class AzureMachineProviderSpec implements Editable<AzureMachineProviderSpecBuilder> , HasMetadata, Namespaced
 {
 

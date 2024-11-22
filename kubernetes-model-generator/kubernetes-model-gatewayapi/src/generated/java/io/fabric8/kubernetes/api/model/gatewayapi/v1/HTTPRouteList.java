@@ -74,7 +74,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1")
 @Group("gateway.networking.k8s.io")
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public class HTTPRouteList implements Editable<HTTPRouteListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.gatewayapi.v1.HTTPRoute>
 {
 

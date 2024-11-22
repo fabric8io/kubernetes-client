@@ -74,7 +74,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1beta1")
 @Group("policy")
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public class PodDisruptionBudgetList implements Editable<PodDisruptionBudgetListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.policy.v1beta1.PodDisruptionBudget>
 {
 

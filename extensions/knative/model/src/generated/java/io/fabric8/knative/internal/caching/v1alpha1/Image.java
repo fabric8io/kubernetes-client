@@ -72,7 +72,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1alpha1")
 @Group("caching.internal.knative.dev")
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public class Image implements Editable<ImageBuilder> , HasMetadata, Namespaced
 {
 

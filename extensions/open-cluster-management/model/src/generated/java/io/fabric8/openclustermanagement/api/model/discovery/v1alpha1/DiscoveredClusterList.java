@@ -74,7 +74,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1alpha1")
 @Group("discovery.open-cluster-management.io")
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public class DiscoveredClusterList implements Editable<DiscoveredClusterListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openclustermanagement.api.model.discovery.v1alpha1.DiscoveredCluster>
 {
 

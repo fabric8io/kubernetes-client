@@ -74,7 +74,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1alpha1")
 @Group("whereabouts.cni.cncf.io")
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public class NodeSlicePoolList implements Editable<NodeSlicePoolListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.whereabouts.v1alpha1.NodeSlicePool>
 {
 

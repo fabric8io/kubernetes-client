@@ -74,7 +74,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1beta2")
 @Group("flowcontrol.apiserver.k8s.io")
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public class PriorityLevelConfigurationList implements Editable<PriorityLevelConfigurationListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.flowcontrol.v1beta2.PriorityLevelConfiguration>
 {
 

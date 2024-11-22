@@ -74,7 +74,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1beta1")
 @Group("admissionregistration.k8s.io")
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public class ValidatingAdmissionPolicyBindingList implements Editable<ValidatingAdmissionPolicyBindingListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.ValidatingAdmissionPolicyBinding>
 {
 

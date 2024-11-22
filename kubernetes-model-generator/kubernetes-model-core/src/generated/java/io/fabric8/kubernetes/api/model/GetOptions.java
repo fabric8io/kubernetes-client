@@ -40,7 +40,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1")
 @Group("")
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public class GetOptions implements Editable<GetOptionsBuilder> , KubernetesResource
 {
 

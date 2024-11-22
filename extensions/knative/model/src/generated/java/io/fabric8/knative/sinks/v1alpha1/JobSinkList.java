@@ -74,7 +74,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1alpha1")
 @Group("sinks.knative.dev")
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public class JobSinkList implements Editable<JobSinkListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.knative.sinks.v1alpha1.JobSink>
 {
 

@@ -70,7 +70,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1alpha1")
 @Group("node.k8s.io")
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public class RuntimeClass implements Editable<RuntimeClassBuilder> , HasMetadata
 {
 

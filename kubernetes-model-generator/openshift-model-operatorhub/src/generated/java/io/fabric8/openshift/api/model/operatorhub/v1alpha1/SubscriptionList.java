@@ -74,7 +74,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1alpha1")
 @Group("operators.coreos.com")
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public class SubscriptionList implements Editable<SubscriptionListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.operatorhub.v1alpha1.Subscription>
 {
 

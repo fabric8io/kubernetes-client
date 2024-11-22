@@ -74,7 +74,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1alpha1")
 @Group("bindings.knative.dev")
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public class GitHubBindingList implements Editable<GitHubBindingListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.knative.bindings.v1alpha1.GitHubBinding>
 {
 

@@ -71,7 +71,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1alpha1")
 @Group("operator.openshift.io")
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public class OLM implements Editable<OLMBuilder> , HasMetadata
 {
 

@@ -74,7 +74,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1beta1")
 @Group("batch")
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public class CronJobList implements Editable<CronJobListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.batch.v1beta1.CronJob>
 {
 

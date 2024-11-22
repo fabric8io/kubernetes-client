@@ -74,7 +74,7 @@ import lombok.experimental.Accessors;
 })
 @Version("v1alpha1")
 @Group("duck.knative.dev")
-@Generated("jsonschema2pojo")
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public class TargetList implements Editable<TargetListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.knative.duck.v1alpha1.Target>
 {
 
