@@ -98,6 +98,9 @@ class SchemaUtilsTest {
   @ParameterizedTest
   @CsvSource({
       "a-variable, aVariable",
+      "a_variable, aVariable",
+      "a__variable, aVariable",
+      "_a__variable_, aVariable",
       "private, _private",
       "continue, _continue",
       "import, _import",
@@ -119,6 +122,8 @@ class SchemaUtilsTest {
   @CsvSource({
       "AVariable, getAVariable",
       "aVariable, getAVariable",
+      "a-variable, getAVariable",
+      "a_variable, getAVariable",
       "available, getAvailable",
       "x-kubernetes-validations, getXKubernetesValidations",
       "items, getItems"
@@ -132,6 +137,8 @@ class SchemaUtilsTest {
   @CsvSource({
       "AVariable, setAVariable",
       "aVariable, setAVariable",
+      "a-variable, setAVariable",
+      "a_variable, setAVariable",
       "available, setAvailable",
       "x-kubernetes-validations, setXKubernetesValidations",
       "items, setItems"

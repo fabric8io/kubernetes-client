@@ -209,7 +209,7 @@ public class PhysicalMachineChaosSpec implements Editable<PhysicalMachineChaosSp
     @JsonProperty("stress-mem")
     private StressMemorySpec stressMem;
     @JsonProperty("user_defined")
-    private UserDefinedSpec user_defined;
+    private UserDefinedSpec userDefined;
     @JsonProperty("value")
     private String value;
     @JsonProperty("vm")
@@ -224,7 +224,7 @@ public class PhysicalMachineChaosSpec implements Editable<PhysicalMachineChaosSp
     public PhysicalMachineChaosSpec() {
     }
 
-    public PhysicalMachineChaosSpec(String action, List<String> address, ClockSpec clock, DiskFillSpec diskFill, DiskPayloadSpec diskReadPayload, DiskPayloadSpec diskWritePayload, String duration, FileAppendSpec fileAppend, FileCreateSpec fileCreate, FileDeleteSpec fileDelete, FileModifyPrivilegeSpec fileModify, FileRenameSpec fileRename, FileReplaceSpec fileReplace, HTTPAbortSpec httpAbort, HTTPConfigSpec httpConfig, HTTPDelaySpec httpDelay, HTTPRequestSpec httpRequest, JVMExceptionSpec jvmException, JVMGCSpec jvmGc, JVMLatencySpec jvmLatency, PMJVMMySQLSpec jvmMysql, JVMReturnSpec jvmReturn, JVMRuleDataSpec jvmRuleData, JVMStressSpec jvmStress, KafkaFillSpec kafkaFill, KafkaFloodSpec kafkaFlood, KafkaIOSpec kafkaIo, String mode, NetworkBandwidthSpec networkBandwidth, NetworkCorruptSpec networkCorrupt, NetworkDelaySpec networkDelay, NetworkDNSSpec networkDns, NetworkDownSpec networkDown, NetworkDuplicateSpec networkDuplicate, NetworkFloodSpec networkFlood, NetworkLossSpec networkLoss, NetworkPartitionSpec networkPartition, ProcessSpec process, RedisCacheLimitSpec redisCacheLimit, RedisExpirationSpec redisExpiration, RedisPenetrationSpec redisPenetration, RedisSentinelRestartSpec redisRestart, RedisSentinelStopSpec redisStop, String remoteCluster, PhysicalMachineSelectorSpec selector, StressCPUSpec stressCpu, StressMemorySpec stressMem, UserDefinedSpec user_defined, String value, VMSpec vm) {
+    public PhysicalMachineChaosSpec(String action, List<String> address, ClockSpec clock, DiskFillSpec diskFill, DiskPayloadSpec diskReadPayload, DiskPayloadSpec diskWritePayload, String duration, FileAppendSpec fileAppend, FileCreateSpec fileCreate, FileDeleteSpec fileDelete, FileModifyPrivilegeSpec fileModify, FileRenameSpec fileRename, FileReplaceSpec fileReplace, HTTPAbortSpec httpAbort, HTTPConfigSpec httpConfig, HTTPDelaySpec httpDelay, HTTPRequestSpec httpRequest, JVMExceptionSpec jvmException, JVMGCSpec jvmGc, JVMLatencySpec jvmLatency, PMJVMMySQLSpec jvmMysql, JVMReturnSpec jvmReturn, JVMRuleDataSpec jvmRuleData, JVMStressSpec jvmStress, KafkaFillSpec kafkaFill, KafkaFloodSpec kafkaFlood, KafkaIOSpec kafkaIo, String mode, NetworkBandwidthSpec networkBandwidth, NetworkCorruptSpec networkCorrupt, NetworkDelaySpec networkDelay, NetworkDNSSpec networkDns, NetworkDownSpec networkDown, NetworkDuplicateSpec networkDuplicate, NetworkFloodSpec networkFlood, NetworkLossSpec networkLoss, NetworkPartitionSpec networkPartition, ProcessSpec process, RedisCacheLimitSpec redisCacheLimit, RedisExpirationSpec redisExpiration, RedisPenetrationSpec redisPenetration, RedisSentinelRestartSpec redisRestart, RedisSentinelStopSpec redisStop, String remoteCluster, PhysicalMachineSelectorSpec selector, StressCPUSpec stressCpu, StressMemorySpec stressMem, UserDefinedSpec userDefined, String value, VMSpec vm) {
         super();
         this.action = action;
         this.address = address;
@@ -273,7 +273,7 @@ public class PhysicalMachineChaosSpec implements Editable<PhysicalMachineChaosSp
         this.selector = selector;
         this.stressCpu = stressCpu;
         this.stressMem = stressMem;
-        this.user_defined = user_defined;
+        this.userDefined = userDefined;
         this.value = value;
         this.vm = vm;
     }
@@ -750,13 +750,13 @@ public class PhysicalMachineChaosSpec implements Editable<PhysicalMachineChaosSp
     }
 
     @JsonProperty("user_defined")
-    public UserDefinedSpec getUser_defined() {
-        return user_defined;
+    public UserDefinedSpec getUserDefined() {
+        return userDefined;
     }
 
     @JsonProperty("user_defined")
-    public void setUser_defined(UserDefinedSpec user_defined) {
-        this.user_defined = user_defined;
+    public void setUserDefined(UserDefinedSpec userDefined) {
+        this.userDefined = userDefined;
     }
 
     @JsonProperty("value")

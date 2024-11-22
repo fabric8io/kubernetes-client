@@ -102,10 +102,10 @@ public class HTTPChaosSpec implements Editable<HTTPChaosSpecBuilder> , Kubernete
     private PodHttpChaosReplaceActions replace;
     @JsonProperty("request_headers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> request_headers = new LinkedHashMap<>();
+    private Map<String, String> requestHeaders = new LinkedHashMap<>();
     @JsonProperty("response_headers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, String> response_headers = new LinkedHashMap<>();
+    private Map<String, String> responseHeaders = new LinkedHashMap<>();
     @JsonProperty("selector")
     private PodSelectorSpec selector;
     @JsonProperty("target")
@@ -124,7 +124,7 @@ public class HTTPChaosSpec implements Editable<HTTPChaosSpecBuilder> , Kubernete
     public HTTPChaosSpec() {
     }
 
-    public HTTPChaosSpec(Boolean abort, Integer code, String delay, String duration, String method, String mode, PodHttpChaosPatchActions patch, String path, Integer port, String remoteCluster, PodHttpChaosReplaceActions replace, Map<String, String> request_headers, Map<String, String> response_headers, PodSelectorSpec selector, String target, PodHttpChaosTLS tls, String value) {
+    public HTTPChaosSpec(Boolean abort, Integer code, String delay, String duration, String method, String mode, PodHttpChaosPatchActions patch, String path, Integer port, String remoteCluster, PodHttpChaosReplaceActions replace, Map<String, String> requestHeaders, Map<String, String> responseHeaders, PodSelectorSpec selector, String target, PodHttpChaosTLS tls, String value) {
         super();
         this.abort = abort;
         this.code = code;
@@ -137,8 +137,8 @@ public class HTTPChaosSpec implements Editable<HTTPChaosSpecBuilder> , Kubernete
         this.port = port;
         this.remoteCluster = remoteCluster;
         this.replace = replace;
-        this.request_headers = request_headers;
-        this.response_headers = response_headers;
+        this.requestHeaders = requestHeaders;
+        this.responseHeaders = responseHeaders;
         this.selector = selector;
         this.target = target;
         this.tls = tls;
@@ -257,24 +257,24 @@ public class HTTPChaosSpec implements Editable<HTTPChaosSpecBuilder> , Kubernete
 
     @JsonProperty("request_headers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Map<String, String> getRequest_headers() {
-        return request_headers;
+    public Map<String, String> getRequestHeaders() {
+        return requestHeaders;
     }
 
     @JsonProperty("request_headers")
-    public void setRequest_headers(Map<String, String> request_headers) {
-        this.request_headers = request_headers;
+    public void setRequestHeaders(Map<String, String> requestHeaders) {
+        this.requestHeaders = requestHeaders;
     }
 
     @JsonProperty("response_headers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Map<String, String> getResponse_headers() {
-        return response_headers;
+    public Map<String, String> getResponseHeaders() {
+        return responseHeaders;
     }
 
     @JsonProperty("response_headers")
-    public void setResponse_headers(Map<String, String> response_headers) {
-        this.response_headers = response_headers;
+    public void setResponseHeaders(Map<String, String> responseHeaders) {
+        this.responseHeaders = responseHeaders;
     }
 
     @JsonProperty("selector")

@@ -88,7 +88,7 @@ public class WebTLSConfig implements Editable<WebTLSConfigBuilder> , KubernetesR
     @JsonProperty("clientCAFile")
     private String clientCAFile;
     @JsonProperty("client_ca")
-    private SecretOrConfigMap client_ca;
+    private SecretOrConfigMap clientCa;
     @JsonProperty("curvePreferences")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> curvePreferences = new ArrayList<>();
@@ -112,14 +112,14 @@ public class WebTLSConfig implements Editable<WebTLSConfigBuilder> , KubernetesR
     public WebTLSConfig() {
     }
 
-    public WebTLSConfig(SecretOrConfigMap cert, String certFile, List<String> cipherSuites, String clientAuthType, String clientCAFile, SecretOrConfigMap client_ca, List<String> curvePreferences, String keyFile, SecretKeySelector keySecret, String maxVersion, String minVersion, Boolean preferServerCipherSuites) {
+    public WebTLSConfig(SecretOrConfigMap cert, String certFile, List<String> cipherSuites, String clientAuthType, String clientCAFile, SecretOrConfigMap clientCa, List<String> curvePreferences, String keyFile, SecretKeySelector keySecret, String maxVersion, String minVersion, Boolean preferServerCipherSuites) {
         super();
         this.cert = cert;
         this.certFile = certFile;
         this.cipherSuites = cipherSuites;
         this.clientAuthType = clientAuthType;
         this.clientCAFile = clientCAFile;
-        this.client_ca = client_ca;
+        this.clientCa = clientCa;
         this.curvePreferences = curvePreferences;
         this.keyFile = keyFile;
         this.keySecret = keySecret;
@@ -180,13 +180,13 @@ public class WebTLSConfig implements Editable<WebTLSConfigBuilder> , KubernetesR
     }
 
     @JsonProperty("client_ca")
-    public SecretOrConfigMap getClient_ca() {
-        return client_ca;
+    public SecretOrConfigMap getClientCa() {
+        return clientCa;
     }
 
     @JsonProperty("client_ca")
-    public void setClient_ca(SecretOrConfigMap client_ca) {
-        this.client_ca = client_ca;
+    public void setClientCa(SecretOrConfigMap clientCa) {
+        this.clientCa = clientCa;
     }
 
     @JsonProperty("curvePreferences")

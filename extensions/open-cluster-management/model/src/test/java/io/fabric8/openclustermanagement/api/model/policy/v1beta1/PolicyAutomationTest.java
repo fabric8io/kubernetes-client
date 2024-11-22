@@ -56,7 +56,7 @@ class PolicyAutomationTest {
             "sn_priority", 1,
             "target_clusters", Collections.singletonList("cluster1")))
         .build(),
-        policyAutomation.getSpec().getAutomationDef().getExtra_vars());
+        policyAutomation.getSpec().getAutomationDef().getExtraVars());
   }
 
   @Test
@@ -95,7 +95,7 @@ class PolicyAutomationTest {
         "sn_severity", 1,
         "sn_priority", 1,
         "target_clusters", Collections.singletonList("cluster1")),
-        policyAutomation.getSpec().getAutomationDef().getExtra_vars());
+        policyAutomation.getSpec().getAutomationDef().getExtraVars());
   }
 
 }

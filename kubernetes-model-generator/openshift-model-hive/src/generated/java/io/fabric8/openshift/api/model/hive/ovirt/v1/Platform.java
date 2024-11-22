@@ -71,11 +71,11 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     @JsonProperty("credentialsSecretRef")
     private LocalObjectReference credentialsSecretRef;
     @JsonProperty("ovirt_cluster_id")
-    private String ovirt_cluster_id;
+    private String ovirtClusterId;
     @JsonProperty("ovirt_network_name")
-    private String ovirt_network_name;
+    private String ovirtNetworkName;
     @JsonProperty("storage_domain_id")
-    private String storage_domain_id;
+    private String storageDomainId;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -86,13 +86,13 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     public Platform() {
     }
 
-    public Platform(LocalObjectReference certificatesSecretRef, LocalObjectReference credentialsSecretRef, String ovirt_cluster_id, String ovirt_network_name, String storage_domain_id) {
+    public Platform(LocalObjectReference certificatesSecretRef, LocalObjectReference credentialsSecretRef, String ovirtClusterId, String ovirtNetworkName, String storageDomainId) {
         super();
         this.certificatesSecretRef = certificatesSecretRef;
         this.credentialsSecretRef = credentialsSecretRef;
-        this.ovirt_cluster_id = ovirt_cluster_id;
-        this.ovirt_network_name = ovirt_network_name;
-        this.storage_domain_id = storage_domain_id;
+        this.ovirtClusterId = ovirtClusterId;
+        this.ovirtNetworkName = ovirtNetworkName;
+        this.storageDomainId = storageDomainId;
     }
 
     @JsonProperty("certificatesSecretRef")
@@ -116,33 +116,33 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     }
 
     @JsonProperty("ovirt_cluster_id")
-    public String getOvirt_cluster_id() {
-        return ovirt_cluster_id;
+    public String getOvirtClusterId() {
+        return ovirtClusterId;
     }
 
     @JsonProperty("ovirt_cluster_id")
-    public void setOvirt_cluster_id(String ovirt_cluster_id) {
-        this.ovirt_cluster_id = ovirt_cluster_id;
+    public void setOvirtClusterId(String ovirtClusterId) {
+        this.ovirtClusterId = ovirtClusterId;
     }
 
     @JsonProperty("ovirt_network_name")
-    public String getOvirt_network_name() {
-        return ovirt_network_name;
+    public String getOvirtNetworkName() {
+        return ovirtNetworkName;
     }
 
     @JsonProperty("ovirt_network_name")
-    public void setOvirt_network_name(String ovirt_network_name) {
-        this.ovirt_network_name = ovirt_network_name;
+    public void setOvirtNetworkName(String ovirtNetworkName) {
+        this.ovirtNetworkName = ovirtNetworkName;
     }
 
     @JsonProperty("storage_domain_id")
-    public String getStorage_domain_id() {
-        return storage_domain_id;
+    public String getStorageDomainId() {
+        return storageDomainId;
     }
 
     @JsonProperty("storage_domain_id")
-    public void setStorage_domain_id(String storage_domain_id) {
-        this.storage_domain_id = storage_domain_id;
+    public void setStorageDomainId(String storageDomainId) {
+        this.storageDomainId = storageDomainId;
     }
 
     @JsonIgnore
