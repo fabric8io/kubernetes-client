@@ -49,6 +49,7 @@ import lombok.experimental.Accessors;
     "oauth2",
     "proxyConnectHeader",
     "proxyFromEnvironment",
+    "proxyURL",
     "proxyUrl",
     "tlsConfig"
 })
@@ -94,6 +95,8 @@ public class HTTPConfig implements Editable<HTTPConfigBuilder> , KubernetesResou
     private Map<String, List<SecretKeySelector>> proxyConnectHeader = new LinkedHashMap<>();
     @JsonProperty("proxyFromEnvironment")
     private Boolean proxyFromEnvironment;
+    @JsonProperty("proxyURL")
+    private String proxyURL;
     @JsonProperty("proxyUrl")
     private String proxyUrl;
     @JsonProperty("tlsConfig")
@@ -108,7 +111,7 @@ public class HTTPConfig implements Editable<HTTPConfigBuilder> , KubernetesResou
     public HTTPConfig() {
     }
 
-    public HTTPConfig(SafeAuthorization authorization, BasicAuth basicAuth, SecretKeySelector bearerTokenSecret, Boolean followRedirects, String noProxy, OAuth2 oauth2, Map<String, List<SecretKeySelector>> proxyConnectHeader, Boolean proxyFromEnvironment, String proxyUrl, SafeTLSConfig tlsConfig) {
+    public HTTPConfig(SafeAuthorization authorization, BasicAuth basicAuth, SecretKeySelector bearerTokenSecret, Boolean followRedirects, String noProxy, OAuth2 oauth2, Map<String, List<SecretKeySelector>> proxyConnectHeader, Boolean proxyFromEnvironment, String proxyURL, String proxyUrl, SafeTLSConfig tlsConfig) {
         super();
         this.authorization = authorization;
         this.basicAuth = basicAuth;
@@ -118,6 +121,7 @@ public class HTTPConfig implements Editable<HTTPConfigBuilder> , KubernetesResou
         this.oauth2 = oauth2;
         this.proxyConnectHeader = proxyConnectHeader;
         this.proxyFromEnvironment = proxyFromEnvironment;
+        this.proxyURL = proxyURL;
         this.proxyUrl = proxyUrl;
         this.tlsConfig = tlsConfig;
     }
@@ -201,6 +205,16 @@ public class HTTPConfig implements Editable<HTTPConfigBuilder> , KubernetesResou
     @JsonProperty("proxyFromEnvironment")
     public void setProxyFromEnvironment(Boolean proxyFromEnvironment) {
         this.proxyFromEnvironment = proxyFromEnvironment;
+    }
+
+    @JsonProperty("proxyURL")
+    public String getProxyURL() {
+        return proxyURL;
+    }
+
+    @JsonProperty("proxyURL")
+    public void setProxyURL(String proxyURL) {
+        this.proxyURL = proxyURL;
     }
 
     @JsonProperty("proxyUrl")
