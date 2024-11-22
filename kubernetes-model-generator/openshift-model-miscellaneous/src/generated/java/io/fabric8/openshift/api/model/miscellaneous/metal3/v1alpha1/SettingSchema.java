@@ -73,21 +73,21 @@ public class SettingSchema implements Editable<SettingSchemaBuilder> , Kubernete
 
     @JsonProperty("allowable_values")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> allowable_values = new ArrayList<>();
+    private List<String> allowableValues = new ArrayList<>();
     @JsonProperty("attribute_type")
-    private String attribute_type;
+    private String attributeType;
     @JsonProperty("lower_bound")
-    private Integer lower_bound;
+    private Integer lowerBound;
     @JsonProperty("max_length")
-    private Integer max_length;
+    private Integer maxLength;
     @JsonProperty("min_length")
-    private Integer min_length;
+    private Integer minLength;
     @JsonProperty("read_only")
-    private Boolean read_only;
+    private Boolean readOnly;
     @JsonProperty("unique")
     private Boolean unique;
     @JsonProperty("upper_bound")
-    private Integer upper_bound;
+    private Integer upperBound;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -98,77 +98,77 @@ public class SettingSchema implements Editable<SettingSchemaBuilder> , Kubernete
     public SettingSchema() {
     }
 
-    public SettingSchema(List<String> allowable_values, String attribute_type, Integer lower_bound, Integer max_length, Integer min_length, Boolean read_only, Boolean unique, Integer upper_bound) {
+    public SettingSchema(List<String> allowableValues, String attributeType, Integer lowerBound, Integer maxLength, Integer minLength, Boolean readOnly, Boolean unique, Integer upperBound) {
         super();
-        this.allowable_values = allowable_values;
-        this.attribute_type = attribute_type;
-        this.lower_bound = lower_bound;
-        this.max_length = max_length;
-        this.min_length = min_length;
-        this.read_only = read_only;
+        this.allowableValues = allowableValues;
+        this.attributeType = attributeType;
+        this.lowerBound = lowerBound;
+        this.maxLength = maxLength;
+        this.minLength = minLength;
+        this.readOnly = readOnly;
         this.unique = unique;
-        this.upper_bound = upper_bound;
+        this.upperBound = upperBound;
     }
 
     @JsonProperty("allowable_values")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<String> getAllowable_values() {
-        return allowable_values;
+    public List<String> getAllowableValues() {
+        return allowableValues;
     }
 
     @JsonProperty("allowable_values")
-    public void setAllowable_values(List<String> allowable_values) {
-        this.allowable_values = allowable_values;
+    public void setAllowableValues(List<String> allowableValues) {
+        this.allowableValues = allowableValues;
     }
 
     @JsonProperty("attribute_type")
-    public String getAttribute_type() {
-        return attribute_type;
+    public String getAttributeType() {
+        return attributeType;
     }
 
     @JsonProperty("attribute_type")
-    public void setAttribute_type(String attribute_type) {
-        this.attribute_type = attribute_type;
+    public void setAttributeType(String attributeType) {
+        this.attributeType = attributeType;
     }
 
     @JsonProperty("lower_bound")
-    public Integer getLower_bound() {
-        return lower_bound;
+    public Integer getLowerBound() {
+        return lowerBound;
     }
 
     @JsonProperty("lower_bound")
-    public void setLower_bound(Integer lower_bound) {
-        this.lower_bound = lower_bound;
+    public void setLowerBound(Integer lowerBound) {
+        this.lowerBound = lowerBound;
     }
 
     @JsonProperty("max_length")
-    public Integer getMax_length() {
-        return max_length;
+    public Integer getMaxLength() {
+        return maxLength;
     }
 
     @JsonProperty("max_length")
-    public void setMax_length(Integer max_length) {
-        this.max_length = max_length;
+    public void setMaxLength(Integer maxLength) {
+        this.maxLength = maxLength;
     }
 
     @JsonProperty("min_length")
-    public Integer getMin_length() {
-        return min_length;
+    public Integer getMinLength() {
+        return minLength;
     }
 
     @JsonProperty("min_length")
-    public void setMin_length(Integer min_length) {
-        this.min_length = min_length;
+    public void setMinLength(Integer minLength) {
+        this.minLength = minLength;
     }
 
     @JsonProperty("read_only")
-    public Boolean getRead_only() {
-        return read_only;
+    public Boolean getReadOnly() {
+        return readOnly;
     }
 
     @JsonProperty("read_only")
-    public void setRead_only(Boolean read_only) {
-        this.read_only = read_only;
+    public void setReadOnly(Boolean readOnly) {
+        this.readOnly = readOnly;
     }
 
     @JsonProperty("unique")
@@ -182,13 +182,13 @@ public class SettingSchema implements Editable<SettingSchemaBuilder> , Kubernete
     }
 
     @JsonProperty("upper_bound")
-    public Integer getUpper_bound() {
-        return upper_bound;
+    public Integer getUpperBound() {
+        return upperBound;
     }
 
     @JsonProperty("upper_bound")
-    public void setUpper_bound(Integer upper_bound) {
-        this.upper_bound = upper_bound;
+    public void setUpperBound(Integer upperBound) {
+        this.upperBound = upperBound;
     }
 
     @JsonIgnore

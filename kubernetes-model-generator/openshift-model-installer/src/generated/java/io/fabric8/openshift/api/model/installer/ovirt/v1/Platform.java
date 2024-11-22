@@ -79,25 +79,25 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<AffinityGroup> affinityGroups = new ArrayList<>();
     @JsonProperty("api_vip")
-    private String api_vip;
+    private String apiVip;
     @JsonProperty("api_vips")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> api_vips = new ArrayList<>();
+    private List<String> apiVips = new ArrayList<>();
     @JsonProperty("defaultMachinePlatform")
     private MachinePool defaultMachinePlatform;
     @JsonProperty("ingress_vip")
-    private String ingress_vip;
+    private String ingressVip;
     @JsonProperty("ingress_vips")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> ingress_vips = new ArrayList<>();
+    private List<String> ingressVips = new ArrayList<>();
     @JsonProperty("loadBalancer")
     private OvirtPlatformLoadBalancer loadBalancer;
     @JsonProperty("ovirt_cluster_id")
-    private String ovirt_cluster_id;
+    private String ovirtClusterId;
     @JsonProperty("ovirt_network_name")
-    private String ovirt_network_name;
+    private String ovirtNetworkName;
     @JsonProperty("ovirt_storage_domain_id")
-    private String ovirt_storage_domain_id;
+    private String ovirtStorageDomainId;
     @JsonProperty("vnicProfileID")
     private String vnicProfileID;
     @JsonIgnore
@@ -110,18 +110,18 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     public Platform() {
     }
 
-    public Platform(List<AffinityGroup> affinityGroups, String api_vip, List<String> api_vips, MachinePool defaultMachinePlatform, String ingress_vip, List<String> ingress_vips, OvirtPlatformLoadBalancer loadBalancer, String ovirt_cluster_id, String ovirt_network_name, String ovirt_storage_domain_id, String vnicProfileID) {
+    public Platform(List<AffinityGroup> affinityGroups, String apiVip, List<String> apiVips, MachinePool defaultMachinePlatform, String ingressVip, List<String> ingressVips, OvirtPlatformLoadBalancer loadBalancer, String ovirtClusterId, String ovirtNetworkName, String ovirtStorageDomainId, String vnicProfileID) {
         super();
         this.affinityGroups = affinityGroups;
-        this.api_vip = api_vip;
-        this.api_vips = api_vips;
+        this.apiVip = apiVip;
+        this.apiVips = apiVips;
         this.defaultMachinePlatform = defaultMachinePlatform;
-        this.ingress_vip = ingress_vip;
-        this.ingress_vips = ingress_vips;
+        this.ingressVip = ingressVip;
+        this.ingressVips = ingressVips;
         this.loadBalancer = loadBalancer;
-        this.ovirt_cluster_id = ovirt_cluster_id;
-        this.ovirt_network_name = ovirt_network_name;
-        this.ovirt_storage_domain_id = ovirt_storage_domain_id;
+        this.ovirtClusterId = ovirtClusterId;
+        this.ovirtNetworkName = ovirtNetworkName;
+        this.ovirtStorageDomainId = ovirtStorageDomainId;
         this.vnicProfileID = vnicProfileID;
     }
 
@@ -137,24 +137,24 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     }
 
     @JsonProperty("api_vip")
-    public String getApi_vip() {
-        return api_vip;
+    public String getApiVip() {
+        return apiVip;
     }
 
     @JsonProperty("api_vip")
-    public void setApi_vip(String api_vip) {
-        this.api_vip = api_vip;
+    public void setApiVip(String apiVip) {
+        this.apiVip = apiVip;
     }
 
     @JsonProperty("api_vips")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<String> getApi_vips() {
-        return api_vips;
+    public List<String> getApiVips() {
+        return apiVips;
     }
 
     @JsonProperty("api_vips")
-    public void setApi_vips(List<String> api_vips) {
-        this.api_vips = api_vips;
+    public void setApiVips(List<String> apiVips) {
+        this.apiVips = apiVips;
     }
 
     @JsonProperty("defaultMachinePlatform")
@@ -168,24 +168,24 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     }
 
     @JsonProperty("ingress_vip")
-    public String getIngress_vip() {
-        return ingress_vip;
+    public String getIngressVip() {
+        return ingressVip;
     }
 
     @JsonProperty("ingress_vip")
-    public void setIngress_vip(String ingress_vip) {
-        this.ingress_vip = ingress_vip;
+    public void setIngressVip(String ingressVip) {
+        this.ingressVip = ingressVip;
     }
 
     @JsonProperty("ingress_vips")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<String> getIngress_vips() {
-        return ingress_vips;
+    public List<String> getIngressVips() {
+        return ingressVips;
     }
 
     @JsonProperty("ingress_vips")
-    public void setIngress_vips(List<String> ingress_vips) {
-        this.ingress_vips = ingress_vips;
+    public void setIngressVips(List<String> ingressVips) {
+        this.ingressVips = ingressVips;
     }
 
     @JsonProperty("loadBalancer")
@@ -199,33 +199,33 @@ public class Platform implements Editable<PlatformBuilder> , KubernetesResource
     }
 
     @JsonProperty("ovirt_cluster_id")
-    public String getOvirt_cluster_id() {
-        return ovirt_cluster_id;
+    public String getOvirtClusterId() {
+        return ovirtClusterId;
     }
 
     @JsonProperty("ovirt_cluster_id")
-    public void setOvirt_cluster_id(String ovirt_cluster_id) {
-        this.ovirt_cluster_id = ovirt_cluster_id;
+    public void setOvirtClusterId(String ovirtClusterId) {
+        this.ovirtClusterId = ovirtClusterId;
     }
 
     @JsonProperty("ovirt_network_name")
-    public String getOvirt_network_name() {
-        return ovirt_network_name;
+    public String getOvirtNetworkName() {
+        return ovirtNetworkName;
     }
 
     @JsonProperty("ovirt_network_name")
-    public void setOvirt_network_name(String ovirt_network_name) {
-        this.ovirt_network_name = ovirt_network_name;
+    public void setOvirtNetworkName(String ovirtNetworkName) {
+        this.ovirtNetworkName = ovirtNetworkName;
     }
 
     @JsonProperty("ovirt_storage_domain_id")
-    public String getOvirt_storage_domain_id() {
-        return ovirt_storage_domain_id;
+    public String getOvirtStorageDomainId() {
+        return ovirtStorageDomainId;
     }
 
     @JsonProperty("ovirt_storage_domain_id")
-    public void setOvirt_storage_domain_id(String ovirt_storage_domain_id) {
-        this.ovirt_storage_domain_id = ovirt_storage_domain_id;
+    public void setOvirtStorageDomainId(String ovirtStorageDomainId) {
+        this.ovirtStorageDomainId = ovirtStorageDomainId;
     }
 
     @JsonProperty("vnicProfileID")

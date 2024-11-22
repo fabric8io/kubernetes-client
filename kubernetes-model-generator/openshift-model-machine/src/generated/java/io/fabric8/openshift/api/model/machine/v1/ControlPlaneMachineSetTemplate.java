@@ -66,7 +66,7 @@ public class ControlPlaneMachineSetTemplate implements Editable<ControlPlaneMach
     @JsonProperty("machineType")
     private String machineType;
     @JsonProperty("machines_v1beta1_machine_openshift_io")
-    private OpenShiftMachineV1Beta1MachineTemplate machines_v1beta1_machine_openshift_io;
+    private OpenShiftMachineV1Beta1MachineTemplate machinesV1beta1MachineOpenshiftIo;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -77,10 +77,10 @@ public class ControlPlaneMachineSetTemplate implements Editable<ControlPlaneMach
     public ControlPlaneMachineSetTemplate() {
     }
 
-    public ControlPlaneMachineSetTemplate(String machineType, OpenShiftMachineV1Beta1MachineTemplate machines_v1beta1_machine_openshift_io) {
+    public ControlPlaneMachineSetTemplate(String machineType, OpenShiftMachineV1Beta1MachineTemplate machinesV1beta1MachineOpenshiftIo) {
         super();
         this.machineType = machineType;
-        this.machines_v1beta1_machine_openshift_io = machines_v1beta1_machine_openshift_io;
+        this.machinesV1beta1MachineOpenshiftIo = machinesV1beta1MachineOpenshiftIo;
     }
 
     @JsonProperty("machineType")
@@ -94,13 +94,13 @@ public class ControlPlaneMachineSetTemplate implements Editable<ControlPlaneMach
     }
 
     @JsonProperty("machines_v1beta1_machine_openshift_io")
-    public OpenShiftMachineV1Beta1MachineTemplate getMachines_v1beta1_machine_openshift_io() {
-        return machines_v1beta1_machine_openshift_io;
+    public OpenShiftMachineV1Beta1MachineTemplate getMachinesV1beta1MachineOpenshiftIo() {
+        return machinesV1beta1MachineOpenshiftIo;
     }
 
     @JsonProperty("machines_v1beta1_machine_openshift_io")
-    public void setMachines_v1beta1_machine_openshift_io(OpenShiftMachineV1Beta1MachineTemplate machines_v1beta1_machine_openshift_io) {
-        this.machines_v1beta1_machine_openshift_io = machines_v1beta1_machine_openshift_io;
+    public void setMachinesV1beta1MachineOpenshiftIo(OpenShiftMachineV1Beta1MachineTemplate machinesV1beta1MachineOpenshiftIo) {
+        this.machinesV1beta1MachineOpenshiftIo = machinesV1beta1MachineOpenshiftIo;
     }
 
     @JsonIgnore

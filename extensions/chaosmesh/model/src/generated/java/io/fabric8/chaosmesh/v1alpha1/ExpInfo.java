@@ -187,7 +187,7 @@ public class ExpInfo implements Editable<ExpInfoBuilder> , KubernetesResource
     @JsonProperty("stress-mem")
     private StressMemorySpec stressMem;
     @JsonProperty("user_defined")
-    private UserDefinedSpec user_defined;
+    private UserDefinedSpec userDefined;
     @JsonProperty("vm")
     private VMSpec vm;
     @JsonIgnore
@@ -200,7 +200,7 @@ public class ExpInfo implements Editable<ExpInfoBuilder> , KubernetesResource
     public ExpInfo() {
     }
 
-    public ExpInfo(ClockSpec clock, DiskFillSpec diskFill, DiskPayloadSpec diskReadPayload, DiskPayloadSpec diskWritePayload, FileAppendSpec fileAppend, FileCreateSpec fileCreate, FileDeleteSpec fileDelete, FileModifyPrivilegeSpec fileModify, FileRenameSpec fileRename, FileReplaceSpec fileReplace, HTTPAbortSpec httpAbort, HTTPConfigSpec httpConfig, HTTPDelaySpec httpDelay, HTTPRequestSpec httpRequest, JVMExceptionSpec jvmException, JVMGCSpec jvmGc, JVMLatencySpec jvmLatency, PMJVMMySQLSpec jvmMysql, JVMReturnSpec jvmReturn, JVMRuleDataSpec jvmRuleData, JVMStressSpec jvmStress, KafkaFillSpec kafkaFill, KafkaFloodSpec kafkaFlood, KafkaIOSpec kafkaIo, NetworkBandwidthSpec networkBandwidth, NetworkCorruptSpec networkCorrupt, NetworkDelaySpec networkDelay, NetworkDNSSpec networkDns, NetworkDownSpec networkDown, NetworkDuplicateSpec networkDuplicate, NetworkFloodSpec networkFlood, NetworkLossSpec networkLoss, NetworkPartitionSpec networkPartition, ProcessSpec process, RedisCacheLimitSpec redisCacheLimit, RedisExpirationSpec redisExpiration, RedisPenetrationSpec redisPenetration, RedisSentinelRestartSpec redisRestart, RedisSentinelStopSpec redisStop, StressCPUSpec stressCpu, StressMemorySpec stressMem, UserDefinedSpec user_defined, VMSpec vm) {
+    public ExpInfo(ClockSpec clock, DiskFillSpec diskFill, DiskPayloadSpec diskReadPayload, DiskPayloadSpec diskWritePayload, FileAppendSpec fileAppend, FileCreateSpec fileCreate, FileDeleteSpec fileDelete, FileModifyPrivilegeSpec fileModify, FileRenameSpec fileRename, FileReplaceSpec fileReplace, HTTPAbortSpec httpAbort, HTTPConfigSpec httpConfig, HTTPDelaySpec httpDelay, HTTPRequestSpec httpRequest, JVMExceptionSpec jvmException, JVMGCSpec jvmGc, JVMLatencySpec jvmLatency, PMJVMMySQLSpec jvmMysql, JVMReturnSpec jvmReturn, JVMRuleDataSpec jvmRuleData, JVMStressSpec jvmStress, KafkaFillSpec kafkaFill, KafkaFloodSpec kafkaFlood, KafkaIOSpec kafkaIo, NetworkBandwidthSpec networkBandwidth, NetworkCorruptSpec networkCorrupt, NetworkDelaySpec networkDelay, NetworkDNSSpec networkDns, NetworkDownSpec networkDown, NetworkDuplicateSpec networkDuplicate, NetworkFloodSpec networkFlood, NetworkLossSpec networkLoss, NetworkPartitionSpec networkPartition, ProcessSpec process, RedisCacheLimitSpec redisCacheLimit, RedisExpirationSpec redisExpiration, RedisPenetrationSpec redisPenetration, RedisSentinelRestartSpec redisRestart, RedisSentinelStopSpec redisStop, StressCPUSpec stressCpu, StressMemorySpec stressMem, UserDefinedSpec userDefined, VMSpec vm) {
         super();
         this.clock = clock;
         this.diskFill = diskFill;
@@ -243,7 +243,7 @@ public class ExpInfo implements Editable<ExpInfoBuilder> , KubernetesResource
         this.redisStop = redisStop;
         this.stressCpu = stressCpu;
         this.stressMem = stressMem;
-        this.user_defined = user_defined;
+        this.userDefined = userDefined;
         this.vm = vm;
     }
 
@@ -658,13 +658,13 @@ public class ExpInfo implements Editable<ExpInfoBuilder> , KubernetesResource
     }
 
     @JsonProperty("user_defined")
-    public UserDefinedSpec getUser_defined() {
-        return user_defined;
+    public UserDefinedSpec getUserDefined() {
+        return userDefined;
     }
 
     @JsonProperty("user_defined")
-    public void setUser_defined(UserDefinedSpec user_defined) {
-        this.user_defined = user_defined;
+    public void setUserDefined(UserDefinedSpec userDefined) {
+        this.userDefined = userDefined;
     }
 
     @JsonProperty("vm")

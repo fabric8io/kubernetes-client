@@ -76,9 +76,9 @@ public class RuleGroup implements Editable<RuleGroupBuilder> , KubernetesResourc
     @JsonProperty("name")
     private String name;
     @JsonProperty("partial_response_strategy")
-    private String partial_response_strategy;
+    private String partialResponseStrategy;
     @JsonProperty("query_offset")
-    private String query_offset;
+    private String queryOffset;
     @JsonProperty("rules")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Rule> rules = new ArrayList<>();
@@ -92,13 +92,13 @@ public class RuleGroup implements Editable<RuleGroupBuilder> , KubernetesResourc
     public RuleGroup() {
     }
 
-    public RuleGroup(String interval, Integer limit, String name, String partial_response_strategy, String query_offset, List<Rule> rules) {
+    public RuleGroup(String interval, Integer limit, String name, String partialResponseStrategy, String queryOffset, List<Rule> rules) {
         super();
         this.interval = interval;
         this.limit = limit;
         this.name = name;
-        this.partial_response_strategy = partial_response_strategy;
-        this.query_offset = query_offset;
+        this.partialResponseStrategy = partialResponseStrategy;
+        this.queryOffset = queryOffset;
         this.rules = rules;
     }
 
@@ -133,23 +133,23 @@ public class RuleGroup implements Editable<RuleGroupBuilder> , KubernetesResourc
     }
 
     @JsonProperty("partial_response_strategy")
-    public String getPartial_response_strategy() {
-        return partial_response_strategy;
+    public String getPartialResponseStrategy() {
+        return partialResponseStrategy;
     }
 
     @JsonProperty("partial_response_strategy")
-    public void setPartial_response_strategy(String partial_response_strategy) {
-        this.partial_response_strategy = partial_response_strategy;
+    public void setPartialResponseStrategy(String partialResponseStrategy) {
+        this.partialResponseStrategy = partialResponseStrategy;
     }
 
     @JsonProperty("query_offset")
-    public String getQuery_offset() {
-        return query_offset;
+    public String getQueryOffset() {
+        return queryOffset;
     }
 
     @JsonProperty("query_offset")
-    public void setQuery_offset(String query_offset) {
-        this.query_offset = query_offset;
+    public void setQueryOffset(String queryOffset) {
+        this.queryOffset = queryOffset;
     }
 
     @JsonProperty("rules")

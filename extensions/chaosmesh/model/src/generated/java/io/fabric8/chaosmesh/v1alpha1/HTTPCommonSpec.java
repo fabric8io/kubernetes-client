@@ -79,7 +79,7 @@ public class HTTPCommonSpec implements Editable<HTTPCommonSpecBuilder> , Kuberne
     private Integer port;
     @JsonProperty("proxy_ports")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Integer> proxy_ports = new ArrayList<>();
+    private List<Integer> proxyPorts = new ArrayList<>();
     @JsonProperty("target")
     private String target;
     @JsonIgnore
@@ -92,13 +92,13 @@ public class HTTPCommonSpec implements Editable<HTTPCommonSpecBuilder> , Kuberne
     public HTTPCommonSpec() {
     }
 
-    public HTTPCommonSpec(String code, String method, String path, Integer port, List<Integer> proxy_ports, String target) {
+    public HTTPCommonSpec(String code, String method, String path, Integer port, List<Integer> proxyPorts, String target) {
         super();
         this.code = code;
         this.method = method;
         this.path = path;
         this.port = port;
-        this.proxy_ports = proxy_ports;
+        this.proxyPorts = proxyPorts;
         this.target = target;
     }
 
@@ -144,13 +144,13 @@ public class HTTPCommonSpec implements Editable<HTTPCommonSpecBuilder> , Kuberne
 
     @JsonProperty("proxy_ports")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<Integer> getProxy_ports() {
-        return proxy_ports;
+    public List<Integer> getProxyPorts() {
+        return proxyPorts;
     }
 
     @JsonProperty("proxy_ports")
-    public void setProxy_ports(List<Integer> proxy_ports) {
-        this.proxy_ports = proxy_ports;
+    public void setProxyPorts(List<Integer> proxyPorts) {
+        this.proxyPorts = proxyPorts;
     }
 
     @JsonProperty("target")

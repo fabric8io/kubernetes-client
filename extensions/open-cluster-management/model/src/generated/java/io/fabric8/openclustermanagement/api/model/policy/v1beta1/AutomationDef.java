@@ -69,7 +69,7 @@ public class AutomationDef implements Editable<AutomationDefBuilder> , Kubernete
 
     @JsonProperty("extra_vars")
     @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
-    private Object extra_vars;
+    private Object extraVars;
     @JsonProperty("jobTtl")
     private Integer jobTtl;
     @JsonProperty("name")
@@ -90,9 +90,9 @@ public class AutomationDef implements Editable<AutomationDefBuilder> , Kubernete
     public AutomationDef() {
     }
 
-    public AutomationDef(Object extra_vars, Integer jobTtl, String name, Integer policyViolationsLimit, String secret, String type) {
+    public AutomationDef(Object extraVars, Integer jobTtl, String name, Integer policyViolationsLimit, String secret, String type) {
         super();
-        this.extra_vars = extra_vars;
+        this.extraVars = extraVars;
         this.jobTtl = jobTtl;
         this.name = name;
         this.policyViolationsLimit = policyViolationsLimit;
@@ -101,14 +101,14 @@ public class AutomationDef implements Editable<AutomationDefBuilder> , Kubernete
     }
 
     @JsonProperty("extra_vars")
-    public Object getExtra_vars() {
-        return extra_vars;
+    public Object getExtraVars() {
+        return extraVars;
     }
 
     @JsonProperty("extra_vars")
     @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
-    public void setExtra_vars(Object extra_vars) {
-        this.extra_vars = extra_vars;
+    public void setExtraVars(Object extraVars) {
+        this.extraVars = extraVars;
     }
 
     @JsonProperty("jobTtl")

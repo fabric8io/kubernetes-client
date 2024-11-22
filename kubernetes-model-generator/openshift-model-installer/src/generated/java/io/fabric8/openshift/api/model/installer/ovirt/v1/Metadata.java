@@ -64,9 +64,9 @@ public class Metadata implements Editable<MetadataBuilder> , KubernetesResource
 {
 
     @JsonProperty("cluster_id")
-    private String cluster_id;
+    private String clusterId;
     @JsonProperty("remove_template")
-    private Boolean remove_template;
+    private Boolean removeTemplate;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -77,30 +77,30 @@ public class Metadata implements Editable<MetadataBuilder> , KubernetesResource
     public Metadata() {
     }
 
-    public Metadata(String cluster_id, Boolean remove_template) {
+    public Metadata(String clusterId, Boolean removeTemplate) {
         super();
-        this.cluster_id = cluster_id;
-        this.remove_template = remove_template;
+        this.clusterId = clusterId;
+        this.removeTemplate = removeTemplate;
     }
 
     @JsonProperty("cluster_id")
-    public String getCluster_id() {
-        return cluster_id;
+    public String getClusterId() {
+        return clusterId;
     }
 
     @JsonProperty("cluster_id")
-    public void setCluster_id(String cluster_id) {
-        this.cluster_id = cluster_id;
+    public void setClusterId(String clusterId) {
+        this.clusterId = clusterId;
     }
 
     @JsonProperty("remove_template")
-    public Boolean getRemove_template() {
-        return remove_template;
+    public Boolean getRemoveTemplate() {
+        return removeTemplate;
     }
 
     @JsonProperty("remove_template")
-    public void setRemove_template(Boolean remove_template) {
-        this.remove_template = remove_template;
+    public void setRemoveTemplate(Boolean removeTemplate) {
+        this.removeTemplate = removeTemplate;
     }
 
     @JsonIgnore
