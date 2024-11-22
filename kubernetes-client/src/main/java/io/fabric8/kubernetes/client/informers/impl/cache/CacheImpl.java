@@ -358,9 +358,13 @@ public class CacheImpl<T extends HasMetadata> implements Cache<T> {
    * @return the indexed value
    */
   public static List<String> metaNamespaceIndexFunc(Object obj) {
-    ObjectMeta metadata = null;
+    final ObjectMeta metadata;
     if (obj instanceof HasMetadata) {
       metadata = ((HasMetadata) obj).getMetadata();
+    } else if (obj instanceof ObjectMeta) {
+      metadata = (ObjectMeta) obj;
+    } else {
+      metadata = null;
     }
     return metadata == null ? Collections.emptyList() : Collections.singletonList(metadata.getNamespace());
   }

@@ -47,6 +47,7 @@
 * Fix #6626: Removed deprecated methods from `io.fabric8.kubernetes.client.osgi.ManagedKubernetesClient` class
 * Fix #6627: Removed deprecated methods from `io.fabric8.kubernetes.client.CustomResource` class
 * Fix #6628: Removed deprecated `io.fabric8.kubernetes.client.CustomResourceList` class
+* Fix #6630: Removed deprecated `io.fabric8.kubernetes.client.utils.ReflectUtils` class
 
 ### 6.13.4 (2024-09-25)
 
