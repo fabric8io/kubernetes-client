@@ -38,7 +38,9 @@ import org.slf4j.LoggerFactory;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -205,7 +207,7 @@ public class KubernetesCrudDispatcher extends CrudDispatcher implements Kubernet
     }
     if (!resource.isMarkedForDeletion()) {
       // Mark the resource as deleted, but don't remove it yet (wait for finalizer-removal).
-      resource.getMetadata().setDeletionTimestamp(LocalDateTime.now().toString());
+      resource.getMetadata().setDeletionTimestamp(ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ISO_INSTANT));
       resource.getMetadata().setResourceVersion(String.valueOf(requestResourceVersion()));
       String updatedResource = Serialization.asJson(resource);
       processEvent(path, pathAttributes, oldAttributes, resource, updatedResource);
