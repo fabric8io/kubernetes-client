@@ -5,6 +5,7 @@
 #### Bugs
 * Fix #6038: Support for Gradle configuration cache
 * Fix #6214: Java generator does not recognize fields in CRDs other than metadata, spec, and status
+* Fix #6632: Inconsistencies with mock server timestamps
 
 #### Improvements
 * Fix #3069: (crd-generator) Add `@AdditionalPrinterColumn` to specify a printer column by JSON path.
