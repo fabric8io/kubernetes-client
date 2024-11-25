@@ -113,8 +113,7 @@ public class ClassInformation implements ImportManager {
     if (isEditable()) {
       addImport("com.fasterxml.jackson.annotation.JsonIgnore");
       addImport(schemaUtils.getSettings().getBuilderPackage() + "." + "Editable");
-      implementsExtends.append("Editable<").append(getBuilderName()).append(">");
-      implementsExtends.append(" , "); // TODO: weird comma introduced by jsonschema2pojo
+      implementsExtends.append("Editable<").append(getBuilderName()).append(">, ");
     }
     // HasMetadata
     if (isHasMetadata()) {
