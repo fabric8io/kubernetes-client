@@ -73,7 +73,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("eventing.knative.dev")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class Trigger implements Editable<TriggerBuilder> , HasMetadata, Namespaced
+public class Trigger implements Editable<TriggerBuilder>, HasMetadata, Namespaced
 {
 
     /**

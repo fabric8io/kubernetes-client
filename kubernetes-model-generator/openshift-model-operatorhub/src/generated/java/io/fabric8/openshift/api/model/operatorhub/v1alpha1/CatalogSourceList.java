@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("operators.coreos.com")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class CatalogSourceList implements Editable<CatalogSourceListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.operatorhub.v1alpha1.CatalogSource>
+public class CatalogSourceList implements Editable<CatalogSourceListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.operatorhub.v1alpha1.CatalogSource>
 {
 
     /**

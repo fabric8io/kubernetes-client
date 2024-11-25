@@ -72,7 +72,7 @@ import lombok.experimental.Accessors;
 @Version("v1beta1")
 @Group("gateway.networking.k8s.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ReferenceGrant implements Editable<ReferenceGrantBuilder> , HasMetadata, Namespaced
+public class ReferenceGrant implements Editable<ReferenceGrantBuilder>, HasMetadata, Namespaced
 {
 
     /**

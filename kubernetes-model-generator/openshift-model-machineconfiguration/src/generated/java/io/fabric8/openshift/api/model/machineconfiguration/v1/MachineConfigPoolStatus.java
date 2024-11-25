@@ -70,7 +70,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class MachineConfigPoolStatus implements Editable<MachineConfigPoolStatusBuilder> , KubernetesResource
+public class MachineConfigPoolStatus implements Editable<MachineConfigPoolStatusBuilder>, KubernetesResource
 {
 
     @JsonProperty("certExpirys")

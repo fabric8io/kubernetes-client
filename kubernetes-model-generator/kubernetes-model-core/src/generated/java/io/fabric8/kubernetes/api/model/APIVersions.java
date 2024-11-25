@@ -44,7 +44,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class APIVersions implements Editable<APIVersionsBuilder> , KubernetesResource
+public class APIVersions implements Editable<APIVersionsBuilder>, KubernetesResource
 {
 
     /**

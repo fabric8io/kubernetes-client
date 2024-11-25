@@ -62,7 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class AffinityGroup implements Editable<AffinityGroupBuilder> , KubernetesResource
+public class AffinityGroup implements Editable<AffinityGroupBuilder>, KubernetesResource
 {
 
     @JsonProperty("description")

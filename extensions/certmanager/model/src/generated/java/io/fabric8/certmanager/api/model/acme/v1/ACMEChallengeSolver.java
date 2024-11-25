@@ -61,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ACMEChallengeSolver implements Editable<ACMEChallengeSolverBuilder> , KubernetesResource
+public class ACMEChallengeSolver implements Editable<ACMEChallengeSolverBuilder>, KubernetesResource
 {
 
     @JsonProperty("dns01")

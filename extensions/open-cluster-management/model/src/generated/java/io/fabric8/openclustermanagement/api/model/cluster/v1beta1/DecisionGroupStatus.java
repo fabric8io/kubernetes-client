@@ -64,7 +64,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class DecisionGroupStatus implements Editable<DecisionGroupStatusBuilder> , KubernetesResource
+public class DecisionGroupStatus implements Editable<DecisionGroupStatusBuilder>, KubernetesResource
 {
 
     @JsonProperty("clusterCount")

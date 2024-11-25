@@ -61,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class QuickStarts implements Editable<QuickStartsBuilder> , KubernetesResource
+public class QuickStarts implements Editable<QuickStartsBuilder>, KubernetesResource
 {
 
     @JsonProperty("disabled")

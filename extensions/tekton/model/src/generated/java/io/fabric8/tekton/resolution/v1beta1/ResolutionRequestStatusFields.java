@@ -62,7 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ResolutionRequestStatusFields implements Editable<ResolutionRequestStatusFieldsBuilder> , KubernetesResource
+public class ResolutionRequestStatusFields implements Editable<ResolutionRequestStatusFieldsBuilder>, KubernetesResource
 {
 
     @JsonProperty("data")

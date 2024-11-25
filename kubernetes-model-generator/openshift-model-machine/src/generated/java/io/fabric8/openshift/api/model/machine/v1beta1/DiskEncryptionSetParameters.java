@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class DiskEncryptionSetParameters implements Editable<DiskEncryptionSetParametersBuilder> , KubernetesResource
+public class DiskEncryptionSetParameters implements Editable<DiskEncryptionSetParametersBuilder>, KubernetesResource
 {
 
     @JsonProperty("id")

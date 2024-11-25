@@ -47,7 +47,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class DeleteOptions implements Editable<DeleteOptionsBuilder> , KubernetesResource
+public class DeleteOptions implements Editable<DeleteOptionsBuilder>, KubernetesResource
 {
 
     /**

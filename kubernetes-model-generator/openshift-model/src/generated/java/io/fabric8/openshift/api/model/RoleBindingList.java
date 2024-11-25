@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("authorization.openshift.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class RoleBindingList implements Editable<RoleBindingListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.RoleBinding>
+public class RoleBindingList implements Editable<RoleBindingListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.RoleBinding>
 {
 
     /**

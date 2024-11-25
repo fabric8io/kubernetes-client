@@ -66,7 +66,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class Metal3ClusterStatus implements Editable<Metal3ClusterStatusBuilder> , KubernetesResource
+public class Metal3ClusterStatus implements Editable<Metal3ClusterStatusBuilder>, KubernetesResource
 {
 
     @JsonProperty("conditions")

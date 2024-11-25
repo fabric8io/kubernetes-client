@@ -62,7 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class NativeHistogramConfig implements Editable<NativeHistogramConfigBuilder> , KubernetesResource
+public class NativeHistogramConfig implements Editable<NativeHistogramConfigBuilder>, KubernetesResource
 {
 
     @JsonProperty("nativeHistogramBucketLimit")

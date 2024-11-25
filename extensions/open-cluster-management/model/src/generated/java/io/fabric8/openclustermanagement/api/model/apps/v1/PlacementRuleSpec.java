@@ -67,7 +67,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class PlacementRuleSpec implements Editable<PlacementRuleSpecBuilder> , KubernetesResource
+public class PlacementRuleSpec implements Editable<PlacementRuleSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("clusterConditions")

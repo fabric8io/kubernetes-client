@@ -63,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class PriorityLevelConfigurationCondition implements Editable<PriorityLevelConfigurationConditionBuilder> , KubernetesResource
+public class PriorityLevelConfigurationCondition implements Editable<PriorityLevelConfigurationConditionBuilder>, KubernetesResource
 {
 
     @JsonProperty("lastTransitionTime")

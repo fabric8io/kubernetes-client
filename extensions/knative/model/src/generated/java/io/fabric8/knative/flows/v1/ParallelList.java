@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("flows.knative.dev")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ParallelList implements Editable<ParallelListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.knative.flows.v1.Parallel>
+public class ParallelList implements Editable<ParallelListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.knative.flows.v1.Parallel>
 {
 
     /**

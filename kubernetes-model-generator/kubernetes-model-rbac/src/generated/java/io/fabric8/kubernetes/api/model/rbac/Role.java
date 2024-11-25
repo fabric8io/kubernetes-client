@@ -74,7 +74,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("rbac.authorization.k8s.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class Role implements Editable<RoleBuilder> , HasMetadata, Namespaced
+public class Role implements Editable<RoleBuilder>, HasMetadata, Namespaced
 {
 
     /**

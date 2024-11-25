@@ -102,7 +102,7 @@ import lombok.experimental.Accessors;
 @Version("v1beta1")
 @Group("machine.openshift.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class AzureMachineProviderSpec implements Editable<AzureMachineProviderSpecBuilder> , HasMetadata, Namespaced
+public class AzureMachineProviderSpec implements Editable<AzureMachineProviderSpecBuilder>, HasMetadata, Namespaced
 {
 
     @JsonProperty("acceleratedNetworking")

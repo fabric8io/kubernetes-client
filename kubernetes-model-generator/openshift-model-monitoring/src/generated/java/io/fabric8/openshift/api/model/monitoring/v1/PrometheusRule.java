@@ -72,7 +72,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("monitoring.coreos.com")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class PrometheusRule implements Editable<PrometheusRuleBuilder> , HasMetadata, Namespaced
+public class PrometheusRule implements Editable<PrometheusRuleBuilder>, HasMetadata, Namespaced
 {
 
     /**

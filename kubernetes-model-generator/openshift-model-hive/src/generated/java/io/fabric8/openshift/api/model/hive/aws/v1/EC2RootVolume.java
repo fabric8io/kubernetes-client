@@ -62,7 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class EC2RootVolume implements Editable<EC2RootVolumeBuilder> , KubernetesResource
+public class EC2RootVolume implements Editable<EC2RootVolumeBuilder>, KubernetesResource
 {
 
     @JsonProperty("iops")

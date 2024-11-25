@@ -62,7 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class Destination implements Editable<DestinationBuilder> , KubernetesResource
+public class Destination implements Editable<DestinationBuilder>, KubernetesResource
 {
 
     @JsonProperty("CACerts")

@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("apps.open-cluster-management.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class SubscriptionList implements Editable<SubscriptionListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openclustermanagement.api.model.apps.v1.Subscription>
+public class SubscriptionList implements Editable<SubscriptionListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.openclustermanagement.api.model.apps.v1.Subscription>
 {
 
     /**

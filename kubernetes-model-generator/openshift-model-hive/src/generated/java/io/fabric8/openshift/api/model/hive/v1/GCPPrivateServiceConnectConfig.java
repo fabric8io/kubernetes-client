@@ -62,7 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class GCPPrivateServiceConnectConfig implements Editable<GCPPrivateServiceConnectConfigBuilder> , KubernetesResource
+public class GCPPrivateServiceConnectConfig implements Editable<GCPPrivateServiceConnectConfigBuilder>, KubernetesResource
 {
 
     @JsonProperty("credentialsSecretRef")

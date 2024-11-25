@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class NutanixPlatformLoadBalancer implements Editable<NutanixPlatformLoadBalancerBuilder> , KubernetesResource
+public class NutanixPlatformLoadBalancer implements Editable<NutanixPlatformLoadBalancerBuilder>, KubernetesResource
 {
 
     @JsonProperty("type")

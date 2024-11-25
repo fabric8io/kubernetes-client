@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("certificates.k8s.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class CertificateSigningRequestList implements Editable<CertificateSigningRequestListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequest>
+public class CertificateSigningRequestList implements Editable<CertificateSigningRequestListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequest>
 {
 
     /**

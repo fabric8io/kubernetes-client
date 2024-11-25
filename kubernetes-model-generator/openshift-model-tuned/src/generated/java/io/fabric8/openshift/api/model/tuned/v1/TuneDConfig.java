@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class TuneDConfig implements Editable<TuneDConfigBuilder> , KubernetesResource
+public class TuneDConfig implements Editable<TuneDConfigBuilder>, KubernetesResource
 {
 
     @JsonProperty("reapply_sysctl")

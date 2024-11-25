@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("operator.openshift.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class StorageList implements Editable<StorageListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.operator.v1.Storage>
+public class StorageList implements Editable<StorageListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.operator.v1.Storage>
 {
 
     /**

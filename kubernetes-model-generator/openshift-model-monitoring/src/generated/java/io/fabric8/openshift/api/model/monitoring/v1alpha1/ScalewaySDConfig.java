@@ -79,7 +79,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ScalewaySDConfig implements Editable<ScalewaySDConfigBuilder> , KubernetesResource
+public class ScalewaySDConfig implements Editable<ScalewaySDConfigBuilder>, KubernetesResource
 {
 
     @JsonProperty("accessKey")

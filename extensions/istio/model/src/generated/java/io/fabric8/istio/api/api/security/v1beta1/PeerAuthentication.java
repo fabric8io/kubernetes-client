@@ -72,7 +72,7 @@ import lombok.experimental.Accessors;
 @Version("v1beta1")
 @Group("")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class PeerAuthentication implements Editable<PeerAuthenticationBuilder> , KubernetesResource, Namespaced
+public class PeerAuthentication implements Editable<PeerAuthenticationBuilder>, KubernetesResource, Namespaced
 {
 
     @JsonProperty("mtls")

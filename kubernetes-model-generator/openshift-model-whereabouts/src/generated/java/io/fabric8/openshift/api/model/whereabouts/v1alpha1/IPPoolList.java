@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("whereabouts.cni.cncf.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class IPPoolList implements Editable<IPPoolListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.whereabouts.v1alpha1.IPPool>
+public class IPPoolList implements Editable<IPPoolListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.whereabouts.v1alpha1.IPPool>
 {
 
     /**

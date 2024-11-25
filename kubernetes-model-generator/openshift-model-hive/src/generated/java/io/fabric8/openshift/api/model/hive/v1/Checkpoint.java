@@ -73,7 +73,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("hive.openshift.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class Checkpoint implements Editable<CheckpointBuilder> , HasMetadata, Namespaced
+public class Checkpoint implements Editable<CheckpointBuilder>, HasMetadata, Namespaced
 {
 
     /**

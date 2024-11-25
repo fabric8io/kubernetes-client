@@ -72,7 +72,7 @@ import lombok.experimental.Accessors;
 @Version("v1beta1")
 @Group("scheduling.volcano.sh")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class Queue implements Editable<QueueBuilder> , HasMetadata
+public class Queue implements Editable<QueueBuilder>, HasMetadata
 {
 
     /**

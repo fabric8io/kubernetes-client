@@ -72,7 +72,7 @@ import lombok.experimental.Accessors;
 @Version("v1beta1")
 @Group("triggers.tekton.dev")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ClusterTriggerBinding implements Editable<ClusterTriggerBindingBuilder> , HasMetadata
+public class ClusterTriggerBinding implements Editable<ClusterTriggerBindingBuilder>, HasMetadata
 {
 
     /**

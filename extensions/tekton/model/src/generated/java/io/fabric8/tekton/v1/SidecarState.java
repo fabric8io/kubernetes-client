@@ -67,7 +67,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class SidecarState implements Editable<SidecarStateBuilder> , KubernetesResource
+public class SidecarState implements Editable<SidecarStateBuilder>, KubernetesResource
 {
 
     @JsonProperty("container")

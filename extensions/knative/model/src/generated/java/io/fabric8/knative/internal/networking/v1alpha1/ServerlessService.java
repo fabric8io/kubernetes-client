@@ -73,7 +73,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("networking.internal.knative.dev")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ServerlessService implements Editable<ServerlessServiceBuilder> , HasMetadata, Namespaced
+public class ServerlessService implements Editable<ServerlessServiceBuilder>, HasMetadata, Namespaced
 {
 
     /**

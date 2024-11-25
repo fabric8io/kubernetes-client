@@ -66,7 +66,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ConnectionPoolSettingsHTTPSettings implements Editable<ConnectionPoolSettingsHTTPSettingsBuilder> , KubernetesResource
+public class ConnectionPoolSettingsHTTPSettings implements Editable<ConnectionPoolSettingsHTTPSettingsBuilder>, KubernetesResource
 {
 
     @JsonProperty("h2UpgradePolicy")

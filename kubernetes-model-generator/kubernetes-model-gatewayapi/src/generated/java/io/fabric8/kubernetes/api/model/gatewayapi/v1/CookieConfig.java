@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class CookieConfig implements Editable<CookieConfigBuilder> , KubernetesResource
+public class CookieConfig implements Editable<CookieConfigBuilder>, KubernetesResource
 {
 
     @JsonProperty("lifetimeType")

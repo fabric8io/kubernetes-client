@@ -73,7 +73,7 @@ import lombok.experimental.Accessors;
 @Version("v1beta1")
 @Group("cluster.open-cluster-management.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class Placement implements Editable<PlacementBuilder> , HasMetadata, Namespaced
+public class Placement implements Editable<PlacementBuilder>, HasMetadata, Namespaced
 {
 
     /**

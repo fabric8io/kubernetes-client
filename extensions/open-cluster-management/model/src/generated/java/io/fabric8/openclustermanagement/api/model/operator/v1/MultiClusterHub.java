@@ -73,7 +73,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("operator.open-cluster-management.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class MultiClusterHub implements Editable<MultiClusterHubBuilder> , HasMetadata, Namespaced
+public class MultiClusterHub implements Editable<MultiClusterHubBuilder>, HasMetadata, Namespaced
 {
 
     /**

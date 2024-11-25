@@ -60,7 +60,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class MetaDataHostInterface implements Editable<MetaDataHostInterfaceBuilder> , KubernetesResource
+public class MetaDataHostInterface implements Editable<MetaDataHostInterfaceBuilder>, KubernetesResource
 {
 
     @JsonProperty("interface")

@@ -66,7 +66,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class DataDiskProperties implements Editable<DataDiskPropertiesBuilder> , KubernetesResource
+public class DataDiskProperties implements Editable<DataDiskPropertiesBuilder>, KubernetesResource
 {
 
     @JsonProperty("Category")

@@ -61,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class MistakeSpec implements Editable<MistakeSpecBuilder> , KubernetesResource
+public class MistakeSpec implements Editable<MistakeSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("filling")

@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1beta1")
 @Group("security.istio.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class AuthorizationPolicyList implements Editable<AuthorizationPolicyListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.istio.api.security.v1beta1.AuthorizationPolicy>
+public class AuthorizationPolicyList implements Editable<AuthorizationPolicyListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.istio.api.security.v1beta1.AuthorizationPolicy>
 {
 
     /**

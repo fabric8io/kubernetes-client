@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1beta1")
 @Group("helm.openshift.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class HelmChartRepositoryList implements Editable<HelmChartRepositoryListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.miscellaneous.helm.v1beta1.HelmChartRepository>
+public class HelmChartRepositoryList implements Editable<HelmChartRepositoryListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.miscellaneous.helm.v1beta1.HelmChartRepository>
 {
 
     /**

@@ -60,7 +60,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class PerVerbAPIRequestCount implements Editable<PerVerbAPIRequestCountBuilder> , KubernetesResource
+public class PerVerbAPIRequestCount implements Editable<PerVerbAPIRequestCountBuilder>, KubernetesResource
 {
 
     @JsonProperty("requestCount")

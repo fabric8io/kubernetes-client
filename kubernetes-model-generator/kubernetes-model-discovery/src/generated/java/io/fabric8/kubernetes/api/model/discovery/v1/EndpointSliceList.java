@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("discovery.k8s.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class EndpointSliceList implements Editable<EndpointSliceListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.discovery.v1.EndpointSlice>
+public class EndpointSliceList implements Editable<EndpointSliceListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.discovery.v1.EndpointSlice>
 {
 
     /**

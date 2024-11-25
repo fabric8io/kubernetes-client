@@ -73,7 +73,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class WorkspaceBinding implements Editable<WorkspaceBindingBuilder> , KubernetesResource
+public class WorkspaceBinding implements Editable<WorkspaceBindingBuilder>, KubernetesResource
 {
 
     @JsonProperty("configMap")

@@ -32,7 +32,7 @@ import lombok.experimental.Accessors;
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ResourceFieldSelector implements Editable<ResourceFieldSelectorBuilder> , KubernetesResource
+public class ResourceFieldSelector implements Editable<ResourceFieldSelectorBuilder>, KubernetesResource
 {
 
     @JsonProperty("containerName")

@@ -73,7 +73,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("agent.open-cluster-management.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class KlusterletAddonConfig implements Editable<KlusterletAddonConfigBuilder> , HasMetadata, Namespaced
+public class KlusterletAddonConfig implements Editable<KlusterletAddonConfigBuilder>, HasMetadata, Namespaced
 {
 
     /**

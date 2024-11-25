@@ -60,7 +60,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class NetworkGatewayv6 implements Editable<NetworkGatewayv6Builder> , KubernetesResource
+public class NetworkGatewayv6 implements Editable<NetworkGatewayv6Builder>, KubernetesResource
 {
 
     @JsonProperty("fromIPPool")

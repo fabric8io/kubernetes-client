@@ -44,7 +44,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ComponentStatusList implements Editable<ComponentStatusListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.ComponentStatus>
+public class ComponentStatusList implements Editable<ComponentStatusListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.ComponentStatus>
 {
 
     /**

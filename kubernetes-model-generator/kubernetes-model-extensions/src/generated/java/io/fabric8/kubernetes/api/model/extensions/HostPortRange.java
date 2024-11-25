@@ -60,7 +60,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class HostPortRange implements Editable<HostPortRangeBuilder> , KubernetesResource
+public class HostPortRange implements Editable<HostPortRangeBuilder>, KubernetesResource
 {
 
     @JsonProperty("max")

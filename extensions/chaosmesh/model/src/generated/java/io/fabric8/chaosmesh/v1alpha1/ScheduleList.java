@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("chaos-mesh.org")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ScheduleList implements Editable<ScheduleListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.chaosmesh.v1alpha1.Schedule>
+public class ScheduleList implements Editable<ScheduleListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.chaosmesh.v1alpha1.Schedule>
 {
 
     /**

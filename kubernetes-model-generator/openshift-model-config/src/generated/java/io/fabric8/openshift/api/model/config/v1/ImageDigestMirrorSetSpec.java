@@ -61,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ImageDigestMirrorSetSpec implements Editable<ImageDigestMirrorSetSpecBuilder> , KubernetesResource
+public class ImageDigestMirrorSetSpec implements Editable<ImageDigestMirrorSetSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("imageDigestMirrors")

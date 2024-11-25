@@ -72,7 +72,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("authorization.k8s.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class SelfSubjectRulesReview implements Editable<SelfSubjectRulesReviewBuilder> , HasMetadata
+public class SelfSubjectRulesReview implements Editable<SelfSubjectRulesReviewBuilder>, HasMetadata
 {
 
     /**

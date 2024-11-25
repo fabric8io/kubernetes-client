@@ -62,7 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class PKCS12Keystore implements Editable<PKCS12KeystoreBuilder> , KubernetesResource
+public class PKCS12Keystore implements Editable<PKCS12KeystoreBuilder>, KubernetesResource
 {
 
     @JsonProperty("create")

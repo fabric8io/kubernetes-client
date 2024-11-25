@@ -67,7 +67,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class EventListenerSpec implements Editable<EventListenerSpecBuilder> , KubernetesResource
+public class EventListenerSpec implements Editable<EventListenerSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("cloudEventURI")

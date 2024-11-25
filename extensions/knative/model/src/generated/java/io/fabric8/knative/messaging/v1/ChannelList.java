@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("messaging.knative.dev")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ChannelList implements Editable<ChannelListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.knative.messaging.v1.Channel>
+public class ChannelList implements Editable<ChannelListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.knative.messaging.v1.Channel>
 {
 
     /**

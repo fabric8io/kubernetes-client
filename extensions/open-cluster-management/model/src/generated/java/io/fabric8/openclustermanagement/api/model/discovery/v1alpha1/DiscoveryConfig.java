@@ -73,7 +73,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("discovery.open-cluster-management.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class DiscoveryConfig implements Editable<DiscoveryConfigBuilder> , HasMetadata, Namespaced
+public class DiscoveryConfig implements Editable<DiscoveryConfigBuilder>, HasMetadata, Namespaced
 {
 
     /**

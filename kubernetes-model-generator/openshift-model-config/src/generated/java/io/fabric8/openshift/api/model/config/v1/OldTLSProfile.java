@@ -58,7 +58,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class OldTLSProfile implements Editable<OldTLSProfileBuilder> , KubernetesResource
+public class OldTLSProfile implements Editable<OldTLSProfileBuilder>, KubernetesResource
 {
 
     @JsonIgnore

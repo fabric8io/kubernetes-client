@@ -72,7 +72,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ACMEChallengeSolverHTTP01IngressPodSecurityContext implements Editable<ACMEChallengeSolverHTTP01IngressPodSecurityContextBuilder> , KubernetesResource
+public class ACMEChallengeSolverHTTP01IngressPodSecurityContext implements Editable<ACMEChallengeSolverHTTP01IngressPodSecurityContextBuilder>, KubernetesResource
 {
 
     @JsonProperty("fsGroup")

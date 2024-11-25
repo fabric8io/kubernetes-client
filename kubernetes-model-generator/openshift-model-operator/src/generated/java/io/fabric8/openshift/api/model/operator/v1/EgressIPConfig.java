@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class EgressIPConfig implements Editable<EgressIPConfigBuilder> , KubernetesResource
+public class EgressIPConfig implements Editable<EgressIPConfigBuilder>, KubernetesResource
 {
 
     @JsonProperty("reachabilityTotalTimeoutSeconds")

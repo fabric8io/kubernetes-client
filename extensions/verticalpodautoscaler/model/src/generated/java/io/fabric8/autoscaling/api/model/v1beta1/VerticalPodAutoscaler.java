@@ -73,7 +73,7 @@ import lombok.experimental.Accessors;
 @Version("v1beta1")
 @Group("autoscaling.k8s.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class VerticalPodAutoscaler implements Editable<VerticalPodAutoscalerBuilder> , HasMetadata, Namespaced
+public class VerticalPodAutoscaler implements Editable<VerticalPodAutoscalerBuilder>, HasMetadata, Namespaced
 {
 
     /**

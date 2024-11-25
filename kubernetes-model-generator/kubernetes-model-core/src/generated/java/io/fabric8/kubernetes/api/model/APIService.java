@@ -43,7 +43,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("apiregistration.k8s.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class APIService implements Editable<APIServiceBuilder> , HasMetadata
+public class APIService implements Editable<APIServiceBuilder>, HasMetadata
 {
 
     /**

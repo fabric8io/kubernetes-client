@@ -72,7 +72,7 @@ import lombok.experimental.Accessors;
 @Version("v1beta1")
 @Group("tekton.dev")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class StepAction implements Editable<StepActionBuilder> , HasMetadata, Namespaced
+public class StepAction implements Editable<StepActionBuilder>, HasMetadata, Namespaced
 {
 
     /**

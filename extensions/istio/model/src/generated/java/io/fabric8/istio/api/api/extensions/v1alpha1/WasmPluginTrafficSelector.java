@@ -63,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class WasmPluginTrafficSelector implements Editable<WasmPluginTrafficSelectorBuilder> , KubernetesResource
+public class WasmPluginTrafficSelector implements Editable<WasmPluginTrafficSelectorBuilder>, KubernetesResource
 {
 
     @JsonProperty("mode")

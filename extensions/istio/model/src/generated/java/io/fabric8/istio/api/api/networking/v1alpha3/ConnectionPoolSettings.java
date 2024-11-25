@@ -60,7 +60,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ConnectionPoolSettings implements Editable<ConnectionPoolSettingsBuilder> , KubernetesResource
+public class ConnectionPoolSettings implements Editable<ConnectionPoolSettingsBuilder>, KubernetesResource
 {
 
     @JsonProperty("http")

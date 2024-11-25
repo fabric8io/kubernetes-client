@@ -61,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class BlockDelaySpec implements Editable<BlockDelaySpecBuilder> , KubernetesResource
+public class BlockDelaySpec implements Editable<BlockDelaySpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("correlation")

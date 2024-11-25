@@ -76,7 +76,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("operator.openshift.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class GenericOperatorConfig implements Editable<GenericOperatorConfigBuilder> , KubernetesResource, Namespaced
+public class GenericOperatorConfig implements Editable<GenericOperatorConfigBuilder>, KubernetesResource, Namespaced
 {
 
     /**

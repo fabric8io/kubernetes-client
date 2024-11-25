@@ -63,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class NetworkFloodSpec implements Editable<NetworkFloodSpecBuilder> , KubernetesResource
+public class NetworkFloodSpec implements Editable<NetworkFloodSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("duration")

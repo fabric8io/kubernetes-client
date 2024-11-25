@@ -72,7 +72,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class MutatingWebhook implements Editable<MutatingWebhookBuilder> , KubernetesResource
+public class MutatingWebhook implements Editable<MutatingWebhookBuilder>, KubernetesResource
 {
 
     @JsonProperty("admissionReviewVersions")

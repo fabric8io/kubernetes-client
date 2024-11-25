@@ -60,7 +60,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class CloudLoadBalancerConfig implements Editable<CloudLoadBalancerConfigBuilder> , KubernetesResource
+public class CloudLoadBalancerConfig implements Editable<CloudLoadBalancerConfigBuilder>, KubernetesResource
 {
 
     @JsonProperty("clusterHosted")

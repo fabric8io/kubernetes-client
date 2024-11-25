@@ -60,7 +60,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class AuditAnnotation implements Editable<AuditAnnotationBuilder> , KubernetesResource
+public class AuditAnnotation implements Editable<AuditAnnotationBuilder>, KubernetesResource
 {
 
     @JsonProperty("key")

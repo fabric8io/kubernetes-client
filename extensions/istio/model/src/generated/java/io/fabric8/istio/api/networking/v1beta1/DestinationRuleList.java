@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1beta1")
 @Group("networking.istio.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class DestinationRuleList implements Editable<DestinationRuleListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.istio.api.networking.v1beta1.DestinationRule>
+public class DestinationRuleList implements Editable<DestinationRuleListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.istio.api.networking.v1beta1.DestinationRule>
 {
 
     /**

@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class TriggerFilter implements Editable<TriggerFilterBuilder> , KubernetesResource
+public class TriggerFilter implements Editable<TriggerFilterBuilder>, KubernetesResource
 {
 
     @JsonProperty("attributes")

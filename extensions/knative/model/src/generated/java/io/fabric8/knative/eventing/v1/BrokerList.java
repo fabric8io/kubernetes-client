@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("eventing.knative.dev")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class BrokerList implements Editable<BrokerListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.knative.eventing.v1.Broker>
+public class BrokerList implements Editable<BrokerListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.knative.eventing.v1.Broker>
 {
 
     /**

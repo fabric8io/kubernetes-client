@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ImagePrunerSpec implements Editable<ImagePrunerSpecBuilder> , KubernetesResource
+public class ImagePrunerSpec implements Editable<ImagePrunerSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("affinity")

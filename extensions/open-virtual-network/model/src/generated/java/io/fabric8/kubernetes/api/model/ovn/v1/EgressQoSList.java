@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("k8s.ovn.org")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class EgressQoSList implements Editable<EgressQoSListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.ovn.v1.EgressQoS>
+public class EgressQoSList implements Editable<EgressQoSListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.ovn.v1.EgressQoS>
 {
 
     /**

@@ -61,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class IPFIXConfig implements Editable<IPFIXConfigBuilder> , KubernetesResource
+public class IPFIXConfig implements Editable<IPFIXConfigBuilder>, KubernetesResource
 {
 
     @JsonProperty("collectors")

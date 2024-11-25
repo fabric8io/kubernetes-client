@@ -62,7 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class GRPCRouteMatch implements Editable<GRPCRouteMatchBuilder> , KubernetesResource
+public class GRPCRouteMatch implements Editable<GRPCRouteMatchBuilder>, KubernetesResource
 {
 
     @JsonProperty("headers")

@@ -61,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class AdditionalRoutingCapabilities implements Editable<AdditionalRoutingCapabilitiesBuilder> , KubernetesResource
+public class AdditionalRoutingCapabilities implements Editable<AdditionalRoutingCapabilitiesBuilder>, KubernetesResource
 {
 
     @JsonProperty("providers")

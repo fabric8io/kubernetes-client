@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class RuleFrom implements Editable<RuleFromBuilder> , KubernetesResource
+public class RuleFrom implements Editable<RuleFromBuilder>, KubernetesResource
 {
 
     @JsonProperty("source")

@@ -62,7 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class SubjectRulesReviewStatus implements Editable<SubjectRulesReviewStatusBuilder> , KubernetesResource
+public class SubjectRulesReviewStatus implements Editable<SubjectRulesReviewStatusBuilder>, KubernetesResource
 {
 
     @JsonProperty("evaluationError")

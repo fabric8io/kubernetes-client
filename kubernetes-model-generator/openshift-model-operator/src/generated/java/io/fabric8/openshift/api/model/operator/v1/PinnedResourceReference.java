@@ -61,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class PinnedResourceReference implements Editable<PinnedResourceReferenceBuilder> , KubernetesResource
+public class PinnedResourceReference implements Editable<PinnedResourceReferenceBuilder>, KubernetesResource
 {
 
     @JsonProperty("group")

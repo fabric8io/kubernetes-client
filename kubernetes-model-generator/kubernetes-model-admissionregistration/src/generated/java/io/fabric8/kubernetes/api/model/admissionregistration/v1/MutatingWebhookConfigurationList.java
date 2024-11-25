@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("admissionregistration.k8s.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class MutatingWebhookConfigurationList implements Editable<MutatingWebhookConfigurationListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.admissionregistration.v1.MutatingWebhookConfiguration>
+public class MutatingWebhookConfigurationList implements Editable<MutatingWebhookConfigurationListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.admissionregistration.v1.MutatingWebhookConfiguration>
 {
 
     /**

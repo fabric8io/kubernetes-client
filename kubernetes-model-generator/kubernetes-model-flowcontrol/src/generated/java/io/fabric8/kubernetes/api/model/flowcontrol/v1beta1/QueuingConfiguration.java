@@ -61,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class QueuingConfiguration implements Editable<QueuingConfigurationBuilder> , KubernetesResource
+public class QueuingConfiguration implements Editable<QueuingConfigurationBuilder>, KubernetesResource
 {
 
     @JsonProperty("handSize")

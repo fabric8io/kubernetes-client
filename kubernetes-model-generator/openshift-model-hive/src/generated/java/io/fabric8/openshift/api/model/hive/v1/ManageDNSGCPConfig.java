@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ManageDNSGCPConfig implements Editable<ManageDNSGCPConfigBuilder> , KubernetesResource
+public class ManageDNSGCPConfig implements Editable<ManageDNSGCPConfigBuilder>, KubernetesResource
 {
 
     @JsonProperty("credentialsSecretRef")

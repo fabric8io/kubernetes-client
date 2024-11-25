@@ -69,7 +69,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class SNSConfig implements Editable<SNSConfigBuilder> , KubernetesResource
+public class SNSConfig implements Editable<SNSConfigBuilder>, KubernetesResource
 {
 
     @JsonProperty("apiURL")

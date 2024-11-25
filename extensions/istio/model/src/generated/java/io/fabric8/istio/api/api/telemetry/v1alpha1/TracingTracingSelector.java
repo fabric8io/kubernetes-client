@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class TracingTracingSelector implements Editable<TracingTracingSelectorBuilder> , KubernetesResource
+public class TracingTracingSelector implements Editable<TracingTracingSelectorBuilder>, KubernetesResource
 {
 
     @JsonProperty("mode")

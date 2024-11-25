@@ -61,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ClusterResourceQuotaSpec implements Editable<ClusterResourceQuotaSpecBuilder> , KubernetesResource
+public class ClusterResourceQuotaSpec implements Editable<ClusterResourceQuotaSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("quota")

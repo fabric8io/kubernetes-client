@@ -62,7 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class RuntimeClassStrategyOptions implements Editable<RuntimeClassStrategyOptionsBuilder> , KubernetesResource
+public class RuntimeClassStrategyOptions implements Editable<RuntimeClassStrategyOptionsBuilder>, KubernetesResource
 {
 
     @JsonProperty("allowedRuntimeClassNames")

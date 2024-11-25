@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class GroupSubject implements Editable<GroupSubjectBuilder> , KubernetesResource
+public class GroupSubject implements Editable<GroupSubjectBuilder>, KubernetesResource
 {
 
     @JsonProperty("name")

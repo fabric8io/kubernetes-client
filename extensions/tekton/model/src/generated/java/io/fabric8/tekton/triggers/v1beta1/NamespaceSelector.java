@@ -61,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class NamespaceSelector implements Editable<NamespaceSelectorBuilder> , KubernetesResource
+public class NamespaceSelector implements Editable<NamespaceSelectorBuilder>, KubernetesResource
 {
 
     @JsonProperty("matchNames")

@@ -63,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class EventListenerTriggerGroup implements Editable<EventListenerTriggerGroupBuilder> , KubernetesResource
+public class EventListenerTriggerGroup implements Editable<EventListenerTriggerGroupBuilder>, KubernetesResource
 {
 
     @JsonProperty("interceptors")

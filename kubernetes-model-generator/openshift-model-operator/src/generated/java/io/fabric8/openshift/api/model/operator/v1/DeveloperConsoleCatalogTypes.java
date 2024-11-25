@@ -63,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class DeveloperConsoleCatalogTypes implements Editable<DeveloperConsoleCatalogTypesBuilder> , KubernetesResource
+public class DeveloperConsoleCatalogTypes implements Editable<DeveloperConsoleCatalogTypesBuilder>, KubernetesResource
 {
 
     @JsonProperty("disabled")

@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class HardwareDataSpec implements Editable<HardwareDataSpecBuilder> , KubernetesResource
+public class HardwareDataSpec implements Editable<HardwareDataSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("hardware")

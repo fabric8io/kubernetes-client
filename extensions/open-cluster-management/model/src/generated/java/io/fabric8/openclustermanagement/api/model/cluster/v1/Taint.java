@@ -62,7 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class Taint implements Editable<TaintBuilder> , KubernetesResource
+public class Taint implements Editable<TaintBuilder>, KubernetesResource
 {
 
     @JsonProperty("effect")

@@ -61,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ACMEChallenge implements Editable<ACMEChallengeBuilder> , KubernetesResource
+public class ACMEChallenge implements Editable<ACMEChallengeBuilder>, KubernetesResource
 {
 
     @JsonProperty("token")

@@ -63,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ConsoleNotificationSpec implements Editable<ConsoleNotificationSpecBuilder> , KubernetesResource
+public class ConsoleNotificationSpec implements Editable<ConsoleNotificationSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("backgroundColor")

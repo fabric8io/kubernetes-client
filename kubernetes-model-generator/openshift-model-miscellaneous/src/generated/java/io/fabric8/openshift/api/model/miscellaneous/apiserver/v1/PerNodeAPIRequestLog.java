@@ -63,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class PerNodeAPIRequestLog implements Editable<PerNodeAPIRequestLogBuilder> , KubernetesResource
+public class PerNodeAPIRequestLog implements Editable<PerNodeAPIRequestLogBuilder>, KubernetesResource
 {
 
     @JsonProperty("byUser")

@@ -62,7 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ServiceSpec implements Editable<ServiceSpecBuilder> , KubernetesResource
+public class ServiceSpec implements Editable<ServiceSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("template")

@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class MetadataServiceOptions implements Editable<MetadataServiceOptionsBuilder> , KubernetesResource
+public class MetadataServiceOptions implements Editable<MetadataServiceOptionsBuilder>, KubernetesResource
 {
 
     @JsonProperty("authentication")

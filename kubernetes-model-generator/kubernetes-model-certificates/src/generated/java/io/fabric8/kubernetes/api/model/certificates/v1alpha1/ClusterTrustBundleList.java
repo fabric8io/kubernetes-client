@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("certificates.k8s.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ClusterTrustBundleList implements Editable<ClusterTrustBundleListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.certificates.v1alpha1.ClusterTrustBundle>
+public class ClusterTrustBundleList implements Editable<ClusterTrustBundleListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.certificates.v1alpha1.ClusterTrustBundle>
 {
 
     /**

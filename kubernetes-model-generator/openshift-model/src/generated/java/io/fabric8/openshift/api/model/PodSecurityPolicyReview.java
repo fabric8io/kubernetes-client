@@ -73,7 +73,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("security.openshift.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class PodSecurityPolicyReview implements Editable<PodSecurityPolicyReviewBuilder> , HasMetadata, Namespaced
+public class PodSecurityPolicyReview implements Editable<PodSecurityPolicyReviewBuilder>, HasMetadata, Namespaced
 {
 
     /**

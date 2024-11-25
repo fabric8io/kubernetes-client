@@ -66,7 +66,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class KubeSchedulerSpec implements Editable<KubeSchedulerSpecBuilder> , KubernetesResource
+public class KubeSchedulerSpec implements Editable<KubeSchedulerSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("failedRevisionLimit")

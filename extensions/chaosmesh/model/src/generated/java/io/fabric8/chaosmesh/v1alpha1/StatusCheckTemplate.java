@@ -67,7 +67,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class StatusCheckTemplate implements Editable<StatusCheckTemplateBuilder> , KubernetesResource
+public class StatusCheckTemplate implements Editable<StatusCheckTemplateBuilder>, KubernetesResource
 {
 
     @JsonProperty("duration")

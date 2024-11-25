@@ -63,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class JVMExceptionSpec implements Editable<JVMExceptionSpecBuilder> , KubernetesResource
+public class JVMExceptionSpec implements Editable<JVMExceptionSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("class")

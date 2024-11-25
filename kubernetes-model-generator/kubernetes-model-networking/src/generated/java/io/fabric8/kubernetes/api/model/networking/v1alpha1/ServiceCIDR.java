@@ -72,7 +72,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("networking.k8s.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ServiceCIDR implements Editable<ServiceCIDRBuilder> , HasMetadata
+public class ServiceCIDR implements Editable<ServiceCIDRBuilder>, HasMetadata
 {
 
     /**

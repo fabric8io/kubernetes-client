@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("duck.knative.dev")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class PodList implements Editable<PodListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.knative.duck.v1.WithPod>
+public class PodList implements Editable<PodListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.knative.duck.v1.WithPod>
 {
 
     /**

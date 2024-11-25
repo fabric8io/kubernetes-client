@@ -77,7 +77,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class PagerDutyConfig implements Editable<PagerDutyConfigBuilder> , KubernetesResource
+public class PagerDutyConfig implements Editable<PagerDutyConfigBuilder>, KubernetesResource
 {
 
     @JsonProperty("class")

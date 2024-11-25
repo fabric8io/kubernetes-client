@@ -74,7 +74,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha3")
 @Group("networking.istio.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class VirtualService implements Editable<VirtualServiceBuilder> , HasMetadata, Namespaced
+public class VirtualService implements Editable<VirtualServiceBuilder>, HasMetadata, Namespaced
 {
 
     /**

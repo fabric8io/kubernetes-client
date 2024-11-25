@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("cluster.open-cluster-management.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ManagedClusterList implements Editable<ManagedClusterListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openclustermanagement.api.model.cluster.v1.ManagedCluster>
+public class ManagedClusterList implements Editable<ManagedClusterListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.openclustermanagement.api.model.cluster.v1.ManagedCluster>
 {
 
     /**

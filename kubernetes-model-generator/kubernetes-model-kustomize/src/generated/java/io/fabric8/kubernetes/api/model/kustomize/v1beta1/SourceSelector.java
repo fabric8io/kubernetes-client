@@ -65,7 +65,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class SourceSelector implements Editable<SourceSelectorBuilder> , KubernetesResource
+public class SourceSelector implements Editable<SourceSelectorBuilder>, KubernetesResource
 {
 
     @JsonProperty("fieldPath")

@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("ingress.operator.openshift.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class DNSRecordList implements Editable<DNSRecordListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.operator.ingress.v1.DNSRecord>
+public class DNSRecordList implements Editable<DNSRecordListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.operator.ingress.v1.DNSRecord>
 {
 
     /**

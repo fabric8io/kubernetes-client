@@ -61,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class AddPage implements Editable<AddPageBuilder> , KubernetesResource
+public class AddPage implements Editable<AddPageBuilder>, KubernetesResource
 {
 
     @JsonProperty("disabledActions")

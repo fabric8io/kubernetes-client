@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("eventing.knative.dev")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class EventPolicyList implements Editable<EventPolicyListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.knative.eventing.v1alpha1.EventPolicy>
+public class EventPolicyList implements Editable<EventPolicyListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.knative.eventing.v1alpha1.EventPolicy>
 {
 
     /**

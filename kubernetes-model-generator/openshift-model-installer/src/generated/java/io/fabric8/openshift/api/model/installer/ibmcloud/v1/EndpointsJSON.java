@@ -69,7 +69,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class EndpointsJSON implements Editable<EndpointsJSONBuilder> , KubernetesResource
+public class EndpointsJSON implements Editable<EndpointsJSONBuilder>, KubernetesResource
 {
 
     @JsonProperty("IBMCLOUD_CIS_API_ENDPOINT")

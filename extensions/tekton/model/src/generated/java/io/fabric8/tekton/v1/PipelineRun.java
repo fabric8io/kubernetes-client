@@ -73,7 +73,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("tekton.dev")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class PipelineRun implements Editable<PipelineRunBuilder> , HasMetadata, Namespaced
+public class PipelineRun implements Editable<PipelineRunBuilder>, HasMetadata, Namespaced
 {
 
     /**

@@ -67,7 +67,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class HTTPRouteRule implements Editable<HTTPRouteRuleBuilder> , KubernetesResource
+public class HTTPRouteRule implements Editable<HTTPRouteRuleBuilder>, KubernetesResource
 {
 
     @JsonProperty("backendRefs")

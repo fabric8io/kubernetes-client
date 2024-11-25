@@ -78,7 +78,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class KumaSDConfig implements Editable<KumaSDConfigBuilder> , KubernetesResource
+public class KumaSDConfig implements Editable<KumaSDConfigBuilder>, KubernetesResource
 {
 
     @JsonProperty("authorization")

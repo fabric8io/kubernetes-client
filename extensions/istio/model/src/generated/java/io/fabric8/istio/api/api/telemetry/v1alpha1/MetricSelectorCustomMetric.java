@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class MetricSelectorCustomMetric implements IsMetricSelectorMetricMatch, Editable<MetricSelectorCustomMetricBuilder> , KubernetesResource
+public class MetricSelectorCustomMetric implements IsMetricSelectorMetricMatch, Editable<MetricSelectorCustomMetricBuilder>, KubernetesResource
 {
 
     @JsonProperty("customMetric")

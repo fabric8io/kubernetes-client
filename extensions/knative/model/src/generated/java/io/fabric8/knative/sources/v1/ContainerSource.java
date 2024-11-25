@@ -73,7 +73,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("sources.knative.dev")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ContainerSource implements Editable<ContainerSourceBuilder> , HasMetadata, Namespaced
+public class ContainerSource implements Editable<ContainerSourceBuilder>, HasMetadata, Namespaced
 {
 
     /**

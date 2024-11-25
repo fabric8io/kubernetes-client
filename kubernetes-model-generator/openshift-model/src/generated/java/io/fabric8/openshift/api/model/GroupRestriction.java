@@ -62,7 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class GroupRestriction implements Editable<GroupRestrictionBuilder> , KubernetesResource
+public class GroupRestriction implements Editable<GroupRestrictionBuilder>, KubernetesResource
 {
 
     @JsonProperty("groups")

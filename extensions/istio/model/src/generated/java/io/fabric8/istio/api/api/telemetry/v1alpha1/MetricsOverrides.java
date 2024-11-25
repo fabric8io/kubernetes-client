@@ -61,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class MetricsOverrides implements Editable<MetricsOverridesBuilder> , KubernetesResource
+public class MetricsOverrides implements Editable<MetricsOverridesBuilder>, KubernetesResource
 {
 
     @JsonProperty("disabled")

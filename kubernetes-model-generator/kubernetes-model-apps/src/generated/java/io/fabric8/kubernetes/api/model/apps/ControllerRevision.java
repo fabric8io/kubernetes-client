@@ -73,7 +73,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("apps")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ControllerRevision implements Editable<ControllerRevisionBuilder> , HasMetadata, Namespaced
+public class ControllerRevision implements Editable<ControllerRevisionBuilder>, HasMetadata, Namespaced
 {
 
     /**

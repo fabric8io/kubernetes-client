@@ -63,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class CPUStressor implements Editable<CPUStressorBuilder> , KubernetesResource
+public class CPUStressor implements Editable<CPUStressorBuilder>, KubernetesResource
 {
 
     @JsonProperty("load")

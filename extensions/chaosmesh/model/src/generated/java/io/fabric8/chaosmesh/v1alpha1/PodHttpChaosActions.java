@@ -62,7 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class PodHttpChaosActions implements Editable<PodHttpChaosActionsBuilder> , KubernetesResource
+public class PodHttpChaosActions implements Editable<PodHttpChaosActionsBuilder>, KubernetesResource
 {
 
     @JsonProperty("abort")

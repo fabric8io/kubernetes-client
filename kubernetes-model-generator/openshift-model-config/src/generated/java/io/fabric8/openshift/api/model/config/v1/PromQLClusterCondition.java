@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class PromQLClusterCondition implements Editable<PromQLClusterConditionBuilder> , KubernetesResource
+public class PromQLClusterCondition implements Editable<PromQLClusterConditionBuilder>, KubernetesResource
 {
 
     @JsonProperty("promql")

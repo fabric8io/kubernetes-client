@@ -62,7 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ClusterProvisionStatus implements Editable<ClusterProvisionStatusBuilder> , KubernetesResource
+public class ClusterProvisionStatus implements Editable<ClusterProvisionStatusBuilder>, KubernetesResource
 {
 
     @JsonProperty("conditions")

@@ -65,7 +65,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class PoolSynchronizerStatus implements Editable<PoolSynchronizerStatusBuilder> , KubernetesResource
+public class PoolSynchronizerStatus implements Editable<PoolSynchronizerStatusBuilder>, KubernetesResource
 {
 
     @JsonProperty("availableMachineCount")

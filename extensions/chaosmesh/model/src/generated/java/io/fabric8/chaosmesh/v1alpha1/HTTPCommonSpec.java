@@ -66,7 +66,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class HTTPCommonSpec implements Editable<HTTPCommonSpecBuilder> , KubernetesResource
+public class HTTPCommonSpec implements Editable<HTTPCommonSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("code")

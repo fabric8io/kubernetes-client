@@ -61,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class UserTag implements Editable<UserTagBuilder> , KubernetesResource
+public class UserTag implements Editable<UserTagBuilder>, KubernetesResource
 {
 
     @JsonProperty("key")

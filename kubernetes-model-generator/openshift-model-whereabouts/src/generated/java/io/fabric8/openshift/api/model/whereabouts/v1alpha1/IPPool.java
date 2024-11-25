@@ -72,7 +72,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("whereabouts.cni.cncf.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class IPPool implements Editable<IPPoolBuilder> , HasMetadata, Namespaced
+public class IPPool implements Editable<IPPoolBuilder>, HasMetadata, Namespaced
 {
 
     /**

@@ -72,7 +72,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("chaos-mesh.org")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class PhysicalMachine implements Editable<PhysicalMachineBuilder> , HasMetadata, Namespaced
+public class PhysicalMachine implements Editable<PhysicalMachineBuilder>, HasMetadata, Namespaced
 {
 
     /**

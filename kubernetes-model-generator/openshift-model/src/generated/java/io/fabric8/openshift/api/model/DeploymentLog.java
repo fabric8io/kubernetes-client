@@ -70,7 +70,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("apps.openshift.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class DeploymentLog implements Editable<DeploymentLogBuilder> , KubernetesResource, Namespaced
+public class DeploymentLog implements Editable<DeploymentLogBuilder>, KubernetesResource, Namespaced
 {
 
     /**

@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("migration.k8s.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class StorageStateList implements Editable<StorageStateListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.storageversionmigrator.v1alpha1.StorageState>
+public class StorageStateList implements Editable<StorageStateListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.storageversionmigrator.v1alpha1.StorageState>
 {
 
     /**

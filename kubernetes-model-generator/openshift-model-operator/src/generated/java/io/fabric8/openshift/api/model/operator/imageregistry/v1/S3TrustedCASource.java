@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class S3TrustedCASource implements Editable<S3TrustedCASourceBuilder> , KubernetesResource
+public class S3TrustedCASource implements Editable<S3TrustedCASourceBuilder>, KubernetesResource
 {
 
     @JsonProperty("name")

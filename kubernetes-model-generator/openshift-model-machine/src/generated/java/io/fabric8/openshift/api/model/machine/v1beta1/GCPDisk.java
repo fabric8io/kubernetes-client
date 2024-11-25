@@ -65,7 +65,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class GCPDisk implements Editable<GCPDiskBuilder> , KubernetesResource
+public class GCPDisk implements Editable<GCPDiskBuilder>, KubernetesResource
 {
 
     @JsonProperty("autoDelete")

@@ -61,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class HTTPRequestMirrorFilter implements Editable<HTTPRequestMirrorFilterBuilder> , KubernetesResource
+public class HTTPRequestMirrorFilter implements Editable<HTTPRequestMirrorFilterBuilder>, KubernetesResource
 {
 
     @JsonProperty("backendRef")

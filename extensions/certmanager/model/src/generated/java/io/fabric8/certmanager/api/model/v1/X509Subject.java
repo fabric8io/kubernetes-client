@@ -68,7 +68,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class X509Subject implements Editable<X509SubjectBuilder> , KubernetesResource
+public class X509Subject implements Editable<X509SubjectBuilder>, KubernetesResource
 {
 
     @JsonProperty("countries")

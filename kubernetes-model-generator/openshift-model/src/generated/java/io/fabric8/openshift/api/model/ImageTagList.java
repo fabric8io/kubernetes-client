@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("image.openshift.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ImageTagList implements Editable<ImageTagListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.ImageTag>
+public class ImageTagList implements Editable<ImageTagListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.ImageTag>
 {
 
     /**

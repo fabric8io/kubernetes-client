@@ -62,7 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class PolicyTargetReference implements Editable<PolicyTargetReferenceBuilder> , KubernetesResource
+public class PolicyTargetReference implements Editable<PolicyTargetReferenceBuilder>, KubernetesResource
 {
 
     @JsonProperty("group")

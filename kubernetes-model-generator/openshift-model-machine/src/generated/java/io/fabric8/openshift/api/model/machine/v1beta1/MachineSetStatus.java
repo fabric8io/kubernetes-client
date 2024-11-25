@@ -70,7 +70,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class MachineSetStatus implements Editable<MachineSetStatusBuilder> , KubernetesResource
+public class MachineSetStatus implements Editable<MachineSetStatusBuilder>, KubernetesResource
 {
 
     @JsonProperty("authoritativeAPI")

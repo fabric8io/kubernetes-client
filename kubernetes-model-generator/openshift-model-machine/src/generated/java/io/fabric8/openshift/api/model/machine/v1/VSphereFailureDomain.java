@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class VSphereFailureDomain implements Editable<VSphereFailureDomainBuilder> , KubernetesResource
+public class VSphereFailureDomain implements Editable<VSphereFailureDomainBuilder>, KubernetesResource
 {
 
     @JsonProperty("name")

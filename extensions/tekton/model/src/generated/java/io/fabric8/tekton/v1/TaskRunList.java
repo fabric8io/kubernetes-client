@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("tekton.dev")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class TaskRunList implements Editable<TaskRunListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.tekton.v1.TaskRun>
+public class TaskRunList implements Editable<TaskRunListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.tekton.v1.TaskRun>
 {
 
     /**

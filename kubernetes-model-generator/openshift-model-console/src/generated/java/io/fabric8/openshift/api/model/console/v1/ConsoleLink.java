@@ -71,7 +71,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("console.openshift.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ConsoleLink implements Editable<ConsoleLinkBuilder> , HasMetadata
+public class ConsoleLink implements Editable<ConsoleLinkBuilder>, HasMetadata
 {
 
     /**

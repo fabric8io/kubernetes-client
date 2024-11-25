@@ -60,7 +60,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class PagerDutyLinkConfig implements Editable<PagerDutyLinkConfigBuilder> , KubernetesResource
+public class PagerDutyLinkConfig implements Editable<PagerDutyLinkConfigBuilder>, KubernetesResource
 {
 
     @JsonProperty("alt")

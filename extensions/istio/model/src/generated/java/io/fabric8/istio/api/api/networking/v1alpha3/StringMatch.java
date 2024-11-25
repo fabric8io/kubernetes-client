@@ -60,7 +60,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class StringMatch implements Editable<StringMatchBuilder> , KubernetesResource
+public class StringMatch implements Editable<StringMatchBuilder>, KubernetesResource
 {
 
     @JsonProperty("MatchType")

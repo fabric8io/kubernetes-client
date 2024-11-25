@@ -80,7 +80,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("image.openshift.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ImageSignature implements Editable<ImageSignatureBuilder> , HasMetadata
+public class ImageSignature implements Editable<ImageSignatureBuilder>, HasMetadata
 {
 
     /**

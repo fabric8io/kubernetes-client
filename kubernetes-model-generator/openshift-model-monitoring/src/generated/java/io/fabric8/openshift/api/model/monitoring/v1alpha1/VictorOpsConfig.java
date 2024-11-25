@@ -71,7 +71,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class VictorOpsConfig implements Editable<VictorOpsConfigBuilder> , KubernetesResource
+public class VictorOpsConfig implements Editable<VictorOpsConfigBuilder>, KubernetesResource
 {
 
     @JsonProperty("apiKey")

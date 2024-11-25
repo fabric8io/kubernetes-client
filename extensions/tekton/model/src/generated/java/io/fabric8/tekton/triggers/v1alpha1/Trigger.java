@@ -72,7 +72,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("triggers.tekton.dev")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class Trigger implements Editable<TriggerBuilder> , HasMetadata, Namespaced
+public class Trigger implements Editable<TriggerBuilder>, HasMetadata, Namespaced
 {
 
     /**

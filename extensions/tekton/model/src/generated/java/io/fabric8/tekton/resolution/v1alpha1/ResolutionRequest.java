@@ -73,7 +73,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("resolution.tekton.dev")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ResolutionRequest implements Editable<ResolutionRequestBuilder> , HasMetadata, Namespaced
+public class ResolutionRequest implements Editable<ResolutionRequestBuilder>, HasMetadata, Namespaced
 {
 
     /**

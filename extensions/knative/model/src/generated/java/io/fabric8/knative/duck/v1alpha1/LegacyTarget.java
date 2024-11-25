@@ -72,7 +72,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("duck.knative.dev")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class LegacyTarget implements Editable<LegacyTargetBuilder> , HasMetadata, Namespaced
+public class LegacyTarget implements Editable<LegacyTargetBuilder>, HasMetadata, Namespaced
 {
 
     /**

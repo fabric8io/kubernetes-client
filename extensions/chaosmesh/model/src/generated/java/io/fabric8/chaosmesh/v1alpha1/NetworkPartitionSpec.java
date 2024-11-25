@@ -64,7 +64,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class NetworkPartitionSpec implements Editable<NetworkPartitionSpecBuilder> , KubernetesResource
+public class NetworkPartitionSpec implements Editable<NetworkPartitionSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("accept-tcp-flags")

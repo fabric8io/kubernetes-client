@@ -81,7 +81,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("build.openshift.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class BuildLogOptions implements Editable<BuildLogOptionsBuilder> , KubernetesResource, Namespaced
+public class BuildLogOptions implements Editable<BuildLogOptionsBuilder>, KubernetesResource, Namespaced
 {
 
     /**

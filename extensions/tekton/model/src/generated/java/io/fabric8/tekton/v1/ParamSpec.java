@@ -66,7 +66,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ParamSpec implements Editable<ParamSpecBuilder> , KubernetesResource
+public class ParamSpec implements Editable<ParamSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("default")

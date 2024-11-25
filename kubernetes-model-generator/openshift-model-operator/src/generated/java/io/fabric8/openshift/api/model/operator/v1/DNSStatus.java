@@ -63,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class DNSStatus implements Editable<DNSStatusBuilder> , KubernetesResource
+public class DNSStatus implements Editable<DNSStatusBuilder>, KubernetesResource
 {
 
     @JsonProperty("clusterDomain")

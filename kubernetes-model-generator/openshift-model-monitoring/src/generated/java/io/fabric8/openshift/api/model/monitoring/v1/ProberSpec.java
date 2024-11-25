@@ -62,7 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ProberSpec implements Editable<ProberSpecBuilder> , KubernetesResource
+public class ProberSpec implements Editable<ProberSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("path")

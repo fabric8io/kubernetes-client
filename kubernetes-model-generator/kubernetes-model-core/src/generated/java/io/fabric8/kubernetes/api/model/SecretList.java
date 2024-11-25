@@ -44,7 +44,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class SecretList implements Editable<SecretListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.Secret>
+public class SecretList implements Editable<SecretListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.Secret>
 {
 
     /**

@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("operator.openshift.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class KubeAPIServerList implements Editable<KubeAPIServerListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.operator.v1.KubeAPIServer>
+public class KubeAPIServerList implements Editable<KubeAPIServerListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.operator.v1.KubeAPIServer>
 {
 
     /**

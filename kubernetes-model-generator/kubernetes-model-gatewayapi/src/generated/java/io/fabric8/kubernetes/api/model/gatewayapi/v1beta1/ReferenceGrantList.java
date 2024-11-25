@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1beta1")
 @Group("gateway.networking.k8s.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ReferenceGrantList implements Editable<ReferenceGrantListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.ReferenceGrant>
+public class ReferenceGrantList implements Editable<ReferenceGrantListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.gatewayapi.v1beta1.ReferenceGrant>
 {
 
     /**

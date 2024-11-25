@@ -44,7 +44,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class LimitRangeList implements Editable<LimitRangeListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.LimitRange>
+public class LimitRangeList implements Editable<LimitRangeListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.LimitRange>
 {
 
     /**

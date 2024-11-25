@@ -72,7 +72,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("cert-manager.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ClusterIssuer implements Editable<ClusterIssuerBuilder> , HasMetadata
+public class ClusterIssuer implements Editable<ClusterIssuerBuilder>, HasMetadata
 {
 
     /**

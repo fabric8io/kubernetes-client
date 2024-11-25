@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class TracingCustomTagEnvironment implements IsTracingCustomTagType, Editable<TracingCustomTagEnvironmentBuilder> , KubernetesResource
+public class TracingCustomTagEnvironment implements IsTracingCustomTagType, Editable<TracingCustomTagEnvironmentBuilder>, KubernetesResource
 {
 
     @JsonProperty("environment")

@@ -60,7 +60,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class BMCEventSubscriptionStatus implements Editable<BMCEventSubscriptionStatusBuilder> , KubernetesResource
+public class BMCEventSubscriptionStatus implements Editable<BMCEventSubscriptionStatusBuilder>, KubernetesResource
 {
 
     @JsonProperty("error")

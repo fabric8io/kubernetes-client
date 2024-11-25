@@ -61,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class DomainMappingSpec implements Editable<DomainMappingSpecBuilder> , KubernetesResource
+public class DomainMappingSpec implements Editable<DomainMappingSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("ref")

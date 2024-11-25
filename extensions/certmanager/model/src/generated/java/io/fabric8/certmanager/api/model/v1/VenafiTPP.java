@@ -63,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class VenafiTPP implements Editable<VenafiTPPBuilder> , KubernetesResource
+public class VenafiTPP implements Editable<VenafiTPPBuilder>, KubernetesResource
 {
 
     @JsonProperty("caBundle")

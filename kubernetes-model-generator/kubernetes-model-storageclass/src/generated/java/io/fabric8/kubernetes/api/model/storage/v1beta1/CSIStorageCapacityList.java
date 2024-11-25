@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1beta1")
 @Group("storage.k8s.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class CSIStorageCapacityList implements Editable<CSIStorageCapacityListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.storage.v1beta1.CSIStorageCapacity>
+public class CSIStorageCapacityList implements Editable<CSIStorageCapacityListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.storage.v1beta1.CSIStorageCapacity>
 {
 
     /**

@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class NutanixFailureDomainReference implements Editable<NutanixFailureDomainReferenceBuilder> , KubernetesResource
+public class NutanixFailureDomainReference implements Editable<NutanixFailureDomainReferenceBuilder>, KubernetesResource
 {
 
     @JsonProperty("name")

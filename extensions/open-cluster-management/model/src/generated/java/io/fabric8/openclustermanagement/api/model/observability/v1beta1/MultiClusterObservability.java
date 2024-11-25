@@ -72,7 +72,7 @@ import lombok.experimental.Accessors;
 @Version("v1beta1")
 @Group("observability.open-cluster-management.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class MultiClusterObservability implements Editable<MultiClusterObservabilityBuilder> , HasMetadata
+public class MultiClusterObservability implements Editable<MultiClusterObservabilityBuilder>, HasMetadata
 {
 
     /**

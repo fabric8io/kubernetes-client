@@ -61,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class EgressFirewallDestination implements Editable<EgressFirewallDestinationBuilder> , KubernetesResource
+public class EgressFirewallDestination implements Editable<EgressFirewallDestinationBuilder>, KubernetesResource
 {
 
     @JsonProperty("cidrSelector")

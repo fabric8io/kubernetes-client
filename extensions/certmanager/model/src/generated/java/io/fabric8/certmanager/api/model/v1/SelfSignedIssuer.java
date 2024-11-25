@@ -61,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class SelfSignedIssuer implements Editable<SelfSignedIssuerBuilder> , KubernetesResource
+public class SelfSignedIssuer implements Editable<SelfSignedIssuerBuilder>, KubernetesResource
 {
 
     @JsonProperty("crlDistributionPoints")

@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("security.istio.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class RequestAuthenticationList implements Editable<RequestAuthenticationListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.istio.api.security.v1.RequestAuthentication>
+public class RequestAuthenticationList implements Editable<RequestAuthenticationListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.istio.api.security.v1.RequestAuthentication>
 {
 
     /**

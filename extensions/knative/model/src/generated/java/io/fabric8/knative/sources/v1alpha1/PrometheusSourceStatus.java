@@ -71,7 +71,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class PrometheusSourceStatus implements Editable<PrometheusSourceStatusBuilder> , KubernetesResource
+public class PrometheusSourceStatus implements Editable<PrometheusSourceStatusBuilder>, KubernetesResource
 {
 
     @JsonProperty("annotations")

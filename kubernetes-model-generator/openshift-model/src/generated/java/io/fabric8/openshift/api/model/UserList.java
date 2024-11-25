@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("user.openshift.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class UserList implements Editable<UserListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.User>
+public class UserList implements Editable<UserListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.User>
 {
 
     /**

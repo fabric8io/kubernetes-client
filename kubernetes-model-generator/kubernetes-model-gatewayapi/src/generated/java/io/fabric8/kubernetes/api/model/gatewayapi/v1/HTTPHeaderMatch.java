@@ -61,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class HTTPHeaderMatch implements Editable<HTTPHeaderMatchBuilder> , KubernetesResource
+public class HTTPHeaderMatch implements Editable<HTTPHeaderMatchBuilder>, KubernetesResource
 {
 
     @JsonProperty("name")

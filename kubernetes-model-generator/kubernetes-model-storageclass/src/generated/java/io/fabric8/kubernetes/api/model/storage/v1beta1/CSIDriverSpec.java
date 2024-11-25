@@ -67,7 +67,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class CSIDriverSpec implements Editable<CSIDriverSpecBuilder> , KubernetesResource
+public class CSIDriverSpec implements Editable<CSIDriverSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("attachRequired")

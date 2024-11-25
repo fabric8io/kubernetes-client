@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ClusterMetadata implements Editable<ClusterMetadataBuilder> , KubernetesResource
+public class ClusterMetadata implements Editable<ClusterMetadataBuilder>, KubernetesResource
 {
 
     @JsonProperty("aws")

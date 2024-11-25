@@ -72,7 +72,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("storage.k8s.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class VolumeAttachment implements Editable<VolumeAttachmentBuilder> , HasMetadata
+public class VolumeAttachment implements Editable<VolumeAttachmentBuilder>, HasMetadata
 {
 
     /**

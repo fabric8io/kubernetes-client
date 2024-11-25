@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ResourcePattern implements Editable<ResourcePatternBuilder> , KubernetesResource
+public class ResourcePattern implements Editable<ResourcePatternBuilder>, KubernetesResource
 {
 
     @JsonProperty("pattern")

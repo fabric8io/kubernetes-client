@@ -71,7 +71,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class StatefulSetSpec implements Editable<StatefulSetSpecBuilder> , KubernetesResource
+public class StatefulSetSpec implements Editable<StatefulSetSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("minReadySeconds")

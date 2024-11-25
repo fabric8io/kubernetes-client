@@ -60,7 +60,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class BlockDeviceVolume implements Editable<BlockDeviceVolumeBuilder> , KubernetesResource
+public class BlockDeviceVolume implements Editable<BlockDeviceVolumeBuilder>, KubernetesResource
 {
 
     @JsonProperty("availabilityZone")

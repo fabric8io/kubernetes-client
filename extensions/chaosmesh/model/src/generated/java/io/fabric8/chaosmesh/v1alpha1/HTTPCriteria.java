@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class HTTPCriteria implements Editable<HTTPCriteriaBuilder> , KubernetesResource
+public class HTTPCriteria implements Editable<HTTPCriteriaBuilder>, KubernetesResource
 {
 
     @JsonProperty("statusCode")

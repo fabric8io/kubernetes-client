@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class UsernamePrefix implements Editable<UsernamePrefixBuilder> , KubernetesResource
+public class UsernamePrefix implements Editable<UsernamePrefixBuilder>, KubernetesResource
 {
 
     @JsonProperty("prefixString")

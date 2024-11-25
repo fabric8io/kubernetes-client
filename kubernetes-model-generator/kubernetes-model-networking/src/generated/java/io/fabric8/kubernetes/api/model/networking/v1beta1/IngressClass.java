@@ -71,7 +71,7 @@ import lombok.experimental.Accessors;
 @Version("v1beta1")
 @Group("networking.k8s.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class IngressClass implements Editable<IngressClassBuilder> , HasMetadata
+public class IngressClass implements Editable<IngressClassBuilder>, HasMetadata
 {
 
     /**

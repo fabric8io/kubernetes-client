@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class Targetable implements Editable<TargetableBuilder> , KubernetesResource
+public class Targetable implements Editable<TargetableBuilder>, KubernetesResource
 {
 
     @JsonProperty("domainInternal")

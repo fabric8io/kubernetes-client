@@ -73,7 +73,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class JVMParameter implements Editable<JVMParameterBuilder> , KubernetesResource
+public class JVMParameter implements Editable<JVMParameterBuilder>, KubernetesResource
 {
 
     @JsonProperty("class")

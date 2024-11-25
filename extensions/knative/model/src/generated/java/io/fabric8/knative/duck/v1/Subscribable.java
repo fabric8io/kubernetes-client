@@ -73,7 +73,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("duck.knative.dev")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class Subscribable implements Editable<SubscribableBuilder> , HasMetadata, Namespaced
+public class Subscribable implements Editable<SubscribableBuilder>, HasMetadata, Namespaced
 {
 
     /**

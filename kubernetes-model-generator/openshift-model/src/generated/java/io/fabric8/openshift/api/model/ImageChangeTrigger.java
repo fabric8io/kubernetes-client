@@ -61,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ImageChangeTrigger implements Editable<ImageChangeTriggerBuilder> , KubernetesResource
+public class ImageChangeTrigger implements Editable<ImageChangeTriggerBuilder>, KubernetesResource
 {
 
     @JsonProperty("from")

@@ -62,7 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class LastOperation implements Editable<LastOperationBuilder> , KubernetesResource
+public class LastOperation implements Editable<LastOperationBuilder>, KubernetesResource
 {
 
     @JsonProperty("description")

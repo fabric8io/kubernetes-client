@@ -61,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class Upstream implements Editable<UpstreamBuilder> , KubernetesResource
+public class Upstream implements Editable<UpstreamBuilder>, KubernetesResource
 {
 
     @JsonProperty("address")

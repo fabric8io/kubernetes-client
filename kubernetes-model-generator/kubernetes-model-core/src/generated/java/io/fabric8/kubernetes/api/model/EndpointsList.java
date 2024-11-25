@@ -44,7 +44,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class EndpointsList implements Editable<EndpointsListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.Endpoints>
+public class EndpointsList implements Editable<EndpointsListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.Endpoints>
 {
 
     /**

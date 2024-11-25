@@ -67,7 +67,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class GlobalSMTPConfig implements Editable<GlobalSMTPConfigBuilder> , KubernetesResource
+public class GlobalSMTPConfig implements Editable<GlobalSMTPConfigBuilder>, KubernetesResource
 {
 
     @JsonProperty("authIdentity")

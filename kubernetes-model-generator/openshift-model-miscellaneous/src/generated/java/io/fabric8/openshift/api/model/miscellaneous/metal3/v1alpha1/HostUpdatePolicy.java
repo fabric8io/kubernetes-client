@@ -73,7 +73,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("metal3.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class HostUpdatePolicy implements Editable<HostUpdatePolicyBuilder> , HasMetadata, Namespaced
+public class HostUpdatePolicy implements Editable<HostUpdatePolicyBuilder>, HasMetadata, Namespaced
 {
 
     /**

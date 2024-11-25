@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("operator.open-cluster-management.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class MultiClusterHubList implements Editable<MultiClusterHubListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openclustermanagement.api.model.operator.v1.MultiClusterHub>
+public class MultiClusterHubList implements Editable<MultiClusterHubListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.openclustermanagement.api.model.operator.v1.MultiClusterHub>
 {
 
     /**

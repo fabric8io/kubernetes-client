@@ -74,7 +74,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class OpsGenieConfig implements Editable<OpsGenieConfigBuilder> , KubernetesResource
+public class OpsGenieConfig implements Editable<OpsGenieConfigBuilder>, KubernetesResource
 {
 
     @JsonProperty("actions")

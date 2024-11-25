@@ -63,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class SyncIdentityProviderSpec implements Editable<SyncIdentityProviderSpecBuilder> , KubernetesResource
+public class SyncIdentityProviderSpec implements Editable<SyncIdentityProviderSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("clusterDeploymentRefs")

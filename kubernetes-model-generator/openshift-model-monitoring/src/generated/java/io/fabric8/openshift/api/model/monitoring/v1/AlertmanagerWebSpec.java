@@ -62,7 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class AlertmanagerWebSpec implements Editable<AlertmanagerWebSpecBuilder> , KubernetesResource
+public class AlertmanagerWebSpec implements Editable<AlertmanagerWebSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("getConcurrency")

@@ -70,7 +70,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class WeChatConfig implements Editable<WeChatConfigBuilder> , KubernetesResource
+public class WeChatConfig implements Editable<WeChatConfigBuilder>, KubernetesResource
 {
 
     @JsonProperty("agentID")

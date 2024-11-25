@@ -73,7 +73,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class MultiClusterObservabilitySpec implements Editable<MultiClusterObservabilitySpecBuilder> , KubernetesResource
+public class MultiClusterObservabilitySpec implements Editable<MultiClusterObservabilitySpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("availabilityConfig")

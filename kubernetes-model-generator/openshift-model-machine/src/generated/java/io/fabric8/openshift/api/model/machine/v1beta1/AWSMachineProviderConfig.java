@@ -93,7 +93,7 @@ import lombok.experimental.Accessors;
 @Version("v1beta1")
 @Group("machine.openshift.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class AWSMachineProviderConfig implements Editable<AWSMachineProviderConfigBuilder> , HasMetadata, Namespaced
+public class AWSMachineProviderConfig implements Editable<AWSMachineProviderConfigBuilder>, HasMetadata, Namespaced
 {
 
     @JsonProperty("ami")

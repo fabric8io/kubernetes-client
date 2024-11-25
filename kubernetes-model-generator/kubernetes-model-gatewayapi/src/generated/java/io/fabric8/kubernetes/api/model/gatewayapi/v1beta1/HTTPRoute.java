@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1beta1")
 @Group("gateway.networking.k8s.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class HTTPRoute implements Editable<HTTPRouteBuilder> , HasMetadata, Namespaced
+public class HTTPRoute implements Editable<HTTPRouteBuilder>, HasMetadata, Namespaced
 {
 
     /**

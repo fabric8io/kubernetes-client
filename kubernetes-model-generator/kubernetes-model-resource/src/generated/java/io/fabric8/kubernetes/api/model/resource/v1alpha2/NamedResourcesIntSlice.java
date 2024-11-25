@@ -61,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class NamedResourcesIntSlice implements Editable<NamedResourcesIntSliceBuilder> , KubernetesResource
+public class NamedResourcesIntSlice implements Editable<NamedResourcesIntSliceBuilder>, KubernetesResource
 {
 
     @JsonProperty("ints")

@@ -45,7 +45,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class Secret implements Editable<SecretBuilder> , HasMetadata, Namespaced
+public class Secret implements Editable<SecretBuilder>, HasMetadata, Namespaced
 {
 
     /**

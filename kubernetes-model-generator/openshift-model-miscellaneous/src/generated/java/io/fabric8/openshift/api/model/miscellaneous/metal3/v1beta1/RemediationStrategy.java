@@ -61,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class RemediationStrategy implements Editable<RemediationStrategyBuilder> , KubernetesResource
+public class RemediationStrategy implements Editable<RemediationStrategyBuilder>, KubernetesResource
 {
 
     @JsonProperty("retryLimit")

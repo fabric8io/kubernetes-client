@@ -60,7 +60,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ACMEChallengeSolverHTTP01 implements Editable<ACMEChallengeSolverHTTP01Builder> , KubernetesResource
+public class ACMEChallengeSolverHTTP01 implements Editable<ACMEChallengeSolverHTTP01Builder>, KubernetesResource
 {
 
     @JsonProperty("gatewayHTTPRoute")

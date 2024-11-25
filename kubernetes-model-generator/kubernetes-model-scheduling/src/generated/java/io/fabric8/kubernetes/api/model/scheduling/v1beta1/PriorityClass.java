@@ -74,7 +74,7 @@ import lombok.experimental.Accessors;
 @Version("v1beta1")
 @Group("scheduling.k8s.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class PriorityClass implements Editable<PriorityClassBuilder> , HasMetadata
+public class PriorityClass implements Editable<PriorityClassBuilder>, HasMetadata
 {
 
     /**

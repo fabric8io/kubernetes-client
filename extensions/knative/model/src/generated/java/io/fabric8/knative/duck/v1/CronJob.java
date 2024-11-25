@@ -73,7 +73,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("duck.knative.dev")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class CronJob implements Editable<CronJobBuilder> , HasMetadata, Namespaced
+public class CronJob implements Editable<CronJobBuilder>, HasMetadata, Namespaced
 {
 
     /**

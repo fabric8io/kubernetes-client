@@ -66,7 +66,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ACMEIssuerDNS01ProviderRoute53 implements Editable<ACMEIssuerDNS01ProviderRoute53Builder> , KubernetesResource
+public class ACMEIssuerDNS01ProviderRoute53 implements Editable<ACMEIssuerDNS01ProviderRoute53Builder>, KubernetesResource
 {
 
     @JsonProperty("accessKeyID")

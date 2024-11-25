@@ -44,7 +44,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class NamespaceList implements Editable<NamespaceListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.Namespace>
+public class NamespaceList implements Editable<NamespaceListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.Namespace>
 {
 
     /**

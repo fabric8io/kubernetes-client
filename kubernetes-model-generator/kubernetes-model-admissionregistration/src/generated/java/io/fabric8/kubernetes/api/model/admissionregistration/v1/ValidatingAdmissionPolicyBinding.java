@@ -71,7 +71,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("admissionregistration.k8s.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ValidatingAdmissionPolicyBinding implements Editable<ValidatingAdmissionPolicyBindingBuilder> , HasMetadata
+public class ValidatingAdmissionPolicyBinding implements Editable<ValidatingAdmissionPolicyBindingBuilder>, HasMetadata
 {
 
     /**

@@ -73,7 +73,7 @@ import lombok.experimental.Accessors;
 @Version("v1beta2")
 @Group("cluster.open-cluster-management.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ManagedClusterSetBinding implements Editable<ManagedClusterSetBindingBuilder> , HasMetadata, Namespaced
+public class ManagedClusterSetBinding implements Editable<ManagedClusterSetBindingBuilder>, HasMetadata, Namespaced
 {
 
     /**

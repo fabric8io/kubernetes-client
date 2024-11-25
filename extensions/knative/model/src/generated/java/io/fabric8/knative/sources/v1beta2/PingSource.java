@@ -73,7 +73,7 @@ import lombok.experimental.Accessors;
 @Version("v1beta2")
 @Group("sources.knative.dev")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class PingSource implements Editable<PingSourceBuilder> , HasMetadata, Namespaced
+public class PingSource implements Editable<PingSourceBuilder>, HasMetadata, Namespaced
 {
 
     /**

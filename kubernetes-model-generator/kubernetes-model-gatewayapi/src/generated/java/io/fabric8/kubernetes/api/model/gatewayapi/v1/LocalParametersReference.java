@@ -61,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class LocalParametersReference implements Editable<LocalParametersReferenceBuilder> , KubernetesResource
+public class LocalParametersReference implements Editable<LocalParametersReferenceBuilder>, KubernetesResource
 {
 
     @JsonProperty("group")

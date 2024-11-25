@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("network.openshift.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class NetNamespaceList implements Editable<NetNamespaceListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.miscellaneous.network.v1.NetNamespace>
+public class NetNamespaceList implements Editable<NetNamespaceListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.miscellaneous.network.v1.NetNamespace>
 {
 
     /**

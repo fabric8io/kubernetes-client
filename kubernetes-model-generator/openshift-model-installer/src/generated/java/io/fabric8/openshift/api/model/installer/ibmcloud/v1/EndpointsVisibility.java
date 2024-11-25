@@ -60,7 +60,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class EndpointsVisibility implements Editable<EndpointsVisibilityBuilder> , KubernetesResource
+public class EndpointsVisibility implements Editable<EndpointsVisibilityBuilder>, KubernetesResource
 {
 
     @JsonProperty("private")

@@ -61,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ImageLayer implements Editable<ImageLayerBuilder> , KubernetesResource
+public class ImageLayer implements Editable<ImageLayerBuilder>, KubernetesResource
 {
 
     @JsonProperty("mediaType")

@@ -62,7 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class BlockDeviceMappingSpec implements Editable<BlockDeviceMappingSpecBuilder> , KubernetesResource
+public class BlockDeviceMappingSpec implements Editable<BlockDeviceMappingSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("deviceName")

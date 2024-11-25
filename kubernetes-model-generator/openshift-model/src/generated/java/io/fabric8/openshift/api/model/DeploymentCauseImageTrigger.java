@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class DeploymentCauseImageTrigger implements Editable<DeploymentCauseImageTriggerBuilder> , KubernetesResource
+public class DeploymentCauseImageTrigger implements Editable<DeploymentCauseImageTriggerBuilder>, KubernetesResource
 {
 
     @JsonProperty("from")

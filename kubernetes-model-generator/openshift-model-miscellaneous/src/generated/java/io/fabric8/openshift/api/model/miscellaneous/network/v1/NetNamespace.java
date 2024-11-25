@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("network.openshift.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class NetNamespace implements Editable<NetNamespaceBuilder> , HasMetadata
+public class NetNamespace implements Editable<NetNamespaceBuilder>, HasMetadata
 {
 
     /**

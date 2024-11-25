@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("network.operator.openshift.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class EgressRouterList implements Editable<EgressRouterListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.operator.network.v1.EgressRouter>
+public class EgressRouterList implements Editable<EgressRouterListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.operator.network.v1.EgressRouter>
 {
 
     /**

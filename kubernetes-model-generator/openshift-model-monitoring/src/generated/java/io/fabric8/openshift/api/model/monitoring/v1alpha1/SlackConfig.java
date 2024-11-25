@@ -83,7 +83,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class SlackConfig implements Editable<SlackConfigBuilder> , KubernetesResource
+public class SlackConfig implements Editable<SlackConfigBuilder>, KubernetesResource
 {
 
     @JsonProperty("actions")

@@ -62,7 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class RegistrationHubConfiguration implements Editable<RegistrationHubConfigurationBuilder> , KubernetesResource
+public class RegistrationHubConfiguration implements Editable<RegistrationHubConfigurationBuilder>, KubernetesResource
 {
 
     @JsonProperty("autoApproveUsers")

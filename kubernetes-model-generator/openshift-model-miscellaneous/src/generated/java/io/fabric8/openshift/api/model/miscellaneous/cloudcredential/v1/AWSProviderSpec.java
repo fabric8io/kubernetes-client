@@ -74,7 +74,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("cloudcredential.openshift.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class AWSProviderSpec implements Editable<AWSProviderSpecBuilder> , KubernetesResource, Namespaced
+public class AWSProviderSpec implements Editable<AWSProviderSpecBuilder>, KubernetesResource, Namespaced
 {
 
     /**

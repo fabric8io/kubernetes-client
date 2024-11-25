@@ -63,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class DeveloperConsoleCatalogCategoryMeta implements Editable<DeveloperConsoleCatalogCategoryMetaBuilder> , KubernetesResource
+public class DeveloperConsoleCatalogCategoryMeta implements Editable<DeveloperConsoleCatalogCategoryMetaBuilder>, KubernetesResource
 {
 
     @JsonProperty("id")

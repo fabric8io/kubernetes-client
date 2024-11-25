@@ -71,7 +71,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ApiServerSourceSpec implements Editable<ApiServerSourceSpecBuilder> , KubernetesResource
+public class ApiServerSourceSpec implements Editable<ApiServerSourceSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("ceOverrides")

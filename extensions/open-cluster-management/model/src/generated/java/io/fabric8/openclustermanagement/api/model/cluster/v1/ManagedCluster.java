@@ -72,7 +72,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("cluster.open-cluster-management.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ManagedCluster implements Editable<ManagedClusterBuilder> , HasMetadata
+public class ManagedCluster implements Editable<ManagedClusterBuilder>, HasMetadata
 {
 
     /**

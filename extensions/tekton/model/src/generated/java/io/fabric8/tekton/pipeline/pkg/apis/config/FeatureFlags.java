@@ -80,7 +80,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class FeatureFlags implements Editable<FeatureFlagsBuilder> , KubernetesResource
+public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesResource
 {
 
     @JsonProperty("AwaitSidecarReadiness")

@@ -61,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class RouteSpec implements Editable<RouteSpecBuilder> , KubernetesResource
+public class RouteSpec implements Editable<RouteSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("traffic")

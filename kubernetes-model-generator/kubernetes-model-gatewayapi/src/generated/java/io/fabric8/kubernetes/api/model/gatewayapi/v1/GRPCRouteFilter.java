@@ -63,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class GRPCRouteFilter implements Editable<GRPCRouteFilterBuilder> , KubernetesResource
+public class GRPCRouteFilter implements Editable<GRPCRouteFilterBuilder>, KubernetesResource
 {
 
     @JsonProperty("extensionRef")

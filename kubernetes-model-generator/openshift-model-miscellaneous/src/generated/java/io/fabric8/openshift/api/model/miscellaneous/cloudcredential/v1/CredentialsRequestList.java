@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("cloudcredential.openshift.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class CredentialsRequestList implements Editable<CredentialsRequestListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.miscellaneous.cloudcredential.v1.CredentialsRequest>
+public class CredentialsRequestList implements Editable<CredentialsRequestListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.miscellaneous.cloudcredential.v1.CredentialsRequest>
 {
 
     /**

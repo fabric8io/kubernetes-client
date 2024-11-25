@@ -67,7 +67,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class PingSourceSpec implements Editable<PingSourceSpecBuilder> , KubernetesResource
+public class PingSourceSpec implements Editable<PingSourceSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("ceOverrides")

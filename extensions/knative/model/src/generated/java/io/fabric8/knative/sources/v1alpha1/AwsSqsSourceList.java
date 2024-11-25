@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("sources.knative.dev")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class AwsSqsSourceList implements Editable<AwsSqsSourceListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.knative.sources.v1alpha1.AwsSqsSource>
+public class AwsSqsSourceList implements Editable<AwsSqsSourceListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.knative.sources.v1alpha1.AwsSqsSource>
 {
 
     /**

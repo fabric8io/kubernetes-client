@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class Exemplars implements Editable<ExemplarsBuilder> , KubernetesResource
+public class Exemplars implements Editable<ExemplarsBuilder>, KubernetesResource
 {
 
     @JsonProperty("maxSize")

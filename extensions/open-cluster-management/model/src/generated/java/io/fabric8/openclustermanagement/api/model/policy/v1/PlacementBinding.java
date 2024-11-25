@@ -78,7 +78,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("policy.open-cluster-management.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class PlacementBinding implements Editable<PlacementBindingBuilder> , HasMetadata, Namespaced
+public class PlacementBinding implements Editable<PlacementBindingBuilder>, HasMetadata, Namespaced
 {
 
     /**

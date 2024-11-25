@@ -73,7 +73,7 @@ import lombok.experimental.Accessors;
 @Version("v1beta1")
 @Group("scheduling.volcano.sh")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class PodGroup implements Editable<PodGroupBuilder> , HasMetadata, Namespaced
+public class PodGroup implements Editable<PodGroupBuilder>, HasMetadata, Namespaced
 {
 
     /**

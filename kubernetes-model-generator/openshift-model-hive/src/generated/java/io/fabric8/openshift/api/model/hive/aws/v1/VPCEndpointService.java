@@ -64,7 +64,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class VPCEndpointService implements Editable<VPCEndpointServiceBuilder> , KubernetesResource
+public class VPCEndpointService implements Editable<VPCEndpointServiceBuilder>, KubernetesResource
 {
 
     @JsonProperty("additionalAllowedPrincipals")

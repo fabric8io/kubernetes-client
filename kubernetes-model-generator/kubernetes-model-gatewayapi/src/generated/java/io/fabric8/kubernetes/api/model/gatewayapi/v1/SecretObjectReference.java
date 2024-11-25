@@ -62,7 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class SecretObjectReference implements Editable<SecretObjectReferenceBuilder> , KubernetesResource
+public class SecretObjectReference implements Editable<SecretObjectReferenceBuilder>, KubernetesResource
 {
 
     @JsonProperty("group")

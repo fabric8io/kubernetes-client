@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class HTTPChaosSpec implements Editable<HTTPChaosSpecBuilder> , KubernetesResource
+public class HTTPChaosSpec implements Editable<HTTPChaosSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("abort")

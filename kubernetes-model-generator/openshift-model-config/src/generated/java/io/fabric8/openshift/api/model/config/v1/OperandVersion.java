@@ -60,7 +60,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class OperandVersion implements Editable<OperandVersionBuilder> , KubernetesResource
+public class OperandVersion implements Editable<OperandVersionBuilder>, KubernetesResource
 {
 
     @JsonProperty("name")

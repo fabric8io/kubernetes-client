@@ -72,7 +72,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("operator.openshift.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class KubeStorageVersionMigrator implements Editable<KubeStorageVersionMigratorBuilder> , HasMetadata
+public class KubeStorageVersionMigrator implements Editable<KubeStorageVersionMigratorBuilder>, HasMetadata
 {
 
     /**

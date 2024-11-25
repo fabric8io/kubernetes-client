@@ -61,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class EndpointConditions implements Editable<EndpointConditionsBuilder> , KubernetesResource
+public class EndpointConditions implements Editable<EndpointConditionsBuilder>, KubernetesResource
 {
 
     @JsonProperty("ready")

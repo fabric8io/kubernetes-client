@@ -72,7 +72,7 @@ import lombok.experimental.Accessors;
 @Version("v1beta1")
 @Group("infrastructure.cluster.x-k8s.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class Metal3MachineTemplate implements Editable<Metal3MachineTemplateBuilder> , HasMetadata, Namespaced
+public class Metal3MachineTemplate implements Editable<Metal3MachineTemplateBuilder>, HasMetadata, Namespaced
 {
 
     /**

@@ -73,7 +73,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("apps.openshift.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class DeploymentConfigRollback implements Editable<DeploymentConfigRollbackBuilder> , KubernetesResource, Namespaced
+public class DeploymentConfigRollback implements Editable<DeploymentConfigRollbackBuilder>, KubernetesResource, Namespaced
 {
 
     /**

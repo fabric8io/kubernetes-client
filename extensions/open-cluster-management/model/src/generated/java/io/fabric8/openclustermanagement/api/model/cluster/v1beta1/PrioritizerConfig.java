@@ -60,7 +60,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class PrioritizerConfig implements Editable<PrioritizerConfigBuilder> , KubernetesResource
+public class PrioritizerConfig implements Editable<PrioritizerConfigBuilder>, KubernetesResource
 {
 
     @JsonProperty("scoreCoordinate")

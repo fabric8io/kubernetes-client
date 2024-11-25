@@ -73,7 +73,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("k8s.ovn.org")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class EgressQoS implements Editable<EgressQoSBuilder> , HasMetadata, Namespaced
+public class EgressQoS implements Editable<EgressQoSBuilder>, HasMetadata, Namespaced
 {
 
     /**

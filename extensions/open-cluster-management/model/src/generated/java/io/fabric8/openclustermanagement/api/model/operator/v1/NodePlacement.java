@@ -63,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class NodePlacement implements Editable<NodePlacementBuilder> , KubernetesResource
+public class NodePlacement implements Editable<NodePlacementBuilder>, KubernetesResource
 {
 
     @JsonProperty("nodeSelector")

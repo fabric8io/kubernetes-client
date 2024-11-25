@@ -60,7 +60,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class UserWorkloadCapabilitiesSpec implements Editable<UserWorkloadCapabilitiesSpecBuilder> , KubernetesResource
+public class UserWorkloadCapabilitiesSpec implements Editable<UserWorkloadCapabilitiesSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("logs")

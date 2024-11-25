@@ -73,7 +73,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("flows.knative.dev")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class Parallel implements Editable<ParallelBuilder> , HasMetadata, Namespaced
+public class Parallel implements Editable<ParallelBuilder>, HasMetadata, Namespaced
 {
 
     /**

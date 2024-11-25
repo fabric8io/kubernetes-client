@@ -72,7 +72,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("operator.openshift.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class Config implements Editable<ConfigBuilder> , HasMetadata
+public class Config implements Editable<ConfigBuilder>, HasMetadata
 {
 
     /**

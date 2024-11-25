@@ -61,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ConnectionPoolSettingsTCPSettingsTcpKeepalive implements Editable<ConnectionPoolSettingsTCPSettingsTcpKeepaliveBuilder> , KubernetesResource
+public class ConnectionPoolSettingsTCPSettingsTcpKeepalive implements Editable<ConnectionPoolSettingsTCPSettingsTcpKeepaliveBuilder>, KubernetesResource
 {
 
     @JsonProperty("interval")

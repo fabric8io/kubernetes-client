@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class FeatureGateAttributes implements Editable<FeatureGateAttributesBuilder> , KubernetesResource
+public class FeatureGateAttributes implements Editable<FeatureGateAttributesBuilder>, KubernetesResource
 {
 
     @JsonProperty("name")

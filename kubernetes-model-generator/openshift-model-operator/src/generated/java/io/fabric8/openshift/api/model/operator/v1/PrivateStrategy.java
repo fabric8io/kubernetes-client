@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class PrivateStrategy implements Editable<PrivateStrategyBuilder> , KubernetesResource
+public class PrivateStrategy implements Editable<PrivateStrategyBuilder>, KubernetesResource
 {
 
     @JsonProperty("protocol")

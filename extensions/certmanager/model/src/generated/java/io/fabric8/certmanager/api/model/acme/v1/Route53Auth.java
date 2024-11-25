@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class Route53Auth implements Editable<Route53AuthBuilder> , KubernetesResource
+public class Route53Auth implements Editable<Route53AuthBuilder>, KubernetesResource
 {
 
     @JsonProperty("kubernetes")

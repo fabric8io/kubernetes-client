@@ -62,7 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ACMEExternalAccountBinding implements Editable<ACMEExternalAccountBindingBuilder> , KubernetesResource
+public class ACMEExternalAccountBinding implements Editable<ACMEExternalAccountBindingBuilder>, KubernetesResource
 {
 
     @JsonProperty("keyAlgorithm")

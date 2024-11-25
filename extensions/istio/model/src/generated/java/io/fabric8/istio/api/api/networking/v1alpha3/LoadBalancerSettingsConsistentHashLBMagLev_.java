@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class LoadBalancerSettingsConsistentHashLBMagLev_ implements Editable<LoadBalancerSettingsConsistentHashLBMagLev_Builder> , KubernetesResource
+public class LoadBalancerSettingsConsistentHashLBMagLev_ implements Editable<LoadBalancerSettingsConsistentHashLBMagLev_Builder>, KubernetesResource
 {
 
     @JsonProperty("tableSize")

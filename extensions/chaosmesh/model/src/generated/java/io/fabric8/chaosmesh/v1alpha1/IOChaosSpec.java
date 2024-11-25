@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class IOChaosSpec implements Editable<IOChaosSpecBuilder> , KubernetesResource
+public class IOChaosSpec implements Editable<IOChaosSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("action")

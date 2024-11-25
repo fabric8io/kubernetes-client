@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class StringMatchExact implements IsStringMatchMatchType, Editable<StringMatchExactBuilder> , KubernetesResource
+public class StringMatchExact implements IsStringMatchMatchType, Editable<StringMatchExactBuilder>, KubernetesResource
 {
 
     @JsonProperty("exact")

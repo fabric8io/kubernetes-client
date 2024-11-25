@@ -63,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class TriggerSpecBinding implements Editable<TriggerSpecBindingBuilder> , KubernetesResource
+public class TriggerSpecBinding implements Editable<TriggerSpecBindingBuilder>, KubernetesResource
 {
 
     @JsonProperty("apiversion")

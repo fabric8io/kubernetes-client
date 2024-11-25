@@ -64,7 +64,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ClusterDeploymentCondition implements Editable<ClusterDeploymentConditionBuilder> , KubernetesResource
+public class ClusterDeploymentCondition implements Editable<ClusterDeploymentConditionBuilder>, KubernetesResource
 {
 
     @JsonProperty("lastProbeTime")

@@ -73,7 +73,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("serving.knative.dev")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class Configuration implements Editable<ConfigurationBuilder> , HasMetadata, Namespaced
+public class Configuration implements Editable<ConfigurationBuilder>, HasMetadata, Namespaced
 {
 
     /**

@@ -62,7 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class OperatorConditionStatus implements Editable<OperatorConditionStatusBuilder> , KubernetesResource
+public class OperatorConditionStatus implements Editable<OperatorConditionStatusBuilder>, KubernetesResource
 {
 
     @JsonProperty("conditions")

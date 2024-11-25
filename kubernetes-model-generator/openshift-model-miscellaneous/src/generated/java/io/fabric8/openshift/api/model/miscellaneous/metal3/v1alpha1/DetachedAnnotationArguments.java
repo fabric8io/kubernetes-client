@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class DetachedAnnotationArguments implements Editable<DetachedAnnotationArgumentsBuilder> , KubernetesResource
+public class DetachedAnnotationArguments implements Editable<DetachedAnnotationArgumentsBuilder>, KubernetesResource
 {
 
     @JsonProperty("deleteAction")

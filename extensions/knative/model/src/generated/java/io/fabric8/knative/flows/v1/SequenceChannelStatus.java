@@ -61,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class SequenceChannelStatus implements Editable<SequenceChannelStatusBuilder> , KubernetesResource
+public class SequenceChannelStatus implements Editable<SequenceChannelStatusBuilder>, KubernetesResource
 {
 
     @JsonProperty("channel")

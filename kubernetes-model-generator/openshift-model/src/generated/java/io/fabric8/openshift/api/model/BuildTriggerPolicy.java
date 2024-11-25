@@ -64,7 +64,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class BuildTriggerPolicy implements Editable<BuildTriggerPolicyBuilder> , KubernetesResource
+public class BuildTriggerPolicy implements Editable<BuildTriggerPolicyBuilder>, KubernetesResource
 {
 
     @JsonProperty("bitbucket")

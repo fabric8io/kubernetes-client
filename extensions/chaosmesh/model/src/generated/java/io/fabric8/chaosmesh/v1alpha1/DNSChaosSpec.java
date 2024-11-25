@@ -68,7 +68,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class DNSChaosSpec implements Editable<DNSChaosSpecBuilder> , KubernetesResource
+public class DNSChaosSpec implements Editable<DNSChaosSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("action")

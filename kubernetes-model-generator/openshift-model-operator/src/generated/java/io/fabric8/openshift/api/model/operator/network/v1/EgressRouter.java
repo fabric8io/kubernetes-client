@@ -73,7 +73,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("network.operator.openshift.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class EgressRouter implements Editable<EgressRouterBuilder> , HasMetadata, Namespaced
+public class EgressRouter implements Editable<EgressRouterBuilder>, HasMetadata, Namespaced
 {
 
     /**

@@ -61,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class AWSPlatformSpec implements Editable<AWSPlatformSpecBuilder> , KubernetesResource
+public class AWSPlatformSpec implements Editable<AWSPlatformSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("serviceEndpoints")

@@ -61,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class SecretParam implements Editable<SecretParamBuilder> , KubernetesResource
+public class SecretParam implements Editable<SecretParamBuilder>, KubernetesResource
 {
 
     @JsonProperty("fieldName")

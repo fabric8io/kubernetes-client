@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class NoK8sNetworkError implements Editable<NoK8sNetworkErrorBuilder> , KubernetesResource
+public class NoK8sNetworkError implements Editable<NoK8sNetworkErrorBuilder>, KubernetesResource
 {
 
     @JsonProperty("Message")

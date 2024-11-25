@@ -63,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ProbeTargetIngress implements Editable<ProbeTargetIngressBuilder> , KubernetesResource
+public class ProbeTargetIngress implements Editable<ProbeTargetIngressBuilder>, KubernetesResource
 {
 
     @JsonProperty("namespaceSelector")

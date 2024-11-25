@@ -61,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ConsoleSampleSource implements Editable<ConsoleSampleSourceBuilder> , KubernetesResource
+public class ConsoleSampleSource implements Editable<ConsoleSampleSourceBuilder>, KubernetesResource
 {
 
     @JsonProperty("containerImport")

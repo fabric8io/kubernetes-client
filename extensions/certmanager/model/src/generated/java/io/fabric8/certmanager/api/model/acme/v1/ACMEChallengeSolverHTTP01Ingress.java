@@ -64,7 +64,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ACMEChallengeSolverHTTP01Ingress implements Editable<ACMEChallengeSolverHTTP01IngressBuilder> , KubernetesResource
+public class ACMEChallengeSolverHTTP01Ingress implements Editable<ACMEChallengeSolverHTTP01IngressBuilder>, KubernetesResource
 {
 
     @JsonProperty("class")

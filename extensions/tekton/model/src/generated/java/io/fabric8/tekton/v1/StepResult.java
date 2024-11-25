@@ -62,7 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class StepResult implements Editable<StepResultBuilder> , KubernetesResource
+public class StepResult implements Editable<StepResultBuilder>, KubernetesResource
 {
 
     @JsonProperty("description")

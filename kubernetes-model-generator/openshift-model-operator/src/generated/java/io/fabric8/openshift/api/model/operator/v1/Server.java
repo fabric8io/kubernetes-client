@@ -63,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class Server implements Editable<ServerBuilder> , KubernetesResource
+public class Server implements Editable<ServerBuilder>, KubernetesResource
 {
 
     @JsonProperty("forwardPlugin")

@@ -74,7 +74,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("extensions.istio.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class WasmPlugin implements Editable<WasmPluginBuilder> , HasMetadata, Namespaced
+public class WasmPlugin implements Editable<WasmPluginBuilder>, HasMetadata, Namespaced
 {
 
     /**

@@ -64,7 +64,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ContainerRuntimeConfiguration implements Editable<ContainerRuntimeConfigurationBuilder> , KubernetesResource
+public class ContainerRuntimeConfiguration implements Editable<ContainerRuntimeConfigurationBuilder>, KubernetesResource
 {
 
     @JsonProperty("defaultRuntime")

@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class AttachedImageReference implements Editable<AttachedImageReferenceBuilder> , KubernetesResource
+public class AttachedImageReference implements Editable<AttachedImageReferenceBuilder>, KubernetesResource
 {
 
     @JsonProperty("url")

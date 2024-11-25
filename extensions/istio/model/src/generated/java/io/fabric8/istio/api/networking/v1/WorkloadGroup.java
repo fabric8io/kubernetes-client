@@ -74,7 +74,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("networking.istio.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class WorkloadGroup implements Editable<WorkloadGroupBuilder> , HasMetadata, Namespaced
+public class WorkloadGroup implements Editable<WorkloadGroupBuilder>, HasMetadata, Namespaced
 {
 
     /**

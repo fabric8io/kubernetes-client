@@ -61,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ManagedBootImages implements Editable<ManagedBootImagesBuilder> , KubernetesResource
+public class ManagedBootImages implements Editable<ManagedBootImagesBuilder>, KubernetesResource
 {
 
     @JsonProperty("machineManagers")

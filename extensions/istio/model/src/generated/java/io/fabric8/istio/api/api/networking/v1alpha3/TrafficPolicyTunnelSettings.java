@@ -61,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class TrafficPolicyTunnelSettings implements Editable<TrafficPolicyTunnelSettingsBuilder> , KubernetesResource
+public class TrafficPolicyTunnelSettings implements Editable<TrafficPolicyTunnelSettingsBuilder>, KubernetesResource
 {
 
     @JsonProperty("protocol")

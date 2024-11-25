@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("flow.volcano.sh")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class JobTemplateList implements Editable<JobTemplateListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.volcano.api.model.flow.v1alpha1.JobTemplate>
+public class JobTemplateList implements Editable<JobTemplateListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.volcano.api.model.flow.v1alpha1.JobTemplate>
 {
 
     /**

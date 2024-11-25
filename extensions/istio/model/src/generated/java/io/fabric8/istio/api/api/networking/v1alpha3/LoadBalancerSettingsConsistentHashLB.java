@@ -62,7 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class LoadBalancerSettingsConsistentHashLB implements Editable<LoadBalancerSettingsConsistentHashLBBuilder> , KubernetesResource
+public class LoadBalancerSettingsConsistentHashLB implements Editable<LoadBalancerSettingsConsistentHashLBBuilder>, KubernetesResource
 {
 
     @JsonProperty("HashAlgorithm")

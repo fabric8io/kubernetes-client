@@ -61,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class NutanixGPU implements Editable<NutanixGPUBuilder> , KubernetesResource
+public class NutanixGPU implements Editable<NutanixGPUBuilder>, KubernetesResource
 {
 
     @JsonProperty("deviceID")

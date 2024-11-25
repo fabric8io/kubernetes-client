@@ -63,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class OpenStackPlatformSpec implements Editable<OpenStackPlatformSpecBuilder> , KubernetesResource
+public class OpenStackPlatformSpec implements Editable<OpenStackPlatformSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("apiServerInternalIPs")

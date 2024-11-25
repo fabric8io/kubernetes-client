@@ -73,7 +73,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("eventing.knative.dev")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class KafkaSink implements Editable<KafkaSinkBuilder> , HasMetadata, Namespaced
+public class KafkaSink implements Editable<KafkaSinkBuilder>, HasMetadata, Namespaced
 {
 
     /**

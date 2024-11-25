@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("console.openshift.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ConsoleSampleList implements Editable<ConsoleSampleListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.console.v1.ConsoleSample>
+public class ConsoleSampleList implements Editable<ConsoleSampleListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.console.v1.ConsoleSample>
 {
 
     /**

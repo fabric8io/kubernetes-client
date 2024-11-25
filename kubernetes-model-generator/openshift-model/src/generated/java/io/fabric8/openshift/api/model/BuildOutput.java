@@ -63,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class BuildOutput implements Editable<BuildOutputBuilder> , KubernetesResource
+public class BuildOutput implements Editable<BuildOutputBuilder>, KubernetesResource
 {
 
     @JsonProperty("imageLabels")

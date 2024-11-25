@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class LoadBalancerSettingsConsistentHashLBHttpQueryParameterName implements IsLoadBalancerSettingsConsistentHashLBHashKey, Editable<LoadBalancerSettingsConsistentHashLBHttpQueryParameterNameBuilder> , KubernetesResource
+public class LoadBalancerSettingsConsistentHashLBHttpQueryParameterName implements IsLoadBalancerSettingsConsistentHashLBHashKey, Editable<LoadBalancerSettingsConsistentHashLBHttpQueryParameterNameBuilder>, KubernetesResource
 {
 
     @JsonProperty("httpQueryParameterName")

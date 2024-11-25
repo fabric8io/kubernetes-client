@@ -77,7 +77,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("machine.openshift.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class PowerVSMachineProviderStatus implements Editable<PowerVSMachineProviderStatusBuilder> , KubernetesResource, Namespaced
+public class PowerVSMachineProviderStatus implements Editable<PowerVSMachineProviderStatusBuilder>, KubernetesResource, Namespaced
 {
 
     /**

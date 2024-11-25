@@ -73,7 +73,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("networking.internal.knative.dev")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class Ingress implements Editable<IngressBuilder> , HasMetadata, Namespaced
+public class Ingress implements Editable<IngressBuilder>, HasMetadata, Namespaced
 {
 
     /**

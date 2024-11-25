@@ -89,7 +89,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("machine.openshift.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class NutanixMachineProviderConfig implements Editable<NutanixMachineProviderConfigBuilder> , HasMetadata, Namespaced
+public class NutanixMachineProviderConfig implements Editable<NutanixMachineProviderConfigBuilder>, HasMetadata, Namespaced
 {
 
     /**

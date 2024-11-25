@@ -62,7 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class Patch implements Editable<PatchBuilder> , KubernetesResource
+public class Patch implements Editable<PatchBuilder>, KubernetesResource
 {
 
     @JsonProperty("options")

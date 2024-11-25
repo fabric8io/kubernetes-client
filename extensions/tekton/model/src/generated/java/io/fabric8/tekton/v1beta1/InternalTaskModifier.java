@@ -63,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class InternalTaskModifier implements Editable<InternalTaskModifierBuilder> , KubernetesResource
+public class InternalTaskModifier implements Editable<InternalTaskModifierBuilder>, KubernetesResource
 {
 
     @JsonProperty("stepsToAppend")

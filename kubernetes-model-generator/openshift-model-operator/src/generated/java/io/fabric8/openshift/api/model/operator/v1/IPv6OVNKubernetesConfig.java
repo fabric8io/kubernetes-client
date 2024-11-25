@@ -60,7 +60,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class IPv6OVNKubernetesConfig implements Editable<IPv6OVNKubernetesConfigBuilder> , KubernetesResource
+public class IPv6OVNKubernetesConfig implements Editable<IPv6OVNKubernetesConfigBuilder>, KubernetesResource
 {
 
     @JsonProperty("internalJoinSubnet")

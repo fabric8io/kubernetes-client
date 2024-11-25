@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v2")
 @Group("operators.coreos.com")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class OperatorConditionList implements Editable<OperatorConditionListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.operatorhub.v2.OperatorCondition>
+public class OperatorConditionList implements Editable<OperatorConditionListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.operatorhub.v2.OperatorCondition>
 {
 
     /**

@@ -60,7 +60,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class Flow implements Editable<FlowBuilder> , KubernetesResource
+public class Flow implements Editable<FlowBuilder>, KubernetesResource
 {
 
     @JsonProperty("dependsOn")

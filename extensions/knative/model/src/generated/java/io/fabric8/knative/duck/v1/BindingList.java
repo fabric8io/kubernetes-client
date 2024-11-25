@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("duck.knative.dev")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class BindingList implements Editable<BindingListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.knative.duck.v1.Binding>
+public class BindingList implements Editable<BindingListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.knative.duck.v1.Binding>
 {
 
     /**

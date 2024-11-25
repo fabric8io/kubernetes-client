@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1beta3")
 @Group("flowcontrol.apiserver.k8s.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class FlowSchemaList implements Editable<FlowSchemaListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.flowcontrol.v1beta3.FlowSchema>
+public class FlowSchemaList implements Editable<FlowSchemaListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.flowcontrol.v1beta3.FlowSchema>
 {
 
     /**

@@ -71,7 +71,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("cloudcredential.openshift.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class VSphereProviderStatus implements Editable<VSphereProviderStatusBuilder> , KubernetesResource, Namespaced
+public class VSphereProviderStatus implements Editable<VSphereProviderStatusBuilder>, KubernetesResource, Namespaced
 {
 
     /**

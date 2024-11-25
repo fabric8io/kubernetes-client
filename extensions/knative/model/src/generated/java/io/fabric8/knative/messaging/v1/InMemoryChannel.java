@@ -73,7 +73,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("messaging.knative.dev")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class InMemoryChannel implements Editable<InMemoryChannelBuilder> , HasMetadata, Namespaced
+public class InMemoryChannel implements Editable<InMemoryChannelBuilder>, HasMetadata, Namespaced
 {
 
     /**

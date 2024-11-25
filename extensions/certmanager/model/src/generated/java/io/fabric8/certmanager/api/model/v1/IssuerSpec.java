@@ -64,7 +64,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class IssuerSpec implements Editable<IssuerSpecBuilder> , KubernetesResource
+public class IssuerSpec implements Editable<IssuerSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("acme")

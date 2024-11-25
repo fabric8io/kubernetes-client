@@ -68,7 +68,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class Operation implements Editable<OperationBuilder> , KubernetesResource
+public class Operation implements Editable<OperationBuilder>, KubernetesResource
 {
 
     @JsonProperty("hosts")

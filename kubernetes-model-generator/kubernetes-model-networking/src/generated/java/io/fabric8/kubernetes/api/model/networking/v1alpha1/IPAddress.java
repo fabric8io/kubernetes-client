@@ -71,7 +71,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("networking.k8s.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class IPAddress implements Editable<IPAddressBuilder> , HasMetadata
+public class IPAddress implements Editable<IPAddressBuilder>, HasMetadata
 {
 
     /**

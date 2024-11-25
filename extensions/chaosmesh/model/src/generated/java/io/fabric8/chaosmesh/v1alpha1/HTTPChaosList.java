@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("chaos-mesh.org")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class HTTPChaosList implements Editable<HTTPChaosListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.chaosmesh.v1alpha1.HTTPChaos>
+public class HTTPChaosList implements Editable<HTTPChaosListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.chaosmesh.v1alpha1.HTTPChaos>
 {
 
     /**

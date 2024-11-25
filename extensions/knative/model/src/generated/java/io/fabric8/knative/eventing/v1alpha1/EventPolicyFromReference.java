@@ -62,7 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class EventPolicyFromReference implements Editable<EventPolicyFromReferenceBuilder> , KubernetesResource
+public class EventPolicyFromReference implements Editable<EventPolicyFromReferenceBuilder>, KubernetesResource
 {
 
     @JsonProperty("apiVersion")

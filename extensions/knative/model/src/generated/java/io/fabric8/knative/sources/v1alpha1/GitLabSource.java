@@ -73,7 +73,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("sources.knative.dev")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class GitLabSource implements Editable<GitLabSourceBuilder> , HasMetadata, Namespaced
+public class GitLabSource implements Editable<GitLabSourceBuilder>, HasMetadata, Namespaced
 {
 
     /**

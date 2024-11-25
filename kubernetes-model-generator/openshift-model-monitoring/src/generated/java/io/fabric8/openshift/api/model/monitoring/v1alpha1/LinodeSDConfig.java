@@ -76,7 +76,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class LinodeSDConfig implements Editable<LinodeSDConfigBuilder> , KubernetesResource
+public class LinodeSDConfig implements Editable<LinodeSDConfigBuilder>, KubernetesResource
 {
 
     @JsonProperty("authorization")

@@ -73,7 +73,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("operators.coreos.com")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class CatalogSource implements Editable<CatalogSourceBuilder> , HasMetadata, Namespaced
+public class CatalogSource implements Editable<CatalogSourceBuilder>, HasMetadata, Namespaced
 {
 
     /**

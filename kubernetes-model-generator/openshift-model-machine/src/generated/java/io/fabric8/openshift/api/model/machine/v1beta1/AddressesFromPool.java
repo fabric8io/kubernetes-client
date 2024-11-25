@@ -61,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class AddressesFromPool implements Editable<AddressesFromPoolBuilder> , KubernetesResource
+public class AddressesFromPool implements Editable<AddressesFromPoolBuilder>, KubernetesResource
 {
 
     @JsonProperty("group")

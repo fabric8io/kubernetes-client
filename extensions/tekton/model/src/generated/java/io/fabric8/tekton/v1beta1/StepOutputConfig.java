@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class StepOutputConfig implements Editable<StepOutputConfigBuilder> , KubernetesResource
+public class StepOutputConfig implements Editable<StepOutputConfigBuilder>, KubernetesResource
 {
 
     @JsonProperty("path")

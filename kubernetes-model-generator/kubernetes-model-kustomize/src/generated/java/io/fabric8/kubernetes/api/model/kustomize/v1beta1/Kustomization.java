@@ -94,7 +94,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class Kustomization implements Editable<KustomizationBuilder> , KubernetesResource
+public class Kustomization implements Editable<KustomizationBuilder>, KubernetesResource
 {
 
     @JsonProperty("apiVersion")

@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1beta1")
 @Group("scheduling.volcano.sh")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class PodGroupList implements Editable<PodGroupListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.volcano.api.model.scheduling.v1beta1.PodGroup>
+public class PodGroupList implements Editable<PodGroupListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.volcano.api.model.scheduling.v1beta1.PodGroup>
 {
 
     /**

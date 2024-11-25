@@ -63,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class PciDevice implements Editable<PciDeviceBuilder> , KubernetesResource
+public class PciDevice implements Editable<PciDeviceBuilder>, KubernetesResource
 {
 
     @JsonProperty("pci-address")

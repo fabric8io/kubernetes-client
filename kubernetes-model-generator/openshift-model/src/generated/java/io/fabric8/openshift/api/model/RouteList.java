@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("route.openshift.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class RouteList implements Editable<RouteListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.Route>
+public class RouteList implements Editable<RouteListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.Route>
 {
 
     /**

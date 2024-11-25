@@ -79,7 +79,7 @@ import lombok.experimental.Accessors;
 @Version("v1beta1")
 @Group("")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class AuthorizationPolicy implements Editable<AuthorizationPolicyBuilder> , KubernetesResource, Namespaced
+public class AuthorizationPolicy implements Editable<AuthorizationPolicyBuilder>, KubernetesResource, Namespaced
 {
 
     @JsonProperty("ActionDetail")

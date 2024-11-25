@@ -63,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ImageTagMirrors implements Editable<ImageTagMirrorsBuilder> , KubernetesResource
+public class ImageTagMirrors implements Editable<ImageTagMirrorsBuilder>, KubernetesResource
 {
 
     @JsonProperty("mirrorSourcePolicy")

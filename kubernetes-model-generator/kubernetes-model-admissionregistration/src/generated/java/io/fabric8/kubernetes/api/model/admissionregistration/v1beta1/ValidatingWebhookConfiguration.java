@@ -73,7 +73,7 @@ import lombok.experimental.Accessors;
 @Version("v1beta1")
 @Group("admissionregistration.k8s.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ValidatingWebhookConfiguration implements Editable<ValidatingWebhookConfigurationBuilder> , HasMetadata
+public class ValidatingWebhookConfiguration implements Editable<ValidatingWebhookConfigurationBuilder>, HasMetadata
 {
 
     /**

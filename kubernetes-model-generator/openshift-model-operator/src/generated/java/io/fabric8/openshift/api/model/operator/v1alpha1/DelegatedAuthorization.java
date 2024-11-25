@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class DelegatedAuthorization implements Editable<DelegatedAuthorizationBuilder> , KubernetesResource
+public class DelegatedAuthorization implements Editable<DelegatedAuthorizationBuilder>, KubernetesResource
 {
 
     @JsonProperty("disabled")

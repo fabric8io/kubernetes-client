@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("packages.operators.coreos.com")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class PackageManifestList implements Editable<PackageManifestListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.operatorhub.packages.v1.PackageManifest>
+public class PackageManifestList implements Editable<PackageManifestListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.operatorhub.packages.v1.PackageManifest>
 {
 
     /**

@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1beta1")
 @Group("extensions")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class IngressList implements Editable<IngressListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.extensions.Ingress>
+public class IngressList implements Editable<IngressListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.extensions.Ingress>
 {
 
     /**

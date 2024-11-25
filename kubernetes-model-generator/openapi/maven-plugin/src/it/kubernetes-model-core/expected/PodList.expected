@@ -44,7 +44,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class PodList implements Editable<PodListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.Pod>
+public class PodList implements Editable<PodListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.Pod>
 {
 
     /**

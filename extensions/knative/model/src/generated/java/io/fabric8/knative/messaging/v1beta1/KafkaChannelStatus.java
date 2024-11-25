@@ -74,7 +74,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class KafkaChannelStatus implements Editable<KafkaChannelStatusBuilder> , KubernetesResource
+public class KafkaChannelStatus implements Editable<KafkaChannelStatusBuilder>, KubernetesResource
 {
 
     @JsonProperty("address")

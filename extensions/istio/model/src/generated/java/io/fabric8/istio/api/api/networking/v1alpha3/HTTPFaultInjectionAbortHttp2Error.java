@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class HTTPFaultInjectionAbortHttp2Error implements IsHTTPFaultInjectionAbortErrorType, Editable<HTTPFaultInjectionAbortHttp2ErrorBuilder> , KubernetesResource
+public class HTTPFaultInjectionAbortHttp2Error implements IsHTTPFaultInjectionAbortErrorType, Editable<HTTPFaultInjectionAbortHttp2ErrorBuilder>, KubernetesResource
 {
 
     @JsonProperty("http2Error")

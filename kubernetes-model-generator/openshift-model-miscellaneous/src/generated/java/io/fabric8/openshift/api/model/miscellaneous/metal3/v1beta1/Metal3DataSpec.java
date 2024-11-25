@@ -65,7 +65,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class Metal3DataSpec implements Editable<Metal3DataSpecBuilder> , KubernetesResource
+public class Metal3DataSpec implements Editable<Metal3DataSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("claim")

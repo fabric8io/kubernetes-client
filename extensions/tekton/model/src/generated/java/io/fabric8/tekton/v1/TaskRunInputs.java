@@ -61,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class TaskRunInputs implements Editable<TaskRunInputsBuilder> , KubernetesResource
+public class TaskRunInputs implements Editable<TaskRunInputsBuilder>, KubernetesResource
 {
 
     @JsonProperty("params")

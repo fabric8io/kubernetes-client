@@ -175,7 +175,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class PrometheusSpec implements Editable<PrometheusSpecBuilder> , KubernetesResource
+public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("additionalAlertManagerConfigs")

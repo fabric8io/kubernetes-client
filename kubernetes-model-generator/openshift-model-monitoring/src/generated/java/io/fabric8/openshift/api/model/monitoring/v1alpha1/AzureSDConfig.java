@@ -68,7 +68,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class AzureSDConfig implements Editable<AzureSDConfigBuilder> , KubernetesResource
+public class AzureSDConfig implements Editable<AzureSDConfigBuilder>, KubernetesResource
 {
 
     @JsonProperty("authenticationMethod")

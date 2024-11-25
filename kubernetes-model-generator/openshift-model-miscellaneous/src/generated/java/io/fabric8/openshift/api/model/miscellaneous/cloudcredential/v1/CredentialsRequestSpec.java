@@ -64,7 +64,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class CredentialsRequestSpec implements Editable<CredentialsRequestSpecBuilder> , KubernetesResource
+public class CredentialsRequestSpec implements Editable<CredentialsRequestSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("cloudTokenPath")

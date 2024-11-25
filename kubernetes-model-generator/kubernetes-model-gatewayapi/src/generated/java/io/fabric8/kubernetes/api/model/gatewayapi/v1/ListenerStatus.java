@@ -65,7 +65,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ListenerStatus implements Editable<ListenerStatusBuilder> , KubernetesResource
+public class ListenerStatus implements Editable<ListenerStatusBuilder>, KubernetesResource
 {
 
     @JsonProperty("attachedRoutes")

@@ -61,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class InterceptorResponse implements Editable<InterceptorResponseBuilder> , KubernetesResource
+public class InterceptorResponse implements Editable<InterceptorResponseBuilder>, KubernetesResource
 {
 
     @JsonProperty("continue")

@@ -60,7 +60,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class StorageStateSpecResource implements Editable<StorageStateSpecResourceBuilder> , KubernetesResource
+public class StorageStateSpecResource implements Editable<StorageStateSpecResourceBuilder>, KubernetesResource
 {
 
     @JsonProperty("group")

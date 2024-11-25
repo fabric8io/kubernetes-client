@@ -61,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class PodSchedulingContextStatus implements Editable<PodSchedulingContextStatusBuilder> , KubernetesResource
+public class PodSchedulingContextStatus implements Editable<PodSchedulingContextStatusBuilder>, KubernetesResource
 {
 
     @JsonProperty("resourceClaims")

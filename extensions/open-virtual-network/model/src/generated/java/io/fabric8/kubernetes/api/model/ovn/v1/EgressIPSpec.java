@@ -63,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class EgressIPSpec implements Editable<EgressIPSpecBuilder> , KubernetesResource
+public class EgressIPSpec implements Editable<EgressIPSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("egressIPs")

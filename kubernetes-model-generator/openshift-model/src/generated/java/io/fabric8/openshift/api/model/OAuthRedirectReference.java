@@ -72,7 +72,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("oauth.openshift.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class OAuthRedirectReference implements Editable<OAuthRedirectReferenceBuilder> , HasMetadata, Namespaced
+public class OAuthRedirectReference implements Editable<OAuthRedirectReferenceBuilder>, HasMetadata, Namespaced
 {
 
     /**

@@ -72,7 +72,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha2")
 @Group("resource.k8s.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ResourceClaimTemplate implements Editable<ResourceClaimTemplateBuilder> , HasMetadata, Namespaced
+public class ResourceClaimTemplate implements Editable<ResourceClaimTemplateBuilder>, HasMetadata, Namespaced
 {
 
     /**

@@ -67,7 +67,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class SubscriptionStatusPhysicalSubscription implements Editable<SubscriptionStatusPhysicalSubscriptionBuilder> , KubernetesResource
+public class SubscriptionStatusPhysicalSubscription implements Editable<SubscriptionStatusPhysicalSubscriptionBuilder>, KubernetesResource
 {
 
     @JsonProperty("deadLetterSinkAudience")

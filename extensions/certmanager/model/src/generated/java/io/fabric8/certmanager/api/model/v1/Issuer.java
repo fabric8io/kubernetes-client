@@ -73,7 +73,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("cert-manager.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class Issuer implements Editable<IssuerBuilder> , HasMetadata, Namespaced
+public class Issuer implements Editable<IssuerBuilder>, HasMetadata, Namespaced
 {
 
     /**

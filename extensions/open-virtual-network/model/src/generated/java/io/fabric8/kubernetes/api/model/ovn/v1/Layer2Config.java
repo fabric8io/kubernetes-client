@@ -65,7 +65,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class Layer2Config implements Editable<Layer2ConfigBuilder> , KubernetesResource
+public class Layer2Config implements Editable<Layer2ConfigBuilder>, KubernetesResource
 {
 
     @JsonProperty("ipamLifecycle")

@@ -76,7 +76,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class PortOpts implements Editable<PortOptsBuilder> , KubernetesResource
+public class PortOpts implements Editable<PortOptsBuilder>, KubernetesResource
 {
 
     @JsonProperty("adminStateUp")

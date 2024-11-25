@@ -69,7 +69,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class TopologySpreadConstraint implements Editable<TopologySpreadConstraintBuilder> , KubernetesResource
+public class TopologySpreadConstraint implements Editable<TopologySpreadConstraintBuilder>, KubernetesResource
 {
 
     @JsonProperty("additionalLabelSelectors")

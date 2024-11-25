@@ -64,7 +64,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ImageBlobReferences implements Editable<ImageBlobReferencesBuilder> , KubernetesResource
+public class ImageBlobReferences implements Editable<ImageBlobReferencesBuilder>, KubernetesResource
 {
 
     @JsonProperty("config")

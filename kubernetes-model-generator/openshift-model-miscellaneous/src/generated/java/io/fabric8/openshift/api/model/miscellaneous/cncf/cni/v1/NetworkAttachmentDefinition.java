@@ -72,7 +72,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("k8s.cni.cncf.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class NetworkAttachmentDefinition implements Editable<NetworkAttachmentDefinitionBuilder> , HasMetadata, Namespaced
+public class NetworkAttachmentDefinition implements Editable<NetworkAttachmentDefinitionBuilder>, HasMetadata, Namespaced
 {
 
     /**

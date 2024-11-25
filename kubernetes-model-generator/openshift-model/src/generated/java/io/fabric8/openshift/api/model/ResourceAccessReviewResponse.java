@@ -76,7 +76,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("authorization.openshift.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ResourceAccessReviewResponse implements Editable<ResourceAccessReviewResponseBuilder> , KubernetesResource, Namespaced
+public class ResourceAccessReviewResponse implements Editable<ResourceAccessReviewResponseBuilder>, KubernetesResource, Namespaced
 {
 
     /**

@@ -63,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class LoadBalancerSettings implements Editable<LoadBalancerSettingsBuilder> , KubernetesResource
+public class LoadBalancerSettings implements Editable<LoadBalancerSettingsBuilder>, KubernetesResource
 {
 
     @JsonProperty("LbPolicy")

@@ -63,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ImageStreamImportStatus implements Editable<ImageStreamImportStatusBuilder> , KubernetesResource
+public class ImageStreamImportStatus implements Editable<ImageStreamImportStatusBuilder>, KubernetesResource
 {
 
     @JsonProperty("images")

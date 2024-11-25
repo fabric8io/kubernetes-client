@@ -62,7 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class Placeable implements Editable<PlaceableBuilder> , KubernetesResource
+public class Placeable implements Editable<PlaceableBuilder>, KubernetesResource
 {
 
     @JsonProperty("maxAllowedVReplicas")

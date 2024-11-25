@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class OpenTelemetryCollectorSpec implements Editable<OpenTelemetryCollectorSpecBuilder> , KubernetesResource
+public class OpenTelemetryCollectorSpec implements Editable<OpenTelemetryCollectorSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("enabled")

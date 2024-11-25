@@ -71,7 +71,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha3")
 @Group("")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class WorkloadGroup implements Editable<WorkloadGroupBuilder> , KubernetesResource, Namespaced
+public class WorkloadGroup implements Editable<WorkloadGroupBuilder>, KubernetesResource, Namespaced
 {
 
     @JsonProperty("metadata")

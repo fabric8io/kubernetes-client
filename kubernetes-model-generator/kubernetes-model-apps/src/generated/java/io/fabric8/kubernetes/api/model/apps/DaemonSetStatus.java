@@ -70,7 +70,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class DaemonSetStatus implements Editable<DaemonSetStatusBuilder> , KubernetesResource
+public class DaemonSetStatus implements Editable<DaemonSetStatusBuilder>, KubernetesResource
 {
 
     @JsonProperty("collisionCount")

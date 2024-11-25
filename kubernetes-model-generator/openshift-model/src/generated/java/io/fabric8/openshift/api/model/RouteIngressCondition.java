@@ -63,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class RouteIngressCondition implements Editable<RouteIngressConditionBuilder> , KubernetesResource
+public class RouteIngressCondition implements Editable<RouteIngressConditionBuilder>, KubernetesResource
 {
 
     @JsonProperty("lastTransitionTime")

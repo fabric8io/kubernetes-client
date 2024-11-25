@@ -60,7 +60,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class Metal3ClusterSpec implements Editable<Metal3ClusterSpecBuilder> , KubernetesResource
+public class Metal3ClusterSpec implements Editable<Metal3ClusterSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("controlPlaneEndpoint")

@@ -73,7 +73,7 @@ import lombok.experimental.Accessors;
 @Version("v1beta1")
 @Group("autoscaling.openshift.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class MachineAutoscaler implements Editable<MachineAutoscalerBuilder> , HasMetadata, Namespaced
+public class MachineAutoscaler implements Editable<MachineAutoscalerBuilder>, HasMetadata, Namespaced
 {
 
     /**

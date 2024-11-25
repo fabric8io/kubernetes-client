@@ -63,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class HTTPRouteRetry implements Editable<HTTPRouteRetryBuilder> , KubernetesResource
+public class HTTPRouteRetry implements Editable<HTTPRouteRetryBuilder>, KubernetesResource
 {
 
     @JsonProperty("attempts")
