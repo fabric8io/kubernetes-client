@@ -2,6 +2,7 @@
 
 ## Contents
 - [Java baseline set to Java 11](#java-11)
+- [Vert.x as default HttpClient implementation](#vertx-httpclient)
 - [Bouncy Castle is no longer needed](#bouncy-castle)
 - [Config changes](#config-changes)
   - [Support for multiple kubeconfig files](#config-changes-multiple-kubeconfig)
@@ -40,6 +41,14 @@ Starting from version 7.0.0, you will need a Java 11+ runtime (using the latest 
 
 It's been more than 10 years since Java 8 was released, and it's no longer supported by most vendors.
 We made our best effort to keep the client compatible with Java 8 for as long as possible, but it's time to move on.
+
+## Vert.x as default HttpClient implementation <a href="#vertx-httpclient" id="vertx-httpclient"/>
+
+OkHttp has been replaced by Vert.x as the default HttpClient implementation.
+As of version 7.0.0, the Fabric8 Kubernetes Client `io.fabric8:kubernetes-client` and `io.fabric8:openshift-client` include a transitive dependency to the `io.fabric8:kubernetes-httpclient-vertx` module.
+
+If you want to continue using OkHttp as the HttpClient, you can do so by adding the `io.fabric8:kubernetes-httpclient-okhttp` module as a dependency.
+It is also recommended (although not mandatory) to add an exclusion for the `io.fabric8:kubernetes-httpclient-vertx` module to avoid having both implementations in the classpath.
 
 ## Bouncy Castle is no longer needed <a href="#bouncy-castle" id="bouncy-castle"/>
 

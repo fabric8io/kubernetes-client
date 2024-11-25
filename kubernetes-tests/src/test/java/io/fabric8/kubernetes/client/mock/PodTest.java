@@ -46,7 +46,6 @@ import io.fabric8.kubernetes.client.server.mock.StatusStreamMessage;
 import io.fabric8.kubernetes.client.utils.InputStreamPumper;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.mockwebserver.internal.WebSocketMessage;
-import okio.ByteString;
 import org.awaitility.Awaitility;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -830,7 +829,7 @@ class PodTest {
       } while (read >= 0);
       buffer.flip();
       channel.socket().close();
-      assertEquals("Hello World", ByteString.of(buffer).utf8());
+      assertEquals("Hello World", StandardCharsets.UTF_8.decode(buffer).toString());
       assertFalse(portForward.errorOccurred());
       assertEquals(0, portForward.getClientThrowables().size());
       assertEquals(0, portForward.getServerThrowables().size());
