@@ -80,7 +80,8 @@ class KubernetesCrudDispatcherPostTest extends KubernetesCrudDispatcherTestBase 
         .hasFieldOrPropertyWithValue("spec.dnsPolicy", "always-dns")
         .extracting(Pod::getMetadata)
         .satisfies(m -> assertThat(m.getName()).startsWith("foo-gen-"))
-        .satisfies(m -> assertThat(m.getCreationTimestamp()).isNotBlank())
+        .satisfies(m -> assertThat(m.getCreationTimestamp())
+            .isNotBlank().matches("\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z"))
         .satisfies(m -> assertThat(m.getUid()).isNotBlank());
     assertLocked(1, 0);
   }
