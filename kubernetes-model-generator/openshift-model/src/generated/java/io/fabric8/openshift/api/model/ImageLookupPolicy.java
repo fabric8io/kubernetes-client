@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ImageLookupPolicy implements Editable<ImageLookupPolicyBuilder> , KubernetesResource
+public class ImageLookupPolicy implements Editable<ImageLookupPolicyBuilder>, KubernetesResource
 {
 
     @JsonProperty("local")

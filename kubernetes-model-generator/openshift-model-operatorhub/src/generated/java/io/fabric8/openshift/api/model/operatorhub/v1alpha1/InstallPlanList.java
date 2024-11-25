@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("operators.coreos.com")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class InstallPlanList implements Editable<InstallPlanListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.operatorhub.v1alpha1.InstallPlan>
+public class InstallPlanList implements Editable<InstallPlanListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.operatorhub.v1alpha1.InstallPlan>
 {
 
     /**

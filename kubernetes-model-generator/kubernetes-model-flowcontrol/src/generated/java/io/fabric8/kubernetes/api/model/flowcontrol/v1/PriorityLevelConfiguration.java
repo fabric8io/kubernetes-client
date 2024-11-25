@@ -72,7 +72,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("flowcontrol.apiserver.k8s.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class PriorityLevelConfiguration implements Editable<PriorityLevelConfigurationBuilder> , HasMetadata
+public class PriorityLevelConfiguration implements Editable<PriorityLevelConfigurationBuilder>, HasMetadata
 {
 
     /**

@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("monitoring.coreos.com")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class PodMonitorList implements Editable<PodMonitorListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.monitoring.v1.PodMonitor>
+public class PodMonitorList implements Editable<PodMonitorListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.monitoring.v1.PodMonitor>
 {
 
     /**

@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha2")
 @Group("operators.coreos.com")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class OperatorGroupList implements Editable<OperatorGroupListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.operatorhub.v1alpha2.OperatorGroup>
+public class OperatorGroupList implements Editable<OperatorGroupListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.operatorhub.v1alpha2.OperatorGroup>
 {
 
     /**

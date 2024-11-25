@@ -63,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class StressChaosStatus implements Editable<StressChaosStatusBuilder> , KubernetesResource
+public class StressChaosStatus implements Editable<StressChaosStatusBuilder>, KubernetesResource
 {
 
     @JsonProperty("conditions")

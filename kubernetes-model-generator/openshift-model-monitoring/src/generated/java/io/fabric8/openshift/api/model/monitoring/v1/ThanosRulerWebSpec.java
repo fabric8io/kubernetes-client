@@ -60,7 +60,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ThanosRulerWebSpec implements Editable<ThanosRulerWebSpecBuilder> , KubernetesResource
+public class ThanosRulerWebSpec implements Editable<ThanosRulerWebSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("httpConfig")

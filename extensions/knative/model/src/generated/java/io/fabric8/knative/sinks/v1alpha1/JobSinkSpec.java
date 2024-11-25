@@ -60,7 +60,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class JobSinkSpec implements Editable<JobSinkSpecBuilder> , KubernetesResource
+public class JobSinkSpec implements Editable<JobSinkSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("job")

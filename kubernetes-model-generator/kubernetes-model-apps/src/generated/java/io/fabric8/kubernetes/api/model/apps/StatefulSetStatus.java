@@ -70,7 +70,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class StatefulSetStatus implements Editable<StatefulSetStatusBuilder> , KubernetesResource
+public class StatefulSetStatus implements Editable<StatefulSetStatusBuilder>, KubernetesResource
 {
 
     @JsonProperty("availableReplicas")

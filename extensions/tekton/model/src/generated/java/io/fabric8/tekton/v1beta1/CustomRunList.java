@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1beta1")
 @Group("tekton.dev")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class CustomRunList implements Editable<CustomRunListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.tekton.v1beta1.CustomRun>
+public class CustomRunList implements Editable<CustomRunListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.tekton.v1beta1.CustomRun>
 {
 
     /**

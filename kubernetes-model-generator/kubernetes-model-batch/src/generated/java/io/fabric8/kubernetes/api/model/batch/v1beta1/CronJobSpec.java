@@ -65,7 +65,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class CronJobSpec implements Editable<CronJobSpecBuilder> , KubernetesResource
+public class CronJobSpec implements Editable<CronJobSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("concurrencyPolicy")

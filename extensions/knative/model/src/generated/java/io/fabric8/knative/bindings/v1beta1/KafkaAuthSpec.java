@@ -62,7 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class KafkaAuthSpec implements Editable<KafkaAuthSpecBuilder> , KubernetesResource
+public class KafkaAuthSpec implements Editable<KafkaAuthSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("bootstrapServers")

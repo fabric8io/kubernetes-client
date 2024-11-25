@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class HTTPConfigSpec implements Editable<HTTPConfigSpecBuilder> , KubernetesResource
+public class HTTPConfigSpec implements Editable<HTTPConfigSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("file_path")

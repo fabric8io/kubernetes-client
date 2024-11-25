@@ -63,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ImageRegistryConfigStorageIBMCOS implements Editable<ImageRegistryConfigStorageIBMCOSBuilder> , KubernetesResource
+public class ImageRegistryConfigStorageIBMCOS implements Editable<ImageRegistryConfigStorageIBMCOSBuilder>, KubernetesResource
 {
 
     @JsonProperty("bucket")

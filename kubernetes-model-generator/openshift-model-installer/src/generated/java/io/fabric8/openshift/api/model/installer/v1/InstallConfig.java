@@ -94,7 +94,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("install.openshift.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class InstallConfig implements Editable<InstallConfigBuilder> , HasMetadata, Namespaced
+public class InstallConfig implements Editable<InstallConfigBuilder>, HasMetadata, Namespaced
 {
 
     @JsonProperty("additionalTrustBundle")

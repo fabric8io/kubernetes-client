@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ImageSecretObjectReference implements Editable<ImageSecretObjectReferenceBuilder> , KubernetesResource
+public class ImageSecretObjectReference implements Editable<ImageSecretObjectReferenceBuilder>, KubernetesResource
 {
 
     @JsonProperty("name")

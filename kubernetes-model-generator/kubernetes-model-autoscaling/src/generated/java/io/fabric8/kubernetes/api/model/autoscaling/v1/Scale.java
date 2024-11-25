@@ -73,7 +73,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("autoscaling")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class Scale implements Editable<ScaleBuilder> , HasMetadata, Namespaced
+public class Scale implements Editable<ScaleBuilder>, HasMetadata, Namespaced
 {
 
     /**

@@ -60,7 +60,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class Fraction implements Editable<FractionBuilder> , KubernetesResource
+public class Fraction implements Editable<FractionBuilder>, KubernetesResource
 {
 
     @JsonProperty("denominator")

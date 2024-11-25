@@ -72,7 +72,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("coordination.k8s.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class Lease implements Editable<LeaseBuilder> , HasMetadata, Namespaced
+public class Lease implements Editable<LeaseBuilder>, HasMetadata, Namespaced
 {
 
     /**

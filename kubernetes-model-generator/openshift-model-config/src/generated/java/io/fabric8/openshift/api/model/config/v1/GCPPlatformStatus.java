@@ -65,7 +65,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class GCPPlatformStatus implements Editable<GCPPlatformStatusBuilder> , KubernetesResource
+public class GCPPlatformStatus implements Editable<GCPPlatformStatusBuilder>, KubernetesResource
 {
 
     @JsonProperty("cloudLoadBalancerConfig")

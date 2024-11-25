@@ -71,7 +71,7 @@ import lombok.experimental.Accessors;
 @Version("v1beta1")
 @Group("storage.k8s.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class CSINode implements Editable<CSINodeBuilder> , HasMetadata
+public class CSINode implements Editable<CSINodeBuilder>, HasMetadata
 {
 
     /**

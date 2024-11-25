@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("oauth.openshift.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class OAuthAuthorizeTokenList implements Editable<OAuthAuthorizeTokenListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.OAuthAuthorizeToken>
+public class OAuthAuthorizeTokenList implements Editable<OAuthAuthorizeTokenListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.OAuthAuthorizeToken>
 {
 
     /**

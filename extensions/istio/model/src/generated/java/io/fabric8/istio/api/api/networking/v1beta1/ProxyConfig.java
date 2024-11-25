@@ -73,7 +73,7 @@ import lombok.experimental.Accessors;
 @Version("v1beta1")
 @Group("")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ProxyConfig implements Editable<ProxyConfigBuilder> , KubernetesResource, Namespaced
+public class ProxyConfig implements Editable<ProxyConfigBuilder>, KubernetesResource, Namespaced
 {
 
     @JsonProperty("concurrency")

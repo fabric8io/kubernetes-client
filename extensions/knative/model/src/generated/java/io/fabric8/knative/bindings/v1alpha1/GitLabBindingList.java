@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("bindings.knative.dev")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class GitLabBindingList implements Editable<GitLabBindingListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.knative.bindings.v1alpha1.GitLabBinding>
+public class GitLabBindingList implements Editable<GitLabBindingListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.knative.bindings.v1alpha1.GitLabBinding>
 {
 
     /**

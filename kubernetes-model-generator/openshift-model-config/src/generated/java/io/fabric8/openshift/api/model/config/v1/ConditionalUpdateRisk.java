@@ -64,7 +64,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ConditionalUpdateRisk implements Editable<ConditionalUpdateRiskBuilder> , KubernetesResource
+public class ConditionalUpdateRisk implements Editable<ConditionalUpdateRiskBuilder>, KubernetesResource
 {
 
     @JsonProperty("matchingRules")

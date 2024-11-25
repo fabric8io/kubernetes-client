@@ -60,7 +60,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class FixedIPs implements Editable<FixedIPsBuilder> , KubernetesResource
+public class FixedIPs implements Editable<FixedIPsBuilder>, KubernetesResource
 {
 
     @JsonProperty("ipAddress")

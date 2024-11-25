@@ -73,7 +73,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("gateway.networking.k8s.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class GRPCRoute implements Editable<GRPCRouteBuilder> , HasMetadata, Namespaced
+public class GRPCRoute implements Editable<GRPCRouteBuilder>, HasMetadata, Namespaced
 {
 
     /**

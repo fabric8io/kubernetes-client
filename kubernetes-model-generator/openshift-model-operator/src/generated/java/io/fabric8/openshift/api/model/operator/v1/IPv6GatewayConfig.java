@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class IPv6GatewayConfig implements Editable<IPv6GatewayConfigBuilder> , KubernetesResource
+public class IPv6GatewayConfig implements Editable<IPv6GatewayConfigBuilder>, KubernetesResource
 {
 
     @JsonProperty("internalMasqueradeSubnet")

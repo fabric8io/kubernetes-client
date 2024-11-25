@@ -72,7 +72,7 @@ import lombok.experimental.Accessors;
 @Version("v1beta1")
 @Group("apiextensions.k8s.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class CustomResourceDefinition implements Editable<CustomResourceDefinitionBuilder> , HasMetadata
+public class CustomResourceDefinition implements Editable<CustomResourceDefinitionBuilder>, HasMetadata
 {
 
     /**

@@ -73,7 +73,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("monitoring.coreos.com")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class Prometheus implements Editable<PrometheusBuilder> , HasMetadata, Namespaced
+public class Prometheus implements Editable<PrometheusBuilder>, HasMetadata, Namespaced
 {
 
     /**

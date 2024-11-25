@@ -72,7 +72,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("apiserver.openshift.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class APIRequestCount implements Editable<APIRequestCountBuilder> , HasMetadata
+public class APIRequestCount implements Editable<APIRequestCountBuilder>, HasMetadata
 {
 
     /**

@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("chaos-mesh.org")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class StatusCheckList implements Editable<StatusCheckListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.chaosmesh.v1alpha1.StatusCheck>
+public class StatusCheckList implements Editable<StatusCheckListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.chaosmesh.v1alpha1.StatusCheck>
 {
 
     /**

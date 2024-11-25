@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("agent.open-cluster-management.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class KlusterletAddonConfigList implements Editable<KlusterletAddonConfigListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openclustermanagement.api.model.agent.v1.KlusterletAddonConfig>
+public class KlusterletAddonConfigList implements Editable<KlusterletAddonConfigListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.openclustermanagement.api.model.agent.v1.KlusterletAddonConfig>
 {
 
     /**

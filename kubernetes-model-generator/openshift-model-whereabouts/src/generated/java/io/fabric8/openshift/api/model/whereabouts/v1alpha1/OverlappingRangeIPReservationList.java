@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("whereabouts.cni.cncf.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class OverlappingRangeIPReservationList implements Editable<OverlappingRangeIPReservationListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.whereabouts.v1alpha1.OverlappingRangeIPReservation>
+public class OverlappingRangeIPReservationList implements Editable<OverlappingRangeIPReservationListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.whereabouts.v1alpha1.OverlappingRangeIPReservation>
 {
 
     /**

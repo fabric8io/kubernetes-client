@@ -72,7 +72,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("k8s.ovn.org")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class EgressIP implements Editable<EgressIPBuilder> , HasMetadata
+public class EgressIP implements Editable<EgressIPBuilder>, HasMetadata
 {
 
     /**

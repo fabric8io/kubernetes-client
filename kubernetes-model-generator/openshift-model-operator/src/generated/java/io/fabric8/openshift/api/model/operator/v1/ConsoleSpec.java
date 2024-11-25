@@ -70,7 +70,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ConsoleSpec implements Editable<ConsoleSpecBuilder> , KubernetesResource
+public class ConsoleSpec implements Editable<ConsoleSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("customization")

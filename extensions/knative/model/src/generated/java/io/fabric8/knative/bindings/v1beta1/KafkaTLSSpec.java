@@ -62,7 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class KafkaTLSSpec implements Editable<KafkaTLSSpecBuilder> , KubernetesResource
+public class KafkaTLSSpec implements Editable<KafkaTLSSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("caCert")

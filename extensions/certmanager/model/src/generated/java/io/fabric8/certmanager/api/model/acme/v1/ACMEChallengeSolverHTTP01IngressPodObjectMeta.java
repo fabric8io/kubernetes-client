@@ -60,7 +60,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ACMEChallengeSolverHTTP01IngressPodObjectMeta implements Editable<ACMEChallengeSolverHTTP01IngressPodObjectMetaBuilder> , KubernetesResource
+public class ACMEChallengeSolverHTTP01IngressPodObjectMeta implements Editable<ACMEChallengeSolverHTTP01IngressPodObjectMetaBuilder>, KubernetesResource
 {
 
     @JsonProperty("annotations")

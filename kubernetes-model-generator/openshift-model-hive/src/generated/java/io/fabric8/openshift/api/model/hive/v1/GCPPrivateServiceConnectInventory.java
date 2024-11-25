@@ -62,7 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class GCPPrivateServiceConnectInventory implements Editable<GCPPrivateServiceConnectInventoryBuilder> , KubernetesResource
+public class GCPPrivateServiceConnectInventory implements Editable<GCPPrivateServiceConnectInventoryBuilder>, KubernetesResource
 {
 
     @JsonProperty("network")

@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1beta1")
 @Group("triggers.tekton.dev")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class TriggerBindingList implements Editable<TriggerBindingListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.tekton.triggers.v1beta1.TriggerBinding>
+public class TriggerBindingList implements Editable<TriggerBindingListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.tekton.triggers.v1beta1.TriggerBinding>
 {
 
     /**

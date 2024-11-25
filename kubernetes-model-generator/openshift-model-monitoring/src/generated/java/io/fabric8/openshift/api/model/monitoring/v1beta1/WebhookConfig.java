@@ -63,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class WebhookConfig implements Editable<WebhookConfigBuilder> , KubernetesResource
+public class WebhookConfig implements Editable<WebhookConfigBuilder>, KubernetesResource
 {
 
     @JsonProperty("httpConfig")

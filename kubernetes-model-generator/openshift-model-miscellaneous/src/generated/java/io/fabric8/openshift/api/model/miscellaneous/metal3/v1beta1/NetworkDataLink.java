@@ -63,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class NetworkDataLink implements Editable<NetworkDataLinkBuilder> , KubernetesResource
+public class NetworkDataLink implements Editable<NetworkDataLinkBuilder>, KubernetesResource
 {
 
     @JsonProperty("bonds")

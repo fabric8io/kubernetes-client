@@ -66,7 +66,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class RawIPSet implements Editable<RawIPSetBuilder> , KubernetesResource
+public class RawIPSet implements Editable<RawIPSetBuilder>, KubernetesResource
 {
 
     @JsonProperty("cidrAndPorts")

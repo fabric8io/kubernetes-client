@@ -68,7 +68,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class BuildInputs implements Editable<BuildInputsBuilder> , KubernetesResource
+public class BuildInputs implements Editable<BuildInputsBuilder>, KubernetesResource
 {
 
     @JsonProperty("baseImagePullSecret")

@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1beta1")
 @Group("serving.knative.dev")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class DomainMappingList implements Editable<DomainMappingListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.knative.serving.v1beta1.DomainMapping>
+public class DomainMappingList implements Editable<DomainMappingListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.knative.serving.v1beta1.DomainMapping>
 {
 
     /**

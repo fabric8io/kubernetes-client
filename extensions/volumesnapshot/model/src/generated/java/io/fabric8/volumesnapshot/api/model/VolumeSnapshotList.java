@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("snapshot.storage.k8s.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class VolumeSnapshotList implements Editable<VolumeSnapshotListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.volumesnapshot.api.model.VolumeSnapshot>
+public class VolumeSnapshotList implements Editable<VolumeSnapshotListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.volumesnapshot.api.model.VolumeSnapshot>
 {
 
     /**

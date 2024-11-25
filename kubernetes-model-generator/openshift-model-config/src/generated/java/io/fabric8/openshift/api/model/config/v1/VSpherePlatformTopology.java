@@ -67,7 +67,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class VSpherePlatformTopology implements Editable<VSpherePlatformTopologyBuilder> , KubernetesResource
+public class VSpherePlatformTopology implements Editable<VSpherePlatformTopologyBuilder>, KubernetesResource
 {
 
     @JsonProperty("computeCluster")

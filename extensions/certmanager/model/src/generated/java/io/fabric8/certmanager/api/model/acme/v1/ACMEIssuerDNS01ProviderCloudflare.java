@@ -62,7 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ACMEIssuerDNS01ProviderCloudflare implements Editable<ACMEIssuerDNS01ProviderCloudflareBuilder> , KubernetesResource
+public class ACMEIssuerDNS01ProviderCloudflare implements Editable<ACMEIssuerDNS01ProviderCloudflareBuilder>, KubernetesResource
 {
 
     @JsonProperty("apiKeySecretRef")

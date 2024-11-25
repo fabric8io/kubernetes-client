@@ -74,7 +74,7 @@ import lombok.experimental.Accessors;
 @Version("v1beta1")
 @Group("observability.open-cluster-management.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ObservabilityAddon implements Editable<ObservabilityAddonBuilder> , HasMetadata, Namespaced
+public class ObservabilityAddon implements Editable<ObservabilityAddonBuilder>, HasMetadata, Namespaced
 {
 
     /**

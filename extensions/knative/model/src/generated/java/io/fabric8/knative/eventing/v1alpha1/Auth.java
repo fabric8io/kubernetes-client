@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class Auth implements Editable<AuthBuilder> , KubernetesResource
+public class Auth implements Editable<AuthBuilder>, KubernetesResource
 {
 
     @JsonProperty("secret")

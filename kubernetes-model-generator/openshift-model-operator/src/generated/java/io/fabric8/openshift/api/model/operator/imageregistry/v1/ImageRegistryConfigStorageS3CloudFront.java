@@ -63,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ImageRegistryConfigStorageS3CloudFront implements Editable<ImageRegistryConfigStorageS3CloudFrontBuilder> , KubernetesResource
+public class ImageRegistryConfigStorageS3CloudFront implements Editable<ImageRegistryConfigStorageS3CloudFrontBuilder>, KubernetesResource
 {
 
     @JsonProperty("baseURL")

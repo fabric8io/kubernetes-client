@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class RouteSetHTTPHeader implements Editable<RouteSetHTTPHeaderBuilder> , KubernetesResource
+public class RouteSetHTTPHeader implements Editable<RouteSetHTTPHeaderBuilder>, KubernetesResource
 {
 
     @JsonProperty("value")

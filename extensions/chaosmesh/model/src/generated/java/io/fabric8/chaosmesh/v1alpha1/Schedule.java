@@ -73,7 +73,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("chaos-mesh.org")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class Schedule implements Editable<ScheduleBuilder> , HasMetadata, Namespaced
+public class Schedule implements Editable<ScheduleBuilder>, HasMetadata, Namespaced
 {
 
     /**

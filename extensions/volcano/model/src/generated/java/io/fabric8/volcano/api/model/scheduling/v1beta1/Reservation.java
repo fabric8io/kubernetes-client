@@ -63,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class Reservation implements Editable<ReservationBuilder> , KubernetesResource
+public class Reservation implements Editable<ReservationBuilder>, KubernetesResource
 {
 
     @JsonProperty("nodes")

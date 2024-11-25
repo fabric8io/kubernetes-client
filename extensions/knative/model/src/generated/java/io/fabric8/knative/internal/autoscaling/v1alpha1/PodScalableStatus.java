@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class PodScalableStatus implements Editable<PodScalableStatusBuilder> , KubernetesResource
+public class PodScalableStatus implements Editable<PodScalableStatusBuilder>, KubernetesResource
 {
 
     @JsonProperty("replicas")

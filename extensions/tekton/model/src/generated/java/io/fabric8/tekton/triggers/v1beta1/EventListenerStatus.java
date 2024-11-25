@@ -68,7 +68,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class EventListenerStatus implements Editable<EventListenerStatusBuilder> , KubernetesResource
+public class EventListenerStatus implements Editable<EventListenerStatusBuilder>, KubernetesResource
 {
 
     @JsonProperty("address")

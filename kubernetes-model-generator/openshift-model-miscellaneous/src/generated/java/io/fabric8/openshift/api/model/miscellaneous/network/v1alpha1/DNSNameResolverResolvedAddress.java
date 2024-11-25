@@ -61,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class DNSNameResolverResolvedAddress implements Editable<DNSNameResolverResolvedAddressBuilder> , KubernetesResource
+public class DNSNameResolverResolvedAddress implements Editable<DNSNameResolverResolvedAddressBuilder>, KubernetesResource
 {
 
     @JsonProperty("ip")

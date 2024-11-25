@@ -62,7 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class CloudEventDeliveryState implements Editable<CloudEventDeliveryStateBuilder> , KubernetesResource
+public class CloudEventDeliveryState implements Editable<CloudEventDeliveryStateBuilder>, KubernetesResource
 {
 
     @JsonProperty("condition")

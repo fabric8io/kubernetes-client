@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class BareMetalPlatform implements Editable<BareMetalPlatformBuilder> , KubernetesResource
+public class BareMetalPlatform implements Editable<BareMetalPlatformBuilder>, KubernetesResource
 {
 
     @JsonProperty("agentSelector")

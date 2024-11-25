@@ -63,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ExternalMetricSource implements Editable<ExternalMetricSourceBuilder> , KubernetesResource
+public class ExternalMetricSource implements Editable<ExternalMetricSourceBuilder>, KubernetesResource
 {
 
     @JsonProperty("metricName")

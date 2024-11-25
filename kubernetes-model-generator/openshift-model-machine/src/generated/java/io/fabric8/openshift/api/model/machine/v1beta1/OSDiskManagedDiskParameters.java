@@ -61,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class OSDiskManagedDiskParameters implements Editable<OSDiskManagedDiskParametersBuilder> , KubernetesResource
+public class OSDiskManagedDiskParameters implements Editable<OSDiskManagedDiskParametersBuilder>, KubernetesResource
 {
 
     @JsonProperty("diskEncryptionSet")

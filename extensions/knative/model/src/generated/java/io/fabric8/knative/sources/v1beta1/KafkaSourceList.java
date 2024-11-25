@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1beta1")
 @Group("sources.knative.dev")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class KafkaSourceList implements Editable<KafkaSourceListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.knative.sources.v1beta1.KafkaSource>
+public class KafkaSourceList implements Editable<KafkaSourceListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.knative.sources.v1beta1.KafkaSource>
 {
 
     /**

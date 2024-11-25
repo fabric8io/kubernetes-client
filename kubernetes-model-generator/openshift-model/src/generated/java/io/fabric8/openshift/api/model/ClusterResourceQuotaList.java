@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("quota.openshift.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ClusterResourceQuotaList implements Editable<ClusterResourceQuotaListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.ClusterResourceQuota>
+public class ClusterResourceQuotaList implements Editable<ClusterResourceQuotaListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.ClusterResourceQuota>
 {
 
     /**

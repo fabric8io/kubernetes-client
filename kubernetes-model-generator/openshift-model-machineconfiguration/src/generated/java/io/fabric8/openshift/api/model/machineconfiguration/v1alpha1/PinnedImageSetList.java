@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("machineconfiguration.openshift.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class PinnedImageSetList implements Editable<PinnedImageSetListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.machineconfiguration.v1alpha1.PinnedImageSet>
+public class PinnedImageSetList implements Editable<PinnedImageSetListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.machineconfiguration.v1alpha1.PinnedImageSet>
 {
 
     /**

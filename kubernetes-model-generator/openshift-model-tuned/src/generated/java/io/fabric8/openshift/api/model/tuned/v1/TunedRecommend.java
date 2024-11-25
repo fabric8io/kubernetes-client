@@ -65,7 +65,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class TunedRecommend implements Editable<TunedRecommendBuilder> , KubernetesResource
+public class TunedRecommend implements Editable<TunedRecommendBuilder>, KubernetesResource
 {
 
     @JsonProperty("machineConfigLabels")

@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("storage.k8s.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class VolumeAttributesClassList implements Editable<VolumeAttributesClassListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.storage.v1alpha1.VolumeAttributesClass>
+public class VolumeAttributesClassList implements Editable<VolumeAttributesClassListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.storage.v1alpha1.VolumeAttributesClass>
 {
 
     /**

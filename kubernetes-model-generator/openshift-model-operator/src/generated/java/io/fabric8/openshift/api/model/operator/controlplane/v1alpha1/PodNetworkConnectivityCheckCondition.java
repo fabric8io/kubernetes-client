@@ -63,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class PodNetworkConnectivityCheckCondition implements Editable<PodNetworkConnectivityCheckConditionBuilder> , KubernetesResource
+public class PodNetworkConnectivityCheckCondition implements Editable<PodNetworkConnectivityCheckConditionBuilder>, KubernetesResource
 {
 
     @JsonProperty("lastTransitionTime")

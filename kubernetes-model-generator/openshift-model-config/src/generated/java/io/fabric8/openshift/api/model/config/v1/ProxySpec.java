@@ -65,7 +65,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ProxySpec implements Editable<ProxySpecBuilder> , KubernetesResource
+public class ProxySpec implements Editable<ProxySpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("httpProxy")

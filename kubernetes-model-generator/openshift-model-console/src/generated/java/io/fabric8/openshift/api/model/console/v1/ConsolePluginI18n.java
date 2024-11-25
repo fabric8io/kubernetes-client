@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ConsolePluginI18n implements Editable<ConsolePluginI18nBuilder> , KubernetesResource
+public class ConsolePluginI18n implements Editable<ConsolePluginI18nBuilder>, KubernetesResource
 {
 
     @JsonProperty("loadType")

@@ -61,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class RuntimeClassSpec implements Editable<RuntimeClassSpecBuilder> , KubernetesResource
+public class RuntimeClassSpec implements Editable<RuntimeClassSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("overhead")

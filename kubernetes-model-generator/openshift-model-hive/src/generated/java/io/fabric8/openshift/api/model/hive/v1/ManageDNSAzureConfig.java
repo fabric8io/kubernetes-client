@@ -61,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ManageDNSAzureConfig implements Editable<ManageDNSAzureConfigBuilder> , KubernetesResource
+public class ManageDNSAzureConfig implements Editable<ManageDNSAzureConfigBuilder>, KubernetesResource
 {
 
     @JsonProperty("cloudName")

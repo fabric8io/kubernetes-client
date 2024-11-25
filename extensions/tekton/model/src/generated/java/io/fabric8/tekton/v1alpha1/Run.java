@@ -73,7 +73,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("tekton.dev")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class Run implements Editable<RunBuilder> , HasMetadata, Namespaced
+public class Run implements Editable<RunBuilder>, HasMetadata, Namespaced
 {
 
     /**

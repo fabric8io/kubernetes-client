@@ -65,7 +65,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class MatchResources implements Editable<MatchResourcesBuilder> , KubernetesResource
+public class MatchResources implements Editable<MatchResourcesBuilder>, KubernetesResource
 {
 
     @JsonProperty("excludeResourceRules")

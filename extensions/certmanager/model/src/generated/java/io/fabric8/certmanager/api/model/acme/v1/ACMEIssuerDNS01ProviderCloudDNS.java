@@ -62,7 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ACMEIssuerDNS01ProviderCloudDNS implements Editable<ACMEIssuerDNS01ProviderCloudDNSBuilder> , KubernetesResource
+public class ACMEIssuerDNS01ProviderCloudDNS implements Editable<ACMEIssuerDNS01ProviderCloudDNSBuilder>, KubernetesResource
 {
 
     @JsonProperty("hostedZoneName")

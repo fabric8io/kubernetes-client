@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("autoscaling.internal.knative.dev")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class MetricList implements Editable<MetricListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.knative.internal.autoscaling.v1alpha1.Metric>
+public class MetricList implements Editable<MetricListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.knative.internal.autoscaling.v1alpha1.Metric>
 {
 
     /**

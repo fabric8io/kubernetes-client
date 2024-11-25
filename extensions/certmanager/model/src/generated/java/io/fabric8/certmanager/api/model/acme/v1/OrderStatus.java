@@ -67,7 +67,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class OrderStatus implements Editable<OrderStatusBuilder> , KubernetesResource
+public class OrderStatus implements Editable<OrderStatusBuilder>, KubernetesResource
 {
 
     @JsonProperty("authorizations")

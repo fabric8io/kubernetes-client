@@ -63,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class SchedulerSpec implements Editable<SchedulerSpecBuilder> , KubernetesResource
+public class SchedulerSpec implements Editable<SchedulerSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("defaultNodeSelector")

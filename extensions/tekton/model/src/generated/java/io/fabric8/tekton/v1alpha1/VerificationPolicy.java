@@ -72,7 +72,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("tekton.dev")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class VerificationPolicy implements Editable<VerificationPolicyBuilder> , HasMetadata, Namespaced
+public class VerificationPolicy implements Editable<VerificationPolicyBuilder>, HasMetadata, Namespaced
 {
 
     /**

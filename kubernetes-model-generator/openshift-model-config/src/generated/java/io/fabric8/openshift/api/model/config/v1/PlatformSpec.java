@@ -73,7 +73,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class PlatformSpec implements Editable<PlatformSpecBuilder> , KubernetesResource
+public class PlatformSpec implements Editable<PlatformSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("alibabaCloud")

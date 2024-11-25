@@ -73,7 +73,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("acme.cert-manager.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class Challenge implements Editable<ChallengeBuilder> , HasMetadata, Namespaced
+public class Challenge implements Editable<ChallengeBuilder>, HasMetadata, Namespaced
 {
 
     /**

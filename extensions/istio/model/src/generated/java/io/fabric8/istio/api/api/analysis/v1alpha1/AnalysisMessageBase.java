@@ -61,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class AnalysisMessageBase implements Editable<AnalysisMessageBaseBuilder> , KubernetesResource
+public class AnalysisMessageBase implements Editable<AnalysisMessageBaseBuilder>, KubernetesResource
 {
 
     @JsonProperty("documentationUrl")

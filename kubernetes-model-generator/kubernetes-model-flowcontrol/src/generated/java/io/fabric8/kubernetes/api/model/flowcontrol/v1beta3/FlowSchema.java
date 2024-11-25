@@ -72,7 +72,7 @@ import lombok.experimental.Accessors;
 @Version("v1beta3")
 @Group("flowcontrol.apiserver.k8s.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class FlowSchema implements Editable<FlowSchemaBuilder> , HasMetadata
+public class FlowSchema implements Editable<FlowSchemaBuilder>, HasMetadata
 {
 
     /**

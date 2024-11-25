@@ -73,7 +73,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("autoscaling.internal.knative.dev")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class Metric implements Editable<MetricBuilder> , HasMetadata, Namespaced
+public class Metric implements Editable<MetricBuilder>, HasMetadata, Namespaced
 {
 
     /**

@@ -64,7 +64,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class TokenReviewStatus implements Editable<TokenReviewStatusBuilder> , KubernetesResource
+public class TokenReviewStatus implements Editable<TokenReviewStatusBuilder>, KubernetesResource
 {
 
     @JsonProperty("audiences")

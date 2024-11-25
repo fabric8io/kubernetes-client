@@ -60,7 +60,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class KubeClientConfig implements Editable<KubeClientConfigBuilder> , KubernetesResource
+public class KubeClientConfig implements Editable<KubeClientConfigBuilder>, KubernetesResource
 {
 
     @JsonProperty("connectionOverrides")

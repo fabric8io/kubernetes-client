@@ -58,7 +58,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ClusterOperatorSpec implements Editable<ClusterOperatorSpecBuilder> , KubernetesResource
+public class ClusterOperatorSpec implements Editable<ClusterOperatorSpecBuilder>, KubernetesResource
 {
 
     @JsonIgnore

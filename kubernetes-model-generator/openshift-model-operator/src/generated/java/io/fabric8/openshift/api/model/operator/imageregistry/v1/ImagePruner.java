@@ -72,7 +72,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("imageregistry.operator.openshift.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ImagePruner implements Editable<ImagePrunerBuilder> , HasMetadata
+public class ImagePruner implements Editable<ImagePrunerBuilder>, HasMetadata
 {
 
     /**

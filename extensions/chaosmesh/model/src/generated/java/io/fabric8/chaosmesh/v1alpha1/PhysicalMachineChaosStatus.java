@@ -62,7 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class PhysicalMachineChaosStatus implements Editable<PhysicalMachineChaosStatusBuilder> , KubernetesResource
+public class PhysicalMachineChaosStatus implements Editable<PhysicalMachineChaosStatusBuilder>, KubernetesResource
 {
 
     @JsonProperty("conditions")

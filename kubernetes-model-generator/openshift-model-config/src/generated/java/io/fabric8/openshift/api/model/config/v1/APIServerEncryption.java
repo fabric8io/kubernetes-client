@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class APIServerEncryption implements Editable<APIServerEncryptionBuilder> , KubernetesResource
+public class APIServerEncryption implements Editable<APIServerEncryptionBuilder>, KubernetesResource
 {
 
     @JsonProperty("type")

@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("monitoring.coreos.com")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class AlertmanagerConfigList implements Editable<AlertmanagerConfigListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.monitoring.v1alpha1.AlertmanagerConfig>
+public class AlertmanagerConfigList implements Editable<AlertmanagerConfigListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.monitoring.v1alpha1.AlertmanagerConfig>
 {
 
     /**

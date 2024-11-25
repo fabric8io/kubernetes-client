@@ -62,7 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class BrokerSpec implements Editable<BrokerSpecBuilder> , KubernetesResource
+public class BrokerSpec implements Editable<BrokerSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("config")

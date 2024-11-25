@@ -58,7 +58,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class TriggerBindingStatus implements Editable<TriggerBindingStatusBuilder> , KubernetesResource
+public class TriggerBindingStatus implements Editable<TriggerBindingStatusBuilder>, KubernetesResource
 {
 
     @JsonIgnore

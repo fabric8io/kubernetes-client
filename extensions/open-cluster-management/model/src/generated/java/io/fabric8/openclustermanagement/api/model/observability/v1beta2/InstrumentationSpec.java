@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class InstrumentationSpec implements Editable<InstrumentationSpecBuilder> , KubernetesResource
+public class InstrumentationSpec implements Editable<InstrumentationSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("enabled")

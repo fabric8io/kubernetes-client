@@ -72,7 +72,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("duck.knative.dev")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class WithPod implements Editable<WithPodBuilder> , HasMetadata, Namespaced
+public class WithPod implements Editable<WithPodBuilder>, HasMetadata, Namespaced
 {
 
     /**

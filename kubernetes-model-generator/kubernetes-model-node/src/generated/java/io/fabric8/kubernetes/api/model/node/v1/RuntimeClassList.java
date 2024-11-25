@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("node.k8s.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class RuntimeClassList implements Editable<RuntimeClassListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.node.v1.RuntimeClass>
+public class RuntimeClassList implements Editable<RuntimeClassListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.node.v1.RuntimeClass>
 {
 
     /**

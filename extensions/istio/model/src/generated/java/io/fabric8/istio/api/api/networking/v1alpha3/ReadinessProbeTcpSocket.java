@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ReadinessProbeTcpSocket implements IsReadinessProbeHealthCheckMethod, Editable<ReadinessProbeTcpSocketBuilder> , KubernetesResource
+public class ReadinessProbeTcpSocket implements IsReadinessProbeHealthCheckMethod, Editable<ReadinessProbeTcpSocketBuilder>, KubernetesResource
 {
 
     @JsonProperty("tcpSocket")

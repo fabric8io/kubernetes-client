@@ -72,7 +72,7 @@ import lombok.experimental.Accessors;
 @Version("v1beta1")
 @Group("helm.openshift.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class HelmChartRepository implements Editable<HelmChartRepositoryBuilder> , HasMetadata
+public class HelmChartRepository implements Editable<HelmChartRepositoryBuilder>, HasMetadata
 {
 
     /**

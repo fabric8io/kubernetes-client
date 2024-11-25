@@ -62,7 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ClusterClaimSelector implements Editable<ClusterClaimSelectorBuilder> , KubernetesResource
+public class ClusterClaimSelector implements Editable<ClusterClaimSelectorBuilder>, KubernetesResource
 {
 
     @JsonProperty("matchExpressions")

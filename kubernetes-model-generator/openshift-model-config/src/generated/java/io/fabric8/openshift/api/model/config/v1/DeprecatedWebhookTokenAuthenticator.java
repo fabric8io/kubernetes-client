@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class DeprecatedWebhookTokenAuthenticator implements Editable<DeprecatedWebhookTokenAuthenticatorBuilder> , KubernetesResource
+public class DeprecatedWebhookTokenAuthenticator implements Editable<DeprecatedWebhookTokenAuthenticatorBuilder>, KubernetesResource
 {
 
     @JsonProperty("kubeConfig")

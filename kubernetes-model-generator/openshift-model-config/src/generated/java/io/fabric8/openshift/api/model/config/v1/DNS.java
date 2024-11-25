@@ -72,7 +72,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("config.openshift.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class DNS implements Editable<DNSBuilder> , HasMetadata
+public class DNS implements Editable<DNSBuilder>, HasMetadata
 {
 
     /**

@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("autoscaling.internal.knative.dev")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class PodAutoscalerList implements Editable<PodAutoscalerListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.knative.internal.autoscaling.v1alpha1.PodAutoscaler>
+public class PodAutoscalerList implements Editable<PodAutoscalerListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.knative.internal.autoscaling.v1alpha1.PodAutoscaler>
 {
 
     /**

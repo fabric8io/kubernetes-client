@@ -68,7 +68,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class NetworkDelaySpec implements Editable<NetworkDelaySpecBuilder> , KubernetesResource
+public class NetworkDelaySpec implements Editable<NetworkDelaySpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("accept-tcp-flags")

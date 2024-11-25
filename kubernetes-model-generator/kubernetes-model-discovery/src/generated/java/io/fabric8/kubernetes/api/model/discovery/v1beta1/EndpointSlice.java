@@ -76,7 +76,7 @@ import lombok.experimental.Accessors;
 @Version("v1beta1")
 @Group("discovery.k8s.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class EndpointSlice implements Editable<EndpointSliceBuilder> , HasMetadata, Namespaced
+public class EndpointSlice implements Editable<EndpointSliceBuilder>, HasMetadata, Namespaced
 {
 
     @JsonProperty("addressType")

@@ -63,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class VSpherePlatformVCenterSpec implements Editable<VSpherePlatformVCenterSpecBuilder> , KubernetesResource
+public class VSpherePlatformVCenterSpec implements Editable<VSpherePlatformVCenterSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("datacenters")

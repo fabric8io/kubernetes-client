@@ -63,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ClusterRoleScopeRestriction implements Editable<ClusterRoleScopeRestrictionBuilder> , KubernetesResource
+public class ClusterRoleScopeRestriction implements Editable<ClusterRoleScopeRestrictionBuilder>, KubernetesResource
 {
 
     @JsonProperty("allowEscalation")

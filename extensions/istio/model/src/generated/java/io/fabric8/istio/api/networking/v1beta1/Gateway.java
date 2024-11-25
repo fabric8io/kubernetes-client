@@ -74,7 +74,7 @@ import lombok.experimental.Accessors;
 @Version("v1beta1")
 @Group("networking.istio.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class Gateway implements Editable<GatewayBuilder> , HasMetadata, Namespaced
+public class Gateway implements Editable<GatewayBuilder>, HasMetadata, Namespaced
 {
 
     /**

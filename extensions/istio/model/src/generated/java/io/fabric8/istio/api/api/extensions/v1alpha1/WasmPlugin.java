@@ -88,7 +88,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class WasmPlugin implements Editable<WasmPluginBuilder> , KubernetesResource, Namespaced
+public class WasmPlugin implements Editable<WasmPluginBuilder>, KubernetesResource, Namespaced
 {
 
     @JsonProperty("failStrategy")

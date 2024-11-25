@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class BuildStatusOutputTo implements Editable<BuildStatusOutputToBuilder> , KubernetesResource
+public class BuildStatusOutputTo implements Editable<BuildStatusOutputToBuilder>, KubernetesResource
 {
 
     @JsonProperty("imageDigest")

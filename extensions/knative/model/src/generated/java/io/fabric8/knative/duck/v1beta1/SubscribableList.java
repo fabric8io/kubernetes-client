@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1beta1")
 @Group("duck.knative.dev")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class SubscribableList implements Editable<SubscribableListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.knative.duck.v1beta1.Subscribable>
+public class SubscribableList implements Editable<SubscribableListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.knative.duck.v1beta1.Subscribable>
 {
 
     /**

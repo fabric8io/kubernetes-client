@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("caching.internal.knative.dev")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ImageList implements Editable<ImageListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.knative.internal.caching.v1alpha1.Image>
+public class ImageList implements Editable<ImageListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.knative.internal.caching.v1alpha1.Image>
 {
 
     /**

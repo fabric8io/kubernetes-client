@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class EmbedStatusCheck implements Editable<EmbedStatusCheckBuilder> , KubernetesResource
+public class EmbedStatusCheck implements Editable<EmbedStatusCheckBuilder>, KubernetesResource
 {
 
     @JsonProperty("http")

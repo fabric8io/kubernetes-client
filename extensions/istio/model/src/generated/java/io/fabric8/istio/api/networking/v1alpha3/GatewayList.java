@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha3")
 @Group("networking.istio.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class GatewayList implements Editable<GatewayListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.istio.api.networking.v1alpha3.Gateway>
+public class GatewayList implements Editable<GatewayListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.istio.api.networking.v1alpha3.Gateway>
 {
 
     /**

@@ -62,7 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ExternalNextHops implements Editable<ExternalNextHopsBuilder> , KubernetesResource
+public class ExternalNextHops implements Editable<ExternalNextHopsBuilder>, KubernetesResource
 {
 
     @JsonProperty("dynamic")

@@ -63,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class HeadersHeaderOperations implements Editable<HeadersHeaderOperationsBuilder> , KubernetesResource
+public class HeadersHeaderOperations implements Editable<HeadersHeaderOperationsBuilder>, KubernetesResource
 {
 
     @JsonProperty("add")

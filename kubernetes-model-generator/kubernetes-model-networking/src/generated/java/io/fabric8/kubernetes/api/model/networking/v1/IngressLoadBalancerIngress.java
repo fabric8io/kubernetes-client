@@ -63,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class IngressLoadBalancerIngress implements Editable<IngressLoadBalancerIngressBuilder> , KubernetesResource
+public class IngressLoadBalancerIngress implements Editable<IngressLoadBalancerIngressBuilder>, KubernetesResource
 {
 
     @JsonProperty("hostname")

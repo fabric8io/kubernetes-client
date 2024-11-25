@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class AlertmanagerEndpoints implements Editable<AlertmanagerEndpointsBuilder> , KubernetesResource
+public class AlertmanagerEndpoints implements Editable<AlertmanagerEndpointsBuilder>, KubernetesResource
 {
 
     @JsonProperty("alertRelabelings")

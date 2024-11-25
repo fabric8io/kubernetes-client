@@ -66,7 +66,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class EventTypeSpec implements Editable<EventTypeSpecBuilder> , KubernetesResource
+public class EventTypeSpec implements Editable<EventTypeSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("broker")

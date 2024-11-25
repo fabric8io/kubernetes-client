@@ -61,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class HTTPRouteStatus implements Editable<HTTPRouteStatusBuilder> , KubernetesResource
+public class HTTPRouteStatus implements Editable<HTTPRouteStatusBuilder>, KubernetesResource
 {
 
     @JsonProperty("parents")

@@ -67,7 +67,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ACMEIssuerDNS01ProviderAzureDNS implements Editable<ACMEIssuerDNS01ProviderAzureDNSBuilder> , KubernetesResource
+public class ACMEIssuerDNS01ProviderAzureDNS implements Editable<ACMEIssuerDNS01ProviderAzureDNSBuilder>, KubernetesResource
 {
 
     @JsonProperty("clientID")

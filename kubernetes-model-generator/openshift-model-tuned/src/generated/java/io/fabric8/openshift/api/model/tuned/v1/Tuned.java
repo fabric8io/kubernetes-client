@@ -73,7 +73,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("tuned.openshift.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class Tuned implements Editable<TunedBuilder> , HasMetadata, Namespaced
+public class Tuned implements Editable<TunedBuilder>, HasMetadata, Namespaced
 {
 
     /**

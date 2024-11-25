@@ -61,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class PrivateLinkAccessStatus implements Editable<PrivateLinkAccessStatusBuilder> , KubernetesResource
+public class PrivateLinkAccessStatus implements Editable<PrivateLinkAccessStatusBuilder>, KubernetesResource
 {
 
     @JsonProperty("hostedZoneID")

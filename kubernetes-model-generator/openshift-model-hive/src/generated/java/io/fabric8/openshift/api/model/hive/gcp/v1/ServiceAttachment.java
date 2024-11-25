@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ServiceAttachment implements Editable<ServiceAttachmentBuilder> , KubernetesResource
+public class ServiceAttachment implements Editable<ServiceAttachmentBuilder>, KubernetesResource
 {
 
     @JsonProperty("subnet")

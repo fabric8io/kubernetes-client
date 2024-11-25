@@ -73,7 +73,7 @@ import lombok.experimental.Accessors;
 @Version("v1beta1")
 @Group("sources.knative.dev")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class KafkaSource implements Editable<KafkaSourceBuilder> , HasMetadata, Namespaced
+public class KafkaSource implements Editable<KafkaSourceBuilder>, HasMetadata, Namespaced
 {
 
     /**

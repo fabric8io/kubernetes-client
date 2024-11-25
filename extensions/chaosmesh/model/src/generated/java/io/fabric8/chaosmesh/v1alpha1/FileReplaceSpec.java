@@ -62,7 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class FileReplaceSpec implements Editable<FileReplaceSpecBuilder> , KubernetesResource
+public class FileReplaceSpec implements Editable<FileReplaceSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("dest-string")

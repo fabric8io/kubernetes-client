@@ -62,7 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class PipelineResult implements Editable<PipelineResultBuilder> , KubernetesResource
+public class PipelineResult implements Editable<PipelineResultBuilder>, KubernetesResource
 {
 
     @JsonProperty("description")

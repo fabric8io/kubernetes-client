@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("apps")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class DeploymentList implements Editable<DeploymentListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.apps.Deployment>
+public class DeploymentList implements Editable<DeploymentListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.apps.Deployment>
 {
 
     /**

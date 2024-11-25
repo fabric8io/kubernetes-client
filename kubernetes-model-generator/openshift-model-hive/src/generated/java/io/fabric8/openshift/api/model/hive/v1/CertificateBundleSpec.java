@@ -61,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class CertificateBundleSpec implements Editable<CertificateBundleSpecBuilder> , KubernetesResource
+public class CertificateBundleSpec implements Editable<CertificateBundleSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("certificateSecretRef")

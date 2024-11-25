@@ -64,7 +64,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class FlowSchemaSpec implements Editable<FlowSchemaSpecBuilder> , KubernetesResource
+public class FlowSchemaSpec implements Editable<FlowSchemaSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("distinguisherMethod")

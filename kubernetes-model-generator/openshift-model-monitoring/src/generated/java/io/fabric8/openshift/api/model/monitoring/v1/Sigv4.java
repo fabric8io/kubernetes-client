@@ -64,7 +64,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class Sigv4 implements Editable<Sigv4Builder> , KubernetesResource
+public class Sigv4 implements Editable<Sigv4Builder>, KubernetesResource
 {
 
     @JsonProperty("accessKey")

@@ -72,7 +72,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("cluster.open-cluster-management.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class AddOnPlacementScore implements Editable<AddOnPlacementScoreBuilder> , HasMetadata, Namespaced
+public class AddOnPlacementScore implements Editable<AddOnPlacementScoreBuilder>, HasMetadata, Namespaced
 {
 
     /**

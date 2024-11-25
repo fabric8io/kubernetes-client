@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("eventing.knative.dev")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class TriggerList implements Editable<TriggerListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.knative.eventing.v1.Trigger>
+public class TriggerList implements Editable<TriggerListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.knative.eventing.v1.Trigger>
 {
 
     /**

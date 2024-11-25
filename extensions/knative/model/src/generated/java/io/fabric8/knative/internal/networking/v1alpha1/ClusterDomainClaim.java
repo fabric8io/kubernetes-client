@@ -71,7 +71,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("networking.internal.knative.dev")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ClusterDomainClaim implements Editable<ClusterDomainClaimBuilder> , HasMetadata
+public class ClusterDomainClaim implements Editable<ClusterDomainClaimBuilder>, HasMetadata
 {
 
     /**

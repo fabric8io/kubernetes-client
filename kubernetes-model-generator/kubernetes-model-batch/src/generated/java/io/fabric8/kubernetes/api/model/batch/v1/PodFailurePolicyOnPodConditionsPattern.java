@@ -60,7 +60,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class PodFailurePolicyOnPodConditionsPattern implements Editable<PodFailurePolicyOnPodConditionsPatternBuilder> , KubernetesResource
+public class PodFailurePolicyOnPodConditionsPattern implements Editable<PodFailurePolicyOnPodConditionsPatternBuilder>, KubernetesResource
 {
 
     @JsonProperty("status")

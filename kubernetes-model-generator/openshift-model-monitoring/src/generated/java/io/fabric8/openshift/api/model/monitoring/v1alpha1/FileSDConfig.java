@@ -62,7 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class FileSDConfig implements Editable<FileSDConfigBuilder> , KubernetesResource
+public class FileSDConfig implements Editable<FileSDConfigBuilder>, KubernetesResource
 {
 
     @JsonProperty("files")

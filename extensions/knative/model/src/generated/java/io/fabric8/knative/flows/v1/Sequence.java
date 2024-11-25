@@ -73,7 +73,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("flows.knative.dev")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class Sequence implements Editable<SequenceBuilder> , HasMetadata, Namespaced
+public class Sequence implements Editable<SequenceBuilder>, HasMetadata, Namespaced
 {
 
     /**

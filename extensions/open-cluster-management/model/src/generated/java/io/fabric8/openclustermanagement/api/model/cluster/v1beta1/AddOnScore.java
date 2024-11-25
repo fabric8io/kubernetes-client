@@ -60,7 +60,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class AddOnScore implements Editable<AddOnScoreBuilder> , KubernetesResource
+public class AddOnScore implements Editable<AddOnScoreBuilder>, KubernetesResource
 {
 
     @JsonProperty("resourceName")

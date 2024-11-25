@@ -68,7 +68,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class KubeControllerManagerStatus implements Editable<KubeControllerManagerStatusBuilder> , KubernetesResource
+public class KubeControllerManagerStatus implements Editable<KubeControllerManagerStatusBuilder>, KubernetesResource
 {
 
     @JsonProperty("conditions")

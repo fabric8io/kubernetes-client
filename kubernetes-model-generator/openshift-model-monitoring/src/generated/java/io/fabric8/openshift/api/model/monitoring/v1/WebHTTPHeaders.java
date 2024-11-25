@@ -63,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class WebHTTPHeaders implements Editable<WebHTTPHeadersBuilder> , KubernetesResource
+public class WebHTTPHeaders implements Editable<WebHTTPHeadersBuilder>, KubernetesResource
 {
 
     @JsonProperty("contentSecurityPolicy")

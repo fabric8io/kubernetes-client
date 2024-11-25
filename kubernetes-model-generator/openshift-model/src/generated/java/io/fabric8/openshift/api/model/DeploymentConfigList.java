@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("apps.openshift.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class DeploymentConfigList implements Editable<DeploymentConfigListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.DeploymentConfig>
+public class DeploymentConfigList implements Editable<DeploymentConfigListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.DeploymentConfig>
 {
 
     /**

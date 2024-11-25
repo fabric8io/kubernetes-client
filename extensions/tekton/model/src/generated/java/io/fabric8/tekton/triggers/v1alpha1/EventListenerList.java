@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("triggers.tekton.dev")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class EventListenerList implements Editable<EventListenerListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.tekton.triggers.v1alpha1.EventListener>
+public class EventListenerList implements Editable<EventListenerListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.tekton.triggers.v1alpha1.EventListener>
 {
 
     /**

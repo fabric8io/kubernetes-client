@@ -69,7 +69,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class DockerBuildStrategy implements Editable<DockerBuildStrategyBuilder> , KubernetesResource
+public class DockerBuildStrategy implements Editable<DockerBuildStrategyBuilder>, KubernetesResource
 {
 
     @JsonProperty("buildArgs")

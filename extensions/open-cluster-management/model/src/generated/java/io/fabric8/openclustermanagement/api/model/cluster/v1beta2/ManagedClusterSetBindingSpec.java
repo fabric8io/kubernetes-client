@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ManagedClusterSetBindingSpec implements Editable<ManagedClusterSetBindingSpecBuilder> , KubernetesResource
+public class ManagedClusterSetBindingSpec implements Editable<ManagedClusterSetBindingSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("clusterSet")

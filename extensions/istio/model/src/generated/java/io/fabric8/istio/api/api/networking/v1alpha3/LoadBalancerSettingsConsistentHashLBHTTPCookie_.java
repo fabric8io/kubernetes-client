@@ -61,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class LoadBalancerSettingsConsistentHashLBHTTPCookie_ implements Editable<LoadBalancerSettingsConsistentHashLBHTTPCookie_Builder> , KubernetesResource
+public class LoadBalancerSettingsConsistentHashLBHTTPCookie_ implements Editable<LoadBalancerSettingsConsistentHashLBHTTPCookie_Builder>, KubernetesResource
 {
 
     @JsonProperty("name")

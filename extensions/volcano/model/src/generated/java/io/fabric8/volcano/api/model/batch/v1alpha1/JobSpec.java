@@ -73,7 +73,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class JobSpec implements Editable<JobSpecBuilder> , KubernetesResource
+public class JobSpec implements Editable<JobSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("maxRetry")

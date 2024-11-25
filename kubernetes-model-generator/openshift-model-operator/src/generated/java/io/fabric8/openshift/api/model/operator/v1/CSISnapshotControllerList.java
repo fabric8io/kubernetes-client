@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("operator.openshift.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class CSISnapshotControllerList implements Editable<CSISnapshotControllerListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.operator.v1.CSISnapshotController>
+public class CSISnapshotControllerList implements Editable<CSISnapshotControllerListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.operator.v1.CSISnapshotController>
 {
 
     /**

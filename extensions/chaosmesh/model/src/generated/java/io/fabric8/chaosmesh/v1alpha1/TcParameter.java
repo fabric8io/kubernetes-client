@@ -64,7 +64,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class TcParameter implements Editable<TcParameterBuilder> , KubernetesResource
+public class TcParameter implements Editable<TcParameterBuilder>, KubernetesResource
 {
 
     @JsonProperty("bandwidth")

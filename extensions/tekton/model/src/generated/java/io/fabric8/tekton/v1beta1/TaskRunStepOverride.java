@@ -60,7 +60,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class TaskRunStepOverride implements Editable<TaskRunStepOverrideBuilder> , KubernetesResource
+public class TaskRunStepOverride implements Editable<TaskRunStepOverrideBuilder>, KubernetesResource
 {
 
     @JsonProperty("name")

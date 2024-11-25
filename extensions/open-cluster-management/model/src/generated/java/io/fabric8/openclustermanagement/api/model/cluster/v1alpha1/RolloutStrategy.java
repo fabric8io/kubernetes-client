@@ -62,7 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class RolloutStrategy implements Editable<RolloutStrategyBuilder> , KubernetesResource
+public class RolloutStrategy implements Editable<RolloutStrategyBuilder>, KubernetesResource
 {
 
     @JsonProperty("all")

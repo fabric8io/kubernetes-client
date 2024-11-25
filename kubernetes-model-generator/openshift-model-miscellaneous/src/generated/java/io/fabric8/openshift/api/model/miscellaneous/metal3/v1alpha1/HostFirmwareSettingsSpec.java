@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class HostFirmwareSettingsSpec implements Editable<HostFirmwareSettingsSpecBuilder> , KubernetesResource
+public class HostFirmwareSettingsSpec implements Editable<HostFirmwareSettingsSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("settings")

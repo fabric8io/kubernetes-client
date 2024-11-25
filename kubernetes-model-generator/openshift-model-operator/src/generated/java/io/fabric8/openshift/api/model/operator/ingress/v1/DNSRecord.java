@@ -73,7 +73,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("ingress.operator.openshift.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class DNSRecord implements Editable<DNSRecordBuilder> , HasMetadata, Namespaced
+public class DNSRecord implements Editable<DNSRecordBuilder>, HasMetadata, Namespaced
 {
 
     /**

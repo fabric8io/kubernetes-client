@@ -64,7 +64,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(RawExtension.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class Resources implements Editable<ResourcesBuilder> , KubernetesResource
+public class Resources implements Editable<ResourcesBuilder>, KubernetesResource
 {
 
     @JsonProperty("customResource")

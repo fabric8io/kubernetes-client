@@ -64,7 +64,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class RouteParentStatus implements Editable<RouteParentStatusBuilder> , KubernetesResource
+public class RouteParentStatus implements Editable<RouteParentStatusBuilder>, KubernetesResource
 {
 
     @JsonProperty("conditions")

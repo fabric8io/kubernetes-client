@@ -62,7 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class OLMConfigStatus implements Editable<OLMConfigStatusBuilder> , KubernetesResource
+public class OLMConfigStatus implements Editable<OLMConfigStatusBuilder>, KubernetesResource
 {
 
     @JsonProperty("conditions")

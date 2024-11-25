@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1beta1")
 @Group("networking.istio.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class SidecarList implements Editable<SidecarListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.istio.api.networking.v1beta1.Sidecar>
+public class SidecarList implements Editable<SidecarListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.istio.api.networking.v1beta1.Sidecar>
 {
 
     /**

@@ -63,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class CloudPrivateIPConfigStatus implements Editable<CloudPrivateIPConfigStatusBuilder> , KubernetesResource
+public class CloudPrivateIPConfigStatus implements Editable<CloudPrivateIPConfigStatusBuilder>, KubernetesResource
 {
 
     @JsonProperty("conditions")

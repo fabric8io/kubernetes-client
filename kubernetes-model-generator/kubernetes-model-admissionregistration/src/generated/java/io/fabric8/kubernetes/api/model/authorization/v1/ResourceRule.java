@@ -64,7 +64,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ResourceRule implements Editable<ResourceRuleBuilder> , KubernetesResource
+public class ResourceRule implements Editable<ResourceRuleBuilder>, KubernetesResource
 {
 
     @JsonProperty("apiGroups")

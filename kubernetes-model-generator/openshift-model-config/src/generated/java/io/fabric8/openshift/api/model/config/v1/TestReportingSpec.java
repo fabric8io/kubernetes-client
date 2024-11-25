@@ -61,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class TestReportingSpec implements Editable<TestReportingSpecBuilder> , KubernetesResource
+public class TestReportingSpec implements Editable<TestReportingSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("testsForFeatureGates")

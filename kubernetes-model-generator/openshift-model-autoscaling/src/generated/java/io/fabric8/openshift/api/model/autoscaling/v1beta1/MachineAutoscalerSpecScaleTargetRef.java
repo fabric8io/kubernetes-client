@@ -61,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class MachineAutoscalerSpecScaleTargetRef implements Editable<MachineAutoscalerSpecScaleTargetRefBuilder> , KubernetesResource
+public class MachineAutoscalerSpecScaleTargetRef implements Editable<MachineAutoscalerSpecScaleTargetRefBuilder>, KubernetesResource
 {
 
     @JsonProperty("apiVersion")

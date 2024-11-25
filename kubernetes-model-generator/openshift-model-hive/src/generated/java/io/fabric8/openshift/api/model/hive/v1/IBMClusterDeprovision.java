@@ -61,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class IBMClusterDeprovision implements Editable<IBMClusterDeprovisionBuilder> , KubernetesResource
+public class IBMClusterDeprovision implements Editable<IBMClusterDeprovisionBuilder>, KubernetesResource
 {
 
     @JsonProperty("baseDomain")

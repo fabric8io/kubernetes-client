@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("hive.openshift.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ClusterProvisionList implements Editable<ClusterProvisionListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.hive.v1.ClusterProvision>
+public class ClusterProvisionList implements Editable<ClusterProvisionListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.hive.v1.ClusterProvision>
 {
 
     /**

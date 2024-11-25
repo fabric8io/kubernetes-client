@@ -64,7 +64,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class RepositoryImportStatus implements Editable<RepositoryImportStatusBuilder> , KubernetesResource
+public class RepositoryImportStatus implements Editable<RepositoryImportStatusBuilder>, KubernetesResource
 {
 
     @JsonProperty("additionalTags")

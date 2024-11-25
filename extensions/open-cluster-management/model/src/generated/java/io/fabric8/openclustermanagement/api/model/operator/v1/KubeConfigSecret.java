@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class KubeConfigSecret implements Editable<KubeConfigSecretBuilder> , KubernetesResource
+public class KubeConfigSecret implements Editable<KubeConfigSecretBuilder>, KubernetesResource
 {
 
     @JsonProperty("name")

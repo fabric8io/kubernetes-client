@@ -62,7 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class EnvoyFilterEnvoyConfigObjectMatch implements Editable<EnvoyFilterEnvoyConfigObjectMatchBuilder> , KubernetesResource
+public class EnvoyFilterEnvoyConfigObjectMatch implements Editable<EnvoyFilterEnvoyConfigObjectMatchBuilder>, KubernetesResource
 {
 
     @JsonProperty("ObjectTypes")

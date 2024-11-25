@@ -65,7 +65,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class HostFirmwareComponentsStatus implements Editable<HostFirmwareComponentsStatusBuilder> , KubernetesResource
+public class HostFirmwareComponentsStatus implements Editable<HostFirmwareComponentsStatusBuilder>, KubernetesResource
 {
 
     @JsonProperty("components")

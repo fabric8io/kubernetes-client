@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("metal3.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class HardwareDataList implements Editable<HardwareDataListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1.HardwareData>
+public class HardwareDataList implements Editable<HardwareDataListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1.HardwareData>
 {
 
     /**

@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("machineconfiguration.openshift.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ContainerRuntimeConfigList implements Editable<ContainerRuntimeConfigListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.machineconfiguration.v1.ContainerRuntimeConfig>
+public class ContainerRuntimeConfigList implements Editable<ContainerRuntimeConfigListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.machineconfiguration.v1.ContainerRuntimeConfig>
 {
 
     /**

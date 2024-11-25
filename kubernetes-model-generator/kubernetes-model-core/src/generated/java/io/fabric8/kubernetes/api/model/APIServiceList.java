@@ -44,7 +44,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("apiregistration.k8s.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class APIServiceList implements Editable<APIServiceListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.APIService>
+public class APIServiceList implements Editable<APIServiceListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.APIService>
 {
 
     /**

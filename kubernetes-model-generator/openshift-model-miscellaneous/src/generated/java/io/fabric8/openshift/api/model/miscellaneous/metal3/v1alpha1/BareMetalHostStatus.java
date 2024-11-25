@@ -70,7 +70,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class BareMetalHostStatus implements Editable<BareMetalHostStatusBuilder> , KubernetesResource
+public class BareMetalHostStatus implements Editable<BareMetalHostStatusBuilder>, KubernetesResource
 {
 
     @JsonProperty("errorCount")

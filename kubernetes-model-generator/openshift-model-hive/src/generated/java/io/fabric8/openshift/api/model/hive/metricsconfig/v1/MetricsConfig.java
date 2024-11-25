@@ -62,7 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class MetricsConfig implements Editable<MetricsConfigBuilder> , KubernetesResource
+public class MetricsConfig implements Editable<MetricsConfigBuilder>, KubernetesResource
 {
 
     @JsonProperty("additionalClusterDeploymentLabels")

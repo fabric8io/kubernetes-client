@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("machine.openshift.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class NutanixMachineProviderStatus implements Editable<NutanixMachineProviderStatusBuilder> , KubernetesResource, Namespaced
+public class NutanixMachineProviderStatus implements Editable<NutanixMachineProviderStatusBuilder>, KubernetesResource, Namespaced
 {
 
     /**

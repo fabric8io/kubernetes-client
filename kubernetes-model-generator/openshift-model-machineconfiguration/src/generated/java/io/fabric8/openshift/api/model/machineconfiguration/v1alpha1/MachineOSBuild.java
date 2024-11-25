@@ -72,7 +72,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("machineconfiguration.openshift.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class MachineOSBuild implements Editable<MachineOSBuildBuilder> , HasMetadata
+public class MachineOSBuild implements Editable<MachineOSBuildBuilder>, HasMetadata
 {
 
     /**

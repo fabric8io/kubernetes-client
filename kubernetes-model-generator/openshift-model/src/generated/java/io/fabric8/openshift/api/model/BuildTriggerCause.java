@@ -64,7 +64,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class BuildTriggerCause implements Editable<BuildTriggerCauseBuilder> , KubernetesResource
+public class BuildTriggerCause implements Editable<BuildTriggerCauseBuilder>, KubernetesResource
 {
 
     @JsonProperty("bitbucketWebHook")

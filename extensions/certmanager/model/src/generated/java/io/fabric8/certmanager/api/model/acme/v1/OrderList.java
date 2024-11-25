@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("acme.cert-manager.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class OrderList implements Editable<OrderListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.certmanager.api.model.acme.v1.Order>
+public class OrderList implements Editable<OrderListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.certmanager.api.model.acme.v1.Order>
 {
 
     /**

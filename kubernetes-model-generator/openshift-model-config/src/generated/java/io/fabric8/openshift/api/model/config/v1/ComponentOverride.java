@@ -63,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ComponentOverride implements Editable<ComponentOverrideBuilder> , KubernetesResource
+public class ComponentOverride implements Editable<ComponentOverrideBuilder>, KubernetesResource
 {
 
     @JsonProperty("group")

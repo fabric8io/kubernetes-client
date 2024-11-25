@@ -61,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class BuildSpec implements Editable<BuildSpecBuilder> , KubernetesResource
+public class BuildSpec implements Editable<BuildSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("additionalTrustedCA")

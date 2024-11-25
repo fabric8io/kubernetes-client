@@ -60,7 +60,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class FirmwareUpdate implements Editable<FirmwareUpdateBuilder> , KubernetesResource
+public class FirmwareUpdate implements Editable<FirmwareUpdateBuilder>, KubernetesResource
 {
 
     @JsonProperty("component")

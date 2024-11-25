@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class CapabilityVisibility implements Editable<CapabilityVisibilityBuilder> , KubernetesResource
+public class CapabilityVisibility implements Editable<CapabilityVisibilityBuilder>, KubernetesResource
 {
 
     @JsonProperty("state")

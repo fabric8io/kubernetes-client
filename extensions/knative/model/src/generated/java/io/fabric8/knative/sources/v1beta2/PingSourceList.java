@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1beta2")
 @Group("sources.knative.dev")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class PingSourceList implements Editable<PingSourceListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.knative.sources.v1beta2.PingSource>
+public class PingSourceList implements Editable<PingSourceListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.knative.sources.v1beta2.PingSource>
 {
 
     /**

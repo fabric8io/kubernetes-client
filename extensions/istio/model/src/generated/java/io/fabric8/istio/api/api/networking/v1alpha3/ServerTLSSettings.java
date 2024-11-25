@@ -73,7 +73,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ServerTLSSettings implements Editable<ServerTLSSettingsBuilder> , KubernetesResource
+public class ServerTLSSettings implements Editable<ServerTLSSettingsBuilder>, KubernetesResource
 {
 
     @JsonProperty("caCertificates")

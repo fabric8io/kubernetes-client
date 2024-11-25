@@ -62,7 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class UncountedTerminatedPods implements Editable<UncountedTerminatedPodsBuilder> , KubernetesResource
+public class UncountedTerminatedPods implements Editable<UncountedTerminatedPodsBuilder>, KubernetesResource
 {
 
     @JsonProperty("failed")

@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class BinaryBuildSource implements Editable<BinaryBuildSourceBuilder> , KubernetesResource
+public class BinaryBuildSource implements Editable<BinaryBuildSourceBuilder>, KubernetesResource
 {
 
     @JsonProperty("asFile")

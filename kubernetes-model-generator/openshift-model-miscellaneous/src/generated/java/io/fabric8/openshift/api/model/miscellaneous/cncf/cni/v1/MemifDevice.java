@@ -61,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class MemifDevice implements Editable<MemifDeviceBuilder> , KubernetesResource
+public class MemifDevice implements Editable<MemifDeviceBuilder>, KubernetesResource
 {
 
     @JsonProperty("mode")

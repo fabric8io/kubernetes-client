@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class RoleBinding implements Editable<RoleBindingBuilder> , KubernetesResource
+public class RoleBinding implements Editable<RoleBindingBuilder>, KubernetesResource
 {
 
     @JsonProperty("role")

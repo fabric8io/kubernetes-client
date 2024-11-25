@@ -73,7 +73,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("config.openshift.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class TestReporting implements Editable<TestReportingBuilder> , HasMetadata, Namespaced
+public class TestReporting implements Editable<TestReportingBuilder>, HasMetadata, Namespaced
 {
 
     /**

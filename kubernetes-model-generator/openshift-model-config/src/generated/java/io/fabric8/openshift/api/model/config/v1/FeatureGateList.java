@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("config.openshift.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class FeatureGateList implements Editable<FeatureGateListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.config.v1.FeatureGate>
+public class FeatureGateList implements Editable<FeatureGateListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.config.v1.FeatureGate>
 {
 
     /**

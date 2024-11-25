@@ -62,7 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class NodeDisruptionPolicyStatusFile implements Editable<NodeDisruptionPolicyStatusFileBuilder> , KubernetesResource
+public class NodeDisruptionPolicyStatusFile implements Editable<NodeDisruptionPolicyStatusFileBuilder>, KubernetesResource
 {
 
     @JsonProperty("actions")

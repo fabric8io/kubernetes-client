@@ -73,7 +73,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("operators.coreos.com")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class OperatorGroup implements Editable<OperatorGroupBuilder> , HasMetadata, Namespaced
+public class OperatorGroup implements Editable<OperatorGroupBuilder>, HasMetadata, Namespaced
 {
 
     /**

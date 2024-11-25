@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1beta1")
 @Group("cluster.open-cluster-management.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class PlacementDecisionList implements Editable<PlacementDecisionListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openclustermanagement.api.model.cluster.v1beta1.PlacementDecision>
+public class PlacementDecisionList implements Editable<PlacementDecisionListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.openclustermanagement.api.model.cluster.v1beta1.PlacementDecision>
 {
 
     /**

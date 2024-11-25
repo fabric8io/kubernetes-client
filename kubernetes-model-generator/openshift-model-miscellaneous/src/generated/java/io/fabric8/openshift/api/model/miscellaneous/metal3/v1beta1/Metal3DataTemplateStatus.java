@@ -60,7 +60,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class Metal3DataTemplateStatus implements Editable<Metal3DataTemplateStatusBuilder> , KubernetesResource
+public class Metal3DataTemplateStatus implements Editable<Metal3DataTemplateStatusBuilder>, KubernetesResource
 {
 
     @JsonProperty("indexes")

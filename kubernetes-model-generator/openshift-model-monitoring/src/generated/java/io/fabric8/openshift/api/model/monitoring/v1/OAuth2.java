@@ -71,7 +71,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class OAuth2 implements Editable<OAuth2Builder> , KubernetesResource
+public class OAuth2 implements Editable<OAuth2Builder>, KubernetesResource
 {
 
     @JsonProperty("clientId")

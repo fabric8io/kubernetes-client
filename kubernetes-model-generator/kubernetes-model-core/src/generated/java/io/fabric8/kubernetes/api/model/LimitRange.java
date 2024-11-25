@@ -42,7 +42,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class LimitRange implements Editable<LimitRangeBuilder> , HasMetadata, Namespaced
+public class LimitRange implements Editable<LimitRangeBuilder>, HasMetadata, Namespaced
 {
 
     /**

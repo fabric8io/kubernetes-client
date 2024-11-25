@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1beta1")
 @Group("autoscaling.openshift.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class MachineAutoscalerList implements Editable<MachineAutoscalerListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.autoscaling.v1beta1.MachineAutoscaler>
+public class MachineAutoscalerList implements Editable<MachineAutoscalerListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.autoscaling.v1beta1.MachineAutoscaler>
 {
 
     /**

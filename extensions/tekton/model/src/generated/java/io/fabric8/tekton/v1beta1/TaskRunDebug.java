@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class TaskRunDebug implements Editable<TaskRunDebugBuilder> , KubernetesResource
+public class TaskRunDebug implements Editable<TaskRunDebugBuilder>, KubernetesResource
 {
 
     @JsonProperty("breakpoints")

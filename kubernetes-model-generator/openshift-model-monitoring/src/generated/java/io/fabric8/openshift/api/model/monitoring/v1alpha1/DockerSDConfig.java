@@ -81,7 +81,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class DockerSDConfig implements Editable<DockerSDConfigBuilder> , KubernetesResource
+public class DockerSDConfig implements Editable<DockerSDConfigBuilder>, KubernetesResource
 {
 
     @JsonProperty("authorization")

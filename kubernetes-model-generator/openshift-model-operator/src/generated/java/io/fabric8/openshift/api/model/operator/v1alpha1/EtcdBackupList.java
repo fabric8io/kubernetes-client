@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("operator.openshift.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class EtcdBackupList implements Editable<EtcdBackupListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.operator.v1alpha1.EtcdBackup>
+public class EtcdBackupList implements Editable<EtcdBackupListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.operator.v1alpha1.EtcdBackup>
 {
 
     /**

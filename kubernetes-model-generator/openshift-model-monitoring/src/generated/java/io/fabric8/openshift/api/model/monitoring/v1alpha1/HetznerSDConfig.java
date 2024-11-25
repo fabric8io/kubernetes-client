@@ -77,7 +77,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class HetznerSDConfig implements Editable<HetznerSDConfigBuilder> , KubernetesResource
+public class HetznerSDConfig implements Editable<HetznerSDConfigBuilder>, KubernetesResource
 {
 
     @JsonProperty("authorization")

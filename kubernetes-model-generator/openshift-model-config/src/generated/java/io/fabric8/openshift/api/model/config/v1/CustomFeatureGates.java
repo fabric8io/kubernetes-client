@@ -62,7 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class CustomFeatureGates implements Editable<CustomFeatureGatesBuilder> , KubernetesResource
+public class CustomFeatureGates implements Editable<CustomFeatureGatesBuilder>, KubernetesResource
 {
 
     @JsonProperty("disabled")

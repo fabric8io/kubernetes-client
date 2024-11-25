@@ -61,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class Metal3RemediationStatus implements Editable<Metal3RemediationStatusBuilder> , KubernetesResource
+public class Metal3RemediationStatus implements Editable<Metal3RemediationStatusBuilder>, KubernetesResource
 {
 
     @JsonProperty("lastRemediated")

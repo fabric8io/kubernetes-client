@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("discovery.open-cluster-management.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class DiscoveryConfigList implements Editable<DiscoveryConfigListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openclustermanagement.api.model.discovery.v1.DiscoveryConfig>
+public class DiscoveryConfigList implements Editable<DiscoveryConfigListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.openclustermanagement.api.model.discovery.v1.DiscoveryConfig>
 {
 
     /**

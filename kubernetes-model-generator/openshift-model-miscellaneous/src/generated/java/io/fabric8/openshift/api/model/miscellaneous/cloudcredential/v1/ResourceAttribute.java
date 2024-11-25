@@ -61,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ResourceAttribute implements Editable<ResourceAttributeBuilder> , KubernetesResource
+public class ResourceAttribute implements Editable<ResourceAttributeBuilder>, KubernetesResource
 {
 
     @JsonProperty("name")

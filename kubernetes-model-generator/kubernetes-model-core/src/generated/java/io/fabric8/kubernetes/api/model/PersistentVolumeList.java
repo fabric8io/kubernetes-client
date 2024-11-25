@@ -44,7 +44,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class PersistentVolumeList implements Editable<PersistentVolumeListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.PersistentVolume>
+public class PersistentVolumeList implements Editable<PersistentVolumeListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.PersistentVolume>
 {
 
     /**

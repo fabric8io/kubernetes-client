@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("security.openshift.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class RangeAllocationList implements Editable<RangeAllocationListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.RangeAllocation>
+public class RangeAllocationList implements Editable<RangeAllocationListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.RangeAllocation>
 {
 
     /**

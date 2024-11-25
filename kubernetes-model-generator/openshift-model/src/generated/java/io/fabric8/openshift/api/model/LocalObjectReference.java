@@ -58,7 +58,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class LocalObjectReference implements Editable<LocalObjectReferenceBuilder> , KubernetesResource
+public class LocalObjectReference implements Editable<LocalObjectReferenceBuilder>, KubernetesResource
 {
 
     @JsonProperty("name")

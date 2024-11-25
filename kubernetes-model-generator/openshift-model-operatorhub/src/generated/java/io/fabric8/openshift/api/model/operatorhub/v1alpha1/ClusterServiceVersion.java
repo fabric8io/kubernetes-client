@@ -73,7 +73,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("operators.coreos.com")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ClusterServiceVersion implements Editable<ClusterServiceVersionBuilder> , HasMetadata, Namespaced
+public class ClusterServiceVersion implements Editable<ClusterServiceVersionBuilder>, HasMetadata, Namespaced
 {
 
     /**

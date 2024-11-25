@@ -62,7 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class JVMStressSpec implements Editable<JVMStressSpecBuilder> , KubernetesResource
+public class JVMStressSpec implements Editable<JVMStressSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("cpu-count")

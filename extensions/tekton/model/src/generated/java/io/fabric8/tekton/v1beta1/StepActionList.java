@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1beta1")
 @Group("tekton.dev")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class StepActionList implements Editable<StepActionListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.tekton.v1beta1.StepAction>
+public class StepActionList implements Editable<StepActionListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.tekton.v1beta1.StepAction>
 {
 
     /**

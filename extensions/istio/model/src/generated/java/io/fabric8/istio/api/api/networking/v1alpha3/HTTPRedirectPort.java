@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class HTTPRedirectPort implements IsHTTPRedirectRedirectPort, Editable<HTTPRedirectPortBuilder> , KubernetesResource
+public class HTTPRedirectPort implements IsHTTPRedirectRedirectPort, Editable<HTTPRedirectPortBuilder>, KubernetesResource
 {
 
     @JsonProperty("port")

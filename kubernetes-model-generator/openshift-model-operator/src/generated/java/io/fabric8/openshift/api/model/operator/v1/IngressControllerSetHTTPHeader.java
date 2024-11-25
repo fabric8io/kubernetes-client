@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class IngressControllerSetHTTPHeader implements Editable<IngressControllerSetHTTPHeaderBuilder> , KubernetesResource
+public class IngressControllerSetHTTPHeader implements Editable<IngressControllerSetHTTPHeaderBuilder>, KubernetesResource
 {
 
     @JsonProperty("value")

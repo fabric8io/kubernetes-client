@@ -61,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class HistogramCheckpoint implements Editable<HistogramCheckpointBuilder> , KubernetesResource
+public class HistogramCheckpoint implements Editable<HistogramCheckpointBuilder>, KubernetesResource
 {
 
     @JsonProperty("bucketWeights")

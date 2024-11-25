@@ -73,7 +73,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class WebTLSConfig implements Editable<WebTLSConfigBuilder> , KubernetesResource
+public class WebTLSConfig implements Editable<WebTLSConfigBuilder>, KubernetesResource
 {
 
     @JsonProperty("cert")

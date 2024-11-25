@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class IngressControllerLogging implements Editable<IngressControllerLoggingBuilder> , KubernetesResource
+public class IngressControllerLogging implements Editable<IngressControllerLoggingBuilder>, KubernetesResource
 {
 
     @JsonProperty("access")

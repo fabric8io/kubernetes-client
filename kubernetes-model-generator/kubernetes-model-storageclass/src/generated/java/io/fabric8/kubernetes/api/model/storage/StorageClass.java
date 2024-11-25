@@ -80,7 +80,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("storage.k8s.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class StorageClass implements Editable<StorageClassBuilder> , HasMetadata
+public class StorageClass implements Editable<StorageClassBuilder>, HasMetadata
 {
 
     @JsonProperty("allowVolumeExpansion")

@@ -61,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class VCenters implements Editable<VCentersBuilder> , KubernetesResource
+public class VCenters implements Editable<VCentersBuilder>, KubernetesResource
 {
 
     @JsonProperty("password")

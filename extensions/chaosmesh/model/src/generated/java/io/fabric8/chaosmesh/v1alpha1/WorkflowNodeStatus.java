@@ -66,7 +66,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class WorkflowNodeStatus implements Editable<WorkflowNodeStatusBuilder> , KubernetesResource
+public class WorkflowNodeStatus implements Editable<WorkflowNodeStatusBuilder>, KubernetesResource
 {
 
     @JsonProperty("activeChildren")

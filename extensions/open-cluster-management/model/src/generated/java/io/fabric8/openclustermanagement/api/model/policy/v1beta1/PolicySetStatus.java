@@ -63,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class PolicySetStatus implements Editable<PolicySetStatusBuilder> , KubernetesResource
+public class PolicySetStatus implements Editable<PolicySetStatusBuilder>, KubernetesResource
 {
 
     @JsonProperty("compliant")

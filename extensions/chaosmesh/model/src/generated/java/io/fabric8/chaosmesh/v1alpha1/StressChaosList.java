@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("chaos-mesh.org")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class StressChaosList implements Editable<StressChaosListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.chaosmesh.v1alpha1.StressChaos>
+public class StressChaosList implements Editable<StressChaosListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.chaosmesh.v1alpha1.StressChaos>
 {
 
     /**

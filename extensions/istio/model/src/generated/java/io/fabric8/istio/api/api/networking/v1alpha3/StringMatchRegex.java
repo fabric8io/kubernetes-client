@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class StringMatchRegex implements IsStringMatchMatchType, Editable<StringMatchRegexBuilder> , KubernetesResource
+public class StringMatchRegex implements IsStringMatchMatchType, Editable<StringMatchRegexBuilder>, KubernetesResource
 {
 
     @JsonProperty("regex")

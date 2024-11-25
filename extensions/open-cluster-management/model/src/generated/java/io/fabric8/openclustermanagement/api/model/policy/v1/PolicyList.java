@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("policy.open-cluster-management.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class PolicyList implements Editable<PolicyListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openclustermanagement.api.model.policy.v1.Policy>
+public class PolicyList implements Editable<PolicyListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.openclustermanagement.api.model.policy.v1.Policy>
 {
 
     /**

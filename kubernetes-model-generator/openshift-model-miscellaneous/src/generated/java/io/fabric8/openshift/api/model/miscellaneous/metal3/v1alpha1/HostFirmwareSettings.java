@@ -73,7 +73,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("metal3.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class HostFirmwareSettings implements Editable<HostFirmwareSettingsBuilder> , HasMetadata, Namespaced
+public class HostFirmwareSettings implements Editable<HostFirmwareSettingsBuilder>, HasMetadata, Namespaced
 {
 
     /**

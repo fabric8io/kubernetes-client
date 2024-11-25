@@ -70,7 +70,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class HTTPServingInfo implements Editable<HTTPServingInfoBuilder> , KubernetesResource
+public class HTTPServingInfo implements Editable<HTTPServingInfoBuilder>, KubernetesResource
 {
 
     @JsonProperty("bindAddress")

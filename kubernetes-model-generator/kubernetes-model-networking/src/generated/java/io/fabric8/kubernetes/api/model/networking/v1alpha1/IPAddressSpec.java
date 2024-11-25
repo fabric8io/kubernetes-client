@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class IPAddressSpec implements Editable<IPAddressSpecBuilder> , KubernetesResource
+public class IPAddressSpec implements Editable<IPAddressSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("parentRef")

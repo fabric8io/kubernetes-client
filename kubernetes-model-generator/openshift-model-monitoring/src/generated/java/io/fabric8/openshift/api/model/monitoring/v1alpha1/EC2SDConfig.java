@@ -76,7 +76,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class EC2SDConfig implements Editable<EC2SDConfigBuilder> , KubernetesResource
+public class EC2SDConfig implements Editable<EC2SDConfigBuilder>, KubernetesResource
 {
 
     @JsonProperty("accessKey")

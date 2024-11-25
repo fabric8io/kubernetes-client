@@ -67,7 +67,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class RegistrationConfiguration implements Editable<RegistrationConfigurationBuilder> , KubernetesResource
+public class RegistrationConfiguration implements Editable<RegistrationConfigurationBuilder>, KubernetesResource
 {
 
     @JsonProperty("bootstrapKubeConfigs")

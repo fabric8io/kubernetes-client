@@ -73,7 +73,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("batch")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class Job implements Editable<JobBuilder> , HasMetadata, Namespaced
+public class Job implements Editable<JobBuilder>, HasMetadata, Namespaced
 {
 
     /**

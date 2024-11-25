@@ -68,7 +68,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class CoreV1TopologySpreadConstraint implements Editable<CoreV1TopologySpreadConstraintBuilder> , KubernetesResource
+public class CoreV1TopologySpreadConstraint implements Editable<CoreV1TopologySpreadConstraintBuilder>, KubernetesResource
 {
 
     @JsonProperty("labelSelector")

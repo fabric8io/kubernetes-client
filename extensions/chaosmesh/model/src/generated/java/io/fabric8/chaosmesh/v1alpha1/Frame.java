@@ -61,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class Frame implements Editable<FrameBuilder> , KubernetesResource
+public class Frame implements Editable<FrameBuilder>, KubernetesResource
 {
 
     @JsonProperty("funcname")

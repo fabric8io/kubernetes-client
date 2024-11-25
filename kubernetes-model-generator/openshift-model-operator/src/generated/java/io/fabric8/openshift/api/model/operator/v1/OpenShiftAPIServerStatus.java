@@ -66,7 +66,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class OpenShiftAPIServerStatus implements Editable<OpenShiftAPIServerStatusBuilder> , KubernetesResource
+public class OpenShiftAPIServerStatus implements Editable<OpenShiftAPIServerStatusBuilder>, KubernetesResource
 {
 
     @JsonProperty("conditions")

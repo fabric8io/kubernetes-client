@@ -62,7 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class TagEvent implements Editable<TagEventBuilder> , KubernetesResource
+public class TagEvent implements Editable<TagEventBuilder>, KubernetesResource
 {
 
     @JsonProperty("created")

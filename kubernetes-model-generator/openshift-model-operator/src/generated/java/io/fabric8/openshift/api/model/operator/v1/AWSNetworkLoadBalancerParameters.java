@@ -62,7 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class AWSNetworkLoadBalancerParameters implements Editable<AWSNetworkLoadBalancerParametersBuilder> , KubernetesResource
+public class AWSNetworkLoadBalancerParameters implements Editable<AWSNetworkLoadBalancerParametersBuilder>, KubernetesResource
 {
 
     @JsonProperty("eipAllocations")

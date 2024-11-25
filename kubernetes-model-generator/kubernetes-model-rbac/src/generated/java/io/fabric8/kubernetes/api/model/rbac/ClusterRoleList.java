@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("rbac.authorization.k8s.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ClusterRoleList implements Editable<ClusterRoleListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.rbac.ClusterRole>
+public class ClusterRoleList implements Editable<ClusterRoleListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.rbac.ClusterRole>
 {
 
     /**

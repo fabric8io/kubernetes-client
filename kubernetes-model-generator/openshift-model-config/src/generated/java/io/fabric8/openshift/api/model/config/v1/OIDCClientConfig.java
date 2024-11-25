@@ -65,7 +65,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class OIDCClientConfig implements Editable<OIDCClientConfigBuilder> , KubernetesResource
+public class OIDCClientConfig implements Editable<OIDCClientConfigBuilder>, KubernetesResource
 {
 
     @JsonProperty("clientID")

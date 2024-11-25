@@ -74,7 +74,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class InMemoryChannelStatus implements Editable<InMemoryChannelStatusBuilder> , KubernetesResource
+public class InMemoryChannelStatus implements Editable<InMemoryChannelStatusBuilder>, KubernetesResource
 {
 
     @JsonProperty("address")

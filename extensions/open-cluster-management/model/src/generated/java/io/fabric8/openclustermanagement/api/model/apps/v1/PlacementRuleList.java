@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("apps.open-cluster-management.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class PlacementRuleList implements Editable<PlacementRuleListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openclustermanagement.api.model.apps.v1.PlacementRule>
+public class PlacementRuleList implements Editable<PlacementRuleListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.openclustermanagement.api.model.apps.v1.PlacementRule>
 {
 
     /**

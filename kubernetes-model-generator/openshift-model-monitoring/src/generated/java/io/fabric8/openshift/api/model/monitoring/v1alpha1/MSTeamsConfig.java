@@ -65,7 +65,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class MSTeamsConfig implements Editable<MSTeamsConfigBuilder> , KubernetesResource
+public class MSTeamsConfig implements Editable<MSTeamsConfigBuilder>, KubernetesResource
 {
 
     @JsonProperty("httpConfig")

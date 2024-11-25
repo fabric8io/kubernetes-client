@@ -68,7 +68,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class RichReference implements Editable<RichReferenceBuilder> , KubernetesResource
+public class RichReference implements Editable<RichReferenceBuilder>, KubernetesResource
 {
 
     @JsonProperty("apiVersion")

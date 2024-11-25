@@ -60,7 +60,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class PipelineTaskMetadata implements Editable<PipelineTaskMetadataBuilder> , KubernetesResource
+public class PipelineTaskMetadata implements Editable<PipelineTaskMetadataBuilder>, KubernetesResource
 {
 
     @JsonProperty("annotations")

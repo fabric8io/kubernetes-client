@@ -63,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ImageImportSpec implements Editable<ImageImportSpecBuilder> , KubernetesResource
+public class ImageImportSpec implements Editable<ImageImportSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("from")

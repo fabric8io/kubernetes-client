@@ -82,7 +82,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class JVMChaosSpec implements Editable<JVMChaosSpecBuilder> , KubernetesResource
+public class JVMChaosSpec implements Editable<JVMChaosSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("action")

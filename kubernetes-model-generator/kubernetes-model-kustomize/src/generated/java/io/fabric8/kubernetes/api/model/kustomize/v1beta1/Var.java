@@ -61,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class Var implements Editable<VarBuilder> , KubernetesResource
+public class Var implements Editable<VarBuilder>, KubernetesResource
 {
 
     @JsonProperty("fieldref")

@@ -61,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class BIOS implements Editable<BIOSBuilder> , KubernetesResource
+public class BIOS implements Editable<BIOSBuilder>, KubernetesResource
 {
 
     @JsonProperty("date")

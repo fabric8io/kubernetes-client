@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("k8s.ovn.org")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class UserDefinedNetworkList implements Editable<UserDefinedNetworkListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.ovn.v1.UserDefinedNetwork>
+public class UserDefinedNetworkList implements Editable<UserDefinedNetworkListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.ovn.v1.UserDefinedNetwork>
 {
 
     /**

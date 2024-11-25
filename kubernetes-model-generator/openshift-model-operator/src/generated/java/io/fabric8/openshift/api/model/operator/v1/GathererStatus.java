@@ -64,7 +64,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class GathererStatus implements Editable<GathererStatusBuilder> , KubernetesResource
+public class GathererStatus implements Editable<GathererStatusBuilder>, KubernetesResource
 {
 
     @JsonProperty("conditions")

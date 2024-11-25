@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("search.open-cluster-management.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class SearchList implements Editable<SearchListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openclustermanagement.api.model.search.v1alpha1.Search>
+public class SearchList implements Editable<SearchListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.openclustermanagement.api.model.search.v1alpha1.Search>
 {
 
     /**

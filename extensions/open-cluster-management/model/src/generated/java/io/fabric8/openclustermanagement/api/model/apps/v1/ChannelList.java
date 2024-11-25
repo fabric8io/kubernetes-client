@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("apps.open-cluster-management.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ChannelList implements Editable<ChannelListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openclustermanagement.api.model.apps.v1.Channel>
+public class ChannelList implements Editable<ChannelListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.openclustermanagement.api.model.apps.v1.Channel>
 {
 
     /**

@@ -68,7 +68,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class MachinePool implements Editable<MachinePoolBuilder> , KubernetesResource
+public class MachinePool implements Editable<MachinePoolBuilder>, KubernetesResource
 {
 
     @JsonProperty("encryptionAtHost")

@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class GCPDNSZoneStatus implements Editable<GCPDNSZoneStatusBuilder> , KubernetesResource
+public class GCPDNSZoneStatus implements Editable<GCPDNSZoneStatusBuilder>, KubernetesResource
 {
 
     @JsonProperty("zoneName")

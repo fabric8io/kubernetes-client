@@ -62,7 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class CustomResourceDefinitions implements Editable<CustomResourceDefinitionsBuilder> , KubernetesResource
+public class CustomResourceDefinitions implements Editable<CustomResourceDefinitionsBuilder>, KubernetesResource
 {
 
     @JsonProperty("owned")

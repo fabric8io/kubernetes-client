@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("networking.istio.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class WorkloadEntryList implements Editable<WorkloadEntryListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.istio.api.networking.v1.WorkloadEntry>
+public class WorkloadEntryList implements Editable<WorkloadEntryListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.istio.api.networking.v1.WorkloadEntry>
 {
 
     /**

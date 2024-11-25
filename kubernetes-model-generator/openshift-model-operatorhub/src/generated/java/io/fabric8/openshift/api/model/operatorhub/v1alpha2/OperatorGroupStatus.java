@@ -63,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class OperatorGroupStatus implements Editable<OperatorGroupStatusBuilder> , KubernetesResource
+public class OperatorGroupStatus implements Editable<OperatorGroupStatusBuilder>, KubernetesResource
 {
 
     @JsonProperty("lastUpdated")

@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("apiextensions.k8s.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class CustomResourceDefinitionList implements Editable<CustomResourceDefinitionListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition>
+public class CustomResourceDefinitionList implements Editable<CustomResourceDefinitionListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition>
 {
 
     /**

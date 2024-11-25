@@ -72,7 +72,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("tekton.dev")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class Task implements Editable<TaskBuilder> , HasMetadata, Namespaced
+public class Task implements Editable<TaskBuilder>, HasMetadata, Namespaced
 {
 
     /**

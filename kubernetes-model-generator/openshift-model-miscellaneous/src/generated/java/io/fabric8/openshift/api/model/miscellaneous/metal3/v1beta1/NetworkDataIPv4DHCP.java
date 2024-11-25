@@ -63,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class NetworkDataIPv4DHCP implements Editable<NetworkDataIPv4DHCPBuilder> , KubernetesResource
+public class NetworkDataIPv4DHCP implements Editable<NetworkDataIPv4DHCPBuilder>, KubernetesResource
 {
 
     @JsonProperty("id")

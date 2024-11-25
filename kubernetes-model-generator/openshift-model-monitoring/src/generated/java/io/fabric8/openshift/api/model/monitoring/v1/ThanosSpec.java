@@ -84,7 +84,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ThanosSpec implements Editable<ThanosSpecBuilder> , KubernetesResource
+public class ThanosSpec implements Editable<ThanosSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("additionalArgs")

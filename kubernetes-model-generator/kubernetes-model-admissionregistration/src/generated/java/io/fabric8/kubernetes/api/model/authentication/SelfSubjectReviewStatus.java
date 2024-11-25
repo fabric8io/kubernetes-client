@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class SelfSubjectReviewStatus implements Editable<SelfSubjectReviewStatusBuilder> , KubernetesResource
+public class SelfSubjectReviewStatus implements Editable<SelfSubjectReviewStatusBuilder>, KubernetesResource
 {
 
     @JsonProperty("userInfo")

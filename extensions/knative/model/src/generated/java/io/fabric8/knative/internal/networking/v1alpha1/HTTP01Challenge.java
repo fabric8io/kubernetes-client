@@ -62,7 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class HTTP01Challenge implements Editable<HTTP01ChallengeBuilder> , KubernetesResource
+public class HTTP01Challenge implements Editable<HTTP01ChallengeBuilder>, KubernetesResource
 {
 
     @JsonProperty("serviceName")

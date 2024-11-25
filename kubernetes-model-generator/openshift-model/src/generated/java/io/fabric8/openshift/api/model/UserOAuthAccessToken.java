@@ -81,7 +81,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("oauth.openshift.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class UserOAuthAccessToken implements Editable<UserOAuthAccessTokenBuilder> , HasMetadata
+public class UserOAuthAccessToken implements Editable<UserOAuthAccessTokenBuilder>, HasMetadata
 {
 
     /**

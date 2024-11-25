@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("storage.k8s.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class CSIDriverList implements Editable<CSIDriverListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.storage.CSIDriver>
+public class CSIDriverList implements Editable<CSIDriverListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.storage.CSIDriver>
 {
 
     /**

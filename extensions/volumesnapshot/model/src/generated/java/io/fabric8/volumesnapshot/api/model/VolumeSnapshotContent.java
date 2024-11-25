@@ -72,7 +72,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("snapshot.storage.k8s.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class VolumeSnapshotContent implements Editable<VolumeSnapshotContentBuilder> , HasMetadata
+public class VolumeSnapshotContent implements Editable<VolumeSnapshotContentBuilder>, HasMetadata
 {
 
     /**

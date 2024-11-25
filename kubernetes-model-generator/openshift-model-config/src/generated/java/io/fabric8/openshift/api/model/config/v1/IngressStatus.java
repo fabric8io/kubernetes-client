@@ -62,7 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class IngressStatus implements Editable<IngressStatusBuilder> , KubernetesResource
+public class IngressStatus implements Editable<IngressStatusBuilder>, KubernetesResource
 {
 
     @JsonProperty("componentRoutes")

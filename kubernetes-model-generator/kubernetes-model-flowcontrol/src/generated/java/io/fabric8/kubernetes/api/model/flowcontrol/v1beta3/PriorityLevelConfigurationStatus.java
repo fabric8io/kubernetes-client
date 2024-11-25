@@ -61,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class PriorityLevelConfigurationStatus implements Editable<PriorityLevelConfigurationStatusBuilder> , KubernetesResource
+public class PriorityLevelConfigurationStatus implements Editable<PriorityLevelConfigurationStatusBuilder>, KubernetesResource
 {
 
     @JsonProperty("conditions")

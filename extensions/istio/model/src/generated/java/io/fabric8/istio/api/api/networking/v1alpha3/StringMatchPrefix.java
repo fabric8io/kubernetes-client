@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class StringMatchPrefix implements IsStringMatchMatchType, Editable<StringMatchPrefixBuilder> , KubernetesResource
+public class StringMatchPrefix implements IsStringMatchMatchType, Editable<StringMatchPrefixBuilder>, KubernetesResource
 {
 
     @JsonProperty("prefix")

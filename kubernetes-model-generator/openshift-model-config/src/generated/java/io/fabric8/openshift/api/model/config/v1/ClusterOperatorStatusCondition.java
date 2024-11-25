@@ -63,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ClusterOperatorStatusCondition implements Editable<ClusterOperatorStatusConditionBuilder> , KubernetesResource
+public class ClusterOperatorStatusCondition implements Editable<ClusterOperatorStatusConditionBuilder>, KubernetesResource
 {
 
     @JsonProperty("lastTransitionTime")

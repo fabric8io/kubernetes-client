@@ -63,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class SessionPersistence implements Editable<SessionPersistenceBuilder> , KubernetesResource
+public class SessionPersistence implements Editable<SessionPersistenceBuilder>, KubernetesResource
 {
 
     @JsonProperty("absoluteTimeout")

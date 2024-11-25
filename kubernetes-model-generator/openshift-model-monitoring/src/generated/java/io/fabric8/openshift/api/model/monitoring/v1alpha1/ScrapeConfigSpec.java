@@ -121,7 +121,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder> , KubernetesResource
+public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("authorization")

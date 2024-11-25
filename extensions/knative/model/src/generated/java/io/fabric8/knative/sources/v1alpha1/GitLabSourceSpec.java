@@ -70,7 +70,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class GitLabSourceSpec implements Editable<GitLabSourceSpecBuilder> , KubernetesResource
+public class GitLabSourceSpec implements Editable<GitLabSourceSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("accessToken")

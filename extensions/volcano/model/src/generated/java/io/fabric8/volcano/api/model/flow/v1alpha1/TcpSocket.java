@@ -60,7 +60,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class TcpSocket implements Editable<TcpSocketBuilder> , KubernetesResource
+public class TcpSocket implements Editable<TcpSocketBuilder>, KubernetesResource
 {
 
     @JsonProperty("port")

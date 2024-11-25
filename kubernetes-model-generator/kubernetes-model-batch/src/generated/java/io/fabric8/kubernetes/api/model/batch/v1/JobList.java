@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("batch")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class JobList implements Editable<JobListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.batch.v1.Job>
+public class JobList implements Editable<JobListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.batch.v1.Job>
 {
 
     /**

@@ -65,7 +65,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class GatewaySpec implements Editable<GatewaySpecBuilder> , KubernetesResource
+public class GatewaySpec implements Editable<GatewaySpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("addresses")

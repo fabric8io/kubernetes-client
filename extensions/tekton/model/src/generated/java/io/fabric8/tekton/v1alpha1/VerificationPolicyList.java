@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("tekton.dev")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class VerificationPolicyList implements Editable<VerificationPolicyListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.tekton.v1alpha1.VerificationPolicy>
+public class VerificationPolicyList implements Editable<VerificationPolicyListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.tekton.v1alpha1.VerificationPolicy>
 {
 
     /**

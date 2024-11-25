@@ -65,7 +65,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ClusterIngress implements Editable<ClusterIngressBuilder> , KubernetesResource
+public class ClusterIngress implements Editable<ClusterIngressBuilder>, KubernetesResource
 {
 
     @JsonProperty("domain")

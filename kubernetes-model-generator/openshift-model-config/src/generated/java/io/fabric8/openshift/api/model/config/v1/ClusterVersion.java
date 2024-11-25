@@ -72,7 +72,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("config.openshift.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ClusterVersion implements Editable<ClusterVersionBuilder> , HasMetadata
+public class ClusterVersion implements Editable<ClusterVersionBuilder>, HasMetadata
 {
 
     /**

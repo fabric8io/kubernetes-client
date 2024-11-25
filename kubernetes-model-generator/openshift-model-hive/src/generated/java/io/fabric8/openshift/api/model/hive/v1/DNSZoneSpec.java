@@ -64,7 +64,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class DNSZoneSpec implements Editable<DNSZoneSpecBuilder> , KubernetesResource
+public class DNSZoneSpec implements Editable<DNSZoneSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("aws")

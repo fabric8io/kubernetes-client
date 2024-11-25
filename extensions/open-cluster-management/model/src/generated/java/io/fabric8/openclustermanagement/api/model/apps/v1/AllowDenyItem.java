@@ -62,7 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class AllowDenyItem implements Editable<AllowDenyItemBuilder> , KubernetesResource
+public class AllowDenyItem implements Editable<AllowDenyItemBuilder>, KubernetesResource
 {
 
     @JsonProperty("apiVersion")

@@ -58,7 +58,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class SchedulerStatus implements Editable<SchedulerStatusBuilder> , KubernetesResource
+public class SchedulerStatus implements Editable<SchedulerStatusBuilder>, KubernetesResource
 {
 
     @JsonIgnore

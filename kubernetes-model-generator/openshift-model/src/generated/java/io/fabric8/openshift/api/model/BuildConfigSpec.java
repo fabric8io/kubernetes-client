@@ -74,7 +74,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class BuildConfigSpec implements Editable<BuildConfigSpecBuilder> , KubernetesResource
+public class BuildConfigSpec implements Editable<BuildConfigSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("completionDeadlineSeconds")

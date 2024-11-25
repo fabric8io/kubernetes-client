@@ -73,7 +73,7 @@ import lombok.experimental.Accessors;
 @Version("v1beta1")
 @Group("messaging.knative.dev")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class KafkaChannel implements Editable<KafkaChannelBuilder> , HasMetadata, Namespaced
+public class KafkaChannel implements Editable<KafkaChannelBuilder>, HasMetadata, Namespaced
 {
 
     /**

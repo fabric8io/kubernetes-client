@@ -68,7 +68,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class StaticPodOperatorStatus implements Editable<StaticPodOperatorStatusBuilder> , KubernetesResource
+public class StaticPodOperatorStatus implements Editable<StaticPodOperatorStatusBuilder>, KubernetesResource
 {
 
     @JsonProperty("conditions")

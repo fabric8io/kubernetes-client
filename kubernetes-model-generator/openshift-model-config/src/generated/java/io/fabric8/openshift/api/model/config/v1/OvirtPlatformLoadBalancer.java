@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class OvirtPlatformLoadBalancer implements Editable<OvirtPlatformLoadBalancerBuilder> , KubernetesResource
+public class OvirtPlatformLoadBalancer implements Editable<OvirtPlatformLoadBalancerBuilder>, KubernetesResource
 {
 
     @JsonProperty("type")

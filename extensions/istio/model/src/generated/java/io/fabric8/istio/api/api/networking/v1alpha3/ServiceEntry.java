@@ -79,7 +79,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha3")
 @Group("")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ServiceEntry implements Editable<ServiceEntryBuilder> , KubernetesResource, Namespaced
+public class ServiceEntry implements Editable<ServiceEntryBuilder>, KubernetesResource, Namespaced
 {
 
     @JsonProperty("addresses")

@@ -82,7 +82,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("image.openshift.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class Image implements Editable<ImageBuilder> , HasMetadata
+public class Image implements Editable<ImageBuilder>, HasMetadata
 {
 
     /**

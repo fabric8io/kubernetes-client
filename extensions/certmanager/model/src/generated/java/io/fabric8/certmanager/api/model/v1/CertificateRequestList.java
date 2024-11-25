@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("cert-manager.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class CertificateRequestList implements Editable<CertificateRequestListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.certmanager.api.model.v1.CertificateRequest>
+public class CertificateRequestList implements Editable<CertificateRequestListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.certmanager.api.model.v1.CertificateRequest>
 {
 
     /**

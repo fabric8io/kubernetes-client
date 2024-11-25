@@ -64,7 +64,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ImageManifest implements Editable<ImageManifestBuilder> , KubernetesResource
+public class ImageManifest implements Editable<ImageManifestBuilder>, KubernetesResource
 {
 
     @JsonProperty("architecture")

@@ -62,7 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class OpenShiftMachineV1Beta1MachineTemplate implements Editable<OpenShiftMachineV1Beta1MachineTemplateBuilder> , KubernetesResource
+public class OpenShiftMachineV1Beta1MachineTemplate implements Editable<OpenShiftMachineV1Beta1MachineTemplateBuilder>, KubernetesResource
 {
 
     @JsonProperty("failureDomains")

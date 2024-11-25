@@ -67,7 +67,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ChannelSpec implements Editable<ChannelSpecBuilder> , KubernetesResource
+public class ChannelSpec implements Editable<ChannelSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("configMapRef")

@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("networking.internal.knative.dev")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ServerlessServiceList implements Editable<ServerlessServiceListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.knative.internal.networking.v1alpha1.ServerlessService>
+public class ServerlessServiceList implements Editable<ServerlessServiceListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.knative.internal.networking.v1alpha1.ServerlessService>
 {
 
     /**

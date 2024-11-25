@@ -74,7 +74,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class MultiClusterHubSpec implements Editable<MultiClusterHubSpecBuilder> , KubernetesResource
+public class MultiClusterHubSpec implements Editable<MultiClusterHubSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("availabilityConfig")

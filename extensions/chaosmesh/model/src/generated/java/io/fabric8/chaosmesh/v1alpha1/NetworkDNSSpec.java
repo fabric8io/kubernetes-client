@@ -61,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class NetworkDNSSpec implements Editable<NetworkDNSSpecBuilder> , KubernetesResource
+public class NetworkDNSSpec implements Editable<NetworkDNSSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("dns-domain-name")

@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class DiscoveredClusterSpec implements Editable<DiscoveredClusterSpecBuilder> , KubernetesResource
+public class DiscoveredClusterSpec implements Editable<DiscoveredClusterSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("activityTimestamp")

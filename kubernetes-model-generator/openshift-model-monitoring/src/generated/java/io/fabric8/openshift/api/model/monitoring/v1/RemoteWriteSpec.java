@@ -85,7 +85,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class RemoteWriteSpec implements Editable<RemoteWriteSpecBuilder> , KubernetesResource
+public class RemoteWriteSpec implements Editable<RemoteWriteSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("authorization")

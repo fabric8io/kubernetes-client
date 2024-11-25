@@ -62,7 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class PrometheusWebSpec implements Editable<PrometheusWebSpecBuilder> , KubernetesResource
+public class PrometheusWebSpec implements Editable<PrometheusWebSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("httpConfig")

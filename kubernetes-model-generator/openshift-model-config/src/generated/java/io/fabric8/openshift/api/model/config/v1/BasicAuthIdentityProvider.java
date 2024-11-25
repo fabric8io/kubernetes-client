@@ -62,7 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class BasicAuthIdentityProvider implements Editable<BasicAuthIdentityProviderBuilder> , KubernetesResource
+public class BasicAuthIdentityProvider implements Editable<BasicAuthIdentityProviderBuilder>, KubernetesResource
 {
 
     @JsonProperty("ca")

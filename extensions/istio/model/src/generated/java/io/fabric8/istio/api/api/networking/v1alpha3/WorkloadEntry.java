@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha3")
 @Group("")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class WorkloadEntry implements Editable<WorkloadEntryBuilder> , KubernetesResource, Namespaced
+public class WorkloadEntry implements Editable<WorkloadEntryBuilder>, KubernetesResource, Namespaced
 {
 
     @JsonProperty("address")

@@ -61,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class SuccessPolicy implements Editable<SuccessPolicyBuilder> , KubernetesResource
+public class SuccessPolicy implements Editable<SuccessPolicyBuilder>, KubernetesResource
 {
 
     @JsonProperty("rules")

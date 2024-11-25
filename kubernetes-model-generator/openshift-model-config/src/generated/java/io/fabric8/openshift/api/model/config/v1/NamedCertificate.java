@@ -63,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class NamedCertificate implements Editable<NamedCertificateBuilder> , KubernetesResource
+public class NamedCertificate implements Editable<NamedCertificateBuilder>, KubernetesResource
 {
 
     @JsonProperty("certFile")

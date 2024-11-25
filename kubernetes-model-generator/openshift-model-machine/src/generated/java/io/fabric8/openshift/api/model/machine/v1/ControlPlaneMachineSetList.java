@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("machine.openshift.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ControlPlaneMachineSetList implements Editable<ControlPlaneMachineSetListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.machine.v1.ControlPlaneMachineSet>
+public class ControlPlaneMachineSetList implements Editable<ControlPlaneMachineSetListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.machine.v1.ControlPlaneMachineSet>
 {
 
     /**

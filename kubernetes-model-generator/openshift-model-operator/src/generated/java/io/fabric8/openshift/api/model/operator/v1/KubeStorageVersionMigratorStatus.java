@@ -66,7 +66,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class KubeStorageVersionMigratorStatus implements Editable<KubeStorageVersionMigratorStatusBuilder> , KubernetesResource
+public class KubeStorageVersionMigratorStatus implements Editable<KubeStorageVersionMigratorStatusBuilder>, KubernetesResource
 {
 
     @JsonProperty("conditions")

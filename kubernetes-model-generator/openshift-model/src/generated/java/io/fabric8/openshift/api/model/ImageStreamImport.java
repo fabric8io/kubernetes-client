@@ -73,7 +73,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("image.openshift.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ImageStreamImport implements Editable<ImageStreamImportBuilder> , HasMetadata, Namespaced
+public class ImageStreamImport implements Editable<ImageStreamImportBuilder>, HasMetadata, Namespaced
 {
 
     /**

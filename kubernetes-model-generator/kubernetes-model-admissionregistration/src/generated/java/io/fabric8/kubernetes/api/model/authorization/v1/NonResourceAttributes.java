@@ -60,7 +60,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class NonResourceAttributes implements Editable<NonResourceAttributesBuilder> , KubernetesResource
+public class NonResourceAttributes implements Editable<NonResourceAttributesBuilder>, KubernetesResource
 {
 
     @JsonProperty("path")

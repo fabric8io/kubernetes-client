@@ -62,7 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class IngressControllerCaptureHTTPCookie implements Editable<IngressControllerCaptureHTTPCookieBuilder> , KubernetesResource
+public class IngressControllerCaptureHTTPCookie implements Editable<IngressControllerCaptureHTTPCookieBuilder>, KubernetesResource
 {
 
     @JsonProperty("matchType")

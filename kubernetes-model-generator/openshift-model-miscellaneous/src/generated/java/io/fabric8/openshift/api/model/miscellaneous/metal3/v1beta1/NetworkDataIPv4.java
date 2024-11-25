@@ -66,7 +66,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class NetworkDataIPv4 implements Editable<NetworkDataIPv4Builder> , KubernetesResource
+public class NetworkDataIPv4 implements Editable<NetworkDataIPv4Builder>, KubernetesResource
 {
 
     @JsonProperty("fromPoolRef")

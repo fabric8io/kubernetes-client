@@ -60,7 +60,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class NutanixCategory implements Editable<NutanixCategoryBuilder> , KubernetesResource
+public class NutanixCategory implements Editable<NutanixCategoryBuilder>, KubernetesResource
 {
 
     @JsonProperty("key")

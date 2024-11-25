@@ -73,7 +73,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("discovery.open-cluster-management.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class DiscoveredCluster implements Editable<DiscoveredClusterBuilder> , HasMetadata, Namespaced
+public class DiscoveredCluster implements Editable<DiscoveredClusterBuilder>, HasMetadata, Namespaced
 {
 
     /**

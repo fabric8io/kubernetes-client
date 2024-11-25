@@ -73,7 +73,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("metal3.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class PreprovisioningImage implements Editable<PreprovisioningImageBuilder> , HasMetadata, Namespaced
+public class PreprovisioningImage implements Editable<PreprovisioningImageBuilder>, HasMetadata, Namespaced
 {
 
     /**

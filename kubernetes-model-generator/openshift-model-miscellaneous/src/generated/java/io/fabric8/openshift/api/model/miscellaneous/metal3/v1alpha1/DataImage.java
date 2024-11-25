@@ -73,7 +73,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("metal3.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class DataImage implements Editable<DataImageBuilder> , HasMetadata, Namespaced
+public class DataImage implements Editable<DataImageBuilder>, HasMetadata, Namespaced
 {
 
     /**

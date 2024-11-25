@@ -62,7 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class TLSProfileSpec implements Editable<TLSProfileSpecBuilder> , KubernetesResource
+public class TLSProfileSpec implements Editable<TLSProfileSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("ciphers")

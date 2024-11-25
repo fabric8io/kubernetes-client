@@ -65,7 +65,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class NetworkCommonSpec implements Editable<NetworkCommonSpecBuilder> , KubernetesResource
+public class NetworkCommonSpec implements Editable<NetworkCommonSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("correlation")

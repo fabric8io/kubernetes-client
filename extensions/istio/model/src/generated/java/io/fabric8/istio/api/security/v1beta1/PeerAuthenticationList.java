@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1beta1")
 @Group("security.istio.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class PeerAuthenticationList implements Editable<PeerAuthenticationListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.istio.api.security.v1beta1.PeerAuthentication>
+public class PeerAuthenticationList implements Editable<PeerAuthenticationListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.istio.api.security.v1beta1.PeerAuthentication>
 {
 
     /**

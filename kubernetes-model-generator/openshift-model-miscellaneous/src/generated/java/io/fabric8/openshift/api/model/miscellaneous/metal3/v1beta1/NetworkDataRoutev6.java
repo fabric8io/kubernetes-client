@@ -62,7 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class NetworkDataRoutev6 implements Editable<NetworkDataRoutev6Builder> , KubernetesResource
+public class NetworkDataRoutev6 implements Editable<NetworkDataRoutev6Builder>, KubernetesResource
 {
 
     @JsonProperty("gateway")

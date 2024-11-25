@@ -60,7 +60,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class PipelineTaskParam implements Editable<PipelineTaskParamBuilder> , KubernetesResource
+public class PipelineTaskParam implements Editable<PipelineTaskParamBuilder>, KubernetesResource
 {
 
     @JsonProperty("name")

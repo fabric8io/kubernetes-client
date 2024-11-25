@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class MachineAutoscalerStatus implements Editable<MachineAutoscalerStatusBuilder> , KubernetesResource
+public class MachineAutoscalerStatus implements Editable<MachineAutoscalerStatusBuilder>, KubernetesResource
 {
 
     @JsonProperty("lastTargetRef")

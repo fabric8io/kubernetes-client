@@ -63,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class Perspective implements Editable<PerspectiveBuilder> , KubernetesResource
+public class Perspective implements Editable<PerspectiveBuilder>, KubernetesResource
 {
 
     @JsonProperty("id")

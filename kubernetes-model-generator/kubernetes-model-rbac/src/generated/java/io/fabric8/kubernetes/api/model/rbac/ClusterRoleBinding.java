@@ -74,7 +74,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("rbac.authorization.k8s.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ClusterRoleBinding implements Editable<ClusterRoleBindingBuilder> , HasMetadata
+public class ClusterRoleBinding implements Editable<ClusterRoleBindingBuilder>, HasMetadata
 {
 
     /**

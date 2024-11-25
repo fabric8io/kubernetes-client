@@ -61,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class NetworkPolicyPeer implements Editable<NetworkPolicyPeerBuilder> , KubernetesResource
+public class NetworkPolicyPeer implements Editable<NetworkPolicyPeerBuilder>, KubernetesResource
 {
 
     @JsonProperty("ipBlock")

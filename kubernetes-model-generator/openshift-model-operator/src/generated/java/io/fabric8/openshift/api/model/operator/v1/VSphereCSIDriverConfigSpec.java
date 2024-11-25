@@ -64,7 +64,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class VSphereCSIDriverConfigSpec implements Editable<VSphereCSIDriverConfigSpecBuilder> , KubernetesResource
+public class VSphereCSIDriverConfigSpec implements Editable<VSphereCSIDriverConfigSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("globalMaxSnapshotsPerBlockVolume")

@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("sources.knative.dev")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class GitHubSourceList implements Editable<GitHubSourceListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.knative.sources.v1alpha1.GitHubSource>
+public class GitHubSourceList implements Editable<GitHubSourceListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.knative.sources.v1alpha1.GitHubSource>
 {
 
     /**

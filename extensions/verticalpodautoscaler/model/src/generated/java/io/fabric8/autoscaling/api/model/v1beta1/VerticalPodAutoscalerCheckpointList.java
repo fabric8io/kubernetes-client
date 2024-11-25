@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1beta1")
 @Group("autoscaling.k8s.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class VerticalPodAutoscalerCheckpointList implements Editable<VerticalPodAutoscalerCheckpointListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.autoscaling.api.model.v1beta1.VerticalPodAutoscalerCheckpoint>
+public class VerticalPodAutoscalerCheckpointList implements Editable<VerticalPodAutoscalerCheckpointListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.autoscaling.api.model.v1beta1.VerticalPodAutoscalerCheckpoint>
 {
 
     /**

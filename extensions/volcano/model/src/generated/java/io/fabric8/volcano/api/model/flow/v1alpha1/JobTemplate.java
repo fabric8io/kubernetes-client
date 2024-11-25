@@ -74,7 +74,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("flow.volcano.sh")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class JobTemplate implements Editable<JobTemplateBuilder> , HasMetadata, Namespaced
+public class JobTemplate implements Editable<JobTemplateBuilder>, HasMetadata, Namespaced
 {
 
     /**

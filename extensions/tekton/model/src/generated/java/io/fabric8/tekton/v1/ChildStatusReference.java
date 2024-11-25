@@ -66,7 +66,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ChildStatusReference implements Editable<ChildStatusReferenceBuilder> , KubernetesResource
+public class ChildStatusReference implements Editable<ChildStatusReferenceBuilder>, KubernetesResource
 {
 
     @JsonProperty("apiVersion")

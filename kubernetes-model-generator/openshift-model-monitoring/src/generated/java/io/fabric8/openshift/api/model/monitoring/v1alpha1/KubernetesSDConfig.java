@@ -80,7 +80,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class KubernetesSDConfig implements Editable<KubernetesSDConfigBuilder> , KubernetesResource
+public class KubernetesSDConfig implements Editable<KubernetesSDConfigBuilder>, KubernetesResource
 {
 
     @JsonProperty("apiServer")

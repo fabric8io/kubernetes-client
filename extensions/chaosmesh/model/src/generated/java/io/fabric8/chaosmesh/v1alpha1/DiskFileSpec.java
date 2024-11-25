@@ -60,7 +60,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class DiskFileSpec implements Editable<DiskFileSpecBuilder> , KubernetesResource
+public class DiskFileSpec implements Editable<DiskFileSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("path")

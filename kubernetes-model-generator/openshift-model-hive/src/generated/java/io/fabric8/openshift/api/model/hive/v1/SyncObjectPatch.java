@@ -64,7 +64,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class SyncObjectPatch implements Editable<SyncObjectPatchBuilder> , KubernetesResource
+public class SyncObjectPatch implements Editable<SyncObjectPatchBuilder>, KubernetesResource
 {
 
     @JsonProperty("apiVersion")

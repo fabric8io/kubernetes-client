@@ -73,7 +73,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("authorization.openshift.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class SubjectRulesReview implements Editable<SubjectRulesReviewBuilder> , HasMetadata, Namespaced
+public class SubjectRulesReview implements Editable<SubjectRulesReviewBuilder>, HasMetadata, Namespaced
 {
 
     /**

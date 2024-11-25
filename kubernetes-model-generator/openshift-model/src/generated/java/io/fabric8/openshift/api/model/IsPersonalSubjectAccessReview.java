@@ -70,7 +70,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("authorization.openshift.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class IsPersonalSubjectAccessReview implements Editable<IsPersonalSubjectAccessReviewBuilder> , KubernetesResource, Namespaced
+public class IsPersonalSubjectAccessReview implements Editable<IsPersonalSubjectAccessReviewBuilder>, KubernetesResource, Namespaced
 {
 
     /**

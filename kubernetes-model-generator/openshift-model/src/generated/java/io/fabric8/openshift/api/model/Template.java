@@ -77,7 +77,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("template.openshift.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class Template implements Editable<TemplateBuilder> , HasMetadata, Namespaced
+public class Template implements Editable<TemplateBuilder>, HasMetadata, Namespaced
 {
 
     /**

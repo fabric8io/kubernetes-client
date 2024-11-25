@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("monitoring.coreos.com")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class PrometheusRuleList implements Editable<PrometheusRuleListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.monitoring.v1.PrometheusRule>
+public class PrometheusRuleList implements Editable<PrometheusRuleListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.monitoring.v1.PrometheusRule>
 {
 
     /**

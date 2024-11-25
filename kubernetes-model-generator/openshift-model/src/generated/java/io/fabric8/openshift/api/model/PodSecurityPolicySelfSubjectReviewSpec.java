@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class PodSecurityPolicySelfSubjectReviewSpec implements Editable<PodSecurityPolicySelfSubjectReviewSpecBuilder> , KubernetesResource
+public class PodSecurityPolicySelfSubjectReviewSpec implements Editable<PodSecurityPolicySelfSubjectReviewSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("template")

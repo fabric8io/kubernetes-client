@@ -61,7 +61,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class MachineOSConfigSpec implements Editable<MachineOSConfigSpecBuilder> , KubernetesResource
+public class MachineOSConfigSpec implements Editable<MachineOSConfigSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("buildInputs")

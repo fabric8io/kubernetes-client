@@ -62,7 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class EvictionRequirement implements Editable<EvictionRequirementBuilder> , KubernetesResource
+public class EvictionRequirement implements Editable<EvictionRequirementBuilder>, KubernetesResource
 {
 
     @JsonProperty("changeRequirement")

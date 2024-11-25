@@ -59,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class StatuspageProvider implements Editable<StatuspageProviderBuilder> , KubernetesResource
+public class StatuspageProvider implements Editable<StatuspageProviderBuilder>, KubernetesResource
 {
 
     @JsonProperty("pageID")

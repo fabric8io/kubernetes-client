@@ -68,7 +68,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class PodAutoscalerStatus implements Editable<PodAutoscalerStatusBuilder> , KubernetesResource
+public class PodAutoscalerStatus implements Editable<PodAutoscalerStatusBuilder>, KubernetesResource
 {
 
     @JsonProperty("actualScale")

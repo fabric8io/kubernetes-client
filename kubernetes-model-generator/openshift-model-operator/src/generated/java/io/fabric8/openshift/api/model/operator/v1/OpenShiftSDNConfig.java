@@ -63,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class OpenShiftSDNConfig implements Editable<OpenShiftSDNConfigBuilder> , KubernetesResource
+public class OpenShiftSDNConfig implements Editable<OpenShiftSDNConfigBuilder>, KubernetesResource
 {
 
     @JsonProperty("enableUnidling")

@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1beta1")
 @Group("infrastructure.cluster.x-k8s.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class Metal3DataTemplateList implements Editable<Metal3DataTemplateListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.miscellaneous.metal3.v1beta1.Metal3DataTemplate>
+public class Metal3DataTemplateList implements Editable<Metal3DataTemplateListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.miscellaneous.metal3.v1beta1.Metal3DataTemplate>
 {
 
     /**

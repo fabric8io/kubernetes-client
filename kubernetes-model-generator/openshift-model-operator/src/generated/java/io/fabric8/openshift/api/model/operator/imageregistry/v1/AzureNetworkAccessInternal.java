@@ -62,7 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class AzureNetworkAccessInternal implements Editable<AzureNetworkAccessInternalBuilder> , KubernetesResource
+public class AzureNetworkAccessInternal implements Editable<AzureNetworkAccessInternalBuilder>, KubernetesResource
 {
 
     @JsonProperty("networkResourceGroupName")

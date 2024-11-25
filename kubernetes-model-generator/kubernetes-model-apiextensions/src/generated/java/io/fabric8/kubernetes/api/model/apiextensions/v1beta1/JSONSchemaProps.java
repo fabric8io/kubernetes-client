@@ -103,7 +103,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class JSONSchemaProps implements Editable<JSONSchemaPropsBuilder> , KubernetesResource
+public class JSONSchemaProps implements Editable<JSONSchemaPropsBuilder>, KubernetesResource
 {
 
     @JsonProperty("$ref")

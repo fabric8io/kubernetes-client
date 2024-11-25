@@ -31,7 +31,7 @@ import lombok.experimental.Accessors;
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class HostPathVolumeSource implements Editable<HostPathVolumeSourceBuilder> , KubernetesResource
+public class HostPathVolumeSource implements Editable<HostPathVolumeSourceBuilder>, KubernetesResource
 {
 
     @JsonProperty("path")

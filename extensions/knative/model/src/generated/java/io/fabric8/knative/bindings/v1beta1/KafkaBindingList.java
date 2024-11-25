@@ -75,7 +75,7 @@ import lombok.experimental.Accessors;
 @Version("v1beta1")
 @Group("bindings.knative.dev")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class KafkaBindingList implements Editable<KafkaBindingListBuilder> , KubernetesResource, KubernetesResourceList<io.fabric8.knative.bindings.v1beta1.KafkaBinding>
+public class KafkaBindingList implements Editable<KafkaBindingListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.knative.bindings.v1beta1.KafkaBinding>
 {
 
     /**

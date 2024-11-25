@@ -71,7 +71,7 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("messaging.knative.dev")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ChannelTemplateSpec implements Editable<ChannelTemplateSpecBuilder> , KubernetesResource, Namespaced
+public class ChannelTemplateSpec implements Editable<ChannelTemplateSpecBuilder>, KubernetesResource, Namespaced
 {
 
     /**

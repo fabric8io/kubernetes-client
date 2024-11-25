@@ -60,7 +60,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ConfigMapBuildSource implements Editable<ConfigMapBuildSourceBuilder> , KubernetesResource
+public class ConfigMapBuildSource implements Editable<ConfigMapBuildSourceBuilder>, KubernetesResource
 {
 
     @JsonProperty("configMap")

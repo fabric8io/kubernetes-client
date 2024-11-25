@@ -67,7 +67,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class SyncSetSpec implements Editable<SyncSetSpecBuilder> , KubernetesResource
+public class SyncSetSpec implements Editable<SyncSetSpecBuilder>, KubernetesResource
 {
 
     @JsonProperty("applyBehavior")

@@ -63,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ShardStatus implements Editable<ShardStatusBuilder> , KubernetesResource
+public class ShardStatus implements Editable<ShardStatusBuilder>, KubernetesResource
 {
 
     @JsonProperty("availableReplicas")

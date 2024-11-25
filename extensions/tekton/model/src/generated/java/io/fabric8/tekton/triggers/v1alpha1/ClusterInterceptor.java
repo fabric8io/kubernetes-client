@@ -72,7 +72,7 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("triggers.tekton.dev")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ClusterInterceptor implements Editable<ClusterInterceptorBuilder> , HasMetadata
+public class ClusterInterceptor implements Editable<ClusterInterceptorBuilder>, HasMetadata
 {
 
     /**
