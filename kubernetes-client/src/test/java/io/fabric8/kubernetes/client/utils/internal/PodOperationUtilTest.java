@@ -199,7 +199,7 @@ class PodOperationUtilTest {
   }
 
   @Test
-  void testGetLog() {
+  void getLog() {
     // Given
     PodResource p1 = mock(PodResource.class, Mockito.RETURNS_DEEP_STUBS);
     PodResource p2 = mock(PodResource.class, Mockito.RETURNS_DEEP_STUBS);

@@ -5,6 +5,7 @@
 #### Bugs
 * Fix #6038: Support for Gradle configuration cache
 * Fix #6214: Java generator does not recognize fields in CRDs other than metadata, spec, and status
+* Fix #6459: Pod log request sinceTime param correctly encoded
 * Fix #6632: Mock server creationTimestamp and deletionTimestamp formatted consistently (ISO 8601)
 
 #### Improvements
