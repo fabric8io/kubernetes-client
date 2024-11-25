@@ -65,7 +65,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.net.HttpURLConnection;
+import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
@@ -75,7 +78,6 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
 import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -1182,7 +1184,63 @@ class DefaultSharedIndexInformerTest {
 
   @Test
   void stopReceivingEventsWhenEventHandlerRemoved() {
-    fail();
+    String startResourceVersion = "1000";
+    var firstPod = new Pod();
+    var secondPod = new Pod();
+    var eventEmitTimeWait = 500L;
+
+    server.expect()
+        .withPath("/api/v1/pods?resourceVersion=0")
+        .andReturn(200, new PodListBuilder().withNewMetadata()
+            .withResourceVersion(startResourceVersion)
+            .endMetadata()
+            .withItems(Collections.emptyList())
+            .build())
+        .once();
+    server.expect()
+        .withPath("/api/v1/pods?allowWatchBookmarks=true&resourceVersion=" + startResourceVersion
+            + "&timeoutSeconds=600&watch=true")
+        .andUpgradeToWebSocket()
+        .open()
+        .waitFor(eventEmitTimeWait)
+        .andEmit(new WatchEvent(new PodBuilder().withNewMetadata()
+            .withNamespace("test")
+            .withName("pod1")
+            .withResourceVersion("1001")
+            .endMetadata()
+            .build(), "ADDED"))
+        .waitFor(2 * eventEmitTimeWait)
+        .andEmit(new WatchEvent(new PodBuilder().withNewMetadata()
+            .withNamespace("test")
+            .withName("pod2")
+            .withResourceVersion("1002")
+            .endMetadata()
+            .build(), "ADDED"))
+        .done()
+        .always();
+
+    var handler1 = new AddRecordingEventHandler();
+    var handler2 = new AddRecordingEventHandler();
+
+    try (SharedIndexInformer<Pod> informer = client.pods().inAnyNamespace().runnableInformer(0)) {
+      informer.run();
+      informer.addEventHandler(handler1);
+      informer.addEventHandler(handler2);
+
+      await().pollInterval(Duration.ofMillis(100)).untilAsserted(() -> {
+        assertThat(handler1.getAddedPods()).hasSize(1);
+        assertThat(handler2.getAddedPods()).hasSize(1);
+      });
+
+      informer.removeEventHandler(handler2);
+
+      await().pollDelay(Duration.ofMillis(eventEmitTimeWait))
+          .pollInterval(Duration.ofMillis(100)).untilAsserted(() -> {
+            assertThat(handler1.getAddedPods()).hasSize(2);
+            assertThat(handler2.getAddedPods()).hasSize(1);
+          });
+    }
+
   }
 
   @Test
@@ -1415,6 +1473,27 @@ class DefaultSharedIndexInformerTest {
     podSet.setSpec(podSetSpec);
 
     return podSet;
+  }
+
+  private class AddRecordingEventHandler implements ResourceEventHandler<Pod> {
+    private List<Pod> addedPods = new ArrayList<>();
+
+    @Override
+    public void onAdd(Pod obj) {
+      addedPods.add(obj);
+    }
+
+    @Override
+    public void onUpdate(Pod oldObj, Pod newObj) {
+    }
+
+    @Override
+    public void onDelete(Pod obj, boolean deletedFinalStateUnknown) {
+    }
+
+    public List<Pod> getAddedPods() {
+      return addedPods;
+    }
   }
 
 }
