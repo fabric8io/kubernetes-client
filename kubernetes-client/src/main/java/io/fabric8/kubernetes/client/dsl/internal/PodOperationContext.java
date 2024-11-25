@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.client.dsl.internal;
 
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ExecListener;
+import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.URLUtils.URLBuilder;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -143,7 +144,8 @@ public class PodOperationContext {
     if (sinceSeconds != null) {
       sb.append("&sinceSeconds=").append(sinceSeconds);
     } else if (sinceTimestamp != null) {
-      sb.append("&sinceTime=").append(sinceTimestamp);
+      // https://github.com/fabric8io/kubernetes-client/issues/6459
+      sb.append("&sinceTime=").append(URLUtils.encodeToUTF(sinceTimestamp).replace("%3A", ":"));
     }
     if (tailingLines != null) {
       sb.append("&tailLines=").append(tailingLines);
