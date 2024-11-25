@@ -29,6 +29,7 @@ import java.net.HttpURLConnection;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 
 import static io.fabric8.kubernetes.client.utils.Utils.generateId;
@@ -84,7 +85,8 @@ public class PostHandler implements KubernetesCrudDispatcherHandler {
     }
     resource.getMetadata().setNamespace(pathNamespace);
     resource.getMetadata().setUid(uuid.toString());
-    resource.getMetadata().setCreationTimestamp(ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ISO_INSTANT));
+    resource.getMetadata().setCreationTimestamp(
+        ZonedDateTime.now(ZoneOffset.UTC).truncatedTo(ChronoUnit.SECONDS).format(DateTimeFormatter.ISO_INSTANT));
     resource.getMetadata().setResourceVersion(String.valueOf(persistence.requestResourceVersion()));
     resource.getMetadata().setGeneration(1L);
   }

@@ -61,6 +61,18 @@ class KubernetesCrudDispatcherFinalizerTest extends KubernetesCrudDispatcherTest
   }
 
   @Test
+  @DisplayName("when deleting a resource, deletionTimestamp is set in ISO_INSTANT format")
+  void deleteResourceWithFinalizerSetsDeletionTimestamp() {
+    // Given
+    final Owl owl = createOwlWithFinalizer("owl-with-finalizer");
+    // When
+    client.resources(Owl.class).resource(owl).delete();
+    // Then
+    assertThat(client.resources(Owl.class).resource(owl).get().getMetadata().getDeletionTimestamp())
+        .matches("\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z");
+  }
+
+  @Test
   @DisplayName("when deleting a resource with a deletionTimestamp twice, then the deletionTimestamp doesn't change.")
   void deleteResourceWithFinalizerTwiceSameDeletionTimestamp() {
     // Given:
