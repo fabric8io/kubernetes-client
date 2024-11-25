@@ -119,13 +119,13 @@ class CompilationTest {
     config = config.toBuilder()
         .objectExtraAnnotations(true)
         .build();
+    final var fileJavaGenerator = new FileJavaGenerator(config, crd);
 
     // Assert
-    assertThatThrownBy(() -> {
-      // Act
-      new FileJavaGenerator(config, crd).run(tempDir);
-      javac().compile(getSources(tempDir));
-    }).as("The current CRD should not compile since it contains duplicate fields which are not marked as deprecated")
+    assertThatThrownBy(
+        // Act
+        () -> fileJavaGenerator.run(tempDir))
+        .as("The current CRD should not compile since it contains duplicate fields which are not marked as deprecated")
         .isInstanceOf(JavaGeneratorException.class);
   }
 

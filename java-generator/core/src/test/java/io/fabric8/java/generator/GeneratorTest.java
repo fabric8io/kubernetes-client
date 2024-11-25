@@ -17,9 +17,14 @@ package io.fabric8.java.generator;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.TextNode;
+import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
+import com.github.javaparser.ast.body.EnumDeclaration;
+import com.github.javaparser.ast.body.FieldDeclaration;
+import com.github.javaparser.ast.expr.NormalAnnotationExpr;
 import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
 import io.fabric8.java.generator.exceptions.JavaGeneratorException;
 import io.fabric8.java.generator.nodes.AbstractJSONSchema2Pojo;
+import io.fabric8.java.generator.nodes.GeneratorResult.ClassResult;
 import io.fabric8.java.generator.nodes.JArray;
 import io.fabric8.java.generator.nodes.JCRObject;
 import io.fabric8.java.generator.nodes.JEnum;
@@ -30,10 +35,9 @@ import io.fabric8.java.generator.nodes.ValidationProperties;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsOrBool;
 import io.fabric8.kubernetes.client.utils.Serialization;
+import org.assertj.core.api.OptionalAssert;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -80,11 +84,11 @@ class GeneratorTest {
     final var res = cro.generateJava();
 
     // Assert
-    assertThat(res.getTopLevelClasses()).singleElement().satisfies(classResult -> {
-      assertThat(classResult.getName()).isEqualTo("Type");
-      assertThat(classResult.getPackageDeclaration()).isPresent()
-          .hasValueSatisfying(packageDeclaration -> assertThat(packageDeclaration.getNameAsString()).isEqualTo("v1alpha1"));
-    });
+    assertThat(res.getTopLevelClasses()).singleElement()
+        .satisfies(classResult -> {
+          assertThat(classResult.getName()).isEqualTo("Type");
+          assertPackageDeclaration(classResult, "v1alpha1");
+        });
   }
 
   @Test
@@ -110,9 +114,11 @@ class GeneratorTest {
     final var res = cro.generateJava();
 
     // Assert
-    assertThat(res.getTopLevelClasses().get(0).getClassByName("Type")).isPresent()
-        .hasValueSatisfying(type -> assertThat(type.getImplementedTypes().get(0).getNameWithScope())
-            .isEqualTo("io.fabric8.kubernetes.api.model.Namespaced"));
+    assertThat(res.getTopLevelClasses()).singleElement()
+        .satisfies(classResult -> assertClassByName(classResult, "Type")
+            .hasValueSatisfying(declaration -> assertThat(declaration.getImplementedTypes()).singleElement()
+                .satisfies(
+                    type -> assertThat(type.getNameWithScope()).isEqualTo("io.fabric8.kubernetes.api.model.Namespaced"))));
   }
 
   @Test
@@ -138,8 +144,9 @@ class GeneratorTest {
     final var res = cro.generateJava();
 
     // Assert
-    assertThat(res.getTopLevelClasses().get(0).getClassByName("Type")).isPresent()
-        .hasValueSatisfying(type -> assertThat(type.getImplementedTypes()).isEmpty());
+    assertThat(res.getTopLevelClasses()).singleElement()
+        .satisfies(classResult -> assertClassByName(classResult, "Type")
+            .hasValueSatisfying(type -> assertThat(type.getImplementedTypes()).isEmpty()));
   }
 
   @Test
@@ -166,7 +173,7 @@ class GeneratorTest {
 
     // Assert
     assertThat(res.getTopLevelClasses()).singleElement()
-        .satisfies(classResult -> assertThat(classResult.getName()).isEqualTo("Type"));
+        .satisfies(classResult -> assertClassByName(classResult, "Type"));
   }
 
   @Test
@@ -312,7 +319,7 @@ class GeneratorTest {
     // Assert
     assertThat(obj.getType()).isEqualTo("v1alpha1.T");
     assertThat(res.getTopLevelClasses()).singleElement()
-        .satisfies(classResult -> assertThat(classResult.getName()).isEqualTo("T"));
+        .satisfies(classResult -> assertClassByName(classResult, "T"));
   }
 
   @Test
@@ -335,20 +342,18 @@ class GeneratorTest {
     // Assert
     assertThat(obj.getType()).isEqualTo("T");
     assertThat(res.getTopLevelClasses()).singleElement()
-        .satisfies(classResult -> assertThat(classResult.getName()).isEqualTo("T"));
+        .satisfies(classResult -> assertClassByName(classResult, "T"));
   }
 
   @Test
   void testObjectOfPrimitives() {
     // Arrange
-    final var props = new HashMap<String, JSONSchemaProps>();
     final var newBool = new JSONSchemaProps();
     newBool.setType("boolean");
-    props.put("o1", newBool);
     final var obj = new JObject(
         "v1alpha1",
         "t",
-        props,
+        Map.of("o1", newBool),
         null,
         false,
         defaultConfig,
@@ -361,29 +366,24 @@ class GeneratorTest {
 
     // Assert
     assertThat(obj.getType()).isEqualTo("v1alpha1.T");
-    assertThat(res.getTopLevelClasses()).singleElement().satisfies(classResult -> {
-      assertThat(classResult.getName()).isEqualTo("T");
-      assertThat(classResult.getClassByName("T")).isPresent().hasValueSatisfying(clz -> {
-        assertThat(clz.getFields()).hasSize(1);
-        assertThat(clz.getFieldByName("o1")).isPresent();
-      });
-    });
+    assertThat(res.getTopLevelClasses()).singleElement()
+        .satisfies(classResult -> assertClassByName(classResult, "T")
+            .hasValueSatisfying(declaration -> {
+              assertThat(declaration.getFields()).hasSize(1);
+              assertThat(declaration.getFieldByName("o1")).isPresent();
+            }));
   }
 
   @Test
   void testObjectWithRequiredField() {
     // Arrange
-    final var props = new HashMap<String, JSONSchemaProps>();
     final var newBool = new JSONSchemaProps();
     newBool.setType("boolean");
-    props.put("o1", newBool);
-    final var req = new ArrayList<String>(1);
-    req.add("o1");
     final var obj = new JObject(
         "v1alpha1",
         "t",
-        props,
-        req,
+        Map.of("o1", newBool),
+        List.of("o1"),
         false,
         defaultConfig,
         null,
@@ -394,9 +394,10 @@ class GeneratorTest {
     final var res = obj.generateJava();
 
     // Assert
-    assertThat(res.getTopLevelClasses().get(0).getClassByName("T")).isPresent()
-        .hasValueSatisfying(clz -> assertThat(clz.getFieldByName("o1")).isPresent()
-            .hasValueSatisfying(o1Field -> assertThat(o1Field.getAnnotationByName("Required")).isPresent()));
+    assertThat(res.getTopLevelClasses()).singleElement()
+        .satisfies(classResult -> assertClassByName(classResult, "T")
+            .hasValueSatisfying(declaration -> assertThat(declaration.getFieldByName("o1")).isPresent()
+                .hasValueSatisfying(field -> assertThat(field.getAnnotationByName("Required")).isPresent())));
   }
 
   @Test
@@ -405,21 +406,20 @@ class GeneratorTest {
     final var obj1 = new JObject(
         "v1alpha1",
         "t",
-        new HashMap<>(),
-        new ArrayList<>(),
+        Map.of(),
+        List.of(),
         false,
         defaultConfig,
         null,
         Boolean.FALSE,
         null);
-    final var config = new Config(null, null, false, new HashMap<>());
     final var obj2 = new JObject(
         "v1alpha1",
         "t",
-        new HashMap<>(),
-        new ArrayList<>(),
+        Map.of(),
+        List.of(),
         false,
-        config,
+        new Config(null, null, false, Map.of()),
         null,
         Boolean.FALSE,
         null);
@@ -430,161 +430,132 @@ class GeneratorTest {
     final var res2 = obj2.generateJava();
 
     // Assert
-    assertThat(res1.getTopLevelClasses().get(0).getClassByName("T")).isPresent()
-        .hasValueSatisfying(clz -> assertThat(clz.getAnnotationByName(generatedAnnotationName)).isPresent());
-    assertThat(res2.getTopLevelClasses().get(0).getClassByName("T")).isPresent()
-        .hasValueSatisfying(clz -> assertThat(clz.getAnnotationByName(generatedAnnotationName)).isNotPresent());
+    assertThat(res1.getTopLevelClasses()).singleElement()
+        .satisfies(classResult -> assertClassByName(classResult, "T")
+            .hasValueSatisfying(
+                declaration -> assertThat(declaration.getAnnotationByName(generatedAnnotationName)).isPresent()));
+    assertThat(res2.getTopLevelClasses()).singleElement()
+        .satisfies(classResult -> assertClassByName(classResult, "T")
+            .hasValueSatisfying(
+                declaration -> assertThat(declaration.getAnnotationByName(generatedAnnotationName)).isNotPresent()));
   }
 
   @Test
   void testDefaultEnum() {
     // Arrange
-    final var newEnum = new JSONSchemaProps();
-    newEnum.setType("string");
-    final var enumValues = new ArrayList<JsonNode>();
-    enumValues.add(new TextNode("foo"));
-    enumValues.add(new TextNode("bar"));
-    enumValues.add(new TextNode("baz"));
-    final var enu = new JEnum(
+    final var jEnum = new JEnum(
         "t",
         JAVA_LANG_STRING,
-        enumValues,
+        List.of(new TextNode("foo"), new TextNode("bar"), new TextNode("baz")),
         defaultConfig,
         null,
         Boolean.FALSE,
         null);
 
     // Act
-    final var res = enu.generateJava();
+    final var res = jEnum.generateJava();
 
     // Assert
-    assertThat(enu.getType()).isEqualTo("T");
-    assertThat(res.getInnerClasses()).singleElement().satisfies(classResult -> {
-      assertThat(classResult.getName()).isEqualTo("T");
-      assertThat(classResult.getEnumByName("T")).isPresent()
-          .hasValueSatisfying(enumDeclaration -> assertThat(enumDeclaration.getEntries()).satisfiesExactly(
-              ecd -> assertThat(ecd.getName().asString()).isEqualTo("FOO"),
-              ecd -> assertThat(ecd.getName().asString()).isEqualTo("BAR"),
-              ecd -> assertThat(ecd.getName().asString()).isEqualTo("BAZ")));
-    });
+    assertThat(jEnum.getType()).isEqualTo("T");
+    assertThat(res.getInnerClasses()).singleElement()
+        .satisfies(classResult -> assertEnumByName(classResult, "T")
+            .hasValueSatisfying(enumDeclaration -> assertThat(enumDeclaration.getEntries()).satisfiesExactly(
+                declaration -> assertThat(declaration.getName()).hasToString("FOO"),
+                declaration -> assertThat(declaration.getName()).hasToString("BAR"),
+                declaration -> assertThat(declaration.getName()).hasToString("BAZ"))));
   }
 
   @Test
   void testLongEnum() {
     // Arrange
-    final var newEnum = new JSONSchemaProps();
-    newEnum.setType("integer");
-    final var enumValues = new ArrayList<JsonNode>();
-    enumValues.add(new TextNode("1"));
-    enumValues.add(new TextNode("2"));
-    enumValues.add(new TextNode("3"));
-    final var enu = new JEnum(
+    final var jEnum = new JEnum(
         "t",
         JAVA_LANG_LONG,
-        enumValues,
+        List.of(new TextNode("1"), new TextNode("2"), new TextNode("3")),
         defaultConfig,
         null,
         Boolean.FALSE,
         null);
 
     // Act
-    final var res = enu.generateJava();
+    final var res = jEnum.generateJava();
 
     // Assert
-    assertThat(enu.getType()).isEqualTo("T");
-    assertThat(res.getInnerClasses()).singleElement().satisfies(classResult -> {
-      assertThat(classResult.getName()).isEqualTo("T");
-      assertThat(classResult.getEnumByName("T")).isPresent()
-          .hasValueSatisfying(enumDeclaration -> assertThat(enumDeclaration.getEntries()).satisfiesExactly(
-              ecd -> {
-                assertThat(ecd.getName().asString()).isEqualTo("V__1");
-                assertThat(ecd.getArgument(0).toString()).isEqualTo("1L");
-              },
-              ecd -> {
-                assertThat(ecd.getName().asString()).isEqualTo("V__2");
-                assertThat(ecd.getArgument(0).toString()).isEqualTo("2L");
-              },
-              ecd -> {
-                assertThat(ecd.getName().asString()).isEqualTo("V__3");
-                assertThat(ecd.getArgument(0).toString()).isEqualTo("3L");
-              }));
-    });
+    assertThat(jEnum.getType()).isEqualTo("T");
+    assertThat(res.getInnerClasses()).singleElement()
+        .satisfies(classResult -> assertEnumByName(classResult, "T")
+            .hasValueSatisfying(enumDeclaration -> assertThat(enumDeclaration.getEntries()).satisfiesExactly(
+                declaration -> {
+                  assertThat(declaration.getName()).hasToString("V__1");
+                  assertThat(declaration.getArgument(0)).hasToString("1L");
+                },
+                declaration -> {
+                  assertThat(declaration.getName()).hasToString("V__2");
+                  assertThat(declaration.getArgument(0)).hasToString("2L");
+                },
+                declaration -> {
+                  assertThat(declaration.getName()).hasToString("V__3");
+                  assertThat(declaration.getArgument(0)).hasToString("3L");
+                })));
   }
 
   @Test
   void testIntEnum() {
     // Arrange
-    final var newEnum = new JSONSchemaProps();
-    newEnum.setType("integer");
-    newEnum.setFormat("int32");
-    final var enumValues = new ArrayList<JsonNode>();
-    enumValues.add(new TextNode("1"));
-    enumValues.add(new TextNode("2"));
-    enumValues.add(new TextNode("3"));
-    final var enu = new JEnum(
+    final var jEnum = new JEnum(
         "t",
         JAVA_LANG_INTEGER,
-        enumValues,
+        List.of(new TextNode("1"), new TextNode("2"), new TextNode("3")),
         defaultConfig,
         null,
         Boolean.FALSE,
         null);
 
     // Act
-    final var res = enu.generateJava();
+    final var res = jEnum.generateJava();
 
     // Assert
-    assertThat(enu.getType()).isEqualTo("T");
-    assertThat(res.getInnerClasses()).singleElement().satisfies(classResult -> {
-      assertThat(classResult.getName()).isEqualTo("T");
-      assertThat(classResult.getEnumByName("T")).isPresent()
-          .hasValueSatisfying(enumDeclaration -> assertThat(enumDeclaration.getEntries()).satisfiesExactly(
-              ecd -> {
-                assertThat(ecd.getName().asString()).isEqualTo("V__1");
-                assertThat(ecd.getArgument(0).toString()).isEqualTo("1");
-              },
-              ecd -> {
-                assertThat(ecd.getName().asString()).isEqualTo("V__2");
-                assertThat(ecd.getArgument(0).toString()).isEqualTo("2");
-              },
-              ecd -> {
-                assertThat(ecd.getName().asString()).isEqualTo("V__3");
-                assertThat(ecd.getArgument(0).toString()).isEqualTo("3");
-              }));
-    });
+    assertThat(jEnum.getType()).isEqualTo("T");
+    assertThat(res.getInnerClasses()).singleElement()
+        .satisfies(classResult -> assertEnumByName(classResult, "T")
+            .hasValueSatisfying(enumDeclaration -> assertThat(enumDeclaration.getEntries()).satisfiesExactly(
+                declaration -> {
+                  assertThat(declaration.getName()).hasToString("V__1");
+                  assertThat(declaration.getArgument(0)).hasToString("1");
+                },
+                declaration -> {
+                  assertThat(declaration.getName()).hasToString("V__2");
+                  assertThat(declaration.getArgument(0)).hasToString("2");
+                },
+                declaration -> {
+                  assertThat(declaration.getName()).hasToString("V__3");
+                  assertThat(declaration.getArgument(0)).hasToString("3");
+                })));
   }
 
   @Test
   void testNotUppercaseEnum() {
     // Arrange
-    final var newEnum = new JSONSchemaProps();
-    newEnum.setType("string");
-    final var enumValues = new ArrayList<JsonNode>();
-    enumValues.add(new TextNode("foo"));
-    enumValues.add(new TextNode("bar"));
-    enumValues.add(new TextNode("baz"));
-    final var enu = new JEnum(
+    final var jEnum = new JEnum(
         "t",
         JAVA_LANG_STRING,
-        enumValues,
-        new Config(false, null, null, new HashMap<>()),
+        List.of(new TextNode("foo"), new TextNode("bar"), new TextNode("baz")),
+        new Config(false, null, null, Map.of()),
         null,
         Boolean.FALSE,
         null);
 
     // Act
-    final var res = enu.generateJava();
+    final var res = jEnum.generateJava();
 
     // Assert
-    assertThat(enu.getType()).isEqualTo("T");
-    assertThat(res.getInnerClasses()).singleElement().satisfies(classResult -> {
-      assertThat(classResult.getName()).isEqualTo("T");
-      assertThat(classResult.getEnumByName("T")).isPresent()
-          .hasValueSatisfying(enumDeclaration -> assertThat(enumDeclaration.getEntries()).satisfiesExactly(
-              ecd -> assertThat(ecd.getName().asString()).isEqualTo("foo"),
-              ecd -> assertThat(ecd.getName().asString()).isEqualTo("bar"),
-              ecd -> assertThat(ecd.getName().asString()).isEqualTo("baz")));
-    });
+    assertThat(jEnum.getType()).isEqualTo("T");
+    assertThat(res.getInnerClasses()).singleElement()
+        .satisfies(classResult -> assertEnumByName(classResult, "T")
+            .hasValueSatisfying(enumDeclaration -> assertThat(enumDeclaration.getEntries()).satisfiesExactly(
+                declaration -> assertThat(declaration.getName()).hasToString("foo"),
+                declaration -> assertThat(declaration.getName()).hasToString("bar"),
+                declaration -> assertThat(declaration.getName()).hasToString("baz"))));
   }
 
   @Test
@@ -612,7 +583,7 @@ class GeneratorTest {
     // Assert
     assertThat(array.getType()).isEqualTo("java.util.List<T>");
     assertThat(res.getTopLevelClasses()).singleElement()
-        .satisfies(classResult -> assertThat(classResult.getName()).isEqualTo("T"));
+        .satisfies(classResult -> assertClassByName(classResult, "T"));
   }
 
   @Test
@@ -640,20 +611,18 @@ class GeneratorTest {
     // Assert
     assertThat(map.getType()).isEqualTo("java.util.Map<java.lang.String, T>");
     assertThat(res.getTopLevelClasses()).singleElement()
-        .satisfies(classResult -> assertThat(classResult.getName()).isEqualTo("T"));
+        .satisfies(classResult -> assertClassByName(classResult, "T"));
   }
 
   @Test
   void testObjectOfObjects() {
     // Arrange
-    final var props = new HashMap<String, JSONSchemaProps>();
     final var newObj = new JSONSchemaProps();
     newObj.setType("object");
-    props.put("o1", newObj);
     final var obj = new JObject(
         null,
         "t",
-        props,
+        Map.of("o1", newObj),
         null,
         false,
         defaultConfig,
@@ -666,14 +635,9 @@ class GeneratorTest {
 
     // Assert
     assertThat(res.getTopLevelClasses()).satisfiesExactly(
-        classResult -> {
-          assertThat(classResult.getName()).isEqualTo("O1");
-          assertThat(classResult.getClassByName("O1")).isPresent();
-        }, classResult -> {
-          assertThat(classResult.getName()).isEqualTo("T");
-          assertThat(classResult.getClassByName("T")).isPresent()
-              .hasValueSatisfying(clz -> assertThat(clz.getFieldByName("o1")).isPresent());
-        });
+        classResult -> assertClassByName(classResult, "O1"),
+        classResult -> assertClassByName(classResult, "T")
+            .hasValueSatisfying(declaration -> assertThat(declaration.getFieldByName("o1")).isPresent()));
   }
 
   @Test
@@ -694,25 +658,21 @@ class GeneratorTest {
     final var res = obj.generateJava();
 
     // Assert
-    assertThat(res.getTopLevelClasses()).singleElement().satisfies(
-        classResult -> {
-          assertThat(classResult.getName()).isEqualTo("T");
-          assertThat(classResult.getClassByName("T")).isPresent().hasValueSatisfying(
-              coiDeclaration -> assertThat(coiDeclaration.getFieldByName("additionalProperties")).isPresent());
-        });
+    assertThat(res.getTopLevelClasses()).singleElement()
+        .satisfies(classResult -> assertClassByName(classResult, "T")
+            .hasValueSatisfying(declaration -> assertThat(declaration.getFieldByName("additionalProperties")).isPresent()));
   }
 
   @Test
   void testConfigToGeneratePreservedUnknownFields() {
     // Arrange
-    final var config = new Config(null, null, null, true, new HashMap<>(), new ArrayList<>(), null, null, null);
     final var obj = new JObject(
         null,
         "t",
         null,
         null,
         false,
-        config,
+        new Config(null, null, null, true, Map.of(), List.of(), null, null, null),
         null,
         Boolean.FALSE,
         null);
@@ -721,26 +681,20 @@ class GeneratorTest {
     final var res = obj.generateJava();
 
     // Assert
-    assertThat(res.getTopLevelClasses()).singleElement().satisfies(
-        classResult -> {
-          assertThat(classResult.getName()).isEqualTo("T");
-          assertThat(classResult.getClassByName("T")).isPresent().hasValueSatisfying(
-              coiDeclaration -> assertThat(coiDeclaration.getFieldByName("additionalProperties")).isPresent());
-        });
+    assertThat(res.getTopLevelClasses()).singleElement()
+        .satisfies(classResult -> assertClassByName(classResult, "T")
+            .hasValueSatisfying(declaration -> assertThat(declaration.getFieldByName("additionalProperties")).isPresent()));
   }
 
   @Test
   void testObjectWithSpecialFieldNames() {
     // Arrange
-    final var props = new HashMap<String, JSONSchemaProps>();
     final var newObj = new JSONSchemaProps();
     newObj.setType("string");
-    props.put("description", newObj);
-
     final var obj = new JObject(
         null,
         "t",
-        props,
+        Map.of("description", newObj),
         null,
         false,
         defaultConfig,
@@ -752,126 +706,104 @@ class GeneratorTest {
     final var res = obj.generateJava();
 
     // Assert
-    assertThat(res.getTopLevelClasses()).singleElement().satisfies(
-        classResult -> {
-          assertThat(classResult.getName()).isEqualTo("T");
-          assertThat(classResult.getClassByName("T")).isPresent().hasValueSatisfying(
-              coiDeclaration -> assertThat(coiDeclaration.getFieldByName("description")).isPresent());
-        });
+    assertThat(res.getTopLevelClasses()).singleElement()
+        .satisfies(classResult -> assertClassByName(classResult, "T")
+            .hasValueSatisfying(declaration -> assertThat(declaration.getFieldByName("description")).isPresent()));
   }
 
   @Test
   void testObjectNullableFieldsManagement() {
     // Arrange
-    final var props = new HashMap<String, JSONSchemaProps>();
     final var nullableObj = new JSONSchemaProps();
     nullableObj.setType("object");
     nullableObj.setNullable(Boolean.TRUE);
-    props.put("o1", nullableObj);
-
     final var nonNullableObj = new JSONSchemaProps();
     nonNullableObj.setType("object");
     nonNullableObj.setNullable(Boolean.FALSE);
-    props.put("o2", nonNullableObj);
-
-    final var obj = new JObject(null, "t", props, null, false, defaultConfig, null, Boolean.FALSE, null);
+    final var obj = new JObject(
+        null,
+        "t",
+        Map.of("o1", nullableObj, "o2", nonNullableObj),
+        null,
+        false,
+        defaultConfig,
+        null,
+        Boolean.FALSE,
+        null);
 
     // Act
     final var res = obj.generateJava();
 
     // Assert
     assertThat(res.getTopLevelClasses()).satisfiesExactly(
-        classResult -> {
-          assertThat(classResult.getName()).isEqualTo("O1");
-          assertThat(classResult.getClassByName("O1")).isPresent();
-        }, classResult -> {
-          assertThat(classResult.getName()).isEqualTo("O2");
-          assertThat(classResult.getClassByName("O2")).isPresent();
-        }, classResult -> {
-          assertThat(classResult.getName()).isEqualTo("T");
-          assertThat(classResult.getClassByName("T")).isPresent()
-              .hasValueSatisfying(clz -> {
-                assertThat(clz.getFields()).hasSize(2);
-                assertThat(clz.getFieldByName("o1")).isPresent().hasValueSatisfying(o1Field -> {
-                  assertThat(o1Field.getAnnotations()).hasSize(3);
-                  assertThat(o1Field.getAnnotationByName("com.fasterxml.jackson.annotation.JsonSetter")).isPresent()
-                      .hasValueSatisfying(annotationExpr -> {
-                        assertThat(annotationExpr).isInstanceOf(SingleMemberAnnotationExpr.class);
-                        SingleMemberAnnotationExpr annotation = (SingleMemberAnnotationExpr) annotationExpr;
-                        assertThat(annotation.getMemberValue().toString())
-                            .isEqualTo("nulls = com.fasterxml.jackson.annotation.Nulls.SET");
-                      });
-                  assertThat(o1Field.getAnnotationByName("com.fasterxml.jackson.annotation.JsonProperty")).isPresent()
-                      .hasValueSatisfying(annotationExpr -> {
-                        assertThat(annotationExpr).isInstanceOf(SingleMemberAnnotationExpr.class);
-                        SingleMemberAnnotationExpr annotation = (SingleMemberAnnotationExpr) annotationExpr;
-                        assertThat(annotation.getMemberValue().toString()).isEqualTo("\"o1\"");
-                      });
-                  assertThat(o1Field.getAnnotationByName("io.fabric8.generator.annotation.Nullable")).isPresent();
-                });
-                assertThat(clz.getFieldByName("o2")).isPresent().hasValueSatisfying(o2Field -> {
-                  assertThat(o2Field.getAnnotations()).hasSize(2);
-                  assertThat(o2Field.getAnnotationByName("com.fasterxml.jackson.annotation.JsonSetter")).isPresent()
-                      .hasValueSatisfying(annotationExpr -> {
-                        assertThat(annotationExpr).isInstanceOf(SingleMemberAnnotationExpr.class);
-                        SingleMemberAnnotationExpr annotation = (SingleMemberAnnotationExpr) annotationExpr;
-                        assertThat(annotation.getMemberValue().toString())
-                            .isEqualTo("nulls = com.fasterxml.jackson.annotation.Nulls.SKIP");
-                      });
-                  assertThat(o2Field.getAnnotationByName("com.fasterxml.jackson.annotation.JsonProperty")).isPresent()
-                      .hasValueSatisfying(annotationExpr -> {
-                        assertThat(annotationExpr).isInstanceOf(SingleMemberAnnotationExpr.class);
-                        SingleMemberAnnotationExpr annotation = (SingleMemberAnnotationExpr) annotationExpr;
-                        assertThat(annotation.getMemberValue().toString()).isEqualTo("\"o2\"");
-                      });
-                });
+        classResult -> assertClassByName(classResult, "O1"),
+        classResult -> assertClassByName(classResult, "O2"),
+        classResult -> assertClassByName(classResult, "T")
+            .hasValueSatisfying(declaration -> {
+              assertThat(declaration.getFields()).hasSize(2);
+              assertThat(declaration.getFieldByName("o1")).isPresent().hasValueSatisfying(field -> {
+                assertThat(field.getAnnotations()).hasSize(3);
+                assertAnnotationValue(field, "com.fasterxml.jackson.annotation.JsonSetter",
+                    "nulls = com.fasterxml.jackson.annotation.Nulls.SET");
+                assertAnnotationValue(field, "com.fasterxml.jackson.annotation.JsonProperty", "\"o1\"");
+                assertAnnotationValue(field, "io.fabric8.generator.annotation.Nullable", null);
               });
-        });
+              assertThat(declaration.getFieldByName("o2")).isPresent().hasValueSatisfying(field -> {
+                assertThat(field.getAnnotations()).hasSize(2);
+                assertAnnotationValue(field, "com.fasterxml.jackson.annotation.JsonSetter",
+                    "nulls = com.fasterxml.jackson.annotation.Nulls.SKIP");
+                assertAnnotationValue(field, "com.fasterxml.jackson.annotation.JsonProperty", "\"o2\"");
+              });
+            }));
   }
 
   @Test
   void testObjectWithAdditionalPropertiesTrue() {
     // Arrange
-    final var props = new HashMap<String, JSONSchemaProps>();
     final var obj = new JSONSchemaProps();
     obj.setType("object");
     obj.setAdditionalProperties(new JSONSchemaPropsOrBool(true, null));
-    props.put("o1", obj);
-
-    final var jobj = new JObject(null, "t", props, null, false, defaultConfig, null, Boolean.FALSE, null);
+    final var jobj = new JObject(
+        null,
+        "t",
+        Map.of("o1", obj),
+        null,
+        false,
+        defaultConfig,
+        null,
+        Boolean.FALSE,
+        null);
 
     // Act
     final var res = jobj.generateJava();
 
     // Assert
-    assertThat(res.getTopLevelClasses()).singleElement().satisfies(
-        classResult -> {
-          assertThat(classResult.getName()).isEqualTo("T");
-          assertThat(classResult.getClassByName("T")).isPresent().hasValueSatisfying(clz -> {
-            assertThat(clz.getFields()).hasSize(1);
-            assertThat(clz.getFieldByName("o1")).isPresent()
-                .hasValueSatisfying(o1Field -> assertThat(o1Field.getElementType().asString())
-                    .isEqualTo("io.fabric8.kubernetes.api.model.AnyType"));
-          });
-        });
+    assertThat(res.getTopLevelClasses()).singleElement()
+        .satisfies(classResult -> assertClassByName(classResult, "T")
+            .hasValueSatisfying(declaration -> {
+              assertThat(declaration.getFields()).hasSize(1);
+              assertFieldElementType(declaration, "o1", "io.fabric8.kubernetes.api.model.AnyType");
+            }));
   }
 
   @Test
   void testClassNamesDisambiguationWithPackageNesting() {
     // Arrange
-    final var props = new HashMap<String, JSONSchemaProps>();
     final var newObj1 = new JSONSchemaProps();
-    final var newObj2 = new JSONSchemaProps();
     newObj1.setType("object");
+    final var newObj2 = new JSONSchemaProps();
     newObj2.setType("object");
-    final var obj2Props = new HashMap<String, JSONSchemaProps>();
-    obj2Props.put("o1", newObj1);
-    obj2Props.put("o2", newObj1);
-    obj2Props.put("o3", newObj1);
-    newObj2.setProperties(obj2Props);
-    props.put("o1", newObj1);
-    props.put("o2", newObj2);
-    final var obj = new JObject("v1alpha1", "t", props, null, false, defaultConfig, null, Boolean.FALSE, null);
+    newObj2.setProperties(Map.of("o1", newObj1, "o2", newObj1, "o3", newObj1));
+    final var obj = new JObject(
+        "v1alpha1",
+        "t",
+        Map.of("o1", newObj1, "o2", newObj2),
+        null,
+        false,
+        defaultConfig,
+        null,
+        Boolean.FALSE,
+        null);
 
     // Act
     final var res = obj.generateJava();
@@ -879,54 +811,32 @@ class GeneratorTest {
     // Assert
     assertThat(res.getTopLevelClasses()).satisfiesExactly(
         classResult -> {
-          assertThat(classResult.getName()).isEqualTo("O1");
-          assertThat(classResult.getPackageDeclaration()).isPresent()
-              .hasValueSatisfying(
-                  packageDeclaration -> assertThat(packageDeclaration.getNameAsString()).isEqualTo("v1alpha1.t"));
-          assertThat(classResult.getClassByName("O1")).isPresent();
+          assertPackageDeclaration(classResult, "v1alpha1.t");
+          assertClassByName(classResult, "O1");
         }, classResult -> {
-          assertThat(classResult.getName()).isEqualTo("O1");
-          assertThat(classResult.getPackageDeclaration()).isPresent()
-              .hasValueSatisfying(
-                  packageDeclaration -> assertThat(packageDeclaration.getNameAsString()).isEqualTo("v1alpha1.t.o2"));
-          assertThat(classResult.getClassByName("O1")).isPresent();
+          assertPackageDeclaration(classResult, "v1alpha1.t.o2");
+          assertClassByName(classResult, "O1");
         }, classResult -> {
-          assertThat(classResult.getName()).isEqualTo("O2");
-          assertThat(classResult.getPackageDeclaration()).isPresent()
-              .hasValueSatisfying(
-                  packageDeclaration -> assertThat(packageDeclaration.getNameAsString()).isEqualTo("v1alpha1.t.o2"));
-          assertThat(classResult.getClassByName("O2")).isPresent();
+          assertPackageDeclaration(classResult, "v1alpha1.t.o2");
+          assertClassByName(classResult, "O2");
         }, classResult -> {
-          assertThat(classResult.getName()).isEqualTo("O3");
-          assertThat(classResult.getPackageDeclaration()).isPresent()
-              .hasValueSatisfying(
-                  packageDeclaration -> assertThat(packageDeclaration.getNameAsString()).isEqualTo("v1alpha1.t.o2"));
-          assertThat(classResult.getClassByName("O3")).isPresent();
+          assertPackageDeclaration(classResult, "v1alpha1.t.o2");
+          assertClassByName(classResult, "O3");
         }, classResult -> {
-          assertThat(classResult.getName()).isEqualTo("O2");
-          assertThat(classResult.getPackageDeclaration()).isPresent()
-              .hasValueSatisfying(
-                  packageDeclaration -> assertThat(packageDeclaration.getNameAsString()).isEqualTo("v1alpha1.t"));
-          assertThat(classResult.getClassByName("O2")).isPresent().hasValueSatisfying(clz -> {
-            assertThat(clz.getFields()).hasSize(3);
-            assertThat(clz.getFieldByName("o1")).isPresent()
-                .hasValueSatisfying(o1Field -> assertThat(o1Field.getElementType().asString()).isEqualTo("v1alpha1.t.o2.O1"));
-            assertThat(clz.getFieldByName("o2")).isPresent()
-                .hasValueSatisfying(o2Field -> assertThat(o2Field.getElementType().asString()).isEqualTo("v1alpha1.t.o2.O2"));
-            assertThat(clz.getFieldByName("o3")).isPresent()
-                .hasValueSatisfying(o3Field -> assertThat(o3Field.getElementType().asString()).isEqualTo("v1alpha1.t.o2.O3"));
+          assertPackageDeclaration(classResult, "v1alpha1.t");
+          assertClassByName(classResult, "O2").hasValueSatisfying(declaration -> {
+            assertThat(declaration.getFields()).hasSize(3);
+            assertFieldElementType(declaration, "o1", "v1alpha1.t.o2.O1");
+            assertFieldElementType(declaration, "o2", "v1alpha1.t.o2.O2");
+            assertFieldElementType(declaration, "o3", "v1alpha1.t.o2.O3");
           });
         }, classResult -> {
-          assertThat(classResult.getName()).isEqualTo("T");
-          assertThat(classResult.getPackageDeclaration()).isPresent()
-              .hasValueSatisfying(packageDeclaration -> assertThat(packageDeclaration.getNameAsString()).isEqualTo("v1alpha1"));
-          assertThat(classResult.getClassByName("T")).isPresent()
-              .hasValueSatisfying(clz -> {
-                assertThat(clz.getFields()).hasSize(2);
-                assertThat(clz.getFieldByName("o1")).isPresent()
-                    .hasValueSatisfying(o1Field -> assertThat(o1Field.getElementType().asString()).isEqualTo("v1alpha1.t.O1"));
-                assertThat(clz.getFieldByName("o2")).isPresent()
-                    .hasValueSatisfying(o2Field -> assertThat(o2Field.getElementType().asString()).isEqualTo("v1alpha1.t.O2"));
+          assertPackageDeclaration(classResult, "v1alpha1");
+          assertClassByName(classResult, "T")
+              .hasValueSatisfying(declaration -> {
+                assertThat(declaration.getFields()).hasSize(2);
+                assertFieldElementType(declaration, "o1", "v1alpha1.t.O1");
+                assertFieldElementType(declaration, "o2", "v1alpha1.t.O2");
               });
         });
   }
@@ -934,59 +844,52 @@ class GeneratorTest {
   @Test
   void testObjectDefaultFieldsManagement() {
     // Arrange
-    final var props = new HashMap<String, JSONSchemaProps>();
-
-    final var objWithDefaultValues = new JSONSchemaProps();
-    objWithDefaultValues.setType("object");
     final var jsonContent = "{\"limits\":{\"memory\":\"1024Mi\",\"cpu\":\"\"},\"requests\":{\"memory\":\"1024Mi\",\"cpu\":\"1\"}}";
     final var defaultValue = Serialization.unmarshal(jsonContent, JsonNode.class);
+    final var objWithDefaultValues = new JSONSchemaProps();
+    objWithDefaultValues.setType("object");
     objWithDefaultValues.setDefault(defaultValue);
-    props.put("o1", objWithDefaultValues);
-
     final var objWithoutDefaultValues = new JSONSchemaProps();
     objWithoutDefaultValues.setType("object");
-    props.put("o2", objWithoutDefaultValues);
-
-    final var obj = new JObject(null, "t", props, null, false, defaultConfig, null, Boolean.FALSE, null);
+    final var obj = new JObject(
+        null,
+        "t",
+        Map.of("o1", objWithDefaultValues, "o2", objWithoutDefaultValues),
+        null,
+        false,
+        defaultConfig,
+        null,
+        Boolean.FALSE,
+        null);
 
     // Act
     final var res = obj.generateJava();
 
     // Assert
     assertThat(res.getTopLevelClasses()).satisfiesExactly(
-        classResult -> {
-          assertThat(classResult.getName()).isEqualTo("O1");
-          assertThat(classResult.getClassByName("O1")).isPresent();
-        }, classResult -> {
-          assertThat(classResult.getName()).isEqualTo("O2");
-          assertThat(classResult.getClassByName("O2")).isPresent();
-        }, classResult -> {
-          assertThat(classResult.getName()).isEqualTo("T");
-          assertThat(classResult.getClassByName("T")).isPresent()
-              .hasValueSatisfying(clz -> {
-                assertThat(clz.getFields()).hasSize(2);
-                assertThat(clz.getFieldByName("o1")).isPresent()
-                    .hasValueSatisfying(o1Field -> assertThat(o1Field.getVariable(0)).isNotNull()
-                        .satisfies(variableDeclarator -> assertThat(variableDeclarator.getInitializer()).isPresent()));
-                assertThat(clz.getFieldByName("o2")).isPresent()
-                    .hasValueSatisfying(o2Field -> assertThat(o2Field.getVariable(0)).isNotNull()
-                        .satisfies(variableDeclarator -> assertThat(variableDeclarator.getInitializer()).isNotPresent()));
-              });
-        });
+        classResult -> assertClassByName(classResult, "O1"),
+        classResult -> assertClassByName(classResult, "O2"),
+        classResult -> assertClassByName(classResult, "T")
+            .hasValueSatisfying(declaration -> {
+              assertThat(declaration.getFields()).hasSize(2);
+              assertThat(declaration.getFieldByName("o1")).isPresent()
+                  .hasValueSatisfying(field -> assertThat(field.getVariables()).singleElement()
+                      .satisfies(declarator -> assertThat(declarator.getInitializer()).isPresent()));
+              assertThat(declaration.getFieldByName("o2")).isPresent()
+                  .hasValueSatisfying(field -> assertThat(field.getVariables()).singleElement()
+                      .satisfies(declarator -> assertThat(declarator.getInitializer()).isNotPresent()));
+            }));
   }
 
   @Test
   void testExactlyMoreThanOneDuplicatedFieldFailsWithException() {
     // Arrange
-    final var props = new HashMap<String, JSONSchemaProps>();
-
     final var duplicatedFieldObject = new JSONSchemaProps();
     duplicatedFieldObject.setType("boolean");
     duplicatedFieldObject.setDescription("This field is JUST FOR testing purposes.");
-    props.put("test_Dup", duplicatedFieldObject);
     duplicatedFieldObject.setDescription("Deprecated: This field is JUST FOR testing purposes.");
-    props.put("test Dup", duplicatedFieldObject);
-    props.put("test.Dup", duplicatedFieldObject);
+    final var props = Map.of("test_Dup", duplicatedFieldObject, "test Dup", duplicatedFieldObject, "test.Dup",
+        duplicatedFieldObject);
 
     // Assert
     assertThatThrownBy(
@@ -999,13 +902,10 @@ class GeneratorTest {
   @Test
   void testExactlyDuplicatedFieldNotMarkedAsDeprecatedFailsWithException() {
     // Arrange
-    final var props = new HashMap<String, JSONSchemaProps>();
-
     final var duplicatedFieldObject = new JSONSchemaProps();
     duplicatedFieldObject.setType("boolean");
     duplicatedFieldObject.setDescription("This field is JUST FOR testing purposes.");
-    props.put("testDup", duplicatedFieldObject);
-    props.put("test-Dup", duplicatedFieldObject);
+    final var props = Map.of("testDup", duplicatedFieldObject, "test-Dup", duplicatedFieldObject);
 
     // Assert
     assertThatThrownBy(
@@ -1036,5 +936,43 @@ class GeneratorTest {
     // Assert
     assertThat(obj.getType()).isEqualTo("org.test.ExistingJavaType");
     assertThat(res.getTopLevelClasses()).isEmpty();
+  }
+
+  private static OptionalAssert<ClassOrInterfaceDeclaration> assertClassByName(ClassResult classResult,
+      String expectedClassName) {
+    assertThat(classResult.getName()).isEqualTo(expectedClassName);
+    return assertThat(classResult.getClassByName(expectedClassName)).isPresent();
+  }
+
+  @SuppressWarnings("SameParameterValue")
+  private static OptionalAssert<EnumDeclaration> assertEnumByName(ClassResult classResult,
+      String expectedClassName) {
+    assertThat(classResult.getName()).isEqualTo(expectedClassName);
+    return assertThat(classResult.getEnumByName(expectedClassName)).isPresent();
+  }
+
+  private static void assertAnnotationValue(FieldDeclaration field, String annotationName, String expectedMemberValue) {
+    assertThat(field.getAnnotationByName(annotationName)).isPresent()
+        .hasValueSatisfying(annotationExpr -> {
+          if (expectedMemberValue != null) {
+            assertThat(annotationExpr).isInstanceOf(SingleMemberAnnotationExpr.class);
+            final var annotation = (SingleMemberAnnotationExpr) annotationExpr;
+            assertThat(annotation.getMemberValue()).hasToString(expectedMemberValue);
+          } else {
+            assertThat(annotationExpr).isInstanceOf(NormalAnnotationExpr.class);
+          }
+        });
+  }
+
+  private static void assertFieldElementType(ClassOrInterfaceDeclaration declaration, String fieldName,
+      String expectedElementType) {
+    assertThat(declaration.getFieldByName(fieldName)).isPresent()
+        .hasValueSatisfying(field -> assertThat(field.getElementType().asString())
+            .isEqualTo(expectedElementType));
+  }
+
+  private static void assertPackageDeclaration(ClassResult classResult, String expectedPackageName) {
+    assertThat(classResult.getPackageDeclaration()).isPresent()
+        .hasValueSatisfying(declaration -> assertThat(declaration.getNameAsString()).isEqualTo(expectedPackageName));
   }
 }
