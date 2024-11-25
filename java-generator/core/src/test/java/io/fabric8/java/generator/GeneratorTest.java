@@ -20,7 +20,6 @@ import com.fasterxml.jackson.databind.node.TextNode;
 import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
 import io.fabric8.java.generator.exceptions.JavaGeneratorException;
 import io.fabric8.java.generator.nodes.AbstractJSONSchema2Pojo;
-import io.fabric8.java.generator.nodes.GeneratorResult;
 import io.fabric8.java.generator.nodes.JArray;
 import io.fabric8.java.generator.nodes.JCRObject;
 import io.fabric8.java.generator.nodes.JEnum;
@@ -34,7 +33,6 @@ import io.fabric8.kubernetes.client.utils.Serialization;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,7 +51,7 @@ class GeneratorTest {
   @Test
   void testCorrectInterpolationOfPackage() {
     // Act
-    String packageName = groupToPackage("test.org");
+    final var packageName = groupToPackage("test.org");
 
     // Assert
     assertThat(packageName).isEqualTo("org.test");
@@ -62,14 +60,14 @@ class GeneratorTest {
   @Test
   void testCR() {
     // Arrange
-    JCRObject cro = new JCRObject(
+    final var cro = new JCRObject(
         "v1alpha1",
         "Type",
         "g",
         "v",
         "Namespaced",
-        Collections.emptyMap(),
-        Collections.emptyList(),
+        Map.of(),
+        List.of(),
         false,
         "",
         true,
@@ -79,7 +77,7 @@ class GeneratorTest {
         defaultConfig);
 
     // Act
-    GeneratorResult res = cro.generateJava();
+    final var res = cro.generateJava();
 
     // Assert
     assertThat(res.getTopLevelClasses()).singleElement().satisfies(classResult -> {
@@ -92,14 +90,14 @@ class GeneratorTest {
   @Test
   void testNamespacedCR() {
     // Arrange
-    JCRObject cro = new JCRObject(
+    final var cro = new JCRObject(
         null,
         "Type",
         "g",
         "v",
         "Namespaced",
-        Collections.emptyMap(),
-        Collections.emptyList(),
+        Map.of(),
+        List.of(),
         false,
         "",
         true,
@@ -109,7 +107,7 @@ class GeneratorTest {
         defaultConfig);
 
     // Act
-    GeneratorResult res = cro.generateJava();
+    final var res = cro.generateJava();
 
     // Assert
     assertThat(res.getTopLevelClasses().get(0).getClassByName("Type")).isPresent()
@@ -120,14 +118,14 @@ class GeneratorTest {
   @Test
   void testClusterScopeCR() {
     // Arrange
-    JCRObject cro = new JCRObject(
+    final var cro = new JCRObject(
         null,
         "Type",
         "g",
         "v",
         "Cluster",
-        Collections.emptyMap(),
-        Collections.emptyList(),
+        Map.of(),
+        List.of(),
         false,
         "",
         true,
@@ -137,7 +135,7 @@ class GeneratorTest {
         defaultConfig);
 
     // Act
-    GeneratorResult res = cro.generateJava();
+    final var res = cro.generateJava();
 
     // Assert
     assertThat(res.getTopLevelClasses().get(0).getClassByName("Type")).isPresent()
@@ -147,14 +145,14 @@ class GeneratorTest {
   @Test
   void testCRWithoutNamespace() {
     // Arrange
-    JCRObject cro = new JCRObject(
+    final var cro = new JCRObject(
         null,
         "Type",
         "g",
         "v",
         "Namespaced",
-        Collections.emptyMap(),
-        Collections.emptyList(),
+        Map.of(),
+        List.of(),
         false,
         "",
         true,
@@ -164,7 +162,7 @@ class GeneratorTest {
         defaultConfig);
 
     // Act
-    GeneratorResult res = cro.generateJava();
+    final var res = cro.generateJava();
 
     // Assert
     assertThat(res.getTopLevelClasses()).singleElement()
@@ -174,7 +172,7 @@ class GeneratorTest {
   @Test
   void testPrimitive() {
     // Arrange
-    JPrimitive primitive = new JPrimitive(
+    final var primitive = new JPrimitive(
         "test",
         defaultConfig,
         null,
@@ -183,7 +181,7 @@ class GeneratorTest {
         null);
 
     // Act
-    GeneratorResult res = primitive.generateJava();
+    final var res = primitive.generateJava();
 
     // Assert
     assertThat(primitive.getType()).isEqualTo("test");
@@ -193,14 +191,14 @@ class GeneratorTest {
   @Test
   void testPrimitiveWithNumericValidationConstraints() {
     // Arrange
-    final Double expectedMaximum = 3.14;
-    final Double expectedMinimum = 0.0;
-    ValidationProperties validationProperties = ValidationProperties.Builder
+    final var expectedMaximum = 3.14d;
+    final var expectedMinimum = 0.0d;
+    final var validationProperties = ValidationProperties.Builder
         .getInstance()
         .withMaximum(expectedMaximum)
         .withMinimum(expectedMinimum)
         .build();
-    JPrimitive primitive = new JPrimitive(
+    final var primitive = new JPrimitive(
         "test",
         defaultConfig,
         null,
@@ -209,7 +207,7 @@ class GeneratorTest {
         validationProperties);
 
     // Act
-    GeneratorResult res = primitive.generateJava();
+    final var res = primitive.generateJava();
 
     // Assert
     assertThat(primitive.getType()).isEqualTo("test");
@@ -222,12 +220,12 @@ class GeneratorTest {
   @Test
   void testPrimitiveWithAlphanumericValidationConstraints() {
     // Arrange
-    final String expectedPattern = ".*whatever.*";
-    ValidationProperties validationProperties = ValidationProperties.Builder
+    final var expectedPattern = ".*whatever.*";
+    final var validationProperties = ValidationProperties.Builder
         .getInstance()
         .withPattern(expectedPattern)
         .build();
-    JPrimitive primitive = new JPrimitive(
+    final var primitive = new JPrimitive(
         "test",
         defaultConfig,
         null,
@@ -236,7 +234,7 @@ class GeneratorTest {
         validationProperties);
 
     // Act
-    GeneratorResult res = primitive.generateJava();
+    final var res = primitive.generateJava();
 
     // Assert
     assertThat(primitive.getType()).isEqualTo("test");
@@ -249,7 +247,7 @@ class GeneratorTest {
   @Test
   void testArrayOfPrimitives() {
     // Arrange
-    JArray array = new JArray(
+    final var array = new JArray(
         new JPrimitive(
             "primitive",
             defaultConfig,
@@ -263,7 +261,7 @@ class GeneratorTest {
         null);
 
     // Act
-    GeneratorResult res = array.generateJava();
+    final var res = array.generateJava();
 
     // Assert
     assertThat(array.getType()).isEqualTo("java.util.List<primitive>");
@@ -273,7 +271,7 @@ class GeneratorTest {
   @Test
   void testMapOfPrimitives() {
     // Arrange
-    JMap map = new JMap(
+    final var map = new JMap(
         new JPrimitive(
             "primitive",
             defaultConfig,
@@ -287,7 +285,7 @@ class GeneratorTest {
         null);
 
     // Act
-    GeneratorResult res = map.generateJava();
+    final var res = map.generateJava();
 
     // Assert
     assertThat(map.getType()).isEqualTo("java.util.Map<java.lang.String, primitive>");
@@ -297,7 +295,7 @@ class GeneratorTest {
   @Test
   void testEmptyObject() {
     // Arrange
-    JObject obj = new JObject(
+    final var obj = new JObject(
         "v1alpha1",
         "t",
         null,
@@ -309,7 +307,7 @@ class GeneratorTest {
         null);
 
     // Act
-    GeneratorResult res = obj.generateJava();
+    final var res = obj.generateJava();
 
     // Assert
     assertThat(obj.getType()).isEqualTo("v1alpha1.T");
@@ -320,7 +318,7 @@ class GeneratorTest {
   @Test
   void testEmptyObjectWithoutNamespace() {
     // Arrange
-    JObject obj = new JObject(
+    final var obj = new JObject(
         null,
         "t",
         null,
@@ -332,7 +330,7 @@ class GeneratorTest {
         null);
 
     // Act
-    GeneratorResult res = obj.generateJava();
+    final var res = obj.generateJava();
 
     // Assert
     assertThat(obj.getType()).isEqualTo("T");
@@ -343,11 +341,11 @@ class GeneratorTest {
   @Test
   void testObjectOfPrimitives() {
     // Arrange
-    Map<String, JSONSchemaProps> props = new HashMap<>();
-    JSONSchemaProps newBool = new JSONSchemaProps();
+    final var props = new HashMap<String, JSONSchemaProps>();
+    final var newBool = new JSONSchemaProps();
     newBool.setType("boolean");
     props.put("o1", newBool);
-    JObject obj = new JObject(
+    final var obj = new JObject(
         "v1alpha1",
         "t",
         props,
@@ -359,7 +357,7 @@ class GeneratorTest {
         null);
 
     // Act
-    GeneratorResult res = obj.generateJava();
+    final var res = obj.generateJava();
 
     // Assert
     assertThat(obj.getType()).isEqualTo("v1alpha1.T");
@@ -375,13 +373,13 @@ class GeneratorTest {
   @Test
   void testObjectWithRequiredField() {
     // Arrange
-    Map<String, JSONSchemaProps> props = new HashMap<>();
-    JSONSchemaProps newBool = new JSONSchemaProps();
+    final var props = new HashMap<String, JSONSchemaProps>();
+    final var newBool = new JSONSchemaProps();
     newBool.setType("boolean");
     props.put("o1", newBool);
-    List<String> req = new ArrayList<>(1);
+    final var req = new ArrayList<String>(1);
     req.add("o1");
-    JObject obj = new JObject(
+    final var obj = new JObject(
         "v1alpha1",
         "t",
         props,
@@ -393,7 +391,7 @@ class GeneratorTest {
         null);
 
     // Act
-    GeneratorResult res = obj.generateJava();
+    final var res = obj.generateJava();
 
     // Assert
     assertThat(res.getTopLevelClasses().get(0).getClassByName("T")).isPresent()
@@ -404,7 +402,7 @@ class GeneratorTest {
   @Test
   void testObjectWithAndWithoutGeneratedAnnotation() {
     // Arrange
-    JObject obj1 = new JObject(
+    final var obj1 = new JObject(
         "v1alpha1",
         "t",
         new HashMap<>(),
@@ -414,8 +412,8 @@ class GeneratorTest {
         null,
         Boolean.FALSE,
         null);
-    Config config = new Config(null, null, false, new HashMap<>());
-    JObject obj2 = new JObject(
+    final var config = new Config(null, null, false, new HashMap<>());
+    final var obj2 = new JObject(
         "v1alpha1",
         "t",
         new HashMap<>(),
@@ -425,11 +423,11 @@ class GeneratorTest {
         null,
         Boolean.FALSE,
         null);
-    String generatedAnnotationName = AbstractJSONSchema2Pojo.newGeneratedAnnotation().getNameAsString();
+    final var generatedAnnotationName = AbstractJSONSchema2Pojo.newGeneratedAnnotation().getNameAsString();
 
     // Act
-    GeneratorResult res1 = obj1.generateJava();
-    GeneratorResult res2 = obj2.generateJava();
+    final var res1 = obj1.generateJava();
+    final var res2 = obj2.generateJava();
 
     // Assert
     assertThat(res1.getTopLevelClasses().get(0).getClassByName("T")).isPresent()
@@ -441,13 +439,13 @@ class GeneratorTest {
   @Test
   void testDefaultEnum() {
     // Arrange
-    JSONSchemaProps newEnum = new JSONSchemaProps();
+    final var newEnum = new JSONSchemaProps();
     newEnum.setType("string");
-    List<JsonNode> enumValues = new ArrayList<>();
+    final var enumValues = new ArrayList<JsonNode>();
     enumValues.add(new TextNode("foo"));
     enumValues.add(new TextNode("bar"));
     enumValues.add(new TextNode("baz"));
-    JEnum enu = new JEnum(
+    final var enu = new JEnum(
         "t",
         JAVA_LANG_STRING,
         enumValues,
@@ -457,7 +455,7 @@ class GeneratorTest {
         null);
 
     // Act
-    GeneratorResult res = enu.generateJava();
+    final var res = enu.generateJava();
 
     // Assert
     assertThat(enu.getType()).isEqualTo("T");
@@ -474,13 +472,13 @@ class GeneratorTest {
   @Test
   void testLongEnum() {
     // Arrange
-    JSONSchemaProps newEnum = new JSONSchemaProps();
+    final var newEnum = new JSONSchemaProps();
     newEnum.setType("integer");
-    List<JsonNode> enumValues = new ArrayList<>();
+    final var enumValues = new ArrayList<JsonNode>();
     enumValues.add(new TextNode("1"));
     enumValues.add(new TextNode("2"));
     enumValues.add(new TextNode("3"));
-    JEnum enu = new JEnum(
+    final var enu = new JEnum(
         "t",
         JAVA_LANG_LONG,
         enumValues,
@@ -490,7 +488,7 @@ class GeneratorTest {
         null);
 
     // Act
-    GeneratorResult res = enu.generateJava();
+    final var res = enu.generateJava();
 
     // Assert
     assertThat(enu.getType()).isEqualTo("T");
@@ -516,14 +514,14 @@ class GeneratorTest {
   @Test
   void testIntEnum() {
     // Arrange
-    JSONSchemaProps newEnum = new JSONSchemaProps();
+    final var newEnum = new JSONSchemaProps();
     newEnum.setType("integer");
     newEnum.setFormat("int32");
-    List<JsonNode> enumValues = new ArrayList<>();
+    final var enumValues = new ArrayList<JsonNode>();
     enumValues.add(new TextNode("1"));
     enumValues.add(new TextNode("2"));
     enumValues.add(new TextNode("3"));
-    JEnum enu = new JEnum(
+    final var enu = new JEnum(
         "t",
         JAVA_LANG_INTEGER,
         enumValues,
@@ -533,7 +531,7 @@ class GeneratorTest {
         null);
 
     // Act
-    GeneratorResult res = enu.generateJava();
+    final var res = enu.generateJava();
 
     // Assert
     assertThat(enu.getType()).isEqualTo("T");
@@ -559,13 +557,13 @@ class GeneratorTest {
   @Test
   void testNotUppercaseEnum() {
     // Arrange
-    JSONSchemaProps newEnum = new JSONSchemaProps();
+    final var newEnum = new JSONSchemaProps();
     newEnum.setType("string");
-    List<JsonNode> enumValues = new ArrayList<>();
+    final var enumValues = new ArrayList<JsonNode>();
     enumValues.add(new TextNode("foo"));
     enumValues.add(new TextNode("bar"));
     enumValues.add(new TextNode("baz"));
-    JEnum enu = new JEnum(
+    final var enu = new JEnum(
         "t",
         JAVA_LANG_STRING,
         enumValues,
@@ -575,7 +573,7 @@ class GeneratorTest {
         null);
 
     // Act
-    GeneratorResult res = enu.generateJava();
+    final var res = enu.generateJava();
 
     // Assert
     assertThat(enu.getType()).isEqualTo("T");
@@ -592,7 +590,7 @@ class GeneratorTest {
   @Test
   void testArrayOfObjects() {
     // Arrange
-    JArray array = new JArray(
+    final var array = new JArray(
         new JObject(
             null,
             "t",
@@ -609,7 +607,7 @@ class GeneratorTest {
         null);
 
     // Act
-    GeneratorResult res = array.generateJava();
+    final var res = array.generateJava();
 
     // Assert
     assertThat(array.getType()).isEqualTo("java.util.List<T>");
@@ -620,7 +618,7 @@ class GeneratorTest {
   @Test
   void testMapOfObjects() {
     // Arrange
-    JMap map = new JMap(
+    final var map = new JMap(
         new JObject(
             null,
             "t",
@@ -637,7 +635,7 @@ class GeneratorTest {
         null);
 
     // Act
-    GeneratorResult res = map.generateJava();
+    final var res = map.generateJava();
 
     // Assert
     assertThat(map.getType()).isEqualTo("java.util.Map<java.lang.String, T>");
@@ -648,11 +646,11 @@ class GeneratorTest {
   @Test
   void testObjectOfObjects() {
     // Arrange
-    Map<String, JSONSchemaProps> props = new HashMap<>();
-    JSONSchemaProps newObj = new JSONSchemaProps();
+    final var props = new HashMap<String, JSONSchemaProps>();
+    final var newObj = new JSONSchemaProps();
     newObj.setType("object");
     props.put("o1", newObj);
-    JObject obj = new JObject(
+    final var obj = new JObject(
         null,
         "t",
         props,
@@ -664,7 +662,7 @@ class GeneratorTest {
         null);
 
     // Act
-    GeneratorResult res = obj.generateJava();
+    final var res = obj.generateJava();
 
     // Assert
     assertThat(res.getTopLevelClasses()).satisfiesExactly(
@@ -681,7 +679,7 @@ class GeneratorTest {
   @Test
   void testObjectWithPreservedFields() {
     // Arrange
-    JObject obj = new JObject(
+    final var obj = new JObject(
         null,
         "t",
         null,
@@ -693,7 +691,7 @@ class GeneratorTest {
         null);
 
     // Act
-    GeneratorResult res = obj.generateJava();
+    final var res = obj.generateJava();
 
     // Assert
     assertThat(res.getTopLevelClasses()).singleElement().satisfies(
@@ -707,8 +705,8 @@ class GeneratorTest {
   @Test
   void testConfigToGeneratePreservedUnknownFields() {
     // Arrange
-    Config config = new Config(null, null, null, true, new HashMap<>(), new ArrayList<>(), null, null, null);
-    JObject obj = new JObject(
+    final var config = new Config(null, null, null, true, new HashMap<>(), new ArrayList<>(), null, null, null);
+    final var obj = new JObject(
         null,
         "t",
         null,
@@ -720,7 +718,7 @@ class GeneratorTest {
         null);
 
     // Act
-    GeneratorResult res = obj.generateJava();
+    final var res = obj.generateJava();
 
     // Assert
     assertThat(res.getTopLevelClasses()).singleElement().satisfies(
@@ -734,12 +732,12 @@ class GeneratorTest {
   @Test
   void testObjectWithSpecialFieldNames() {
     // Arrange
-    Map<String, JSONSchemaProps> props = new HashMap<>();
-    JSONSchemaProps newObj = new JSONSchemaProps();
+    final var props = new HashMap<String, JSONSchemaProps>();
+    final var newObj = new JSONSchemaProps();
     newObj.setType("string");
     props.put("description", newObj);
 
-    JObject obj = new JObject(
+    final var obj = new JObject(
         null,
         "t",
         props,
@@ -751,7 +749,7 @@ class GeneratorTest {
         null);
 
     // Act
-    GeneratorResult res = obj.generateJava();
+    final var res = obj.generateJava();
 
     // Assert
     assertThat(res.getTopLevelClasses()).singleElement().satisfies(
@@ -765,21 +763,21 @@ class GeneratorTest {
   @Test
   void testObjectNullableFieldsManagement() {
     // Arrange
-    Map<String, JSONSchemaProps> props = new HashMap<>();
-    JSONSchemaProps nullableObj = new JSONSchemaProps();
+    final var props = new HashMap<String, JSONSchemaProps>();
+    final var nullableObj = new JSONSchemaProps();
     nullableObj.setType("object");
     nullableObj.setNullable(Boolean.TRUE);
     props.put("o1", nullableObj);
 
-    JSONSchemaProps nonNullableObj = new JSONSchemaProps();
+    final var nonNullableObj = new JSONSchemaProps();
     nonNullableObj.setType("object");
     nonNullableObj.setNullable(Boolean.FALSE);
     props.put("o2", nonNullableObj);
 
-    JObject obj = new JObject(null, "t", props, null, false, defaultConfig, null, Boolean.FALSE, null);
+    final var obj = new JObject(null, "t", props, null, false, defaultConfig, null, Boolean.FALSE, null);
 
     // Act
-    GeneratorResult res = obj.generateJava();
+    final var res = obj.generateJava();
 
     // Assert
     assertThat(res.getTopLevelClasses()).satisfiesExactly(
@@ -834,16 +832,16 @@ class GeneratorTest {
   @Test
   void testObjectWithAdditionalPropertiesTrue() {
     // Arrange
-    Map<String, JSONSchemaProps> props = new HashMap<>();
-    JSONSchemaProps obj = new JSONSchemaProps();
+    final var props = new HashMap<String, JSONSchemaProps>();
+    final var obj = new JSONSchemaProps();
     obj.setType("object");
     obj.setAdditionalProperties(new JSONSchemaPropsOrBool(true, null));
     props.put("o1", obj);
 
-    JObject jobj = new JObject(null, "t", props, null, false, defaultConfig, null, Boolean.FALSE, null);
+    final var jobj = new JObject(null, "t", props, null, false, defaultConfig, null, Boolean.FALSE, null);
 
     // Act
-    GeneratorResult res = jobj.generateJava();
+    final var res = jobj.generateJava();
 
     // Assert
     assertThat(res.getTopLevelClasses()).singleElement().satisfies(
@@ -861,22 +859,22 @@ class GeneratorTest {
   @Test
   void testClassNamesDisambiguationWithPackageNesting() {
     // Arrange
-    Map<String, JSONSchemaProps> props = new HashMap<>();
-    JSONSchemaProps newObj1 = new JSONSchemaProps();
-    JSONSchemaProps newObj2 = new JSONSchemaProps();
+    final var props = new HashMap<String, JSONSchemaProps>();
+    final var newObj1 = new JSONSchemaProps();
+    final var newObj2 = new JSONSchemaProps();
     newObj1.setType("object");
     newObj2.setType("object");
-    Map<String, JSONSchemaProps> obj2Props = new HashMap<>();
+    final var obj2Props = new HashMap<String, JSONSchemaProps>();
     obj2Props.put("o1", newObj1);
     obj2Props.put("o2", newObj1);
     obj2Props.put("o3", newObj1);
     newObj2.setProperties(obj2Props);
     props.put("o1", newObj1);
     props.put("o2", newObj2);
-    JObject obj = new JObject("v1alpha1", "t", props, null, false, defaultConfig, null, Boolean.FALSE, null);
+    final var obj = new JObject("v1alpha1", "t", props, null, false, defaultConfig, null, Boolean.FALSE, null);
 
     // Act
-    GeneratorResult res = obj.generateJava();
+    final var res = obj.generateJava();
 
     // Assert
     assertThat(res.getTopLevelClasses()).satisfiesExactly(
@@ -936,23 +934,23 @@ class GeneratorTest {
   @Test
   void testObjectDefaultFieldsManagement() {
     // Arrange
-    Map<String, JSONSchemaProps> props = new HashMap<>();
+    final var props = new HashMap<String, JSONSchemaProps>();
 
-    JSONSchemaProps objWithDefaultValues = new JSONSchemaProps();
+    final var objWithDefaultValues = new JSONSchemaProps();
     objWithDefaultValues.setType("object");
-    String jsonContent = "{\"limits\":{\"memory\":\"1024Mi\",\"cpu\":\"\"},\"requests\":{\"memory\":\"1024Mi\",\"cpu\":\"1\"}}";
-    JsonNode defaultValue = Serialization.unmarshal(jsonContent, JsonNode.class);
+    final var jsonContent = "{\"limits\":{\"memory\":\"1024Mi\",\"cpu\":\"\"},\"requests\":{\"memory\":\"1024Mi\",\"cpu\":\"1\"}}";
+    final var defaultValue = Serialization.unmarshal(jsonContent, JsonNode.class);
     objWithDefaultValues.setDefault(defaultValue);
     props.put("o1", objWithDefaultValues);
 
-    JSONSchemaProps objWithoutDefaultValues = new JSONSchemaProps();
+    final var objWithoutDefaultValues = new JSONSchemaProps();
     objWithoutDefaultValues.setType("object");
     props.put("o2", objWithoutDefaultValues);
 
-    JObject obj = new JObject(null, "t", props, null, false, defaultConfig, null, Boolean.FALSE, null);
+    final var obj = new JObject(null, "t", props, null, false, defaultConfig, null, Boolean.FALSE, null);
 
     // Act
-    GeneratorResult res = obj.generateJava();
+    final var res = obj.generateJava();
 
     // Assert
     assertThat(res.getTopLevelClasses()).satisfiesExactly(
@@ -980,9 +978,9 @@ class GeneratorTest {
   @Test
   void testExactlyMoreThanOneDuplicatedFieldFailsWithException() {
     // Arrange
-    Map<String, JSONSchemaProps> props = new HashMap<>();
+    final var props = new HashMap<String, JSONSchemaProps>();
 
-    JSONSchemaProps duplicatedFieldObject = new JSONSchemaProps();
+    final var duplicatedFieldObject = new JSONSchemaProps();
     duplicatedFieldObject.setType("boolean");
     duplicatedFieldObject.setDescription("This field is JUST FOR testing purposes.");
     props.put("test_Dup", duplicatedFieldObject);
@@ -1001,9 +999,9 @@ class GeneratorTest {
   @Test
   void testExactlyDuplicatedFieldNotMarkedAsDeprecatedFailsWithException() {
     // Arrange
-    Map<String, JSONSchemaProps> props = new HashMap<>();
+    final var props = new HashMap<String, JSONSchemaProps>();
 
-    JSONSchemaProps duplicatedFieldObject = new JSONSchemaProps();
+    final var duplicatedFieldObject = new JSONSchemaProps();
     duplicatedFieldObject.setType("boolean");
     duplicatedFieldObject.setDescription("This field is JUST FOR testing purposes.");
     props.put("testDup", duplicatedFieldObject);
@@ -1020,9 +1018,8 @@ class GeneratorTest {
   @Test
   void testExistingJavaTypeObject() {
     // Arrange
-    Config config = Config.builder()
-        .existingJavaTypes(Collections.singletonMap("v1alpha1.T", "org.test.ExistingJavaType")).build();
-    JObject obj = new JObject(
+    final var config = Config.builder().existingJavaTypes(Map.of("v1alpha1.T", "org.test.ExistingJavaType")).build();
+    final var obj = new JObject(
         "v1alpha1",
         "T",
         null,
@@ -1034,7 +1031,7 @@ class GeneratorTest {
         null);
 
     // Act
-    GeneratorResult res = obj.generateJava();
+    final var res = obj.generateJava();
 
     // Assert
     assertThat(obj.getType()).isEqualTo("org.test.ExistingJavaType");

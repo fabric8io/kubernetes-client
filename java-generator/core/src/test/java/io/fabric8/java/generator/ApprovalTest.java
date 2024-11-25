@@ -19,16 +19,15 @@ import io.fabric8.java.generator.nodes.GeneratorResult;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import org.approvaltests.Approvals;
-import org.approvaltests.namer.NamedEnvironment;
 import org.approvaltests.namer.NamerFactory;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
 import static io.fabric8.java.generator.CRGeneratorRunner.groupToPackage;
@@ -47,33 +46,32 @@ class ApprovalTest {
             new Config()),
         Arguments.of("testCalicoIPPoolCrd", "calico-ippool-crd.yml", "IPPool", "CalicoIPPoolCr", new Config()),
         Arguments.of("testExistingJavaType", "existing-java-type-crd.yml", "ExistingJavaType", "ExistingJavaTypeCr",
-            Config.builder().existingJavaTypes(Collections.singletonMap(
-                "org.test.v1.existingjavatypespec.Affinity", "io.fabric8.kubernetes.api.model.Affinity")).build()));
+            Config.builder().existingJavaTypes(
+                Map.of("org.test.v1.existingjavatypespec.Affinity", "io.fabric8.kubernetes.api.model.Affinity")).build()));
   }
 
   @ParameterizedTest
   @MethodSource("getCRDGenerationInputData")
   void generate_withValidCrd_shouldGeneratePojos(String parameter, String crdYaml, String customResourceName,
       String approvalLabel, Config config) {
-    try (NamedEnvironment en = NamerFactory.withParameters(parameter)) {
+    try (var ignored = NamerFactory.withParameters(parameter)) {
       // Arrange
-      CRGeneratorRunner runner = new CRGeneratorRunner(config);
-      CustomResourceDefinition crd = getCRD(crdYaml);
+      final var runner = new CRGeneratorRunner(config);
+      final var crd = getCRD(crdYaml);
 
       // Act
-      List<WritableCRCompilationUnit> writables = runner.generate(crd, groupToPackage("test.org"));
+      final var writables = runner.generate(crd, groupToPackage("test.org"));
 
       // Assert
       assertThat(writables).hasSize(1);
 
-      WritableCRCompilationUnit writable = writables.get(0);
-
-      List<String> underTest = new ArrayList<>();
-      List<GeneratorResult.ClassResult> crl = writable.getClassResults();
+      final var writable = writables.get(0);
+      final var underTest = new ArrayList<>();
+      final var crl = writable.getClassResults();
       underTest.add(getJavaClass(crl, customResourceName));
       underTest.add(getJavaClass(crl, customResourceName + "Spec"));
       // not all the tested CRDs have a status definition, e.g. see calico-ippool-crd.yml
-      final String statusCrlName = customResourceName + "Status";
+      final var statusCrlName = customResourceName + "Status";
       if (crl.stream().anyMatch(c -> c.getName().equals(statusCrlName))) {
         underTest.add(getJavaClass(crl, statusCrlName));
       }
@@ -82,13 +80,10 @@ class ApprovalTest {
   }
 
   private CustomResourceDefinition getCRD(String name) {
-    return Serialization.unmarshal(
-        this.getClass().getClassLoader().getResourceAsStream(name),
-        CustomResourceDefinition.class);
+    return Serialization.unmarshal(getClass().getClassLoader().getResourceAsStream(name), CustomResourceDefinition.class);
   }
 
   private String getJavaClass(List<GeneratorResult.ClassResult> classResults, String name) {
-    GeneratorResult.ClassResult cr = classResults.stream().filter(c -> c.getName().equals(name)).findFirst().get();
-    return cr.getJavaSource();
+    return classResults.stream().filter(c -> c.getName().equals(name)).findFirst().orElseThrow().getJavaSource();
   }
 }

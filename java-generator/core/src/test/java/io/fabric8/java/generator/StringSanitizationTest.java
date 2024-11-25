@@ -25,10 +25,10 @@ class StringSanitizationTest {
   @Test
   void shouldRemoveDashes() {
     // Arrange
-    String str = "property-name";
+    final var str = "property-name";
 
     // Act
-    String res = AbstractJSONSchema2Pojo.sanitizeString(str);
+    final var res = AbstractJSONSchema2Pojo.sanitizeString(str);
 
     // Assert
     assertThat(res).isEqualTo("propertyName");
@@ -37,10 +37,10 @@ class StringSanitizationTest {
   @Test
   void shouldRemoveTrailingDashes() {
     // Arrange
-    String str = "property-name-";
+    final var str = "property-name-";
 
     // Act
-    String res = AbstractJSONSchema2Pojo.sanitizeString(str);
+    final var res = AbstractJSONSchema2Pojo.sanitizeString(str);
 
     // Assert
     assertThat(res).isEqualTo("propertyName");
@@ -49,10 +49,10 @@ class StringSanitizationTest {
   @Test
   void shouldAddTrailingUnderscoreOnInvalidClassAndPackageNames() {
     // Arrange
-    String str = "3property-name-";
+    final var str = "3property-name-";
 
     // Act
-    String res = AbstractJSONSchema2Pojo.sanitizeString(str);
+    final var res = AbstractJSONSchema2Pojo.sanitizeString(str);
 
     // Assert
     assertThat(res).isEqualTo("_3propertyName");

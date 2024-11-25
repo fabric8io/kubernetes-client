@@ -25,7 +25,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
-import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -40,7 +39,7 @@ class URLJavaGeneratorTest {
 
   @Test
   void nullUrlsThrowsException() {
-    final URLJavaGenerator generator = new URLJavaGenerator(new Config(), null, downloadLocation);
+    final var generator = new URLJavaGenerator(new Config(), null, downloadLocation);
     assertThatThrownBy(() -> generator.run(outputLocation))
         .isInstanceOf(JavaGeneratorException.class)
         .hasMessage("No URLs provided");
@@ -48,27 +47,26 @@ class URLJavaGeneratorTest {
 
   @Test
   void emptyUrlsThrowsException() {
-    final URLJavaGenerator generator = new URLJavaGenerator(new Config(), Collections.emptyList(), downloadLocation);
+    final var generator = new URLJavaGenerator(new Config(), List.of(), downloadLocation);
     assertThatThrownBy(() -> generator.run(outputLocation))
         .isInstanceOf(JavaGeneratorException.class)
         .hasMessage("No URLs provided");
   }
 
   @Test
-  void nullDirectoryThrowsException() throws IOException {
-    final List<URL> urls = Collections.singletonList(new URL("https://www.example.com"));
-    final URLJavaGenerator generator = new URLJavaGenerator(new Config(), urls, null);
+  void nullDirectoryThrowsException() throws Exception {
+    final var urls = List.of(new URL("https://www.example.com"));
+    final var generator = new URLJavaGenerator(new Config(), urls, null);
     assertThatThrownBy(() -> generator.run(outputLocation))
         .isInstanceOf(JavaGeneratorException.class)
         .hasMessage("Download directory is required");
   }
 
   @Test
-  void directoryIsInvalidThrowsException() throws IOException {
-    final File invalidDirectory = Files.createTempFile(downloadLocation.toPath(), "invalid", "file")
-        .toFile();
-    final List<URL> urls = Collections.singletonList(new URL("https://www.example.com"));
-    final URLJavaGenerator generator = new URLJavaGenerator(new Config(), urls, invalidDirectory);
+  void directoryIsInvalidThrowsException() throws Exception {
+    final var invalidDirectory = Files.createTempFile(downloadLocation.toPath(), "invalid", "file").toFile();
+    final var urls = List.of(new URL("https://www.example.com"));
+    final var generator = new URLJavaGenerator(new Config(), urls, invalidDirectory);
     assertThatThrownBy(() -> generator.run(outputLocation))
         .isInstanceOf(JavaGeneratorException.class)
         .hasMessageStartingWith("Download directory")
@@ -77,18 +75,19 @@ class URLJavaGeneratorTest {
 
   @Test
   void downloadsFileAndGeneratesJavaClasses() throws IOException {
-    final DefaultMockServer server = new DefaultMockServer();
+    final var server = new DefaultMockServer();
     try {
       server.start();
       server.expect().withPath("/cert-manager-crd.yml")
           .andReturn(200,
               new KubernetesSerialization().unmarshal(URLJavaGeneratorTest.class.getResourceAsStream("/cert-manager-crd.yml")))
           .always();
-      final URLJavaGenerator generator = new URLJavaGenerator(new Config(),
-          Collections.singletonList(new URL(server.url("/cert-manager-crd.yml"))), downloadLocation);
+      final var generator = new URLJavaGenerator(new Config(),
+          List.of(new URL(server.url("/cert-manager-crd.yml"))), downloadLocation);
       generator.run(outputLocation);
-      assertThat(new File(downloadLocation, "cert-manager-crd.yml"))
-          .isFile().exists().isNotEmpty();
+      assertThat(downloadLocation.toPath().resolve("cert-manager-crd.yml"))
+          .exists()
+          .isNotEmptyFile();
       assertThat(outputLocation.toPath().resolve("io").resolve("cert_manager").resolve("v1").resolve("CertificateRequest.java"))
           .exists()
           .isNotEmptyFile();
