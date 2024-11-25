@@ -18,7 +18,7 @@ package io.fabric8.java.generator;
 import io.fabric8.java.generator.nodes.AbstractJSONSchema2Pojo;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class StringSanitizationTest {
 
@@ -31,7 +31,7 @@ class StringSanitizationTest {
     String res = AbstractJSONSchema2Pojo.sanitizeString(str);
 
     // Assert
-    assertEquals("propertyName", res);
+    assertThat(res).isEqualTo("propertyName");
   }
 
   @Test
@@ -43,7 +43,7 @@ class StringSanitizationTest {
     String res = AbstractJSONSchema2Pojo.sanitizeString(str);
 
     // Assert
-    assertEquals("propertyName", res);
+    assertThat(res).isEqualTo("propertyName");
   }
 
   @Test
@@ -55,6 +55,6 @@ class StringSanitizationTest {
     String res = AbstractJSONSchema2Pojo.sanitizeString(str);
 
     // Assert
-    assertEquals("_3propertyName", res);
+    assertThat(res).isEqualTo("_3propertyName");
   }
 }

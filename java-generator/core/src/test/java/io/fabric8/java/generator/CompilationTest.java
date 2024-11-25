@@ -29,11 +29,11 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -41,7 +41,8 @@ import java.util.stream.Stream;
 import javax.tools.JavaFileObject;
 
 import static com.google.testing.compile.Compiler.javac;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class CompilationTest {
 
@@ -88,9 +89,9 @@ class CompilationTest {
     Compilation compilation = javac().compile(getSources(tempDir));
 
     // Assert
-    assertTrue(compilation.errors().isEmpty());
-    assertEquals(expectedGeneratedSourceFiles, compilation.sourceFiles().size());
-    assertEquals(Compilation.Status.SUCCESS, compilation.status());
+    assertThat(compilation.errors()).isEmpty();
+    assertThat(compilation.sourceFiles()).hasSize(expectedGeneratedSourceFiles);
+    assertThat(compilation.status()).isEqualTo(Compilation.Status.SUCCESS);
   }
 
   @Disabled("Requires support from sundrio to work with compile-testing, see sundrio PR #469")
@@ -109,9 +110,9 @@ class CompilationTest {
         .compile(getSources(tempDir));
 
     // Assert
-    assertEquals(Collections.emptyList(), compilation.errors());
-    assertEquals(3, compilation.sourceFiles().size());
-    assertEquals(Compilation.Status.SUCCESS, compilation.status());
+    assertThat(compilation.errors()).isEmpty();
+    assertThat(compilation.sourceFiles()).hasSize(3);
+    assertThat(compilation.status()).isEqualTo(Compilation.Status.SUCCESS);
   }
 
   @Test
@@ -123,28 +124,32 @@ class CompilationTest {
         .build();
 
     // Assert
-    assertThrows(JavaGeneratorException.class, () -> {
+    assertThatThrownBy(() -> {
       // Act
       new FileJavaGenerator(config, crd).run(tempDir);
       javac().compile(getSources(tempDir));
-    },
-        "The current CRD should not compile since it contains duplicate fields which are not marked as deprecated");
+    }).as("The current CRD should not compile since it contains duplicate fields which are not marked as deprecated")
+        .isInstanceOf(JavaGeneratorException.class);
   }
 
   static List<JavaFileObject> getSources(File basePath) throws IOException {
-    List<JavaFileObject> sources = new ArrayList<JavaFileObject>();
-    for (Path f : Files.list(basePath.toPath()).collect(Collectors.toList())) {
-      if (f.toFile().isDirectory()) {
-        sources.addAll(getSources(f.toFile()));
-      } else {
-        sources.add(JavaFileObjects.forResource(f.toUri().toURL()));
+    List<JavaFileObject> sources = new ArrayList<>();
+    try (Stream<Path> pathStream = Files.list(basePath.toPath())) {
+      for (Path path : pathStream.collect(Collectors.toList())) {
+        File file = path.toFile();
+        if (file.isDirectory()) {
+          sources.addAll(getSources(file));
+        } else {
+          sources.add(JavaFileObjects.forResource(path.toUri().toURL()));
+        }
       }
     }
-
     return sources;
   }
 
   static File getCRD(String name) throws Exception {
-    return Paths.get(CompilationTest.class.getClassLoader().getResource(name).toURI()).toFile();
+    URL resource = CompilationTest.class.getClassLoader().getResource(name);
+    assertThat(resource).isNotNull();
+    return Paths.get(resource.toURI()).toFile();
   }
 }

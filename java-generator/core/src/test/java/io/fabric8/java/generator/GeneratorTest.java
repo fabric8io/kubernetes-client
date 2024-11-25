@@ -17,26 +17,34 @@ package io.fabric8.java.generator;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.TextNode;
-import com.github.javaparser.ast.CompilationUnit;
-import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
-import com.github.javaparser.ast.body.EnumDeclaration;
-import com.github.javaparser.ast.body.FieldDeclaration;
-import com.github.javaparser.ast.body.VariableDeclarator;
-import com.github.javaparser.ast.expr.AnnotationExpr;
-import com.github.javaparser.ast.expr.Expression;
 import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
 import io.fabric8.java.generator.exceptions.JavaGeneratorException;
-import io.fabric8.java.generator.nodes.*;
+import io.fabric8.java.generator.nodes.AbstractJSONSchema2Pojo;
+import io.fabric8.java.generator.nodes.GeneratorResult;
+import io.fabric8.java.generator.nodes.JArray;
+import io.fabric8.java.generator.nodes.JCRObject;
+import io.fabric8.java.generator.nodes.JEnum;
+import io.fabric8.java.generator.nodes.JMap;
+import io.fabric8.java.generator.nodes.JObject;
+import io.fabric8.java.generator.nodes.JPrimitive;
+import io.fabric8.java.generator.nodes.ValidationProperties;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsOrBool;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import org.junit.jupiter.api.Test;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static io.fabric8.java.generator.CRGeneratorRunner.groupToPackage;
-import static io.fabric8.java.generator.nodes.Keywords.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static io.fabric8.java.generator.nodes.Keywords.JAVA_LANG_INTEGER;
+import static io.fabric8.java.generator.nodes.Keywords.JAVA_LANG_LONG;
+import static io.fabric8.java.generator.nodes.Keywords.JAVA_LANG_STRING;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class GeneratorTest {
 
@@ -48,7 +56,7 @@ class GeneratorTest {
     String packageName = groupToPackage("test.org");
 
     // Assert
-    assertEquals("org.test", packageName);
+    assertThat(packageName).isEqualTo("org.test");
   }
 
   @Test
@@ -74,10 +82,11 @@ class GeneratorTest {
     GeneratorResult res = cro.generateJava();
 
     // Assert
-    assertEquals(1, res.getTopLevelClasses().size());
-    assertEquals("Type", res.getTopLevelClasses().get(0).getName());
-    assertEquals("v1alpha1",
-        res.getTopLevelClasses().get(0).getPackageDeclaration().get().getNameAsString());
+    assertThat(res.getTopLevelClasses()).singleElement().satisfies(classResult -> {
+      assertThat(classResult.getName()).isEqualTo("Type");
+      assertThat(classResult.getPackageDeclaration()).isPresent()
+          .hasValueSatisfying(packageDeclaration -> assertThat(packageDeclaration.getNameAsString()).isEqualTo("v1alpha1"));
+    });
   }
 
   @Test
@@ -103,8 +112,9 @@ class GeneratorTest {
     GeneratorResult res = cro.generateJava();
 
     // Assert
-    assertEquals("io.fabric8.kubernetes.api.model.Namespaced", res.getTopLevelClasses().get(0)
-        .getClassByName("Type").get().getImplementedTypes().get(0).getNameWithScope());
+    assertThat(res.getTopLevelClasses().get(0).getClassByName("Type")).isPresent()
+        .hasValueSatisfying(type -> assertThat(type.getImplementedTypes().get(0).getNameWithScope())
+            .isEqualTo("io.fabric8.kubernetes.api.model.Namespaced"));
   }
 
   @Test
@@ -130,7 +140,8 @@ class GeneratorTest {
     GeneratorResult res = cro.generateJava();
 
     // Assert
-    assertTrue(res.getTopLevelClasses().get(0).getClassByName("Type").get().getImplementedTypes().isEmpty());
+    assertThat(res.getTopLevelClasses().get(0).getClassByName("Type")).isPresent()
+        .hasValueSatisfying(type -> assertThat(type.getImplementedTypes()).isEmpty());
   }
 
   @Test
@@ -156,8 +167,8 @@ class GeneratorTest {
     GeneratorResult res = cro.generateJava();
 
     // Assert
-    assertEquals(1, res.getTopLevelClasses().size());
-    assertEquals("Type", res.getTopLevelClasses().get(0).getName());
+    assertThat(res.getTopLevelClasses()).singleElement()
+        .satisfies(classResult -> assertThat(classResult.getName()).isEqualTo("Type"));
   }
 
   @Test
@@ -175,8 +186,8 @@ class GeneratorTest {
     GeneratorResult res = primitive.generateJava();
 
     // Assert
-    assertEquals("test", primitive.getType());
-    assertEquals(0, res.getTopLevelClasses().size());
+    assertThat(primitive.getType()).isEqualTo("test");
+    assertThat(res.getTopLevelClasses()).isEmpty();
   }
 
   @Test
@@ -201,11 +212,11 @@ class GeneratorTest {
     GeneratorResult res = primitive.generateJava();
 
     // Assert
-    assertEquals("test", primitive.getType());
-    assertEquals(0, res.getTopLevelClasses().size());
-    assertEquals(expectedMaximum, primitive.getMaximum());
-    assertEquals(expectedMinimum, primitive.getMinimum());
-    assertNull(primitive.getPattern());
+    assertThat(primitive.getType()).isEqualTo("test");
+    assertThat(res.getTopLevelClasses()).isEmpty();
+    assertThat(primitive.getMaximum()).isEqualTo(expectedMaximum);
+    assertThat(primitive.getMinimum()).isEqualTo(expectedMinimum);
+    assertThat(primitive.getPattern()).isNull();
   }
 
   @Test
@@ -228,11 +239,11 @@ class GeneratorTest {
     GeneratorResult res = primitive.generateJava();
 
     // Assert
-    assertEquals("test", primitive.getType());
-    assertEquals(0, res.getTopLevelClasses().size());
-    assertEquals(expectedPattern, primitive.getPattern());
-    assertNull(primitive.getMaximum());
-    assertNull(primitive.getMinimum());
+    assertThat(primitive.getType()).isEqualTo("test");
+    assertThat(res.getTopLevelClasses()).isEmpty();
+    assertThat(primitive.getPattern()).isEqualTo(expectedPattern);
+    assertThat(primitive.getMaximum()).isNull();
+    assertThat(primitive.getMinimum()).isNull();
   }
 
   @Test
@@ -255,8 +266,8 @@ class GeneratorTest {
     GeneratorResult res = array.generateJava();
 
     // Assert
-    assertEquals("java.util.List<primitive>", array.getType());
-    assertEquals(0, res.getTopLevelClasses().size());
+    assertThat(array.getType()).isEqualTo("java.util.List<primitive>");
+    assertThat(res.getTopLevelClasses()).isEmpty();
   }
 
   @Test
@@ -279,8 +290,8 @@ class GeneratorTest {
     GeneratorResult res = map.generateJava();
 
     // Assert
-    assertEquals("java.util.Map<java.lang.String, primitive>", map.getType());
-    assertEquals(0, res.getTopLevelClasses().size());
+    assertThat(map.getType()).isEqualTo("java.util.Map<java.lang.String, primitive>");
+    assertThat(res.getTopLevelClasses()).isEmpty();
   }
 
   @Test
@@ -301,9 +312,9 @@ class GeneratorTest {
     GeneratorResult res = obj.generateJava();
 
     // Assert
-    assertEquals("v1alpha1.T", obj.getType());
-    assertEquals(1, res.getTopLevelClasses().size());
-    assertEquals("T", res.getTopLevelClasses().get(0).getName());
+    assertThat(obj.getType()).isEqualTo("v1alpha1.T");
+    assertThat(res.getTopLevelClasses()).singleElement()
+        .satisfies(classResult -> assertThat(classResult.getName()).isEqualTo("T"));
   }
 
   @Test
@@ -324,9 +335,9 @@ class GeneratorTest {
     GeneratorResult res = obj.generateJava();
 
     // Assert
-    assertEquals("T", obj.getType());
-    assertEquals(1, res.getTopLevelClasses().size());
-    assertEquals("T", res.getTopLevelClasses().get(0).getName());
+    assertThat(obj.getType()).isEqualTo("T");
+    assertThat(res.getTopLevelClasses()).singleElement()
+        .satisfies(classResult -> assertThat(classResult.getName()).isEqualTo("T"));
   }
 
   @Test
@@ -351,14 +362,14 @@ class GeneratorTest {
     GeneratorResult res = obj.generateJava();
 
     // Assert
-    assertEquals("v1alpha1.T", obj.getType());
-    assertEquals(1, res.getTopLevelClasses().size());
-    assertEquals("T", res.getTopLevelClasses().get(0).getName());
-
-    Optional<ClassOrInterfaceDeclaration> clz = res.getTopLevelClasses().get(0).getClassByName("T");
-    assertTrue(clz.isPresent());
-    assertEquals(1, clz.get().getFields().size());
-    assertTrue(clz.get().getFieldByName("o1").isPresent());
+    assertThat(obj.getType()).isEqualTo("v1alpha1.T");
+    assertThat(res.getTopLevelClasses()).singleElement().satisfies(classResult -> {
+      assertThat(classResult.getName()).isEqualTo("T");
+      assertThat(classResult.getClassByName("T")).isPresent().hasValueSatisfying(clz -> {
+        assertThat(clz.getFields()).hasSize(1);
+        assertThat(clz.getFieldByName("o1")).isPresent();
+      });
+    });
   }
 
   @Test
@@ -385,8 +396,9 @@ class GeneratorTest {
     GeneratorResult res = obj.generateJava();
 
     // Assert
-    Optional<ClassOrInterfaceDeclaration> clz = res.getTopLevelClasses().get(0).getClassByName("T");
-    assertTrue(clz.get().getFieldByName("o1").get().getAnnotationByName("Required").isPresent());
+    assertThat(res.getTopLevelClasses().get(0).getClassByName("T")).isPresent()
+        .hasValueSatisfying(clz -> assertThat(clz.getFieldByName("o1")).isPresent()
+            .hasValueSatisfying(o1Field -> assertThat(o1Field.getAnnotationByName("Required")).isPresent()));
   }
 
   @Test
@@ -420,24 +432,21 @@ class GeneratorTest {
     GeneratorResult res2 = obj2.generateJava();
 
     // Assert
-    Optional<ClassOrInterfaceDeclaration> clz1 = res1.getTopLevelClasses().get(0).getClassByName("T");
-    assertTrue(clz1.get().getAnnotationByName(generatedAnnotationName).isPresent());
-
-    Optional<ClassOrInterfaceDeclaration> clz2 = res2.getTopLevelClasses().get(0).getClassByName("T");
-    assertFalse(clz2.get().getAnnotationByName(generatedAnnotationName).isPresent());
+    assertThat(res1.getTopLevelClasses().get(0).getClassByName("T")).isPresent()
+        .hasValueSatisfying(clz -> assertThat(clz.getAnnotationByName(generatedAnnotationName)).isPresent());
+    assertThat(res2.getTopLevelClasses().get(0).getClassByName("T")).isPresent()
+        .hasValueSatisfying(clz -> assertThat(clz.getAnnotationByName(generatedAnnotationName)).isNotPresent());
   }
 
   @Test
   void testDefaultEnum() {
     // Arrange
-    Map<String, JSONSchemaProps> props = new HashMap<>();
     JSONSchemaProps newEnum = new JSONSchemaProps();
     newEnum.setType("string");
     List<JsonNode> enumValues = new ArrayList<>();
     enumValues.add(new TextNode("foo"));
     enumValues.add(new TextNode("bar"));
     enumValues.add(new TextNode("baz"));
-    props.put("e1", newEnum);
     JEnum enu = new JEnum(
         "t",
         JAVA_LANG_STRING,
@@ -451,29 +460,26 @@ class GeneratorTest {
     GeneratorResult res = enu.generateJava();
 
     // Assert
-    assertEquals("T", enu.getType());
-    assertEquals(1, res.getInnerClasses().size());
-    assertEquals("T", res.getInnerClasses().get(0).getName());
-
-    Optional<EnumDeclaration> en = res.getInnerClasses().get(0).getEnumByName("T");
-    assertTrue(en.isPresent());
-    assertEquals(3, en.get().getEntries().size());
-    assertEquals("FOO", en.get().getEntries().get(0).getName().asString());
-    assertEquals("BAR", en.get().getEntries().get(1).getName().asString());
-    assertEquals("BAZ", en.get().getEntries().get(2).getName().asString());
+    assertThat(enu.getType()).isEqualTo("T");
+    assertThat(res.getInnerClasses()).singleElement().satisfies(classResult -> {
+      assertThat(classResult.getName()).isEqualTo("T");
+      assertThat(classResult.getEnumByName("T")).isPresent()
+          .hasValueSatisfying(enumDeclaration -> assertThat(enumDeclaration.getEntries()).satisfiesExactly(
+              ecd -> assertThat(ecd.getName().asString()).isEqualTo("FOO"),
+              ecd -> assertThat(ecd.getName().asString()).isEqualTo("BAR"),
+              ecd -> assertThat(ecd.getName().asString()).isEqualTo("BAZ")));
+    });
   }
 
   @Test
   void testLongEnum() {
     // Arrange
-    Map<String, JSONSchemaProps> props = new HashMap<>();
     JSONSchemaProps newEnum = new JSONSchemaProps();
     newEnum.setType("integer");
     List<JsonNode> enumValues = new ArrayList<>();
     enumValues.add(new TextNode("1"));
     enumValues.add(new TextNode("2"));
     enumValues.add(new TextNode("3"));
-    props.put("e1", newEnum);
     JEnum enu = new JEnum(
         "t",
         JAVA_LANG_LONG,
@@ -487,25 +493,29 @@ class GeneratorTest {
     GeneratorResult res = enu.generateJava();
 
     // Assert
-    assertEquals("T", enu.getType());
-    assertEquals(1, res.getInnerClasses().size());
-    assertEquals("T", res.getInnerClasses().get(0).getName());
-
-    Optional<EnumDeclaration> en = res.getInnerClasses().get(0).getEnumByName("T");
-    assertTrue(en.isPresent());
-    assertEquals(3, en.get().getEntries().size());
-    assertEquals("V__1", en.get().getEntries().get(0).getName().asString());
-    assertEquals("V__2", en.get().getEntries().get(1).getName().asString());
-    assertEquals("V__3", en.get().getEntries().get(2).getName().asString());
-    assertEquals("1L", en.get().getEntries().get(0).getArgument(0).toString());
-    assertEquals("2L", en.get().getEntries().get(1).getArgument(0).toString());
-    assertEquals("3L", en.get().getEntries().get(2).getArgument(0).toString());
+    assertThat(enu.getType()).isEqualTo("T");
+    assertThat(res.getInnerClasses()).singleElement().satisfies(classResult -> {
+      assertThat(classResult.getName()).isEqualTo("T");
+      assertThat(classResult.getEnumByName("T")).isPresent()
+          .hasValueSatisfying(enumDeclaration -> assertThat(enumDeclaration.getEntries()).satisfiesExactly(
+              ecd -> {
+                assertThat(ecd.getName().asString()).isEqualTo("V__1");
+                assertThat(ecd.getArgument(0).toString()).isEqualTo("1L");
+              },
+              ecd -> {
+                assertThat(ecd.getName().asString()).isEqualTo("V__2");
+                assertThat(ecd.getArgument(0).toString()).isEqualTo("2L");
+              },
+              ecd -> {
+                assertThat(ecd.getName().asString()).isEqualTo("V__3");
+                assertThat(ecd.getArgument(0).toString()).isEqualTo("3L");
+              }));
+    });
   }
 
   @Test
   void testIntEnum() {
     // Arrange
-    Map<String, JSONSchemaProps> props = new HashMap<>();
     JSONSchemaProps newEnum = new JSONSchemaProps();
     newEnum.setType("integer");
     newEnum.setFormat("int32");
@@ -513,7 +523,6 @@ class GeneratorTest {
     enumValues.add(new TextNode("1"));
     enumValues.add(new TextNode("2"));
     enumValues.add(new TextNode("3"));
-    props.put("e1", newEnum);
     JEnum enu = new JEnum(
         "t",
         JAVA_LANG_INTEGER,
@@ -527,33 +536,35 @@ class GeneratorTest {
     GeneratorResult res = enu.generateJava();
 
     // Assert
-    assertEquals("T", enu.getType());
-    assertEquals(1, res.getInnerClasses().size());
-    assertEquals("T", res.getInnerClasses().get(0).getName());
-
-    Optional<EnumDeclaration> en = res.getInnerClasses().get(0).getEnumByName("T");
-    assertTrue(en.isPresent());
-    assertEquals(3, en.get().getEntries().size());
-    assertEquals("V__1", en.get().getEntries().get(0).getName().asString());
-    assertEquals("V__2", en.get().getEntries().get(1).getName().asString());
-    assertEquals("V__3", en.get().getEntries().get(2).getName().asString());
-    assertEquals("1", en.get().getEntries().get(0).getArgument(0).toString());
-    assertEquals("2", en.get().getEntries().get(1).getArgument(0).toString());
-    assertEquals("3", en.get().getEntries().get(2).getArgument(0).toString());
+    assertThat(enu.getType()).isEqualTo("T");
+    assertThat(res.getInnerClasses()).singleElement().satisfies(classResult -> {
+      assertThat(classResult.getName()).isEqualTo("T");
+      assertThat(classResult.getEnumByName("T")).isPresent()
+          .hasValueSatisfying(enumDeclaration -> assertThat(enumDeclaration.getEntries()).satisfiesExactly(
+              ecd -> {
+                assertThat(ecd.getName().asString()).isEqualTo("V__1");
+                assertThat(ecd.getArgument(0).toString()).isEqualTo("1");
+              },
+              ecd -> {
+                assertThat(ecd.getName().asString()).isEqualTo("V__2");
+                assertThat(ecd.getArgument(0).toString()).isEqualTo("2");
+              },
+              ecd -> {
+                assertThat(ecd.getName().asString()).isEqualTo("V__3");
+                assertThat(ecd.getArgument(0).toString()).isEqualTo("3");
+              }));
+    });
   }
 
   @Test
   void testNotUppercaseEnum() {
     // Arrange
-    CompilationUnit cu = new CompilationUnit();
-    Map<String, JSONSchemaProps> props = new HashMap<>();
     JSONSchemaProps newEnum = new JSONSchemaProps();
     newEnum.setType("string");
     List<JsonNode> enumValues = new ArrayList<>();
     enumValues.add(new TextNode("foo"));
     enumValues.add(new TextNode("bar"));
     enumValues.add(new TextNode("baz"));
-    props.put("e1", newEnum);
     JEnum enu = new JEnum(
         "t",
         JAVA_LANG_STRING,
@@ -567,16 +578,15 @@ class GeneratorTest {
     GeneratorResult res = enu.generateJava();
 
     // Assert
-    assertEquals("T", enu.getType());
-    assertEquals(1, res.getInnerClasses().size());
-    assertEquals("T", res.getInnerClasses().get(0).getName());
-
-    Optional<EnumDeclaration> en = res.getInnerClasses().get(0).getEnumByName("T");
-    assertTrue(en.isPresent());
-    assertEquals(3, en.get().getEntries().size());
-    assertEquals("foo", en.get().getEntries().get(0).getName().asString());
-    assertEquals("bar", en.get().getEntries().get(1).getName().asString());
-    assertEquals("baz", en.get().getEntries().get(2).getName().asString());
+    assertThat(enu.getType()).isEqualTo("T");
+    assertThat(res.getInnerClasses()).singleElement().satisfies(classResult -> {
+      assertThat(classResult.getName()).isEqualTo("T");
+      assertThat(classResult.getEnumByName("T")).isPresent()
+          .hasValueSatisfying(enumDeclaration -> assertThat(enumDeclaration.getEntries()).satisfiesExactly(
+              ecd -> assertThat(ecd.getName().asString()).isEqualTo("foo"),
+              ecd -> assertThat(ecd.getName().asString()).isEqualTo("bar"),
+              ecd -> assertThat(ecd.getName().asString()).isEqualTo("baz")));
+    });
   }
 
   @Test
@@ -602,9 +612,9 @@ class GeneratorTest {
     GeneratorResult res = array.generateJava();
 
     // Assert
-    assertEquals("java.util.List<T>", array.getType());
-    assertEquals(1, res.getTopLevelClasses().size());
-    assertEquals("T", res.getTopLevelClasses().get(0).getName());
+    assertThat(array.getType()).isEqualTo("java.util.List<T>");
+    assertThat(res.getTopLevelClasses()).singleElement()
+        .satisfies(classResult -> assertThat(classResult.getName()).isEqualTo("T"));
   }
 
   @Test
@@ -630,9 +640,9 @@ class GeneratorTest {
     GeneratorResult res = map.generateJava();
 
     // Assert
-    assertEquals("java.util.Map<java.lang.String, T>", map.getType());
-    assertEquals(1, res.getTopLevelClasses().size());
-    assertEquals("T", res.getTopLevelClasses().get(0).getName());
+    assertThat(map.getType()).isEqualTo("java.util.Map<java.lang.String, T>");
+    assertThat(res.getTopLevelClasses()).singleElement()
+        .satisfies(classResult -> assertThat(classResult.getName()).isEqualTo("T"));
   }
 
   @Test
@@ -657,16 +667,15 @@ class GeneratorTest {
     GeneratorResult res = obj.generateJava();
 
     // Assert
-    assertEquals(2, res.getTopLevelClasses().size());
-    assertEquals("O1", res.getTopLevelClasses().get(0).getName());
-    assertEquals("T", res.getTopLevelClasses().get(1).getName());
-
-    Optional<ClassOrInterfaceDeclaration> clzT = res.getTopLevelClasses().get(1).getClassByName("T");
-    assertTrue(clzT.isPresent());
-    assertEquals(1, clzT.get().getFields().size());
-    assertTrue(clzT.get().getFieldByName("o1").isPresent());
-    Optional<ClassOrInterfaceDeclaration> clzO1 = res.getTopLevelClasses().get(0).getClassByName("O1");
-    assertTrue(clzO1.isPresent());
+    assertThat(res.getTopLevelClasses()).satisfiesExactly(
+        classResult -> {
+          assertThat(classResult.getName()).isEqualTo("O1");
+          assertThat(classResult.getClassByName("O1")).isPresent();
+        }, classResult -> {
+          assertThat(classResult.getName()).isEqualTo("T");
+          assertThat(classResult.getClassByName("T")).isPresent()
+              .hasValueSatisfying(clz -> assertThat(clz.getFieldByName("o1")).isPresent());
+        });
   }
 
   @Test
@@ -687,12 +696,12 @@ class GeneratorTest {
     GeneratorResult res = obj.generateJava();
 
     // Assert
-    assertEquals(1, res.getTopLevelClasses().size());
-    assertEquals("T", res.getTopLevelClasses().get(0).getName());
-
-    Optional<ClassOrInterfaceDeclaration> clzT = res.getTopLevelClasses().get(0).getClassByName("T");
-    assertTrue(clzT.isPresent());
-    assertTrue(clzT.get().getFieldByName("additionalProperties").isPresent());
+    assertThat(res.getTopLevelClasses()).singleElement().satisfies(
+        classResult -> {
+          assertThat(classResult.getName()).isEqualTo("T");
+          assertThat(classResult.getClassByName("T")).isPresent().hasValueSatisfying(
+              coiDeclaration -> assertThat(coiDeclaration.getFieldByName("additionalProperties")).isPresent());
+        });
   }
 
   @Test
@@ -714,12 +723,12 @@ class GeneratorTest {
     GeneratorResult res = obj.generateJava();
 
     // Assert
-    assertEquals(1, res.getTopLevelClasses().size());
-    assertEquals("T", res.getTopLevelClasses().get(0).getName());
-
-    Optional<ClassOrInterfaceDeclaration> clzT = res.getTopLevelClasses().get(0).getClassByName("T");
-    assertTrue(clzT.isPresent());
-    assertTrue(clzT.get().getFieldByName("additionalProperties").isPresent());
+    assertThat(res.getTopLevelClasses()).singleElement().satisfies(
+        classResult -> {
+          assertThat(classResult.getName()).isEqualTo("T");
+          assertThat(classResult.getClassByName("T")).isPresent().hasValueSatisfying(
+              coiDeclaration -> assertThat(coiDeclaration.getFieldByName("additionalProperties")).isPresent());
+        });
   }
 
   @Test
@@ -745,12 +754,12 @@ class GeneratorTest {
     GeneratorResult res = obj.generateJava();
 
     // Assert
-    assertEquals(1, res.getTopLevelClasses().size());
-    assertEquals("T", res.getTopLevelClasses().get(0).getName());
-
-    Optional<ClassOrInterfaceDeclaration> clzT = res.getTopLevelClasses().get(0).getClassByName("T");
-    assertTrue(clzT.isPresent());
-    assertTrue(clzT.get().getFieldByName("description").isPresent());
+    assertThat(res.getTopLevelClasses()).singleElement().satisfies(
+        classResult -> {
+          assertThat(classResult.getName()).isEqualTo("T");
+          assertThat(classResult.getClassByName("T")).isPresent().hasValueSatisfying(
+              coiDeclaration -> assertThat(coiDeclaration.getFieldByName("description")).isPresent());
+        });
   }
 
   @Test
@@ -773,38 +782,53 @@ class GeneratorTest {
     GeneratorResult res = obj.generateJava();
 
     // Assert
-    assertEquals(3, res.getTopLevelClasses().size());
-    assertEquals("O1", res.getTopLevelClasses().get(0).getName());
-    assertEquals("O2", res.getTopLevelClasses().get(1).getName());
-    assertEquals("T", res.getTopLevelClasses().get(2).getName());
-
-    Optional<ClassOrInterfaceDeclaration> clzT = res.getTopLevelClasses().get(2).getClassByName("T");
-    assertTrue(clzT.isPresent());
-    assertEquals(2, clzT.get().getFields().size());
-    Optional<FieldDeclaration> o1Field = clzT.get().getFieldByName("o1");
-    assertTrue(o1Field.isPresent());
-    FieldDeclaration actualO1Field = o1Field.get();
-    Optional<AnnotationExpr> nullableJacksonBasedAnnotation = actualO1Field
-        .getAnnotationByName("com.fasterxml.jackson.annotation.JsonSetter");
-    assertTrue(nullableJacksonBasedAnnotation.isPresent());
-    assertInstanceOf(SingleMemberAnnotationExpr.class, nullableJacksonBasedAnnotation.get());
-    SingleMemberAnnotationExpr actualNullableAnnotation = (SingleMemberAnnotationExpr) nullableJacksonBasedAnnotation.get();
-    assertEquals("nulls = com.fasterxml.jackson.annotation.Nulls.SET", actualNullableAnnotation.getMemberValue().toString());
-    Optional<AnnotationExpr> nullableFabric8BasedAnnotation = actualO1Field
-        .getAnnotationByName("io.fabric8.generator.annotation.Nullable");
-    assertTrue(nullableFabric8BasedAnnotation.isPresent());
-
-    Optional<FieldDeclaration> o2Field = clzT.get().getFieldByName("o2");
-    assertTrue(o2Field.isPresent());
-    FieldDeclaration actualO2Field = o2Field.get();
-    nullableJacksonBasedAnnotation = actualO2Field.getAnnotationByName("com.fasterxml.jackson.annotation.JsonSetter");
-    assertTrue(nullableJacksonBasedAnnotation.isPresent());
-    assertInstanceOf(SingleMemberAnnotationExpr.class, nullableJacksonBasedAnnotation.get());
-    actualNullableAnnotation = (SingleMemberAnnotationExpr) nullableJacksonBasedAnnotation.get();
-    assertEquals("nulls = com.fasterxml.jackson.annotation.Nulls.SKIP", actualNullableAnnotation.getMemberValue().toString());
-
-    Optional<ClassOrInterfaceDeclaration> clzO1 = res.getTopLevelClasses().get(0).getClassByName("O1");
-    assertTrue(clzO1.isPresent());
+    assertThat(res.getTopLevelClasses()).satisfiesExactly(
+        classResult -> {
+          assertThat(classResult.getName()).isEqualTo("O1");
+          assertThat(classResult.getClassByName("O1")).isPresent();
+        }, classResult -> {
+          assertThat(classResult.getName()).isEqualTo("O2");
+          assertThat(classResult.getClassByName("O2")).isPresent();
+        }, classResult -> {
+          assertThat(classResult.getName()).isEqualTo("T");
+          assertThat(classResult.getClassByName("T")).isPresent()
+              .hasValueSatisfying(clz -> {
+                assertThat(clz.getFields()).hasSize(2);
+                assertThat(clz.getFieldByName("o1")).isPresent().hasValueSatisfying(o1Field -> {
+                  assertThat(o1Field.getAnnotations()).hasSize(3);
+                  assertThat(o1Field.getAnnotationByName("com.fasterxml.jackson.annotation.JsonSetter")).isPresent()
+                      .hasValueSatisfying(annotationExpr -> {
+                        assertThat(annotationExpr).isInstanceOf(SingleMemberAnnotationExpr.class);
+                        SingleMemberAnnotationExpr annotation = (SingleMemberAnnotationExpr) annotationExpr;
+                        assertThat(annotation.getMemberValue().toString())
+                            .isEqualTo("nulls = com.fasterxml.jackson.annotation.Nulls.SET");
+                      });
+                  assertThat(o1Field.getAnnotationByName("com.fasterxml.jackson.annotation.JsonProperty")).isPresent()
+                      .hasValueSatisfying(annotationExpr -> {
+                        assertThat(annotationExpr).isInstanceOf(SingleMemberAnnotationExpr.class);
+                        SingleMemberAnnotationExpr annotation = (SingleMemberAnnotationExpr) annotationExpr;
+                        assertThat(annotation.getMemberValue().toString()).isEqualTo("\"o1\"");
+                      });
+                  assertThat(o1Field.getAnnotationByName("io.fabric8.generator.annotation.Nullable")).isPresent();
+                });
+                assertThat(clz.getFieldByName("o2")).isPresent().hasValueSatisfying(o2Field -> {
+                  assertThat(o2Field.getAnnotations()).hasSize(2);
+                  assertThat(o2Field.getAnnotationByName("com.fasterxml.jackson.annotation.JsonSetter")).isPresent()
+                      .hasValueSatisfying(annotationExpr -> {
+                        assertThat(annotationExpr).isInstanceOf(SingleMemberAnnotationExpr.class);
+                        SingleMemberAnnotationExpr annotation = (SingleMemberAnnotationExpr) annotationExpr;
+                        assertThat(annotation.getMemberValue().toString())
+                            .isEqualTo("nulls = com.fasterxml.jackson.annotation.Nulls.SKIP");
+                      });
+                  assertThat(o2Field.getAnnotationByName("com.fasterxml.jackson.annotation.JsonProperty")).isPresent()
+                      .hasValueSatisfying(annotationExpr -> {
+                        assertThat(annotationExpr).isInstanceOf(SingleMemberAnnotationExpr.class);
+                        SingleMemberAnnotationExpr annotation = (SingleMemberAnnotationExpr) annotationExpr;
+                        assertThat(annotation.getMemberValue().toString()).isEqualTo("\"o2\"");
+                      });
+                });
+              });
+        });
   }
 
   @Test
@@ -822,17 +846,16 @@ class GeneratorTest {
     GeneratorResult res = jobj.generateJava();
 
     // Assert
-    assertEquals(1, res.getTopLevelClasses().size());
-    assertEquals("T", res.getTopLevelClasses().get(0).getName());
-
-    Optional<ClassOrInterfaceDeclaration> clzT = res.getTopLevelClasses().get(0).getClassByName("T");
-    assertTrue(clzT.isPresent());
-    assertEquals(1, clzT.get().getFields().size());
-    Optional<FieldDeclaration> o1Field = clzT.get().getFieldByName("o1");
-    assertTrue(o1Field.isPresent());
-    FieldDeclaration actualO1Field = o1Field.get();
-    assertEquals("io.fabric8.kubernetes.api.model.AnyType",
-        actualO1Field.getElementType().asString());
+    assertThat(res.getTopLevelClasses()).singleElement().satisfies(
+        classResult -> {
+          assertThat(classResult.getName()).isEqualTo("T");
+          assertThat(classResult.getClassByName("T")).isPresent().hasValueSatisfying(clz -> {
+            assertThat(clz.getFields()).hasSize(1);
+            assertThat(clz.getFieldByName("o1")).isPresent()
+                .hasValueSatisfying(o1Field -> assertThat(o1Field.getElementType().asString())
+                    .isEqualTo("io.fabric8.kubernetes.api.model.AnyType"));
+          });
+        });
   }
 
   @Test
@@ -856,37 +879,58 @@ class GeneratorTest {
     GeneratorResult res = obj.generateJava();
 
     // Assert
-    assertEquals(6, res.getTopLevelClasses().size());
-    // The order here is not important
-    assertEquals("O1", res.getTopLevelClasses().get(0).getName());
-    assertEquals("O1", res.getTopLevelClasses().get(1).getName());
-    assertEquals("O2", res.getTopLevelClasses().get(2).getName());
-    assertEquals("O3", res.getTopLevelClasses().get(3).getName());
-    assertEquals("O2", res.getTopLevelClasses().get(4).getName());
-    assertEquals("T", res.getTopLevelClasses().get(5).getName());
-
-    GeneratorResult.ClassResult cuT = res.getTopLevelClasses().get(5);
-    Optional<ClassOrInterfaceDeclaration> clzT = cuT.getClassByName("T");
-    assertTrue(clzT.isPresent());
-    assertEquals(2, clzT.get().getFields().size());
-    assertTrue(clzT.get().getFieldByName("o1").isPresent());
-    assertEquals("v1alpha1", cuT.getPackageDeclaration().get().getNameAsString());
-    assertEquals(
-        "v1alpha1.t.O1", clzT.get().getFieldByName("o1").get().getElementType().toString());
-    GeneratorResult.ClassResult cuO1 = res.getTopLevelClasses().get(0);
-    Optional<ClassOrInterfaceDeclaration> clzO1 = cuO1.getClassByName("O1");
-    assertTrue(clzO1.isPresent());
-    assertEquals("v1alpha1.t", cuO1.getPackageDeclaration().get().getNameAsString());
-    GeneratorResult.ClassResult cuO2 = res.getTopLevelClasses().get(4);
-    Optional<ClassOrInterfaceDeclaration> clzO2 = cuO2.getClassByName("O2");
-    assertTrue(clzO2.isPresent());
-    assertTrue(clzO2.get().getFieldByName("o1").isPresent());
-    assertEquals("v1alpha1.t", cuO2.getPackageDeclaration().get().getNameAsString());
-    assertEquals(
-        "v1alpha1.t.o2.O1",
-        clzO2.get().getFieldByName("o1").get().getElementType().toString());
-    assertTrue(clzO2.get().getFieldByName("o2").isPresent());
-    assertTrue(clzO2.get().getFieldByName("o3").isPresent());
+    assertThat(res.getTopLevelClasses()).satisfiesExactly(
+        classResult -> {
+          assertThat(classResult.getName()).isEqualTo("O1");
+          assertThat(classResult.getPackageDeclaration()).isPresent()
+              .hasValueSatisfying(
+                  packageDeclaration -> assertThat(packageDeclaration.getNameAsString()).isEqualTo("v1alpha1.t"));
+          assertThat(classResult.getClassByName("O1")).isPresent();
+        }, classResult -> {
+          assertThat(classResult.getName()).isEqualTo("O1");
+          assertThat(classResult.getPackageDeclaration()).isPresent()
+              .hasValueSatisfying(
+                  packageDeclaration -> assertThat(packageDeclaration.getNameAsString()).isEqualTo("v1alpha1.t.o2"));
+          assertThat(classResult.getClassByName("O1")).isPresent();
+        }, classResult -> {
+          assertThat(classResult.getName()).isEqualTo("O2");
+          assertThat(classResult.getPackageDeclaration()).isPresent()
+              .hasValueSatisfying(
+                  packageDeclaration -> assertThat(packageDeclaration.getNameAsString()).isEqualTo("v1alpha1.t.o2"));
+          assertThat(classResult.getClassByName("O2")).isPresent();
+        }, classResult -> {
+          assertThat(classResult.getName()).isEqualTo("O3");
+          assertThat(classResult.getPackageDeclaration()).isPresent()
+              .hasValueSatisfying(
+                  packageDeclaration -> assertThat(packageDeclaration.getNameAsString()).isEqualTo("v1alpha1.t.o2"));
+          assertThat(classResult.getClassByName("O3")).isPresent();
+        }, classResult -> {
+          assertThat(classResult.getName()).isEqualTo("O2");
+          assertThat(classResult.getPackageDeclaration()).isPresent()
+              .hasValueSatisfying(
+                  packageDeclaration -> assertThat(packageDeclaration.getNameAsString()).isEqualTo("v1alpha1.t"));
+          assertThat(classResult.getClassByName("O2")).isPresent().hasValueSatisfying(clz -> {
+            assertThat(clz.getFields()).hasSize(3);
+            assertThat(clz.getFieldByName("o1")).isPresent()
+                .hasValueSatisfying(o1Field -> assertThat(o1Field.getElementType().asString()).isEqualTo("v1alpha1.t.o2.O1"));
+            assertThat(clz.getFieldByName("o2")).isPresent()
+                .hasValueSatisfying(o2Field -> assertThat(o2Field.getElementType().asString()).isEqualTo("v1alpha1.t.o2.O2"));
+            assertThat(clz.getFieldByName("o3")).isPresent()
+                .hasValueSatisfying(o3Field -> assertThat(o3Field.getElementType().asString()).isEqualTo("v1alpha1.t.o2.O3"));
+          });
+        }, classResult -> {
+          assertThat(classResult.getName()).isEqualTo("T");
+          assertThat(classResult.getPackageDeclaration()).isPresent()
+              .hasValueSatisfying(packageDeclaration -> assertThat(packageDeclaration.getNameAsString()).isEqualTo("v1alpha1"));
+          assertThat(classResult.getClassByName("T")).isPresent()
+              .hasValueSatisfying(clz -> {
+                assertThat(clz.getFields()).hasSize(2);
+                assertThat(clz.getFieldByName("o1")).isPresent()
+                    .hasValueSatisfying(o1Field -> assertThat(o1Field.getElementType().asString()).isEqualTo("v1alpha1.t.O1"));
+                assertThat(clz.getFieldByName("o2")).isPresent()
+                    .hasValueSatisfying(o2Field -> assertThat(o2Field.getElementType().asString()).isEqualTo("v1alpha1.t.O2"));
+              });
+        });
   }
 
   @Test
@@ -911,36 +955,26 @@ class GeneratorTest {
     GeneratorResult res = obj.generateJava();
 
     // Assert
-    assertEquals(3, res.getTopLevelClasses().size());
-    assertEquals("O1", res.getTopLevelClasses().get(0).getName());
-    assertEquals("O2", res.getTopLevelClasses().get(1).getName());
-    assertEquals("T", res.getTopLevelClasses().get(2).getName());
-
-    Optional<ClassOrInterfaceDeclaration> clzT = res.getTopLevelClasses().get(2).getClassByName("T");
-    assertTrue(clzT.isPresent());
-    assertEquals(2, clzT.get().getFields().size());
-
-    Optional<FieldDeclaration> o1Field = clzT.get().getFieldByName("o1");
-    assertTrue(o1Field.isPresent());
-    FieldDeclaration actualO1Field = o1Field.get();
-    VariableDeclarator variableDeclarator = actualO1Field.getVariable(0);
-    assertNotNull(variableDeclarator);
-    Optional<Expression> initializer = variableDeclarator.getInitializer();
-    assertTrue(initializer.isPresent());
-
-    Optional<FieldDeclaration> o2Field = clzT.get().getFieldByName("o2");
-    assertTrue(o2Field.isPresent());
-    FieldDeclaration actualO2Field = o2Field.get();
-    variableDeclarator = actualO2Field.getVariable(0);
-    assertNotNull(variableDeclarator);
-    initializer = variableDeclarator.getInitializer();
-    assertFalse(initializer.isPresent());
-
-    Optional<ClassOrInterfaceDeclaration> clzO1 = res.getTopLevelClasses().get(0).getClassByName("O1");
-    assertTrue(clzO1.isPresent());
-
-    Optional<ClassOrInterfaceDeclaration> clzO2 = res.getTopLevelClasses().get(1).getClassByName("O2");
-    assertTrue(clzO2.isPresent());
+    assertThat(res.getTopLevelClasses()).satisfiesExactly(
+        classResult -> {
+          assertThat(classResult.getName()).isEqualTo("O1");
+          assertThat(classResult.getClassByName("O1")).isPresent();
+        }, classResult -> {
+          assertThat(classResult.getName()).isEqualTo("O2");
+          assertThat(classResult.getClassByName("O2")).isPresent();
+        }, classResult -> {
+          assertThat(classResult.getName()).isEqualTo("T");
+          assertThat(classResult.getClassByName("T")).isPresent()
+              .hasValueSatisfying(clz -> {
+                assertThat(clz.getFields()).hasSize(2);
+                assertThat(clz.getFieldByName("o1")).isPresent()
+                    .hasValueSatisfying(o1Field -> assertThat(o1Field.getVariable(0)).isNotNull()
+                        .satisfies(variableDeclarator -> assertThat(variableDeclarator.getInitializer()).isPresent()));
+                assertThat(clz.getFieldByName("o2")).isPresent()
+                    .hasValueSatisfying(o2Field -> assertThat(o2Field.getVariable(0)).isNotNull()
+                        .satisfies(variableDeclarator -> assertThat(variableDeclarator.getInitializer()).isNotPresent()));
+              });
+        });
   }
 
   @Test
@@ -957,11 +991,11 @@ class GeneratorTest {
     props.put("test.Dup", duplicatedFieldObject);
 
     // Assert
-    assertThrows(JavaGeneratorException.class, () -> {
-      // Act
-      JObject obj = new JObject(null, "t", props, null, false, defaultConfig, null, Boolean.FALSE, null);
-    },
-        "An exception is expected to be thrown when an object contains more that one duplicated field");
+    assertThatThrownBy(
+        // Act
+        () -> new JObject(null, "t", props, null, false, defaultConfig, null, Boolean.FALSE, null))
+        .as("An exception is expected to be thrown when an object contains more that one duplicated field")
+        .isInstanceOf(JavaGeneratorException.class);
   }
 
   @Test
@@ -976,11 +1010,11 @@ class GeneratorTest {
     props.put("test-Dup", duplicatedFieldObject);
 
     // Assert
-    assertThrows(JavaGeneratorException.class, () -> {
-      // Act
-      JObject obj = new JObject(null, "t", props, null, false, defaultConfig, null, Boolean.FALSE, null);
-    },
-        "An exception is expected to be thrown when an object contains one duplicated field that is not marked as deprecated");
+    assertThatThrownBy(
+        // Act
+        () -> new JObject(null, "t", props, null, false, defaultConfig, null, Boolean.FALSE, null))
+        .as("An exception is expected to be thrown when an object contains one duplicated field that is not marked as deprecated")
+        .isInstanceOf(JavaGeneratorException.class);
   }
 
   @Test
@@ -1003,7 +1037,7 @@ class GeneratorTest {
     GeneratorResult res = obj.generateJava();
 
     // Assert
-    assertEquals("org.test.ExistingJavaType", obj.getType());
-    assertEquals(0, res.getTopLevelClasses().size());
+    assertThat(obj.getType()).isEqualTo("org.test.ExistingJavaType");
+    assertThat(res.getTopLevelClasses()).isEmpty();
   }
 }

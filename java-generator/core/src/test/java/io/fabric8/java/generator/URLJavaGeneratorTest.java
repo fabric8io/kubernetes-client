@@ -16,7 +16,7 @@
 package io.fabric8.java.generator;
 
 import io.fabric8.java.generator.exceptions.JavaGeneratorException;
-import io.fabric8.kubernetes.client.utils.Serialization;
+import io.fabric8.kubernetes.client.utils.KubernetesSerialization;
 import io.fabric8.mockwebserver.DefaultMockServer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -81,7 +81,8 @@ class URLJavaGeneratorTest {
     try {
       server.start();
       server.expect().withPath("/cert-manager-crd.yml")
-          .andReturn(200, Serialization.unmarshal(URLJavaGeneratorTest.class.getResourceAsStream("/cert-manager-crd.yml")))
+          .andReturn(200,
+              new KubernetesSerialization().unmarshal(URLJavaGeneratorTest.class.getResourceAsStream("/cert-manager-crd.yml")))
           .always();
       final URLJavaGenerator generator = new URLJavaGenerator(new Config(),
           Collections.singletonList(new URL(server.url("/cert-manager-crd.yml"))), downloadLocation);

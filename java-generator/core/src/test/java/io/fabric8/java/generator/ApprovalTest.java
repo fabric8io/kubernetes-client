@@ -31,8 +31,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static com.google.common.truth.Truth.assertThat;
 import static io.fabric8.java.generator.CRGeneratorRunner.groupToPackage;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class ApprovalTest {
 
