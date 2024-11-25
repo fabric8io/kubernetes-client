@@ -1185,8 +1185,6 @@ class DefaultSharedIndexInformerTest {
   @Test
   void stopReceivingEventsWhenEventHandlerRemoved() {
     String startResourceVersion = "1000";
-    var firstPod = new Pod();
-    var secondPod = new Pod();
     var eventEmitTimeWait = 500L;
 
     server.expect()
