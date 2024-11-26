@@ -97,7 +97,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
     implements PodResource, EphemeralContainersResource, CopyOrReadable {
 
   public static final int HTTP_TOO_MANY_REQUESTS = 429;
-  public static final int DEFAULT_POD_READY_WAIT_TIMEOUT_MS = 5000;
+  public static final int DEFAULT_POD_READY_WAIT_TIMEOUT_MS = 0;
   private static final String[] EMPTY_COMMAND = { "/bin/sh", "-i" };
   public static final String DEFAULT_CONTAINER_ANNOTATION_NAME = "kubectl.kubernetes.io/default-container";
 
@@ -193,8 +193,8 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
   }
 
   @Override
-  public PodOperationsImpl withReadyWaitTimeout(Integer logWaitTimeout) {
-    return new PodOperationsImpl(getContext().withReadyWaitTimeout(logWaitTimeout), context);
+  public PodOperationsImpl withReadyWaitTimeout(Integer readyWaitTimeout) {
+    return new PodOperationsImpl(getContext().withReadyWaitTimeout(readyWaitTimeout), context);
   }
 
   @Override

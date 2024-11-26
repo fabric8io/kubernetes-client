@@ -4,6 +4,7 @@
 - [Java baseline set to Java 11](#java-11)
 - [Vert.x as default HttpClient implementation](#vertx-httpclient)
 - [Bouncy Castle is no longer needed](#bouncy-castle)
+- [Default Pod wait until ready timeout changed to 0](#pod-wait-timeout)
 - [Config changes](#config-changes)
   - [Support for multiple kubeconfig files](#config-changes-multiple-kubeconfig)
 - [Model Changes](#model-changes)
@@ -55,6 +56,21 @@ It is also recommended (although not mandatory) to add an exclusion for the `io.
 The Bouncy Castle library is no longer needed as a dependency.
 In previous versions, this was an optional dependency needed for Elliptic Curve (EC) Keys.
 The Kubernetes client now uses the default Java security provider which should be enough to handle all scenarios.
+
+## Default Pod wait until ready timeout changed to 0 <a href="#pod-wait-timeout" id="pod-wait-timeout"/>
+
+The default timeout for Pod readiness has been changed from 5 seconds to 0 seconds.
+
+In previous versions, the default timeout for waiting until a Pod is ready was 5 seconds.
+This was causing issues in scenarios where the Pod was not marked as ready.
+For example, when the Pod contained an init container, it was impossible to wait for the Pod to be ready while performing operations on that container.
+
+We've changed the behavior to make Pod readiness waits opt-in.
+If you want to preserve the previous behavior, you can set the timeout with the `withReadyWaitTimeout` method.
+
+``` java
+client.pods().withName($podName).withReadyWaitTimeout(5000).getLog();
+```
 
 ## Config changes <a href="#config-changes" id="config-changes"/>
 
