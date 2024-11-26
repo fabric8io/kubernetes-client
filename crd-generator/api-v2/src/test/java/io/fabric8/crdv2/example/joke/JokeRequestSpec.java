@@ -17,6 +17,7 @@ package io.fabric8.crdv2.example.joke;
 
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 import io.fabric8.crd.generator.annotation.PrinterColumn;
+import io.fabric8.crd.generator.annotation.PrinterColumnFormat;
 import io.fabric8.crd.generator.annotation.SelectableField;
 
 public class JokeRequestSpec {
@@ -49,6 +50,9 @@ public class JokeRequestSpec {
       ExcludedTopic.sexist };
   private boolean safe;
 
+  @PrinterColumn(format = PrinterColumnFormat.DATE_TIME)
+  private String createdAt;
+
   public Category getCategory() {
     return category;
   }
@@ -71,5 +75,13 @@ public class JokeRequestSpec {
 
   public void setSafe(boolean safe) {
     this.safe = safe;
+  }
+
+  public String getCreatedAt() {
+    return createdAt;
+  }
+
+  public void setCreatedAt(String createdAt) {
+    this.createdAt = createdAt;
   }
 }

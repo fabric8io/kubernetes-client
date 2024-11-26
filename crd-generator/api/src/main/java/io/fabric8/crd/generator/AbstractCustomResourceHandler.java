@@ -186,7 +186,7 @@ public abstract class AbstractCustomResourceHandler {
       Optional<String> specReplicasPath, Optional<String> statusReplicasPath,
       Optional<String> labelSelectorPath);
 
-  private static Optional<PrinterColumnFormat> findPrinterColumnFormat(Object o) {
+  static Optional<PrinterColumnFormat> findPrinterColumnFormat(Object o) {
     if (o == null) {
       return Optional.empty();
     }
