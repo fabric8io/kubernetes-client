@@ -127,8 +127,8 @@ public class PodOperationContext {
     return this.toBuilder().dir(dir).build();
   }
 
-  public PodOperationContext withReadyWaitTimeout(Integer logWaitTimeout) {
-    return this.toBuilder().readyWaitTimeout(logWaitTimeout).build();
+  public PodOperationContext withReadyWaitTimeout(Integer readyWaitTimeout) {
+    return this.toBuilder().readyWaitTimeout(readyWaitTimeout).build();
   }
 
   public String getLogParameters() {
