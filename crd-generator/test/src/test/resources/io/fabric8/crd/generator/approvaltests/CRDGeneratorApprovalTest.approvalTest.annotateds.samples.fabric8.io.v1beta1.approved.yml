@@ -20,6 +20,15 @@ spec:
               - "non"
               - "oui"
               type: "string"
+            defaultBoolean:
+              default: true
+              type: "boolean"
+            defaultInt:
+              default: 1337
+              type: "integer"
+            defaultInteger:
+              default: 1337
+              type: "integer"
             defaultValue:
               default: "my-value"
               type: "string"
