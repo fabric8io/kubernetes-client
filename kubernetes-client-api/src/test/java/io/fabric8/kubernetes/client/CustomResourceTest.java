@@ -60,6 +60,8 @@ class CustomResourceTest {
     assertEquals(custom.getPlural() + "." + Custom.GROUP, custom.getCRDName());
     assertEquals(Custom.VERSION, custom.getVersion());
     assertEquals(Custom.GROUP, custom.getGroup());
+    assertEquals(1, Custom.getCategories(Custom.class).length);
+    assertEquals(Custom.CATEGORY, Custom.getCategories(Custom.class)[0]);
     assertFalse(custom.isServed());
     assertFalse(custom.isStorage());
   }
