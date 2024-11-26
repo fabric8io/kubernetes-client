@@ -31,7 +31,7 @@ require (
 	github.com/stolostron/search-v2-operator v0.0.0-20241029125341-1a376a062a45
 	github.com/tektoncd/pipeline v0.65.2
 	github.com/tektoncd/triggers v0.30.0
-	istio.io/client-go v1.24.0
+	istio.io/client-go v1.24.1
 	k8s.io/api v0.31.3
 	k8s.io/apiextensions-apiserver v0.31.3
 	k8s.io/apimachinery v0.31.3
