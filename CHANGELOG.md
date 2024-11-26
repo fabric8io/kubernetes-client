@@ -43,6 +43,7 @@
 * Fix #6158: Removed deprecated methods from `io.fabric8.kubernetes.client.utils.IOHelpers` class
 * Fix #6159: Removed deprecated `io.fabric8.kubernetes.client.utils.Utils.getPluralFromKind` method
 * Fix #6361: Renamed SettableBeanPropertyDelegate to SettableBeanPropertyDelegating
+* Fix #6470: Switched default HTTP client from OkHttp to Vert.x (`kubernetes-httpclient-vertx`)
 * Fix #6603: Removed deprecated `io.fabric8.openshift.api.model.runtime.RawExtension` class
 * Fix #6605: Removed deprecated `ApiVersionUtil` classes in extension modules
 * Fix #6609: Removed deprecated `io.fabric8.crd.generator.CRDInfo.getVersion` method

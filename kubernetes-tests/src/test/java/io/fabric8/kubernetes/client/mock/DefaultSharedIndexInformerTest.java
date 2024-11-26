@@ -74,6 +74,7 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -103,7 +104,7 @@ class DefaultSharedIndexInformerTest {
       .withKind("Animal")
       .withScope("Namespaced")
       .build();
-  private KubernetesClient client;
+  KubernetesClient client;
   private SharedInformerFactory factory;
 
   @BeforeEach
@@ -212,7 +213,7 @@ class DefaultSharedIndexInformerTest {
             RESYNC_PERIOD);
     CountDownLatch foundExistingPod = new CountDownLatch(1);
     podInformer.addEventHandler(
-        new ResourceEventHandler<Pod>() {
+        new ResourceEventHandler<>() {
           @Override
           public void onAdd(Pod obj) {
             if (obj.getMetadata().getName().equalsIgnoreCase("pod1")) {
@@ -541,7 +542,7 @@ class DefaultSharedIndexInformerTest {
     SharedIndexInformer<Pod> podInformer = factory.sharedIndexInformerFor(Pod.class, 1000L);
     CountDownLatch failureCallbackReceived = new CountDownLatch(1);
     podInformer.addEventHandler(
-        new ResourceEventHandler<Pod>() {
+        new ResourceEventHandler<>() {
           @Override
           public void onAdd(Pod obj) {
           }
@@ -1224,22 +1225,19 @@ class DefaultSharedIndexInformerTest {
   }
 
   @Test
-  void testClientStopClosesInformerBeforeStarting() throws InterruptedException {
+  void clientStopPreventsInformerFromStarting() {
     // Given
     setupMockServerExpectations(Animal.class, "ns1", this::getList,
         r -> new WatchEvent(getAnimal("red-panda", "Carnivora", r), "ADDED"), null, null);
-
-    // When
     SharedIndexInformer<GenericKubernetesResource> animalSharedIndexInformer = client
         .genericKubernetesResources(animalContext)
         .inNamespace("ns1")
         .runnableInformer(60 * WATCH_EVENT_EMIT_TIME);
-
     client.close();
-
-    animalSharedIndexInformer.start();
-
-    assertTrue(animalSharedIndexInformer.stopped().toCompletableFuture().isDone());
+    // When
+    assertThatIllegalStateException()
+        .isThrownBy(animalSharedIndexInformer::start)
+        .withMessage("Client is closed");
   }
 
   private KubernetesResource getAnimal(String name, String order, String resourceVersion) {

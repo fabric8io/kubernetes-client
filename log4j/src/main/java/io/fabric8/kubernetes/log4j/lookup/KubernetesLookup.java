@@ -166,6 +166,10 @@ public class KubernetesLookup extends AbstractLookup {
       .isClassAvailable("org.apache.logging.log4j.spring.cloud.config.client.SpringEnvironmentHolder")
       || LoaderUtil.isClassAvailable("org.apache.logging.log4j.spring.boot.SpringEnvironmentHolder");
 
+  // Vert.x uses Log4j as a logger, if the KubernetesLookup info is initialized when the plugin is instantiated
+  // it will cause an infinite loop since the Log4j factory will invoke the KubernetesLookup plugin,
+  // the Vert.x client will invoke the Log4j factory again, and so forth.
+  private volatile boolean initialized;
   private Pod pod;
   private Namespace namespace;
   private URL masterUrl;
@@ -177,14 +181,14 @@ public class KubernetesLookup extends AbstractLookup {
     this.pod = null;
     this.namespace = null;
     this.masterUrl = null;
-    initialize(this);
+    this.initialized = false;
   }
 
   KubernetesLookup(Pod pod, Namespace namespace, URL masterUrl) {
     this.pod = pod;
     this.namespace = namespace;
     this.masterUrl = masterUrl;
-    initialize(this);
+    this.initialized = false;
   }
 
   private static void initialize(KubernetesLookup lookup) {
@@ -252,7 +256,7 @@ public class KubernetesLookup extends AbstractLookup {
    * <p>
    * Used in tests to provide a mock client.
    * </p>
-   * 
+   *
    * @return A Kubernetes client.
    */
   protected KubernetesClient createClient() {
@@ -370,6 +374,12 @@ public class KubernetesLookup extends AbstractLookup {
 
   @Override
   public String lookup(final LogEvent event, final String key) {
+    synchronized (this) {
+      if (!initialized) {
+        initialize(this);
+        initialized = true;
+      }
+    }
     KubernetesInfo info;
     READ_LOCK.lock();
     try {
