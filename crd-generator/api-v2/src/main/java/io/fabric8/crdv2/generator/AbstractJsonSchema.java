@@ -81,6 +81,7 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static io.fabric8.crdv2.generator.CRDUtils.toTargetType;
 import static java.util.Optional.ofNullable;
 
 /**
@@ -93,11 +94,11 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
 
   private static final Logger LOGGER = LoggerFactory.getLogger(AbstractJsonSchema.class);
 
-  private ResolvingContext resolvingContext;
-  private T root;
-  private Set<String> dependentClasses = new HashSet<>();
-  private Set<AdditionalPrinterColumn> additionalPrinterColumns = new HashSet<>();
-  private Set<AdditionalSelectableField> additionalSelectableFields = new HashSet<>();
+  private final ResolvingContext resolvingContext;
+  private final T root;
+  private final Set<String> dependentClasses = new HashSet<>();
+  private final Set<AdditionalPrinterColumn> additionalPrinterColumns = new HashSet<>();
+  private final Set<AdditionalSelectableField> additionalSelectableFields = new HashSet<>();
 
   public static class AnnotationMetadata {
     public final Annotation annotation;
@@ -109,7 +110,7 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
     }
   }
 
-  private Map<Class<? extends Annotation>, LinkedHashMap<String, AnnotationMetadata>> pathMetadata = new HashMap<>();
+  private final Map<Class<? extends Annotation>, LinkedHashMap<String, AnnotationMetadata>> pathMetadata = new HashMap<>();
 
   public AbstractJsonSchema(ResolvingContext resolvingContext, Class<?> def) {
     this.resolvingContext = resolvingContext;
@@ -226,8 +227,8 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
   class PropertyMetadata {
 
     private boolean required;
-    private String description;
-    private String defaultValue;
+    private final String description;
+    private final Object defaultValue;
     private Double min;
     private Double max;
     private String pattern;
@@ -241,7 +242,6 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
       required = Boolean.TRUE.equals(value.getRequired());
 
       description = beanProperty.getMetadata().getDescription();
-      defaultValue = beanProperty.getMetadata().getDefaultValue();
 
       schemaFrom = ofNullable(beanProperty.getAnnotation(SchemaFrom.class)).map(SchemaFrom::type).orElse(null);
       preserveUnknownFields = beanProperty.getAnnotation(PreserveUnknownFields.class) != null;
@@ -263,6 +263,15 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
 
       collectValidationRules(beanProperty, validationRules);
 
+      if (beanProperty.getMetadata().getDefaultValue() != null) {
+        defaultValue = toTargetType(beanProperty.getType(), beanProperty.getMetadata().getDefaultValue());
+      } else if (ofNullable(beanProperty.getAnnotation(Default.class)).map(Default::value).isPresent()) {
+        defaultValue = toTargetType(beanProperty.getType(),
+            ofNullable(beanProperty.getAnnotation(Default.class)).map(Default::value).get());
+      } else {
+        defaultValue = null;
+      }
+
       // TODO: should probably move to a standard annotations
       // see ValidationSchemaFactoryWrapper
       nullable = beanProperty.getAnnotation(Nullable.class) != null;
@@ -271,7 +280,6 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
 
       // TODO: should the following be deprecated?
       required = beanProperty.getAnnotation(Required.class) != null;
-      defaultValue = ofNullable(beanProperty.getAnnotation(Default.class)).map(Default::value).orElse(defaultValue);
       pattern = ofNullable(beanProperty.getAnnotation(Pattern.class)).map(Pattern::value).orElse(pattern);
     }
 

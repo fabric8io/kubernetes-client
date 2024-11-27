@@ -7,6 +7,7 @@
 * Fix #6214: Java generator does not recognize fields in CRDs other than metadata, spec, and status
 * Fix #6459: Pod log request sinceTime param correctly encoded
 * Fix #6632: Mock server creationTimestamp and deletionTimestamp formatted consistently (ISO 8601)
+* Fix #6654: (crd-generator) default values for CRD fields can be numeric or boolean
 
 #### Improvements
 * Fix #3069: (crd-generator) Add `@AdditionalPrinterColumn` to specify a printer column by JSON path.

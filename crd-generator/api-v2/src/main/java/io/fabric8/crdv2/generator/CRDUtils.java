@@ -16,10 +16,12 @@
 package io.fabric8.crdv2.generator;
 
 import com.fasterxml.jackson.databind.BeanDescription;
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationConfig;
 import com.fasterxml.jackson.databind.introspect.BeanPropertyDefinition;
 
+import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,6 +30,7 @@ public class CRDUtils {
     throw new IllegalStateException("Utility class");
   }
 
+  @SuppressWarnings("LombokGetterMayBeUsed")
   public static class SpecAndStatus {
 
     private final String specClassName;
@@ -79,7 +82,7 @@ public class CRDUtils {
     Map<String, String> res = new HashMap<>();
     if (arr != null) {
       for (String e : arr) {
-        String[] splitted = e.split("\\=");
+        String[] splitted = e.split("=");
         if (splitted.length >= 2) {
           res.put(splitted[0], e.substring(splitted[0].length() + 1));
         } else {
@@ -91,4 +94,23 @@ public class CRDUtils {
     return res;
   }
 
+  static Object toTargetType(JavaType type, String value) {
+    if (type == null || value == null) {
+      return null;
+    }
+    try {
+      if (Number.class.isAssignableFrom(type.getRawClass()) || int.class.isAssignableFrom(type.getRawClass())
+          || long.class.isAssignableFrom(type.getRawClass()) || float.class.isAssignableFrom(type.getRawClass())
+          || double.class.isAssignableFrom(type.getRawClass())) {
+        return NumberFormat.getInstance().parse(value);
+      }
+      if (Boolean.class.isAssignableFrom(type.getRawClass()) || boolean.class.isAssignableFrom(type.getRawClass())) {
+        return Boolean.valueOf(value);
+      }
+    } catch (Exception ex) {
+      // NO OP
+    }
+    return value;
+
+  }
 }

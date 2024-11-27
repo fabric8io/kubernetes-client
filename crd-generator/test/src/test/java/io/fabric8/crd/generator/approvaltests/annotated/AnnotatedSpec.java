@@ -42,6 +42,15 @@ public class AnnotatedSpec {
   private String defaultValue;
   @Default("my-value2")
   private String defaultValue2;
+  @JsonProperty(defaultValue = "true")
+  @Default("true") // compatibility with CRDGenerator-v1
+  private boolean defaultBoolean;
+  @JsonProperty(defaultValue = "1337")
+  @Default("1337") // compatibility with CRDGenerator-v1
+  private Integer defaultInteger;
+  @JsonProperty(defaultValue = "1337")
+  @Default("1337") // compatibility with CRDGenerator-v1
+  private int defaultInt;
   @Required
   private boolean emptySetter;
   @Required
