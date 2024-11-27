@@ -29,6 +29,7 @@
 
 #### New Features
 * Fix #5719: io.fabric8:mockwebserver is now based on Vert.x
+* Fix #5795: (crd-generator) Allow to configure categories
 * Fix #5944: (crd-generator) Add CRD-Generator Maven Plugin
 * Fix #5958: (crd-generator) Add CRD-Generator CLI Application
 * Fix #6145: Introduced `io.fabric8:kubernetes-model-validator` module to validate Kubernetes resources
