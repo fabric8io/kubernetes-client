@@ -15,6 +15,7 @@
  */
 package io.fabric8.crd.generator;
 
+import io.fabric8.crd.generator.annotation.PrinterColumnFormat;
 import io.fabric8.crd.generator.decorator.Decorator;
 import io.fabric8.crd.generator.visitor.*;
 import io.fabric8.kubernetes.client.utils.Utils;
@@ -25,6 +26,7 @@ import io.sundr.model.TypeDef;
 import io.sundr.model.TypeDefBuilder;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -82,8 +84,10 @@ public abstract class AbstractCustomResourceHandler {
     Map<String, Property> additionalPrinterColumns = new HashMap<>(additionalPrinterColumnDetector.getProperties());
     additionalPrinterColumns.forEach((path, property) -> {
       Map<String, Object> parameters = property.getAnnotations().stream()
-          .filter(a -> a.getClassRef().getName().equals("PrinterColumn")).map(AnnotationRef::getParameters)
-          .findFirst().orElse(Collections.emptyMap());
+          .filter(a -> a.getClassRef().getName().equals("PrinterColumn"))
+          .map(AnnotationRef::getParameters)
+          .findFirst()
+          .orElse(Collections.emptyMap());
       String type = AbstractJsonSchema.getSchemaTypeFor(property.getTypeRef());
       String column = (String) parameters.get("name");
       if (Utils.isNullOrEmpty(column)) {
@@ -91,7 +95,11 @@ public abstract class AbstractCustomResourceHandler {
       }
       String description = property.getComments().stream().filter(l -> !l.trim().startsWith("@"))
           .collect(Collectors.joining(" ")).trim();
-      String format = (String) parameters.get("format");
+
+      String format = findPrinterColumnFormat(parameters.get("format"))
+          .map(PrinterColumnFormat::getValue)
+          .orElse(null);
+
       int priority = (int) parameters.getOrDefault("priority", 0);
 
       resources.decorate(
@@ -177,4 +185,19 @@ public abstract class AbstractCustomResourceHandler {
   protected abstract void addDecorators(CustomResourceInfo config, TypeDef def,
       Optional<String> specReplicasPath, Optional<String> statusReplicasPath,
       Optional<String> labelSelectorPath);
+
+  static Optional<PrinterColumnFormat> findPrinterColumnFormat(Object o) {
+    if (o == null) {
+      return Optional.empty();
+    }
+
+    if (o instanceof PrinterColumnFormat) {
+      return Optional.of((PrinterColumnFormat) o);
+    }
+
+    String symbol = o.toString();
+    return Arrays.stream(PrinterColumnFormat.values())
+        .filter(f -> f.name().equals(symbol))
+        .findFirst();
+  }
 }

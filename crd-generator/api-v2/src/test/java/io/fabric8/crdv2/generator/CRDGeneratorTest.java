@@ -390,7 +390,7 @@ class CRDGeneratorTest {
       // printer columns should be ordered in the alphabetical order of their json path
       final List<CustomResourceColumnDefinition> printerColumns = version
           .getAdditionalPrinterColumns();
-      assertEquals(4, printerColumns.size());
+      assertEquals(5, printerColumns.size());
       CustomResourceColumnDefinition columnDefinition = printerColumns.get(0);
       assertEquals("date", columnDefinition.getType());
       assertEquals(".metadata.creationTimestamp", columnDefinition.getJsonPath());
@@ -403,10 +403,16 @@ class CRDGeneratorTest {
       assertEquals(1, columnDefinition.getPriority());
       columnDefinition = printerColumns.get(2);
       assertEquals("string", columnDefinition.getType());
+      assertEquals(".spec.createdAt", columnDefinition.getJsonPath());
+      assertEquals("CREATEDAT", columnDefinition.getName());
+      assertEquals("date-time", columnDefinition.getFormat());
+      assertEquals(0, columnDefinition.getPriority());
+      columnDefinition = printerColumns.get(3);
+      assertEquals("string", columnDefinition.getType());
       assertEquals(".spec.excluded", columnDefinition.getJsonPath());
       assertEquals("excludedTopics", columnDefinition.getName());
       assertEquals(0, columnDefinition.getPriority());
-      columnDefinition = printerColumns.get(3);
+      columnDefinition = printerColumns.get(4);
       assertEquals("string", columnDefinition.getType());
       assertEquals(".status.category", columnDefinition.getJsonPath());
       assertEquals("jokeCategory", columnDefinition.getName());
@@ -417,7 +423,7 @@ class CRDGeneratorTest {
       Map<String, JSONSchemaProps> properties = schema.getOpenAPIV3Schema().getProperties();
       assertEquals(2, properties.size());
       Map<String, JSONSchemaProps> specProps = properties.get("spec").getProperties();
-      assertEquals(3, specProps.size());
+      assertEquals(4, specProps.size());
       assertEquals("boolean", specProps.get("safe").getType());
       JSONSchemaProps category = specProps.get("category");
       assertEquals("string", category.getType());

@@ -16,12 +16,10 @@
 package io.fabric8.crdv2.generator;
 
 import io.fabric8.crd.generator.annotation.AdditionalPrinterColumn;
-import io.fabric8.crd.generator.annotation.AdditionalPrinterColumn.Format;
 import io.fabric8.crd.generator.annotation.PrinterColumn;
 import io.fabric8.crd.generator.annotation.SelectableField;
 import io.fabric8.crdv2.generator.AbstractJsonSchema.AnnotationMetadata;
 import io.fabric8.kubernetes.api.model.HasMetadata;
-import io.fabric8.kubernetes.client.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,7 +55,7 @@ public abstract class AbstractCustomResourceHandler {
       if (property.annotation instanceof AdditionalPrinterColumn) {
         AdditionalPrinterColumn printerColumn = ((AdditionalPrinterColumn) property.annotation);
         String column = printerColumn.name();
-        String format = printerColumn.format() == Format.NONE ? null : printerColumn.format().getValue();
+        String format = printerColumn.format().getValue();
         String type = printerColumn.type().getValue();
         int priority = printerColumn.priority();
         String description = printerColumn.getDescription();
@@ -65,8 +63,7 @@ public abstract class AbstractCustomResourceHandler {
       } else {
         PrinterColumn printerColumn = ((PrinterColumn) property.annotation);
         String column = printerColumn.name();
-        String format = printerColumn.format();
-        format = Utils.isNotNullOrEmpty(format) ? format : null;
+        String format = printerColumn.format().getValue();
         String type = property.schema.getType();
         if ("object".equals(type) || "array".equals(type)) {
           LOGGER.warn("Printer column '{}' has a type '{}' that is not allowed, will use string intead", column, type);
