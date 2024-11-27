@@ -62,6 +62,10 @@ public class ProcessorListener<T> {
     return this.resyncPeriodInMillis != 0 && (now.isAfter(this.nextResync) || now.equals(this.nextResync));
   }
 
+  public long getResyncPeriodInMillis() {
+    return resyncPeriodInMillis;
+  }
+
   public abstract static class Notification<T> {
     private final T oldObject;
     private final T newObject;

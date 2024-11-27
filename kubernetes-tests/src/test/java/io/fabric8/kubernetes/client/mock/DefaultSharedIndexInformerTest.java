@@ -45,6 +45,7 @@ import io.fabric8.kubernetes.client.dsl.base.ResourceDefinitionContext;
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
 import io.fabric8.kubernetes.client.informers.SharedIndexInformer;
 import io.fabric8.kubernetes.client.informers.SharedInformerFactory;
+import io.fabric8.kubernetes.client.informers.impl.DefaultSharedIndexInformer;
 import io.fabric8.kubernetes.client.mock.crd.Animal;
 import io.fabric8.kubernetes.client.mock.crd.AnimalSpec;
 import io.fabric8.kubernetes.client.mock.crd.CronTab;
@@ -64,7 +65,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.net.HttpURLConnection;
+import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
@@ -1160,6 +1164,85 @@ class DefaultSharedIndexInformerTest {
   }
 
   @Test
+  void removeEventHandlerBeforeStartAdjustsResyncPeriod() {
+    var longResyncPeriod = 3000;
+    var shorterResyncPeriod = 2000;
+    var eventHandlerLongResync = emptyEventHandler();
+    var eventHandlerShorterResync = emptyEventHandler();
+
+    SharedIndexInformer<Pod> podInformer = factory.sharedIndexInformerFor(Pod.class, 4000);
+    podInformer.addEventHandlerWithResyncPeriod(eventHandlerLongResync, longResyncPeriod);
+    podInformer.addEventHandlerWithResyncPeriod(eventHandlerShorterResync, shorterResyncPeriod);
+
+    assertThat(((DefaultSharedIndexInformer<?, ?>) podInformer).getFullResyncPeriod())
+        .isEqualTo(shorterResyncPeriod);
+
+    podInformer.removeEventHandler(eventHandlerShorterResync);
+
+    assertThat(((DefaultSharedIndexInformer<?, ?>) podInformer).getFullResyncPeriod())
+        .isEqualTo(longResyncPeriod);
+  }
+
+  @Test
+  void stopReceivingEventsWhenEventHandlerRemoved() {
+    String startResourceVersion = "1000";
+    var eventEmitTimeWait = 500L;
+
+    server.expect()
+        .withPath("/api/v1/pods?resourceVersion=0")
+        .andReturn(200, new PodListBuilder().withNewMetadata()
+            .withResourceVersion(startResourceVersion)
+            .endMetadata()
+            .withItems(Collections.emptyList())
+            .build())
+        .once();
+    server.expect()
+        .withPath("/api/v1/pods?allowWatchBookmarks=true&resourceVersion=" + startResourceVersion
+            + "&timeoutSeconds=600&watch=true")
+        .andUpgradeToWebSocket()
+        .open()
+        .waitFor(eventEmitTimeWait)
+        .andEmit(new WatchEvent(new PodBuilder().withNewMetadata()
+            .withNamespace("test")
+            .withName("pod1")
+            .withResourceVersion("1001")
+            .endMetadata()
+            .build(), "ADDED"))
+        .waitFor(2 * eventEmitTimeWait)
+        .andEmit(new WatchEvent(new PodBuilder().withNewMetadata()
+            .withNamespace("test")
+            .withName("pod2")
+            .withResourceVersion("1002")
+            .endMetadata()
+            .build(), "ADDED"))
+        .done()
+        .always();
+
+    var handler1 = new AddRecordingEventHandler();
+    var handler2 = new AddRecordingEventHandler();
+
+    try (SharedIndexInformer<Pod> informer = client.pods().inAnyNamespace().runnableInformer(0)) {
+      informer.run();
+      informer.addEventHandler(handler1);
+      informer.addEventHandler(handler2);
+
+      await().pollInterval(Duration.ofMillis(100)).untilAsserted(() -> {
+        assertThat(handler1.getAddedPods()).hasSize(1);
+        assertThat(handler2.getAddedPods()).hasSize(1);
+      });
+
+      informer.removeEventHandler(handler2);
+
+      await().pollDelay(Duration.ofMillis(eventEmitTimeWait))
+          .pollInterval(Duration.ofMillis(100)).untilAsserted(() -> {
+            assertThat(handler1.getAddedPods()).hasSize(2);
+            assertThat(handler2.getAddedPods()).hasSize(1);
+          });
+    }
+
+  }
+
+  @Test
   void testGenericKubernetesResourceSharedIndexInformerWithAdditionalDeserializers() throws InterruptedException {
     // Given
     setupMockServerExpectations(Animal.class, "ns1", this::getList,
@@ -1350,6 +1433,22 @@ class DefaultSharedIndexInformerTest {
     }
   }
 
+  private static ResourceEventHandler<Object> emptyEventHandler() {
+    return new ResourceEventHandler<>() {
+      @Override
+      public void onAdd(Object obj) {
+      }
+
+      @Override
+      public void onUpdate(Object oldObj, Object newObj) {
+      }
+
+      @Override
+      public void onDelete(Object obj, boolean deletedFinalStateUnknown) {
+      }
+    };
+  }
+
   private Star getStar(String name, String resourceVersion) {
     StarSpec starSpec = new StarSpec();
     starSpec.setType("G");
@@ -1370,6 +1469,27 @@ class DefaultSharedIndexInformerTest {
     podSet.setSpec(podSetSpec);
 
     return podSet;
+  }
+
+  private class AddRecordingEventHandler implements ResourceEventHandler<Pod> {
+    private List<Pod> addedPods = new ArrayList<>();
+
+    @Override
+    public void onAdd(Pod obj) {
+      addedPods.add(obj);
+    }
+
+    @Override
+    public void onUpdate(Pod oldObj, Pod newObj) {
+    }
+
+    @Override
+    public void onDelete(Pod obj, boolean deletedFinalStateUnknown) {
+    }
+
+    public List<Pod> getAddedPods() {
+      return addedPods;
+    }
   }
 
 }

@@ -74,6 +74,13 @@ public interface SharedIndexInformer<T> extends AutoCloseable {
   SharedIndexInformer<T> addEventHandler(ResourceEventHandler<? super T> handler);
 
   /**
+   * Remove event handler.
+   *
+   * @param handler event handler
+   */
+  SharedIndexInformer<T> removeEventHandler(ResourceEventHandler<? super T> handler);
+
+  /**
    * Adds an event handler to the shared informer using the specified resync period.
    * Events to a single handler are delivered sequentially, but there is no
    * coordination between different handlers.
