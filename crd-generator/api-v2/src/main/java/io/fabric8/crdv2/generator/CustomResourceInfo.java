@@ -57,7 +57,8 @@ public class CustomResourceInfo {
   private final String[] labels;
 
   public CustomResourceInfo(String group, String version, String kind, String singular,
-      String plural, String[] shortNames, String[] categories, boolean storage, boolean served, boolean deprecated, String deprecationWarning,
+      String plural, String[] shortNames, String[] categories, boolean storage, boolean served, boolean deprecated,
+      String deprecationWarning,
       Scope scope, Class<?> definition, String crClassName,
       String specClassName, String statusClassName, String[] annotations, String[] labels) {
     this.group = group;

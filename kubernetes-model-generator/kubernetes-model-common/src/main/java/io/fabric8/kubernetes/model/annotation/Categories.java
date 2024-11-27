@@ -23,14 +23,15 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
  * Specifies the categories the annotated Custom Resource belongs to.
- * See https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#categories for more details.
+ * See https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#categories for more
+ * details.
  */
 @Target({ TYPE })
 @Retention(RUNTIME)
 public @interface Categories {
 
-    /**
-     * @return the categories this Custom Resource belongs to.
-     */
-    String[] value() default {};
+  /**
+   * @return the categories this Custom Resource belongs to.
+   */
+  String[] value() default {};
 }

@@ -28,7 +28,7 @@ import io.fabric8.kubernetes.model.annotation.Version;
 @Version("v1alpha1")
 @ShortNames("jr")
 @AdditionalPrinterColumn(name = "Age", jsonPath = ".metadata.creationTimestamp", type = Type.DATE)
-@Categories({"cat1", "cat2"})
+@Categories({ "cat1", "cat2" })
 public class JokeRequest extends CustomResource<JokeRequestSpec, JokeRequestStatus> implements Namespaced {
 
 }
