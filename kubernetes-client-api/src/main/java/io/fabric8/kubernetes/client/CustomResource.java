@@ -27,6 +27,7 @@ import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.kubernetes.model.Scope;
+import io.fabric8.kubernetes.model.annotation.Categories;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.ShortNames;
 import io.fabric8.kubernetes.model.annotation.Version;
@@ -241,6 +242,18 @@ public abstract class CustomResource<S, T> implements HasMetadata {
   public static String[] getShortNames(Class<?> clazz) {
     return Optional.ofNullable(clazz.getAnnotation(ShortNames.class))
         .map(ShortNames::value)
+        .orElse(new String[] {});
+  }
+
+  /**
+   * Retrieves the categories associated with this CustomResource or an empty array if none was provided
+   *
+   * @param clazz the CustomResource class for which the categories are to be retrieved
+   * @return the categories associated with this CustomResource or an empty array if none was provided
+   */
+  public static String[] getCategories(Class<?> clazz) {
+    return Optional.ofNullable(clazz.getAnnotation(Categories.class))
+        .map(Categories::value)
         .orElse(new String[] {});
   }
 

@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client;
 
+import io.fabric8.kubernetes.model.annotation.Categories;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Kind;
 import io.fabric8.kubernetes.model.annotation.Plural;
@@ -26,10 +27,12 @@ import io.fabric8.kubernetes.model.annotation.Version;
 @Singular(Custom.SINGULAR)
 @Plural(Custom.PLURAL)
 @Kind(Custom.KIND)
+@Categories(Custom.CATEGORY)
 public class Custom extends CustomResource {
   public static final String VERSION = "v1beta1";
   public static final String GROUP = "sample.fabric8.io";
   public static final String SINGULAR = "foo";
   public static final String PLURAL = "fooes";
   public static final String KIND = "CustomCR";
+  public static final String CATEGORY = "Cat1";
 }

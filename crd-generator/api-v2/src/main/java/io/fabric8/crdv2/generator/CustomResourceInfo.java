@@ -40,6 +40,7 @@ public class CustomResourceInfo {
   private final String singular;
   private final String plural;
   private final String[] shortNames;
+  private final String[] categories;
   private final boolean storage;
   private final boolean served;
   private final boolean deprecated;
@@ -56,7 +57,8 @@ public class CustomResourceInfo {
   private final String[] labels;
 
   public CustomResourceInfo(String group, String version, String kind, String singular,
-      String plural, String[] shortNames, boolean storage, boolean served, boolean deprecated, String deprecationWarning,
+      String plural, String[] shortNames, String[] categories, boolean storage, boolean served, boolean deprecated,
+      String deprecationWarning,
       Scope scope, Class<?> definition, String crClassName,
       String specClassName, String statusClassName, String[] annotations, String[] labels) {
     this.group = group;
@@ -65,6 +67,7 @@ public class CustomResourceInfo {
     this.singular = singular;
     this.plural = plural;
     this.shortNames = shortNames;
+    this.categories = categories;
     this.storage = storage;
     this.served = served;
     this.deprecated = deprecated;
@@ -110,6 +113,10 @@ public class CustomResourceInfo {
 
   public String[] shortNames() {
     return shortNames;
+  }
+
+  public String[] categories() {
+    return categories;
   }
 
   public String singular() {
@@ -161,6 +168,7 @@ public class CustomResourceInfo {
       final HasMetadata instance = customResource.getDeclaredConstructor().newInstance();
 
       final String[] shortNames = CustomResource.getShortNames(customResource);
+      final String[] categories = CustomResource.getCategories(customResource);
 
       final Scope scope = Utils.isResourceNamespaced(customResource) ? Scope.NAMESPACED : Scope.CLUSTER;
 
@@ -189,7 +197,7 @@ public class CustomResourceInfo {
       }
 
       return new CustomResourceInfo(rdc.getGroup(), rdc.getVersion(), rdc.getKind(),
-          singular, rdc.getPlural(), shortNames, storage, served,
+          singular, rdc.getPlural(), shortNames, categories, storage, served,
           deprecated, deprecationWarning,
           scope, customResource,
           customResource.getCanonicalName(), specAndStatus.getSpecClassName(),

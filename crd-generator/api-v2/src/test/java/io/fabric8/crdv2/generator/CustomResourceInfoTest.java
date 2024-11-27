@@ -19,6 +19,7 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.model.Scope;
+import io.fabric8.kubernetes.model.annotation.Categories;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.ShortNames;
 import io.fabric8.kubernetes.model.annotation.Version;
@@ -42,6 +43,7 @@ public class CustomResourceInfoTest {
   @Group(GROUP)
   @Version(VERSION)
   @ShortNames("s")
+  @Categories("cat")
   public static class ClusteredCR extends CustomResource<Spec, Status> {
   }
 
@@ -85,6 +87,7 @@ public class CustomResourceInfoTest {
     assertEquals(HasMetadata.getPlural(ClusteredCR.class), info.plural());
     assertEquals(CustomResource.getCRDName(ClusteredCR.class), info.crdName());
     assertArrayEquals(CustomResource.getShortNames(ClusteredCR.class), info.shortNames());
+    assertArrayEquals(CustomResource.getCategories(ClusteredCR.class), info.categories());
     assertTrue(info.served());
     assertTrue(info.storage());
     assertEquals(HasMetadata.getKind(ClusteredCR.class), info.kind());
