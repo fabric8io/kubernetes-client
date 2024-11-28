@@ -51,6 +51,9 @@ public class AnnotatedSpec {
   @JsonProperty(defaultValue = "1337")
   @Default("1337") // compatibility with CRDGenerator-v1
   private int defaultInt;
+  @JsonProperty(defaultValue = "13.37")
+  @Default("13.37") // compatibility with CRDGenerator-v1
+  private double defaultDouble;
   @Required
   private boolean emptySetter;
   @Required
