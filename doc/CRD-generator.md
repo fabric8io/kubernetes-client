@@ -1,27 +1,42 @@
 # CRD generation
 
+The CRD Generator annotation processing tool (APT) (`io.fabric8:crd-generator-apt`) and its API (`io.fabric8:crd-generator-api`) are being deprecated and will eventually be removed once we offer a complete replacement for all users.
+
+As a replacement, we're currently providing a new version of the API in the `io.fabric8:crd-generator-api-v2`and a few tools to be able to leverage it in your projects.
+
+The following list contains the available tooling:
+- CRD Generator Maven Plugin: A Maven plugin that generates CRDs during the build process.
+- CRD Generator CLI tool: A CLI tool that generates CRDs when executed.
+
 ## Quick start
 
-Import the Annotation Processor into your build.
+Add the CRD Generator plugin to your project or use the CLI tool:
 
 with Maven:
 
 ```xml
-<dependency>
-    <groupId>io.fabric8</groupId>
-    <artifactId>crd-generator-apt</artifactId>
-    <scope>provided</scope>
-</dependency>
+<build>
+  <plugins>
+    <plugin>
+      <groupId>io.fabric8</groupId>
+      <artifactId>crd-generator-maven-plugin</artifactId>
+      <version>${fabric8.kubernetes-client.version}</version>
+      <executions>
+        <execution>
+          <goals>
+            <goal>generate</goal>
+          </goals>
+        </execution>
+      </executions>
+    </plugin>
+  </plugins>
+</build>
 ```
 
 with Gradle:
 
-```groovy
-dependencies {
-    annotationProcessor 'io.fabric8:crd-generator-apt:<version>'
-    ...
-}
-```
+> [!NOTE]
+> The Gradle plugin is not available yet. Please use the Maven plugin or the CLI tool.
 
 Now you can define a `class` that extends `io.fabric8.kubernetes.client.CustomResource`
 and the corresponding CRD is generated in the folder: `target/classes/META-INF/fabric8`
@@ -685,9 +700,9 @@ package io.fabric8.crd.example.multiple.v2;
 @Group("sample.fabric8.io")
 @Version(value = "v2", storage = true, served = true)
 public class Multiple extends CustomResource<MultipleSpec, Void> {}
+```
 
-// -------
-
+```java
 package io.fabric8.crd.example.multiple.v1;
 
 @Group("sample.fabric8.io")
@@ -714,14 +729,14 @@ spec:
     served: true
     schema:
       openAPIV3Schema:
-        [...]
+        # [...]
   - name: v1
     storage: false
     served: true
     deprecated: true
     schema:
       openAPIV3Schema:
-        [...]
+        # [...]
 ```
 
 
