@@ -23,6 +23,9 @@ spec:
             defaultBoolean:
               default: true
               type: "boolean"
+            defaultDouble:
+              default: 13.37
+              type: "number"
             defaultInt:
               default: 1337
               type: "integer"
