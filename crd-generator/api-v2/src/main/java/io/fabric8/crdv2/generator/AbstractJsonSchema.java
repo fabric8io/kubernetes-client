@@ -314,7 +314,15 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
 
       // TODO: should the following be deprecated?
       required = beanProperty.getAnnotation(Required.class) != null;
-      defaultValue = ofNullable(beanProperty.getAnnotation(Default.class)).map(Default::value).orElse(defaultValue);
+
+      if (beanProperty.getMetadata().getDefaultValue() != null) {
+        defaultValue = toTargetType(beanProperty.getType(), beanProperty.getMetadata().getDefaultValue());
+      } else if (ofNullable(beanProperty.getAnnotation(Default.class)).map(Default::value).isPresent()) {
+        defaultValue = toTargetType(beanProperty.getType(),
+            ofNullable(beanProperty.getAnnotation(Default.class)).map(Default::value).get());
+      } else {
+        defaultValue = null;
+      }
     }
 
     private void setMinMax(BeanProperty beanProperty,
