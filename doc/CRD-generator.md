@@ -5,7 +5,7 @@ The CRD Generator annotation processing tool (APT) (`io.fabric8:crd-generator-ap
 As a replacement, we're currently providing a new version of the API in the `io.fabric8:crd-generator-api-v2`and a few tools to be able to leverage it in your projects.
 
 The following list contains the available tooling:
-- CRD Generator Maven Plugin: A Maven plugin that generates CRDs during the build process.
+- [CRD Generator Maven Plugin](../crd-generator/maven-plugin/README.md): A Maven plugin that generates CRDs during the build process.
 - CRD Generator CLI tool: A CLI tool that generates CRDs when executed.
 
 ## Quick start
