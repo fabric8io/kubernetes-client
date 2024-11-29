@@ -133,8 +133,10 @@
     <guava.version>33.3.1-jre</guava.version> <!-- Required by Gradle Testing Toolkit -->
     <osgi.annotations.version>1.5.1</osgi.annotations.version>
     <felix.scr.version>2.0.6</felix.scr.version>
+    <jmustache.version>1.16</jmustache.version>
     <picocli.version>4.7.6</picocli.version>
     <swagger-request-validator-core.version>2.43.0</swagger-request-validator-core.version>
+    <swagger-parser.version>2.1.24</swagger-parser.version>
 
     <!-- Maven plugin versions -->
     <buildnumber.plugin.version>3.2.1</buildnumber.plugin.version>
@@ -680,6 +682,11 @@
         <scope>provided</scope>
       </dependency>
       <dependency>
+        <groupId>com.samskivert</groupId>
+        <artifactId>jmustache</artifactId>
+        <version>${jmustache.version}</version>
+      </dependency>
+      <dependency>
         <groupId>com.squareup.okhttp3</groupId>
         <artifactId>okhttp</artifactId>
         <version>${okhttp.version}</version>
@@ -780,6 +787,11 @@
         <groupId>io.smallrye</groupId>
         <artifactId>jandex</artifactId>
         <version>${jandex.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.swagger.parser.v3</groupId>
+        <artifactId>swagger-parser</artifactId>
+        <version>${swagger-parser.version}</version>
       </dependency>
 
       <!-- Test dependencies -->
