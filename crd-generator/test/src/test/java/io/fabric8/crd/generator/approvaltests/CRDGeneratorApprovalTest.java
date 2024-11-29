@@ -29,6 +29,7 @@ import io.fabric8.crd.generator.approvaltests.map.ContainingMaps;
 import io.fabric8.crd.generator.approvaltests.nocyclic.NoCyclic;
 import io.fabric8.crd.generator.approvaltests.printercolum.PrinterColumn;
 import io.fabric8.crd.generator.approvaltests.replica.Replica;
+import io.fabric8.crd.generator.approvaltests.required.Required;
 import io.fabric8.crd.generator.approvaltests.selectablefield.SelectableField;
 import io.fabric8.kubernetes.client.CustomResource;
 import io.sundr.utils.Strings;
@@ -182,6 +183,7 @@ class CRDGeneratorApprovalTest {
     final List<TestCase> cases = new ArrayList<>();
     for (boolean parallel : new boolean[] { false, true }) {
       cases.add(new TestCase("printercolumns.sample.fabric8.io", crdVersion, parallel, PrinterColumn.class));
+      cases.add(new TestCase("requireds.samples.fabric8.io", crdVersion, parallel, Required.class));
       cases.add(new TestCase("selectablefields.sample.fabric8.io", crdVersion, parallel, SelectableField.class));
     }
     return cases.stream();

@@ -317,6 +317,28 @@ The field will be marked as `required` in the generated CRD, such as:
             type: object
 ```
 
+#### Marking the custom resource's spec and status fields as required
+
+The abstract `CustomResource` class contains the field definitions for the `spec` and `status` fields with just the basic annotations.
+In case you want to mark these fields as required in your CRD, you can override the field getters in your `CustomResource` subclass and annotate them with `@Required`.
+
+```java
+public class Example extends CustomResource<ExampleSpec, ExampleStatus> {
+  
+  @Override
+  @Required
+  public ExampleSpec getSpec() {
+    return super.getSpec();
+  }
+
+  @Override
+  @Required
+  public ExampleStatus getStatus() {
+    return super.getStatus();
+  }
+}
+```
+
 ### io.fabric8.generator.annotation.ValidationRule
 
 If a field or one of its accessors is annotated with `io.fabric8.generator.annotation.ValidationRule`
