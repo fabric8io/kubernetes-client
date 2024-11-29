@@ -6,7 +6,7 @@ As a replacement, we're currently providing a new version of the API in the `io.
 
 The following list contains the available tooling:
 - [CRD Generator Maven Plugin](../crd-generator/maven-plugin/README.md): A Maven plugin that generates CRDs during the build process.
-- CRD Generator CLI tool: A CLI tool that generates CRDs when executed.
+- [CRD Generator CLI tool](../crd-generator/cli/README.md): A CLI tool that generates CRDs when executed.
 
 ## Quick start
 
