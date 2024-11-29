@@ -49,6 +49,10 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 import static com.fasterxml.jackson.annotation.JsonInclude.Value.construct;
 
+/**
+ * @deprecated Use io.fabric8.crdv2.generator.CRDGenerator instead.
+ */
+@Deprecated(since = "7.0.0")
 public class CRDGenerator {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(CRDGenerator.class);

@@ -85,6 +85,10 @@ public class CustomResourceAnnotationProcessor extends AbstractProcessor {
         versionToInfo.forEach(
             (version, info) -> messager.printMessage(Diagnostic.Kind.NOTE, "  - " + version + " -> " + info.getFilePath()));
       });
+      messager.printMessage(Diagnostic.Kind.WARNING,
+          "This version of the CRD Generator (v1) is deprecated, please use v2 instead.");
+      messager.printMessage(Diagnostic.Kind.WARNING,
+          "Please check how to use v2 in the following link:https://github.com/fabric8io/kubernetes-client/blob/main/doc/CRD-generator.md");
       return true;
     }
 

@@ -28,6 +28,7 @@
   - [OpenShift Server Mock removed](#openshift-server-mock-removed)
   - [SupportTestingClient removed](#supporttestingclient-removed)
   - [Service Catalog API (extension) removed](#service-catalog-extension)
+  - [CRD Generator annotation processor deprecated](#crd-generator-annotation-processor-deprecated)
 
 
 > [!NOTE]
@@ -311,3 +312,9 @@ For OpenShift, you can also leverage the `OpenShiftClient.supportsOpenShiftAPIGr
 The Service Catalog API extension has been removed.
 The upstream project has been archived since May 6, 2022.
 We are no longer supporting it.
+
+### CRD Generator annotation processor deprecated <a href="#crd-generator-annotation-processor-deprecated" id="crd-generator-annotation-processor-deprecated"/>
+
+The CRD Generator annotation processing tool (APT) (`io.fabric8:crd-generator-apt`) and its API (`io.fabric8:crd-generator-api`) are being deprecated and will eventually be removed once we offer a complete replacement for all users.
+
+You can find out more about its replacement in the [CRD Generator documentation](./CRD-generator.md)
