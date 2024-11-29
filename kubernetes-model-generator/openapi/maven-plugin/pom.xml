@@ -55,12 +55,10 @@
     <dependency>
       <groupId>com.samskivert</groupId>
       <artifactId>jmustache</artifactId>
-      <version>1.16</version>
     </dependency>
     <dependency>
       <groupId>io.swagger.parser.v3</groupId>
       <artifactId>swagger-parser</artifactId>
-      <version>2.1.24</version>
     </dependency>
   </dependencies>
   <build>
