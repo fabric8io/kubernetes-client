@@ -21,6 +21,7 @@ package packages
 var OpenShiftPackagePatterns = []string{
 	// Always import Kubernetes base packages as they are required by the rest of APIs
 	"k8s.io/apimachinery/pkg/apis/meta/v...",
+	"k8s.io/apimachinery/pkg/util/intstr",
 	"k8s.io/api/.../v...",
 	// OpenShift APIs
 	"github.com/openshift/api/.../v...",
