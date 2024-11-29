@@ -24,9 +24,11 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.parser.OpenAPIV3Parser;
+import io.swagger.v3.parser.core.models.ParseOptions;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Locale;
@@ -136,8 +138,19 @@ public class Validator {
    * @return a new instance of the validator.
    */
   public static Validator newInstance() {
-    var api = new OpenAPIV3Parser().read(Objects.requireNonNull(
-        Validator.class.getResource(OPENAPI_SCHEMA), OPENAPI_SCHEMA + " resource not found").toString());
-    return new Validator(api);
+    try {
+      final var openApiSchema = new String(Objects.requireNonNull(Validator.class.getResourceAsStream(OPENAPI_SCHEMA),
+          OPENAPI_SCHEMA + " resource not found").readAllBytes(), StandardCharsets.UTF_8);
+      final var options = new ParseOptions();
+      for (var extension : OpenAPIV3Parser.getExtensions()) {
+        var result = extension.readContents(openApiSchema, null, options);
+        if (result.getOpenAPI() != null) {
+          return new Validator(result.getOpenAPI());
+        }
+      }
+    } catch (IOException ex) {
+      // NO OP
+    }
+    throw new IllegalStateException("Failed to parse the OpenAPI schema: " + OPENAPI_SCHEMA);
   }
 }
