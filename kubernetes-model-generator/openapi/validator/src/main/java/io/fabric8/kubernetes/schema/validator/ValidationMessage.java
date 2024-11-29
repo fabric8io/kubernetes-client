@@ -47,17 +47,25 @@ public class ValidationMessage {
    * The validation message level.
    */
   private final Level level;
+  private final String schema;
   /**
    * The validation message.
    */
   private final String message;
 
-  public ValidationMessage(Level level, String message) {
+  public ValidationMessage(Level level, String schema, String message) {
     this.level = level;
+    this.schema = schema;
     this.message = message;
   }
 
   static ValidationMessage from(ValidationReport.Message message) {
-    return new ValidationMessage(levelMappings.getOrDefault(message.getLevel(), Level.INFO), message.getMessage());
+    return new ValidationMessage(
+        levelMappings.getOrDefault(message.getLevel(), Level.INFO),
+        message.getContext()
+            .map(ValidationReport.MessageContext::getPointers)
+            .flatMap(p -> p.map(ValidationReport.MessageContext.Pointers::getSchema))
+            .orElse(null),
+        message.getMessage());
   }
 }

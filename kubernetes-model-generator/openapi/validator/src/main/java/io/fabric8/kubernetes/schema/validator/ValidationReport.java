@@ -33,9 +33,10 @@ public class ValidationReport {
 
   static final ValidationReport EMPTY = new ValidationReport(Collections.emptyList());
   static final ValidationReport MISSING_KIND = new ValidationReport(Collections.singletonList(
-      new ValidationMessage(ValidationMessage.Level.ERROR, "[Path '/'] Object has missing required properties ([\"kind\"])")));
+      new ValidationMessage(ValidationMessage.Level.ERROR, null,
+          "[Path '/'] Object has missing required properties ([\"kind\"])")));
   static final ValidationReport MISSING_API_VERSION = new ValidationReport(Collections.singletonList(new ValidationMessage(
-      ValidationMessage.Level.ERROR, "[Path '/'] Object has missing or invalid required properties ([\"apiVersion\"])")));
+      ValidationMessage.Level.ERROR, null, "[Path '/'] Object has missing or invalid required properties ([\"apiVersion\"])")));
 
   @Getter
   private final Collection<ValidationMessage> messages;
