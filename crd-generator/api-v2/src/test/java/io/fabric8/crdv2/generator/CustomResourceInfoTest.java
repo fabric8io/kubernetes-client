@@ -27,6 +27,8 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CustomResourceInfoTest {
@@ -44,12 +46,33 @@ public class CustomResourceInfoTest {
   @Version(VERSION)
   @ShortNames("s")
   @Categories("cat")
-  public static class ClusteredCR extends CustomResource<Spec, Status> {
+  public static class ClusteredCR extends
+      io.fabric8.kubernetes.client.CustomResource<Spec, Status> {
   }
 
   @Group(GROUP)
   @Version(VERSION)
-  public static class NamespacedCR extends CustomResource<Spec, Status> implements Namespaced {
+  public static class NamespacedCR extends io.fabric8.kubernetes.client.CustomResource<Spec, Status>
+      implements Namespaced {
+  }
+
+  @Group(GROUP)
+  @Version(VERSION)
+  static class PackagePrivateInnerCustomResource extends
+      io.fabric8.kubernetes.client.CustomResource<Void, Void> {
+  }
+
+  @Group(GROUP)
+  @Version(VERSION)
+  private static class PrivateInnerCustomResource extends
+      io.fabric8.kubernetes.client.CustomResource<Void, Void> {
+  }
+
+  @Group(GROUP)
+  @Version(VERSION)
+  private static class NoDefaultConstructorCustomResource extends CustomResource<Void, Void> {
+    NoDefaultConstructorCustomResource(String s) {
+    }
   }
 
   @Test
@@ -91,5 +114,23 @@ public class CustomResourceInfoTest {
     assertTrue(info.served());
     assertTrue(info.storage());
     assertEquals(HasMetadata.getKind(ClusteredCR.class), info.kind());
+  }
+
+  @Test
+  void shouldCreateCustomResourceInfoFromPackagePrivateClass() {
+    CustomResourceInfo info = CustomResourceInfo.fromClass(PackagePrivateInnerCustomResource.class);
+    assertNotNull(info);
+  }
+
+  @Test
+  void shouldCreateCustomResourceInfoFromPrivateClass() {
+    CustomResourceInfo info = CustomResourceInfo.fromClass(PrivateInnerCustomResource.class);
+    assertNotNull(info);
+  }
+
+  @Test
+  void shouldFailForMissingDefaultConstructor() {
+    assertThrows(IllegalStateException.class,
+        () -> CustomResourceInfo.fromClass(NoDefaultConstructorCustomResource.class));
   }
 }
