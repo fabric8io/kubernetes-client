@@ -746,7 +746,6 @@
           "description": "SupportedFeatures is the set of features the GatewayClass support. It MUST be sorted in ascending alphabetical order by the Name key. \u003cgateway:experimental\u003e",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.networking.gateway.v1.SupportedFeature"
           },
           "x-kubernetes-list-map-keys": [
