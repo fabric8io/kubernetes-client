@@ -25,7 +25,10 @@ import io.fabric8.kubernetes.model.Scope;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -165,7 +168,7 @@ public class CustomResourceInfo {
 
   public static CustomResourceInfo fromClass(Class<? extends HasMetadata> customResource) {
     try {
-      final HasMetadata instance = customResource.getDeclaredConstructor().newInstance();
+      final HasMetadata instance = createInstance(customResource);
 
       final String[] shortNames = CustomResource.getShortNames(customResource);
       final String[] categories = CustomResource.getCategories(customResource);
@@ -203,9 +206,38 @@ public class CustomResourceInfo {
           customResource.getCanonicalName(), specAndStatus.getSpecClassName(),
           specAndStatus.getStatusClassName(), toStringArray(instance.getMetadata().getAnnotations()),
           toStringArray(instance.getMetadata().getLabels()));
-    } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+    } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
       throw KubernetesClientException.launderThrowable(e);
     }
+  }
+
+  private static HasMetadata createInstance(Class<? extends HasMetadata> customResource)
+      throws InvocationTargetException, InstantiationException, IllegalAccessException {
+    final Constructor<?> defaultConstructor = Arrays.stream(customResource.getDeclaredConstructors())
+        .filter(constructor -> constructor.getParameterCount() == 0)
+        .findFirst()
+        .orElseThrow(() -> new IllegalStateException(
+            "Cannot find default constructor for " + customResource.getCanonicalName()));
+
+    if (Modifier.isPublic(customResource.getModifiers())
+        && Modifier.isPublic(defaultConstructor.getModifiers())) {
+      return (HasMetadata) defaultConstructor.newInstance();
+    }
+
+    LOGGER.trace(
+        "Default constructor for CustomResource class {} is not accessible. Modifying accessibility...",
+        customResource.getCanonicalName());
+
+    boolean accessible = defaultConstructor.trySetAccessible();
+    if (!accessible) {
+      LOGGER.warn(
+          "Default constructor for CustomResource class {} is not accessible.",
+          customResource.getCanonicalName());
+    } else {
+      LOGGER.debug(
+          "Modified constructor for CustomResource class {} to make it accessible.", customResource.getCanonicalName());
+    }
+    return (HasMetadata) defaultConstructor.newInstance();
   }
 
   public static String[] toStringArray(Map<String, String> map) {

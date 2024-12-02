@@ -13,23 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import io.fabric8.crd.generator.maven.plugin.Verify
-import java.nio.file.Path
-import java.nio.file.Paths
+package io.fabric8.crd.maven.example;
 
-Path basedirPath = basedir.toPath();
+import io.fabric8.kubernetes.client.CustomResource;
+import io.fabric8.kubernetes.model.annotation.Group;
+import io.fabric8.kubernetes.model.annotation.Version;
 
-
-[
-	"multiples.sample.fabric8.io-v1",
-	"packageprivatecustomresources.sample.fabric8.io-v1",
-	"packageprivateinnercustomresources.sample.fabric8.io-v1",
-	"privateinnercustomresources.sample.fabric8.io-v1",
-	"publicinnercustomresources.sample.fabric8.io-v1"
-].each {
-	Verify.verifyContentEquals(
-			basedirPath.resolve(Paths.get("target", "classes", "META-INF", "fabric8", it + ".yml")),
-			basedirPath.resolve(Paths.get("expected",  it + ".yml")))
+@Group("sample.fabric8.io")
+@Version(value = "v1")
+class PackagePrivateCustomResource extends CustomResource<Void, Void> {
 }
-
-true
