@@ -1239,6 +1239,16 @@
                 <skipStagingRepositoryClose>true</skipStagingRepositoryClose>
                 <sonar.skip>true</sonar.skip>
               </properties>
+              <modules>
+                <excludes>
+                  <exclude>io.fabric8:*-tests</exclude>
+                  <exclude>io.fabric8:*-itests</exclude>
+                  <exclude>io.fabric8.kubernetes:*-itests</exclude>
+                  <exclude>io.fabric8*:*-examples</exclude>
+                  <exclude>io.fabric8:crd-generator-test*</exclude>
+                  <exclude>io.fabric8:kubernetes-test</exclude>
+                </excludes>
+              </modules>
             </bom>
             <bom>
               <artifactId>kubernetes-client-bom-with-deps</artifactId>
@@ -1272,6 +1282,16 @@
                   <include>io.fabric8:openshift-model*</include>
                 </includes>
               </dependencies>
+              <modules>
+                <excludes>
+                  <exclude>io.fabric8:*-tests</exclude>
+                  <exclude>io.fabric8:*-itests</exclude>
+                  <exclude>io.fabric8.kubernetes:*-itests</exclude>
+                  <exclude>io.fabric8*:*-examples</exclude>
+                  <exclude>io.fabric8:crd-generator-test*</exclude>
+                  <exclude>io.fabric8:kubernetes-test</exclude>
+                </excludes>
+              </modules>
               <properties>
                 <skipStagingRepositoryClose>true</skipStagingRepositoryClose>
                 <sonar.skip>true</sonar.skip>

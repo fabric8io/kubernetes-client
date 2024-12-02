@@ -26,6 +26,7 @@
 * Fix #2632: Bumped OkHttp from 3.12.12 to 4.12.0
 * Fix #5965: Bumped sundrio.version from 0.103.1 to 0.200.0
 * Fix #6052: Removed dependency on no longer maintained com.github.mifmif:generex
+* Fix #6676: Removed tests and examples from the BOM
 
 #### New Features
 * Fix #5719: io.fabric8:mockwebserver is now based on Vert.x
@@ -58,6 +59,7 @@
 * Fix #6630: Removed deprecated `io.fabric8.kubernetes.client.utils.ReflectUtils` class
 * Fix #6455: (crd-generator) Changed format in `@PrinterColumn` to enum
 * Fix #6673: (crd-generator) Deprecation of CRD Generator v1
+* Fix #6676: Removed tests and examples from the BOM
 
 ### 6.13.4 (2024-09-25)
 
