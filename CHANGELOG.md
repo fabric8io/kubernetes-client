@@ -12,6 +12,8 @@
 #### Improvements
 * Fix #3069: (crd-generator) Add `@AdditionalPrinterColumn` to specify a printer column by JSON path.
 * Fix #6392: (crd-generator) Add `@AdditionalSelectableField` and `@SelectableField` to specify selectable fields.
+* Fix #5836: (crd-generator) Add `@Size` annotation to limit the size of strings, lists/arrays or maps
+* Fix #5868: (crd-generator) Add `exlusiveMinimum` / `exclusiveMaximum` support to `@Min` and `@Max`
 * Fix #5264: Remove deprecated `Config.errorMessages` field
 * Fix #6008: removing the optional dependency on bouncy castle
 * Fix #6407: sundrio builder-annotations is not available via bom import
