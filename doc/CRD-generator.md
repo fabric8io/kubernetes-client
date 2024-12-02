@@ -217,8 +217,20 @@ The field will have the `minimum` property in the generated CRD, such as:
               someValue:
                 minimum: -1.0
                 type: integer
-            required:
-            - someValue
+            type: object
+```
+
+By default, the minimum value is *inclusive*.
+
+If the value should be *exclusive* use `@Min(value = -1, inclusive = false)`:
+
+```yaml
+          spec:
+            properties:
+              someValue:
+                minimum: -1.0
+                exclusiveMinimum: true
+                type: integer
             type: object
 ```
 
@@ -241,8 +253,60 @@ The field will have the `maximum` property in the generated CRD, such as:
               someValue:
                 maximum: 1.0
                 type: integer
-            required:
-            - someValue
+            type: object
+```
+
+By default, the maximum value is *inclusive*.
+
+If the value should be *exclusive* use `@Max(value = 1, inclusive = false)`:
+
+```yaml
+          spec:
+            properties:
+              someValue:
+                maximum: 1.0
+                exclusiveMaximum: true
+                type: integer
+            type: object
+```
+
+### io.fabric8.generator.annotation.Size
+
+If a field or one of its accessors is annotated with `io.fabric8.generator.annotation.Size`
+
+```java
+public class ExampleSpec {
+  @Size(min = 1, max = 3)
+  String stringValue;
+  @Size(min = 1, max = 3)
+  List<String> listValue;
+  @Size(min = 1, max = 3)
+  Map<String, String> mapValue;
+}
+```
+
+The field will have the `minLength`/`maxLength`, `minItems`/`maxItems`, `minProperties`/`maxProperties` properties 
+in the generated CRD depending on the type:
+
+```yaml
+          spec:
+            properties:
+              stringValue:
+                maxLength: 3
+                minLength: 1
+                type: string
+              listValue:
+                items:
+                  type: "string"
+                  maxItems: 3
+                  minItems: 1
+                type: "array"
+              mapValue:
+                additionalProperties:
+                  type: "string"
+                  maxProperties: 3
+                  minProperties: 1
+                type: "object"
             type: object
 ```
 
@@ -764,31 +828,32 @@ spec:
 
 ## Features cheatsheet
 
-| Annotation                                                      | Description                                                                                 |
-|-----------------------------------------------------------------|---------------------------------------------------------------------------------------------|
-| `com.fasterxml.jackson.annotation.JsonProperty`                 | The field is named after the provided value instead of looking up the java field name       |
-| `com.fasterxml.jackson.annotation.JsonPropertyDescription`      | The provided text is be embedded in the `description` of the field                          |
-| `com.fasterxml.jackson.annotation.JsonIgnore`                   | The field is ignored                                                                        |
-| `io.fabric8.crd.generator.annotation.PreserveUnknownFields`     | The field have `x-kubernetes-preserve-unknown-fields: true` defined                         |
-| `com.fasterxml.jackson.annotation.JsonAnyGetter`                | The corresponding object have `x-kubernetes-preserve-unknown-fields: true` defined          |
-| `com.fasterxml.jackson.annotation.JsonAnySetter`                | The corresponding object have `x-kubernetes-preserve-unknown-fields: true` defined          |
-| `io.fabric8.generator.annotation.Min`                           | The field defines a validation `min`                                                        |
-| `io.fabric8.generator.annotation.Max`                           | The field defines a validation `max`                                                        |
-| `io.fabric8.generator.annotation.Pattern`                       | The field defines a validation `pattern`                                                    |
-| `io.fabric8.generator.annotation.Nullable`                      | The field is marked as `nullable`                                                           |
-| `io.fabric8.generator.annotation.Required`                      | The field is marked as `required`                                                           |
-| `io.fabric8.generator.annotation.ValidationRule`                | The field or object is validated by a CEL rule                                              |
-| `io.fabric8.crd.generator.annotation.SchemaFrom`                | The field type for the generation is the one coming from the annotation                     |
-| `io.fabric8.crd.generator.annotation.SchemaSwap`                | Similar to SchemaFrom, but can be applied at any point in the class hierarchy               |
-| `io.fabric8.crd.generator.annotation.Annotations`               | Additional `annotations` in `metadata`                                                      |
-| `io.fabric8.crd.generator.annotation.Labels`                    | Additional `labels` in `metadata`                                                           |
-| `io.fabric8.crd.generator.annotation.PrinterColumn`             | Define the field as PrinterColumn, so that it will be shown by the `kubectl get` command.   |
-| `io.fabric8.crd.generator.annotation.AdditionalPrinterColumn`   | Define a PrinterColumn by JSON path, so that it will be shown by the `kubectl get` command. |
-| `io.fabric8.crd.generator.annotation.SelectableField`           | Define the field as selectable, so that it can be used for filtering.                       |
-| `io.fabric8.crd.generator.annotation.AdditionalSelectableField` | Define a SelectableField by JSON path, so that it can be used for filtering.                |
-| `io.fabric8.kubernetes.model.annotation.SpecReplicas`           | The field is used in scale subresource as `specReplicaPath`                                 |
-| `io.fabric8.kubernetes.model.annotation.StatusReplicas`         | The field is used in scale subresource as `statusReplicaPath`                               |
-| `io.fabric8.kubernetes.model.annotation.LabelSelector`          | The field is used in scale subresource as `labelSelectorPath`                               |
+| Annotation                                                      | Description                                                                                             |
+|-----------------------------------------------------------------|---------------------------------------------------------------------------------------------------------|
+| `com.fasterxml.jackson.annotation.JsonProperty`                 | The field is named after the provided value instead of looking up the java field name                   |
+| `com.fasterxml.jackson.annotation.JsonPropertyDescription`      | The provided text is be embedded in the `description` of the field                                      |
+| `com.fasterxml.jackson.annotation.JsonIgnore`                   | The field is ignored                                                                                    |
+| `io.fabric8.crd.generator.annotation.PreserveUnknownFields`     | The field have `x-kubernetes-preserve-unknown-fields: true` defined                                     |
+| `com.fasterxml.jackson.annotation.JsonAnyGetter`                | The corresponding object have `x-kubernetes-preserve-unknown-fields: true` defined                      |
+| `com.fasterxml.jackson.annotation.JsonAnySetter`                | The corresponding object have `x-kubernetes-preserve-unknown-fields: true` defined                      |
+| `io.fabric8.generator.annotation.Min`                           | The field's `minimum` value                                                                             |
+| `io.fabric8.generator.annotation.Max`                           | The field's `maximum` value                                                                             |
+| `io.fabric8.generator.annotation.Size`                          | The field (strings, lists/arrays, maps) has size limits (`minLength`, `minItems`, `minProperties`, ...) |
+| `io.fabric8.generator.annotation.Pattern`                       | The field defines a validation `pattern`                                                                |
+| `io.fabric8.generator.annotation.Nullable`                      | The field is marked as `nullable`                                                                       |
+| `io.fabric8.generator.annotation.Required`                      | The field is marked as `required`                                                                       |
+| `io.fabric8.generator.annotation.ValidationRule`                | The field or object is validated by a CEL rule                                                          |
+| `io.fabric8.crd.generator.annotation.SchemaFrom`                | The field type for the generation is the one coming from the annotation                                 |
+| `io.fabric8.crd.generator.annotation.SchemaSwap`                | Similar to SchemaFrom, but can be applied at any point in the class hierarchy                           |
+| `io.fabric8.crd.generator.annotation.Annotations`               | Additional `annotations` in `metadata`                                                                  |
+| `io.fabric8.crd.generator.annotation.Labels`                    | Additional `labels` in `metadata`                                                                       |
+| `io.fabric8.crd.generator.annotation.PrinterColumn`             | Define the field as PrinterColumn, so that it will be shown by the `kubectl get` command.               |
+| `io.fabric8.crd.generator.annotation.AdditionalPrinterColumn`   | Define a PrinterColumn by JSON path, so that it will be shown by the `kubectl get` command.             |
+| `io.fabric8.crd.generator.annotation.SelectableField`           | Define the field as selectable, so that it can be used for filtering.                                   |
+| `io.fabric8.crd.generator.annotation.AdditionalSelectableField` | Define a SelectableField by JSON path, so that it can be used for filtering.                            |
+| `io.fabric8.kubernetes.model.annotation.SpecReplicas`           | The field is used in scale subresource as `specReplicaPath`                                             |
+| `io.fabric8.kubernetes.model.annotation.StatusReplicas`         | The field is used in scale subresource as `statusReplicaPath`                                           |
+| `io.fabric8.kubernetes.model.annotation.LabelSelector`          | The field is used in scale subresource as `labelSelectorPath`                                           |
 
 
 A field of type `com.fasterxml.jackson.databind.JsonNode` is encoded as an empty object with `x-kubernetes-preserve-unknown-fields: true` defined.
