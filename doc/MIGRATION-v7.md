@@ -20,6 +20,7 @@
   - [Open Virtual Network OVN Extension](#ovn-extension)
   - [Tekton Extension](#tekton-extension)
   - [Vertical Pod Autoscaler Extension](#vertical-pod-autoscaler-extension)
+  - [OpenShift Template objects](#openshift-template-objects)
 - [MockWebServer is based on Vert.x](#mockwebserver-vertx)
   - [OkHttp class replacements](#mockwebserver-okhttp-replacements)
   - [SSL/TLS certificates](#mockwebserver-ssl-tls-certificates)
@@ -248,6 +249,12 @@ The following packages have been moved:
 The module `verticalpodautoscaler-model-v1` has been renamed to `verticalpodautoscaler-model`.
 
 The package containing the Vertical Pod Autoscaler classes has also been renamed from `io.fabric8.verticalpodautoscaler.api.model` to `io.fabric8.autoscaling.api.model.v1`.
+
+### OpenShift Template objects <a href="#openshift-template-objects" id="openshift-template-objects"/>
+
+The OpenShift Template `objects` field (`getObjects()` / `setObjects()`) has changed its type from `List<HasMetadata>` to `List<Object>`.
+Technically, this field can contain any kind of object, not just `HasMetadata` object instances.
+The object will always be deserialized as a `KubernetesResource` instance, but not necessarily a `HasMetadata` instance (`AnyType`, `RawExtension`, `GenericKubernetesResource`).
 
 ## MockWebServer is based on Vert.x <a href="#mockwebserver-vertx" id="mockwebserver-vertx"/>
 
