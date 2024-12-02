@@ -18,6 +18,7 @@ package io.fabric8.java.generator;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.TextNode;
 import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.PackageDeclaration;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.EnumDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
@@ -30,12 +31,17 @@ import io.fabric8.java.generator.nodes.*;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsOrBool;
 import io.fabric8.kubernetes.client.utils.Serialization;
+import org.assertj.core.api.InstanceOfAssertFactories;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
 
 import static io.fabric8.java.generator.CRGeneratorRunner.groupToPackage;
 import static io.fabric8.java.generator.nodes.Keywords.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.tuple;
 import static org.junit.jupiter.api.Assertions.*;
 
 class GeneratorTest {
@@ -74,10 +80,13 @@ class GeneratorTest {
     GeneratorResult res = cro.generateJava();
 
     // Assert
-    assertEquals(1, res.getTopLevelClasses().size());
-    assertEquals("Type", res.getTopLevelClasses().get(0).getName());
-    assertEquals("v1alpha1",
-        res.getTopLevelClasses().get(0).getPackageDeclaration().get().getNameAsString());
+    assertThat(res.getTopLevelClasses())
+        .singleElement()
+        .hasFieldOrPropertyWithValue("name", "Type")
+        .extracting(GeneratorResult.ClassResult::getPackageDeclaration)
+        .asInstanceOf(InstanceOfAssertFactories.optional(PackageDeclaration.class))
+        .get()
+        .hasFieldOrPropertyWithValue("nameAsString", "v1alpha1");
   }
 
   @Test
@@ -835,58 +844,94 @@ class GeneratorTest {
         actualO1Field.getElementType().asString());
   }
 
-  @Test
-  void testClassNamesDisambiguationWithPackageNesting() {
-    // Arrange
-    Map<String, JSONSchemaProps> props = new HashMap<>();
-    JSONSchemaProps newObj1 = new JSONSchemaProps();
-    JSONSchemaProps newObj2 = new JSONSchemaProps();
-    newObj1.setType("object");
-    newObj2.setType("object");
-    Map<String, JSONSchemaProps> obj2Props = new HashMap<>();
-    obj2Props.put("o1", newObj1);
-    obj2Props.put("o2", newObj1);
-    obj2Props.put("o3", newObj1);
-    newObj2.setProperties(obj2Props);
-    props.put("o1", newObj1);
-    props.put("o2", newObj2);
-    JObject obj = new JObject("v1alpha1", "t", props, null, false, defaultConfig, null, Boolean.FALSE, null);
+  @Nested
+  class ClassNameDisambiguationWithPackageNesting {
 
-    // Act
-    GeneratorResult res = obj.generateJava();
+    private GeneratorResult result;
 
-    // Assert
-    assertEquals(6, res.getTopLevelClasses().size());
-    // The order here is not important
-    assertEquals("O1", res.getTopLevelClasses().get(0).getName());
-    assertEquals("O1", res.getTopLevelClasses().get(1).getName());
-    assertEquals("O2", res.getTopLevelClasses().get(2).getName());
-    assertEquals("O3", res.getTopLevelClasses().get(3).getName());
-    assertEquals("O2", res.getTopLevelClasses().get(4).getName());
-    assertEquals("T", res.getTopLevelClasses().get(5).getName());
+    @BeforeEach
+    void classWithNestedClassesAndProperties() {
+      Map<String, JSONSchemaProps> props = new HashMap<>();
+      JSONSchemaProps newObj1 = new JSONSchemaProps();
+      JSONSchemaProps newObj2 = new JSONSchemaProps();
+      newObj1.setType("object");
+      newObj2.setType("object");
+      Map<String, JSONSchemaProps> obj2Props = new HashMap<>();
+      obj2Props.put("o1", newObj1);
+      obj2Props.put("o2", newObj1);
+      obj2Props.put("o3", newObj1);
+      newObj2.setProperties(obj2Props);
+      props.put("o1", newObj1);
+      props.put("o2", newObj2);
+      result = new JObject("v1alpha1", "t", props, null, false, defaultConfig, null, Boolean.FALSE, null)
+          .generateJava();
+    }
 
-    GeneratorResult.ClassResult cuT = res.getTopLevelClasses().get(5);
-    Optional<ClassOrInterfaceDeclaration> clzT = cuT.getClassByName("T");
-    assertTrue(clzT.isPresent());
-    assertEquals(2, clzT.get().getFields().size());
-    assertTrue(clzT.get().getFieldByName("o1").isPresent());
-    assertEquals("v1alpha1", cuT.getPackageDeclaration().get().getNameAsString());
-    assertEquals(
-        "v1alpha1.t.O1", clzT.get().getFieldByName("o1").get().getElementType().toString());
-    GeneratorResult.ClassResult cuO1 = res.getTopLevelClasses().get(0);
-    Optional<ClassOrInterfaceDeclaration> clzO1 = cuO1.getClassByName("O1");
-    assertTrue(clzO1.isPresent());
-    assertEquals("v1alpha1.t", cuO1.getPackageDeclaration().get().getNameAsString());
-    GeneratorResult.ClassResult cuO2 = res.getTopLevelClasses().get(4);
-    Optional<ClassOrInterfaceDeclaration> clzO2 = cuO2.getClassByName("O2");
-    assertTrue(clzO2.isPresent());
-    assertTrue(clzO2.get().getFieldByName("o1").isPresent());
-    assertEquals("v1alpha1.t", cuO2.getPackageDeclaration().get().getNameAsString());
-    assertEquals(
-        "v1alpha1.t.o2.O1",
-        clzO2.get().getFieldByName("o1").get().getElementType().toString());
-    assertTrue(clzO2.get().getFieldByName("o2").isPresent());
-    assertTrue(clzO2.get().getFieldByName("o3").isPresent());
+    @Test
+    void generatesMultipleClassesInNestedPackages() {
+      assertThat(result.getTopLevelClasses())
+          .hasSize(6)
+          .extracting(
+              // Class Name
+              GeneratorResult.ClassResult::getName,
+              // Package
+              cr -> cr.getPackageDeclaration().map(PackageDeclaration::getName).map(Objects::toString).orElse(null))
+          // The order here is not important
+          .containsExactly(
+              tuple("O1", "v1alpha1.t"),
+              tuple("O1", "v1alpha1.t.o2"),
+              tuple("O2", "v1alpha1.t.o2"),
+              tuple("O3", "v1alpha1.t.o2"),
+              tuple("O2", "v1alpha1.t"),
+              tuple("T", "v1alpha1"));
+    }
+
+    @Test
+    void generatesMainClassWithFields() {
+      assertThat(result.getTopLevelClasses())
+          .last()
+          .hasFieldOrPropertyWithValue("name", "T")
+          .extracting(c -> c.getClassByName("T"))
+          .asInstanceOf(InstanceOfAssertFactories.optional(ClassOrInterfaceDeclaration.class)).get()
+          .extracting(ClassOrInterfaceDeclaration::getFields)
+          .asInstanceOf(InstanceOfAssertFactories.list(FieldDeclaration.class))
+          .extracting(
+              fd -> fd.getElementType().asString(),
+              fd -> fd.getVariable(0).getName().asString())
+          .containsExactly(
+              tuple("v1alpha1.t.O1", "o1"),
+              tuple("v1alpha1.t.O2", "o2"));
+    }
+
+    @Test
+    void generatesNestedClass1WithEmptyFields() {
+      assertThat(result.getTopLevelClasses())
+          .first()
+          .hasFieldOrPropertyWithValue("name", "O1")
+          .extracting(c -> c.getClassByName("O1"))
+          .asInstanceOf(InstanceOfAssertFactories.optional(ClassOrInterfaceDeclaration.class)).get()
+          .extracting(ClassOrInterfaceDeclaration::getFields)
+          .asInstanceOf(InstanceOfAssertFactories.list(FieldDeclaration.class))
+          .isEmpty();
+    }
+
+    @Test
+    void generatesNestedClass2WithFields() {
+      assertThat(result.getTopLevelClasses())
+          .element(4)
+          .hasFieldOrPropertyWithValue("name", "O2")
+          .extracting(c -> c.getClassByName("O2"))
+          .asInstanceOf(InstanceOfAssertFactories.optional(ClassOrInterfaceDeclaration.class)).get()
+          .extracting(ClassOrInterfaceDeclaration::getFields)
+          .asInstanceOf(InstanceOfAssertFactories.list(FieldDeclaration.class))
+          .extracting(
+              fd -> fd.getElementType().asString(),
+              fd -> fd.getVariable(0).getName().asString())
+          .containsExactly(
+              tuple("v1alpha1.t.o2.O1", "o1"),
+              tuple("v1alpha1.t.o2.O2", "o2"),
+              tuple("v1alpha1.t.o2.O3", "o3"));
+    }
   }
 
   @Test
