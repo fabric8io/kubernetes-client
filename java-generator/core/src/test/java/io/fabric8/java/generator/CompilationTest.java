@@ -28,12 +28,9 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -41,7 +38,8 @@ import java.util.stream.Stream;
 import javax.tools.JavaFileObject;
 
 import static com.google.testing.compile.Compiler.javac;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class CompilationTest {
 
@@ -81,70 +79,74 @@ class CompilationTest {
   @MethodSource("compilationTestData")
   void yamlCompiles(String yamlFile, int expectedGeneratedSourceFiles) throws Exception {
     // Arrange
-    File crd = getCRD(yamlFile);
+    final var crd = getCRD(yamlFile);
 
     // Act
     new FileJavaGenerator(config, crd).run(tempDir);
-    Compilation compilation = javac().compile(getSources(tempDir));
+    final var compilation = javac().compile(getSources(tempDir));
 
     // Assert
-    assertTrue(compilation.errors().isEmpty());
-    assertEquals(expectedGeneratedSourceFiles, compilation.sourceFiles().size());
-    assertEquals(Compilation.Status.SUCCESS, compilation.status());
+    assertThat(compilation.errors()).isEmpty();
+    assertThat(compilation.sourceFiles()).hasSize(expectedGeneratedSourceFiles);
+    assertThat(compilation.status()).isEqualTo(Compilation.Status.SUCCESS);
   }
 
   @Disabled("Requires support from sundrio to work with compile-testing, see sundrio PR #469")
   @Test
   void testCrontabCRDCompilesWithExtraAnnotations() throws Exception {
     // Arrange
-    File crd = getCRD("crontab-crd.yml");
+    final var crd = getCRD("crontab-crd.yml");
     config = config.toBuilder()
         .objectExtraAnnotations(true)
         .build();
 
     // Act
     new FileJavaGenerator(config, crd).run(tempDir);
-    Compilation compilation = javac()
+    final var compilation = javac()
         .withProcessors(new BuildableProcessor())
         .compile(getSources(tempDir));
 
     // Assert
-    assertEquals(Collections.emptyList(), compilation.errors());
-    assertEquals(3, compilation.sourceFiles().size());
-    assertEquals(Compilation.Status.SUCCESS, compilation.status());
+    assertThat(compilation.errors()).isEmpty();
+    assertThat(compilation.sourceFiles()).hasSize(3);
+    assertThat(compilation.status()).isEqualTo(Compilation.Status.SUCCESS);
   }
 
   @Test
   void testCalicoIPPoolCRDDoesNotCompileWhenDuplicatesAreNotDeprecated() throws Exception {
     // Arrange
-    File crd = getCRD("calico-ippool-broken-crd.yml");
+    final var crd = getCRD("calico-ippool-broken-crd.yml");
     config = config.toBuilder()
         .objectExtraAnnotations(true)
         .build();
+    final var fileJavaGenerator = new FileJavaGenerator(config, crd);
 
     // Assert
-    assertThrows(JavaGeneratorException.class, () -> {
-      // Act
-      new FileJavaGenerator(config, crd).run(tempDir);
-      javac().compile(getSources(tempDir));
-    },
-        "The current CRD should not compile since it contains duplicate fields which are not marked as deprecated");
+    assertThatThrownBy(
+        // Act
+        () -> fileJavaGenerator.run(tempDir))
+        .as("The current CRD should not compile since it contains duplicate fields which are not marked as deprecated")
+        .isInstanceOf(JavaGeneratorException.class);
   }
 
-  static List<JavaFileObject> getSources(File basePath) throws IOException {
-    List<JavaFileObject> sources = new ArrayList<JavaFileObject>();
-    for (Path f : Files.list(basePath.toPath()).collect(Collectors.toList())) {
-      if (f.toFile().isDirectory()) {
-        sources.addAll(getSources(f.toFile()));
-      } else {
-        sources.add(JavaFileObjects.forResource(f.toUri().toURL()));
+  static List<JavaFileObject> getSources(File basePath) throws Exception {
+    final var sources = new ArrayList<JavaFileObject>();
+    try (final var pathStream = Files.list(basePath.toPath())) {
+      for (final var path : pathStream.collect(Collectors.toList())) {
+        final var file = path.toFile();
+        if (file.isDirectory()) {
+          sources.addAll(getSources(file));
+        } else {
+          sources.add(JavaFileObjects.forResource(path.toUri().toURL()));
+        }
       }
     }
-
     return sources;
   }
 
   static File getCRD(String name) throws Exception {
-    return Paths.get(CompilationTest.class.getClassLoader().getResource(name).toURI()).toFile();
+    final var resource = CompilationTest.class.getClassLoader().getResource(name);
+    assertThat(resource).isNotNull();
+    return Paths.get(resource.toURI()).toFile();
   }
 }

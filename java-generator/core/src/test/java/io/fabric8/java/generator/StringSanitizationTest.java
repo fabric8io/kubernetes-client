@@ -18,43 +18,43 @@ package io.fabric8.java.generator;
 import io.fabric8.java.generator.nodes.AbstractJSONSchema2Pojo;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class StringSanitizationTest {
 
   @Test
   void shouldRemoveDashes() {
     // Arrange
-    String str = "property-name";
+    final var str = "property-name";
 
     // Act
-    String res = AbstractJSONSchema2Pojo.sanitizeString(str);
+    final var res = AbstractJSONSchema2Pojo.sanitizeString(str);
 
     // Assert
-    assertEquals("propertyName", res);
+    assertThat(res).isEqualTo("propertyName");
   }
 
   @Test
   void shouldRemoveTrailingDashes() {
     // Arrange
-    String str = "property-name-";
+    final var str = "property-name-";
 
     // Act
-    String res = AbstractJSONSchema2Pojo.sanitizeString(str);
+    final var res = AbstractJSONSchema2Pojo.sanitizeString(str);
 
     // Assert
-    assertEquals("propertyName", res);
+    assertThat(res).isEqualTo("propertyName");
   }
 
   @Test
   void shouldAddTrailingUnderscoreOnInvalidClassAndPackageNames() {
     // Arrange
-    String str = "3property-name-";
+    final var str = "3property-name-";
 
     // Act
-    String res = AbstractJSONSchema2Pojo.sanitizeString(str);
+    final var res = AbstractJSONSchema2Pojo.sanitizeString(str);
 
     // Assert
-    assertEquals("_3propertyName", res);
+    assertThat(res).isEqualTo("_3propertyName");
   }
 }
