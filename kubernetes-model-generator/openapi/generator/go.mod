@@ -41,7 +41,7 @@ require (
 	k8s.io/kube-openapi v0.0.0-20240903163716-9e1beecbcb38
 	k8s.io/metrics v0.31.3
 	knative.dev/caching v0.0.0-20241022012359-41bbaf964d16
-	knative.dev/eventing v0.43.2
+	knative.dev/eventing v0.43.3
 	knative.dev/eventing-awssqs v0.29.0
 	knative.dev/eventing-couchdb v0.28.0
 	knative.dev/eventing-github v0.43.0
