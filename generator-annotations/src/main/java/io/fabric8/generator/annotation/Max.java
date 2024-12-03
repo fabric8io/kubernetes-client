@@ -31,5 +31,17 @@ import java.lang.annotation.Target;
 @Target({ ElementType.ANNOTATION_TYPE, ElementType.FIELD, ElementType.METHOD, ElementType.TYPE_USE })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Max {
+  /**
+   * @return the value of the maximum constraint
+   */
   double value();
+
+  /**
+   * Specifies whether the specified maximum is inclusive or exclusive.
+   * By default, it is inclusive.
+   *
+   * @return {@code true} if the value must be lower or equal to the specified maximum,
+   *         {@code false} if the value must be lower
+   */
+  boolean inclusive() default true;
 }

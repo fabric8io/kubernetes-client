@@ -29,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class SpecReplicasPathTest {
 
   @Test
-  public void shoudDetectSpecReplicasPath() throws Exception {
+  void shouldDetectSpecReplicasPath() {
     JsonSchema resolver = new JsonSchema(ResolvingContext.defaultResolvingContext(false), WebServerWithStatusProperty.class);
     Optional<String> path = resolver.getSinglePath(SpecReplicas.class);
     assertTrue(path.isPresent());
@@ -37,7 +37,7 @@ class SpecReplicasPathTest {
   }
 
   @Test
-  public void shoudDetectNestedSpecReplicasPath() throws Exception {
+  void shouldDetectNestedSpecReplicasPath() {
     JsonSchema resolver = new JsonSchema(ResolvingContext.defaultResolvingContext(false), WebServerWithSpec.class);
     Optional<String> path = resolver.getSinglePath(SpecReplicas.class);
     assertTrue(path.isPresent());
