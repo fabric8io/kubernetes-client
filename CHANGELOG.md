@@ -1,5 +1,18 @@
 ## CHANGELOG
 
+### 7.1-SNAPSHOT
+
+#### Bugs
+
+#### Improvements
+
+#### Dependency Upgrade
+
+#### New Features
+
+#### _**Note**_: Breaking changes
+
+
 ### 7.0.0 (2024-12-03)
 
 #### Bugs
