@@ -260,7 +260,7 @@ The object will always be deserialized as a `KubernetesResource` instance, but n
 
 ## CRD Generator annotation processor <a href="#crd-generator-annotation-processor" id="crd-generator-annotation-processor"/>
 
-### `@PrinterColum` format changed to enum <a href="#crd-generator-printercolumn-format" id="crd-generator-printercolumn-format"/>
+### `@PrinterColumn` format changed to enum <a href="#crd-generator-printercolumn-format" id="crd-generator-printercolumn-format"/>
 
 The type of `format` in `@PrinterColumn` has changed from string to enum `PrinterColumnFormat`.
 
