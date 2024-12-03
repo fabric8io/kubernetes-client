@@ -21,9 +21,9 @@ dependencies {
 }
 ```
 
-## Experimental
+### Experimental
 
-### Generate CRDs in parallel
+#### Generate CRDs in parallel
 
 It's possible to speed up the CRDs generation by using parallel computation.
 Please note that this feature is experimental, and it may lead to unexpected results.
