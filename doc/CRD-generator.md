@@ -858,31 +858,3 @@ spec:
 
 A field of type `com.fasterxml.jackson.databind.JsonNode` is encoded as an empty object with `x-kubernetes-preserve-unknown-fields: true` defined.
 
-## Experimental
-
-### Generate CRDs in parallel
-It's possible to speed up the CRDs generation by using parallel computation.
-Please note that this feature is experimental, and it may lead to unexpected results.
-
-To enable it, you need to set the `io.fabric8.crd.generator.parallel` property to `true` in the processor.
-
-with Maven:
-
-```xml
-<plugin>
-  <artifactId>maven-compiler-plugin</artifactId>
-  <configuration>
-    <compilerArgs>
-      <arg>-Aio.fabric8.crd.generator.parallel=true</arg>
-    </compilerArgs>
-  </configuration>
-</plugin>
-```
-
-with Gradle:
-
-```groovy
-tasks.withType(JavaCompile) {
-  options.compilerArgs += ["-Aio.fabric8.crd.generator.parallel=true"]
-}
-```
