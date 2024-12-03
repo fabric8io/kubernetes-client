@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### 7.0-SNAPSHOT
+### 7.0.0 (2024-12-03)
 
 #### Bugs
 * Fix #6038: Support for Gradle configuration cache
