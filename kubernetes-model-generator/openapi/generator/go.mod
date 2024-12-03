@@ -11,7 +11,7 @@ require (
 	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.7.5
 	github.com/kubernetes-csi/external-snapshotter/client/v8 v8.0.0
 	github.com/metal3-io/baremetal-operator/apis v0.4.0
-	github.com/metal3-io/cluster-api-provider-metal3/api v1.8.2
+	github.com/metal3-io/cluster-api-provider-metal3/api v1.8.3
 	// Match latest commit in the version branch (e.g. release-4.17)
 	github.com/openshift/api v3.9.0+incompatible
 	github.com/openshift/cloud-credential-operator v0.0.0-20240910052617-d668c182b0e3
@@ -167,7 +167,7 @@ require (
 	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/mattn/go-sqlite3 v2.0.3+incompatible // indirect
 	github.com/metal3-io/baremetal-operator/pkg/hardwareutils v0.5.1 // indirect
-	github.com/metal3-io/ip-address-manager/api v1.8.1 // indirect
+	github.com/metal3-io/ip-address-manager/api v1.8.2 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/mohae/deepcopy v0.0.0-20170929034955-c48cc78d4826 // indirect
