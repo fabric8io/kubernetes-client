@@ -21,6 +21,8 @@
   - [Tekton Extension](#tekton-extension)
   - [Vertical Pod Autoscaler Extension](#vertical-pod-autoscaler-extension)
   - [OpenShift Template objects](#openshift-template-objects)
+- [CRD Generator annotation processor](#crd-generator-annotation-processor)
+  - [`@PrinterColumn` format changed to enum](#crd-generator-printercolumn-format) 
 - [MockWebServer is based on Vert.x](#mockwebserver-vertx)
   - [OkHttp class replacements](#mockwebserver-okhttp-replacements)
   - [SSL/TLS certificates](#mockwebserver-ssl-tls-certificates)
@@ -255,6 +257,12 @@ The package containing the Vertical Pod Autoscaler classes has also been renamed
 The OpenShift Template `objects` field (`getObjects()` / `setObjects()`) has changed its type from `List<HasMetadata>` to `List<Object>`.
 Technically, this field can contain any kind of object, not just `HasMetadata` object instances.
 The object will always be deserialized as a `KubernetesResource` instance, but not necessarily a `HasMetadata` instance (`AnyType`, `RawExtension`, `GenericKubernetesResource`).
+
+## CRD Generator annotation processor <a href="#crd-generator-annotation-processor" id="crd-generator-annotation-processor"/>
+
+### `@PrinterColum` format changed to enum <a href="#crd-generator-printercolumn-format" id="crd-generator-printercolumn-format"/>
+
+The type of `format` in `@PrinterColumn` has changed from string to enum `PrinterColumnFormat`.
 
 ## MockWebServer is based on Vert.x <a href="#mockwebserver-vertx" id="mockwebserver-vertx"/>
 
