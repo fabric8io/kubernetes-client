@@ -1,8 +1,8 @@
 # CRD generation
 
-The CRD Generator annotation processing tool (APT) (`io.fabric8:crd-generator-apt`) and its API (`io.fabric8:crd-generator-api`) are being deprecated and will eventually be removed once we offer a complete replacement for all users.
+The [CRD Generator annotation processing tool (APT)](../crd-generator/apt/README.md) (`io.fabric8:crd-generator-apt`) and its API (`io.fabric8:crd-generator-api`) are being deprecated and will eventually be removed once we offer a complete replacement for all users.
 
-As a replacement, we're currently providing a new version of the API in the `io.fabric8:crd-generator-api-v2`and a few tools to be able to leverage it in your projects.
+As a replacement, we're currently providing a new version of the API in `io.fabric8:crd-generator-api-v2` and a few tools to be able to leverage it in your projects.
 
 The following list contains the available tooling:
 - [CRD Generator Maven Plugin](../crd-generator/maven-plugin/README.md): A Maven plugin that generates CRDs during the build process.
@@ -858,31 +858,3 @@ spec:
 
 A field of type `com.fasterxml.jackson.databind.JsonNode` is encoded as an empty object with `x-kubernetes-preserve-unknown-fields: true` defined.
 
-## Experimental
-
-### Generate CRDs in parallel
-It's possible to speed up the CRDs generation by using parallel computation.
-Please note that this feature is experimental, and it may lead to unexpected results.
-
-To enable it, you need to set the `io.fabric8.crd.generator.parallel` property to `true` in the processor.
-
-with Maven:
-
-```xml
-<plugin>
-  <artifactId>maven-compiler-plugin</artifactId>
-  <configuration>
-    <compilerArgs>
-      <arg>-Aio.fabric8.crd.generator.parallel=true</arg>
-    </compilerArgs>
-  </configuration>
-</plugin>
-```
-
-with Gradle:
-
-```groovy
-tasks.withType(JavaCompile) {
-  options.compilerArgs += ["-Aio.fabric8.crd.generator.parallel=true"]
-}
-```
