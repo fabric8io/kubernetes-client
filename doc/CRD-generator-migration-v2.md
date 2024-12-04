@@ -18,7 +18,7 @@ _GA since 7.0.0_
 - **CRD Generator API v2** - `io.fabric8:crd-generator-api-v2`  
   _Core implementation of the new generator, based on [Jackson/jsonSchema](https://github.com/FasterXML/jackson-module-jsonSchema)._
 - **CRD Generator Collector** - `io.fabric8:crd-generator-collector`  
-  _Shared component to find compiled Custom Resource classes in directories and Jar files._
+  _Shared component to find and load compiled Custom Resource classes in directories and Jar files._
 - **CRD Generator Maven Plugin** - `io.fabric8:crd-generator-maven-plugin`   
   _Maven plugin that generates CRDs during the build process._
 - **CRD Generator CLI** - `io.fabric8:crd-generator-cli`    
@@ -28,23 +28,41 @@ _GA since 7.0.0_
 
 CRD Generator v1 and v2 are using **the same set of annotations**.  
 This means you can keep your code as is and replace just the CRD Generator
-annotation processor with [your tool of choice](#new-tooling).
+annotation processor with your [tool of choice](#new-tooling).
 
 The API itself is not compatible but very similar.
 
 ## New Tooling
 
-To replace the CRD Generator annotation processor you can use the following tools:
+To replace the [CRD Generator annotation processor](../crd-generator/apt/README.md) you can use the following tools:
 
 - [CRD Generator Maven Plugin](../crd-generator/maven-plugin/README.md)
 - [CRD Generator CLI tool](../crd-generator/cli/README.md)
 
-The tools use the same core implementation, which means they should generate the same CRDs if the similar configuration
+The tools use the same core implementation, which means they should generate the same CRDs if similar configuration
 parameter are used. One of the enhancements of the new tooling is that they can be configured easily.
 Please read the README of the tool for details on usage and configuration.
 
-## New annotations since 7.0.0
+## New annotations
 
-Several new annotations have been introduced since 7.0.0. They will be used only by the CRD Generator v2 implementation
+Several new annotations have been introduced since 7.0.0. They will be used by the **CRD Generator v2 implementation only**
 since CRD Generator v1 won't get new features from now on.
+
+- `@AdditionalPrinterColumn`
+- `@SelectableField`
+- `@AdditionalSelectableField`
+- `@Size`
+
+Please read the Javadoc of those annotations and the [CRD Generator documentation](CRD-generator.md) to get details.
+
+## Changed annotations
+
+The `@Min` and `@Max` annotations have been extended with a second argument to define the inclusiveness.
+By default, the value in the annotation is meant to be inclusive like before.
+
+### Migrating from v6
+
+In case you are migrating directly from fabric8/kubernetes-client v6, the following change affects you: 
+
+The type of `format` in `@PrinterColumn` has changed from string to enum `PrinterColumnFormat`.
 
