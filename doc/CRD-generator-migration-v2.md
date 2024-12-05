@@ -48,6 +48,7 @@ Please read the README of the tool for details on usage and configuration.
 Several new annotations have been introduced since 7.0.0. They will be used by the **CRD Generator v2 implementation only**
 since CRD Generator v1 won't get new features from now on.
 
+- `@Categories`
 - `@AdditionalPrinterColumn`
 - `@SelectableField`
 - `@AdditionalSelectableField`
@@ -55,12 +56,23 @@ since CRD Generator v1 won't get new features from now on.
 
 Please read the Javadoc of those annotations and the [CRD Generator documentation](CRD-generator.md) to get details.
 
-## Changed annotations
+## `@Min` / `@Max` inclusiveness
 
 The `@Min` and `@Max` annotations have been extended with a second argument to define the inclusiveness.
 By default, the value in the annotation is meant to be inclusive like before.
 
-### Migrating from v6
+## New restrictions on annotations
+
+With CRD Generator v2 the following annotations are restricted to certain field types:
+
+- `@Min` and `@Max` are restricted to numeric fields
+- `@Pattern` is restricted to string fields
+
+## Default values for CRD fields can be numeric or boolean
+
+TODO
+
+## Migrating from v6
 
 In case you are migrating directly from fabric8/kubernetes-client v6, the following change affects you: 
 
