@@ -1,6 +1,8 @@
 # CRD Generator Annotation Processor
 _Deprecated since 7.0.0_
 
+Please follow our [CRD Generator v2 Migration Guide](../../doc/CRD-generator-migration-v2.md) to replace it.
+
 ## Usage
 
 with Maven:
