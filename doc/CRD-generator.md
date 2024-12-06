@@ -12,7 +12,7 @@ The following list contains the available tooling:
 
 ## Quick start
 
-Add the CRD Generator plugin to your project:
+Add the CRD Generator plugin to your project or use the CLI tool:
 
 with Maven:
 
