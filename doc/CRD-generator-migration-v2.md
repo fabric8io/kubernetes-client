@@ -39,7 +39,7 @@ To replace the [CRD Generator annotation processor](../crd-generator/apt/README.
 - [CRD Generator Maven Plugin](../crd-generator/maven-plugin/README.md)
 - [CRD Generator CLI tool](../crd-generator/cli/README.md)
 
-The tools use the same core implementation, which means they should generate the same CRDs if similar configuration
+The tools use the same base, which means they should generate the same CRDs if similar configuration
 parameter are used. One of the enhancements of the new tooling is that they can be configured easily.
 Please read the README of the tool for details on usage and configuration.
 
@@ -54,7 +54,7 @@ since CRD Generator v1 won't get new features from now on.
 - `@AdditionalSelectableField`
 - `@Size`
 
-Please read the Javadoc of those annotations and the [CRD Generator documentation](CRD-generator.md) to get details.
+Read the Javadoc of the annotations and the [CRD Generator documentation](CRD-generator.md) to get details.
 
 ## `@Min` / `@Max` inclusiveness
 
@@ -68,9 +68,34 @@ With CRD Generator v2 the following annotations are restricted to certain field 
 - `@Min` and `@Max` are restricted to numeric fields
 - `@Pattern` is restricted to string fields
 
+## Annotated Types
+
+`@Pattern`, `@Min`, `@Max` will be detected if they are used to annotate the type of a List or a Map.
+
+Example:
+```java
+List<@Pattern("(a|b)") String> myList;
+Map<String, @Pattern("(a|b)") String> myMap;
+```
+Result:
+```yaml
+myList:
+  items:
+    pattern: "(a|b)+"
+    type: "string"
+  type: "array"
+myMap:
+  additionalProperties:
+    pattern: "(a|b)+"
+    type: "string"
+  type: "object"
+```
+
 ## Default values for CRD fields can be numeric or boolean
 
-TODO
+Previously default values defined by `@Default` could only be used on string fields. 
+With CRD Generator v2 defaults can be set on numeric and boolean fields, too.
+In the same way is `@JsonProperty(defaultValue)` now working.
 
 ## Migrating from v6
 
