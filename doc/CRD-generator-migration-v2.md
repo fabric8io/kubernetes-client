@@ -32,6 +32,21 @@ annotation processor with your [tool of choice](#new-tooling).
 
 The API itself is not compatible but very similar.
 
+## Breaking Changes
+
+### New restrictions on annotations
+
+With CRD Generator v2 the following annotations are restricted to certain field types:
+
+- `@Min` and `@Max` are restricted to numeric fields
+- `@Pattern` is restricted to string fields
+
+### Migrating from v6
+
+In case you are migrating directly from fabric8/kubernetes-client v6, the following change affects you:
+
+The type of `format` in `@PrinterColumn` has changed from string to enum `PrinterColumnFormat`.
+
 ## New Tooling
 
 To replace the [CRD Generator annotation processor](../crd-generator/apt/README.md) you can use the following tools:
@@ -61,13 +76,6 @@ Read the Javadoc of the annotations and the [CRD Generator documentation](CRD-ge
 The `@Min` and `@Max` annotations have been extended with a second argument to define the inclusiveness.
 By default, the value in the annotation is meant to be inclusive like before.
 
-## New restrictions on annotations
-
-With CRD Generator v2 the following annotations are restricted to certain field types:
-
-- `@Min` and `@Max` are restricted to numeric fields
-- `@Pattern` is restricted to string fields
-
 ## Annotated Types
 
 `@Pattern`, `@Min`, `@Max` will be detected if they are used to annotate the type of a List or a Map.
@@ -96,10 +104,4 @@ myMap:
 Previously default values defined by `@Default` could only be used on string fields. 
 With CRD Generator v2 defaults can be set on numeric and boolean fields, too.
 In the same way is `@JsonProperty(defaultValue)` now working.
-
-## Migrating from v6
-
-In case you are migrating directly from fabric8/kubernetes-client v6, the following change affects you: 
-
-The type of `format` in `@PrinterColumn` has changed from string to enum `PrinterColumnFormat`.
 
