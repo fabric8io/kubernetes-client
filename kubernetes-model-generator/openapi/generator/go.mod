@@ -9,7 +9,7 @@ require (
 	github.com/chaos-mesh/chaos-mesh/api v0.0.0
 	github.com/getkin/kin-openapi v0.128.0
 	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.7.5
-	github.com/kubernetes-csi/external-snapshotter/client/v8 v8.0.0
+	github.com/kubernetes-csi/external-snapshotter/client/v8 v8.2.0
 	github.com/metal3-io/baremetal-operator/apis v0.4.0
 	github.com/metal3-io/cluster-api-provider-metal3/api v1.8.3
 	// Match latest commit in the version branch (e.g. release-4.17)
