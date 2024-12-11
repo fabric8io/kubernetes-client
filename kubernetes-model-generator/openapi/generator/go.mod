@@ -34,7 +34,7 @@ require (
 	istio.io/client-go v1.24.1
 	k8s.io/api v0.31.3
 	k8s.io/apiextensions-apiserver v0.31.3
-	k8s.io/apimachinery v0.31.3
+	k8s.io/apimachinery v0.31.4
 	k8s.io/autoscaler/vertical-pod-autoscaler v1.2.1
 	k8s.io/client-go v12.0.0+incompatible
 	k8s.io/gengo/v2 v2.0.0-20240911193312-2b36238f13e9
