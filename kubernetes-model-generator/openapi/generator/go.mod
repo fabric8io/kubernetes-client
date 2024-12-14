@@ -87,8 +87,8 @@ replace (
 
 replace (
 	// TODO: WIP while this gets merged or fixed  https://github.com/chaos-mesh/chaos-mesh/pull/4525
-	github.com/chaos-mesh/chaos-mesh => github.com/marcnuri-forks/chaos-mesh v0.0.0-20241023085955-dbae1077f45f
-	github.com/chaos-mesh/chaos-mesh/api => github.com/marcnuri-forks/chaos-mesh/api v0.0.0-20241023085955-dbae1077f45f
+	github.com/chaos-mesh/chaos-mesh => github.com/marcnuri-forks/chaos-mesh v0.0.0-20241213143402-276e56a5d848
+	github.com/chaos-mesh/chaos-mesh/api => github.com/marcnuri-forks/chaos-mesh/api v0.0.0-20241213143402-276e56a5d848
 	// TODO: WIP while this gets merged or fixed https://github.com/metal3-io/baremetal-operator/pull/1985
 	github.com/metal3-io/baremetal-operator/apis => github.com/marcnuri-forks/baremetal-operator/apis v0.0.0-20241004142039-6b123cc23349
 	// TODO: WIP while this gets merged or fixed https://github.com/openshift/api/pull/2050
