@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client.http;
 
+import io.fabric8.kubernetes.client.RequestConfigBuilder;
 import io.fabric8.mockwebserver.DefaultMockServer;
 import io.fabric8.mockwebserver.http.RecordedRequest;
 import org.junit.jupiter.api.AfterAll;
@@ -97,7 +98,8 @@ public abstract class AbstractHttpPutTest {
   public void expectFailure() throws IOException, URISyntaxException {
     try (final ServerSocket serverSocket = new ServerSocket(0)) {
 
-      try (HttpClient client = getHttpClientFactory().newBuilder().build()) {
+      try (HttpClient client = getHttpClientFactory().newBuilder()
+          .tag(new RequestConfigBuilder().withRequestRetryBackoffLimit(0).build()).build()) {
         final URI uri = uriForPath(serverSocket, "/put-failing");
         serverSocket.close();
 
