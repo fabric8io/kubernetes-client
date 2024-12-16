@@ -12,6 +12,11 @@
 
 #### _**Note**_: Breaking changes
 
+### 7.0.1 (TBD)
+
+#### Bugs
+
+* Fix #6709: VertxHttpClientFactory reuses the same Vertx instance for each VertxHttpClient instance
 
 ### 7.0.0 (2024-12-03)
 
