@@ -622,7 +622,7 @@ class DeploymentTest {
     // Then
     RecordedRequest recordedRequest = server.getLastRequest();
     assertEquals("PATCH", recordedRequest.getMethod());
-    assertEquals("{\"spec\":{\"paused\":true}}", recordedRequest.getBody().readUtf8());
+    assertEquals("[{\"op\":\"add\",\"path\":\"/spec/paused\",\"value\":true}]", recordedRequest.getBody().readUtf8());
   }
 
   @Test
@@ -652,7 +652,7 @@ class DeploymentTest {
     RecordedRequest recordedRequest = server.getLastRequest();
     assertNotNull(deployment);
     assertEquals("PATCH", recordedRequest.getMethod());
-    assertEquals("{\"spec\":{\"paused\":null}}", recordedRequest.getBody().readUtf8());
+    assertEquals("[{\"op\":\"remove\",\"path\":\"/spec/paused\"}]", recordedRequest.getBody().readUtf8());
   }
 
   @Test
