@@ -1,4 +1,4 @@
-# CRD generation
+# CRD Generator
 
 The [CRD Generator annotation processing tool (APT)](../crd-generator/apt/README.md) (`io.fabric8:crd-generator-apt`) and its API (`io.fabric8:crd-generator-api`) are being deprecated and will eventually be removed once we offer a complete replacement for all users.
 
@@ -38,7 +38,8 @@ with Maven:
 with Gradle:
 
 > [!NOTE]
-> The Gradle plugin is not available yet. Please use the Maven plugin or the CLI tool.
+> The Gradle plugin is not available yet.  
+> Meanwhile, Gradle users can use the [CRD Generator in a build script](../crd-generator/gradle/README.md).
 
 Now you can define a `class` that extends `io.fabric8.kubernetes.client.CustomResource`
 and the corresponding CRD is generated in the folder: `target/classes/META-INF/fabric8`
