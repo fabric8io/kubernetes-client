@@ -98,7 +98,7 @@ public abstract class AbstractHttpClientNewWebSocketBuilderTest {
         .always();
     final CountDownLatch latch = new CountDownLatch(2);
     final Set<String> messages = ConcurrentHashMap.newKeySet();
-    final WebSocket ws = httpClient.newWebSocketBuilder()
+    httpClient.newWebSocketBuilder()
         .uri(URI.create(server.url("/websocket-multiple-message")))
         .buildAsync(new WebSocket.Listener() {
           @Override
@@ -157,6 +157,7 @@ public abstract class AbstractHttpClientNewWebSocketBuilderTest {
     server.expect().withPath("/websocket-headers-test")
         .andUpgradeToWebSocket()
         .open()
+        .waitFor(50L).andEmit("OK")
         .done()
         .always();
     httpClient.newWebSocketBuilder()
