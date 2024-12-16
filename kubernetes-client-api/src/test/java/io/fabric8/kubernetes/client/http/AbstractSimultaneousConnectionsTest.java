@@ -96,7 +96,10 @@ public abstract class AbstractSimultaneousConnectionsTest {
   @DisabledOnOs(OS.WINDOWS)
   public void http1Connections() throws Exception {
     final DelayedResponseHandler handler = new DelayedResponseHandler(MAX_HTTP_1_CONNECTIONS,
-        exchange -> exchange.sendResponseHeaders(204, 0));
+        exchange -> {
+          exchange.sendResponseHeaders(204, -1);
+          exchange.close();
+        });
     httpServer.createContext("/http", handler);
     try (final HttpClient client = clientBuilder.build()) {
       final Collection<CompletableFuture<HttpResponse<AsyncBody>>> asyncResponses = ConcurrentHashMap.newKeySet();
