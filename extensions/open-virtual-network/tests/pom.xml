@@ -23,7 +23,7 @@
   <parent>
     <groupId>io.fabric8</groupId>
     <artifactId>kubernetes-client-project</artifactId>
-    <version>7.1-SNAPSHOT</version>
+    <version>7.0.1</version>
     <relativePath>../../../pom.xml</relativePath>
   </parent>
   <artifactId>ovn-tests</artifactId>
