@@ -204,7 +204,7 @@
     </osgi.include.resources.default>
     <osgi.include.resources>${osgi.include.resources.default}</osgi.include.resources>
     <karaf.itest.skip>false</karaf.itest.skip>
-    <project.build.outputTimestamp>2024-12-03T11:46:03Z</project.build.outputTimestamp>
+    <project.build.outputTimestamp>2024-12-18T05:10:42Z</project.build.outputTimestamp>
     <validation-api.version>2.0.1.Final</validation-api.version>
   </properties>
   <modules>
