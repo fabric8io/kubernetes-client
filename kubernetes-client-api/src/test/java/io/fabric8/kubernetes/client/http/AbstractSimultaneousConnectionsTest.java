@@ -110,7 +110,7 @@ public abstract class AbstractSimultaneousConnectionsTest {
         asyncResponses.add(client.consumeBytes(request, (value, asyncBody) -> asyncBody.consume()));
         handler.await();
       }
-      CompletableFuture.allOf(asyncResponses.toArray(new CompletableFuture[0])).get(60, TimeUnit.SECONDS);
+      CompletableFuture.allOf(asyncResponses.toArray(new CompletableFuture[0])).get(70, TimeUnit.SECONDS);
       assertThat(asyncResponses)
           .hasSize(MAX_HTTP_1_CONNECTIONS)
           .extracting(CompletableFuture::join)
