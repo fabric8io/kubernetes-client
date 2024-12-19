@@ -1103,6 +1103,7 @@
             <ENV_VAR_EXISTS>value</ENV_VAR_EXISTS>
             <ENV_VAR_EXISTS_BOOLEAN>true</ENV_VAR_EXISTS_BOOLEAN>
           </environmentVariables>
+          <parallel>suitesAndClasses</parallel>
         </configuration>
       </plugin>
 

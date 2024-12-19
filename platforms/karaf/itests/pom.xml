@@ -165,6 +165,7 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
           <skip>${karaf.itest.skip}</skip>
+          <parallel>none</parallel>
           <systemPropertyVariables>
             <features.xml>${project.build.directory}/features.xml</features.xml>
             <features.repo>${project.build.directory}/features-repo</features.repo>
