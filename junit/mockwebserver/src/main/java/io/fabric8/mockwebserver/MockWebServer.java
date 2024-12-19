@@ -168,6 +168,7 @@ public class MockWebServer implements Closeable {
       httpClose.onComplete(onComplete);
       await(httpClose, "Unable to close MockWebServer");
     }
+    await(vertx.close(), "Unable to close Vertx");
   }
 
   @Override
