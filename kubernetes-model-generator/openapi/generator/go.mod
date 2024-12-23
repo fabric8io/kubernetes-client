@@ -54,7 +54,7 @@ require (
 	open-cluster-management.io/governance-policy-propagator v0.15.0
 	open-cluster-management.io/multicloud-operators-channel v0.15.0
 	open-cluster-management.io/multicloud-operators-subscription v0.15.0
-	sigs.k8s.io/cluster-api v1.8.5
+	sigs.k8s.io/cluster-api v1.9.2
 	sigs.k8s.io/gateway-api v1.2.1
 	sigs.k8s.io/kustomize/api v0.18.0
 	// This version is older than v1.10.0 see replacements below
@@ -126,7 +126,6 @@ require (
 	github.com/docker/go-units v0.5.0 // indirect
 	github.com/emicklei/go-restful/v3 v3.12.1 // indirect
 	github.com/evanphx/json-patch/v5 v5.9.0 // indirect
-	github.com/fsnotify/fsnotify v1.7.0 // indirect
 	github.com/fxamacker/cbor/v2 v2.7.0 // indirect
 	github.com/go-errors/errors v1.4.2 // indirect
 	github.com/go-kit/log v0.2.1 // indirect
@@ -173,7 +172,7 @@ require (
 	github.com/mohae/deepcopy v0.0.0-20170929034955-c48cc78d4826 // indirect
 	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 // indirect
 	github.com/nutanix-cloud-native/prism-go-client v0.3.4 // indirect
-	github.com/onsi/gomega v1.34.2 // indirect
+	github.com/onsi/gomega v1.36.0 // indirect
 	github.com/opencontainers/go-digest v1.0.0 // indirect
 	github.com/openshift/custom-resource-status v1.1.3-0.20220503160415-f2fdb4999d87 // indirect
 	github.com/operator-framework/operator-registry v1.47.0 // indirect
@@ -200,8 +199,8 @@ require (
 	golang.org/x/crypto v0.31.0 // indirect
 	golang.org/x/exp v0.0.0-20240909161429-701f63a606c0 // indirect
 	golang.org/x/mod v0.21.0 // indirect
-	golang.org/x/net v0.30.0 // indirect
-	golang.org/x/oauth2 v0.23.0 // indirect
+	golang.org/x/net v0.32.0 // indirect
+	golang.org/x/oauth2 v0.24.0 // indirect
 	golang.org/x/sync v0.10.0 // indirect
 	golang.org/x/sys v0.28.0 // indirect
 	golang.org/x/term v0.27.0 // indirect
@@ -221,7 +220,7 @@ require (
 	k8s.io/klog/v2 v2.130.1 // indirect
 	k8s.io/utils v0.0.0-20240921022957-49e7df575cb6 // indirect
 	knative.dev/pkg v0.0.0-20241021183759-9b9d535af5ad // indirect
-	sigs.k8s.io/controller-runtime v0.19.0 // indirect
+	sigs.k8s.io/controller-runtime v0.19.3 // indirect
 	sigs.k8s.io/json v0.0.0-20221116044647-bc3834ca7abd // indirect
 	sigs.k8s.io/kustomize/kyaml v0.18.1 // indirect
 	sigs.k8s.io/structured-merge-diff/v4 v4.4.1 // indirect
