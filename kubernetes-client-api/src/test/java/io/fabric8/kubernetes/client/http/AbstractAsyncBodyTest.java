@@ -114,7 +114,6 @@ public abstract class AbstractAsyncBodyTest {
       asyncBodyResponse.body().consume();
       asyncBodyResponse.body().done().get(10L, TimeUnit.SECONDS);
       assertThat(responseText.toString()).isEqualTo(largeBody);
-
     }
   }
 
