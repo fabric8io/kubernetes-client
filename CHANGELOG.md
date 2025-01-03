@@ -4,6 +4,8 @@
 
 #### Bugs
 
+* Fix #6747: Preventing websocket error logs when the client is closed
+
 #### Improvements
 
 #### Dependency Upgrade
