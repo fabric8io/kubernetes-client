@@ -47,6 +47,7 @@ import java.util.concurrent.CompletionException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -370,19 +371,23 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
     }
     closeWebSocketOnce(code, reason);
     LOGGER.debug("Exec Web Socket: On Close with code:[{}], due to: [{}]", code, reason);
-    serialExecutor.execute(() -> {
-      try {
-        if (exitCode.complete(null)) {
-          // this is expected for processes that don't terminate - uploads for example
-          LOGGER.debug("Exec Web Socket: completed with a null exit code - no status was received prior to onClose");
+    try {
+      serialExecutor.execute(() -> {
+        try {
+          if (exitCode.complete(null)) {
+            // this is expected for processes that don't terminate - uploads for example
+            LOGGER.debug("Exec Web Socket: completed with a null exit code - no status was received prior to onClose");
+          }
+          cleanUpOnce();
+        } finally {
+          if (listener != null) {
+            listener.onClose(code, reason);
+          }
         }
-        cleanUpOnce();
-      } finally {
-        if (listener != null) {
-          listener.onClose(code, reason);
-        }
-      }
-    });
+      });
+    } catch (RejectedExecutionException e) {
+      LOGGER.debug("Client already shutdown, aborting normal closure", e);
+    }
   }
 
   @Override
