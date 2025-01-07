@@ -30,6 +30,7 @@ import lombok.experimental.Accessors;
     "kind",
     "dryRun",
     "gracePeriodSeconds",
+    "ignoreStoreReadErrorWithClusterBreakingPotential",
     "orphanDependents",
     "preconditions",
     "propagationPolicy"
@@ -62,6 +63,8 @@ public class DeleteOptions implements Editable<DeleteOptionsBuilder>, Kubernetes
     private List<String> dryRun = new ArrayList<>();
     @JsonProperty("gracePeriodSeconds")
     private Long gracePeriodSeconds;
+    @JsonProperty("ignoreStoreReadErrorWithClusterBreakingPotential")
+    private Boolean ignoreStoreReadErrorWithClusterBreakingPotential;
     /**
      * 
      * (Required)
@@ -85,11 +88,12 @@ public class DeleteOptions implements Editable<DeleteOptionsBuilder>, Kubernetes
     public DeleteOptions() {
     }
 
-    public DeleteOptions(String apiVersion, List<String> dryRun, Long gracePeriodSeconds, String kind, Boolean orphanDependents, Preconditions preconditions, String propagationPolicy) {
+    public DeleteOptions(String apiVersion, List<String> dryRun, Long gracePeriodSeconds, Boolean ignoreStoreReadErrorWithClusterBreakingPotential, String kind, Boolean orphanDependents, Preconditions preconditions, String propagationPolicy) {
         super();
         this.apiVersion = apiVersion;
         this.dryRun = dryRun;
         this.gracePeriodSeconds = gracePeriodSeconds;
+        this.ignoreStoreReadErrorWithClusterBreakingPotential = ignoreStoreReadErrorWithClusterBreakingPotential;
         this.kind = kind;
         this.orphanDependents = orphanDependents;
         this.preconditions = preconditions;
@@ -135,6 +139,16 @@ public class DeleteOptions implements Editable<DeleteOptionsBuilder>, Kubernetes
     @JsonProperty("gracePeriodSeconds")
     public void setGracePeriodSeconds(Long gracePeriodSeconds) {
         this.gracePeriodSeconds = gracePeriodSeconds;
+    }
+
+    @JsonProperty("ignoreStoreReadErrorWithClusterBreakingPotential")
+    public Boolean getIgnoreStoreReadErrorWithClusterBreakingPotential() {
+        return ignoreStoreReadErrorWithClusterBreakingPotential;
+    }
+
+    @JsonProperty("ignoreStoreReadErrorWithClusterBreakingPotential")
+    public void setIgnoreStoreReadErrorWithClusterBreakingPotential(Boolean ignoreStoreReadErrorWithClusterBreakingPotential) {
+        this.ignoreStoreReadErrorWithClusterBreakingPotential = ignoreStoreReadErrorWithClusterBreakingPotential;
     }
 
     /**

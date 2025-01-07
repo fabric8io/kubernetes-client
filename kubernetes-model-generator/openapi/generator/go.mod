@@ -1,6 +1,7 @@
 module github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator
 
-go 1.23
+go 1.23.0
+
 toolchain go1.23.1
 
 require (
