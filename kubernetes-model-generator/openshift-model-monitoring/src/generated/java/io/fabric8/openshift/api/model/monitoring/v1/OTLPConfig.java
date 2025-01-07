@@ -37,7 +37,8 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "promoteResourceAttributes"
+    "promoteResourceAttributes",
+    "translationStrategy"
 })
 @ToString
 @EqualsAndHashCode
@@ -67,6 +68,8 @@ public class OTLPConfig implements Editable<OTLPConfigBuilder>, KubernetesResour
     @JsonProperty("promoteResourceAttributes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> promoteResourceAttributes = new ArrayList<>();
+    @JsonProperty("translationStrategy")
+    private String translationStrategy;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -77,9 +80,10 @@ public class OTLPConfig implements Editable<OTLPConfigBuilder>, KubernetesResour
     public OTLPConfig() {
     }
 
-    public OTLPConfig(List<String> promoteResourceAttributes) {
+    public OTLPConfig(List<String> promoteResourceAttributes, String translationStrategy) {
         super();
         this.promoteResourceAttributes = promoteResourceAttributes;
+        this.translationStrategy = translationStrategy;
     }
 
     @JsonProperty("promoteResourceAttributes")
@@ -91,6 +95,16 @@ public class OTLPConfig implements Editable<OTLPConfigBuilder>, KubernetesResour
     @JsonProperty("promoteResourceAttributes")
     public void setPromoteResourceAttributes(List<String> promoteResourceAttributes) {
         this.promoteResourceAttributes = promoteResourceAttributes;
+    }
+
+    @JsonProperty("translationStrategy")
+    public String getTranslationStrategy() {
+        return translationStrategy;
+    }
+
+    @JsonProperty("translationStrategy")
+    public void setTranslationStrategy(String translationStrategy) {
+        this.translationStrategy = translationStrategy;
     }
 
     @JsonIgnore

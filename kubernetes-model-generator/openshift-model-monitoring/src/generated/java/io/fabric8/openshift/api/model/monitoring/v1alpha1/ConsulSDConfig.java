@@ -47,12 +47,14 @@ import lombok.experimental.Accessors;
     "basicAuth",
     "datacenter",
     "enableHTTP2",
+    "filter",
     "followRedirects",
     "namespace",
     "noProxy",
     "nodeMeta",
     "oauth2",
     "partition",
+    "pathPrefix",
     "proxyConnectHeader",
     "proxyFromEnvironment",
     "proxyUrl",
@@ -100,6 +102,8 @@ public class ConsulSDConfig implements Editable<ConsulSDConfigBuilder>, Kubernet
     private String datacenter;
     @JsonProperty("enableHTTP2")
     private Boolean enableHTTP2;
+    @JsonProperty("filter")
+    private String filter;
     @JsonProperty("followRedirects")
     private Boolean followRedirects;
     @JsonProperty("namespace")
@@ -113,6 +117,8 @@ public class ConsulSDConfig implements Editable<ConsulSDConfigBuilder>, Kubernet
     private OAuth2 oauth2;
     @JsonProperty("partition")
     private String partition;
+    @JsonProperty("pathPrefix")
+    private String pathPrefix;
     @JsonProperty("proxyConnectHeader")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, List<SecretKeySelector>> proxyConnectHeader = new LinkedHashMap<>();
@@ -148,19 +154,21 @@ public class ConsulSDConfig implements Editable<ConsulSDConfigBuilder>, Kubernet
     public ConsulSDConfig() {
     }
 
-    public ConsulSDConfig(Boolean allowStale, SafeAuthorization authorization, BasicAuth basicAuth, String datacenter, Boolean enableHTTP2, Boolean followRedirects, String namespace, String noProxy, Map<String, String> nodeMeta, OAuth2 oauth2, String partition, Map<String, List<SecretKeySelector>> proxyConnectHeader, Boolean proxyFromEnvironment, String proxyUrl, String refreshInterval, String scheme, String server, List<String> services, String tagSeparator, List<String> tags, SafeTLSConfig tlsConfig, SecretKeySelector tokenRef) {
+    public ConsulSDConfig(Boolean allowStale, SafeAuthorization authorization, BasicAuth basicAuth, String datacenter, Boolean enableHTTP2, String filter, Boolean followRedirects, String namespace, String noProxy, Map<String, String> nodeMeta, OAuth2 oauth2, String partition, String pathPrefix, Map<String, List<SecretKeySelector>> proxyConnectHeader, Boolean proxyFromEnvironment, String proxyUrl, String refreshInterval, String scheme, String server, List<String> services, String tagSeparator, List<String> tags, SafeTLSConfig tlsConfig, SecretKeySelector tokenRef) {
         super();
         this.allowStale = allowStale;
         this.authorization = authorization;
         this.basicAuth = basicAuth;
         this.datacenter = datacenter;
         this.enableHTTP2 = enableHTTP2;
+        this.filter = filter;
         this.followRedirects = followRedirects;
         this.namespace = namespace;
         this.noProxy = noProxy;
         this.nodeMeta = nodeMeta;
         this.oauth2 = oauth2;
         this.partition = partition;
+        this.pathPrefix = pathPrefix;
         this.proxyConnectHeader = proxyConnectHeader;
         this.proxyFromEnvironment = proxyFromEnvironment;
         this.proxyUrl = proxyUrl;
@@ -224,6 +232,16 @@ public class ConsulSDConfig implements Editable<ConsulSDConfigBuilder>, Kubernet
         this.enableHTTP2 = enableHTTP2;
     }
 
+    @JsonProperty("filter")
+    public String getFilter() {
+        return filter;
+    }
+
+    @JsonProperty("filter")
+    public void setFilter(String filter) {
+        this.filter = filter;
+    }
+
     @JsonProperty("followRedirects")
     public Boolean getFollowRedirects() {
         return followRedirects;
@@ -283,6 +301,16 @@ public class ConsulSDConfig implements Editable<ConsulSDConfigBuilder>, Kubernet
     @JsonProperty("partition")
     public void setPartition(String partition) {
         this.partition = partition;
+    }
+
+    @JsonProperty("pathPrefix")
+    public String getPathPrefix() {
+        return pathPrefix;
+    }
+
+    @JsonProperty("pathPrefix")
+    public void setPathPrefix(String pathPrefix) {
+        this.pathPrefix = pathPrefix;
     }
 
     @JsonProperty("proxyConnectHeader")

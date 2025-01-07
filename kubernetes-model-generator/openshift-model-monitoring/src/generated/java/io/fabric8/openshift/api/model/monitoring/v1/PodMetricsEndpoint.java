@@ -52,6 +52,7 @@ import lombok.experimental.Accessors;
     "params",
     "path",
     "port",
+    "portNumber",
     "proxyUrl",
     "relabelings",
     "scheme",
@@ -115,6 +116,8 @@ public class PodMetricsEndpoint implements Editable<PodMetricsEndpointBuilder>, 
     private String path;
     @JsonProperty("port")
     private String port;
+    @JsonProperty("portNumber")
+    private Integer portNumber;
     @JsonProperty("proxyUrl")
     private String proxyUrl;
     @JsonProperty("relabelings")
@@ -140,7 +143,7 @@ public class PodMetricsEndpoint implements Editable<PodMetricsEndpointBuilder>, 
     public PodMetricsEndpoint() {
     }
 
-    public PodMetricsEndpoint(SafeAuthorization authorization, BasicAuth basicAuth, SecretKeySelector bearerTokenSecret, Boolean enableHttp2, Boolean filterRunning, Boolean followRedirects, Boolean honorLabels, Boolean honorTimestamps, String interval, List<RelabelConfig> metricRelabelings, OAuth2 oauth2, Map<String, List<String>> params, String path, String port, String proxyUrl, List<RelabelConfig> relabelings, String scheme, String scrapeTimeout, IntOrString targetPort, SafeTLSConfig tlsConfig, Boolean trackTimestampsStaleness) {
+    public PodMetricsEndpoint(SafeAuthorization authorization, BasicAuth basicAuth, SecretKeySelector bearerTokenSecret, Boolean enableHttp2, Boolean filterRunning, Boolean followRedirects, Boolean honorLabels, Boolean honorTimestamps, String interval, List<RelabelConfig> metricRelabelings, OAuth2 oauth2, Map<String, List<String>> params, String path, String port, Integer portNumber, String proxyUrl, List<RelabelConfig> relabelings, String scheme, String scrapeTimeout, IntOrString targetPort, SafeTLSConfig tlsConfig, Boolean trackTimestampsStaleness) {
         super();
         this.authorization = authorization;
         this.basicAuth = basicAuth;
@@ -156,6 +159,7 @@ public class PodMetricsEndpoint implements Editable<PodMetricsEndpointBuilder>, 
         this.params = params;
         this.path = path;
         this.port = port;
+        this.portNumber = portNumber;
         this.proxyUrl = proxyUrl;
         this.relabelings = relabelings;
         this.scheme = scheme;
@@ -305,6 +309,16 @@ public class PodMetricsEndpoint implements Editable<PodMetricsEndpointBuilder>, 
     @JsonProperty("port")
     public void setPort(String port) {
         this.port = port;
+    }
+
+    @JsonProperty("portNumber")
+    public Integer getPortNumber() {
+        return portNumber;
+    }
+
+    @JsonProperty("portNumber")
+    public void setPortNumber(Integer portNumber) {
+        this.portNumber = portNumber;
     }
 
     @JsonProperty("proxyUrl")

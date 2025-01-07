@@ -54,7 +54,9 @@ import lombok.experimental.Accessors;
     "dockerSwarmSDConfigs",
     "ec2SDConfigs",
     "enableCompression",
+    "enableHTTP2",
     "eurekaSDConfigs",
+    "fallbackScrapeProtocol",
     "fileSDConfigs",
     "gceSDConfigs",
     "hetznerSDConfigs",
@@ -151,9 +153,13 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     private List<EC2SDConfig> ec2SDConfigs = new ArrayList<>();
     @JsonProperty("enableCompression")
     private Boolean enableCompression;
+    @JsonProperty("enableHTTP2")
+    private Boolean enableHTTP2;
     @JsonProperty("eurekaSDConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<EurekaSDConfig> eurekaSDConfigs = new ArrayList<>();
+    @JsonProperty("fallbackScrapeProtocol")
+    private String fallbackScrapeProtocol;
     @JsonProperty("fileSDConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<FileSDConfig> fileSDConfigs = new ArrayList<>();
@@ -270,7 +276,7 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     public ScrapeConfigSpec() {
     }
 
-    public ScrapeConfigSpec(SafeAuthorization authorization, List<AzureSDConfig> azureSDConfigs, BasicAuth basicAuth, List<ConsulSDConfig> consulSDConfigs, List<DigitalOceanSDConfig> digitalOceanSDConfigs, List<DNSSDConfig> dnsSDConfigs, List<DockerSDConfig> dockerSDConfigs, List<DockerSwarmSDConfig> dockerSwarmSDConfigs, List<EC2SDConfig> ec2SDConfigs, Boolean enableCompression, List<EurekaSDConfig> eurekaSDConfigs, List<FileSDConfig> fileSDConfigs, List<GCESDConfig> gceSDConfigs, List<HetznerSDConfig> hetznerSDConfigs, Boolean honorLabels, Boolean honorTimestamps, List<HTTPSDConfig> httpSDConfigs, List<IonosSDConfig> ionosSDConfigs, String jobName, Long keepDroppedTargets, List<KubernetesSDConfig> kubernetesSDConfigs, List<KumaSDConfig> kumaSDConfigs, Long labelLimit, Long labelNameLengthLimit, Long labelValueLengthLimit, List<LightSailSDConfig> lightSailSDConfigs, List<LinodeSDConfig> linodeSDConfigs, List<RelabelConfig> metricRelabelings, String metricsPath, Long nativeHistogramBucketLimit, Quantity nativeHistogramMinBucketFactor, String noProxy, List<NomadSDConfig> nomadSDConfigs, OAuth2 oauth2, List<OpenStackSDConfig> openstackSDConfigs, List<OVHCloudSDConfig> ovhcloudSDConfigs, Map<String, List<String>> params, Map<String, List<SecretKeySelector>> proxyConnectHeader, Boolean proxyFromEnvironment, String proxyUrl, List<PuppetDBSDConfig> puppetDBSDConfigs, List<RelabelConfig> relabelings, Long sampleLimit, List<ScalewaySDConfig> scalewaySDConfigs, String scheme, String scrapeClass, Boolean scrapeClassicHistograms, String scrapeInterval, List<String> scrapeProtocols, String scrapeTimeout, List<StaticConfig> staticConfigs, Long targetLimit, SafeTLSConfig tlsConfig, Boolean trackTimestampsStaleness) {
+    public ScrapeConfigSpec(SafeAuthorization authorization, List<AzureSDConfig> azureSDConfigs, BasicAuth basicAuth, List<ConsulSDConfig> consulSDConfigs, List<DigitalOceanSDConfig> digitalOceanSDConfigs, List<DNSSDConfig> dnsSDConfigs, List<DockerSDConfig> dockerSDConfigs, List<DockerSwarmSDConfig> dockerSwarmSDConfigs, List<EC2SDConfig> ec2SDConfigs, Boolean enableCompression, Boolean enableHTTP2, List<EurekaSDConfig> eurekaSDConfigs, String fallbackScrapeProtocol, List<FileSDConfig> fileSDConfigs, List<GCESDConfig> gceSDConfigs, List<HetznerSDConfig> hetznerSDConfigs, Boolean honorLabels, Boolean honorTimestamps, List<HTTPSDConfig> httpSDConfigs, List<IonosSDConfig> ionosSDConfigs, String jobName, Long keepDroppedTargets, List<KubernetesSDConfig> kubernetesSDConfigs, List<KumaSDConfig> kumaSDConfigs, Long labelLimit, Long labelNameLengthLimit, Long labelValueLengthLimit, List<LightSailSDConfig> lightSailSDConfigs, List<LinodeSDConfig> linodeSDConfigs, List<RelabelConfig> metricRelabelings, String metricsPath, Long nativeHistogramBucketLimit, Quantity nativeHistogramMinBucketFactor, String noProxy, List<NomadSDConfig> nomadSDConfigs, OAuth2 oauth2, List<OpenStackSDConfig> openstackSDConfigs, List<OVHCloudSDConfig> ovhcloudSDConfigs, Map<String, List<String>> params, Map<String, List<SecretKeySelector>> proxyConnectHeader, Boolean proxyFromEnvironment, String proxyUrl, List<PuppetDBSDConfig> puppetDBSDConfigs, List<RelabelConfig> relabelings, Long sampleLimit, List<ScalewaySDConfig> scalewaySDConfigs, String scheme, String scrapeClass, Boolean scrapeClassicHistograms, String scrapeInterval, List<String> scrapeProtocols, String scrapeTimeout, List<StaticConfig> staticConfigs, Long targetLimit, SafeTLSConfig tlsConfig, Boolean trackTimestampsStaleness) {
         super();
         this.authorization = authorization;
         this.azureSDConfigs = azureSDConfigs;
@@ -282,7 +288,9 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
         this.dockerSwarmSDConfigs = dockerSwarmSDConfigs;
         this.ec2SDConfigs = ec2SDConfigs;
         this.enableCompression = enableCompression;
+        this.enableHTTP2 = enableHTTP2;
         this.eurekaSDConfigs = eurekaSDConfigs;
+        this.fallbackScrapeProtocol = fallbackScrapeProtocol;
         this.fileSDConfigs = fileSDConfigs;
         this.gceSDConfigs = gceSDConfigs;
         this.hetznerSDConfigs = hetznerSDConfigs;
@@ -435,6 +443,16 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
         this.enableCompression = enableCompression;
     }
 
+    @JsonProperty("enableHTTP2")
+    public Boolean getEnableHTTP2() {
+        return enableHTTP2;
+    }
+
+    @JsonProperty("enableHTTP2")
+    public void setEnableHTTP2(Boolean enableHTTP2) {
+        this.enableHTTP2 = enableHTTP2;
+    }
+
     @JsonProperty("eurekaSDConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<EurekaSDConfig> getEurekaSDConfigs() {
@@ -444,6 +462,16 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
     @JsonProperty("eurekaSDConfigs")
     public void setEurekaSDConfigs(List<EurekaSDConfig> eurekaSDConfigs) {
         this.eurekaSDConfigs = eurekaSDConfigs;
+    }
+
+    @JsonProperty("fallbackScrapeProtocol")
+    public String getFallbackScrapeProtocol() {
+        return fallbackScrapeProtocol;
+    }
+
+    @JsonProperty("fallbackScrapeProtocol")
+    public void setFallbackScrapeProtocol(String fallbackScrapeProtocol) {
+        this.fallbackScrapeProtocol = fallbackScrapeProtocol;
     }
 
     @JsonProperty("fileSDConfigs")

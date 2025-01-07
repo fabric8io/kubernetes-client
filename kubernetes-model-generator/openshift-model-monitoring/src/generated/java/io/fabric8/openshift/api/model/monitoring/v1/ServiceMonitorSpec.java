@@ -41,6 +41,7 @@ import lombok.experimental.Accessors;
     "attachMetadata",
     "bodySizeLimit",
     "endpoints",
+    "fallbackScrapeProtocol",
     "jobLabel",
     "keepDroppedTargets",
     "labelLimit",
@@ -55,6 +56,7 @@ import lombok.experimental.Accessors;
     "scrapeClassicHistograms",
     "scrapeProtocols",
     "selector",
+    "selectorMechanism",
     "targetLabels",
     "targetLimit"
 })
@@ -90,6 +92,8 @@ public class ServiceMonitorSpec implements Editable<ServiceMonitorSpecBuilder>, 
     @JsonProperty("endpoints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Endpoint> endpoints = new ArrayList<>();
+    @JsonProperty("fallbackScrapeProtocol")
+    private String fallbackScrapeProtocol;
     @JsonProperty("jobLabel")
     private String jobLabel;
     @JsonProperty("keepDroppedTargets")
@@ -120,6 +124,8 @@ public class ServiceMonitorSpec implements Editable<ServiceMonitorSpecBuilder>, 
     private List<String> scrapeProtocols = new ArrayList<>();
     @JsonProperty("selector")
     private LabelSelector selector;
+    @JsonProperty("selectorMechanism")
+    private String selectorMechanism;
     @JsonProperty("targetLabels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> targetLabels = new ArrayList<>();
@@ -135,11 +141,12 @@ public class ServiceMonitorSpec implements Editable<ServiceMonitorSpecBuilder>, 
     public ServiceMonitorSpec() {
     }
 
-    public ServiceMonitorSpec(AttachMetadata attachMetadata, String bodySizeLimit, List<Endpoint> endpoints, String jobLabel, Long keepDroppedTargets, Long labelLimit, Long labelNameLengthLimit, Long labelValueLengthLimit, NamespaceSelector namespaceSelector, Long nativeHistogramBucketLimit, Quantity nativeHistogramMinBucketFactor, List<String> podTargetLabels, Long sampleLimit, String scrapeClass, Boolean scrapeClassicHistograms, List<String> scrapeProtocols, LabelSelector selector, List<String> targetLabels, Long targetLimit) {
+    public ServiceMonitorSpec(AttachMetadata attachMetadata, String bodySizeLimit, List<Endpoint> endpoints, String fallbackScrapeProtocol, String jobLabel, Long keepDroppedTargets, Long labelLimit, Long labelNameLengthLimit, Long labelValueLengthLimit, NamespaceSelector namespaceSelector, Long nativeHistogramBucketLimit, Quantity nativeHistogramMinBucketFactor, List<String> podTargetLabels, Long sampleLimit, String scrapeClass, Boolean scrapeClassicHistograms, List<String> scrapeProtocols, LabelSelector selector, String selectorMechanism, List<String> targetLabels, Long targetLimit) {
         super();
         this.attachMetadata = attachMetadata;
         this.bodySizeLimit = bodySizeLimit;
         this.endpoints = endpoints;
+        this.fallbackScrapeProtocol = fallbackScrapeProtocol;
         this.jobLabel = jobLabel;
         this.keepDroppedTargets = keepDroppedTargets;
         this.labelLimit = labelLimit;
@@ -154,6 +161,7 @@ public class ServiceMonitorSpec implements Editable<ServiceMonitorSpecBuilder>, 
         this.scrapeClassicHistograms = scrapeClassicHistograms;
         this.scrapeProtocols = scrapeProtocols;
         this.selector = selector;
+        this.selectorMechanism = selectorMechanism;
         this.targetLabels = targetLabels;
         this.targetLimit = targetLimit;
     }
@@ -187,6 +195,16 @@ public class ServiceMonitorSpec implements Editable<ServiceMonitorSpecBuilder>, 
     @JsonProperty("endpoints")
     public void setEndpoints(List<Endpoint> endpoints) {
         this.endpoints = endpoints;
+    }
+
+    @JsonProperty("fallbackScrapeProtocol")
+    public String getFallbackScrapeProtocol() {
+        return fallbackScrapeProtocol;
+    }
+
+    @JsonProperty("fallbackScrapeProtocol")
+    public void setFallbackScrapeProtocol(String fallbackScrapeProtocol) {
+        this.fallbackScrapeProtocol = fallbackScrapeProtocol;
     }
 
     @JsonProperty("jobLabel")
@@ -329,6 +347,16 @@ public class ServiceMonitorSpec implements Editable<ServiceMonitorSpecBuilder>, 
     @JsonProperty("selector")
     public void setSelector(LabelSelector selector) {
         this.selector = selector;
+    }
+
+    @JsonProperty("selectorMechanism")
+    public String getSelectorMechanism() {
+        return selectorMechanism;
+    }
+
+    @JsonProperty("selectorMechanism")
+    public void setSelectorMechanism(String selectorMechanism) {
+        this.selectorMechanism = selectorMechanism;
     }
 
     @JsonProperty("targetLabels")

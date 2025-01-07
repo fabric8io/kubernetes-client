@@ -42,6 +42,7 @@ import lombok.experimental.Accessors;
     "authorization",
     "basicAuth",
     "bearerTokenSecret",
+    "fallbackScrapeProtocol",
     "interval",
     "jobName",
     "keepDroppedTargets",
@@ -94,6 +95,8 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder>, KubernetesResource
     private BasicAuth basicAuth;
     @JsonProperty("bearerTokenSecret")
     private SecretKeySelector bearerTokenSecret;
+    @JsonProperty("fallbackScrapeProtocol")
+    private String fallbackScrapeProtocol;
     @JsonProperty("interval")
     private String interval;
     @JsonProperty("jobName")
@@ -146,11 +149,12 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder>, KubernetesResource
     public ProbeSpec() {
     }
 
-    public ProbeSpec(SafeAuthorization authorization, BasicAuth basicAuth, SecretKeySelector bearerTokenSecret, String interval, String jobName, Long keepDroppedTargets, Long labelLimit, Long labelNameLengthLimit, Long labelValueLengthLimit, List<RelabelConfig> metricRelabelings, String module, Long nativeHistogramBucketLimit, Quantity nativeHistogramMinBucketFactor, OAuth2 oauth2, ProberSpec prober, Long sampleLimit, String scrapeClass, Boolean scrapeClassicHistograms, List<String> scrapeProtocols, String scrapeTimeout, Long targetLimit, ProbeTargets targets, SafeTLSConfig tlsConfig) {
+    public ProbeSpec(SafeAuthorization authorization, BasicAuth basicAuth, SecretKeySelector bearerTokenSecret, String fallbackScrapeProtocol, String interval, String jobName, Long keepDroppedTargets, Long labelLimit, Long labelNameLengthLimit, Long labelValueLengthLimit, List<RelabelConfig> metricRelabelings, String module, Long nativeHistogramBucketLimit, Quantity nativeHistogramMinBucketFactor, OAuth2 oauth2, ProberSpec prober, Long sampleLimit, String scrapeClass, Boolean scrapeClassicHistograms, List<String> scrapeProtocols, String scrapeTimeout, Long targetLimit, ProbeTargets targets, SafeTLSConfig tlsConfig) {
         super();
         this.authorization = authorization;
         this.basicAuth = basicAuth;
         this.bearerTokenSecret = bearerTokenSecret;
+        this.fallbackScrapeProtocol = fallbackScrapeProtocol;
         this.interval = interval;
         this.jobName = jobName;
         this.keepDroppedTargets = keepDroppedTargets;
@@ -201,6 +205,16 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder>, KubernetesResource
     @JsonProperty("bearerTokenSecret")
     public void setBearerTokenSecret(SecretKeySelector bearerTokenSecret) {
         this.bearerTokenSecret = bearerTokenSecret;
+    }
+
+    @JsonProperty("fallbackScrapeProtocol")
+    public String getFallbackScrapeProtocol() {
+        return fallbackScrapeProtocol;
+    }
+
+    @JsonProperty("fallbackScrapeProtocol")
+    public void setFallbackScrapeProtocol(String fallbackScrapeProtocol) {
+        this.fallbackScrapeProtocol = fallbackScrapeProtocol;
     }
 
     @JsonProperty("interval")
