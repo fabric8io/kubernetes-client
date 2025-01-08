@@ -784,10 +784,10 @@ github.com/matttproud/golang_protobuf_extensions v1.0.1/go.mod h1:D8He9yQNgCq6Z5
 github.com/matttproud/golang_protobuf_extensions v1.0.2-0.20181231171920-c182affec369/go.mod h1:BSXmuO+STAnVfrANrmjBb36TMTDstsz7MSK+HVaYKv4=
 github.com/metal3-io/baremetal-operator/pkg/hardwareutils v0.5.1 h1:X0+MWsJ+Gj/TAkmhGybvesvxk6zQKu3NQXzvC6l0iJs=
 github.com/metal3-io/baremetal-operator/pkg/hardwareutils v0.5.1/go.mod h1:399nvdaqoU9rTI25UdFw2EWcVjmJPpeZPIhfDAIx/XU=
-github.com/metal3-io/cluster-api-provider-metal3/api v1.8.3 h1:oxkydLZmarGBY/v9tdTUst2Lwcn406XUCUP2qBsVM0c=
-github.com/metal3-io/cluster-api-provider-metal3/api v1.8.3/go.mod h1:Tm2g5t3gYpp3XWcbkuGvdDxkWLFYoosd/5Pg1tg0Xw0=
-github.com/metal3-io/ip-address-manager/api v1.8.2 h1:zNCmRaX0+YjkVpMXhZflW0YIba9pSr3GsUiaiaWtKxQ=
-github.com/metal3-io/ip-address-manager/api v1.8.2/go.mod h1:TElC1ZGLybU/mlGGrl0Kk8OQpeITeTLn4pmz40Z7LvA=
+github.com/metal3-io/cluster-api-provider-metal3/api v1.9.0 h1:5BYp2W7qqOSIKdWoXlGZeeSMdN+lbZMZLqKf2b3uJSM=
+github.com/metal3-io/cluster-api-provider-metal3/api v1.9.0/go.mod h1:zqbFcBxg1dEVV3UfJoinzbsCh5xQsmNpWqGnkDoHcdE=
+github.com/metal3-io/ip-address-manager/api v1.9.1 h1:V0wLEzMKxGzAPSkEaIhRgjQr1Zo+Odoh302hc8yjB0I=
+github.com/metal3-io/ip-address-manager/api v1.9.1/go.mod h1:NDtwzQKFb2gCWMyQkfSpqbB5LLKfwXz2/xA12um03Ro=
 github.com/miekg/dns v1.0.14/go.mod h1:W1PPwlIAgtquWBMBEV9nkV9Cazfe8ScdGz/Lj7v3Nrg=
 github.com/miekg/dns v1.1.17/go.mod h1:WgzbA6oji13JREwiNsRDNfl7jYdPnmz+VEuLrA+/48M=
 github.com/mitchellh/cli v1.0.0/go.mod h1:hNIlj7HEI86fIcpObd7a0FcrxTWetlwJDGcceTlRvqc=
@@ -894,8 +894,8 @@ github.com/onsi/gomega v1.27.10/go.mod h1:RsS8tutOdbdgzbPtzzATp12yT7kM5I5aElG3ev
 github.com/onsi/gomega v1.30.0/go.mod h1:9sxs+SwGrKI0+PWe4Fxa9tFQQBG5xSsSbMXOI8PPpoQ=
 github.com/onsi/gomega v1.33.0/go.mod h1:+925n5YtiFsLzzafLUHzVMBpvvRAzrydIBiSIxjX3wY=
 github.com/onsi/gomega v1.33.1/go.mod h1:U4R44UsT+9eLIaYRB2a5qajjtQYn0hauxvRm16AVYg0=
-github.com/onsi/gomega v1.36.0 h1:Pb12RlruUtj4XUuPUqeEWc6j5DkVVVA49Uf6YLfC95Y=
-github.com/onsi/gomega v1.36.0/go.mod h1:PvZbdDc8J6XJEpDK4HCuRBm8a6Fzp9/DmhC9C7yFlog=
+github.com/onsi/gomega v1.36.1 h1:bJDPBO7ibjxcbHMgSCoo4Yj18UWbKDlLwX1x9sybDcw=
+github.com/onsi/gomega v1.36.1/go.mod h1:PvZbdDc8J6XJEpDK4HCuRBm8a6Fzp9/DmhC9C7yFlog=
 github.com/opencontainers/go-digest v1.0.0 h1:apOUWs51W5PlhuyGyz9FCeeBIOUDA/6nW8Oi/yOhh5U=
 github.com/opencontainers/go-digest v1.0.0/go.mod h1:0JzlMkj0TRzQZfJkVvzbP0HBR3IKzErnv2BNG4W4MAM=
 github.com/opencontainers/image-spec v1.1.0 h1:8SG7/vwALn54lVB/0yZ/MMwhFrPYtpEHQb2IpWsCzug=
