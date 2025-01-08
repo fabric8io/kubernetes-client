@@ -30,7 +30,7 @@ require (
 	github.com/stolostron/multiclusterhub-operator v1.0.1-2020-06-08-14-28-27
 	github.com/stolostron/search-v2-operator v0.0.0-20241029125341-1a376a062a45
 	github.com/tektoncd/pipeline v0.66.0
-	github.com/tektoncd/triggers v0.30.0
+	github.com/tektoncd/triggers v0.30.1
 	istio.io/client-go v1.24.1
 	k8s.io/api v0.32.0
 	k8s.io/apiextensions-apiserver v0.32.0
