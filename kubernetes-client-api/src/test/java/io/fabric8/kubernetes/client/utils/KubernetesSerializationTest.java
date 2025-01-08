@@ -70,30 +70,30 @@ class KubernetesSerializationTest {
       assertThat(kubernetesSerialization.<Object> unmarshal("{\"kind\":\"Pod\", \"apiVersion\":\"v1\"}"))
           .isInstanceOf(io.fabric8.kubernetes.api.model.Pod.class);
     }
-    
+
     @Test
     void asYaml() throws Exception {
       final String input = readYamlToString("/serialization/test-crd-schema.yml");
       final CustomResourceDefinition crd = Serialization.unmarshal(input, CustomResourceDefinition.class);
-      
+
       String result = kubernetesSerialization.asYaml(crd);
       assertThat(result).asString().contains("\"widgets.test.fabric8.io\"");
 
       result = kubernetesSerialization.asYaml(crd, false);
       assertThat(result).asString().contains("\"widgets.test.fabric8.io\"");
-      
+
       result = kubernetesSerialization.asYaml(crd, true);
       assertThat(result).asString().doesNotContain("\"widgets.test.fabric8.io\"");
       assertThat(result).asString().contains("widgets.test.fabric8.io");
     }
-    
+
     private String readYamlToString(String path) throws IOException {
-        return Files.readAllLines(
-            new File(KubernetesSerializationTest.class.getResource(path).getFile()).toPath(), StandardCharsets.UTF_8)
-            .stream()
-            .filter(line -> !line.startsWith("#"))
-            .collect(Collectors.joining("\n"));
-      }
+      return Files.readAllLines(
+          new File(KubernetesSerializationTest.class.getResource(path).getFile()).toPath(), StandardCharsets.UTF_8)
+          .stream()
+          .filter(line -> !line.startsWith("#"))
+          .collect(Collectors.joining("\n"));
+    }
 
     @ParameterizedTest(name = "{index}: {0} {1} deserializes to {2}")
     @MethodSource("sameGVK")

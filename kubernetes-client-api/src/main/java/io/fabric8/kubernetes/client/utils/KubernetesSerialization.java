@@ -174,7 +174,7 @@ public class KubernetesSerialization {
       throw KubernetesClientException.launderThrowable(e);
     }
   }
-  
+
   /**
    * Returns a YAML representation of the given object.
    *
@@ -188,7 +188,7 @@ public class KubernetesSerialization {
    * @return a String containing a JSON representation of the provided object.
    */
   public <T> String asYaml(T object) {
-	  return asYaml(object, false);
+    return asYaml(object, false);
   }
 
   /**

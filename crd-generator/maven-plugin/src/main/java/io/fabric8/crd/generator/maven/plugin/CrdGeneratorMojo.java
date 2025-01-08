@@ -128,7 +128,7 @@ public class CrdGeneratorMojo extends AbstractMojo {
    */
   @Parameter(property = "fabric8.crd-generator.skip", defaultValue = "false")
   boolean skip;
-  
+
   /**
    * If {@code true}, quotes will only be included where necessary
    */
