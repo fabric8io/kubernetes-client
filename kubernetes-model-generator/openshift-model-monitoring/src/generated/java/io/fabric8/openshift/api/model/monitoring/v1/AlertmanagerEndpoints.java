@@ -26,6 +26,7 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
+import io.fabric8.kubernetes.api.model.SecretKeySelector;
 import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
@@ -45,8 +46,12 @@ import lombok.experimental.Accessors;
     "enableHttp2",
     "name",
     "namespace",
+    "noProxy",
     "pathPrefix",
     "port",
+    "proxyConnectHeader",
+    "proxyFromEnvironment",
+    "proxyUrl",
     "relabelings",
     "scheme",
     "sigv4",
@@ -95,10 +100,19 @@ public class AlertmanagerEndpoints implements Editable<AlertmanagerEndpointsBuil
     private String name;
     @JsonProperty("namespace")
     private String namespace;
+    @JsonProperty("noProxy")
+    private String noProxy;
     @JsonProperty("pathPrefix")
     private String pathPrefix;
     @JsonProperty("port")
     private IntOrString port;
+    @JsonProperty("proxyConnectHeader")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, List<SecretKeySelector>> proxyConnectHeader = new LinkedHashMap<>();
+    @JsonProperty("proxyFromEnvironment")
+    private Boolean proxyFromEnvironment;
+    @JsonProperty("proxyUrl")
+    private String proxyUrl;
     @JsonProperty("relabelings")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<RelabelConfig> relabelings = new ArrayList<>();
@@ -120,7 +134,7 @@ public class AlertmanagerEndpoints implements Editable<AlertmanagerEndpointsBuil
     public AlertmanagerEndpoints() {
     }
 
-    public AlertmanagerEndpoints(List<RelabelConfig> alertRelabelings, String apiVersion, SafeAuthorization authorization, BasicAuth basicAuth, String bearerTokenFile, Boolean enableHttp2, String name, String namespace, String pathPrefix, IntOrString port, List<RelabelConfig> relabelings, String scheme, Sigv4 sigv4, String timeout, TLSConfig tlsConfig) {
+    public AlertmanagerEndpoints(List<RelabelConfig> alertRelabelings, String apiVersion, SafeAuthorization authorization, BasicAuth basicAuth, String bearerTokenFile, Boolean enableHttp2, String name, String namespace, String noProxy, String pathPrefix, IntOrString port, Map<String, List<SecretKeySelector>> proxyConnectHeader, Boolean proxyFromEnvironment, String proxyUrl, List<RelabelConfig> relabelings, String scheme, Sigv4 sigv4, String timeout, TLSConfig tlsConfig) {
         super();
         this.alertRelabelings = alertRelabelings;
         this.apiVersion = apiVersion;
@@ -130,8 +144,12 @@ public class AlertmanagerEndpoints implements Editable<AlertmanagerEndpointsBuil
         this.enableHttp2 = enableHttp2;
         this.name = name;
         this.namespace = namespace;
+        this.noProxy = noProxy;
         this.pathPrefix = pathPrefix;
         this.port = port;
+        this.proxyConnectHeader = proxyConnectHeader;
+        this.proxyFromEnvironment = proxyFromEnvironment;
+        this.proxyUrl = proxyUrl;
         this.relabelings = relabelings;
         this.scheme = scheme;
         this.sigv4 = sigv4;
@@ -220,6 +238,16 @@ public class AlertmanagerEndpoints implements Editable<AlertmanagerEndpointsBuil
         this.namespace = namespace;
     }
 
+    @JsonProperty("noProxy")
+    public String getNoProxy() {
+        return noProxy;
+    }
+
+    @JsonProperty("noProxy")
+    public void setNoProxy(String noProxy) {
+        this.noProxy = noProxy;
+    }
+
     @JsonProperty("pathPrefix")
     public String getPathPrefix() {
         return pathPrefix;
@@ -238,6 +266,37 @@ public class AlertmanagerEndpoints implements Editable<AlertmanagerEndpointsBuil
     @JsonProperty("port")
     public void setPort(IntOrString port) {
         this.port = port;
+    }
+
+    @JsonProperty("proxyConnectHeader")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public Map<String, List<SecretKeySelector>> getProxyConnectHeader() {
+        return proxyConnectHeader;
+    }
+
+    @JsonProperty("proxyConnectHeader")
+    public void setProxyConnectHeader(Map<String, List<SecretKeySelector>> proxyConnectHeader) {
+        this.proxyConnectHeader = proxyConnectHeader;
+    }
+
+    @JsonProperty("proxyFromEnvironment")
+    public Boolean getProxyFromEnvironment() {
+        return proxyFromEnvironment;
+    }
+
+    @JsonProperty("proxyFromEnvironment")
+    public void setProxyFromEnvironment(Boolean proxyFromEnvironment) {
+        this.proxyFromEnvironment = proxyFromEnvironment;
+    }
+
+    @JsonProperty("proxyUrl")
+    public String getProxyUrl() {
+        return proxyUrl;
+    }
+
+    @JsonProperty("proxyUrl")
+    public void setProxyUrl(String proxyUrl) {
+        this.proxyUrl = proxyUrl;
     }
 
     @JsonProperty("relabelings")

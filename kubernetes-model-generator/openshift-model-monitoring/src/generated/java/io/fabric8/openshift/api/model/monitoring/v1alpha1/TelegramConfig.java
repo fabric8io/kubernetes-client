@@ -43,6 +43,7 @@ import lombok.experimental.Accessors;
     "disableNotifications",
     "httpConfig",
     "message",
+    "messageThreadID",
     "parseMode",
     "sendResolved"
 })
@@ -85,6 +86,8 @@ public class TelegramConfig implements Editable<TelegramConfigBuilder>, Kubernet
     private HTTPConfig httpConfig;
     @JsonProperty("message")
     private String message;
+    @JsonProperty("messageThreadID")
+    private Long messageThreadID;
     @JsonProperty("parseMode")
     private String parseMode;
     @JsonProperty("sendResolved")
@@ -99,7 +102,7 @@ public class TelegramConfig implements Editable<TelegramConfigBuilder>, Kubernet
     public TelegramConfig() {
     }
 
-    public TelegramConfig(String apiURL, SecretKeySelector botToken, String botTokenFile, Long chatID, Boolean disableNotifications, HTTPConfig httpConfig, String message, String parseMode, Boolean sendResolved) {
+    public TelegramConfig(String apiURL, SecretKeySelector botToken, String botTokenFile, Long chatID, Boolean disableNotifications, HTTPConfig httpConfig, String message, Long messageThreadID, String parseMode, Boolean sendResolved) {
         super();
         this.apiURL = apiURL;
         this.botToken = botToken;
@@ -108,6 +111,7 @@ public class TelegramConfig implements Editable<TelegramConfigBuilder>, Kubernet
         this.disableNotifications = disableNotifications;
         this.httpConfig = httpConfig;
         this.message = message;
+        this.messageThreadID = messageThreadID;
         this.parseMode = parseMode;
         this.sendResolved = sendResolved;
     }
@@ -180,6 +184,16 @@ public class TelegramConfig implements Editable<TelegramConfigBuilder>, Kubernet
     @JsonProperty("message")
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    @JsonProperty("messageThreadID")
+    public Long getMessageThreadID() {
+        return messageThreadID;
+    }
+
+    @JsonProperty("messageThreadID")
+    public void setMessageThreadID(Long messageThreadID) {
+        this.messageThreadID = messageThreadID;
     }
 
     @JsonProperty("parseMode")

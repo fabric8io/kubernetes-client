@@ -38,6 +38,7 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "interval",
+    "labels",
     "limit",
     "name",
     "partial_response_strategy",
@@ -71,6 +72,9 @@ public class RuleGroup implements Editable<RuleGroupBuilder>, KubernetesResource
 
     @JsonProperty("interval")
     private String interval;
+    @JsonProperty("labels")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> labels = new LinkedHashMap<>();
     @JsonProperty("limit")
     private Integer limit;
     @JsonProperty("name")
@@ -92,9 +96,10 @@ public class RuleGroup implements Editable<RuleGroupBuilder>, KubernetesResource
     public RuleGroup() {
     }
 
-    public RuleGroup(String interval, Integer limit, String name, String partialResponseStrategy, String queryOffset, List<Rule> rules) {
+    public RuleGroup(String interval, Map<String, String> labels, Integer limit, String name, String partialResponseStrategy, String queryOffset, List<Rule> rules) {
         super();
         this.interval = interval;
+        this.labels = labels;
         this.limit = limit;
         this.name = name;
         this.partialResponseStrategy = partialResponseStrategy;
@@ -110,6 +115,17 @@ public class RuleGroup implements Editable<RuleGroupBuilder>, KubernetesResource
     @JsonProperty("interval")
     public void setInterval(String interval) {
         this.interval = interval;
+    }
+
+    @JsonProperty("labels")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public Map<String, String> getLabels() {
+        return labels;
+    }
+
+    @JsonProperty("labels")
+    public void setLabels(Map<String, String> labels) {
+        this.labels = labels;
     }
 
     @JsonProperty("limit")

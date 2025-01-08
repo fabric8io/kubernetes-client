@@ -38,6 +38,7 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "attachMetadata",
+    "authorization",
     "default",
     "metricRelabelings",
     "name",
@@ -71,6 +72,8 @@ public class ScrapeClass implements Editable<ScrapeClassBuilder>, KubernetesReso
 
     @JsonProperty("attachMetadata")
     private AttachMetadata attachMetadata;
+    @JsonProperty("authorization")
+    private Authorization authorization;
     @JsonProperty("default")
     private Boolean _default;
     @JsonProperty("metricRelabelings")
@@ -93,9 +96,10 @@ public class ScrapeClass implements Editable<ScrapeClassBuilder>, KubernetesReso
     public ScrapeClass() {
     }
 
-    public ScrapeClass(AttachMetadata attachMetadata, Boolean _default, List<RelabelConfig> metricRelabelings, String name, List<RelabelConfig> relabelings, TLSConfig tlsConfig) {
+    public ScrapeClass(AttachMetadata attachMetadata, Authorization authorization, Boolean _default, List<RelabelConfig> metricRelabelings, String name, List<RelabelConfig> relabelings, TLSConfig tlsConfig) {
         super();
         this.attachMetadata = attachMetadata;
+        this.authorization = authorization;
         this._default = _default;
         this.metricRelabelings = metricRelabelings;
         this.name = name;
@@ -111,6 +115,16 @@ public class ScrapeClass implements Editable<ScrapeClassBuilder>, KubernetesReso
     @JsonProperty("attachMetadata")
     public void setAttachMetadata(AttachMetadata attachMetadata) {
         this.attachMetadata = attachMetadata;
+    }
+
+    @JsonProperty("authorization")
+    public Authorization getAuthorization() {
+        return authorization;
+    }
+
+    @JsonProperty("authorization")
+    public void setAuthorization(Authorization authorization) {
+        this.authorization = authorization;
     }
 
     @JsonProperty("default")

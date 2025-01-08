@@ -61,6 +61,7 @@ import lombok.experimental.Accessors;
     "dnsPolicy",
     "enableAdminAPI",
     "enableFeatures",
+    "enableOTLPReceiver",
     "enableRemoteWriteReceiver",
     "enforcedBodySizeLimit",
     "enforcedKeepDroppedTargets",
@@ -91,6 +92,7 @@ import lombok.experimental.Accessors;
     "logLevel",
     "maximumStartupDurationSeconds",
     "minReadySeconds",
+    "nameValidationScheme",
     "nodeSelector",
     "otlp",
     "overrideHonorLabels",
@@ -220,6 +222,8 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     @JsonProperty("enableFeatures")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> enableFeatures = new ArrayList<>();
+    @JsonProperty("enableOTLPReceiver")
+    private Boolean enableOTLPReceiver;
     @JsonProperty("enableRemoteWriteReceiver")
     private Boolean enableRemoteWriteReceiver;
     @JsonProperty("enforcedBodySizeLimit")
@@ -285,6 +289,8 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     private Integer maximumStartupDurationSeconds;
     @JsonProperty("minReadySeconds")
     private Long minReadySeconds;
+    @JsonProperty("nameValidationScheme")
+    private String nameValidationScheme;
     @JsonProperty("nodeSelector")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> nodeSelector = new LinkedHashMap<>();
@@ -430,7 +436,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     public PrometheusSpec() {
     }
 
-    public PrometheusSpec(SecretKeySelector additionalAlertManagerConfigs, SecretKeySelector additionalAlertRelabelConfigs, List<Argument> additionalArgs, SecretKeySelector additionalScrapeConfigs, Affinity affinity, AlertingSpec alerting, Boolean allowOverlappingBlocks, APIServerConfig apiserverConfig, ArbitraryFSAccessThroughSMsConfig arbitraryFSAccessThroughSMs, Boolean automountServiceAccountToken, String baseImage, String bodySizeLimit, List<String> configMaps, List<Container> containers, Boolean disableCompaction, PodDNSConfig dnsConfig, String dnsPolicy, Boolean enableAdminAPI, List<String> enableFeatures, Boolean enableRemoteWriteReceiver, String enforcedBodySizeLimit, Long enforcedKeepDroppedTargets, Long enforcedLabelLimit, Long enforcedLabelNameLengthLimit, Long enforcedLabelValueLengthLimit, String enforcedNamespaceLabel, Long enforcedSampleLimit, Long enforcedTargetLimit, String evaluationInterval, List<ObjectReference> excludedFromEnforcement, Exemplars exemplars, Map<String, String> externalLabels, String externalUrl, List<HostAlias> hostAliases, Boolean hostNetwork, Boolean ignoreNamespaceSelectors, String image, String imagePullPolicy, List<LocalObjectReference> imagePullSecrets, List<Container> initContainers, Long keepDroppedTargets, Long labelLimit, Long labelNameLengthLimit, Long labelValueLengthLimit, Boolean listenLocal, String logFormat, String logLevel, Integer maximumStartupDurationSeconds, Long minReadySeconds, Map<String, String> nodeSelector, OTLPConfig otlp, Boolean overrideHonorLabels, Boolean overrideHonorTimestamps, Boolean paused, StatefulSetPersistentVolumeClaimRetentionPolicy persistentVolumeClaimRetentionPolicy, EmbeddedObjectMetadata podMetadata, LabelSelector podMonitorNamespaceSelector, LabelSelector podMonitorSelector, List<String> podTargetLabels, String portName, String priorityClassName, LabelSelector probeNamespaceSelector, LabelSelector probeSelector, String prometheusExternalLabelName, List<PrometheusRuleExcludeConfig> prometheusRulesExcludedFromEnforce, QuerySpec query, String queryLogFile, String reloadStrategy, List<RemoteReadSpec> remoteRead, List<RemoteWriteSpec> remoteWrite, List<String> remoteWriteReceiverMessageVersions, String replicaExternalLabelName, Integer replicas, ResourceRequirements resources, String retention, String retentionSize, String routePrefix, LabelSelector ruleNamespaceSelector, String ruleQueryOffset, LabelSelector ruleSelector, Rules rules, RuntimeConfig runtime, Long sampleLimit, List<ScrapeClass> scrapeClasses, LabelSelector scrapeConfigNamespaceSelector, LabelSelector scrapeConfigSelector, String scrapeInterval, List<String> scrapeProtocols, String scrapeTimeout, List<String> secrets, PodSecurityContext securityContext, String serviceAccountName, String serviceDiscoveryRole, LabelSelector serviceMonitorNamespaceSelector, LabelSelector serviceMonitorSelector, String sha, Integer shards, StorageSpec storage, String tag, Long targetLimit, ThanosSpec thanos, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, PrometheusTracingConfig tracingConfig, TSDBSpec tsdb, String version, List<VolumeMount> volumeMounts, List<Volume> volumes, Boolean walCompression, PrometheusWebSpec web) {
+    public PrometheusSpec(SecretKeySelector additionalAlertManagerConfigs, SecretKeySelector additionalAlertRelabelConfigs, List<Argument> additionalArgs, SecretKeySelector additionalScrapeConfigs, Affinity affinity, AlertingSpec alerting, Boolean allowOverlappingBlocks, APIServerConfig apiserverConfig, ArbitraryFSAccessThroughSMsConfig arbitraryFSAccessThroughSMs, Boolean automountServiceAccountToken, String baseImage, String bodySizeLimit, List<String> configMaps, List<Container> containers, Boolean disableCompaction, PodDNSConfig dnsConfig, String dnsPolicy, Boolean enableAdminAPI, List<String> enableFeatures, Boolean enableOTLPReceiver, Boolean enableRemoteWriteReceiver, String enforcedBodySizeLimit, Long enforcedKeepDroppedTargets, Long enforcedLabelLimit, Long enforcedLabelNameLengthLimit, Long enforcedLabelValueLengthLimit, String enforcedNamespaceLabel, Long enforcedSampleLimit, Long enforcedTargetLimit, String evaluationInterval, List<ObjectReference> excludedFromEnforcement, Exemplars exemplars, Map<String, String> externalLabels, String externalUrl, List<HostAlias> hostAliases, Boolean hostNetwork, Boolean ignoreNamespaceSelectors, String image, String imagePullPolicy, List<LocalObjectReference> imagePullSecrets, List<Container> initContainers, Long keepDroppedTargets, Long labelLimit, Long labelNameLengthLimit, Long labelValueLengthLimit, Boolean listenLocal, String logFormat, String logLevel, Integer maximumStartupDurationSeconds, Long minReadySeconds, String nameValidationScheme, Map<String, String> nodeSelector, OTLPConfig otlp, Boolean overrideHonorLabels, Boolean overrideHonorTimestamps, Boolean paused, StatefulSetPersistentVolumeClaimRetentionPolicy persistentVolumeClaimRetentionPolicy, EmbeddedObjectMetadata podMetadata, LabelSelector podMonitorNamespaceSelector, LabelSelector podMonitorSelector, List<String> podTargetLabels, String portName, String priorityClassName, LabelSelector probeNamespaceSelector, LabelSelector probeSelector, String prometheusExternalLabelName, List<PrometheusRuleExcludeConfig> prometheusRulesExcludedFromEnforce, QuerySpec query, String queryLogFile, String reloadStrategy, List<RemoteReadSpec> remoteRead, List<RemoteWriteSpec> remoteWrite, List<String> remoteWriteReceiverMessageVersions, String replicaExternalLabelName, Integer replicas, ResourceRequirements resources, String retention, String retentionSize, String routePrefix, LabelSelector ruleNamespaceSelector, String ruleQueryOffset, LabelSelector ruleSelector, Rules rules, RuntimeConfig runtime, Long sampleLimit, List<ScrapeClass> scrapeClasses, LabelSelector scrapeConfigNamespaceSelector, LabelSelector scrapeConfigSelector, String scrapeInterval, List<String> scrapeProtocols, String scrapeTimeout, List<String> secrets, PodSecurityContext securityContext, String serviceAccountName, String serviceDiscoveryRole, LabelSelector serviceMonitorNamespaceSelector, LabelSelector serviceMonitorSelector, String sha, Integer shards, StorageSpec storage, String tag, Long targetLimit, ThanosSpec thanos, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, PrometheusTracingConfig tracingConfig, TSDBSpec tsdb, String version, List<VolumeMount> volumeMounts, List<Volume> volumes, Boolean walCompression, PrometheusWebSpec web) {
         super();
         this.additionalAlertManagerConfigs = additionalAlertManagerConfigs;
         this.additionalAlertRelabelConfigs = additionalAlertRelabelConfigs;
@@ -451,6 +457,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
         this.dnsPolicy = dnsPolicy;
         this.enableAdminAPI = enableAdminAPI;
         this.enableFeatures = enableFeatures;
+        this.enableOTLPReceiver = enableOTLPReceiver;
         this.enableRemoteWriteReceiver = enableRemoteWriteReceiver;
         this.enforcedBodySizeLimit = enforcedBodySizeLimit;
         this.enforcedKeepDroppedTargets = enforcedKeepDroppedTargets;
@@ -481,6 +488,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
         this.logLevel = logLevel;
         this.maximumStartupDurationSeconds = maximumStartupDurationSeconds;
         this.minReadySeconds = minReadySeconds;
+        this.nameValidationScheme = nameValidationScheme;
         this.nodeSelector = nodeSelector;
         this.otlp = otlp;
         this.overrideHonorLabels = overrideHonorLabels;
@@ -736,6 +744,16 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     @JsonProperty("enableFeatures")
     public void setEnableFeatures(List<String> enableFeatures) {
         this.enableFeatures = enableFeatures;
+    }
+
+    @JsonProperty("enableOTLPReceiver")
+    public Boolean getEnableOTLPReceiver() {
+        return enableOTLPReceiver;
+    }
+
+    @JsonProperty("enableOTLPReceiver")
+    public void setEnableOTLPReceiver(Boolean enableOTLPReceiver) {
+        this.enableOTLPReceiver = enableOTLPReceiver;
     }
 
     @JsonProperty("enableRemoteWriteReceiver")
@@ -1041,6 +1059,16 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     @JsonProperty("minReadySeconds")
     public void setMinReadySeconds(Long minReadySeconds) {
         this.minReadySeconds = minReadySeconds;
+    }
+
+    @JsonProperty("nameValidationScheme")
+    public String getNameValidationScheme() {
+        return nameValidationScheme;
+    }
+
+    @JsonProperty("nameValidationScheme")
+    public void setNameValidationScheme(String nameValidationScheme) {
+        this.nameValidationScheme = nameValidationScheme;
     }
 
     @JsonProperty("nodeSelector")

@@ -43,6 +43,7 @@ import io.fabric8.openshift.api.model.monitoring.v1.PodDNSConfig;
 import io.fabric8.openshift.api.model.monitoring.v1.PrometheusTracingConfig;
 import io.fabric8.openshift.api.model.monitoring.v1.PrometheusWebSpec;
 import io.fabric8.openshift.api.model.monitoring.v1.RemoteWriteSpec;
+import io.fabric8.openshift.api.model.monitoring.v1.RuntimeConfig;
 import io.fabric8.openshift.api.model.monitoring.v1.ScrapeClass;
 import io.fabric8.openshift.api.model.monitoring.v1.StorageSpec;
 import io.fabric8.openshift.api.model.monitoring.v1.TSDBSpec;
@@ -68,6 +69,7 @@ import lombok.experimental.Accessors;
     "dnsConfig",
     "dnsPolicy",
     "enableFeatures",
+    "enableOTLPReceiver",
     "enableRemoteWriteReceiver",
     "enforcedBodySizeLimit",
     "enforcedKeepDroppedTargets",
@@ -97,6 +99,7 @@ import lombok.experimental.Accessors;
     "maximumStartupDurationSeconds",
     "minReadySeconds",
     "mode",
+    "nameValidationScheme",
     "nodeSelector",
     "otlp",
     "overrideHonorLabels",
@@ -119,6 +122,7 @@ import lombok.experimental.Accessors;
     "replicas",
     "resources",
     "routePrefix",
+    "runtime",
     "sampleLimit",
     "scrapeClasses",
     "scrapeConfigNamespaceSelector",
@@ -198,6 +202,8 @@ public class PrometheusAgentSpec implements Editable<PrometheusAgentSpecBuilder>
     @JsonProperty("enableFeatures")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> enableFeatures = new ArrayList<>();
+    @JsonProperty("enableOTLPReceiver")
+    private Boolean enableOTLPReceiver;
     @JsonProperty("enableRemoteWriteReceiver")
     private Boolean enableRemoteWriteReceiver;
     @JsonProperty("enforcedBodySizeLimit")
@@ -261,6 +267,8 @@ public class PrometheusAgentSpec implements Editable<PrometheusAgentSpecBuilder>
     private Long minReadySeconds;
     @JsonProperty("mode")
     private String mode;
+    @JsonProperty("nameValidationScheme")
+    private String nameValidationScheme;
     @JsonProperty("nodeSelector")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> nodeSelector = new LinkedHashMap<>();
@@ -309,6 +317,8 @@ public class PrometheusAgentSpec implements Editable<PrometheusAgentSpecBuilder>
     private ResourceRequirements resources;
     @JsonProperty("routePrefix")
     private String routePrefix;
+    @JsonProperty("runtime")
+    private RuntimeConfig runtime;
     @JsonProperty("sampleLimit")
     private Long sampleLimit;
     @JsonProperty("scrapeClasses")
@@ -376,7 +386,7 @@ public class PrometheusAgentSpec implements Editable<PrometheusAgentSpecBuilder>
     public PrometheusAgentSpec() {
     }
 
-    public PrometheusAgentSpec(List<Argument> additionalArgs, SecretKeySelector additionalScrapeConfigs, Affinity affinity, APIServerConfig apiserverConfig, ArbitraryFSAccessThroughSMsConfig arbitraryFSAccessThroughSMs, Boolean automountServiceAccountToken, String bodySizeLimit, List<String> configMaps, List<Container> containers, PodDNSConfig dnsConfig, String dnsPolicy, List<String> enableFeatures, Boolean enableRemoteWriteReceiver, String enforcedBodySizeLimit, Long enforcedKeepDroppedTargets, Long enforcedLabelLimit, Long enforcedLabelNameLengthLimit, Long enforcedLabelValueLengthLimit, String enforcedNamespaceLabel, Long enforcedSampleLimit, Long enforcedTargetLimit, List<ObjectReference> excludedFromEnforcement, Map<String, String> externalLabels, String externalUrl, List<HostAlias> hostAliases, Boolean hostNetwork, Boolean ignoreNamespaceSelectors, String image, String imagePullPolicy, List<LocalObjectReference> imagePullSecrets, List<Container> initContainers, Long keepDroppedTargets, Long labelLimit, Long labelNameLengthLimit, Long labelValueLengthLimit, Boolean listenLocal, String logFormat, String logLevel, Integer maximumStartupDurationSeconds, Long minReadySeconds, String mode, Map<String, String> nodeSelector, OTLPConfig otlp, Boolean overrideHonorLabels, Boolean overrideHonorTimestamps, Boolean paused, StatefulSetPersistentVolumeClaimRetentionPolicy persistentVolumeClaimRetentionPolicy, EmbeddedObjectMetadata podMetadata, LabelSelector podMonitorNamespaceSelector, LabelSelector podMonitorSelector, List<String> podTargetLabels, String portName, String priorityClassName, LabelSelector probeNamespaceSelector, LabelSelector probeSelector, String prometheusExternalLabelName, String reloadStrategy, List<RemoteWriteSpec> remoteWrite, List<String> remoteWriteReceiverMessageVersions, String replicaExternalLabelName, Integer replicas, ResourceRequirements resources, String routePrefix, Long sampleLimit, List<ScrapeClass> scrapeClasses, LabelSelector scrapeConfigNamespaceSelector, LabelSelector scrapeConfigSelector, String scrapeInterval, List<String> scrapeProtocols, String scrapeTimeout, List<String> secrets, PodSecurityContext securityContext, String serviceAccountName, String serviceDiscoveryRole, LabelSelector serviceMonitorNamespaceSelector, LabelSelector serviceMonitorSelector, Integer shards, StorageSpec storage, Long targetLimit, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, PrometheusTracingConfig tracingConfig, TSDBSpec tsdb, String version, List<VolumeMount> volumeMounts, List<Volume> volumes, Boolean walCompression, PrometheusWebSpec web) {
+    public PrometheusAgentSpec(List<Argument> additionalArgs, SecretKeySelector additionalScrapeConfigs, Affinity affinity, APIServerConfig apiserverConfig, ArbitraryFSAccessThroughSMsConfig arbitraryFSAccessThroughSMs, Boolean automountServiceAccountToken, String bodySizeLimit, List<String> configMaps, List<Container> containers, PodDNSConfig dnsConfig, String dnsPolicy, List<String> enableFeatures, Boolean enableOTLPReceiver, Boolean enableRemoteWriteReceiver, String enforcedBodySizeLimit, Long enforcedKeepDroppedTargets, Long enforcedLabelLimit, Long enforcedLabelNameLengthLimit, Long enforcedLabelValueLengthLimit, String enforcedNamespaceLabel, Long enforcedSampleLimit, Long enforcedTargetLimit, List<ObjectReference> excludedFromEnforcement, Map<String, String> externalLabels, String externalUrl, List<HostAlias> hostAliases, Boolean hostNetwork, Boolean ignoreNamespaceSelectors, String image, String imagePullPolicy, List<LocalObjectReference> imagePullSecrets, List<Container> initContainers, Long keepDroppedTargets, Long labelLimit, Long labelNameLengthLimit, Long labelValueLengthLimit, Boolean listenLocal, String logFormat, String logLevel, Integer maximumStartupDurationSeconds, Long minReadySeconds, String mode, String nameValidationScheme, Map<String, String> nodeSelector, OTLPConfig otlp, Boolean overrideHonorLabels, Boolean overrideHonorTimestamps, Boolean paused, StatefulSetPersistentVolumeClaimRetentionPolicy persistentVolumeClaimRetentionPolicy, EmbeddedObjectMetadata podMetadata, LabelSelector podMonitorNamespaceSelector, LabelSelector podMonitorSelector, List<String> podTargetLabels, String portName, String priorityClassName, LabelSelector probeNamespaceSelector, LabelSelector probeSelector, String prometheusExternalLabelName, String reloadStrategy, List<RemoteWriteSpec> remoteWrite, List<String> remoteWriteReceiverMessageVersions, String replicaExternalLabelName, Integer replicas, ResourceRequirements resources, String routePrefix, RuntimeConfig runtime, Long sampleLimit, List<ScrapeClass> scrapeClasses, LabelSelector scrapeConfigNamespaceSelector, LabelSelector scrapeConfigSelector, String scrapeInterval, List<String> scrapeProtocols, String scrapeTimeout, List<String> secrets, PodSecurityContext securityContext, String serviceAccountName, String serviceDiscoveryRole, LabelSelector serviceMonitorNamespaceSelector, LabelSelector serviceMonitorSelector, Integer shards, StorageSpec storage, Long targetLimit, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, PrometheusTracingConfig tracingConfig, TSDBSpec tsdb, String version, List<VolumeMount> volumeMounts, List<Volume> volumes, Boolean walCompression, PrometheusWebSpec web) {
         super();
         this.additionalArgs = additionalArgs;
         this.additionalScrapeConfigs = additionalScrapeConfigs;
@@ -390,6 +400,7 @@ public class PrometheusAgentSpec implements Editable<PrometheusAgentSpecBuilder>
         this.dnsConfig = dnsConfig;
         this.dnsPolicy = dnsPolicy;
         this.enableFeatures = enableFeatures;
+        this.enableOTLPReceiver = enableOTLPReceiver;
         this.enableRemoteWriteReceiver = enableRemoteWriteReceiver;
         this.enforcedBodySizeLimit = enforcedBodySizeLimit;
         this.enforcedKeepDroppedTargets = enforcedKeepDroppedTargets;
@@ -419,6 +430,7 @@ public class PrometheusAgentSpec implements Editable<PrometheusAgentSpecBuilder>
         this.maximumStartupDurationSeconds = maximumStartupDurationSeconds;
         this.minReadySeconds = minReadySeconds;
         this.mode = mode;
+        this.nameValidationScheme = nameValidationScheme;
         this.nodeSelector = nodeSelector;
         this.otlp = otlp;
         this.overrideHonorLabels = overrideHonorLabels;
@@ -441,6 +453,7 @@ public class PrometheusAgentSpec implements Editable<PrometheusAgentSpecBuilder>
         this.replicas = replicas;
         this.resources = resources;
         this.routePrefix = routePrefix;
+        this.runtime = runtime;
         this.sampleLimit = sampleLimit;
         this.scrapeClasses = scrapeClasses;
         this.scrapeConfigNamespaceSelector = scrapeConfigNamespaceSelector;
@@ -590,6 +603,16 @@ public class PrometheusAgentSpec implements Editable<PrometheusAgentSpecBuilder>
     @JsonProperty("enableFeatures")
     public void setEnableFeatures(List<String> enableFeatures) {
         this.enableFeatures = enableFeatures;
+    }
+
+    @JsonProperty("enableOTLPReceiver")
+    public Boolean getEnableOTLPReceiver() {
+        return enableOTLPReceiver;
+    }
+
+    @JsonProperty("enableOTLPReceiver")
+    public void setEnableOTLPReceiver(Boolean enableOTLPReceiver) {
+        this.enableOTLPReceiver = enableOTLPReceiver;
     }
 
     @JsonProperty("enableRemoteWriteReceiver")
@@ -887,6 +910,16 @@ public class PrometheusAgentSpec implements Editable<PrometheusAgentSpecBuilder>
         this.mode = mode;
     }
 
+    @JsonProperty("nameValidationScheme")
+    public String getNameValidationScheme() {
+        return nameValidationScheme;
+    }
+
+    @JsonProperty("nameValidationScheme")
+    public void setNameValidationScheme(String nameValidationScheme) {
+        this.nameValidationScheme = nameValidationScheme;
+    }
+
     @JsonProperty("nodeSelector")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getNodeSelector() {
@@ -1109,6 +1142,16 @@ public class PrometheusAgentSpec implements Editable<PrometheusAgentSpecBuilder>
     @JsonProperty("routePrefix")
     public void setRoutePrefix(String routePrefix) {
         this.routePrefix = routePrefix;
+    }
+
+    @JsonProperty("runtime")
+    public RuntimeConfig getRuntime() {
+        return runtime;
+    }
+
+    @JsonProperty("runtime")
+    public void setRuntime(RuntimeConfig runtime) {
+        this.runtime = runtime;
     }
 
     @JsonProperty("sampleLimit")

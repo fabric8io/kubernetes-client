@@ -40,6 +40,7 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "attachMetadata",
     "bodySizeLimit",
+    "fallbackScrapeProtocol",
     "jobLabel",
     "keepDroppedTargets",
     "labelLimit",
@@ -55,6 +56,7 @@ import lombok.experimental.Accessors;
     "scrapeClassicHistograms",
     "scrapeProtocols",
     "selector",
+    "selectorMechanism",
     "targetLimit"
 })
 @ToString
@@ -86,6 +88,8 @@ public class PodMonitorSpec implements Editable<PodMonitorSpecBuilder>, Kubernet
     private AttachMetadata attachMetadata;
     @JsonProperty("bodySizeLimit")
     private String bodySizeLimit;
+    @JsonProperty("fallbackScrapeProtocol")
+    private String fallbackScrapeProtocol;
     @JsonProperty("jobLabel")
     private String jobLabel;
     @JsonProperty("keepDroppedTargets")
@@ -119,6 +123,8 @@ public class PodMonitorSpec implements Editable<PodMonitorSpecBuilder>, Kubernet
     private List<String> scrapeProtocols = new ArrayList<>();
     @JsonProperty("selector")
     private LabelSelector selector;
+    @JsonProperty("selectorMechanism")
+    private String selectorMechanism;
     @JsonProperty("targetLimit")
     private Long targetLimit;
     @JsonIgnore
@@ -131,10 +137,11 @@ public class PodMonitorSpec implements Editable<PodMonitorSpecBuilder>, Kubernet
     public PodMonitorSpec() {
     }
 
-    public PodMonitorSpec(AttachMetadata attachMetadata, String bodySizeLimit, String jobLabel, Long keepDroppedTargets, Long labelLimit, Long labelNameLengthLimit, Long labelValueLengthLimit, NamespaceSelector namespaceSelector, Long nativeHistogramBucketLimit, Quantity nativeHistogramMinBucketFactor, List<PodMetricsEndpoint> podMetricsEndpoints, List<String> podTargetLabels, Long sampleLimit, String scrapeClass, Boolean scrapeClassicHistograms, List<String> scrapeProtocols, LabelSelector selector, Long targetLimit) {
+    public PodMonitorSpec(AttachMetadata attachMetadata, String bodySizeLimit, String fallbackScrapeProtocol, String jobLabel, Long keepDroppedTargets, Long labelLimit, Long labelNameLengthLimit, Long labelValueLengthLimit, NamespaceSelector namespaceSelector, Long nativeHistogramBucketLimit, Quantity nativeHistogramMinBucketFactor, List<PodMetricsEndpoint> podMetricsEndpoints, List<String> podTargetLabels, Long sampleLimit, String scrapeClass, Boolean scrapeClassicHistograms, List<String> scrapeProtocols, LabelSelector selector, String selectorMechanism, Long targetLimit) {
         super();
         this.attachMetadata = attachMetadata;
         this.bodySizeLimit = bodySizeLimit;
+        this.fallbackScrapeProtocol = fallbackScrapeProtocol;
         this.jobLabel = jobLabel;
         this.keepDroppedTargets = keepDroppedTargets;
         this.labelLimit = labelLimit;
@@ -150,6 +157,7 @@ public class PodMonitorSpec implements Editable<PodMonitorSpecBuilder>, Kubernet
         this.scrapeClassicHistograms = scrapeClassicHistograms;
         this.scrapeProtocols = scrapeProtocols;
         this.selector = selector;
+        this.selectorMechanism = selectorMechanism;
         this.targetLimit = targetLimit;
     }
 
@@ -171,6 +179,16 @@ public class PodMonitorSpec implements Editable<PodMonitorSpecBuilder>, Kubernet
     @JsonProperty("bodySizeLimit")
     public void setBodySizeLimit(String bodySizeLimit) {
         this.bodySizeLimit = bodySizeLimit;
+    }
+
+    @JsonProperty("fallbackScrapeProtocol")
+    public String getFallbackScrapeProtocol() {
+        return fallbackScrapeProtocol;
+    }
+
+    @JsonProperty("fallbackScrapeProtocol")
+    public void setFallbackScrapeProtocol(String fallbackScrapeProtocol) {
+        this.fallbackScrapeProtocol = fallbackScrapeProtocol;
     }
 
     @JsonProperty("jobLabel")
@@ -324,6 +342,16 @@ public class PodMonitorSpec implements Editable<PodMonitorSpecBuilder>, Kubernet
     @JsonProperty("selector")
     public void setSelector(LabelSelector selector) {
         this.selector = selector;
+    }
+
+    @JsonProperty("selectorMechanism")
+    public String getSelectorMechanism() {
+        return selectorMechanism;
+    }
+
+    @JsonProperty("selectorMechanism")
+    public void setSelectorMechanism(String selectorMechanism) {
+        this.selectorMechanism = selectorMechanism;
     }
 
     @JsonProperty("targetLimit")
