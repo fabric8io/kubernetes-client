@@ -6,6 +6,8 @@
 
 #### Improvements
 
+* Fix #6763: CRDGenerator: YAML output customization
+
 #### Dependency Upgrade
 
 #### New Features
