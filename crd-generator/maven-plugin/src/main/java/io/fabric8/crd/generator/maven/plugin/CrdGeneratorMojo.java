@@ -128,6 +128,12 @@ public class CrdGeneratorMojo extends AbstractMojo {
    */
   @Parameter(property = "fabric8.crd-generator.skip", defaultValue = "false")
   boolean skip;
+  
+  /**
+   * If {@code true}, quotes will only be included where necessary
+   */
+  @Parameter(property = "fabric8.crd-generator.minimizeQuotes", defaultValue = "false")
+  boolean minimizeQuotes;
 
   private final CustomResourceCollector customResourceCollector;
   private final CRDGenerator crdGenerator;
@@ -178,6 +184,7 @@ public class CrdGeneratorMojo extends AbstractMojo {
         .customResourceClasses(customResourceClassesLoaded)
         .withParallelGenerationEnabled(parallel)
         .withImplicitPreserveUnknownFields(implicitPreserveUnknownFields)
+        .withMinQuotes(minimizeQuotes)
         .inOutputDir(outputDirectory);
 
     CRDGenerationInfo crdGenerationInfo = crdGenerator.detailedGenerate();
