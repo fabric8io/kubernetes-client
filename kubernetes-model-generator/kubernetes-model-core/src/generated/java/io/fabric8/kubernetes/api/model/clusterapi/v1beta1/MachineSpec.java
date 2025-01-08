@@ -1,7 +1,9 @@
 
 package io.fabric8.kubernetes.api.model.clusterapi.v1beta1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -31,6 +33,7 @@ import lombok.experimental.Accessors;
     "nodeDrainTimeout",
     "nodeVolumeDetachTimeout",
     "providerID",
+    "readinessGates",
     "version"
 })
 @ToString
@@ -60,6 +63,9 @@ public class MachineSpec implements Editable<MachineSpecBuilder>, KubernetesReso
     private Duration nodeVolumeDetachTimeout;
     @JsonProperty("providerID")
     private String providerID;
+    @JsonProperty("readinessGates")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<MachineReadinessGate> readinessGates = new ArrayList<>();
     @JsonProperty("version")
     private String version;
     @JsonIgnore
@@ -72,7 +78,7 @@ public class MachineSpec implements Editable<MachineSpecBuilder>, KubernetesReso
     public MachineSpec() {
     }
 
-    public MachineSpec(Bootstrap bootstrap, String clusterName, String failureDomain, ObjectReference infrastructureRef, Duration nodeDeletionTimeout, Duration nodeDrainTimeout, Duration nodeVolumeDetachTimeout, String providerID, String version) {
+    public MachineSpec(Bootstrap bootstrap, String clusterName, String failureDomain, ObjectReference infrastructureRef, Duration nodeDeletionTimeout, Duration nodeDrainTimeout, Duration nodeVolumeDetachTimeout, String providerID, List<MachineReadinessGate> readinessGates, String version) {
         super();
         this.bootstrap = bootstrap;
         this.clusterName = clusterName;
@@ -82,6 +88,7 @@ public class MachineSpec implements Editable<MachineSpecBuilder>, KubernetesReso
         this.nodeDrainTimeout = nodeDrainTimeout;
         this.nodeVolumeDetachTimeout = nodeVolumeDetachTimeout;
         this.providerID = providerID;
+        this.readinessGates = readinessGates;
         this.version = version;
     }
 
@@ -163,6 +170,17 @@ public class MachineSpec implements Editable<MachineSpecBuilder>, KubernetesReso
     @JsonProperty("providerID")
     public void setProviderID(String providerID) {
         this.providerID = providerID;
+    }
+
+    @JsonProperty("readinessGates")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<MachineReadinessGate> getReadinessGates() {
+        return readinessGates;
+    }
+
+    @JsonProperty("readinessGates")
+    public void setReadinessGates(List<MachineReadinessGate> readinessGates) {
+        this.readinessGates = readinessGates;
     }
 
     @JsonProperty("version")

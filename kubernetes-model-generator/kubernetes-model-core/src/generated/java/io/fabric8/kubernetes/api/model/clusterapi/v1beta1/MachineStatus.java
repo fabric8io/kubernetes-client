@@ -29,6 +29,7 @@ import lombok.experimental.Accessors;
     "bootstrapReady",
     "certificatesExpiryDate",
     "conditions",
+    "deletion",
     "failureMessage",
     "failureReason",
     "infrastructureReady",
@@ -36,7 +37,8 @@ import lombok.experimental.Accessors;
     "nodeInfo",
     "nodeRef",
     "observedGeneration",
-    "phase"
+    "phase",
+    "v1beta2"
 })
 @ToString
 @EqualsAndHashCode
@@ -59,6 +61,8 @@ public class MachineStatus implements Editable<MachineStatusBuilder>, Kubernetes
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Condition> conditions = new ArrayList<>();
+    @JsonProperty("deletion")
+    private MachineDeletionStatus deletion;
     @JsonProperty("failureMessage")
     private String failureMessage;
     @JsonProperty("failureReason")
@@ -75,6 +79,8 @@ public class MachineStatus implements Editable<MachineStatusBuilder>, Kubernetes
     private Long observedGeneration;
     @JsonProperty("phase")
     private String phase;
+    @JsonProperty("v1beta2")
+    private MachineV1Beta2Status v1beta2;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -85,12 +91,13 @@ public class MachineStatus implements Editable<MachineStatusBuilder>, Kubernetes
     public MachineStatus() {
     }
 
-    public MachineStatus(List<MachineAddress> addresses, Boolean bootstrapReady, String certificatesExpiryDate, List<Condition> conditions, String failureMessage, String failureReason, Boolean infrastructureReady, String lastUpdated, NodeSystemInfo nodeInfo, ObjectReference nodeRef, Long observedGeneration, String phase) {
+    public MachineStatus(List<MachineAddress> addresses, Boolean bootstrapReady, String certificatesExpiryDate, List<Condition> conditions, MachineDeletionStatus deletion, String failureMessage, String failureReason, Boolean infrastructureReady, String lastUpdated, NodeSystemInfo nodeInfo, ObjectReference nodeRef, Long observedGeneration, String phase, MachineV1Beta2Status v1beta2) {
         super();
         this.addresses = addresses;
         this.bootstrapReady = bootstrapReady;
         this.certificatesExpiryDate = certificatesExpiryDate;
         this.conditions = conditions;
+        this.deletion = deletion;
         this.failureMessage = failureMessage;
         this.failureReason = failureReason;
         this.infrastructureReady = infrastructureReady;
@@ -99,6 +106,7 @@ public class MachineStatus implements Editable<MachineStatusBuilder>, Kubernetes
         this.nodeRef = nodeRef;
         this.observedGeneration = observedGeneration;
         this.phase = phase;
+        this.v1beta2 = v1beta2;
     }
 
     @JsonProperty("addresses")
@@ -141,6 +149,16 @@ public class MachineStatus implements Editable<MachineStatusBuilder>, Kubernetes
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
+    }
+
+    @JsonProperty("deletion")
+    public MachineDeletionStatus getDeletion() {
+        return deletion;
+    }
+
+    @JsonProperty("deletion")
+    public void setDeletion(MachineDeletionStatus deletion) {
+        this.deletion = deletion;
     }
 
     @JsonProperty("failureMessage")
@@ -221,6 +239,16 @@ public class MachineStatus implements Editable<MachineStatusBuilder>, Kubernetes
     @JsonProperty("phase")
     public void setPhase(String phase) {
         this.phase = phase;
+    }
+
+    @JsonProperty("v1beta2")
+    public MachineV1Beta2Status getV1beta2() {
+        return v1beta2;
+    }
+
+    @JsonProperty("v1beta2")
+    public void setV1beta2(MachineV1Beta2Status v1beta2) {
+        this.v1beta2 = v1beta2;
     }
 
     @JsonIgnore
