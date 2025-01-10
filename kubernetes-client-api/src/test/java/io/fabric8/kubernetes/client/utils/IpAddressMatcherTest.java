@@ -40,6 +40,8 @@ class IpAddressMatcherTest {
         arguments("192.168.10.110", "192.168.10.110"),
         arguments("192.168.1.0/8", "192.168.10.110"),
         arguments("192.168.1.0/24", "192.168.1.100"),
+        arguments("10.96.0.1", "0:0:0:0:0:ffff:0a60:0001"),
+        arguments("2620:52:0:9c::/64", "2620:52:0:9c:0:0:0:1"),
         arguments("0.0.0.0/0", "123.4.5.6"),
         arguments("0.0.0.0/0", "192.168.0.159"),
         arguments("192.168.0.159/0", "123.4.5.6"),
@@ -59,7 +61,6 @@ class IpAddressMatcherTest {
         arguments("192.168.1.0/24", "193.168.1.10"),
         arguments("192.168.1.0/24", "192.168.2.10"),
         arguments("192.168.1.0/8", "193.168.1.10"),
-        arguments("192.168.1.128/25", "192.168.1.104"),
-        arguments("kubernetes.default.svc", "kubernetes.default.svc"));
+        arguments("192.168.1.128/25", "192.168.1.104"));
   }
 }

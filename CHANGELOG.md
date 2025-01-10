@@ -5,6 +5,7 @@
 #### Bugs
 
 * Fix #6747: Preventing websocket error logs when the client is closed
+* Fix #6781: Allowing ipv6 entries to work in NO_PROXY
 
 #### Improvements
 
