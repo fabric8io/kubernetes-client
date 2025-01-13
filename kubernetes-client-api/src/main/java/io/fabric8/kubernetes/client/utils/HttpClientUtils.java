@@ -73,8 +73,9 @@ public class HttpClientUtils {
   private static final String HEADER_INTERCEPTOR = "HEADER";
   private static final String KUBERNETES_BACKWARDS_COMPATIBILITY_INTERCEPTOR_DISABLE = "kubernetes.backwardsCompatibilityInterceptor.disable";
   private static final String BACKWARDS_COMPATIBILITY_DISABLE_DEFAULT = "true";
-  private static final Pattern IPV4_PATTERN = Pattern.compile(
-      "(http://|https://)?(?<ipAddressOrSubnet>(([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.){3}([01]?\\d\\d?|2[0-4]\\d|25[0-5])(\\/([1-2]\\d|3[0-2]|\\d))?)(\\D+|$)");
+  private static final Pattern IP_PATTERN = Pattern.compile(
+      "(http(s?)://)?(?<ipAddressOrSubnet>((\\d{1,3}(.\\d{1,3}){3})|([a-f\\d]{1,4}(\\:[a-f\\d]{0,4}){2,7}))(/\\d+)?)",
+      Pattern.CASE_INSENSITIVE);
   private static final Pattern INVALID_HOST_PATTERN = Pattern.compile("[^\\da-zA-Z.\\-/:]+");
 
   private HttpClientUtils() {
@@ -296,8 +297,8 @@ public class HttpClientUtils {
   }
 
   private static Optional<String> extractIpAddressOrSubnet(String ipAddressOrSubnet) {
-    final Matcher ipMatcher = IPV4_PATTERN.matcher(ipAddressOrSubnet);
-    if (ipMatcher.find()) {
+    final Matcher ipMatcher = IP_PATTERN.matcher(ipAddressOrSubnet);
+    if (ipMatcher.matches()) {
       return Optional.of(ipMatcher.group("ipAddressOrSubnet"));
     }
     return Optional.empty();

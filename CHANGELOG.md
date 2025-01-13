@@ -1,5 +1,10 @@
 ## CHANGELOG
 
+### 6.13.5 (2025-01-18)
+
+#### Bugs
+* Fix #6781: Allowing ipv6 entries to work in NO_PROXY
+
 ### 6.13.4 (2024-09-25)
 
 #### Bugs
