@@ -2399,7 +2399,7 @@ To create a new resource or update an existing one, you just need to call:
 DeploymentConfig dc = client.deploymentConfigs().inNamespace("default").resource(dcToCreate).serverSideApply();
 ```
 
-For resources that are updated by other [FieldManagers](https://kubernetes.io/docs/reference/using-api/server-side-apply/#managers), you will need to force your modifications:
+For resources that are updated by other [FieldManagers](https://kubernetes.io/docs/reference/using-api/server-side-apply/#managers), you will need to force your modifications when there is a conflict:
 
 ```java
 DeploymentConfig dc = client.deploymentConfigs().inNamespace("default").resource(dcToCreate).forceConflicts().serverSideApply();
