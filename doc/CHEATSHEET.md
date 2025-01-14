@@ -2393,18 +2393,16 @@ try (KubernetesClient client = new KubernetesClientBuilder().build()) {
 
 #### Server Side Apply
 
-Basic usage of server side apply is available via Patchable.  At it's simplest you just need to call:
+To create a new resource or update an existing one, you just need to call:
 
 ```java
-client.services().withName("name").patch(PatchContext.of(PatchType.SERVER_SIDE_APPLY), service);
+DeploymentConfig dc = client.deploymentConfigs().inNamespace("default").resource(dcToCreate).serverSideApply();
 ```
 
-For any create or update.  This can be a good alternative to using createOrReplace as it is always a single api call and does not issue a replace/PUT which can be problematic.
-
-If the resources may be created or modified by something other than a fabric8 patch, you will need to force your modifications:
+For resources that are updated by other [FieldManagers](https://kubernetes.io/docs/reference/using-api/server-side-apply/#managers), you will need to force your modifications when there is a conflict:
 
 ```java
-client.services().withName("name").patch(new PatchContext.Builder().withPatchType(PatchType.SERVER_SIDE_APPLY).withForce(true).build(), service);
+DeploymentConfig dc = client.deploymentConfigs().inNamespace("default").resource(dcToCreate).forceConflicts().serverSideApply();
 ```
 
 Please consult the Kubernetes server side apply documentation if you want to do more detailed field management or want to understand the full semantics of how the patches are merged.
