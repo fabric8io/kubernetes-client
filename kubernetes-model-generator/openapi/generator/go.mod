@@ -38,7 +38,7 @@ require (
 	k8s.io/autoscaler/vertical-pod-autoscaler v1.2.1
 	k8s.io/client-go v12.0.0+incompatible
 	k8s.io/gengo/v2 v2.0.0-20240911193312-2b36238f13e9
-	k8s.io/kube-openapi v0.0.0-20241105132330-32ad38e42d3f
+	k8s.io/kube-openapi v0.0.0-20241212222426-2c72e554b1e7
 	k8s.io/metrics v0.32.0
 	knative.dev/caching v0.0.0-20241022012359-41bbaf964d16
 	knative.dev/eventing v0.43.3
@@ -56,7 +56,7 @@ require (
 	open-cluster-management.io/multicloud-operators-subscription v0.15.0
 	sigs.k8s.io/cluster-api v1.9.3
 	sigs.k8s.io/gateway-api v1.2.1
-	sigs.k8s.io/kustomize/api v0.18.0
+	sigs.k8s.io/kustomize/api v0.19.0
 	// This version is older than v1.10.0 see replacements below
 	volcano.sh/apis v1.19.6
 )
@@ -141,7 +141,7 @@ require (
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/golang/protobuf v1.5.4 // indirect
 	github.com/google/cel-go v0.22.0 // indirect
-	github.com/google/gnostic-models v0.6.9-0.20230804172637-c7be7c783f49 // indirect
+	github.com/google/gnostic-models v0.6.9 // indirect
 	github.com/google/go-cmp v0.6.0 // indirect
 	github.com/google/go-containerregistry v0.19.2 // indirect
 	github.com/google/go-github/v31 v31.0.0 // indirect
@@ -223,7 +223,7 @@ require (
 	knative.dev/pkg v0.0.0-20241021183759-9b9d535af5ad // indirect
 	sigs.k8s.io/controller-runtime v0.19.3 // indirect
 	sigs.k8s.io/json v0.0.0-20241014173422-cfa47c3a1cc8 // indirect
-	sigs.k8s.io/kustomize/kyaml v0.18.1 // indirect
+	sigs.k8s.io/kustomize/kyaml v0.19.0 // indirect
 	sigs.k8s.io/structured-merge-diff/v4 v4.5.0 // indirect
 	sigs.k8s.io/yaml v1.4.0 // indirect
 )
