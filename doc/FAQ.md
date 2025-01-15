@@ -203,7 +203,7 @@ Now that there is first class support for serverSideApply it can be used, but it
 - A common pattern for createOrReplace was obtaining the current resource from the api server (possibly via an informer cache), making modifications, then calling createOrReplace.
   Doing something similar with serverSideApply will fail as the managedFields will be populated.
   While you may be tempted to simply clear the managedFields and the resourceVersion, this is generally not what you should be doing unless you want your logic to assume ownership of every field on the resource.
-  Instead you should reorganize your code to apply only the desired state that you wish to apply.
+  Instead you should construct the object with the desired state and simply invoke [serverSideApply()](https://github.com/fabric8io/kubernetes-client/blob/main/doc/CHEATSHEET.md#server-side-apply), letting the server figure how to merge the changes.
   If you have a more involved situation please read the [upstream server side apply documentation](https://kubernetes.io/docs/reference/using-api/server-side-apply/) to understand topics like transferring ownership and partial patches.
 
 If the limitations / changes necessary to use serverSideApply are too much, you may also use the createOr method.
