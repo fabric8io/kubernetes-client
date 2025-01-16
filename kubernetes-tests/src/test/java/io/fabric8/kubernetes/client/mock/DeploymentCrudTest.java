@@ -30,6 +30,7 @@ import java.util.Collections;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @EnableKubernetesMockClient(crud = true)
@@ -124,5 +125,96 @@ class DeploymentCrudTest {
     assertNotNull(replacedDeployment);
     assertFalse(replacedDeployment.getMetadata().getLabels().isEmpty());
     assertEquals("one", replacedDeployment.getMetadata().getLabels().get("testKey"));
+  }
+
+  @Test
+  @DisplayName("Should pause resource")
+  void testPause() {
+    // Given
+    Deployment deployment1 = new DeploymentBuilder().withNewMetadata()
+        .withName("d1")
+        .withNamespace("ns1")
+        .addToLabels("testKey", "testValue")
+        .endMetadata()
+        .withNewSpec()
+        .endSpec()
+        .build();
+    client.apps().deployments().inNamespace("ns1").create(deployment1);
+
+    // When
+    client.apps()
+        .deployments()
+        .inNamespace("ns1")
+        .withName("d1")
+        .rolling()
+        .pause();
+    Deployment updatedDeployment = client.apps().deployments().inNamespace("ns1").withName("d1").get();
+
+    // Then
+    assertNotNull(updatedDeployment);
+    assertEquals(true, updatedDeployment.getSpec().getPaused());
+  }
+
+  @Test
+  @DisplayName("Should resume rollout")
+  void testRolloutResume() throws InterruptedException {
+    // Given
+    Deployment deployment1 = new DeploymentBuilder().withNewMetadata()
+        .withName("d1")
+        .withNamespace("ns1")
+        .addToLabels("testKey", "testValue")
+        .endMetadata()
+        .withNewSpec()
+        .withPaused(true)
+        .endSpec()
+        .build();
+    client.apps().deployments().inNamespace("ns1").create(deployment1);
+
+    // When
+    client.apps()
+        .deployments()
+        .inNamespace("ns1")
+        .withName("d1")
+        .rolling()
+        .resume();
+    Deployment updatedDeployment = client.apps().deployments().inNamespace("ns1").withName("d1").get();
+
+    // Then
+    assertNotNull(updatedDeployment);
+    assertNull(updatedDeployment.getSpec().getPaused());
+  }
+
+  @Test
+  @DisplayName("Should restart rollout")
+  void testRolloutRestart() throws InterruptedException {
+    // Given
+    Deployment deployment1 = new DeploymentBuilder().withNewMetadata()
+        .withName("d1")
+        .withNamespace("ns1")
+        .addToLabels("testKey", "testValue")
+        .endMetadata()
+        .withNewSpec()
+        .withNewTemplate()
+        .withNewMetadata()
+        .addToAnnotations("", "")
+        .endMetadata()
+        .endTemplate()
+        .endSpec()
+        .build();
+    client.apps().deployments().inNamespace("ns1").create(deployment1);
+
+    // When
+    client.apps()
+        .deployments()
+        .inNamespace("ns1")
+        .withName("d1")
+        .rolling()
+        .restart();
+    Deployment updatedDeployment = client.apps().deployments().inNamespace("ns1").withName("d1").get();
+
+    // Then
+    assertNotNull(updatedDeployment);
+    assertNotNull(
+        updatedDeployment.getSpec().getTemplate().getMetadata().getAnnotations().get("kubectl.kubernetes.io/restartedAt"));
   }
 }

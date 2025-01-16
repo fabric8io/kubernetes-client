@@ -45,10 +45,10 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
@@ -169,8 +169,8 @@ public abstract class RollingUpdater<T extends HasMetadata, L> {
     }
   }
 
-  private static <T> T applyPatch(Resource<T> resource, Map<String, Object> map, KubernetesSerialization serialization) {
-    return resource.patch(PatchContext.of(PatchType.STRATEGIC_MERGE), serialization.asJson(map));
+  private static <T> T applyPatch(Resource<T> resource, List<Object> list, KubernetesSerialization serialization) {
+    return resource.patch(PatchContext.of(PatchType.JSON), serialization.asJson(list));
   }
 
   public static <T extends HasMetadata> T resume(RollableScalableResourceOperation<T, ?, ?> resource) {
@@ -185,35 +185,30 @@ public abstract class RollingUpdater<T extends HasMetadata, L> {
     return applyPatch(resource, RollingUpdater.requestPayLoadForRolloutRestart(), resource.getKubernetesSerialization());
   }
 
-  public static Map<String, Object> requestPayLoadForRolloutPause() {
-    Map<String, Object> jsonPatchPayload = new HashMap<>();
-    Map<String, Object> spec = new HashMap<>();
-    spec.put("paused", true);
-    jsonPatchPayload.put("spec", spec);
-    return jsonPatchPayload;
+  public static List<Object> requestPayLoadForRolloutPause() {
+    HashMap<String, Object> patch = new HashMap<>();
+    patch.put("op", "add");
+    patch.put("path", "/spec/paused");
+    patch.put("value", true);
+    return Collections.singletonList(patch);
   }
 
-  public static Map<String, Object> requestPayLoadForRolloutResume() {
-    Map<String, Object> jsonPatchPayload = new HashMap<>();
-    Map<String, Object> spec = new HashMap<>();
-    spec.put("paused", null);
-    jsonPatchPayload.put("spec", spec);
-    return jsonPatchPayload;
+  public static List<Object> requestPayLoadForRolloutResume() {
+    HashMap<String, Object> patch = new HashMap<>();
+    patch.put("op", "remove");
+    patch.put("path", "/spec/paused");
+    return Collections.singletonList(patch);
   }
 
-  public static Map<String, Object> requestPayLoadForRolloutRestart() {
-    Map<String, Object> jsonPatchPayload = new HashMap<>();
-    Map<String, String> annotations = new HashMap<>();
-    annotations.put("kubectl.kubernetes.io/restartedAt",
+  public static List<Object> requestPayLoadForRolloutRestart() {
+    HashMap<String, Object> patch = new HashMap<>();
+    HashMap<String, Object> value = new HashMap<>();
+    patch.put("op", "replace");
+    patch.put("path", "/spec/template/metadata/annotations");
+    value.put("kubectl.kubernetes.io/restartedAt",
         new Date().toInstant().atOffset(ZoneOffset.UTC).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
-    Map<String, Object> templateMetadata = new HashMap<>();
-    templateMetadata.put("annotations", annotations);
-    Map<String, Object> template = new HashMap<>();
-    template.put("metadata", templateMetadata);
-    Map<String, Object> deploymentSpec = new HashMap<>();
-    deploymentSpec.put("template", template);
-    jsonPatchPayload.put("spec", deploymentSpec);
-    return jsonPatchPayload;
+    patch.put("value", value);
+    return Collections.singletonList(patch);
   }
 
   /**
