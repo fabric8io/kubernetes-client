@@ -32,14 +32,14 @@ require (
 	github.com/tektoncd/pipeline v0.66.0
 	github.com/tektoncd/triggers v0.30.1
 	istio.io/client-go v1.24.2
-	k8s.io/api v0.32.0
+	k8s.io/api v0.32.1
 	k8s.io/apiextensions-apiserver v0.32.0
-	k8s.io/apimachinery v0.32.0
+	k8s.io/apimachinery v0.32.1
 	k8s.io/autoscaler/vertical-pod-autoscaler v1.2.1
 	k8s.io/client-go v12.0.0+incompatible
 	k8s.io/gengo/v2 v2.0.0-20240911193312-2b36238f13e9
 	k8s.io/kube-openapi v0.0.0-20241212222426-2c72e554b1e7
-	k8s.io/metrics v0.32.0
+	k8s.io/metrics v0.32.1
 	knative.dev/caching v0.0.0-20241022012359-41bbaf964d16
 	knative.dev/eventing v0.43.3
 	knative.dev/eventing-awssqs v0.29.0
