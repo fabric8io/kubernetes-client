@@ -132,22 +132,22 @@ class DeploymentCrudTest {
   void testPause() {
     // Given
     Deployment deployment1 = new DeploymentBuilder().withNewMetadata()
-      .withName("d1")
-      .withNamespace("ns1")
-      .addToLabels("testKey", "testValue")
-      .endMetadata()
-      .withNewSpec()
-      .endSpec()
-      .build();
+        .withName("d1")
+        .withNamespace("ns1")
+        .addToLabels("testKey", "testValue")
+        .endMetadata()
+        .withNewSpec()
+        .endSpec()
+        .build();
     client.apps().deployments().inNamespace("ns1").create(deployment1);
 
     // When
     client.apps()
-      .deployments()
-      .inNamespace("ns1")
-      .withName("d1")
-      .rolling()
-      .pause();
+        .deployments()
+        .inNamespace("ns1")
+        .withName("d1")
+        .rolling()
+        .pause();
     Deployment updatedDeployment = client.apps().deployments().inNamespace("ns1").withName("d1").get();
 
     // Then
@@ -160,23 +160,23 @@ class DeploymentCrudTest {
   void testRolloutResume() throws InterruptedException {
     // Given
     Deployment deployment1 = new DeploymentBuilder().withNewMetadata()
-      .withName("d1")
-      .withNamespace("ns1")
-      .addToLabels("testKey", "testValue")
-      .endMetadata()
-      .withNewSpec()
-      .withPaused(true)
-      .endSpec()
-      .build();
+        .withName("d1")
+        .withNamespace("ns1")
+        .addToLabels("testKey", "testValue")
+        .endMetadata()
+        .withNewSpec()
+        .withPaused(true)
+        .endSpec()
+        .build();
     client.apps().deployments().inNamespace("ns1").create(deployment1);
 
     // When
     client.apps()
-      .deployments()
-      .inNamespace("ns1")
-      .withName("d1")
-      .rolling()
-      .resume();
+        .deployments()
+        .inNamespace("ns1")
+        .withName("d1")
+        .rolling()
+        .resume();
     Deployment updatedDeployment = client.apps().deployments().inNamespace("ns1").withName("d1").get();
 
     // Then
@@ -189,31 +189,32 @@ class DeploymentCrudTest {
   void testRolloutRestart() throws InterruptedException {
     // Given
     Deployment deployment1 = new DeploymentBuilder().withNewMetadata()
-      .withName("d1")
-      .withNamespace("ns1")
-      .addToLabels("testKey", "testValue")
-      .endMetadata()
-      .withNewSpec()
-      .withNewTemplate()
-      .withNewMetadata()
-      .addToAnnotations("", "")
-      .endMetadata()
-      .endTemplate()
-      .endSpec()
-      .build();
+        .withName("d1")
+        .withNamespace("ns1")
+        .addToLabels("testKey", "testValue")
+        .endMetadata()
+        .withNewSpec()
+        .withNewTemplate()
+        .withNewMetadata()
+        .addToAnnotations("", "")
+        .endMetadata()
+        .endTemplate()
+        .endSpec()
+        .build();
     client.apps().deployments().inNamespace("ns1").create(deployment1);
 
     // When
     client.apps()
-      .deployments()
-      .inNamespace("ns1")
-      .withName("d1")
-      .rolling()
-      .restart();
+        .deployments()
+        .inNamespace("ns1")
+        .withName("d1")
+        .rolling()
+        .restart();
     Deployment updatedDeployment = client.apps().deployments().inNamespace("ns1").withName("d1").get();
 
     // Then
     assertNotNull(updatedDeployment);
-    assertNotNull(updatedDeployment.getSpec().getTemplate().getMetadata().getAnnotations().get("kubectl.kubernetes.io/restartedAt"));
+    assertNotNull(
+        updatedDeployment.getSpec().getTemplate().getMetadata().getAnnotations().get("kubectl.kubernetes.io/restartedAt"));
   }
 }

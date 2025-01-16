@@ -205,8 +205,9 @@ public abstract class RollingUpdater<T extends HasMetadata, L> {
     HashMap<String, Object> value = new HashMap<>();
     patch.put("op", "replace");
     patch.put("path", "/spec/template/metadata/annotations");
-    value.put("kubectl.kubernetes.io/restartedAt", new Date().toInstant().atOffset(ZoneOffset.UTC).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
-    patch.put("value",  value);
+    value.put("kubectl.kubernetes.io/restartedAt",
+        new Date().toInstant().atOffset(ZoneOffset.UTC).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+    patch.put("value", value);
     return Collections.singletonList(patch);
   }
 
