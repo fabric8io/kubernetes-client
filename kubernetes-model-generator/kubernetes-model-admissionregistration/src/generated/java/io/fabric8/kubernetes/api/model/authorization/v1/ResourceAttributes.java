@@ -35,7 +35,9 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "fieldSelector",
     "group",
+    "labelSelector",
     "name",
     "namespace",
     "resource",
@@ -68,8 +70,12 @@ import lombok.experimental.Accessors;
 public class ResourceAttributes implements Editable<ResourceAttributesBuilder>, KubernetesResource
 {
 
+    @JsonProperty("fieldSelector")
+    private FieldSelectorAttributes fieldSelector;
     @JsonProperty("group")
     private String group;
+    @JsonProperty("labelSelector")
+    private LabelSelectorAttributes labelSelector;
     @JsonProperty("name")
     private String name;
     @JsonProperty("namespace")
@@ -92,15 +98,27 @@ public class ResourceAttributes implements Editable<ResourceAttributesBuilder>, 
     public ResourceAttributes() {
     }
 
-    public ResourceAttributes(String group, String name, String namespace, String resource, String subresource, String verb, String version) {
+    public ResourceAttributes(FieldSelectorAttributes fieldSelector, String group, LabelSelectorAttributes labelSelector, String name, String namespace, String resource, String subresource, String verb, String version) {
         super();
+        this.fieldSelector = fieldSelector;
         this.group = group;
+        this.labelSelector = labelSelector;
         this.name = name;
         this.namespace = namespace;
         this.resource = resource;
         this.subresource = subresource;
         this.verb = verb;
         this.version = version;
+    }
+
+    @JsonProperty("fieldSelector")
+    public FieldSelectorAttributes getFieldSelector() {
+        return fieldSelector;
+    }
+
+    @JsonProperty("fieldSelector")
+    public void setFieldSelector(FieldSelectorAttributes fieldSelector) {
+        this.fieldSelector = fieldSelector;
     }
 
     @JsonProperty("group")
@@ -111,6 +129,16 @@ public class ResourceAttributes implements Editable<ResourceAttributesBuilder>, 
     @JsonProperty("group")
     public void setGroup(String group) {
         this.group = group;
+    }
+
+    @JsonProperty("labelSelector")
+    public LabelSelectorAttributes getLabelSelector() {
+        return labelSelector;
+    }
+
+    @JsonProperty("labelSelector")
+    public void setLabelSelector(LabelSelectorAttributes labelSelector) {
+        this.labelSelector = labelSelector;
     }
 
     @JsonProperty("name")

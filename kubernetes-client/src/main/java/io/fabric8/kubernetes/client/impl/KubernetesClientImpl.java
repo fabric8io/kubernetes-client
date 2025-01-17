@@ -80,7 +80,6 @@ import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
 import io.fabric8.kubernetes.client.RequestConfig;
 import io.fabric8.kubernetes.client.V1AdmissionRegistrationAPIGroupDSL;
 import io.fabric8.kubernetes.client.V1Alpha1AdmissionRegistrationAPIGroupDSL;
-import io.fabric8.kubernetes.client.V1Alpha1NetworkAPIGroupDSL;
 import io.fabric8.kubernetes.client.V1Alpha2DynamicResourceAllocationAPIGroupDSL;
 import io.fabric8.kubernetes.client.V1ApiextensionAPIGroupDSL;
 import io.fabric8.kubernetes.client.V1AuthenticationAPIGroupDSL;
@@ -261,7 +260,6 @@ public class KubernetesClientImpl extends BaseClient implements NamespacedKubern
     adapters.registerClient(V1Beta1AuthenticationAPIGroupDSL.class, new V1Beta1AuthenticationAPIGroupClient());
     adapters.registerClient(V1NetworkAPIGroupDSL.class, new V1NetworkAPIGroupClient());
     adapters.registerClient(V1beta1NetworkAPIGroupDSL.class, new V1beta1NetworkAPIGroupClient());
-    adapters.registerClient(V1Alpha1NetworkAPIGroupDSL.class, new V1Alpha1NetworkAPIGroupClient());
     adapters.registerClient(DiscoveryAPIGroupDSL.class, new DiscoveryAPIGroupClient());
     adapters.registerClient(V1beta1DiscoveryAPIGroupDSL.class, new V1beta1DiscoveryAPIGroupClient());
     adapters.registerClient(V1DiscoveryAPIGroupDSL.class, new V1DiscoveryAPIGroupClient());

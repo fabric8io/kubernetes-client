@@ -58,7 +58,9 @@ import java.util.Map;
     "holderIdentity",
     "leaseDurationSeconds",
     "leaseTransitions",
-    "renewTime"
+    "preferredHolder",
+    "renewTime",
+    "strategy"
 })
 @ToString
 @EqualsAndHashCode
@@ -92,9 +94,13 @@ public class LeaseSpec implements Editable<LeaseSpecBuilder>, KubernetesResource
   private Integer leaseDurationSeconds;
   @JsonProperty("leaseTransitions")
   private Integer leaseTransitions;
+  @JsonProperty("preferredHolder")
+  private String preferredHolder;
   @JsonProperty("renewTime")
   @JsonFormat(timezone = "UTC", pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'")
   private ZonedDateTime renewTime;
+  @JsonProperty("strategy")
+  private String strategy;
   @JsonIgnore
   private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -102,12 +108,14 @@ public class LeaseSpec implements Editable<LeaseSpecBuilder>, KubernetesResource
   }
 
   public LeaseSpec(ZonedDateTime acquireTime, String holderIdentity, Integer leaseDurationSeconds, Integer leaseTransitions,
-      ZonedDateTime renewTime) {
+      String preferredHolder, ZonedDateTime renewTime, String strategy) {
     this.acquireTime = acquireTime;
     this.holderIdentity = holderIdentity;
     this.leaseDurationSeconds = leaseDurationSeconds;
     this.leaseTransitions = leaseTransitions;
+    this.preferredHolder = preferredHolder;
     this.renewTime = renewTime;
+    this.strategy = strategy;
   }
 
   @JsonProperty("acquireTime")
@@ -150,6 +158,16 @@ public class LeaseSpec implements Editable<LeaseSpecBuilder>, KubernetesResource
     this.leaseTransitions = leaseTransitions;
   }
 
+  @JsonProperty("preferredHolder")
+  public String getPreferredHolder() {
+    return preferredHolder;
+  }
+
+  @JsonProperty("preferredHolder")
+  public void setPreferredHolder(String preferredHolder) {
+    this.preferredHolder = preferredHolder;
+  }
+
   @JsonProperty("renewTime")
   public ZonedDateTime getRenewTime() {
     return renewTime;
@@ -158,6 +176,16 @@ public class LeaseSpec implements Editable<LeaseSpecBuilder>, KubernetesResource
   @JsonProperty("renewTime")
   public void setRenewTime(ZonedDateTime renewTime) {
     this.renewTime = renewTime;
+  }
+
+  @JsonProperty("strategy")
+  public String getStrategy() {
+    return strategy;
+  }
+
+  @JsonProperty("strategy")
+  public void setStrategy(String strategy) {
+    this.strategy = strategy;
   }
 
   @JsonIgnore

@@ -28,6 +28,7 @@ import lombok.experimental.Accessors;
     "conditions",
     "config",
     "daemonEndpoints",
+    "features",
     "images",
     "nodeInfo",
     "phase",
@@ -62,6 +63,8 @@ public class NodeStatus implements Editable<NodeStatusBuilder>, KubernetesResour
     private NodeConfigStatus config;
     @JsonProperty("daemonEndpoints")
     private NodeDaemonEndpoints daemonEndpoints;
+    @JsonProperty("features")
+    private NodeFeatures features;
     @JsonProperty("images")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ContainerImage> images = new ArrayList<>();
@@ -88,7 +91,7 @@ public class NodeStatus implements Editable<NodeStatusBuilder>, KubernetesResour
     public NodeStatus() {
     }
 
-    public NodeStatus(List<NodeAddress> addresses, Map<String, Quantity> allocatable, Map<String, Quantity> capacity, List<NodeCondition> conditions, NodeConfigStatus config, NodeDaemonEndpoints daemonEndpoints, List<ContainerImage> images, NodeSystemInfo nodeInfo, String phase, List<NodeRuntimeHandler> runtimeHandlers, List<AttachedVolume> volumesAttached, List<String> volumesInUse) {
+    public NodeStatus(List<NodeAddress> addresses, Map<String, Quantity> allocatable, Map<String, Quantity> capacity, List<NodeCondition> conditions, NodeConfigStatus config, NodeDaemonEndpoints daemonEndpoints, NodeFeatures features, List<ContainerImage> images, NodeSystemInfo nodeInfo, String phase, List<NodeRuntimeHandler> runtimeHandlers, List<AttachedVolume> volumesAttached, List<String> volumesInUse) {
         super();
         this.addresses = addresses;
         this.allocatable = allocatable;
@@ -96,6 +99,7 @@ public class NodeStatus implements Editable<NodeStatusBuilder>, KubernetesResour
         this.conditions = conditions;
         this.config = config;
         this.daemonEndpoints = daemonEndpoints;
+        this.features = features;
         this.images = images;
         this.nodeInfo = nodeInfo;
         this.phase = phase;
@@ -166,6 +170,16 @@ public class NodeStatus implements Editable<NodeStatusBuilder>, KubernetesResour
     @JsonProperty("daemonEndpoints")
     public void setDaemonEndpoints(NodeDaemonEndpoints daemonEndpoints) {
         this.daemonEndpoints = daemonEndpoints;
+    }
+
+    @JsonProperty("features")
+    public NodeFeatures getFeatures() {
+        return features;
+    }
+
+    @JsonProperty("features")
+    public void setFeatures(NodeFeatures features) {
+        this.features = features;
     }
 
     @JsonProperty("images")

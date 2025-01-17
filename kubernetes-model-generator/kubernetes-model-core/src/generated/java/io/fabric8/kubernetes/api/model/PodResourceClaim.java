@@ -21,7 +21,8 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "name",
-    "source"
+    "resourceClaimName",
+    "resourceClaimTemplateName"
 })
 @ToString
 @EqualsAndHashCode
@@ -36,8 +37,10 @@ public class PodResourceClaim implements Editable<PodResourceClaimBuilder>, Kube
 
     @JsonProperty("name")
     private String name;
-    @JsonProperty("source")
-    private ClaimSource source;
+    @JsonProperty("resourceClaimName")
+    private String resourceClaimName;
+    @JsonProperty("resourceClaimTemplateName")
+    private String resourceClaimTemplateName;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -48,10 +51,11 @@ public class PodResourceClaim implements Editable<PodResourceClaimBuilder>, Kube
     public PodResourceClaim() {
     }
 
-    public PodResourceClaim(String name, ClaimSource source) {
+    public PodResourceClaim(String name, String resourceClaimName, String resourceClaimTemplateName) {
         super();
         this.name = name;
-        this.source = source;
+        this.resourceClaimName = resourceClaimName;
+        this.resourceClaimTemplateName = resourceClaimTemplateName;
     }
 
     @JsonProperty("name")
@@ -64,14 +68,24 @@ public class PodResourceClaim implements Editable<PodResourceClaimBuilder>, Kube
         this.name = name;
     }
 
-    @JsonProperty("source")
-    public ClaimSource getSource() {
-        return source;
+    @JsonProperty("resourceClaimName")
+    public String getResourceClaimName() {
+        return resourceClaimName;
     }
 
-    @JsonProperty("source")
-    public void setSource(ClaimSource source) {
-        this.source = source;
+    @JsonProperty("resourceClaimName")
+    public void setResourceClaimName(String resourceClaimName) {
+        this.resourceClaimName = resourceClaimName;
+    }
+
+    @JsonProperty("resourceClaimTemplateName")
+    public String getResourceClaimTemplateName() {
+        return resourceClaimTemplateName;
+    }
+
+    @JsonProperty("resourceClaimTemplateName")
+    public void setResourceClaimTemplateName(String resourceClaimTemplateName) {
+        this.resourceClaimTemplateName = resourceClaimTemplateName;
     }
 
     @JsonIgnore
