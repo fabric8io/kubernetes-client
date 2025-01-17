@@ -15,6 +15,8 @@
  */
 package io.fabric8.kubernetes.client;
 
+import io.fabric8.kubernetes.api.model.networking.v1beta1.IPAddress;
+import io.fabric8.kubernetes.api.model.networking.v1beta1.IPAddressList;
 import io.fabric8.kubernetes.api.model.networking.v1beta1.Ingress;
 import io.fabric8.kubernetes.api.model.networking.v1beta1.IngressClass;
 import io.fabric8.kubernetes.api.model.networking.v1beta1.IngressClassList;
@@ -27,4 +29,14 @@ public interface V1beta1NetworkAPIGroupDSL extends Client {
   MixedOperation<Ingress, IngressList, Resource<Ingress>> ingresses();
 
   NonNamespaceOperation<IngressClass, IngressClassList, Resource<IngressClass>> ingressClasses();
+
+  /**
+   * API entrypoint for networking.k8s.io/v1beta1 IPAddress
+   * <br>
+   * IPAddress represents a single IP of a single IP Family. The object is designed to be used by APIs
+   * that operate on IP addresses. The object is used by the Service core API for allocation of IP addresses.
+   *
+   * @return {@link NonNamespaceOperation} for IPAddress
+   */
+  NonNamespaceOperation<IPAddress, IPAddressList, Resource<IPAddress>> ipAddresses();
 }

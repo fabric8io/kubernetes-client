@@ -23,6 +23,7 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "allocatedResources",
+    "allocatedResourcesStatus",
     "containerID",
     "image",
     "imageID",
@@ -33,6 +34,7 @@ import lombok.experimental.Accessors;
     "restartCount",
     "started",
     "state",
+    "user",
     "volumeMounts"
 })
 @ToString
@@ -49,6 +51,9 @@ public class ContainerStatus implements Editable<ContainerStatusBuilder>, Kubern
     @JsonProperty("allocatedResources")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, Quantity> allocatedResources = new LinkedHashMap<>();
+    @JsonProperty("allocatedResourcesStatus")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<ResourceStatus> allocatedResourcesStatus = new ArrayList<>();
     @JsonProperty("containerID")
     private String containerID;
     @JsonProperty("image")
@@ -69,6 +74,8 @@ public class ContainerStatus implements Editable<ContainerStatusBuilder>, Kubern
     private Boolean started;
     @JsonProperty("state")
     private ContainerState state;
+    @JsonProperty("user")
+    private ContainerUser user;
     @JsonProperty("volumeMounts")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<VolumeMountStatus> volumeMounts = new ArrayList<>();
@@ -82,9 +89,10 @@ public class ContainerStatus implements Editable<ContainerStatusBuilder>, Kubern
     public ContainerStatus() {
     }
 
-    public ContainerStatus(Map<String, Quantity> allocatedResources, String containerID, String image, String imageID, ContainerState lastState, String name, Boolean ready, ResourceRequirements resources, Integer restartCount, Boolean started, ContainerState state, List<VolumeMountStatus> volumeMounts) {
+    public ContainerStatus(Map<String, Quantity> allocatedResources, List<ResourceStatus> allocatedResourcesStatus, String containerID, String image, String imageID, ContainerState lastState, String name, Boolean ready, ResourceRequirements resources, Integer restartCount, Boolean started, ContainerState state, ContainerUser user, List<VolumeMountStatus> volumeMounts) {
         super();
         this.allocatedResources = allocatedResources;
+        this.allocatedResourcesStatus = allocatedResourcesStatus;
         this.containerID = containerID;
         this.image = image;
         this.imageID = imageID;
@@ -95,6 +103,7 @@ public class ContainerStatus implements Editable<ContainerStatusBuilder>, Kubern
         this.restartCount = restartCount;
         this.started = started;
         this.state = state;
+        this.user = user;
         this.volumeMounts = volumeMounts;
     }
 
@@ -107,6 +116,17 @@ public class ContainerStatus implements Editable<ContainerStatusBuilder>, Kubern
     @JsonProperty("allocatedResources")
     public void setAllocatedResources(Map<String, Quantity> allocatedResources) {
         this.allocatedResources = allocatedResources;
+    }
+
+    @JsonProperty("allocatedResourcesStatus")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<ResourceStatus> getAllocatedResourcesStatus() {
+        return allocatedResourcesStatus;
+    }
+
+    @JsonProperty("allocatedResourcesStatus")
+    public void setAllocatedResourcesStatus(List<ResourceStatus> allocatedResourcesStatus) {
+        this.allocatedResourcesStatus = allocatedResourcesStatus;
     }
 
     @JsonProperty("containerID")
@@ -207,6 +227,16 @@ public class ContainerStatus implements Editable<ContainerStatusBuilder>, Kubern
     @JsonProperty("state")
     public void setState(ContainerState state) {
         this.state = state;
+    }
+
+    @JsonProperty("user")
+    public ContainerUser getUser() {
+        return user;
+    }
+
+    @JsonProperty("user")
+    public void setUser(ContainerUser user) {
+        this.user = user;
     }
 
     @JsonProperty("volumeMounts")

@@ -41,6 +41,11 @@
       <groupId>io.fabric8</groupId>
       <artifactId>kubernetes-model-core</artifactId>
     </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.datatype</groupId>
+      <artifactId>jackson-datatype-jsr310</artifactId>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <profiles>
@@ -59,9 +64,6 @@
                 <packageMappings combine.self="append">
                   <io.k8s.api.coordination>io.fabric8.kubernetes.api.model.coordination</io.k8s.api.coordination>
                 </packageMappings>
-                <skipGenerationRegexes>
-                  <skipGenerationRegex>^io\.k8s\.api\.coordination\.v1\.LeaseSpec$</skipGenerationRegex>
-                </skipGenerationRegexes>
                 <includeGenerationRegexes>
                   <includeGenerationRegex>^io\.k8s\.api\.coordination\..*$</includeGenerationRegex>
                 </includeGenerationRegexes>

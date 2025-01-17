@@ -20,7 +20,8 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "recursiveReadOnlyMounts"
+    "recursiveReadOnlyMounts",
+    "userNamespaces"
 })
 @ToString
 @EqualsAndHashCode
@@ -35,6 +36,8 @@ public class NodeRuntimeHandlerFeatures implements Editable<NodeRuntimeHandlerFe
 
     @JsonProperty("recursiveReadOnlyMounts")
     private Boolean recursiveReadOnlyMounts;
+    @JsonProperty("userNamespaces")
+    private Boolean userNamespaces;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -45,9 +48,10 @@ public class NodeRuntimeHandlerFeatures implements Editable<NodeRuntimeHandlerFe
     public NodeRuntimeHandlerFeatures() {
     }
 
-    public NodeRuntimeHandlerFeatures(Boolean recursiveReadOnlyMounts) {
+    public NodeRuntimeHandlerFeatures(Boolean recursiveReadOnlyMounts, Boolean userNamespaces) {
         super();
         this.recursiveReadOnlyMounts = recursiveReadOnlyMounts;
+        this.userNamespaces = userNamespaces;
     }
 
     @JsonProperty("recursiveReadOnlyMounts")
@@ -58,6 +62,16 @@ public class NodeRuntimeHandlerFeatures implements Editable<NodeRuntimeHandlerFe
     @JsonProperty("recursiveReadOnlyMounts")
     public void setRecursiveReadOnlyMounts(Boolean recursiveReadOnlyMounts) {
         this.recursiveReadOnlyMounts = recursiveReadOnlyMounts;
+    }
+
+    @JsonProperty("userNamespaces")
+    public Boolean getUserNamespaces() {
+        return userNamespaces;
+    }
+
+    @JsonProperty("userNamespaces")
+    public void setUserNamespaces(Boolean userNamespaces) {
+        this.userNamespaces = userNamespaces;
     }
 
     @JsonIgnore

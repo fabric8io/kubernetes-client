@@ -31,6 +31,7 @@ import lombok.experimental.Accessors;
     "seLinuxOptions",
     "seccompProfile",
     "supplementalGroups",
+    "supplementalGroupsPolicy",
     "sysctls",
     "windowsOptions"
 })
@@ -64,6 +65,8 @@ public class PodSecurityContext implements Editable<PodSecurityContextBuilder>, 
     @JsonProperty("supplementalGroups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Long> supplementalGroups = new ArrayList<>();
+    @JsonProperty("supplementalGroupsPolicy")
+    private String supplementalGroupsPolicy;
     @JsonProperty("sysctls")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Sysctl> sysctls = new ArrayList<>();
@@ -79,7 +82,7 @@ public class PodSecurityContext implements Editable<PodSecurityContextBuilder>, 
     public PodSecurityContext() {
     }
 
-    public PodSecurityContext(AppArmorProfile appArmorProfile, Long fsGroup, String fsGroupChangePolicy, Long runAsGroup, Boolean runAsNonRoot, Long runAsUser, SELinuxOptions seLinuxOptions, SeccompProfile seccompProfile, List<Long> supplementalGroups, List<Sysctl> sysctls, WindowsSecurityContextOptions windowsOptions) {
+    public PodSecurityContext(AppArmorProfile appArmorProfile, Long fsGroup, String fsGroupChangePolicy, Long runAsGroup, Boolean runAsNonRoot, Long runAsUser, SELinuxOptions seLinuxOptions, SeccompProfile seccompProfile, List<Long> supplementalGroups, String supplementalGroupsPolicy, List<Sysctl> sysctls, WindowsSecurityContextOptions windowsOptions) {
         super();
         this.appArmorProfile = appArmorProfile;
         this.fsGroup = fsGroup;
@@ -90,6 +93,7 @@ public class PodSecurityContext implements Editable<PodSecurityContextBuilder>, 
         this.seLinuxOptions = seLinuxOptions;
         this.seccompProfile = seccompProfile;
         this.supplementalGroups = supplementalGroups;
+        this.supplementalGroupsPolicy = supplementalGroupsPolicy;
         this.sysctls = sysctls;
         this.windowsOptions = windowsOptions;
     }
@@ -183,6 +187,16 @@ public class PodSecurityContext implements Editable<PodSecurityContextBuilder>, 
     @JsonProperty("supplementalGroups")
     public void setSupplementalGroups(List<Long> supplementalGroups) {
         this.supplementalGroups = supplementalGroups;
+    }
+
+    @JsonProperty("supplementalGroupsPolicy")
+    public String getSupplementalGroupsPolicy() {
+        return supplementalGroupsPolicy;
+    }
+
+    @JsonProperty("supplementalGroupsPolicy")
+    public void setSupplementalGroupsPolicy(String supplementalGroupsPolicy) {
+        this.supplementalGroupsPolicy = supplementalGroupsPolicy;
     }
 
     @JsonProperty("sysctls")

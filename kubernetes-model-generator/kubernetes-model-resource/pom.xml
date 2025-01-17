@@ -56,6 +56,7 @@
             <configuration >
               <settings combine.self="append">
                 <schemas>
+                  <schema>${project.basedir}/../openapi/schemas/kubernetes-1.30.9.json</schema>
                   <schema>${openapi.schema.kubernetes-latest}</schema>
                 </schemas>
                 <packageMappings combine.self="append">

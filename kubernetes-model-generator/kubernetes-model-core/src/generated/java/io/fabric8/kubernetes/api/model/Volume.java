@@ -37,6 +37,7 @@ import lombok.experimental.Accessors;
     "gitRepo",
     "glusterfs",
     "hostPath",
+    "image",
     "iscsi",
     "name",
     "nfs",
@@ -96,6 +97,8 @@ public class Volume implements Editable<VolumeBuilder>, KubernetesResource
     private GlusterfsVolumeSource glusterfs;
     @JsonProperty("hostPath")
     private HostPathVolumeSource hostPath;
+    @JsonProperty("image")
+    private ImageVolumeSource image;
     @JsonProperty("iscsi")
     private ISCSIVolumeSource iscsi;
     @JsonProperty("name")
@@ -132,7 +135,7 @@ public class Volume implements Editable<VolumeBuilder>, KubernetesResource
     public Volume() {
     }
 
-    public Volume(AWSElasticBlockStoreVolumeSource awsElasticBlockStore, AzureDiskVolumeSource azureDisk, AzureFileVolumeSource azureFile, CephFSVolumeSource cephfs, CinderVolumeSource cinder, ConfigMapVolumeSource configMap, CSIVolumeSource csi, DownwardAPIVolumeSource downwardAPI, EmptyDirVolumeSource emptyDir, EphemeralVolumeSource ephemeral, FCVolumeSource fc, FlexVolumeSource flexVolume, FlockerVolumeSource flocker, GCEPersistentDiskVolumeSource gcePersistentDisk, GitRepoVolumeSource gitRepo, GlusterfsVolumeSource glusterfs, HostPathVolumeSource hostPath, ISCSIVolumeSource iscsi, String name, NFSVolumeSource nfs, PersistentVolumeClaimVolumeSource persistentVolumeClaim, PhotonPersistentDiskVolumeSource photonPersistentDisk, PortworxVolumeSource portworxVolume, ProjectedVolumeSource projected, QuobyteVolumeSource quobyte, RBDVolumeSource rbd, ScaleIOVolumeSource scaleIO, SecretVolumeSource secret, StorageOSVolumeSource storageos, VsphereVirtualDiskVolumeSource vsphereVolume) {
+    public Volume(AWSElasticBlockStoreVolumeSource awsElasticBlockStore, AzureDiskVolumeSource azureDisk, AzureFileVolumeSource azureFile, CephFSVolumeSource cephfs, CinderVolumeSource cinder, ConfigMapVolumeSource configMap, CSIVolumeSource csi, DownwardAPIVolumeSource downwardAPI, EmptyDirVolumeSource emptyDir, EphemeralVolumeSource ephemeral, FCVolumeSource fc, FlexVolumeSource flexVolume, FlockerVolumeSource flocker, GCEPersistentDiskVolumeSource gcePersistentDisk, GitRepoVolumeSource gitRepo, GlusterfsVolumeSource glusterfs, HostPathVolumeSource hostPath, ImageVolumeSource image, ISCSIVolumeSource iscsi, String name, NFSVolumeSource nfs, PersistentVolumeClaimVolumeSource persistentVolumeClaim, PhotonPersistentDiskVolumeSource photonPersistentDisk, PortworxVolumeSource portworxVolume, ProjectedVolumeSource projected, QuobyteVolumeSource quobyte, RBDVolumeSource rbd, ScaleIOVolumeSource scaleIO, SecretVolumeSource secret, StorageOSVolumeSource storageos, VsphereVirtualDiskVolumeSource vsphereVolume) {
         super();
         this.awsElasticBlockStore = awsElasticBlockStore;
         this.azureDisk = azureDisk;
@@ -151,6 +154,7 @@ public class Volume implements Editable<VolumeBuilder>, KubernetesResource
         this.gitRepo = gitRepo;
         this.glusterfs = glusterfs;
         this.hostPath = hostPath;
+        this.image = image;
         this.iscsi = iscsi;
         this.name = name;
         this.nfs = nfs;
@@ -334,6 +338,16 @@ public class Volume implements Editable<VolumeBuilder>, KubernetesResource
     @JsonProperty("hostPath")
     public void setHostPath(HostPathVolumeSource hostPath) {
         this.hostPath = hostPath;
+    }
+
+    @JsonProperty("image")
+    public ImageVolumeSource getImage() {
+        return image;
+    }
+
+    @JsonProperty("image")
+    public void setImage(ImageVolumeSource image) {
+        this.image = image;
     }
 
     @JsonProperty("iscsi")

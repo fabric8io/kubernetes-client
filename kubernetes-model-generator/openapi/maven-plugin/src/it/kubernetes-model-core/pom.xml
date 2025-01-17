@@ -50,7 +50,7 @@
           <settings>
             <outputDirectory>${project.basedir}</outputDirectory>
             <schemas>
-              <schema>@project.basedir@/../schemas/kubernetes-1.30.0.json</schema>
+              <schema>@project.basedir@/../schemas/kubernetes-1.31.5.json</schema>
             </schemas>
             <packageName>io.fabric8.kubernetes.api.model</packageName>
             <builderPackage>io.fabric8.kubernetes.api.builder</builderPackage>

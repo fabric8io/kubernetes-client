@@ -15,10 +15,10 @@
  */
 package io.fabric8.kubernetes.client.mock;
 
-import io.fabric8.kubernetes.api.model.networking.v1alpha1.IPAddress;
-import io.fabric8.kubernetes.api.model.networking.v1alpha1.IPAddressBuilder;
-import io.fabric8.kubernetes.api.model.networking.v1alpha1.IPAddressList;
-import io.fabric8.kubernetes.api.model.networking.v1alpha1.IPAddressListBuilder;
+import io.fabric8.kubernetes.api.model.networking.v1beta1.IPAddress;
+import io.fabric8.kubernetes.api.model.networking.v1beta1.IPAddressBuilder;
+import io.fabric8.kubernetes.api.model.networking.v1beta1.IPAddressList;
+import io.fabric8.kubernetes.api.model.networking.v1beta1.IPAddressListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
@@ -36,12 +36,12 @@ class IPAddressTest {
   @Test
   void get() {
     // Given
-    server.expect().get().withPath("/apis/networking.k8s.io/v1alpha1/ipaddresses/192.168.1.5")
+    server.expect().get().withPath("/apis/networking.k8s.io/v1beta1/ipaddresses/192.168.1.5")
         .andReturn(HttpURLConnection.HTTP_OK, createNewIPAddress())
         .once();
 
     // When
-    IPAddress ipAddress = client.network().v1alpha1().ipAddresses().withName("192.168.1.5").get();
+    IPAddress ipAddress = client.network().v1beta1().ipAddresses().withName("192.168.1.5").get();
 
     // Then
     assertThat(ipAddress)
@@ -52,14 +52,14 @@ class IPAddressTest {
   @Test
   void list() {
     // Given
-    server.expect().get().withPath("/apis/networking.k8s.io/v1alpha1/ipaddresses")
+    server.expect().get().withPath("/apis/networking.k8s.io/v1beta1/ipaddresses")
         .andReturn(HttpURLConnection.HTTP_OK, new IPAddressListBuilder()
             .addToItems(createNewIPAddress())
             .build())
         .once();
 
     // When
-    IPAddressList ipAddressList = client.network().v1alpha1().ipAddresses().list();
+    IPAddressList ipAddressList = client.network().v1beta1().ipAddresses().list();
 
     // Then
     assertThat(ipAddressList).isNotNull();
@@ -71,12 +71,12 @@ class IPAddressTest {
   @Test
   void delete() {
     // Given
-    server.expect().delete().withPath("/apis/networking.k8s.io/v1alpha1/ipaddresses/192.168.1.5")
+    server.expect().delete().withPath("/apis/networking.k8s.io/v1beta1/ipaddresses/192.168.1.5")
         .andReturn(HttpURLConnection.HTTP_OK, createNewIPAddress())
         .once();
 
     // When
-    boolean isDeleted = client.network().v1alpha1().ipAddresses().withName("192.168.1.5").delete()
+    boolean isDeleted = client.network().v1beta1().ipAddresses().withName("192.168.1.5").delete()
         .size() == 1;
 
     // Then

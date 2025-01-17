@@ -20,7 +20,8 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "name"
+    "name",
+    "request"
 })
 @ToString
 @EqualsAndHashCode
@@ -35,6 +36,8 @@ public class ResourceClaim implements Editable<ResourceClaimBuilder>, Kubernetes
 
     @JsonProperty("name")
     private String name;
+    @JsonProperty("request")
+    private String request;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -45,9 +48,10 @@ public class ResourceClaim implements Editable<ResourceClaimBuilder>, Kubernetes
     public ResourceClaim() {
     }
 
-    public ResourceClaim(String name) {
+    public ResourceClaim(String name, String request) {
         super();
         this.name = name;
+        this.request = request;
     }
 
     @JsonProperty("name")
@@ -58,6 +62,16 @@ public class ResourceClaim implements Editable<ResourceClaimBuilder>, Kubernetes
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
+    }
+
+    @JsonProperty("request")
+    public String getRequest() {
+        return request;
+    }
+
+    @JsonProperty("request")
+    public void setRequest(String request) {
+        this.request = request;
     }
 
     @JsonIgnore
