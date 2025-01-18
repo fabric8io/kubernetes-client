@@ -12,6 +12,7 @@
 #### Dependency Upgrade
 
 #### New Features
+* Fix #6802: Java generator support for required spec and status
 
 #### _**Note**_: Breaking changes
 
