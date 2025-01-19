@@ -426,7 +426,7 @@ class JsonSchemaTest {
     assertNotNull(schema);
     JSONSchemaProps embedded = schema.getProperties().get("embedded");
     assertEquals(true, embedded.getXKubernetesEmbeddedResource());
-    assertNull(embedded.getType());
+    assertEquals("object",embedded.getType());
   }
 
   @Test
