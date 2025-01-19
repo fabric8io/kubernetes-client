@@ -33,18 +33,18 @@ class KubeConfigTest {
   KubeConfig kubeConfig = new KubeConfig(certManagerMock, null);
 
   @Test
-  void generatesConfigYaml() {
-    when(certManagerMock.getAPIServerCertPath()).thenReturn(API_CERT_PATH);
-    when(certManagerMock.getClientCertPath()).thenReturn(CLIENT_KEY_PATH);
-    when(certManagerMock.getClientKeyPath()).thenReturn(CLIENT_CERT_PATH);
+    void generatesConfigYaml() {
+        when(certManagerMock.getAPIServerCertPath()).thenReturn(API_CERT_PATH);
+        when(certManagerMock.getClientCertPath()).thenReturn(CLIENT_KEY_PATH);
+        when(certManagerMock.getClientKeyPath()).thenReturn(CLIENT_CERT_PATH);
 
-    String yaml = kubeConfig.generateKubeConfigYaml(API_SERVER_PORT);
+        String yaml = kubeConfig.generateKubeConfigYaml(API_SERVER_PORT);
 
-    assertThat(yaml)
-        .contains("" + API_SERVER_PORT)
-        .contains(API_CERT_PATH)
-        .contains(CLIENT_CERT_PATH)
-        .contains(CLIENT_KEY_PATH);
-  }
+        assertThat(yaml)
+                .contains(""+API_SERVER_PORT)
+                .contains(API_CERT_PATH)
+                .contains(CLIENT_CERT_PATH)
+                .contains(CLIENT_KEY_PATH);
+    }
 
 }
