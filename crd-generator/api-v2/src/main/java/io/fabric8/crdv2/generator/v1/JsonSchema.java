@@ -103,6 +103,7 @@ public class JsonSchema extends AbstractJsonSchema<V1JSONSchemaProps, V1Validati
   protected V1JSONSchemaProps raw() {
     V1JSONSchemaProps result = singleProperty(null);
     result.setXKubernetesEmbeddedResource(true);
+    result.setType("object");
     return result;
   }
 
