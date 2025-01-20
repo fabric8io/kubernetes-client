@@ -48,7 +48,9 @@ class ApprovalTest {
         Arguments.of("testCalicoIPPoolCrd", "calico-ippool-crd.yml", "IPPool", "CalicoIPPoolCr", new Config()),
         Arguments.of("testExistingJavaType", "existing-java-type-crd.yml", "ExistingJavaType", "ExistingJavaTypeCr",
             Config.builder().existingJavaTypes(Collections.singletonMap(
-                "org.test.v1.existingjavatypespec.Affinity", "io.fabric8.kubernetes.api.model.Affinity")).build()));
+                "org.test.v1.existingjavatypespec.Affinity", "io.fabric8.kubernetes.api.model.Affinity")).build()),
+        Arguments.of("testRequireSpecAndStatusCrd", "require-spec-and-status-crd.yml", "RequireSpecAndStatus",
+            "RequireSpecAndStatusJavaCr", new Config()));
   }
 
   @ParameterizedTest

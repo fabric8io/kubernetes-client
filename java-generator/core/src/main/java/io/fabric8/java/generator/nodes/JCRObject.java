@@ -16,12 +16,19 @@
 package io.fabric8.java.generator.nodes;
 
 import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.Modifier;
+import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.PackageDeclaration;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
+import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.expr.Name;
 import com.github.javaparser.ast.expr.NameExpr;
+import com.github.javaparser.ast.expr.NormalAnnotationExpr;
 import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
+import com.github.javaparser.ast.expr.SuperExpr;
+import com.github.javaparser.ast.stmt.BlockStmt;
+import com.github.javaparser.ast.stmt.ReturnStmt;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import io.fabric8.java.generator.Config;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
@@ -115,11 +122,25 @@ public class JCRObject extends JObject implements JObjectExtraAnnotations {
         ? new ClassOrInterfaceType().setName(type + "Spec")
         : jlVoid;
     fields.remove("spec");
+    if (required.contains("spec")) {
+      clz.addMethod("getSpec", Modifier.Keyword.PUBLIC)
+          .setType(spec)
+          .setBody(new BlockStmt().addStatement(new ReturnStmt(new MethodCallExpr(new SuperExpr(), "getSpec"))))
+          .addAnnotation(new NormalAnnotationExpr(new Name("java.lang.Override"), new NodeList<>()))
+          .addAnnotation(new NormalAnnotationExpr(new Name("io.fabric8.generator.annotation.Required"), new NodeList<>()));
+    }
 
     ClassOrInterfaceType status = (fields.containsKey("status"))
         ? new ClassOrInterfaceType().setName(type + "Status")
         : jlVoid;
     fields.remove("status");
+    if (required.contains("status")) {
+      clz.addMethod("getStatus", Modifier.Keyword.PUBLIC)
+          .setType(status)
+          .setBody(new BlockStmt().addStatement(new ReturnStmt(new MethodCallExpr(new SuperExpr(), "getStatus"))))
+          .addAnnotation(new NormalAnnotationExpr(new Name("java.lang.Override"), new NodeList<>()))
+          .addAnnotation(new NormalAnnotationExpr(new Name("io.fabric8.generator.annotation.Required"), new NodeList<>()));
+    }
 
     ClassOrInterfaceType crType = new ClassOrInterfaceType()
         .setName("io.fabric8.kubernetes.client.CustomResource")
