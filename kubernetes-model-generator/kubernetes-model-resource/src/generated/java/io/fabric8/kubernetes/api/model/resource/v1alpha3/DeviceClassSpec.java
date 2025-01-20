@@ -21,7 +21,6 @@ import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
-import io.fabric8.kubernetes.api.model.NodeSelector;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
@@ -39,8 +38,7 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "config",
-    "selectors",
-    "suitableNodes"
+    "selectors"
 })
 @ToString
 @EqualsAndHashCode
@@ -73,8 +71,6 @@ public class DeviceClassSpec implements Editable<DeviceClassSpecBuilder>, Kubern
     @JsonProperty("selectors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<DeviceSelector> selectors = new ArrayList<>();
-    @JsonProperty("suitableNodes")
-    private NodeSelector suitableNodes;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -85,11 +81,10 @@ public class DeviceClassSpec implements Editable<DeviceClassSpecBuilder>, Kubern
     public DeviceClassSpec() {
     }
 
-    public DeviceClassSpec(List<DeviceClassConfiguration> config, List<DeviceSelector> selectors, NodeSelector suitableNodes) {
+    public DeviceClassSpec(List<DeviceClassConfiguration> config, List<DeviceSelector> selectors) {
         super();
         this.config = config;
         this.selectors = selectors;
-        this.suitableNodes = suitableNodes;
     }
 
     @JsonProperty("config")
@@ -112,16 +107,6 @@ public class DeviceClassSpec implements Editable<DeviceClassSpecBuilder>, Kubern
     @JsonProperty("selectors")
     public void setSelectors(List<DeviceSelector> selectors) {
         this.selectors = selectors;
-    }
-
-    @JsonProperty("suitableNodes")
-    public NodeSelector getSuitableNodes() {
-        return suitableNodes;
-    }
-
-    @JsonProperty("suitableNodes")
-    public void setSuitableNodes(NodeSelector suitableNodes) {
-        this.suitableNodes = suitableNodes;
     }
 
     @JsonIgnore

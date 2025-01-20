@@ -78,7 +78,7 @@
     <itest>true</itest>
     <skipTests>false</skipTests>
     <testExclusionPattern>**/*KubernetesTest.java</testExclusionPattern>
-    <openapi.schema.kubernetes-latest>${project.parent.basedir}/openapi/schemas/kubernetes-1.31.5.json</openapi.schema.kubernetes-latest>
+    <openapi.schema.kubernetes-latest>${project.parent.basedir}/openapi/schemas/kubernetes-1.32.1.json</openapi.schema.kubernetes-latest>
     <openapi.schema.openshift-generated>${project.parent.basedir}/openapi/schemas/openshift-generated.json</openapi.schema.openshift-generated>
     <openapi.schema.dev.knative>${project.basedir}/../../../kubernetes-model-generator/openapi/schemas/dev.knative.json</openapi.schema.dev.knative>
     <openapi.schema.dev.tekton>${project.basedir}/../../../kubernetes-model-generator/openapi/schemas/dev.tekton.json</openapi.schema.dev.tekton>

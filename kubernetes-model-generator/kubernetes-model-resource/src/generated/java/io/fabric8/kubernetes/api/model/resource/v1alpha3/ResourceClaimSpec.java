@@ -35,7 +35,6 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "controller",
     "devices"
 })
 @ToString
@@ -63,8 +62,6 @@ import lombok.experimental.Accessors;
 public class ResourceClaimSpec implements Editable<ResourceClaimSpecBuilder>, KubernetesResource
 {
 
-    @JsonProperty("controller")
-    private String controller;
     @JsonProperty("devices")
     private DeviceClaim devices;
     @JsonIgnore
@@ -77,20 +74,9 @@ public class ResourceClaimSpec implements Editable<ResourceClaimSpecBuilder>, Ku
     public ResourceClaimSpec() {
     }
 
-    public ResourceClaimSpec(String controller, DeviceClaim devices) {
+    public ResourceClaimSpec(DeviceClaim devices) {
         super();
-        this.controller = controller;
         this.devices = devices;
-    }
-
-    @JsonProperty("controller")
-    public String getController() {
-        return controller;
-    }
-
-    @JsonProperty("controller")
-    public void setController(String controller) {
-        this.controller = controller;
     }
 
     @JsonProperty("devices")

@@ -38,7 +38,7 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "allocation",
-    "deallocationRequested",
+    "devices",
     "reservedFor"
 })
 @ToString
@@ -68,8 +68,9 @@ public class ResourceClaimStatus implements Editable<ResourceClaimStatusBuilder>
 
     @JsonProperty("allocation")
     private AllocationResult allocation;
-    @JsonProperty("deallocationRequested")
-    private Boolean deallocationRequested;
+    @JsonProperty("devices")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<AllocatedDeviceStatus> devices = new ArrayList<>();
     @JsonProperty("reservedFor")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ResourceClaimConsumerReference> reservedFor = new ArrayList<>();
@@ -83,10 +84,10 @@ public class ResourceClaimStatus implements Editable<ResourceClaimStatusBuilder>
     public ResourceClaimStatus() {
     }
 
-    public ResourceClaimStatus(AllocationResult allocation, Boolean deallocationRequested, List<ResourceClaimConsumerReference> reservedFor) {
+    public ResourceClaimStatus(AllocationResult allocation, List<AllocatedDeviceStatus> devices, List<ResourceClaimConsumerReference> reservedFor) {
         super();
         this.allocation = allocation;
-        this.deallocationRequested = deallocationRequested;
+        this.devices = devices;
         this.reservedFor = reservedFor;
     }
 
@@ -100,14 +101,15 @@ public class ResourceClaimStatus implements Editable<ResourceClaimStatusBuilder>
         this.allocation = allocation;
     }
 
-    @JsonProperty("deallocationRequested")
-    public Boolean getDeallocationRequested() {
-        return deallocationRequested;
+    @JsonProperty("devices")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<AllocatedDeviceStatus> getDevices() {
+        return devices;
     }
 
-    @JsonProperty("deallocationRequested")
-    public void setDeallocationRequested(Boolean deallocationRequested) {
-        this.deallocationRequested = deallocationRequested;
+    @JsonProperty("devices")
+    public void setDevices(List<AllocatedDeviceStatus> devices) {
+        this.devices = devices;
     }
 
     @JsonProperty("reservedFor")

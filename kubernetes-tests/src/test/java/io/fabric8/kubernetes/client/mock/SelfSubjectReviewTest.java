@@ -15,8 +15,8 @@
  */
 package io.fabric8.kubernetes.client.mock;
 
-import io.fabric8.kubernetes.api.model.authentication.v1alpha1.SelfSubjectReview;
-import io.fabric8.kubernetes.api.model.authentication.v1alpha1.SelfSubjectReviewBuilder;
+import io.fabric8.kubernetes.api.model.authentication.SelfSubjectReview;
+import io.fabric8.kubernetes.api.model.authentication.SelfSubjectReviewBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
@@ -30,7 +30,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @EnableKubernetesMockClient
 class SelfSubjectReviewTest {
-  private KubernetesClient client;
+  KubernetesClient client;
   KubernetesMockServer server;
 
   @Test
@@ -38,12 +38,12 @@ class SelfSubjectReviewTest {
     // Given
     SelfSubjectReview ssr = new SelfSubjectReview();
     server.expect().post()
-        .withPath("/apis/authentication.k8s.io/v1alpha1/selfsubjectreviews")
+        .withPath("/apis/authentication.k8s.io/v1/selfsubjectreviews")
         .andReturn(HTTP_CREATED, createNewSelfSubjectReview(Arrays.asList("system:masters", "system:authenticated")))
         .once();
 
     // When
-    SelfSubjectReview result = client.authentication().v1alpha1().selfSubjectReview().create(ssr);
+    SelfSubjectReview result = client.authentication().v1().selfSubjectReviews().create(ssr);
 
     // Then
     assertThat(result)

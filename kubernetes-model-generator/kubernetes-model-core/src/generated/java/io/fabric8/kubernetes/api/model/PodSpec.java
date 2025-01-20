@@ -47,6 +47,7 @@ import lombok.experimental.Accessors;
     "priorityClassName",
     "readinessGates",
     "resourceClaims",
+    "resources",
     "restartPolicy",
     "runtimeClassName",
     "schedulerName",
@@ -132,6 +133,8 @@ public class PodSpec implements Editable<PodSpecBuilder>, KubernetesResource
     @JsonProperty("resourceClaims")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<PodResourceClaim> resourceClaims = new ArrayList<>();
+    @JsonProperty("resources")
+    private ResourceRequirements resources;
     @JsonProperty("restartPolicy")
     private String restartPolicy;
     @JsonProperty("runtimeClassName")
@@ -174,7 +177,7 @@ public class PodSpec implements Editable<PodSpecBuilder>, KubernetesResource
     public PodSpec() {
     }
 
-    public PodSpec(Long activeDeadlineSeconds, Affinity affinity, Boolean automountServiceAccountToken, List<Container> containers, PodDNSConfig dnsConfig, String dnsPolicy, Boolean enableServiceLinks, List<EphemeralContainer> ephemeralContainers, List<HostAlias> hostAliases, Boolean hostIPC, Boolean hostNetwork, Boolean hostPID, Boolean hostUsers, String hostname, List<LocalObjectReference> imagePullSecrets, List<Container> initContainers, String nodeName, Map<String, String> nodeSelector, PodOS os, Map<String, Quantity> overhead, String preemptionPolicy, Integer priority, String priorityClassName, List<PodReadinessGate> readinessGates, List<PodResourceClaim> resourceClaims, String restartPolicy, String runtimeClassName, String schedulerName, List<PodSchedulingGate> schedulingGates, PodSecurityContext securityContext, String serviceAccount, String serviceAccountName, Boolean setHostnameAsFQDN, Boolean shareProcessNamespace, String subdomain, Long terminationGracePeriodSeconds, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, List<Volume> volumes) {
+    public PodSpec(Long activeDeadlineSeconds, Affinity affinity, Boolean automountServiceAccountToken, List<Container> containers, PodDNSConfig dnsConfig, String dnsPolicy, Boolean enableServiceLinks, List<EphemeralContainer> ephemeralContainers, List<HostAlias> hostAliases, Boolean hostIPC, Boolean hostNetwork, Boolean hostPID, Boolean hostUsers, String hostname, List<LocalObjectReference> imagePullSecrets, List<Container> initContainers, String nodeName, Map<String, String> nodeSelector, PodOS os, Map<String, Quantity> overhead, String preemptionPolicy, Integer priority, String priorityClassName, List<PodReadinessGate> readinessGates, List<PodResourceClaim> resourceClaims, ResourceRequirements resources, String restartPolicy, String runtimeClassName, String schedulerName, List<PodSchedulingGate> schedulingGates, PodSecurityContext securityContext, String serviceAccount, String serviceAccountName, Boolean setHostnameAsFQDN, Boolean shareProcessNamespace, String subdomain, Long terminationGracePeriodSeconds, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, List<Volume> volumes) {
         super();
         this.activeDeadlineSeconds = activeDeadlineSeconds;
         this.affinity = affinity;
@@ -201,6 +204,7 @@ public class PodSpec implements Editable<PodSpecBuilder>, KubernetesResource
         this.priorityClassName = priorityClassName;
         this.readinessGates = readinessGates;
         this.resourceClaims = resourceClaims;
+        this.resources = resources;
         this.restartPolicy = restartPolicy;
         this.runtimeClassName = runtimeClassName;
         this.schedulerName = schedulerName;
@@ -474,6 +478,16 @@ public class PodSpec implements Editable<PodSpecBuilder>, KubernetesResource
     @JsonProperty("resourceClaims")
     public void setResourceClaims(List<PodResourceClaim> resourceClaims) {
         this.resourceClaims = resourceClaims;
+    }
+
+    @JsonProperty("resources")
+    public ResourceRequirements getResources() {
+        return resources;
+    }
+
+    @JsonProperty("resources")
+    public void setResources(ResourceRequirements resources) {
+        this.resources = resources;
     }
 
     @JsonProperty("restartPolicy")
