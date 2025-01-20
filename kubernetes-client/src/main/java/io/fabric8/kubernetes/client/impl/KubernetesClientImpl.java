@@ -79,7 +79,6 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
 import io.fabric8.kubernetes.client.RequestConfig;
 import io.fabric8.kubernetes.client.V1AdmissionRegistrationAPIGroupDSL;
-import io.fabric8.kubernetes.client.V1Alpha1AdmissionRegistrationAPIGroupDSL;
 import io.fabric8.kubernetes.client.V1Alpha2DynamicResourceAllocationAPIGroupDSL;
 import io.fabric8.kubernetes.client.V1ApiextensionAPIGroupDSL;
 import io.fabric8.kubernetes.client.V1AuthenticationAPIGroupDSL;
@@ -125,7 +124,6 @@ import io.fabric8.kubernetes.client.dsl.ServiceAccountResource;
 import io.fabric8.kubernetes.client.dsl.ServiceResource;
 import io.fabric8.kubernetes.client.dsl.StorageAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.V1APIGroupDSL;
-import io.fabric8.kubernetes.client.dsl.V1Alpha1AuthenticationAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.V1Alpha1CertificatesAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.V1BatchAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.V1Beta1AuthenticationAPIGroupDSL;
@@ -216,8 +214,6 @@ public class KubernetesClientImpl extends BaseClient implements NamespacedKubern
     adapters.registerClient(V1AdmissionRegistrationAPIGroupDSL.class, new V1AdmissionRegistrationAPIGroupClient());
     adapters.registerClient(V1beta1AdmissionRegistrationAPIGroupDSL.class,
         new V1beta1AdmissionRegistrationAPIGroupClient());
-    adapters.registerClient(V1Alpha1AdmissionRegistrationAPIGroupDSL.class,
-        new V1Alpha1AdmissionRegistrationAPIGroupClient());
     adapters.registerClient(AutoscalingAPIGroupDSL.class, new AutoscalingAPIGroupClient());
     adapters.registerClient(ApiextensionsAPIGroupDSL.class, new ApiextensionsAPIGroupClient());
     adapters.registerClient(AuthorizationAPIGroupDSL.class, new AuthorizationAPIGroupClient());
@@ -256,7 +252,6 @@ public class KubernetesClientImpl extends BaseClient implements NamespacedKubern
     adapters.registerClient(V1AuthorizationAPIGroupDSL.class, new V1AuthorizationAPIGroupClient());
     adapters.registerClient(V1beta1AuthorizationAPIGroupDSL.class, new V1beta1AuthorizationAPIGroupClient());
     adapters.registerClient(V1AuthenticationAPIGroupDSL.class, new V1AuthenticationAPIGroupClient());
-    adapters.registerClient(V1Alpha1AuthenticationAPIGroupDSL.class, new V1Alpha1AuthenticationAPIGroupClient());
     adapters.registerClient(V1Beta1AuthenticationAPIGroupDSL.class, new V1Beta1AuthenticationAPIGroupClient());
     adapters.registerClient(V1NetworkAPIGroupDSL.class, new V1NetworkAPIGroupClient());
     adapters.registerClient(V1beta1NetworkAPIGroupDSL.class, new V1beta1NetworkAPIGroupClient());

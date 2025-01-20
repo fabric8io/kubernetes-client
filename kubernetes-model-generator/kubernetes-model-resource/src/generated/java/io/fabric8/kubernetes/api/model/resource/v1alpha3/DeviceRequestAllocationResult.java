@@ -35,6 +35,7 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "adminAccess",
     "device",
     "driver",
     "pool",
@@ -65,6 +66,8 @@ import lombok.experimental.Accessors;
 public class DeviceRequestAllocationResult implements Editable<DeviceRequestAllocationResultBuilder>, KubernetesResource
 {
 
+    @JsonProperty("adminAccess")
+    private Boolean adminAccess;
     @JsonProperty("device")
     private String device;
     @JsonProperty("driver")
@@ -83,12 +86,23 @@ public class DeviceRequestAllocationResult implements Editable<DeviceRequestAllo
     public DeviceRequestAllocationResult() {
     }
 
-    public DeviceRequestAllocationResult(String device, String driver, String pool, String request) {
+    public DeviceRequestAllocationResult(Boolean adminAccess, String device, String driver, String pool, String request) {
         super();
+        this.adminAccess = adminAccess;
         this.device = device;
         this.driver = driver;
         this.pool = pool;
         this.request = request;
+    }
+
+    @JsonProperty("adminAccess")
+    public Boolean getAdminAccess() {
+        return adminAccess;
+    }
+
+    @JsonProperty("adminAccess")
+    public void setAdminAccess(Boolean adminAccess) {
+        this.adminAccess = adminAccess;
     }
 
     @JsonProperty("device")

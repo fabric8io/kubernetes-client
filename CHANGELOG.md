@@ -13,6 +13,9 @@
 
 #### New Features
 
+* Fix #5993: Support for Kubernetes v1.31 (elli)
+* Fix #6767: Support for Kubernetes v1.32 (penelope) 
+
 #### _**Note**_: Breaking changes
 
 ### 7.0.1 (2024-12-18)

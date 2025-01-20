@@ -28,6 +28,7 @@ import lombok.experimental.Accessors;
     "runAsGroup",
     "runAsNonRoot",
     "runAsUser",
+    "seLinuxChangePolicy",
     "seLinuxOptions",
     "seccompProfile",
     "supplementalGroups",
@@ -58,6 +59,8 @@ public class PodSecurityContext implements Editable<PodSecurityContextBuilder>, 
     private Boolean runAsNonRoot;
     @JsonProperty("runAsUser")
     private Long runAsUser;
+    @JsonProperty("seLinuxChangePolicy")
+    private String seLinuxChangePolicy;
     @JsonProperty("seLinuxOptions")
     private SELinuxOptions seLinuxOptions;
     @JsonProperty("seccompProfile")
@@ -82,7 +85,7 @@ public class PodSecurityContext implements Editable<PodSecurityContextBuilder>, 
     public PodSecurityContext() {
     }
 
-    public PodSecurityContext(AppArmorProfile appArmorProfile, Long fsGroup, String fsGroupChangePolicy, Long runAsGroup, Boolean runAsNonRoot, Long runAsUser, SELinuxOptions seLinuxOptions, SeccompProfile seccompProfile, List<Long> supplementalGroups, String supplementalGroupsPolicy, List<Sysctl> sysctls, WindowsSecurityContextOptions windowsOptions) {
+    public PodSecurityContext(AppArmorProfile appArmorProfile, Long fsGroup, String fsGroupChangePolicy, Long runAsGroup, Boolean runAsNonRoot, Long runAsUser, String seLinuxChangePolicy, SELinuxOptions seLinuxOptions, SeccompProfile seccompProfile, List<Long> supplementalGroups, String supplementalGroupsPolicy, List<Sysctl> sysctls, WindowsSecurityContextOptions windowsOptions) {
         super();
         this.appArmorProfile = appArmorProfile;
         this.fsGroup = fsGroup;
@@ -90,6 +93,7 @@ public class PodSecurityContext implements Editable<PodSecurityContextBuilder>, 
         this.runAsGroup = runAsGroup;
         this.runAsNonRoot = runAsNonRoot;
         this.runAsUser = runAsUser;
+        this.seLinuxChangePolicy = seLinuxChangePolicy;
         this.seLinuxOptions = seLinuxOptions;
         this.seccompProfile = seccompProfile;
         this.supplementalGroups = supplementalGroups;
@@ -156,6 +160,16 @@ public class PodSecurityContext implements Editable<PodSecurityContextBuilder>, 
     @JsonProperty("runAsUser")
     public void setRunAsUser(Long runAsUser) {
         this.runAsUser = runAsUser;
+    }
+
+    @JsonProperty("seLinuxChangePolicy")
+    public String getSeLinuxChangePolicy() {
+        return seLinuxChangePolicy;
+    }
+
+    @JsonProperty("seLinuxChangePolicy")
+    public void setSeLinuxChangePolicy(String seLinuxChangePolicy) {
+        this.seLinuxChangePolicy = seLinuxChangePolicy;
     }
 
     @JsonProperty("seLinuxOptions")

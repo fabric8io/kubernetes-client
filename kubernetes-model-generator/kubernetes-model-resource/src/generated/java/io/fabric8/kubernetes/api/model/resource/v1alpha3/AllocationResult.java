@@ -36,7 +36,6 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "controller",
     "devices",
     "nodeSelector"
 })
@@ -65,8 +64,6 @@ import lombok.experimental.Accessors;
 public class AllocationResult implements Editable<AllocationResultBuilder>, KubernetesResource
 {
 
-    @JsonProperty("controller")
-    private String controller;
     @JsonProperty("devices")
     private DeviceAllocationResult devices;
     @JsonProperty("nodeSelector")
@@ -81,21 +78,10 @@ public class AllocationResult implements Editable<AllocationResultBuilder>, Kube
     public AllocationResult() {
     }
 
-    public AllocationResult(String controller, DeviceAllocationResult devices, NodeSelector nodeSelector) {
+    public AllocationResult(DeviceAllocationResult devices, NodeSelector nodeSelector) {
         super();
-        this.controller = controller;
         this.devices = devices;
         this.nodeSelector = nodeSelector;
-    }
-
-    @JsonProperty("controller")
-    public String getController() {
-        return controller;
-    }
-
-    @JsonProperty("controller")
-    public void setController(String controller) {
-        this.controller = controller;
     }
 
     @JsonProperty("devices")
