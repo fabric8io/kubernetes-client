@@ -70,6 +70,8 @@ var ChaosMeshPackagePatterns = []string{
 
 var GatewayApiPackagePatterns = []string{
 	"sigs.k8s.io/gateway-api/apis/v1",
+	"sigs.k8s.io/gateway-api/apis/v1alpha2",
+	"sigs.k8s.io/gateway-api/apis/v1alpha3",
 	"sigs.k8s.io/gateway-api/apis/v1beta1",
 }
 
