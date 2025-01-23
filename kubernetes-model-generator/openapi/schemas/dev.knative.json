@@ -3709,6 +3709,355 @@
         "Scope": "Namespaced"
       }
     },
+    "dev.knative.eventing.pkg.apis.common.integration.v1alpha1.AWSCommon": {
+      "type": "object",
+      "required": [
+        "overrideEndpoint"
+      ],
+      "properties": {
+        "overrideEndpoint": {
+          "description": "Override endpoint URI",
+          "type": "boolean",
+          "default": false
+        },
+        "region": {
+          "description": "Auth is the S3 authentication (accessKey/secretKey) configuration.",
+          "type": "string"
+        },
+        "uriEndpointOverride": {
+          "description": "AWS region",
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "",
+        "Version": "v1alpha1",
+        "Kind": "AWSCommon",
+        "Scope": "Namespaced"
+      }
+    },
+    "dev.knative.eventing.pkg.apis.common.integration.v1alpha1.AWSDDBStreams": {
+      "type": "object",
+      "required": [
+        "overrideEndpoint"
+      ],
+      "properties": {
+        "delay": {
+          "description": "Defines where in the DynamoDB stream to start getting records",
+          "type": "integer",
+          "format": "int32"
+        },
+        "overrideEndpoint": {
+          "description": "Override endpoint URI",
+          "type": "boolean",
+          "default": false
+        },
+        "region": {
+          "description": "Auth is the S3 authentication (accessKey/secretKey) configuration.",
+          "type": "string"
+        },
+        "streamIteratorType": {
+          "description": "The name of the DynamoDB table",
+          "type": "string"
+        },
+        "table": {
+          "description": "Embeds AWSCommon to inherit its fields in JSON",
+          "type": "string"
+        },
+        "uriEndpointOverride": {
+          "description": "AWS region",
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "",
+        "Version": "v1alpha1",
+        "Kind": "AWSDDBStreams",
+        "Scope": "Namespaced"
+      }
+    },
+    "dev.knative.eventing.pkg.apis.common.integration.v1alpha1.AWSS3": {
+      "type": "object",
+      "required": [
+        "overrideEndpoint",
+        "deleteAfterRead",
+        "moveAfterRead",
+        "autoCreateBucket",
+        "ignoreBody",
+        "forcePathStyle",
+        "delay",
+        "maxMessagesPerPoll"
+      ],
+      "properties": {
+        "arn": {
+          "description": "Embeds AWSCommon to inherit its fields in JSON",
+          "type": "string"
+        },
+        "autoCreateBucket": {
+          "description": "Suffix for moved objects",
+          "type": "boolean",
+          "default": false
+        },
+        "delay": {
+          "description": "Force path style for bucket access",
+          "type": "integer",
+          "format": "int32",
+          "default": 0
+        },
+        "deleteAfterRead": {
+          "description": "S3 ARN",
+          "type": "boolean",
+          "default": false
+        },
+        "destinationBucket": {
+          "description": "Move objects after reading",
+          "type": "string"
+        },
+        "destinationBucketPrefix": {
+          "description": "Destination bucket for moved objects",
+          "type": "string"
+        },
+        "destinationBucketSuffix": {
+          "description": "Prefix for moved objects",
+          "type": "string"
+        },
+        "forcePathStyle": {
+          "description": "Ignore object body",
+          "type": "boolean",
+          "default": false
+        },
+        "ignoreBody": {
+          "description": "S3 bucket prefix for search",
+          "type": "boolean",
+          "default": false
+        },
+        "maxMessagesPerPoll": {
+          "description": "Delay between polls in milliseconds",
+          "type": "integer",
+          "format": "int32",
+          "default": 0
+        },
+        "moveAfterRead": {
+          "description": "Auto-delete objects after reading",
+          "type": "boolean",
+          "default": false
+        },
+        "overrideEndpoint": {
+          "description": "Override endpoint URI",
+          "type": "boolean",
+          "default": false
+        },
+        "prefix": {
+          "description": "Auto-create S3 bucket",
+          "type": "string"
+        },
+        "region": {
+          "description": "Auth is the S3 authentication (accessKey/secretKey) configuration.",
+          "type": "string"
+        },
+        "uriEndpointOverride": {
+          "description": "AWS region",
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "",
+        "Version": "v1alpha1",
+        "Kind": "AWSS3",
+        "Scope": "Namespaced"
+      }
+    },
+    "dev.knative.eventing.pkg.apis.common.integration.v1alpha1.AWSSNS": {
+      "type": "object",
+      "required": [
+        "overrideEndpoint",
+        "autoCreateTopic"
+      ],
+      "properties": {
+        "arn": {
+          "description": "Embeds AWSCommon to inherit its fields in JSON",
+          "type": "string"
+        },
+        "autoCreateTopic": {
+          "description": "SNS ARN",
+          "type": "boolean",
+          "default": false
+        },
+        "overrideEndpoint": {
+          "description": "Override endpoint URI",
+          "type": "boolean",
+          "default": false
+        },
+        "region": {
+          "description": "Auth is the S3 authentication (accessKey/secretKey) configuration.",
+          "type": "string"
+        },
+        "uriEndpointOverride": {
+          "description": "AWS region",
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "",
+        "Version": "v1alpha1",
+        "Kind": "AWSSNS",
+        "Scope": "Namespaced"
+      }
+    },
+    "dev.knative.eventing.pkg.apis.common.integration.v1alpha1.AWSSQS": {
+      "type": "object",
+      "required": [
+        "overrideEndpoint",
+        "deleteAfterRead",
+        "autoCreateQueue",
+        "host",
+        "protocol",
+        "greedy",
+        "delay",
+        "maxMessagesPerPoll"
+      ],
+      "properties": {
+        "arn": {
+          "description": "Embeds AWSCommon to inherit its fields in JSON",
+          "type": "string"
+        },
+        "autoCreateQueue": {
+          "description": "Auto-delete messages after reading",
+          "type": "boolean",
+          "default": false
+        },
+        "delay": {
+          "description": "Greedy scheduler",
+          "type": "integer",
+          "format": "int32",
+          "default": 0
+        },
+        "deleteAfterRead": {
+          "description": "SQS ARN",
+          "type": "boolean",
+          "default": false
+        },
+        "greedy": {
+          "description": "Full SQS queue URL",
+          "type": "boolean",
+          "default": false
+        },
+        "host": {
+          "description": "Auto-create SQS queue",
+          "type": "string",
+          "default": ""
+        },
+        "maxMessagesPerPoll": {
+          "description": "Delay between polls in milliseconds",
+          "type": "integer",
+          "format": "int32",
+          "default": 0
+        },
+        "overrideEndpoint": {
+          "description": "Override endpoint URI",
+          "type": "boolean",
+          "default": false
+        },
+        "protocol": {
+          "description": "AWS host",
+          "type": "string",
+          "default": ""
+        },
+        "queueURL": {
+          "description": "Communication protocol (http/https)",
+          "type": "string"
+        },
+        "region": {
+          "description": "Auth is the S3 authentication (accessKey/secretKey) configuration.",
+          "type": "string"
+        },
+        "uriEndpointOverride": {
+          "description": "AWS region",
+          "type": "string"
+        },
+        "visibilityTimeout": {
+          "description": "Wait time for messages",
+          "type": "integer",
+          "format": "int32"
+        },
+        "waitTimeSeconds": {
+          "description": "Max messages to return (1-10)",
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "",
+        "Version": "v1alpha1",
+        "Kind": "AWSSQS",
+        "Scope": "Namespaced"
+      }
+    },
+    "dev.knative.eventing.pkg.apis.common.integration.v1alpha1.Auth": {
+      "type": "object",
+      "properties": {
+        "accessKey": {
+          "description": "AccessKey is the AWS access key ID.",
+          "type": "string"
+        },
+        "secret": {
+          "description": "Auth Secret",
+          "$ref": "#/definitions/dev.knative.eventing.pkg.apis.common.integration.v1alpha1.Secret"
+        },
+        "secretKey": {
+          "description": "SecretKey is the AWS secret access key.",
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "",
+        "Version": "v1alpha1",
+        "Kind": "Auth",
+        "Scope": "Namespaced"
+      }
+    },
+    "dev.knative.eventing.pkg.apis.common.integration.v1alpha1.Secret": {
+      "type": "object",
+      "properties": {
+        "ref": {
+          "description": "Secret reference for SASL and SSL configurations.",
+          "$ref": "#/definitions/dev.knative.eventing.pkg.apis.common.integration.v1alpha1.SecretReference"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "",
+        "Version": "v1alpha1",
+        "Kind": "Secret",
+        "Scope": "Namespaced"
+      }
+    },
+    "dev.knative.eventing.pkg.apis.common.integration.v1alpha1.SecretReference": {
+      "type": "object",
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "description": "Secret name.",
+          "type": "string",
+          "default": ""
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "",
+        "Version": "v1alpha1",
+        "Kind": "SecretReference",
+        "Scope": "Namespaced"
+      }
+    },
     "dev.knative.eventing.v1.Broker": {
       "description": "Broker collects a pool of events that are consumable using Triggers. Brokers provide a well-known endpoint for event delivery that senders can use with minimal knowledge of the event routing strategy. Subscribers use Triggers to request delivery of events from a Broker's pool to a specific URL or Addressable endpoint.",
       "type": "object",
@@ -4600,6 +4949,176 @@
         "Group": "eventing.knative.dev",
         "Version": "v1alpha1",
         "Kind": "KafkaSinkStatus",
+        "Scope": "Namespaced"
+      }
+    },
+    "dev.knative.eventing.v1alpha1.RequestReply": {
+      "description": "RequestRepluy represents synchronous interface to sending and receiving events from a Broker.",
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+        },
+        "spec": {
+          "description": "Spec defines the desired state of the EventPolicy.",
+          "default": {},
+          "$ref": "#/definitions/dev.knative.eventing.v1alpha1.RequestReplySpec"
+        },
+        "status": {
+          "description": "Status represents the current state of the EventPolicy. This data may be out of date.",
+          "default": {},
+          "$ref": "#/definitions/dev.knative.eventing.v1alpha1.RequestReplyStatus"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "object",
+        "Group": "eventing.knative.dev",
+        "Version": "v1alpha1",
+        "Kind": "RequestReply",
+        "Scope": "Namespaced"
+      }
+    },
+    "dev.knative.eventing.v1alpha1.RequestReplyList": {
+      "description": "RequestReplyList is a collection of RequestReplies.",
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/dev.knative.eventing.v1alpha1.RequestReply"
+          }
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "list",
+        "Group": "eventing.knative.dev",
+        "Version": "v1alpha1",
+        "Kind": "RequestReplyList",
+        "Scope": "Namespaced"
+      }
+    },
+    "dev.knative.eventing.v1alpha1.RequestReplySpec": {
+      "type": "object",
+      "required": [
+        "brokerRef",
+        "correlationAttribute",
+        "replyAttribute",
+        "secrets"
+      ],
+      "properties": {
+        "brokerRef": {
+          "description": "BrokerRef contains the reference to the broker the RequestReply sends events to.",
+          "default": {},
+          "$ref": "#/definitions/dev.knative.duck.v1.KReference"
+        },
+        "correlationAttribute": {
+          "type": "string",
+          "default": ""
+        },
+        "delivery": {
+          "$ref": "#/definitions/dev.knative.duck.v1.DeliverySpec"
+        },
+        "replyAttribute": {
+          "type": "string",
+          "default": ""
+        },
+        "secrets": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "default": ""
+          }
+        },
+        "timeout": {
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "eventing.knative.dev",
+        "Version": "v1alpha1",
+        "Kind": "RequestReplySpec",
+        "Scope": "Namespaced"
+      }
+    },
+    "dev.knative.eventing.v1alpha1.RequestReplyStatus": {
+      "description": "RequestReplyStatus represents the current state of a RequestReply.",
+      "type": "object",
+      "properties": {
+        "address": {
+          "description": "Address is a single Addressable address. If Addresses is present, Address will be ignored by clients.",
+          "$ref": "#/definitions/dev.knative.duck.v1.Addressable"
+        },
+        "addresses": {
+          "description": "Addresses is a list of addresses for different protocols (HTTP and HTTPS) If Addresses is present, Address must be ignored by clients.",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/dev.knative.duck.v1.Addressable"
+          }
+        },
+        "annotations": {
+          "description": "Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.",
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "default": ""
+          }
+        },
+        "conditions": {
+          "description": "Conditions the latest available observations of a resource's current state.",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/dev.knative.pkg.apis.Condition"
+          },
+          "x-kubernetes-patch-merge-key": "type",
+          "x-kubernetes-patch-strategy": "merge"
+        },
+        "observedGeneration": {
+          "description": "ObservedGeneration is the 'Generation' of the Service that was last processed by the controller.",
+          "type": "integer",
+          "format": "int64"
+        },
+        "policies": {
+          "description": "Policies holds the list of applied EventPolicies",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/dev.knative.duck.v1.AppliedEventPolicyRef"
+          }
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "eventing.knative.dev",
+        "Version": "v1alpha1",
+        "Kind": "RequestReplyStatus",
         "Scope": "Namespaced"
       }
     },
@@ -9318,6 +9837,175 @@
         "Scope": "Namespaced"
       }
     },
+    "dev.knative.sinks.v1alpha1.Aws": {
+      "type": "object",
+      "properties": {
+        "auth": {
+          "description": "SNS source configuration",
+          "$ref": "#/definitions/dev.knative.eventing.pkg.apis.common.integration.v1alpha1.Auth"
+        },
+        "s3": {
+          "$ref": "#/definitions/dev.knative.eventing.pkg.apis.common.integration.v1alpha1.AWSS3"
+        },
+        "sns": {
+          "description": "SQS source configuration",
+          "$ref": "#/definitions/dev.knative.eventing.pkg.apis.common.integration.v1alpha1.AWSSNS"
+        },
+        "sqs": {
+          "description": "S3 source configuration",
+          "$ref": "#/definitions/dev.knative.eventing.pkg.apis.common.integration.v1alpha1.AWSSQS"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "sinks.knative.dev",
+        "Version": "v1alpha1",
+        "Kind": "Aws",
+        "Scope": "Namespaced"
+      }
+    },
+    "dev.knative.sinks.v1alpha1.IntegrationSink": {
+      "description": "IntegrationSink is the Schema for the IntegrationSink API.",
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+        },
+        "spec": {
+          "default": {},
+          "$ref": "#/definitions/dev.knative.sinks.v1alpha1.IntegrationSinkSpec"
+        },
+        "status": {
+          "default": {},
+          "$ref": "#/definitions/dev.knative.sinks.v1alpha1.IntegrationSinkStatus"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "object",
+        "Group": "sinks.knative.dev",
+        "Version": "v1alpha1",
+        "Kind": "IntegrationSink",
+        "Scope": "Namespaced"
+      }
+    },
+    "dev.knative.sinks.v1alpha1.IntegrationSinkList": {
+      "description": "IntegrationSinkList contains a list of IntegrationSink",
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/dev.knative.sinks.v1alpha1.IntegrationSink"
+          }
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "list",
+        "Group": "sinks.knative.dev",
+        "Version": "v1alpha1",
+        "Kind": "IntegrationSinkList",
+        "Scope": "Namespaced"
+      }
+    },
+    "dev.knative.sinks.v1alpha1.IntegrationSinkSpec": {
+      "type": "object",
+      "properties": {
+        "aws": {
+          "$ref": "#/definitions/dev.knative.sinks.v1alpha1.Aws"
+        },
+        "log": {
+          "description": "AWS source configuration",
+          "$ref": "#/definitions/dev.knative.sinks.v1alpha1.Log"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "sinks.knative.dev",
+        "Version": "v1alpha1",
+        "Kind": "IntegrationSinkSpec",
+        "Scope": "Namespaced"
+      }
+    },
+    "dev.knative.sinks.v1alpha1.IntegrationSinkStatus": {
+      "type": "object",
+      "properties": {
+        "address": {
+          "description": "Address is a single Addressable address. If Addresses is present, Address will be ignored by clients.",
+          "$ref": "#/definitions/dev.knative.duck.v1.Addressable"
+        },
+        "addresses": {
+          "description": "Addresses is a list of addresses for different protocols (HTTP and HTTPS) If Addresses is present, Address must be ignored by clients.",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/dev.knative.duck.v1.Addressable"
+          }
+        },
+        "annotations": {
+          "description": "Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.",
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "default": ""
+          }
+        },
+        "conditions": {
+          "description": "Conditions the latest available observations of a resource's current state.",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/dev.knative.pkg.apis.Condition"
+          },
+          "x-kubernetes-patch-merge-key": "type",
+          "x-kubernetes-patch-strategy": "merge"
+        },
+        "observedGeneration": {
+          "description": "ObservedGeneration is the 'Generation' of the Service that was last processed by the controller.",
+          "type": "integer",
+          "format": "int64"
+        },
+        "policies": {
+          "description": "Policies holds the list of applied EventPolicies",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/dev.knative.duck.v1.AppliedEventPolicyRef"
+          }
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "sinks.knative.dev",
+        "Version": "v1alpha1",
+        "Kind": "IntegrationSinkStatus",
+        "Scope": "Namespaced"
+      }
+    },
     "dev.knative.sinks.v1alpha1.JobSink": {
       "description": "JobSink is the Schema for the JobSink API.",
       "type": "object",
@@ -9475,6 +10163,69 @@
         "Group": "sinks.knative.dev",
         "Version": "v1alpha1",
         "Kind": "JobStatus",
+        "Scope": "Namespaced"
+      }
+    },
+    "dev.knative.sinks.v1alpha1.Log": {
+      "type": "object",
+      "properties": {
+        "level": {
+          "description": "Name of the logging category to use",
+          "type": "string"
+        },
+        "logMask": {
+          "description": "Logging level to use",
+          "type": "boolean"
+        },
+        "loggerName": {
+          "type": "string"
+        },
+        "marker": {
+          "description": "Mask sensitive information in the log",
+          "type": "string"
+        },
+        "multiline": {
+          "description": "An optional Marker name to use",
+          "type": "boolean"
+        },
+        "showAllProperties": {
+          "description": "If enabled, outputs each information on a newline",
+          "type": "boolean"
+        },
+        "showBody": {
+          "description": "Show all of the exchange properties (both internal and custom)",
+          "type": "boolean"
+        },
+        "showBodyType": {
+          "description": "Show the message body",
+          "type": "boolean"
+        },
+        "showCachedStreams": {
+          "description": "Show the stream bodies",
+          "type": "boolean"
+        },
+        "showExchangePattern": {
+          "description": "Show the body Java type",
+          "type": "boolean"
+        },
+        "showHeaders": {
+          "description": "Show the Message Exchange Pattern (MEP)",
+          "type": "boolean"
+        },
+        "showProperties": {
+          "description": "Show the headers received",
+          "type": "boolean"
+        },
+        "showStreams": {
+          "description": "Show the exchange properties (only custom)",
+          "type": "boolean"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "sinks.knative.dev",
+        "Version": "v1alpha1",
+        "Kind": "Log",
         "Scope": "Namespaced"
       }
     },
@@ -10445,6 +11196,33 @@
         "Scope": "Namespaced"
       }
     },
+    "dev.knative.sources.v1alpha1.Aws": {
+      "type": "object",
+      "properties": {
+        "auth": {
+          "description": "DynamoDB Streams source configuration",
+          "$ref": "#/definitions/dev.knative.eventing.pkg.apis.common.integration.v1alpha1.Auth"
+        },
+        "ddbStreams": {
+          "description": "SQS source configuration",
+          "$ref": "#/definitions/dev.knative.eventing.pkg.apis.common.integration.v1alpha1.AWSDDBStreams"
+        },
+        "s3": {
+          "$ref": "#/definitions/dev.knative.eventing.pkg.apis.common.integration.v1alpha1.AWSS3"
+        },
+        "sqs": {
+          "description": "S3 source configuration",
+          "$ref": "#/definitions/dev.knative.eventing.pkg.apis.common.integration.v1alpha1.AWSSQS"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "sources.knative.dev",
+        "Version": "v1alpha1",
+        "Kind": "Aws",
+        "Scope": "Namespaced"
+      }
+    },
     "dev.knative.sources.v1alpha1.AwsSqsSource": {
       "description": "AwsSqsSource is the Schema for the AWS SQS API",
       "type": "object",
@@ -11169,6 +11947,163 @@
         "Scope": "Namespaced"
       }
     },
+    "dev.knative.sources.v1alpha1.IntegrationSource": {
+      "description": "IntegrationSource is the Schema for the Integrationsources API",
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+        },
+        "spec": {
+          "default": {},
+          "$ref": "#/definitions/dev.knative.sources.v1alpha1.IntegrationSourceSpec"
+        },
+        "status": {
+          "default": {},
+          "$ref": "#/definitions/dev.knative.sources.v1alpha1.IntegrationSourceStatus"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "object",
+        "Group": "sources.knative.dev",
+        "Version": "v1alpha1",
+        "Kind": "IntegrationSource",
+        "Scope": "Namespaced"
+      }
+    },
+    "dev.knative.sources.v1alpha1.IntegrationSourceList": {
+      "description": "IntegrationSourceList contains a list of IntegrationSource",
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/dev.knative.sources.v1alpha1.IntegrationSource"
+          }
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "list",
+        "Group": "sources.knative.dev",
+        "Version": "v1alpha1",
+        "Kind": "IntegrationSourceList",
+        "Scope": "Namespaced"
+      }
+    },
+    "dev.knative.sources.v1alpha1.IntegrationSourceSpec": {
+      "description": "IntegrationSourceSpec defines the desired state of IntegrationSource",
+      "type": "object",
+      "properties": {
+        "aws": {
+          "$ref": "#/definitions/dev.knative.sources.v1alpha1.Aws"
+        },
+        "ceOverrides": {
+          "description": "CloudEventOverrides defines overrides to control the output format and modifications of the event sent to the sink.",
+          "$ref": "#/definitions/dev.knative.duck.v1.CloudEventOverrides"
+        },
+        "sink": {
+          "description": "Sink is a reference to an object that will resolve to a uri to use as the sink.",
+          "default": {},
+          "$ref": "#/definitions/dev.knative.duck.v1.Destination"
+        },
+        "timer": {
+          "description": "AWS source configuration",
+          "$ref": "#/definitions/dev.knative.sources.v1alpha1.Timer"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "sources.knative.dev",
+        "Version": "v1alpha1",
+        "Kind": "IntegrationSourceSpec",
+        "Scope": "Namespaced"
+      }
+    },
+    "dev.knative.sources.v1alpha1.IntegrationSourceStatus": {
+      "description": "IntegrationSourceStatus defines the observed state of IntegrationSource",
+      "type": "object",
+      "properties": {
+        "annotations": {
+          "description": "Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.",
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "default": ""
+          }
+        },
+        "auth": {
+          "description": "Auth defines the attributes that provide the generated service account name in the resource status.",
+          "$ref": "#/definitions/dev.knative.duck.v1.AuthStatus"
+        },
+        "ceAttributes": {
+          "description": "CloudEventAttributes are the specific attributes that the Source uses as part of its CloudEvents.",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/dev.knative.duck.v1.CloudEventAttributes"
+          }
+        },
+        "conditions": {
+          "description": "Conditions the latest available observations of a resource's current state.",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/dev.knative.pkg.apis.Condition"
+          },
+          "x-kubernetes-patch-merge-key": "type",
+          "x-kubernetes-patch-strategy": "merge"
+        },
+        "observedGeneration": {
+          "description": "ObservedGeneration is the 'Generation' of the Service that was last processed by the controller.",
+          "type": "integer",
+          "format": "int64"
+        },
+        "sinkAudience": {
+          "description": "SinkAudience is the OIDC audience of the sink.",
+          "type": "string"
+        },
+        "sinkCACerts": {
+          "description": "SinkCACerts are Certification Authority (CA) certificates in PEM format according to https://www.rfc-editor.org/rfc/rfc7468.",
+          "type": "string"
+        },
+        "sinkUri": {
+          "description": "SinkURI is the current active sink URI that has been configured for the Source.",
+          "$ref": "#/definitions/dev.knative.pkg.apis.URL"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "sources.knative.dev",
+        "Version": "v1alpha1",
+        "Kind": "IntegrationSourceStatus",
+        "Scope": "Namespaced"
+      }
+    },
     "dev.knative.sources.v1alpha1.PrometheusSource": {
       "description": "PrometheusSource is the Schema for the prometheussources API",
       "type": "object",
@@ -11364,6 +12299,43 @@
         "Group": "sources.knative.dev",
         "Version": "v1alpha1",
         "Kind": "SecretValueFromSource",
+        "Scope": "Namespaced"
+      }
+    },
+    "dev.knative.sources.v1alpha1.Timer": {
+      "type": "object",
+      "required": [
+        "period",
+        "message",
+        "contentType"
+      ],
+      "properties": {
+        "contentType": {
+          "description": "Message to generate",
+          "type": "string",
+          "default": ""
+        },
+        "message": {
+          "description": "Interval (in milliseconds) between producing messages",
+          "type": "string",
+          "default": ""
+        },
+        "period": {
+          "type": "integer",
+          "format": "int32",
+          "default": 0
+        },
+        "repeatCount": {
+          "description": "Content type of generated message",
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "sources.knative.dev",
+        "Version": "v1alpha1",
+        "Kind": "Timer",
         "Scope": "Namespaced"
       }
     },
