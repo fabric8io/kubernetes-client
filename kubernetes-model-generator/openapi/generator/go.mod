@@ -40,7 +40,7 @@ require (
 	k8s.io/gengo/v2 v2.0.0-20240911193312-2b36238f13e9
 	k8s.io/kube-openapi v0.0.0-20241212222426-2c72e554b1e7
 	k8s.io/metrics v0.32.1
-	knative.dev/caching v0.0.0-20241022012359-41bbaf964d16
+	knative.dev/caching v0.0.0-20250117155405-a76aa7cd2bb6
 	knative.dev/eventing v0.44.0
 	knative.dev/eventing-awssqs v0.29.0
 	knative.dev/eventing-couchdb v0.28.0
@@ -48,8 +48,8 @@ require (
 	knative.dev/eventing-gitlab v0.43.0
 	knative.dev/eventing-kafka-broker v0.43.1
 	knative.dev/eventing-prometheus v0.28.0
-	knative.dev/networking v0.0.0-20241022012959-60e29ff520dc
-	knative.dev/serving v0.43.1
+	knative.dev/networking v0.0.0-20250117155906-67d1c274ba6a
+	knative.dev/serving v0.44.0
 	open-cluster-management.io/api v0.15.0
 	open-cluster-management.io/governance-policy-propagator v0.15.0
 	open-cluster-management.io/multicloud-operators-channel v0.15.0
