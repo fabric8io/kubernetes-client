@@ -22,7 +22,7 @@ public interface ItemReplacable<T> {
    *
    * @param item replacement
    * @return the replaced item from the api server
-   * @deprecated use resource(item).replaceStatus()
+   * @deprecated use resource(item).updateStatus()
    */
   @Deprecated
   T replaceStatus(T item);
@@ -32,7 +32,7 @@ public interface ItemReplacable<T> {
    *
    * @param item replacement
    * @return the replaced item from the api server
-   * @deprecated use resource(item).replace()
+   * @deprecated use resource(item).update()
    */
   @Deprecated
   T replace(T item);
