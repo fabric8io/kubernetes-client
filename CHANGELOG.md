@@ -17,6 +17,7 @@
 
 * Fix #5993: Support for Kubernetes v1.31 (elli)
 * Fix #6767: Support for Kubernetes v1.32 (penelope) 
+* Fix #6827: Add CRDPostProcessor to process generated CRDs before they are written out
 
 #### _**Note**_: Breaking changes
 

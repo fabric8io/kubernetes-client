@@ -34,19 +34,19 @@ class BinaryDownloaderTest {
   BinaryDownloader binaryDownloader = new BinaryDownloader("target", mockBinaryRepo, mockOsInfo);
 
   @Test
-    void findsLatestBinary() {
-        when(mockOsInfo.getOSName()).thenReturn("linux");
-        when(mockOsInfo.getOSArch()).thenReturn("amd64");
+  void findsLatestBinary() {
+    when(mockOsInfo.getOSName()).thenReturn("linux");
+    when(mockOsInfo.getOSArch()).thenReturn("amd64");
 
-        when(mockBinaryRepo.listObjectNames()).thenReturn(List.of(
-                        new ArchiveDescriptor("1.17.9","amd64","linux"),
-            new ArchiveDescriptor("1.26.1","amd64","darwin"),
-            new ArchiveDescriptor(VERSION,"amd64","linux"))
-                .stream());
+    when(mockBinaryRepo.listObjectNames()).thenReturn(List.of(
+        new ArchiveDescriptor("1.17.9", "amd64", "linux"),
+        new ArchiveDescriptor("1.26.1", "amd64", "darwin"),
+        new ArchiveDescriptor(VERSION, "amd64", "linux"))
+        .stream());
 
-        var latest = binaryDownloader.findLatestVersion();
+    var latest = binaryDownloader.findLatestVersion();
 
-        assertThat(latest).isEqualTo(VERSION);
-    }
+    assertThat(latest).isEqualTo(VERSION);
+  }
 
 }
