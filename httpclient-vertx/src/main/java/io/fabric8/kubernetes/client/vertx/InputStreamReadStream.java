@@ -41,7 +41,7 @@ class InputStreamReadStream implements ReadStream<Buffer> {
   private Handler<Void> endHandler;
   private byte[] bytes;
 
-  public InputStreamReadStream(VertxHttpRequest vertxHttpRequest, InputStream is, HttpClientRequest request) {
+  InputStreamReadStream(VertxHttpRequest vertxHttpRequest, InputStream is, HttpClientRequest request) {
     this.vertxHttpRequest = vertxHttpRequest;
     this.is = is;
     this.request = request;

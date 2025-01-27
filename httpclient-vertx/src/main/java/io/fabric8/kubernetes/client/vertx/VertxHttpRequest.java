@@ -32,7 +32,6 @@ import io.vertx.core.streams.ReadStream;
 
 import java.io.InputStream;
 import java.nio.ByteBuffer;
-import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -77,7 +76,7 @@ class VertxHttpRequest {
 
   final Vertx vertx;
   private final RequestOptions options;
-  private StandardHttpRequest request;
+  private final StandardHttpRequest request;
 
   public VertxHttpRequest(Vertx vertx, RequestOptions options, StandardHttpRequest request) {
     this.vertx = vertx;
@@ -113,7 +112,7 @@ class VertxHttpRequest {
       };
       resp.handler(buffer -> {
         try {
-          consumer.consume(Arrays.asList(ByteBuffer.wrap(buffer.getBytes())), result);
+          consumer.consume(List.of(ByteBuffer.wrap(buffer.getBytes())), result);
         } catch (Exception e) {
           resp.request().reset();
           result.done().completeExceptionally(e);

@@ -7,6 +7,7 @@
 * Fix #6747: Preventing websocket error logs when the client is closed
 * Fix #6781: Allowing ipv6 entries to work in NO_PROXY
 * Fix #6725: CRD generator missing type for GenericKubernetesResource
+* Fix #6792: VertxHttpClient uses exclusive Vert.x instance by default
 
 #### Improvements
 
@@ -14,7 +15,6 @@
 
 #### New Features
 * Fix #6802: Java generator support for required spec and status
-
 * Fix #5993: Support for Kubernetes v1.31 (elli)
 * Fix #6767: Support for Kubernetes v1.32 (penelope) 
 

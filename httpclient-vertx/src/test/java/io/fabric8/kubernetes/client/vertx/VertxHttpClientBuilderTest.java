@@ -16,10 +16,14 @@
 package io.fabric8.kubernetes.client.vertx;
 
 import io.fabric8.kubernetes.client.http.HttpClient;
+import io.vertx.core.Vertx;
+import io.vertx.core.impl.VertxImpl;
+import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.TimeUnit;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class VertxHttpClientBuilderTest {
@@ -35,4 +39,46 @@ class VertxHttpClientBuilderTest {
     }
   }
 
+  @Test
+  void reusesVertxInstanceWhenSharedVertx() {
+    Vertx vertx = Vertx.vertx();
+    try (HttpClient client = new VertxHttpClientFactory(vertx).newBuilder().build()) {
+      assertThat(client)
+          .isInstanceOf(VertxHttpClient.class)
+          .extracting("vertx")
+          .isSameAs(vertx);
+    } finally {
+      vertx.close();
+    }
+  }
+
+  @Test
+  void createsVertxInstanceWhenNoSharedVertx() {
+    try (HttpClient client = new VertxHttpClientFactory().newBuilder().build()) {
+      assertThat(client)
+          .isInstanceOf(VertxHttpClient.class)
+          .extracting("vertx")
+          .isNotNull();
+    }
+  }
+
+  @Test
+  void doesntCloseSharedVertxInstanceWhenClientIsClosed() {
+    final Vertx vertx = Vertx.vertx();
+    final var builder = new VertxHttpClientFactory(vertx).newBuilder();
+    builder.build().close();
+    assertThat(builder.vertx)
+        .asInstanceOf(InstanceOfAssertFactories.type(VertxImpl.class))
+        .returns(false, vi -> vi.closeFuture().isClosed());
+    vertx.close();
+  }
+
+  @Test
+  void closesVertxInstanceWhenClientIsClosed() {
+    final var builder = new VertxHttpClientFactory().newBuilder();
+    builder.build().close();
+    assertThat(builder.vertx)
+        .asInstanceOf(InstanceOfAssertFactories.type(VertxImpl.class))
+        .returns(true, vi -> vi.closeFuture().isClosed());
+  }
 }
