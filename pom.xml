@@ -114,7 +114,7 @@
     <awaitility.version>4.2.2</awaitility.version>
     <approvaltests.version>24.14.2</approvaltests.version>
     <bouncycastle.version>1.80</bouncycastle.version>
-    <bc-fips.version>2.0.0</bc-fips.version>
+    <bc-fips.version>2.1.0</bc-fips.version>
     <bcpkix-fips.version>2.1.8</bcpkix-fips.version>
     <keycloak.version>26.1.0</keycloak.version><!-- Used by CRD Generator integration tests for verifications -->
     <mockito.version>5.15.2</mockito.version>
