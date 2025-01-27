@@ -23,6 +23,8 @@ import io.netty.handler.ssl.ApplicationProtocolConfig;
 import io.netty.handler.ssl.IdentityCipherSuiteFilter;
 import io.netty.handler.ssl.JdkSslContext;
 import io.vertx.core.Vertx;
+import io.vertx.core.VertxOptions;
+import io.vertx.core.file.FileSystemOptions;
 import io.vertx.core.http.HttpVersion;
 import io.vertx.core.net.JdkSSLEngineOptions;
 import io.vertx.core.net.ProxyOptions;
@@ -37,6 +39,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Stream;
 
 import static io.fabric8.kubernetes.client.utils.HttpClientUtils.decodeBasicCredentials;
+import static io.vertx.core.spi.resolver.ResolverProvider.DISABLE_DNS_RESOLVER_PROP_NAME;
 
 public class VertxHttpClientBuilder<F extends HttpClient.Factory>
     extends StandardHttpClientBuilder<VertxHttpClient<F>, F, VertxHttpClientBuilder<F>> {
@@ -46,16 +49,25 @@ public class VertxHttpClientBuilder<F extends HttpClient.Factory>
   private static final int MAX_WS_MESSAGE_SIZE = Integer.MAX_VALUE;
 
   final Vertx vertx;
+  private final boolean closeVertx;
 
-  public VertxHttpClientBuilder(F clientFactory, Vertx vertx) {
+  public VertxHttpClientBuilder(F clientFactory, Vertx sharedVertx) {
+    this(
+        clientFactory,
+        sharedVertx != null ? sharedVertx : createVertxInstance(),
+        sharedVertx == null);
+  }
+
+  VertxHttpClientBuilder(F clientFactory, Vertx vertx, boolean closeVertx) {
     super(clientFactory);
     this.vertx = vertx;
+    this.closeVertx = closeVertx;
   }
 
   @Override
   public VertxHttpClient<F> build() {
     if (this.client != null) {
-      return new VertxHttpClient<>(this, this.client.getClient(), this.client.getClosed());
+      return new VertxHttpClient<>(this, this.client.getClosed(), this.client.getClient(), closeVertx);
     }
 
     WebClientOptions options = new WebClientOptions();
@@ -124,12 +136,12 @@ public class VertxHttpClientBuilder<F extends HttpClient.Factory>
         }
       });
     }
-    return new VertxHttpClient<>(this, vertx.createHttpClient(options), new AtomicBoolean());
+    return new VertxHttpClient<>(this, new AtomicBoolean(), vertx.createHttpClient(options), closeVertx);
   }
 
   @Override
   protected VertxHttpClientBuilder<F> newInstance(F clientFactory) {
-    return new VertxHttpClientBuilder<>(clientFactory, vertx);
+    return new VertxHttpClientBuilder<>(clientFactory, vertx, closeVertx);
   }
 
   private ProxyType convertProxyType() {
@@ -145,4 +157,26 @@ public class VertxHttpClientBuilder<F extends HttpClient.Factory>
     }
   }
 
+  private static Vertx createVertxInstance() {
+    // We must disable the async DNS resolver as it can cause issues when resolving the Vault instance.
+    // This is done using the DISABLE_DNS_RESOLVER_PROP_NAME system property.
+    // The DNS resolver used by vert.x is configured during the (synchronous) initialization.
+    // So, we just need to disable the async resolver around the Vert.x instance creation.
+    final String originalValue = System.getProperty(DISABLE_DNS_RESOLVER_PROP_NAME);
+    Vertx vertx;
+    try {
+      System.setProperty(DISABLE_DNS_RESOLVER_PROP_NAME, "true");
+      vertx = Vertx.vertx(new VertxOptions()
+          .setFileSystemOptions(new FileSystemOptions().setFileCachingEnabled(false).setClassPathResolvingEnabled(false))
+          .setUseDaemonThread(true));
+    } finally {
+      // Restore the original value
+      if (originalValue == null) {
+        System.clearProperty(DISABLE_DNS_RESOLVER_PROP_NAME);
+      } else {
+        System.setProperty(DISABLE_DNS_RESOLVER_PROP_NAME, originalValue);
+      }
+    }
+    return vertx;
+  }
 }
