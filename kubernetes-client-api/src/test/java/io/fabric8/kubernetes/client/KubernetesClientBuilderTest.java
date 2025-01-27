@@ -16,29 +16,30 @@
 package io.fabric8.kubernetes.client;
 
 import io.fabric8.kubernetes.client.KubernetesClientBuilder.ConfigNested;
-import io.fabric8.kubernetes.client.http.HttpClient;
-import io.fabric8.kubernetes.client.http.HttpClient.Factory;
+import io.fabric8.kubernetes.client.http.TestStandardHttpClient;
+import io.fabric8.kubernetes.client.http.TestStandardHttpClientFactory;
+import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class KubernetesClientBuilderTest {
 
   @Test
-  void testHttpClientConfiguration() {
+  void httpClientConfiguration() {
     KubernetesClientBuilder builder = new KubernetesClientBuilder(null);
-    Factory mockFactory = Mockito.mock(HttpClient.Factory.class);
-    HttpClient.Builder mockBuilder = Mockito.mock(HttpClient.Builder.class);
-    Mockito.when(mockFactory.newBuilder(Mockito.any())).thenReturn(mockBuilder);
-    builder.withHttpClientFactory(mockFactory).withHttpClientBuilderConsumer(b -> b.proxyAuthorization("something"));
-    builder.getHttpClient();
-    Mockito.verify(mockBuilder).proxyAuthorization("something");
+    builder.withConfig(Config.empty());
+    builder.withHttpClientFactory(new TestStandardHttpClientFactory());
+    builder.withHttpClientBuilderConsumer(b -> b.tag("string-tag-value"));
+    assertThat(builder.getHttpClient())
+        .asInstanceOf(InstanceOfAssertFactories.type(TestStandardHttpClient.class))
+        .returns("string-tag-value", c -> c.getTag(String.class));
   }
 
   @Test
-  void testConfigNested() {
+  void nestedConfigPreservesOriginalValues() {
     KubernetesClientBuilder builder = new KubernetesClientBuilder(null);
     builder.withConfig(new ConfigBuilder().withWatchReconnectLimit(600).build());
     builder.editOrNewConfig().withApiVersion("x.y").endConfig();
@@ -65,4 +66,5 @@ class KubernetesClientBuilderTest {
       Thread.currentThread().setContextClassLoader(currContextClassLoader);
     }
   }
+
 }
