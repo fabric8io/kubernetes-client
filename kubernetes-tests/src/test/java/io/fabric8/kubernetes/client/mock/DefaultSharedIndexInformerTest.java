@@ -1205,7 +1205,7 @@ class DefaultSharedIndexInformerTest {
   }
 
   @Test
-  void testClientStopClosesInformer() throws InterruptedException {
+  void testClientStopClosesInformer() throws Exception {
     // Given
     setupMockServerExpectations(Animal.class, "ns1", this::getList,
         r -> new WatchEvent(getAnimal("red-panda", "Carnivora", r), "ADDED"), null, null);
@@ -1217,6 +1217,8 @@ class DefaultSharedIndexInformerTest {
         .runnableInformer(60 * WATCH_EVENT_EMIT_TIME);
 
     animalSharedIndexInformer.start();
+
+    await().atMost(10, TimeUnit.SECONDS).until(animalSharedIndexInformer::hasSynced);
 
     client.close();
 

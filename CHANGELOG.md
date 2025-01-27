@@ -5,6 +5,7 @@
 #### Bugs
 * Fix #6781: Allowing ipv6 entries to work in NO_PROXY
 * Fix #6709: VertxHttpClientFactory reuses the same Vertx instance for each VertxHttpClient instance
+* Fix #6792: VertxHttpClient uses exclusive Vert.x instance by default
 
 ### 6.13.4 (2024-09-25)
 
