@@ -3,7 +3,6 @@
 ### 7.1-SNAPSHOT
 
 #### Bugs
-
 * Fix #6747: Preventing websocket error logs when the client is closed
 * Fix #6781: Allowing ipv6 entries to work in NO_PROXY
 * Fix #6725: CRD generator missing type for GenericKubernetesResource
@@ -19,6 +18,13 @@
 * Fix #6767: Support for Kubernetes v1.32 (penelope) 
 
 #### _**Note**_: Breaking changes
+
+### 6.13.5 (2025-01-18)
+
+#### Bugs
+* Fix #6781: Allowing ipv6 entries to work in NO_PROXY
+* Fix #6709: VertxHttpClientFactory reuses the same Vertx instance for each VertxHttpClient instance
+* Fix #6792: VertxHttpClient uses exclusive Vert.x instance by default
 
 ### 7.0.1 (2024-12-18)
 
