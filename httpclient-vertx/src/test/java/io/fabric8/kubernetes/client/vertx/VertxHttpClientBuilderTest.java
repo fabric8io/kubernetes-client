@@ -34,7 +34,7 @@ class VertxHttpClientBuilderTest {
     HttpClient.Builder builder = factory.newBuilder();
 
     // should build and be usable without an issue
-    try (HttpClient client = builder.connectTimeout(0, TimeUnit.MILLISECONDS).build();) {
+    try (HttpClient client = builder.connectTimeout(0, TimeUnit.MILLISECONDS).build()) {
       assertNotNull(client.newHttpRequestBuilder().uri("http://localhost").build());
     }
   }
@@ -65,7 +65,7 @@ class VertxHttpClientBuilderTest {
   @Test
   void doesntCloseSharedVertxInstanceWhenClientIsClosed() {
     final Vertx vertx = Vertx.vertx();
-    final var builder = new VertxHttpClientFactory(vertx).newBuilder();
+    final VertxHttpClientBuilder<VertxHttpClientFactory> builder = new VertxHttpClientFactory(vertx).newBuilder();
     builder.build().close();
     assertThat(builder.vertx)
         .asInstanceOf(InstanceOfAssertFactories.type(VertxImpl.class))
@@ -75,7 +75,7 @@ class VertxHttpClientBuilderTest {
 
   @Test
   void closesVertxInstanceWhenClientIsClosed() {
-    final var builder = new VertxHttpClientFactory().newBuilder();
+    final VertxHttpClientBuilder<VertxHttpClientFactory> builder = new VertxHttpClientFactory().newBuilder();
     builder.build().close();
     assertThat(builder.vertx)
         .asInstanceOf(InstanceOfAssertFactories.type(VertxImpl.class))
