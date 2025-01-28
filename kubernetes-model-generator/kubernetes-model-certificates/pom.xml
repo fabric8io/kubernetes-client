@@ -21,7 +21,7 @@
   <parent>
     <groupId>io.fabric8</groupId>
     <artifactId>kubernetes-model-generator</artifactId>
-    <version>6.13.4</version>
+    <version>6.13.5</version>
   </parent>
 
   <artifactId>kubernetes-model-certificates</artifactId>

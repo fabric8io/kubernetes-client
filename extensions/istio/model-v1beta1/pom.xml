@@ -23,7 +23,7 @@
   <parent>
     <groupId>io.fabric8</groupId>
     <artifactId>istio-extension-pom</artifactId>
-    <version>6.13.4</version>
+    <version>6.13.5</version>
   </parent>
 
   <artifactId>istio-model-v1beta1</artifactId>

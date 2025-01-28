@@ -22,7 +22,7 @@
   <parent>
     <artifactId>kubernetes-extensions</artifactId>
     <groupId>io.fabric8</groupId>
-    <version>6.13.4</version>
+    <version>6.13.5</version>
   </parent>
 
   <artifactId>open-cluster-management</artifactId>

@@ -23,7 +23,7 @@
   <parent>
     <groupId>io.fabric8</groupId>
     <artifactId>kubernetes-client-project</artifactId>
-    <version>6.13.4</version>
+    <version>6.13.5</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
 

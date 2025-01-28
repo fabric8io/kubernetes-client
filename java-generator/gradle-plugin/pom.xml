@@ -23,7 +23,7 @@
   <parent>
     <artifactId>java-generator-parent</artifactId>
     <groupId>io.fabric8</groupId>
-    <version>6.13.4</version>
+    <version>6.13.5</version>
   </parent>
 
   <!--
