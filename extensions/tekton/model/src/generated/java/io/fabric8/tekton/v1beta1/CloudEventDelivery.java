@@ -72,7 +72,6 @@ public class CloudEventDelivery implements Editable<CloudEventDeliveryBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CloudEventDelivery() {
     }

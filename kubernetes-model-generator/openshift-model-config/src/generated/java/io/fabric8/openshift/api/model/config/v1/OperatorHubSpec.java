@@ -75,7 +75,6 @@ public class OperatorHubSpec implements Editable<OperatorHubSpecBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public OperatorHubSpec() {
     }

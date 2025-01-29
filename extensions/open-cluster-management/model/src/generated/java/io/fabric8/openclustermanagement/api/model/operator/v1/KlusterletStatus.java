@@ -84,7 +84,6 @@ public class KlusterletStatus implements Editable<KlusterletStatusBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public KlusterletStatus() {
     }

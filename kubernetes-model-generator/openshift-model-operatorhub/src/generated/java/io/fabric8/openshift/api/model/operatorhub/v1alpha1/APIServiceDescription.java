@@ -108,7 +108,6 @@ public class APIServiceDescription implements Editable<APIServiceDescriptionBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public APIServiceDescription() {
     }

@@ -43,7 +43,6 @@ public class TCPSocketAction implements Editable<TCPSocketActionBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TCPSocketAction() {
     }

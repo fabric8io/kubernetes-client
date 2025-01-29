@@ -88,7 +88,6 @@ public class ConfigStatus implements Editable<ConfigStatusBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ConfigStatus() {
     }

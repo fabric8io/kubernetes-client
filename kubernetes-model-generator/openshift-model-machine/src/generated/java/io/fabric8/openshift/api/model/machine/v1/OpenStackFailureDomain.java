@@ -72,7 +72,6 @@ public class OpenStackFailureDomain implements Editable<OpenStackFailureDomainBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public OpenStackFailureDomain() {
     }

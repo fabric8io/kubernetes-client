@@ -69,7 +69,6 @@ public class KubeConfigSecret implements Editable<KubeConfigSecretBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public KubeConfigSecret() {
     }

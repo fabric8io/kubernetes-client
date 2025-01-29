@@ -90,7 +90,6 @@ public class SyncSetCommonSpec implements Editable<SyncSetCommonSpecBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SyncSetCommonSpec() {
     }

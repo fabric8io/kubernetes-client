@@ -79,9 +79,7 @@ public class PlacementRuleList implements Editable<PlacementRuleListBuilder>, Ku
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "apps.open-cluster-management.io/v1";
@@ -89,9 +87,7 @@ public class PlacementRuleList implements Editable<PlacementRuleListBuilder>, Ku
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openclustermanagement.api.model.apps.v1.PlacementRule> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "PlacementRuleList";
@@ -102,7 +98,6 @@ public class PlacementRuleList implements Editable<PlacementRuleListBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PlacementRuleList() {
     }
@@ -116,9 +111,7 @@ public class PlacementRuleList implements Editable<PlacementRuleListBuilder>, Ku
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class PlacementRuleList implements Editable<PlacementRuleListBuilder>, Ku
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class PlacementRuleList implements Editable<PlacementRuleListBuilder>, Ku
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class PlacementRuleList implements Editable<PlacementRuleListBuilder>, Ku
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

@@ -45,7 +45,6 @@ public class Bootstrap implements Editable<BootstrapBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Bootstrap() {
     }

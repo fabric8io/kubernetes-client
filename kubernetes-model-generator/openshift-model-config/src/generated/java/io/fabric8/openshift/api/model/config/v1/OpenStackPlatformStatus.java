@@ -95,7 +95,6 @@ public class OpenStackPlatformStatus implements Editable<OpenStackPlatformStatus
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public OpenStackPlatformStatus() {
     }

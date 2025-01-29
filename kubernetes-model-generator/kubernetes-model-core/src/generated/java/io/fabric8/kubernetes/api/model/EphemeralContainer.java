@@ -122,7 +122,6 @@ public class EphemeralContainer implements Editable<EphemeralContainerBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EphemeralContainer() {
     }

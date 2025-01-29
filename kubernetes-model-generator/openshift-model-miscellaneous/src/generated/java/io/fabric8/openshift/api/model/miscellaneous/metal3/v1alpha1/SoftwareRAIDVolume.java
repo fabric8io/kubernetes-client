@@ -78,7 +78,6 @@ public class SoftwareRAIDVolume implements Editable<SoftwareRAIDVolumeBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SoftwareRAIDVolume() {
     }

@@ -69,7 +69,6 @@ public class TracingCustomTagHeader implements IsTracingCustomTagType, Editable<
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TracingCustomTagHeader() {
     }

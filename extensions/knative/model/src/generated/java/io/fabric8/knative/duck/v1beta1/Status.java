@@ -80,7 +80,6 @@ public class Status implements Editable<StatusBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Status() {
     }

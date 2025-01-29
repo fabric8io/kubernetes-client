@@ -72,7 +72,6 @@ public class AwsIrsa implements Editable<AwsIrsaBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AwsIrsa() {
     }

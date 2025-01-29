@@ -107,7 +107,6 @@ public class PipelineRunStatusFields implements Editable<PipelineRunStatusFields
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PipelineRunStatusFields() {
     }

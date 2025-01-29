@@ -132,7 +132,6 @@ public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public FeatureFlags() {
     }

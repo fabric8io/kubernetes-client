@@ -94,7 +94,6 @@ public class StorageConfig implements Editable<StorageConfigBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public StorageConfig() {
     }

@@ -110,7 +110,6 @@ public class ClusterProvisionSpec implements Editable<ClusterProvisionSpecBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClusterProvisionSpec() {
     }

@@ -75,7 +75,6 @@ public class PrivateLinkAccess implements Editable<PrivateLinkAccessBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PrivateLinkAccess() {
     }

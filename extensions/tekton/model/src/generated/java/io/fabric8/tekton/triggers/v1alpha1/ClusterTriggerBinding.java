@@ -76,16 +76,12 @@ public class ClusterTriggerBinding implements Editable<ClusterTriggerBindingBuil
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "triggers.tekton.dev/v1alpha1";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "ClusterTriggerBinding";
@@ -100,7 +96,6 @@ public class ClusterTriggerBinding implements Editable<ClusterTriggerBindingBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClusterTriggerBinding() {
     }
@@ -115,9 +110,7 @@ public class ClusterTriggerBinding implements Editable<ClusterTriggerBindingBuil
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -125,9 +118,7 @@ public class ClusterTriggerBinding implements Editable<ClusterTriggerBindingBuil
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -135,9 +126,7 @@ public class ClusterTriggerBinding implements Editable<ClusterTriggerBindingBuil
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -145,9 +134,7 @@ public class ClusterTriggerBinding implements Editable<ClusterTriggerBindingBuil
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

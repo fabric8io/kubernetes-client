@@ -72,7 +72,6 @@ public class GCPMetadata implements Editable<GCPMetadataBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GCPMetadata() {
     }

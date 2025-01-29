@@ -81,7 +81,6 @@ public class ConsoleLinkSpec implements Editable<ConsoleLinkSpecBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ConsoleLinkSpec() {
     }

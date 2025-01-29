@@ -69,7 +69,6 @@ public class MachineConfigNodeSpecPinnedImageSet implements Editable<MachineConf
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MachineConfigNodeSpecPinnedImageSet() {
     }

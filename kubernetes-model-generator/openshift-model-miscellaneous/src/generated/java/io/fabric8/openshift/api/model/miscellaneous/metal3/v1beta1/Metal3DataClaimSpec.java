@@ -69,7 +69,6 @@ public class Metal3DataClaimSpec implements Editable<Metal3DataClaimSpecBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Metal3DataClaimSpec() {
     }

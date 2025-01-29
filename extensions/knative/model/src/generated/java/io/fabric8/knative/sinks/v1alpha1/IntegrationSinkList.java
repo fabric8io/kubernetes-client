@@ -79,9 +79,7 @@ public class IntegrationSinkList implements Editable<IntegrationSinkListBuilder>
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "sinks.knative.dev/v1alpha1";
@@ -89,9 +87,7 @@ public class IntegrationSinkList implements Editable<IntegrationSinkListBuilder>
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.knative.sinks.v1alpha1.IntegrationSink> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "IntegrationSinkList";
@@ -102,7 +98,6 @@ public class IntegrationSinkList implements Editable<IntegrationSinkListBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public IntegrationSinkList() {
     }
@@ -116,9 +111,7 @@ public class IntegrationSinkList implements Editable<IntegrationSinkListBuilder>
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class IntegrationSinkList implements Editable<IntegrationSinkListBuilder>
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class IntegrationSinkList implements Editable<IntegrationSinkListBuilder>
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class IntegrationSinkList implements Editable<IntegrationSinkListBuilder>
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

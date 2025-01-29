@@ -93,7 +93,6 @@ public class DeploymentStatus implements Editable<DeploymentStatusBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DeploymentStatus() {
     }

@@ -72,7 +72,6 @@ public class CloudEventAttributes implements Editable<CloudEventAttributesBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CloudEventAttributes() {
     }

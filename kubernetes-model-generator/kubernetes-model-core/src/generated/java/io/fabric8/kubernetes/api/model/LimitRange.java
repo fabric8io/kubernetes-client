@@ -46,16 +46,12 @@ public class LimitRange implements Editable<LimitRangeBuilder>, HasMetadata, Nam
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "v1";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "LimitRange";
@@ -68,7 +64,6 @@ public class LimitRange implements Editable<LimitRangeBuilder>, HasMetadata, Nam
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public LimitRange() {
     }
@@ -82,9 +77,7 @@ public class LimitRange implements Editable<LimitRangeBuilder>, HasMetadata, Nam
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -92,9 +85,7 @@ public class LimitRange implements Editable<LimitRangeBuilder>, HasMetadata, Nam
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -102,9 +93,7 @@ public class LimitRange implements Editable<LimitRangeBuilder>, HasMetadata, Nam
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -112,9 +101,7 @@ public class LimitRange implements Editable<LimitRangeBuilder>, HasMetadata, Nam
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

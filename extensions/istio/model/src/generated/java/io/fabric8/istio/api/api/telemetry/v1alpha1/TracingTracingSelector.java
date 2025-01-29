@@ -69,7 +69,6 @@ public class TracingTracingSelector implements Editable<TracingTracingSelectorBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TracingTracingSelector() {
     }

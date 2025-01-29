@@ -79,9 +79,7 @@ public class FlowSchemaList implements Editable<FlowSchemaListBuilder>, Kubernet
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "flowcontrol.apiserver.k8s.io/v1beta3";
@@ -89,9 +87,7 @@ public class FlowSchemaList implements Editable<FlowSchemaListBuilder>, Kubernet
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.kubernetes.api.model.flowcontrol.v1beta3.FlowSchema> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "FlowSchemaList";
@@ -102,7 +98,6 @@ public class FlowSchemaList implements Editable<FlowSchemaListBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public FlowSchemaList() {
     }
@@ -116,9 +111,7 @@ public class FlowSchemaList implements Editable<FlowSchemaListBuilder>, Kubernet
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class FlowSchemaList implements Editable<FlowSchemaListBuilder>, Kubernet
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class FlowSchemaList implements Editable<FlowSchemaListBuilder>, Kubernet
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class FlowSchemaList implements Editable<FlowSchemaListBuilder>, Kubernet
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

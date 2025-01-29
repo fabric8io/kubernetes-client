@@ -74,16 +74,12 @@ public class OpenStackProviderSpec implements Editable<OpenStackProviderSpecBuil
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "cloudcredential.openshift.io/v1";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "OpenStackProviderSpec";
@@ -92,7 +88,6 @@ public class OpenStackProviderSpec implements Editable<OpenStackProviderSpecBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public OpenStackProviderSpec() {
     }
@@ -104,9 +99,7 @@ public class OpenStackProviderSpec implements Editable<OpenStackProviderSpecBuil
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -114,9 +107,7 @@ public class OpenStackProviderSpec implements Editable<OpenStackProviderSpecBuil
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -124,9 +115,7 @@ public class OpenStackProviderSpec implements Editable<OpenStackProviderSpecBuil
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -134,9 +123,7 @@ public class OpenStackProviderSpec implements Editable<OpenStackProviderSpecBuil
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

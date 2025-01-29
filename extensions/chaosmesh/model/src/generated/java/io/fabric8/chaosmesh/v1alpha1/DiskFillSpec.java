@@ -75,7 +75,6 @@ public class DiskFillSpec implements Editable<DiskFillSpecBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DiskFillSpec() {
     }

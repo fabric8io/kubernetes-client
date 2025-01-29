@@ -72,7 +72,6 @@ public class RouteHTTPHeaderActionUnion implements Editable<RouteHTTPHeaderActio
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RouteHTTPHeaderActionUnion() {
     }

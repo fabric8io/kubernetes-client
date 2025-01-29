@@ -94,7 +94,6 @@ public class AzureSDConfig implements Editable<AzureSDConfigBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AzureSDConfig() {
     }

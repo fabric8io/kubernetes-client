@@ -69,7 +69,6 @@ public class DNSNameResolverSpec implements Editable<DNSNameResolverSpecBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DNSNameResolverSpec() {
     }

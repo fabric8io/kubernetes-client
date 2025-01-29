@@ -46,7 +46,6 @@ public class ServiceAccountTokenProjection implements Editable<ServiceAccountTok
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ServiceAccountTokenProjection() {
     }

@@ -81,7 +81,6 @@ public class MachineConfigNodeSpec implements Editable<MachineConfigNodeSpecBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MachineConfigNodeSpec() {
     }

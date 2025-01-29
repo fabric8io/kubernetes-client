@@ -75,7 +75,6 @@ public class NamespaceDashboardSpec implements Editable<NamespaceDashboardSpecBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NamespaceDashboardSpec() {
     }

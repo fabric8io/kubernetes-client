@@ -69,7 +69,6 @@ public class ManagedClusterSetBindingSpec implements Editable<ManagedClusterSetB
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ManagedClusterSetBindingSpec() {
     }

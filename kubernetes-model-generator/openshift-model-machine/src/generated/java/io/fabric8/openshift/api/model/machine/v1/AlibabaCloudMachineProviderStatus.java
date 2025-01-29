@@ -81,9 +81,7 @@ public class AlibabaCloudMachineProviderStatus implements Editable<AlibabaCloudM
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "machine.openshift.io/v1";
@@ -95,9 +93,7 @@ public class AlibabaCloudMachineProviderStatus implements Editable<AlibabaCloudM
     @JsonProperty("instanceState")
     private String instanceState;
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "AlibabaCloudMachineProviderStatus";
@@ -108,7 +104,6 @@ public class AlibabaCloudMachineProviderStatus implements Editable<AlibabaCloudM
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AlibabaCloudMachineProviderStatus() {
     }
@@ -124,9 +119,7 @@ public class AlibabaCloudMachineProviderStatus implements Editable<AlibabaCloudM
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -134,9 +127,7 @@ public class AlibabaCloudMachineProviderStatus implements Editable<AlibabaCloudM
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -175,9 +166,7 @@ public class AlibabaCloudMachineProviderStatus implements Editable<AlibabaCloudM
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -185,9 +174,7 @@ public class AlibabaCloudMachineProviderStatus implements Editable<AlibabaCloudM
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

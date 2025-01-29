@@ -71,7 +71,6 @@ public class Overhead implements Editable<OverheadBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Overhead() {
     }

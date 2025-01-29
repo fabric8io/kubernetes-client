@@ -79,9 +79,7 @@ public class JobFlowList implements Editable<JobFlowListBuilder>, KubernetesReso
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "flow.volcano.sh/v1alpha1";
@@ -89,9 +87,7 @@ public class JobFlowList implements Editable<JobFlowListBuilder>, KubernetesReso
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.volcano.api.model.flow.v1alpha1.JobFlow> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "JobFlowList";
@@ -102,7 +98,6 @@ public class JobFlowList implements Editable<JobFlowListBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public JobFlowList() {
     }
@@ -116,9 +111,7 @@ public class JobFlowList implements Editable<JobFlowListBuilder>, KubernetesReso
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class JobFlowList implements Editable<JobFlowListBuilder>, KubernetesReso
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class JobFlowList implements Editable<JobFlowListBuilder>, KubernetesReso
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class JobFlowList implements Editable<JobFlowListBuilder>, KubernetesReso
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

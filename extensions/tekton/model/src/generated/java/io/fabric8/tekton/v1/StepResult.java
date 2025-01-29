@@ -79,7 +79,6 @@ public class StepResult implements Editable<StepResultBuilder>, KubernetesResour
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public StepResult() {
     }

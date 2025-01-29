@@ -69,7 +69,6 @@ public class PodUpdatePolicy implements Editable<PodUpdatePolicyBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PodUpdatePolicy() {
     }

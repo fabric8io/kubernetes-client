@@ -77,16 +77,12 @@ public class ClusterDeprovision implements Editable<ClusterDeprovisionBuilder>, 
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "hive.openshift.io/v1";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "ClusterDeprovision";
@@ -101,7 +97,6 @@ public class ClusterDeprovision implements Editable<ClusterDeprovisionBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClusterDeprovision() {
     }
@@ -116,9 +111,7 @@ public class ClusterDeprovision implements Editable<ClusterDeprovisionBuilder>, 
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class ClusterDeprovision implements Editable<ClusterDeprovisionBuilder>, 
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -136,9 +127,7 @@ public class ClusterDeprovision implements Editable<ClusterDeprovisionBuilder>, 
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -146,9 +135,7 @@ public class ClusterDeprovision implements Editable<ClusterDeprovisionBuilder>, 
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

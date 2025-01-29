@@ -76,16 +76,12 @@ public class StorageState implements Editable<StorageStateBuilder>, HasMetadata
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "migration.k8s.io/v1alpha1";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "StorageState";
@@ -100,7 +96,6 @@ public class StorageState implements Editable<StorageStateBuilder>, HasMetadata
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public StorageState() {
     }
@@ -115,9 +110,7 @@ public class StorageState implements Editable<StorageStateBuilder>, HasMetadata
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -125,9 +118,7 @@ public class StorageState implements Editable<StorageStateBuilder>, HasMetadata
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -135,9 +126,7 @@ public class StorageState implements Editable<StorageStateBuilder>, HasMetadata
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -145,9 +134,7 @@ public class StorageState implements Editable<StorageStateBuilder>, HasMetadata
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

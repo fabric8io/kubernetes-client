@@ -100,7 +100,6 @@ public class CustomResourceDefinitionSpec implements Editable<CustomResourceDefi
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CustomResourceDefinitionSpec() {
     }

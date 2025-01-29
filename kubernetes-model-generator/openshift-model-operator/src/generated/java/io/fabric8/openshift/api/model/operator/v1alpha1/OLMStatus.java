@@ -90,7 +90,6 @@ public class OLMStatus implements Editable<OLMStatusBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public OLMStatus() {
     }

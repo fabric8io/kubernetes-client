@@ -69,7 +69,6 @@ public class MachineConfigNodeSpecMachineConfigVersion implements Editable<Machi
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MachineConfigNodeSpecMachineConfigVersion() {
     }

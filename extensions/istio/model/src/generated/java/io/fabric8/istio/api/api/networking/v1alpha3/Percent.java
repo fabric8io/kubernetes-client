@@ -69,7 +69,6 @@ public class Percent implements Editable<PercentBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Percent() {
     }

@@ -73,7 +73,6 @@ public class GitLabBindingSpec implements Editable<GitLabBindingSpecBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GitLabBindingSpec() {
     }

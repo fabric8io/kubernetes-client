@@ -75,7 +75,6 @@ public class Components implements Editable<ComponentsBuilder>, KubernetesResour
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Components() {
     }

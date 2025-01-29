@@ -72,7 +72,6 @@ public class InstallMode implements Editable<InstallModeBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public InstallMode() {
     }

@@ -69,7 +69,6 @@ public class PowerVSSecretReference implements Editable<PowerVSSecretReferenceBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PowerVSSecretReference() {
     }

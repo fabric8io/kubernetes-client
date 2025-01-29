@@ -69,7 +69,6 @@ public class SpotMarketOptions implements Editable<SpotMarketOptionsBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SpotMarketOptions() {
     }

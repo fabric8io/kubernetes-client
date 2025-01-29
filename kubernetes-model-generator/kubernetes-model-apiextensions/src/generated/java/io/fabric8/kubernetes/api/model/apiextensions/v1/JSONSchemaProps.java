@@ -208,7 +208,6 @@ public class JSONSchemaProps implements Editable<JSONSchemaPropsBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public JSONSchemaProps() {
     }

@@ -75,7 +75,6 @@ public class ControlPlaneConfigSpec implements Editable<ControlPlaneConfigSpecBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ControlPlaneConfigSpec() {
     }

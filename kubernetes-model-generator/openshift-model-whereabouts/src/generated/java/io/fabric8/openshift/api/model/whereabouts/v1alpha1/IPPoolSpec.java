@@ -73,7 +73,6 @@ public class IPPoolSpec implements Editable<IPPoolSpecBuilder>, KubernetesResour
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public IPPoolSpec() {
     }

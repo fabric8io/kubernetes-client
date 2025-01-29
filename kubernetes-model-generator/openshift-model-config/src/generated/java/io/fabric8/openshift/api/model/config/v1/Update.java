@@ -78,7 +78,6 @@ public class Update implements Editable<UpdateBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Update() {
     }

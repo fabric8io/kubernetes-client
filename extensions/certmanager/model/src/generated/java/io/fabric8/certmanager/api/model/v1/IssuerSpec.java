@@ -82,7 +82,6 @@ public class IssuerSpec implements Editable<IssuerSpecBuilder>, KubernetesResour
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public IssuerSpec() {
     }

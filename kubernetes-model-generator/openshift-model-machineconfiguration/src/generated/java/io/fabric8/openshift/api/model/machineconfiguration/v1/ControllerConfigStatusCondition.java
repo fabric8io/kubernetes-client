@@ -81,7 +81,6 @@ public class ControllerConfigStatusCondition implements Editable<ControllerConfi
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ControllerConfigStatusCondition() {
     }

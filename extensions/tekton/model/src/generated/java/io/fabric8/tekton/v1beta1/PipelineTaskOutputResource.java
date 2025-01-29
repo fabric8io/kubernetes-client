@@ -72,7 +72,6 @@ public class PipelineTaskOutputResource implements Editable<PipelineTaskOutputRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PipelineTaskOutputResource() {
     }

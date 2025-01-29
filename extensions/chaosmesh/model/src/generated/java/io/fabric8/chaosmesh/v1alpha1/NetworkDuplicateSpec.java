@@ -90,7 +90,6 @@ public class NetworkDuplicateSpec implements Editable<NetworkDuplicateSpecBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NetworkDuplicateSpec() {
     }

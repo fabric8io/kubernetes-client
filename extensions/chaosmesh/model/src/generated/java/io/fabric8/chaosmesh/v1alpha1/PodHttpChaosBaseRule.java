@@ -75,7 +75,6 @@ public class PodHttpChaosBaseRule implements Editable<PodHttpChaosBaseRuleBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PodHttpChaosBaseRule() {
     }

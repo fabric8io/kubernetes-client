@@ -78,7 +78,6 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AlertmanagerSpec() {
     }

@@ -87,7 +87,6 @@ public class GenericAPIServerConfig implements Editable<GenericAPIServerConfigBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GenericAPIServerConfig() {
     }

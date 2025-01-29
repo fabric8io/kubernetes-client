@@ -77,9 +77,7 @@ public class ControllerRevision implements Editable<ControllerRevisionBuilder>, 
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "apps/v1";
@@ -87,9 +85,7 @@ public class ControllerRevision implements Editable<ControllerRevisionBuilder>, 
     @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
     private Object data;
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "ControllerRevision";
@@ -102,7 +98,6 @@ public class ControllerRevision implements Editable<ControllerRevisionBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ControllerRevision() {
     }
@@ -117,9 +112,7 @@ public class ControllerRevision implements Editable<ControllerRevisionBuilder>, 
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -127,9 +120,7 @@ public class ControllerRevision implements Editable<ControllerRevisionBuilder>, 
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -148,9 +139,7 @@ public class ControllerRevision implements Editable<ControllerRevisionBuilder>, 
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -158,9 +147,7 @@ public class ControllerRevision implements Editable<ControllerRevisionBuilder>, 
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

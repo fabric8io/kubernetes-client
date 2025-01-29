@@ -72,7 +72,6 @@ public class NutanixPrismElementEndpoint implements Editable<NutanixPrismElement
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NutanixPrismElementEndpoint() {
     }

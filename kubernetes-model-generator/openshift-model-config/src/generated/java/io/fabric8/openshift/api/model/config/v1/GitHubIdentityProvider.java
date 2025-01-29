@@ -88,7 +88,6 @@ public class GitHubIdentityProvider implements Editable<GitHubIdentityProviderBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GitHubIdentityProvider() {
     }

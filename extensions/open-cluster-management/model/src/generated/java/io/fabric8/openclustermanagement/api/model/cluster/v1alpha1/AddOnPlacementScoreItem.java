@@ -72,7 +72,6 @@ public class AddOnPlacementScoreItem implements Editable<AddOnPlacementScoreItem
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AddOnPlacementScoreItem() {
     }

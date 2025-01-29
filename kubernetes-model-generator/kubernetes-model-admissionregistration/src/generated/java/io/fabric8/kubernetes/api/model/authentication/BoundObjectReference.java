@@ -78,7 +78,6 @@ public class BoundObjectReference implements Editable<BoundObjectReferenceBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public BoundObjectReference() {
     }

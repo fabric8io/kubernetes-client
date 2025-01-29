@@ -77,7 +77,6 @@ public class Scheduling implements Editable<SchedulingBuilder>, KubernetesResour
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Scheduling() {
     }

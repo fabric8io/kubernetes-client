@@ -78,7 +78,6 @@ public class KMSKeyReference implements Editable<KMSKeyReferenceBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public KMSKeyReference() {
     }

@@ -72,7 +72,6 @@ public class ExemptPriorityLevelConfiguration implements Editable<ExemptPriority
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ExemptPriorityLevelConfiguration() {
     }

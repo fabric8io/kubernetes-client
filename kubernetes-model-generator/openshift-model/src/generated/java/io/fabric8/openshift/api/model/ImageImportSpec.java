@@ -81,7 +81,6 @@ public class ImageImportSpec implements Editable<ImageImportSpecBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ImageImportSpec() {
     }

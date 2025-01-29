@@ -46,7 +46,6 @@ public class HostAlias implements Editable<HostAliasBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HostAlias() {
     }

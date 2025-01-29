@@ -69,7 +69,6 @@ public class AuthorizationPolicyExtensionProvider implements Editable<Authorizat
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AuthorizationPolicyExtensionProvider() {
     }

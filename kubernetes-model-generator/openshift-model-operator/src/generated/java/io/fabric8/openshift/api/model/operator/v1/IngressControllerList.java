@@ -79,9 +79,7 @@ public class IngressControllerList implements Editable<IngressControllerListBuil
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "operator.openshift.io/v1";
@@ -89,9 +87,7 @@ public class IngressControllerList implements Editable<IngressControllerListBuil
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openshift.api.model.operator.v1.IngressController> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "IngressControllerList";
@@ -102,7 +98,6 @@ public class IngressControllerList implements Editable<IngressControllerListBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public IngressControllerList() {
     }
@@ -116,9 +111,7 @@ public class IngressControllerList implements Editable<IngressControllerListBuil
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class IngressControllerList implements Editable<IngressControllerListBuil
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class IngressControllerList implements Editable<IngressControllerListBuil
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class IngressControllerList implements Editable<IngressControllerListBuil
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

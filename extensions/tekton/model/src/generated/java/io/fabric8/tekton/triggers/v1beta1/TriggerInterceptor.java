@@ -81,7 +81,6 @@ public class TriggerInterceptor implements Editable<TriggerInterceptorBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TriggerInterceptor() {
     }

@@ -98,7 +98,6 @@ public class SearchSpec implements Editable<SearchSpecBuilder>, KubernetesResour
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SearchSpec() {
     }

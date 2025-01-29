@@ -85,7 +85,6 @@ public class LeaseCandidateSpec implements Editable<LeaseCandidateSpecBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public LeaseCandidateSpec() {
     }

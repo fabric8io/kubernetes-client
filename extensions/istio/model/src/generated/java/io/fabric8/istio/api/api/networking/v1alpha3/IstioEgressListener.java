@@ -81,7 +81,6 @@ public class IstioEgressListener implements Editable<IstioEgressListenerBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public IstioEgressListener() {
     }

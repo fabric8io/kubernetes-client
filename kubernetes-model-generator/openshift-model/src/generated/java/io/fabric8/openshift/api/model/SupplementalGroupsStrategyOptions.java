@@ -75,7 +75,6 @@ public class SupplementalGroupsStrategyOptions implements Editable<SupplementalG
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SupplementalGroupsStrategyOptions() {
     }

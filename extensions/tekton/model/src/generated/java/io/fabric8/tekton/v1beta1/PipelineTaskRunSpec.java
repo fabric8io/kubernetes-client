@@ -92,7 +92,6 @@ public class PipelineTaskRunSpec implements Editable<PipelineTaskRunSpecBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PipelineTaskRunSpec() {
     }

@@ -108,7 +108,6 @@ public class AWSSQS implements Editable<AWSSQSBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AWSSQS() {
     }

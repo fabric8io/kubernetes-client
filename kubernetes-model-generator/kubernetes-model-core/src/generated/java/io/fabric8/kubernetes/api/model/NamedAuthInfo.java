@@ -43,7 +43,6 @@ public class NamedAuthInfo implements Editable<NamedAuthInfoBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NamedAuthInfo() {
     }

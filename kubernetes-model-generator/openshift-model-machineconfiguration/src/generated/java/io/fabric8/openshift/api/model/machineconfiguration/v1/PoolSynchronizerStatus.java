@@ -87,7 +87,6 @@ public class PoolSynchronizerStatus implements Editable<PoolSynchronizerStatusBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PoolSynchronizerStatus() {
     }

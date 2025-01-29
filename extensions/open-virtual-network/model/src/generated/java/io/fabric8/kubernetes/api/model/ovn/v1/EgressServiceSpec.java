@@ -75,7 +75,6 @@ public class EgressServiceSpec implements Editable<EgressServiceSpecBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EgressServiceSpec() {
     }

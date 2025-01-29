@@ -93,7 +93,6 @@ public class GitRefInfo implements Editable<GitRefInfoBuilder>, KubernetesResour
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GitRefInfo() {
     }

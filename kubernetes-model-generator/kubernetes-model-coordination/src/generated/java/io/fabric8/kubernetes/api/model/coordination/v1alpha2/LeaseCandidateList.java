@@ -79,9 +79,7 @@ public class LeaseCandidateList implements Editable<LeaseCandidateListBuilder>, 
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "coordination.k8s.io/v1alpha2";
@@ -89,9 +87,7 @@ public class LeaseCandidateList implements Editable<LeaseCandidateListBuilder>, 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.kubernetes.api.model.coordination.v1alpha2.LeaseCandidate> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "LeaseCandidateList";
@@ -102,7 +98,6 @@ public class LeaseCandidateList implements Editable<LeaseCandidateListBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public LeaseCandidateList() {
     }
@@ -116,9 +111,7 @@ public class LeaseCandidateList implements Editable<LeaseCandidateListBuilder>, 
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class LeaseCandidateList implements Editable<LeaseCandidateListBuilder>, 
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class LeaseCandidateList implements Editable<LeaseCandidateListBuilder>, 
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class LeaseCandidateList implements Editable<LeaseCandidateListBuilder>, 
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

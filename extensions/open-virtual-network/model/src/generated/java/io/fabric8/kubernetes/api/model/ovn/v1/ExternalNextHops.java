@@ -76,7 +76,6 @@ public class ExternalNextHops implements Editable<ExternalNextHopsBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ExternalNextHops() {
     }

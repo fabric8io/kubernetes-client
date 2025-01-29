@@ -78,7 +78,6 @@ public class GatewayConfig implements Editable<GatewayConfigBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GatewayConfig() {
     }

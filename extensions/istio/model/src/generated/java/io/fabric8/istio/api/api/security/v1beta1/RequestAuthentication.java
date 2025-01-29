@@ -94,7 +94,6 @@ public class RequestAuthentication implements Editable<RequestAuthenticationBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RequestAuthentication() {
     }

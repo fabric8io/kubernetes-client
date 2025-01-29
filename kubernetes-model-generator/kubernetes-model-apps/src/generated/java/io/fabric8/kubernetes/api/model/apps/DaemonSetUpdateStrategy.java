@@ -72,7 +72,6 @@ public class DaemonSetUpdateStrategy implements Editable<DaemonSetUpdateStrategy
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DaemonSetUpdateStrategy() {
     }

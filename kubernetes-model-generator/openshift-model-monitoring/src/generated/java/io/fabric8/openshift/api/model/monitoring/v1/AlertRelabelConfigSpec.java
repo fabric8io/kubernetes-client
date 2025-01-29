@@ -72,7 +72,6 @@ public class AlertRelabelConfigSpec implements Editable<AlertRelabelConfigSpecBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AlertRelabelConfigSpec() {
     }

@@ -79,9 +79,7 @@ public class ScheduleList implements Editable<ScheduleListBuilder>, KubernetesRe
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "chaos-mesh.org/v1alpha1";
@@ -89,9 +87,7 @@ public class ScheduleList implements Editable<ScheduleListBuilder>, KubernetesRe
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.chaosmesh.v1alpha1.Schedule> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "ScheduleList";
@@ -102,7 +98,6 @@ public class ScheduleList implements Editable<ScheduleListBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ScheduleList() {
     }
@@ -116,9 +111,7 @@ public class ScheduleList implements Editable<ScheduleListBuilder>, KubernetesRe
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class ScheduleList implements Editable<ScheduleListBuilder>, KubernetesRe
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class ScheduleList implements Editable<ScheduleListBuilder>, KubernetesRe
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class ScheduleList implements Editable<ScheduleListBuilder>, KubernetesRe
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

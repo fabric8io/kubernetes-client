@@ -69,7 +69,6 @@ public class GCPCSIDriverConfigSpec implements Editable<GCPCSIDriverConfigSpecBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GCPCSIDriverConfigSpec() {
     }

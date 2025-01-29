@@ -84,7 +84,6 @@ public class ProxySpec implements Editable<ProxySpecBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ProxySpec() {
     }

@@ -80,7 +80,6 @@ public class ConnectionConfigNamespaceScoped implements Editable<ConnectionConfi
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ConnectionConfigNamespaceScoped() {
     }

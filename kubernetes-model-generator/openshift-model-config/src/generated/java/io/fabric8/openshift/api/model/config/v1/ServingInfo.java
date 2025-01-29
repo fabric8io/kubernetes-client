@@ -94,7 +94,6 @@ public class ServingInfo implements Editable<ServingInfoBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ServingInfo() {
     }

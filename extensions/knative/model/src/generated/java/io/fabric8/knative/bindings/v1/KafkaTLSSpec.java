@@ -78,7 +78,6 @@ public class KafkaTLSSpec implements Editable<KafkaTLSSpecBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public KafkaTLSSpec() {
     }

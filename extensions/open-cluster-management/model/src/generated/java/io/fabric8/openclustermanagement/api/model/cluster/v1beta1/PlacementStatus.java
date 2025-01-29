@@ -80,7 +80,6 @@ public class PlacementStatus implements Editable<PlacementStatusBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PlacementStatus() {
     }

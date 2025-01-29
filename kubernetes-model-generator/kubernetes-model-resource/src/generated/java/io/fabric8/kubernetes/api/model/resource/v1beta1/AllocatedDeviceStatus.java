@@ -89,7 +89,6 @@ public class AllocatedDeviceStatus implements Editable<AllocatedDeviceStatusBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AllocatedDeviceStatus() {
     }

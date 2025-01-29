@@ -69,7 +69,6 @@ public class LoadBalancer implements Editable<LoadBalancerBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public LoadBalancer() {
     }

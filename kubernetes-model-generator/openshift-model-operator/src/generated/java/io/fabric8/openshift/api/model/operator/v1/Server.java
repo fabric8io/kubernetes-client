@@ -78,7 +78,6 @@ public class Server implements Editable<ServerBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Server() {
     }

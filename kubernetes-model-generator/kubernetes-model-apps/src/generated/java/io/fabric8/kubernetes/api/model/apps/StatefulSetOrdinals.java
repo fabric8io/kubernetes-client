@@ -69,7 +69,6 @@ public class StatefulSetOrdinals implements Editable<StatefulSetOrdinalsBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public StatefulSetOrdinals() {
     }

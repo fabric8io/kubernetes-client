@@ -78,7 +78,6 @@ public class PowerVSResource implements Editable<PowerVSResourceBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PowerVSResource() {
     }

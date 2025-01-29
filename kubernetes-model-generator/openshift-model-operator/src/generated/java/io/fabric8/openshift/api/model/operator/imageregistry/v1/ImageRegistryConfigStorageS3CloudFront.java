@@ -79,7 +79,6 @@ public class ImageRegistryConfigStorageS3CloudFront implements Editable<ImageReg
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ImageRegistryConfigStorageS3CloudFront() {
     }

@@ -72,7 +72,6 @@ public class PodsMetricStatus implements Editable<PodsMetricStatusBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PodsMetricStatus() {
     }

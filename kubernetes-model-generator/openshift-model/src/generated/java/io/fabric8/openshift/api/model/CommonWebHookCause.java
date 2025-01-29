@@ -72,7 +72,6 @@ public class CommonWebHookCause implements Editable<CommonWebHookCauseBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CommonWebHookCause() {
     }

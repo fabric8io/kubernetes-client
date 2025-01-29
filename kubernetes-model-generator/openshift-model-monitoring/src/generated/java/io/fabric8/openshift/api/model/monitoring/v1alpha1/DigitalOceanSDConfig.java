@@ -105,7 +105,6 @@ public class DigitalOceanSDConfig implements Editable<DigitalOceanSDConfigBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DigitalOceanSDConfig() {
     }

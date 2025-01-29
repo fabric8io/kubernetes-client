@@ -123,7 +123,6 @@ public class ScalewaySDConfig implements Editable<ScalewaySDConfigBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ScalewaySDConfig() {
     }

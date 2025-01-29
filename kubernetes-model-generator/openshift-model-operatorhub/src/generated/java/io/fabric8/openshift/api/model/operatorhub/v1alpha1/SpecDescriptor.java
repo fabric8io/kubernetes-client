@@ -84,7 +84,6 @@ public class SpecDescriptor implements Editable<SpecDescriptorBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SpecDescriptor() {
     }

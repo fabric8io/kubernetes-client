@@ -81,7 +81,6 @@ public class ComponentOverride implements Editable<ComponentOverrideBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ComponentOverride() {
     }

@@ -44,7 +44,6 @@ public class MachineDeletionStatus implements Editable<MachineDeletionStatusBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MachineDeletionStatus() {
     }

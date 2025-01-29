@@ -135,7 +135,6 @@ public class JVMChaosSpec implements Editable<JVMChaosSpecBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public JVMChaosSpec() {
     }

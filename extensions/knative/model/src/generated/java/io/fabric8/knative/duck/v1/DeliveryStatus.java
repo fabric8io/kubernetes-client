@@ -75,7 +75,6 @@ public class DeliveryStatus implements Editable<DeliveryStatusBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DeliveryStatus() {
     }

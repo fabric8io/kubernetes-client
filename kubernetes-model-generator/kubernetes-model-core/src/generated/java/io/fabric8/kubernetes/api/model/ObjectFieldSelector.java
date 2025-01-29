@@ -43,7 +43,6 @@ public class ObjectFieldSelector implements Editable<ObjectFieldSelectorBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ObjectFieldSelector() {
     }

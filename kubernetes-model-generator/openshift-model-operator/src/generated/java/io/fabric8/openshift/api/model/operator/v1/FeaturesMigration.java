@@ -75,7 +75,6 @@ public class FeaturesMigration implements Editable<FeaturesMigrationBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public FeaturesMigration() {
     }

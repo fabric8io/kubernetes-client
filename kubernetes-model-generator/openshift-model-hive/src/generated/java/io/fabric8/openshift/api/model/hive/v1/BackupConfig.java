@@ -72,7 +72,6 @@ public class BackupConfig implements Editable<BackupConfigBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public BackupConfig() {
     }

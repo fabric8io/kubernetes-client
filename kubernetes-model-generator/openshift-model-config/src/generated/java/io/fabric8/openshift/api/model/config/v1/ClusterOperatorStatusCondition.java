@@ -81,7 +81,6 @@ public class ClusterOperatorStatusCondition implements Editable<ClusterOperatorS
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClusterOperatorStatusCondition() {
     }

@@ -86,7 +86,6 @@ public class APIRequestCountStatus implements Editable<APIRequestCountStatusBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public APIRequestCountStatus() {
     }

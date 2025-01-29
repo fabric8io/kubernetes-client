@@ -77,7 +77,6 @@ public class InterceptorResponse implements Editable<InterceptorResponseBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public InterceptorResponse() {
     }

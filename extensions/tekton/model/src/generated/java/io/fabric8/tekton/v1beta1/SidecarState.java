@@ -87,7 +87,6 @@ public class SidecarState implements Editable<SidecarStateBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SidecarState() {
     }

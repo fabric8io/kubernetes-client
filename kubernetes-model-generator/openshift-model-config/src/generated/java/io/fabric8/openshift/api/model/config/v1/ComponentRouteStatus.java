@@ -94,7 +94,6 @@ public class ComponentRouteStatus implements Editable<ComponentRouteStatusBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ComponentRouteStatus() {
     }

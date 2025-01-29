@@ -69,7 +69,6 @@ public class AlertmanagerConfigMatcherStrategy implements Editable<AlertmanagerC
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AlertmanagerConfigMatcherStrategy() {
     }

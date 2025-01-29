@@ -91,7 +91,6 @@ public class HardwareDetails implements Editable<HardwareDetailsBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HardwareDetails() {
     }

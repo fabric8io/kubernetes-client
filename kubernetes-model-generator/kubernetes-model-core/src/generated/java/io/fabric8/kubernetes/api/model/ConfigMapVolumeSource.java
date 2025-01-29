@@ -52,7 +52,6 @@ public class ConfigMapVolumeSource implements Editable<ConfigMapVolumeSourceBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ConfigMapVolumeSource() {
     }

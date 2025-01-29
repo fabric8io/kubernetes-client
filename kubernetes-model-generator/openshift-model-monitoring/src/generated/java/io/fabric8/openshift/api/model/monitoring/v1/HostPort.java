@@ -72,7 +72,6 @@ public class HostPort implements Editable<HostPortBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HostPort() {
     }

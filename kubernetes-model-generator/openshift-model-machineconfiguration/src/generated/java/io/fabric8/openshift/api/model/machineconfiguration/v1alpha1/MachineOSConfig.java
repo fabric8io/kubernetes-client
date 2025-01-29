@@ -76,16 +76,12 @@ public class MachineOSConfig implements Editable<MachineOSConfigBuilder>, HasMet
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "machineconfiguration.openshift.io/v1alpha1";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "MachineOSConfig";
@@ -100,7 +96,6 @@ public class MachineOSConfig implements Editable<MachineOSConfigBuilder>, HasMet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MachineOSConfig() {
     }
@@ -115,9 +110,7 @@ public class MachineOSConfig implements Editable<MachineOSConfigBuilder>, HasMet
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -125,9 +118,7 @@ public class MachineOSConfig implements Editable<MachineOSConfigBuilder>, HasMet
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -135,9 +126,7 @@ public class MachineOSConfig implements Editable<MachineOSConfigBuilder>, HasMet
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -145,9 +134,7 @@ public class MachineOSConfig implements Editable<MachineOSConfigBuilder>, HasMet
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

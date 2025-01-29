@@ -72,7 +72,6 @@ public class AlertingSpec implements Editable<AlertingSpecBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AlertingSpec() {
     }

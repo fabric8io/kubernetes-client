@@ -79,9 +79,7 @@ public class ContainerSourceList implements Editable<ContainerSourceListBuilder>
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "sources.knative.dev/v1";
@@ -89,9 +87,7 @@ public class ContainerSourceList implements Editable<ContainerSourceListBuilder>
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.knative.sources.v1.ContainerSource> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "ContainerSourceList";
@@ -102,7 +98,6 @@ public class ContainerSourceList implements Editable<ContainerSourceListBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ContainerSourceList() {
     }
@@ -116,9 +111,7 @@ public class ContainerSourceList implements Editable<ContainerSourceListBuilder>
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class ContainerSourceList implements Editable<ContainerSourceListBuilder>
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class ContainerSourceList implements Editable<ContainerSourceListBuilder>
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class ContainerSourceList implements Editable<ContainerSourceListBuilder>
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

@@ -69,7 +69,6 @@ public class NamedResourcesAllocationResult implements Editable<NamedResourcesAl
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NamedResourcesAllocationResult() {
     }

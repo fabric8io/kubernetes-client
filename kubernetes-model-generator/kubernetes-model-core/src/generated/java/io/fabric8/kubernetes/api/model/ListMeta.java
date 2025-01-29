@@ -49,7 +49,6 @@ public class ListMeta implements Editable<ListMetaBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ListMeta() {
     }

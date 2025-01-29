@@ -81,7 +81,6 @@ public class UpstreamResolvers implements Editable<UpstreamResolversBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public UpstreamResolvers() {
     }

@@ -72,7 +72,6 @@ public class TracingRequestHeader implements Editable<TracingRequestHeaderBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TracingRequestHeader() {
     }

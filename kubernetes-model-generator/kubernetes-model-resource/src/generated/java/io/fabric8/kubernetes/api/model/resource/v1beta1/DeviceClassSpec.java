@@ -76,7 +76,6 @@ public class DeviceClassSpec implements Editable<DeviceClassSpecBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DeviceClassSpec() {
     }

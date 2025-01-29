@@ -49,7 +49,6 @@ public class VsphereVirtualDiskVolumeSource implements Editable<VsphereVirtualDi
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public VsphereVirtualDiskVolumeSource() {
     }

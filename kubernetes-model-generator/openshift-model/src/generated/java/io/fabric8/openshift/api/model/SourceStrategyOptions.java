@@ -69,7 +69,6 @@ public class SourceStrategyOptions implements Editable<SourceStrategyOptionsBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SourceStrategyOptions() {
     }

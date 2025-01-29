@@ -79,9 +79,7 @@ public class TaskRunList implements Editable<TaskRunListBuilder>, KubernetesReso
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "tekton.dev/v1beta1";
@@ -89,9 +87,7 @@ public class TaskRunList implements Editable<TaskRunListBuilder>, KubernetesReso
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.tekton.v1beta1.TaskRun> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "TaskRunList";
@@ -102,7 +98,6 @@ public class TaskRunList implements Editable<TaskRunListBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TaskRunList() {
     }
@@ -116,9 +111,7 @@ public class TaskRunList implements Editable<TaskRunListBuilder>, KubernetesReso
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class TaskRunList implements Editable<TaskRunListBuilder>, KubernetesReso
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class TaskRunList implements Editable<TaskRunListBuilder>, KubernetesReso
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class TaskRunList implements Editable<TaskRunListBuilder>, KubernetesReso
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

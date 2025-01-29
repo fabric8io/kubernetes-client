@@ -76,7 +76,6 @@ public class NodeGroupAntiAffinity implements Editable<NodeGroupAntiAffinityBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NodeGroupAntiAffinity() {
     }

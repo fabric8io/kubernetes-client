@@ -85,7 +85,6 @@ public class VersionAvailability implements Editable<VersionAvailabilityBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public VersionAvailability() {
     }

@@ -87,7 +87,6 @@ public class AzureSelector implements Editable<AzureSelectorBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AzureSelector() {
     }

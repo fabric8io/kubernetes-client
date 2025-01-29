@@ -46,7 +46,6 @@ public class EnvFromSource implements Editable<EnvFromSourceBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EnvFromSource() {
     }

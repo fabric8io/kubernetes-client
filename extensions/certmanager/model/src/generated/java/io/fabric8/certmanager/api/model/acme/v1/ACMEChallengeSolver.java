@@ -75,7 +75,6 @@ public class ACMEChallengeSolver implements Editable<ACMEChallengeSolverBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ACMEChallengeSolver() {
     }

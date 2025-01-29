@@ -72,7 +72,6 @@ public class JVMGCSpec implements Editable<JVMGCSpecBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public JVMGCSpec() {
     }

@@ -46,7 +46,6 @@ public class EnvVar implements Editable<EnvVarBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EnvVar() {
     }

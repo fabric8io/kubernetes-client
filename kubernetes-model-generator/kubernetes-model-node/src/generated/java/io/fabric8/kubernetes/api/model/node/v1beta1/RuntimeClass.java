@@ -77,18 +77,14 @@ public class RuntimeClass implements Editable<RuntimeClassBuilder>, HasMetadata
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "node.k8s.io/v1beta1";
     @JsonProperty("handler")
     private String handler;
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "RuntimeClass";
@@ -103,7 +99,6 @@ public class RuntimeClass implements Editable<RuntimeClassBuilder>, HasMetadata
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RuntimeClass() {
     }
@@ -119,9 +114,7 @@ public class RuntimeClass implements Editable<RuntimeClassBuilder>, HasMetadata
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -129,9 +122,7 @@ public class RuntimeClass implements Editable<RuntimeClassBuilder>, HasMetadata
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -149,9 +140,7 @@ public class RuntimeClass implements Editable<RuntimeClassBuilder>, HasMetadata
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -159,9 +148,7 @@ public class RuntimeClass implements Editable<RuntimeClassBuilder>, HasMetadata
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

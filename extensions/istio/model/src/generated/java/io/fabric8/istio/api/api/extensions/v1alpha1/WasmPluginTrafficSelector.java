@@ -76,7 +76,6 @@ public class WasmPluginTrafficSelector implements Editable<WasmPluginTrafficSele
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public WasmPluginTrafficSelector() {
     }

@@ -69,7 +69,6 @@ public class RenderedMachineConfigReference implements Editable<RenderedMachineC
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RenderedMachineConfigReference() {
     }

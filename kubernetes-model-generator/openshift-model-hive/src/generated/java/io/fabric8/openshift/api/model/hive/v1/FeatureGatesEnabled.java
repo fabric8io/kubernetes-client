@@ -72,7 +72,6 @@ public class FeatureGatesEnabled implements Editable<FeatureGatesEnabledBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public FeatureGatesEnabled() {
     }

@@ -72,7 +72,6 @@ public class TaintIdentifier implements Editable<TaintIdentifierBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TaintIdentifier() {
     }

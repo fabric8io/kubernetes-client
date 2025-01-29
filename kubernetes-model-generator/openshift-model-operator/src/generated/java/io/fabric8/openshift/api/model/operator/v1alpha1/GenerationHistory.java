@@ -81,7 +81,6 @@ public class GenerationHistory implements Editable<GenerationHistoryBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GenerationHistory() {
     }

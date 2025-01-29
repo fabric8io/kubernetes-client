@@ -72,7 +72,6 @@ public class PerVerbAPIRequestCount implements Editable<PerVerbAPIRequestCountBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PerVerbAPIRequestCount() {
     }

@@ -72,7 +72,6 @@ public class ClusterEvent implements Editable<ClusterEventBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClusterEvent() {
     }

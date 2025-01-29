@@ -75,7 +75,6 @@ public class DeviceConstraint implements Editable<DeviceConstraintBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DeviceConstraint() {
     }

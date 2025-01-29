@@ -78,7 +78,6 @@ public class ImageStatus implements Editable<ImageStatusBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ImageStatus() {
     }

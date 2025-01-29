@@ -69,7 +69,6 @@ public class UpdateStrategy implements Editable<UpdateStrategyBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public UpdateStrategy() {
     }

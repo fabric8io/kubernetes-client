@@ -72,7 +72,6 @@ public class IPv4OVNKubernetesConfig implements Editable<IPv4OVNKubernetesConfig
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public IPv4OVNKubernetesConfig() {
     }

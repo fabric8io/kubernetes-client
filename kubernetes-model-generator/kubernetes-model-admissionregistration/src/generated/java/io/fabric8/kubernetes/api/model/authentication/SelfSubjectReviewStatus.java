@@ -69,7 +69,6 @@ public class SelfSubjectReviewStatus implements Editable<SelfSubjectReviewStatus
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SelfSubjectReviewStatus() {
     }

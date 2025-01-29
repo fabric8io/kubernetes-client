@@ -72,7 +72,6 @@ public class ReleaseImageVerificationConfigMapReference implements Editable<Rele
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ReleaseImageVerificationConfigMapReference() {
     }

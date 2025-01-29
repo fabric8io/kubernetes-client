@@ -81,7 +81,6 @@ public class CSINodeDriver implements Editable<CSINodeDriverBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CSINodeDriver() {
     }

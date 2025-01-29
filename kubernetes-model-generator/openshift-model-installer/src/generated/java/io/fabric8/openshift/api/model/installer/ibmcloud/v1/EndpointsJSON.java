@@ -99,7 +99,6 @@ public class EndpointsJSON implements Editable<EndpointsJSONBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EndpointsJSON() {
     }

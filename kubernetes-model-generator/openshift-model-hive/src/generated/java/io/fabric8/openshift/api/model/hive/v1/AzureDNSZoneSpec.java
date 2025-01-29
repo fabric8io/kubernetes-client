@@ -75,7 +75,6 @@ public class AzureDNSZoneSpec implements Editable<AzureDNSZoneSpecBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AzureDNSZoneSpec() {
     }

@@ -69,7 +69,6 @@ public class LoadBalancerSettingsConsistentHashLBHttpCookie implements IsLoadBal
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public LoadBalancerSettingsConsistentHashLBHttpCookie() {
     }

@@ -86,7 +86,6 @@ public class ServerlessServiceStatus implements Editable<ServerlessServiceStatus
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ServerlessServiceStatus() {
     }

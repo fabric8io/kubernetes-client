@@ -75,7 +75,6 @@ public class HTTPRequestSpec implements Editable<HTTPRequestSpecBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HTTPRequestSpec() {
     }

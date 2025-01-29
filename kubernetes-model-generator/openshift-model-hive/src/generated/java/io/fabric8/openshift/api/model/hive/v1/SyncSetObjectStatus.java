@@ -90,7 +90,6 @@ public class SyncSetObjectStatus implements Editable<SyncSetObjectStatusBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SyncSetObjectStatus() {
     }

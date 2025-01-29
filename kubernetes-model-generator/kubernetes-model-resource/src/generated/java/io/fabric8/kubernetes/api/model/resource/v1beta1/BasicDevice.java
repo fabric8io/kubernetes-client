@@ -74,7 +74,6 @@ public class BasicDevice implements Editable<BasicDeviceBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public BasicDevice() {
     }

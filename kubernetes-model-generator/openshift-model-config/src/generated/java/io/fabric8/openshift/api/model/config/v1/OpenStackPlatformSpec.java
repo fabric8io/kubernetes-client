@@ -80,7 +80,6 @@ public class OpenStackPlatformSpec implements Editable<OpenStackPlatformSpecBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public OpenStackPlatformSpec() {
     }

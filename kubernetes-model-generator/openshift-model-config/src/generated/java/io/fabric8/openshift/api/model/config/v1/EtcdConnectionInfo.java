@@ -81,7 +81,6 @@ public class EtcdConnectionInfo implements Editable<EtcdConnectionInfoBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EtcdConnectionInfo() {
     }

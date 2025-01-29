@@ -76,7 +76,6 @@ public class ResourceMetricSource implements Editable<ResourceMetricSourceBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ResourceMetricSource() {
     }

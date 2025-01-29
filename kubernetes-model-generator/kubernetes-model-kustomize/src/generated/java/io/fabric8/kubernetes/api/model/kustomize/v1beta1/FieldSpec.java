@@ -81,7 +81,6 @@ public class FieldSpec implements Editable<FieldSpecBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public FieldSpec() {
     }

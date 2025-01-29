@@ -69,7 +69,6 @@ public class ClusterPredicate implements Editable<ClusterPredicateBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClusterPredicate() {
     }

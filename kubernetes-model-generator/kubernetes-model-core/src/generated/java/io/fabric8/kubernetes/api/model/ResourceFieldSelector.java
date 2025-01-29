@@ -46,7 +46,6 @@ public class ResourceFieldSelector implements Editable<ResourceFieldSelectorBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ResourceFieldSelector() {
     }

@@ -72,7 +72,6 @@ public class AlertingRuleStatus implements Editable<AlertingRuleStatusBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AlertingRuleStatus() {
     }

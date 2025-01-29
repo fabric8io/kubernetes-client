@@ -43,7 +43,6 @@ public class LimitRangeSpec implements Editable<LimitRangeSpecBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public LimitRangeSpec() {
     }

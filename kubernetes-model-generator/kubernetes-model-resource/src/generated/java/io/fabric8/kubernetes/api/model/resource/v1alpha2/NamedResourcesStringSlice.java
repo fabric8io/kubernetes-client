@@ -72,7 +72,6 @@ public class NamedResourcesStringSlice implements Editable<NamedResourcesStringS
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NamedResourcesStringSlice() {
     }

@@ -83,7 +83,6 @@ public class HTTPRedirect implements Editable<HTTPRedirectBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HTTPRedirect() {
     }

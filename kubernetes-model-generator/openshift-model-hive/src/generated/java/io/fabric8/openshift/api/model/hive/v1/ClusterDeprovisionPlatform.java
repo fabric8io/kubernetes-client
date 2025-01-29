@@ -87,7 +87,6 @@ public class ClusterDeprovisionPlatform implements Editable<ClusterDeprovisionPl
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClusterDeprovisionPlatform() {
     }

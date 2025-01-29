@@ -72,7 +72,6 @@ public class VolumeSnapshotError implements Editable<VolumeSnapshotErrorBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public VolumeSnapshotError() {
     }

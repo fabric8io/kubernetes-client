@@ -73,7 +73,6 @@ public class VendorParameters implements Editable<VendorParametersBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public VendorParameters() {
     }

@@ -69,7 +69,6 @@ public class PrometheusRuleRef implements Editable<PrometheusRuleRefBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PrometheusRuleRef() {
     }

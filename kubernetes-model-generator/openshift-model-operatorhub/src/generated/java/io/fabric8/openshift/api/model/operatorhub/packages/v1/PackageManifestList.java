@@ -79,9 +79,7 @@ public class PackageManifestList implements Editable<PackageManifestListBuilder>
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "packages.operators.coreos.com/v1";
@@ -89,9 +87,7 @@ public class PackageManifestList implements Editable<PackageManifestListBuilder>
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openshift.api.model.operatorhub.packages.v1.PackageManifest> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "PackageManifestList";
@@ -102,7 +98,6 @@ public class PackageManifestList implements Editable<PackageManifestListBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PackageManifestList() {
     }
@@ -116,9 +111,7 @@ public class PackageManifestList implements Editable<PackageManifestListBuilder>
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class PackageManifestList implements Editable<PackageManifestListBuilder>
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class PackageManifestList implements Editable<PackageManifestListBuilder>
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class PackageManifestList implements Editable<PackageManifestListBuilder>
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

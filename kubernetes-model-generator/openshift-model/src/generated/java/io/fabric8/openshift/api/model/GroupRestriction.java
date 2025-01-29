@@ -76,7 +76,6 @@ public class GroupRestriction implements Editable<GroupRestrictionBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GroupRestriction() {
     }

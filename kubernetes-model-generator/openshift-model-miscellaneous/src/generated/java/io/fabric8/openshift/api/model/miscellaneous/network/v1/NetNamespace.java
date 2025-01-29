@@ -79,9 +79,7 @@ public class NetNamespace implements Editable<NetNamespaceBuilder>, HasMetadata
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "network.openshift.io/v1";
@@ -89,9 +87,7 @@ public class NetNamespace implements Editable<NetNamespaceBuilder>, HasMetadata
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> egressIPs = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "NetNamespace";
@@ -106,7 +102,6 @@ public class NetNamespace implements Editable<NetNamespaceBuilder>, HasMetadata
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NetNamespace() {
     }
@@ -122,9 +117,7 @@ public class NetNamespace implements Editable<NetNamespaceBuilder>, HasMetadata
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -132,9 +125,7 @@ public class NetNamespace implements Editable<NetNamespaceBuilder>, HasMetadata
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -153,9 +144,7 @@ public class NetNamespace implements Editable<NetNamespaceBuilder>, HasMetadata
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -163,9 +152,7 @@ public class NetNamespace implements Editable<NetNamespaceBuilder>, HasMetadata
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

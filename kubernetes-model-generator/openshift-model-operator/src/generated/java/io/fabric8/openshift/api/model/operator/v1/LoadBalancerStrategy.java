@@ -81,7 +81,6 @@ public class LoadBalancerStrategy implements Editable<LoadBalancerStrategyBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public LoadBalancerStrategy() {
     }

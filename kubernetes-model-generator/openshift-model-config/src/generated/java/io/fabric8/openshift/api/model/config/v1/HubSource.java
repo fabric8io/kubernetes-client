@@ -72,7 +72,6 @@ public class HubSource implements Editable<HubSourceBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HubSource() {
     }

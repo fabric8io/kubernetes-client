@@ -81,7 +81,6 @@ public class TrafficPolicyPortTrafficPolicy implements Editable<TrafficPolicyPor
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TrafficPolicyPortTrafficPolicy() {
     }

@@ -75,7 +75,6 @@ public class GitHubInterceptor implements Editable<GitHubInterceptorBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GitHubInterceptor() {
     }

@@ -109,7 +109,6 @@ public class HTTPSDConfig implements Editable<HTTPSDConfigBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HTTPSDConfig() {
     }

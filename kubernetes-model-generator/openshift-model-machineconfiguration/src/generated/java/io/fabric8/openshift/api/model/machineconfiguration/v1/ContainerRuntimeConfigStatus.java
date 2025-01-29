@@ -75,7 +75,6 @@ public class ContainerRuntimeConfigStatus implements Editable<ContainerRuntimeCo
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ContainerRuntimeConfigStatus() {
     }

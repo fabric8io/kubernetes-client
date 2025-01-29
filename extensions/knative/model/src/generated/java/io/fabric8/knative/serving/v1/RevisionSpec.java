@@ -222,7 +222,6 @@ public class RevisionSpec implements Editable<RevisionSpecBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RevisionSpec() {
     }

@@ -88,7 +88,6 @@ public class GCPDisk implements Editable<GCPDiskBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GCPDisk() {
     }

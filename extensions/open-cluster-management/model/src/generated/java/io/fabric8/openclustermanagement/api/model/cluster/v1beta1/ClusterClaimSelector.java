@@ -73,7 +73,6 @@ public class ClusterClaimSelector implements Editable<ClusterClaimSelectorBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClusterClaimSelector() {
     }

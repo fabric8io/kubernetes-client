@@ -69,7 +69,6 @@ public class TrustedLaunch implements Editable<TrustedLaunchBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TrustedLaunch() {
     }

@@ -84,7 +84,6 @@ public class BuildCondition implements Editable<BuildConditionBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public BuildCondition() {
     }

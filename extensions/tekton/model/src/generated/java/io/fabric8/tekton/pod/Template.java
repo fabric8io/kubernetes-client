@@ -132,7 +132,6 @@ public class Template implements Editable<TemplateBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Template() {
     }

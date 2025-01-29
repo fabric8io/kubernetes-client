@@ -81,7 +81,6 @@ public class TLSSecurityProfile implements Editable<TLSSecurityProfileBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TLSSecurityProfile() {
     }

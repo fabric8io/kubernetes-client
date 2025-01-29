@@ -43,7 +43,6 @@ public class AttachedVolume implements Editable<AttachedVolumeBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AttachedVolume() {
     }

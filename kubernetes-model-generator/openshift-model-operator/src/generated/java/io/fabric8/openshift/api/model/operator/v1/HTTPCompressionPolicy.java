@@ -72,7 +72,6 @@ public class HTTPCompressionPolicy implements Editable<HTTPCompressionPolicyBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HTTPCompressionPolicy() {
     }

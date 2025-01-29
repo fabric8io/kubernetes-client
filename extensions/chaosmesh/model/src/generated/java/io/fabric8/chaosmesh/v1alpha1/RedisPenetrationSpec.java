@@ -75,7 +75,6 @@ public class RedisPenetrationSpec implements Editable<RedisPenetrationSpecBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RedisPenetrationSpec() {
     }

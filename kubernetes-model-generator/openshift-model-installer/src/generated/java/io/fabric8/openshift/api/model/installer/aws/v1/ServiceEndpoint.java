@@ -72,7 +72,6 @@ public class ServiceEndpoint implements Editable<ServiceEndpointBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ServiceEndpoint() {
     }

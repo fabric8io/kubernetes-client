@@ -43,7 +43,6 @@ public class ModifyVolumeStatus implements Editable<ModifyVolumeStatusBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ModifyVolumeStatus() {
     }

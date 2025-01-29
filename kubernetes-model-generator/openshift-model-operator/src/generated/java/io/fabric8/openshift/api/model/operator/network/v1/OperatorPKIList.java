@@ -79,9 +79,7 @@ public class OperatorPKIList implements Editable<OperatorPKIListBuilder>, Kubern
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "network.operator.openshift.io/v1";
@@ -89,9 +87,7 @@ public class OperatorPKIList implements Editable<OperatorPKIListBuilder>, Kubern
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openshift.api.model.operator.network.v1.OperatorPKI> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "OperatorPKIList";
@@ -102,7 +98,6 @@ public class OperatorPKIList implements Editable<OperatorPKIListBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public OperatorPKIList() {
     }
@@ -116,9 +111,7 @@ public class OperatorPKIList implements Editable<OperatorPKIListBuilder>, Kubern
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class OperatorPKIList implements Editable<OperatorPKIListBuilder>, Kubern
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class OperatorPKIList implements Editable<OperatorPKIListBuilder>, Kubern
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class OperatorPKIList implements Editable<OperatorPKIListBuilder>, Kubern
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

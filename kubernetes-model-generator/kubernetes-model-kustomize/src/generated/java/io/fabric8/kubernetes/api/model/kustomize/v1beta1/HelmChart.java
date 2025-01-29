@@ -120,7 +120,6 @@ public class HelmChart implements Editable<HelmChartBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HelmChart() {
     }

@@ -43,7 +43,6 @@ public class GroupVersionForDiscovery implements Editable<GroupVersionForDiscove
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GroupVersionForDiscovery() {
     }

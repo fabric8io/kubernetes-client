@@ -69,7 +69,6 @@ public class Metal3MachineTemplateResource implements Editable<Metal3MachineTemp
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Metal3MachineTemplateResource() {
     }

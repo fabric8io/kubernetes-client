@@ -88,7 +88,6 @@ public class MachinePoolPlatform implements Editable<MachinePoolPlatformBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MachinePoolPlatform() {
     }

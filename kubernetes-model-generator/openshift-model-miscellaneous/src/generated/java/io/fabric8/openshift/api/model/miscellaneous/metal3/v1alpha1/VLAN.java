@@ -72,7 +72,6 @@ public class VLAN implements Editable<VLANBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public VLAN() {
     }

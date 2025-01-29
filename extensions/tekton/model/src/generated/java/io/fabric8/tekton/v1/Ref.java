@@ -69,7 +69,6 @@ public class Ref implements Editable<RefBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Ref() {
     }

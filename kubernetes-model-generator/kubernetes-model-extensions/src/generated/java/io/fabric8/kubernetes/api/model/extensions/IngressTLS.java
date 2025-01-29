@@ -75,7 +75,6 @@ public class IngressTLS implements Editable<IngressTLSBuilder>, KubernetesResour
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public IngressTLS() {
     }

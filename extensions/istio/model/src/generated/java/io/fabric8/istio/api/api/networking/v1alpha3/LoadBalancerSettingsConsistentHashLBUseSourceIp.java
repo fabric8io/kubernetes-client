@@ -69,7 +69,6 @@ public class LoadBalancerSettingsConsistentHashLBUseSourceIp implements IsLoadBa
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public LoadBalancerSettingsConsistentHashLBUseSourceIp() {
     }

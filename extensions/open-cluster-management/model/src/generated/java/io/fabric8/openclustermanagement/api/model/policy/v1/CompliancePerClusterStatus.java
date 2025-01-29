@@ -75,7 +75,6 @@ public class CompliancePerClusterStatus implements Editable<CompliancePerCluster
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CompliancePerClusterStatus() {
     }

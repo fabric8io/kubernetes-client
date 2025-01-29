@@ -75,7 +75,6 @@ public class GRPCHeaderMatch implements Editable<GRPCHeaderMatchBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GRPCHeaderMatch() {
     }

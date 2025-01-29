@@ -75,7 +75,6 @@ public class ACMEChallenge implements Editable<ACMEChallengeBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ACMEChallenge() {
     }

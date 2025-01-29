@@ -76,7 +76,6 @@ public class MetricValueStatus implements Editable<MetricValueStatusBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MetricValueStatus() {
     }

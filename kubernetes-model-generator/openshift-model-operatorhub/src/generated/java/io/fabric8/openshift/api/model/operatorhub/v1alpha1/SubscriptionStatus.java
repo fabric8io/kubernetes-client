@@ -100,7 +100,6 @@ public class SubscriptionStatus implements Editable<SubscriptionStatusBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SubscriptionStatus() {
     }

@@ -72,7 +72,6 @@ public class Flow implements Editable<FlowBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Flow() {
     }

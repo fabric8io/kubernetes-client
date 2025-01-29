@@ -75,7 +75,6 @@ public class ResourceClaimSchedulingStatus implements Editable<ResourceClaimSche
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ResourceClaimSchedulingStatus() {
     }

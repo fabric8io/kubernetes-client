@@ -69,7 +69,6 @@ public class ReadinessProbeTcpSocket implements IsReadinessProbeHealthCheckMetho
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ReadinessProbeTcpSocket() {
     }

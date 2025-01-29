@@ -106,7 +106,6 @@ public class NetworkSelectionElement implements Editable<NetworkSelectionElement
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NetworkSelectionElement() {
     }

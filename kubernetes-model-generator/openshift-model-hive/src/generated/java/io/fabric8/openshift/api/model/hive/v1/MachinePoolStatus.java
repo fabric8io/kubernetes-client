@@ -94,7 +94,6 @@ public class MachinePoolStatus implements Editable<MachinePoolStatusBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MachinePoolStatus() {
     }

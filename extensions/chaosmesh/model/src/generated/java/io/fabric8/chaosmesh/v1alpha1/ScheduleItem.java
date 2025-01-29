@@ -111,7 +111,6 @@ public class ScheduleItem implements Editable<ScheduleItemBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ScheduleItem() {
     }

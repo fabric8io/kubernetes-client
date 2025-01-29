@@ -75,7 +75,6 @@ public class IngressControllerCaptureHTTPCookieUnion implements Editable<Ingress
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public IngressControllerCaptureHTTPCookieUnion() {
     }

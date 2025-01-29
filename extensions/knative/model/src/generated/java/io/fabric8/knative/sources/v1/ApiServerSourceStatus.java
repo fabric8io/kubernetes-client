@@ -102,7 +102,6 @@ public class ApiServerSourceStatus implements Editable<ApiServerSourceStatusBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ApiServerSourceStatus() {
     }

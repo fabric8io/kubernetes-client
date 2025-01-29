@@ -72,7 +72,6 @@ public class PowerVSPlatformSpec implements Editable<PowerVSPlatformSpecBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PowerVSPlatformSpec() {
     }

@@ -110,7 +110,6 @@ public class HelmChartArgs implements Editable<HelmChartArgsBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HelmChartArgs() {
     }

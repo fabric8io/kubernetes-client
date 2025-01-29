@@ -91,7 +91,6 @@ public class EventListenerStatus implements Editable<EventListenerStatusBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EventListenerStatus() {
     }

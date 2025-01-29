@@ -98,7 +98,6 @@ public class SecretArgs implements Editable<SecretArgsBuilder>, KubernetesResour
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SecretArgs() {
     }

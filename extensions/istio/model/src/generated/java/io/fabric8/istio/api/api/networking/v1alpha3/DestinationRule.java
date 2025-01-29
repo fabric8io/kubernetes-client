@@ -96,7 +96,6 @@ public class DestinationRule implements Editable<DestinationRuleBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DestinationRule() {
     }

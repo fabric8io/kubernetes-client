@@ -97,7 +97,6 @@ public class CustomResourceDefinitionVersion implements Editable<CustomResourceD
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CustomResourceDefinitionVersion() {
     }

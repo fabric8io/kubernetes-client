@@ -79,7 +79,6 @@ public class SubjectRulesReviewSpec implements Editable<SubjectRulesReviewSpecBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SubjectRulesReviewSpec() {
     }

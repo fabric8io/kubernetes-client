@@ -69,7 +69,6 @@ public class AttachMetadata implements Editable<AttachMetadataBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AttachMetadata() {
     }

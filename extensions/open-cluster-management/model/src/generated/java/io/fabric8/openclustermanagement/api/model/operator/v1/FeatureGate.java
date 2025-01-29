@@ -72,7 +72,6 @@ public class FeatureGate implements Editable<FeatureGateBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public FeatureGate() {
     }

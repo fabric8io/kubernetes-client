@@ -75,7 +75,6 @@ public class HTTPRouteDestination implements Editable<HTTPRouteDestinationBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HTTPRouteDestination() {
     }

@@ -78,7 +78,6 @@ public class ReplacementField implements Editable<ReplacementFieldBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ReplacementField() {
     }

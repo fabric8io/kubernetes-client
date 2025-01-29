@@ -78,7 +78,6 @@ public class Validation implements Editable<ValidationBuilder>, KubernetesResour
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Validation() {
     }

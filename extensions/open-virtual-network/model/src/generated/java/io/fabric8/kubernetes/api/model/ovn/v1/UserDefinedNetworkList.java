@@ -79,9 +79,7 @@ public class UserDefinedNetworkList implements Editable<UserDefinedNetworkListBu
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "k8s.ovn.org/v1";
@@ -89,9 +87,7 @@ public class UserDefinedNetworkList implements Editable<UserDefinedNetworkListBu
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.kubernetes.api.model.ovn.v1.UserDefinedNetwork> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "UserDefinedNetworkList";
@@ -102,7 +98,6 @@ public class UserDefinedNetworkList implements Editable<UserDefinedNetworkListBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public UserDefinedNetworkList() {
     }
@@ -116,9 +111,7 @@ public class UserDefinedNetworkList implements Editable<UserDefinedNetworkListBu
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class UserDefinedNetworkList implements Editable<UserDefinedNetworkListBu
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class UserDefinedNetworkList implements Editable<UserDefinedNetworkListBu
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class UserDefinedNetworkList implements Editable<UserDefinedNetworkListBu
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

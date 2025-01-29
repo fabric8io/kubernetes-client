@@ -69,7 +69,6 @@ public class BuildStatusOutput implements Editable<BuildStatusOutputBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public BuildStatusOutput() {
     }

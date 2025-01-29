@@ -76,7 +76,6 @@ public class FieldSelectorAttributes implements Editable<FieldSelectorAttributes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public FieldSelectorAttributes() {
     }

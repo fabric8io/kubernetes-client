@@ -73,7 +73,6 @@ public class EventSeries implements Editable<EventSeriesBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EventSeries() {
     }

@@ -91,7 +91,6 @@ public class DNSZoneStatus implements Editable<DNSZoneStatusBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DNSZoneStatus() {
     }

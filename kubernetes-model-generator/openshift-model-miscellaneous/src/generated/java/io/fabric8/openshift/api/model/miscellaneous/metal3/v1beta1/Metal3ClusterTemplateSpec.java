@@ -69,7 +69,6 @@ public class Metal3ClusterTemplateSpec implements Editable<Metal3ClusterTemplate
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Metal3ClusterTemplateSpec() {
     }

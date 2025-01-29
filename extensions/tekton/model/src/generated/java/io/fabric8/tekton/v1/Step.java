@@ -148,7 +148,6 @@ public class Step implements Editable<StepBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Step() {
     }

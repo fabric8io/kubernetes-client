@@ -72,7 +72,6 @@ public class AppliedEventPolicyRef implements Editable<AppliedEventPolicyRefBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AppliedEventPolicyRef() {
     }

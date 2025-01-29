@@ -75,7 +75,6 @@ public class ClusterVersionCapabilitiesSpec implements Editable<ClusterVersionCa
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClusterVersionCapabilitiesSpec() {
     }

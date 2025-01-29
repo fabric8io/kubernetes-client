@@ -72,7 +72,6 @@ public class TypeChecking implements Editable<TypeCheckingBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TypeChecking() {
     }

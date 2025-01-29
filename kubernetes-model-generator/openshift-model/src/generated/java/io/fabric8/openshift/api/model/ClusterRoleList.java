@@ -79,9 +79,7 @@ public class ClusterRoleList implements Editable<ClusterRoleListBuilder>, Kubern
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "authorization.openshift.io/v1";
@@ -89,9 +87,7 @@ public class ClusterRoleList implements Editable<ClusterRoleListBuilder>, Kubern
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openshift.api.model.ClusterRole> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "ClusterRoleList";
@@ -102,7 +98,6 @@ public class ClusterRoleList implements Editable<ClusterRoleListBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClusterRoleList() {
     }
@@ -116,9 +111,7 @@ public class ClusterRoleList implements Editable<ClusterRoleListBuilder>, Kubern
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class ClusterRoleList implements Editable<ClusterRoleListBuilder>, Kubern
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class ClusterRoleList implements Editable<ClusterRoleListBuilder>, Kubern
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class ClusterRoleList implements Editable<ClusterRoleListBuilder>, Kubern
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

@@ -81,7 +81,6 @@ public class MachineHealthCheckStatus implements Editable<MachineHealthCheckStat
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MachineHealthCheckStatus() {
     }

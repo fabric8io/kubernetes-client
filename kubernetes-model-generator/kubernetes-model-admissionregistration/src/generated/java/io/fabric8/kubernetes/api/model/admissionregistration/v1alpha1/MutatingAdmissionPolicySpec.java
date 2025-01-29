@@ -92,7 +92,6 @@ public class MutatingAdmissionPolicySpec implements Editable<MutatingAdmissionPo
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MutatingAdmissionPolicySpec() {
     }

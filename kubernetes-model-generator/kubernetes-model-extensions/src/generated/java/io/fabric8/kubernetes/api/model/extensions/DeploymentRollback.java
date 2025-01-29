@@ -82,7 +82,6 @@ public class DeploymentRollback implements Editable<DeploymentRollbackBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DeploymentRollback() {
     }

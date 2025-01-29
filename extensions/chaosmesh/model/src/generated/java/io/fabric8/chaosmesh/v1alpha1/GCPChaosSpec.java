@@ -93,7 +93,6 @@ public class GCPChaosSpec implements Editable<GCPChaosSpecBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GCPChaosSpec() {
     }

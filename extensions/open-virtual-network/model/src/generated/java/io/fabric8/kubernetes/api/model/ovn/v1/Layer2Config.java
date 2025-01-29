@@ -85,7 +85,6 @@ public class Layer2Config implements Editable<Layer2ConfigBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Layer2Config() {
     }

@@ -69,7 +69,6 @@ public class ConsoleProviders implements Editable<ConsoleProvidersBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ConsoleProviders() {
     }

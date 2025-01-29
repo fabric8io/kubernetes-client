@@ -76,7 +76,6 @@ public class HostSelector implements Editable<HostSelectorBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HostSelector() {
     }

@@ -69,7 +69,6 @@ public class CloudPrivateIPConfigSpec implements Editable<CloudPrivateIPConfigSp
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CloudPrivateIPConfigSpec() {
     }

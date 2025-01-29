@@ -75,7 +75,6 @@ public class NetworkDataService implements Editable<NetworkDataServiceBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NetworkDataService() {
     }

@@ -73,7 +73,6 @@ public class SELinuxStrategyOptions implements Editable<SELinuxStrategyOptionsBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SELinuxStrategyOptions() {
     }

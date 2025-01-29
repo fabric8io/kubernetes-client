@@ -69,7 +69,6 @@ public class SecretTLS implements Editable<SecretTLSBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SecretTLS() {
     }

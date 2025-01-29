@@ -75,7 +75,6 @@ public class DNSRecordStatus implements Editable<DNSRecordStatusBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DNSRecordStatus() {
     }

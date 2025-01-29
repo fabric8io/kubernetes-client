@@ -102,7 +102,6 @@ public class QueueSpec implements Editable<QueueSpecBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public QueueSpec() {
     }

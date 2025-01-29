@@ -79,9 +79,7 @@ public class TriggerTemplateList implements Editable<TriggerTemplateListBuilder>
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "triggers.tekton.dev/v1alpha1";
@@ -89,9 +87,7 @@ public class TriggerTemplateList implements Editable<TriggerTemplateListBuilder>
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.tekton.triggers.v1alpha1.TriggerTemplate> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "TriggerTemplateList";
@@ -102,7 +98,6 @@ public class TriggerTemplateList implements Editable<TriggerTemplateListBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TriggerTemplateList() {
     }
@@ -116,9 +111,7 @@ public class TriggerTemplateList implements Editable<TriggerTemplateListBuilder>
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class TriggerTemplateList implements Editable<TriggerTemplateListBuilder>
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class TriggerTemplateList implements Editable<TriggerTemplateListBuilder>
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class TriggerTemplateList implements Editable<TriggerTemplateListBuilder>
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

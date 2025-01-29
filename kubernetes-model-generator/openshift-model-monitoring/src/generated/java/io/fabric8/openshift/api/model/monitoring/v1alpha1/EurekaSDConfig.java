@@ -109,7 +109,6 @@ public class EurekaSDConfig implements Editable<EurekaSDConfigBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EurekaSDConfig() {
     }

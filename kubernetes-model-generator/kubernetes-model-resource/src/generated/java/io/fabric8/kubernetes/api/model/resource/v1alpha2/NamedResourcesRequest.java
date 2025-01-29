@@ -69,7 +69,6 @@ public class NamedResourcesRequest implements Editable<NamedResourcesRequestBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NamedResourcesRequest() {
     }

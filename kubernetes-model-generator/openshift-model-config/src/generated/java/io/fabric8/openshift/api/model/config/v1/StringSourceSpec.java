@@ -78,7 +78,6 @@ public class StringSourceSpec implements Editable<StringSourceSpecBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public StringSourceSpec() {
     }

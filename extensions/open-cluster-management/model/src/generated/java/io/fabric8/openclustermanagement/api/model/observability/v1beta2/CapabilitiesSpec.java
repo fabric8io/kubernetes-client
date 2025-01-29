@@ -72,7 +72,6 @@ public class CapabilitiesSpec implements Editable<CapabilitiesSpecBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CapabilitiesSpec() {
     }

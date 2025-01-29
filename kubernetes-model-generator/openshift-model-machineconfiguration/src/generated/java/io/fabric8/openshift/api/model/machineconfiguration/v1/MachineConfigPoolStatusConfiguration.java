@@ -93,7 +93,6 @@ public class MachineConfigPoolStatusConfiguration implements Editable<MachineCon
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MachineConfigPoolStatusConfiguration() {
     }

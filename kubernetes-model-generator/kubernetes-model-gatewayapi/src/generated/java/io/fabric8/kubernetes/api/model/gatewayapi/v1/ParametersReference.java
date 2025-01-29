@@ -78,7 +78,6 @@ public class ParametersReference implements Editable<ParametersReferenceBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ParametersReference() {
     }

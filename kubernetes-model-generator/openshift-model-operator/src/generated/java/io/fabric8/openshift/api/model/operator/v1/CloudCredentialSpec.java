@@ -86,7 +86,6 @@ public class CloudCredentialSpec implements Editable<CloudCredentialSpecBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CloudCredentialSpec() {
     }

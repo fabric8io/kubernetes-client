@@ -82,7 +82,6 @@ public class AWSPrivateLinkConfig implements Editable<AWSPrivateLinkConfigBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AWSPrivateLinkConfig() {
     }

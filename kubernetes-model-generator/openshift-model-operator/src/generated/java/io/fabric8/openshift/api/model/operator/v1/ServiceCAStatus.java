@@ -88,7 +88,6 @@ public class ServiceCAStatus implements Editable<ServiceCAStatusBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ServiceCAStatus() {
     }

@@ -72,7 +72,6 @@ public class TimeRange implements Editable<TimeRangeBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TimeRange() {
     }

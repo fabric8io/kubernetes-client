@@ -79,9 +79,7 @@ public class KlusterletAddonConfigList implements Editable<KlusterletAddonConfig
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "agent.open-cluster-management.io/v1";
@@ -89,9 +87,7 @@ public class KlusterletAddonConfigList implements Editable<KlusterletAddonConfig
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openclustermanagement.api.model.agent.v1.KlusterletAddonConfig> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "KlusterletAddonConfigList";
@@ -102,7 +98,6 @@ public class KlusterletAddonConfigList implements Editable<KlusterletAddonConfig
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public KlusterletAddonConfigList() {
     }
@@ -116,9 +111,7 @@ public class KlusterletAddonConfigList implements Editable<KlusterletAddonConfig
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class KlusterletAddonConfigList implements Editable<KlusterletAddonConfig
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class KlusterletAddonConfigList implements Editable<KlusterletAddonConfig
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class KlusterletAddonConfigList implements Editable<KlusterletAddonConfig
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

@@ -79,9 +79,7 @@ public class EventListenerList implements Editable<EventListenerListBuilder>, Ku
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "triggers.tekton.dev/v1beta1";
@@ -89,9 +87,7 @@ public class EventListenerList implements Editable<EventListenerListBuilder>, Ku
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.tekton.triggers.v1beta1.EventListener> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "EventListenerList";
@@ -102,7 +98,6 @@ public class EventListenerList implements Editable<EventListenerListBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EventListenerList() {
     }
@@ -116,9 +111,7 @@ public class EventListenerList implements Editable<EventListenerListBuilder>, Ku
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class EventListenerList implements Editable<EventListenerListBuilder>, Ku
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class EventListenerList implements Editable<EventListenerListBuilder>, Ku
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class EventListenerList implements Editable<EventListenerListBuilder>, Ku
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

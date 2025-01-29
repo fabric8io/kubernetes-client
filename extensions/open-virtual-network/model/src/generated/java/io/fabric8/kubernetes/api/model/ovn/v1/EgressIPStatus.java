@@ -72,7 +72,6 @@ public class EgressIPStatus implements Editable<EgressIPStatusBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EgressIPStatus() {
     }

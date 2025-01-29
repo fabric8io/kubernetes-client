@@ -52,7 +52,6 @@ public class LoadBalancerIngress implements Editable<LoadBalancerIngressBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public LoadBalancerIngress() {
     }

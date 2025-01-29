@@ -69,7 +69,6 @@ public class PrivateLinkConfig implements Editable<PrivateLinkConfigBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PrivateLinkConfig() {
     }

@@ -72,7 +72,6 @@ public class Replica implements Editable<ReplicaBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Replica() {
     }

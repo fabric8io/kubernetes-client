@@ -72,7 +72,6 @@ public class ImageTagMirrorSetSpec implements Editable<ImageTagMirrorSetSpecBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ImageTagMirrorSetSpec() {
     }

@@ -81,7 +81,6 @@ public class EndpointPublishingStrategy implements Editable<EndpointPublishingSt
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EndpointPublishingStrategy() {
     }

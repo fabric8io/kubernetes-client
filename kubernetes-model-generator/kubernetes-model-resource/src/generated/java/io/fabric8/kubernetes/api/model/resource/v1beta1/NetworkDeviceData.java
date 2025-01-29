@@ -78,7 +78,6 @@ public class NetworkDeviceData implements Editable<NetworkDeviceDataBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NetworkDeviceData() {
     }

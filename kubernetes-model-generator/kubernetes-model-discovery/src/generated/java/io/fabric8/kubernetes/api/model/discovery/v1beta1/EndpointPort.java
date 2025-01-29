@@ -78,7 +78,6 @@ public class EndpointPort implements Editable<EndpointPortBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EndpointPort() {
     }

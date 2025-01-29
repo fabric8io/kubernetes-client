@@ -69,7 +69,6 @@ public class Secret implements Editable<SecretBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Secret() {
     }

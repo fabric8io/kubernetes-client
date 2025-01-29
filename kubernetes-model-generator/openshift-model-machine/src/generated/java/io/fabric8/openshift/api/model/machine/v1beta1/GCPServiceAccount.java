@@ -75,7 +75,6 @@ public class GCPServiceAccount implements Editable<GCPServiceAccountBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GCPServiceAccount() {
     }

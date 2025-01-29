@@ -52,7 +52,6 @@ public class ConfigMapNodeConfigSource implements Editable<ConfigMapNodeConfigSo
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ConfigMapNodeConfigSource() {
     }

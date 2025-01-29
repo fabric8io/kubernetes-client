@@ -69,7 +69,6 @@ public class ReadinessProbeHttpGet implements IsReadinessProbeHealthCheckMethod,
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ReadinessProbeHttpGet() {
     }

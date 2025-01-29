@@ -87,7 +87,6 @@ public class MachineSetStatus implements Editable<MachineSetStatusBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MachineSetStatus() {
     }

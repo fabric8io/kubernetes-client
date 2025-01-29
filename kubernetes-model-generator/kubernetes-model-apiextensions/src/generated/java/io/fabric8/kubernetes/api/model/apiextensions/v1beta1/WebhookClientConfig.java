@@ -75,7 +75,6 @@ public class WebhookClientConfig implements Editable<WebhookClientConfigBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public WebhookClientConfig() {
     }

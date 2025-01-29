@@ -69,7 +69,6 @@ public class Firmware implements Editable<FirmwareBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Firmware() {
     }

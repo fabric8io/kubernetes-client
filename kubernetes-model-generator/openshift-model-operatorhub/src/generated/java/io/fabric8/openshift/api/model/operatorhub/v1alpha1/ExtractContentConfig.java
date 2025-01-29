@@ -72,7 +72,6 @@ public class ExtractContentConfig implements Editable<ExtractContentConfigBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ExtractContentConfig() {
     }

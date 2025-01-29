@@ -78,7 +78,6 @@ public class Destination implements Editable<DestinationBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Destination() {
     }

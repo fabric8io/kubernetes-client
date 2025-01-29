@@ -72,7 +72,6 @@ public class JobTemplateStatus implements Editable<JobTemplateStatusBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public JobTemplateStatus() {
     }

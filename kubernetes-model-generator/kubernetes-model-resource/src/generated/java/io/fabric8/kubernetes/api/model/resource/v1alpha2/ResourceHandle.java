@@ -75,7 +75,6 @@ public class ResourceHandle implements Editable<ResourceHandleBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ResourceHandle() {
     }

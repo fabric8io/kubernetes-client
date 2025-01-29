@@ -72,7 +72,6 @@ public class ImageChangeCause implements Editable<ImageChangeCauseBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ImageChangeCause() {
     }

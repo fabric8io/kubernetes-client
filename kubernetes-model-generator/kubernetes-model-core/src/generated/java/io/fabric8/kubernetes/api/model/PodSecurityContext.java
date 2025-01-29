@@ -80,7 +80,6 @@ public class PodSecurityContext implements Editable<PodSecurityContextBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PodSecurityContext() {
     }

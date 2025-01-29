@@ -69,7 +69,6 @@ public class TagReferencePolicy implements Editable<TagReferencePolicyBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TagReferencePolicy() {
     }

@@ -74,7 +74,6 @@ public class ACMEChallengeSolverHTTP01IngressPodObjectMeta implements Editable<A
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ACMEChallengeSolverHTTP01IngressPodObjectMeta() {
     }

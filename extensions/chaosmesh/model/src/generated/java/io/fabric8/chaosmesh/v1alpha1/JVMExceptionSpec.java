@@ -81,7 +81,6 @@ public class JVMExceptionSpec implements Editable<JVMExceptionSpecBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public JVMExceptionSpec() {
     }

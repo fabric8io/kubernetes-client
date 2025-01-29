@@ -69,7 +69,6 @@ public class HTTPFaultInjectionDelayExponentialDelay implements IsHTTPFaultInjec
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HTTPFaultInjectionDelayExponentialDelay() {
     }

@@ -75,7 +75,6 @@ public class NodeDisruptionPolicyStatusFile implements Editable<NodeDisruptionPo
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NodeDisruptionPolicyStatusFile() {
     }

@@ -81,7 +81,6 @@ public class ResourceClaimStatus implements Editable<ResourceClaimStatusBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ResourceClaimStatus() {
     }

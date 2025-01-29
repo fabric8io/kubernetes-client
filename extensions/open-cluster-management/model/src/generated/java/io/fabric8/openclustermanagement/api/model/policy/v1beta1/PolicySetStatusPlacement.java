@@ -75,7 +75,6 @@ public class PolicySetStatusPlacement implements Editable<PolicySetStatusPlaceme
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PolicySetStatusPlacement() {
     }

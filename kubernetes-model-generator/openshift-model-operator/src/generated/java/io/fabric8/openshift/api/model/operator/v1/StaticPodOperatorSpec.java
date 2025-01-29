@@ -92,7 +92,6 @@ public class StaticPodOperatorSpec implements Editable<StaticPodOperatorSpecBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public StaticPodOperatorSpec() {
     }

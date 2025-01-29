@@ -99,7 +99,6 @@ public class WorkloadEntry implements Editable<WorkloadEntryBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public WorkloadEntry() {
     }

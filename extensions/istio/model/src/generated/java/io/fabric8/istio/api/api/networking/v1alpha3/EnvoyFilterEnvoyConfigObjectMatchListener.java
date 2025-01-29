@@ -69,7 +69,6 @@ public class EnvoyFilterEnvoyConfigObjectMatchListener implements IsEnvoyFilterE
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EnvoyFilterEnvoyConfigObjectMatchListener() {
     }

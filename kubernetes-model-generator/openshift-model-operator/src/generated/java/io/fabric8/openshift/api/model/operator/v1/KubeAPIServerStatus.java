@@ -99,7 +99,6 @@ public class KubeAPIServerStatus implements Editable<KubeAPIServerStatusBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public KubeAPIServerStatus() {
     }

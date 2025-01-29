@@ -94,7 +94,6 @@ public class SubscriptionsAPIFilter implements Editable<SubscriptionsAPIFilterBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SubscriptionsAPIFilter() {
     }

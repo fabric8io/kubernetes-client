@@ -75,7 +75,6 @@ public class NodeDisruptionPolicySpecUnit implements Editable<NodeDisruptionPoli
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NodeDisruptionPolicySpecUnit() {
     }

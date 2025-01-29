@@ -69,7 +69,6 @@ public class DetachedAnnotationArguments implements Editable<DetachedAnnotationA
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DetachedAnnotationArguments() {
     }

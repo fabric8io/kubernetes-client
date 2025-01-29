@@ -109,7 +109,6 @@ public class JobSpec implements Editable<JobSpecBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public JobSpec() {
     }

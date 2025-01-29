@@ -69,7 +69,6 @@ public class HiveConfigStatus implements Editable<HiveConfigStatusBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HiveConfigStatus() {
     }

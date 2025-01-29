@@ -75,7 +75,6 @@ public class MachineAutoscalerSpecScaleTargetRef implements Editable<MachineAuto
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MachineAutoscalerSpecScaleTargetRef() {
     }

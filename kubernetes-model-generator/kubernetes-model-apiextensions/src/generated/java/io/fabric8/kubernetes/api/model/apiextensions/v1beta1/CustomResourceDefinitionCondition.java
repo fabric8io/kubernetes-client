@@ -81,7 +81,6 @@ public class CustomResourceDefinitionCondition implements Editable<CustomResourc
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CustomResourceDefinitionCondition() {
     }

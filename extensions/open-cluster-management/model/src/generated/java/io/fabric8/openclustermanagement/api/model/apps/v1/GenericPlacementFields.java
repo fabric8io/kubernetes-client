@@ -75,7 +75,6 @@ public class GenericPlacementFields implements Editable<GenericPlacementFieldsBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GenericPlacementFields() {
     }

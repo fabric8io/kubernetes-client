@@ -75,7 +75,6 @@ public class RemoteClusterSecretRef implements Editable<RemoteClusterSecretRefBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RemoteClusterSecretRef() {
     }

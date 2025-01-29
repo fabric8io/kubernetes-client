@@ -96,7 +96,6 @@ public class TopologySpreadConstraint implements Editable<TopologySpreadConstrai
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TopologySpreadConstraint() {
     }

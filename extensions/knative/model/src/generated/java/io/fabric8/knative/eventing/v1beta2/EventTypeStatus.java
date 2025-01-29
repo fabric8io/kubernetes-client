@@ -80,7 +80,6 @@ public class EventTypeStatus implements Editable<EventTypeStatusBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EventTypeStatus() {
     }

@@ -85,7 +85,6 @@ public class AutomationDef implements Editable<AutomationDefBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AutomationDef() {
     }

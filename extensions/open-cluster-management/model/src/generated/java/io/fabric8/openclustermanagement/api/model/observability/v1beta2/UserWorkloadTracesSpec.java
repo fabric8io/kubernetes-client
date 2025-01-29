@@ -69,7 +69,6 @@ public class UserWorkloadTracesSpec implements Editable<UserWorkloadTracesSpecBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public UserWorkloadTracesSpec() {
     }

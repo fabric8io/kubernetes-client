@@ -52,9 +52,7 @@ public class DeleteOptions implements Editable<DeleteOptionsBuilder>, Kubernetes
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "v1";
@@ -66,9 +64,7 @@ public class DeleteOptions implements Editable<DeleteOptionsBuilder>, Kubernetes
     @JsonProperty("ignoreStoreReadErrorWithClusterBreakingPotential")
     private Boolean ignoreStoreReadErrorWithClusterBreakingPotential;
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "DeleteOptions";
@@ -83,7 +79,6 @@ public class DeleteOptions implements Editable<DeleteOptionsBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DeleteOptions() {
     }
@@ -101,9 +96,7 @@ public class DeleteOptions implements Editable<DeleteOptionsBuilder>, Kubernetes
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -111,9 +104,7 @@ public class DeleteOptions implements Editable<DeleteOptionsBuilder>, Kubernetes
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -152,9 +143,7 @@ public class DeleteOptions implements Editable<DeleteOptionsBuilder>, Kubernetes
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -162,9 +151,7 @@ public class DeleteOptions implements Editable<DeleteOptionsBuilder>, Kubernetes
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

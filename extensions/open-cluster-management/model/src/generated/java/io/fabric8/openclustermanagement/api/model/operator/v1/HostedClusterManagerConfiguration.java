@@ -72,7 +72,6 @@ public class HostedClusterManagerConfiguration implements Editable<HostedCluster
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HostedClusterManagerConfiguration() {
     }

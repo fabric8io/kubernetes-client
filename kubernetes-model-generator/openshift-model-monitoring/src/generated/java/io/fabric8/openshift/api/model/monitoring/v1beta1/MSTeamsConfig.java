@@ -85,7 +85,6 @@ public class MSTeamsConfig implements Editable<MSTeamsConfigBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MSTeamsConfig() {
     }

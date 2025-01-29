@@ -72,7 +72,6 @@ public class RevisionTemplateSpec implements Editable<RevisionTemplateSpecBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RevisionTemplateSpec() {
     }

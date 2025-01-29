@@ -91,7 +91,6 @@ public class CustomBuildStrategy implements Editable<CustomBuildStrategyBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CustomBuildStrategy() {
     }

@@ -85,7 +85,6 @@ public class NetworkDataIPv4 implements Editable<NetworkDataIPv4Builder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NetworkDataIPv4() {
     }

@@ -87,7 +87,6 @@ public class RuleWithOperations implements Editable<RuleWithOperationsBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RuleWithOperations() {
     }

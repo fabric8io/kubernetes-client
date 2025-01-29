@@ -80,18 +80,14 @@ public class CSIStorageCapacity implements Editable<CSIStorageCapacityBuilder>, 
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "storage.k8s.io/v1beta1";
     @JsonProperty("capacity")
     private Quantity capacity;
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "CSIStorageCapacity";
@@ -108,7 +104,6 @@ public class CSIStorageCapacity implements Editable<CSIStorageCapacityBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CSIStorageCapacity() {
     }
@@ -125,9 +120,7 @@ public class CSIStorageCapacity implements Editable<CSIStorageCapacityBuilder>, 
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -135,9 +128,7 @@ public class CSIStorageCapacity implements Editable<CSIStorageCapacityBuilder>, 
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -155,9 +146,7 @@ public class CSIStorageCapacity implements Editable<CSIStorageCapacityBuilder>, 
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -165,9 +154,7 @@ public class CSIStorageCapacity implements Editable<CSIStorageCapacityBuilder>, 
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

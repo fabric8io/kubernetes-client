@@ -75,7 +75,6 @@ public class EgressFirewallDestination implements Editable<EgressFirewallDestina
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EgressFirewallDestination() {
     }

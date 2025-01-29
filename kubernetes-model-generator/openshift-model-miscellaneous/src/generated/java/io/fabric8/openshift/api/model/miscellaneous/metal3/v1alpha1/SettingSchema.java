@@ -93,7 +93,6 @@ public class SettingSchema implements Editable<SettingSchemaBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SettingSchema() {
     }

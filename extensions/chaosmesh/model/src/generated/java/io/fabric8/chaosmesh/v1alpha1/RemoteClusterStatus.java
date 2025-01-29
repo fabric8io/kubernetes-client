@@ -78,7 +78,6 @@ public class RemoteClusterStatus implements Editable<RemoteClusterStatusBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RemoteClusterStatus() {
     }

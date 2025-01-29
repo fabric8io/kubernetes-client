@@ -78,7 +78,6 @@ public class NetworkDataIPv4DHCP implements Editable<NetworkDataIPv4DHCPBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NetworkDataIPv4DHCP() {
     }

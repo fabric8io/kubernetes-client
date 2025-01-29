@@ -78,7 +78,6 @@ public class BandwidthEntry implements Editable<BandwidthEntryBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public BandwidthEntry() {
     }

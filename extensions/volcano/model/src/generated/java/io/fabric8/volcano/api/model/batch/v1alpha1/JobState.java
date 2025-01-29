@@ -78,7 +78,6 @@ public class JobState implements Editable<JobStateBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public JobState() {
     }

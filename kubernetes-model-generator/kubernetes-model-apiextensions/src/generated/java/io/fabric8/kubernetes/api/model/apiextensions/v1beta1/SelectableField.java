@@ -69,7 +69,6 @@ public class SelectableField implements Editable<SelectableFieldBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SelectableField() {
     }

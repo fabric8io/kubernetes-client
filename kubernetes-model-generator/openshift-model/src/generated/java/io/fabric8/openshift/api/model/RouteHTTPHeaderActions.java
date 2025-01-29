@@ -76,7 +76,6 @@ public class RouteHTTPHeaderActions implements Editable<RouteHTTPHeaderActionsBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RouteHTTPHeaderActions() {
     }

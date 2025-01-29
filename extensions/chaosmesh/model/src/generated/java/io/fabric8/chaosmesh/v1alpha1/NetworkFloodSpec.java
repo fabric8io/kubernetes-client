@@ -81,7 +81,6 @@ public class NetworkFloodSpec implements Editable<NetworkFloodSpecBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NetworkFloodSpec() {
     }

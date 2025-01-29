@@ -69,7 +69,6 @@ public class DecisionStrategy implements Editable<DecisionStrategyBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DecisionStrategy() {
     }

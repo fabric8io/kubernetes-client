@@ -73,7 +73,6 @@ public class TCPRouteStatus implements Editable<TCPRouteStatusBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TCPRouteStatus() {
     }

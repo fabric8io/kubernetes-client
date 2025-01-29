@@ -89,9 +89,7 @@ public class VSphereMachineProviderSpec implements Editable<VSphereMachineProvid
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "machine.openshift.io/v1beta1";
@@ -102,9 +100,7 @@ public class VSphereMachineProviderSpec implements Editable<VSphereMachineProvid
     @JsonProperty("diskGiB")
     private Integer diskGiB;
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "VSphereMachineProviderSpec";
@@ -134,7 +130,6 @@ public class VSphereMachineProviderSpec implements Editable<VSphereMachineProvid
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public VSphereMachineProviderSpec() {
     }
@@ -159,9 +154,7 @@ public class VSphereMachineProviderSpec implements Editable<VSphereMachineProvid
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -169,9 +162,7 @@ public class VSphereMachineProviderSpec implements Editable<VSphereMachineProvid
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -209,9 +200,7 @@ public class VSphereMachineProviderSpec implements Editable<VSphereMachineProvid
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -219,9 +208,7 @@ public class VSphereMachineProviderSpec implements Editable<VSphereMachineProvid
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

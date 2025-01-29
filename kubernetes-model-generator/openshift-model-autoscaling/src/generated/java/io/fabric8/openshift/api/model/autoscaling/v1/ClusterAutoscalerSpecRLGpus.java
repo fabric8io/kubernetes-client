@@ -75,7 +75,6 @@ public class ClusterAutoscalerSpecRLGpus implements Editable<ClusterAutoscalerSp
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClusterAutoscalerSpecRLGpus() {
     }

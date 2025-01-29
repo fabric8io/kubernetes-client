@@ -98,7 +98,6 @@ public class DockerBuildStrategy implements Editable<DockerBuildStrategyBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DockerBuildStrategy() {
     }

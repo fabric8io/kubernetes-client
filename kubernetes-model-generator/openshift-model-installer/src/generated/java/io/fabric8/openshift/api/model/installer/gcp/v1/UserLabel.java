@@ -72,7 +72,6 @@ public class UserLabel implements Editable<UserLabelBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public UserLabel() {
     }

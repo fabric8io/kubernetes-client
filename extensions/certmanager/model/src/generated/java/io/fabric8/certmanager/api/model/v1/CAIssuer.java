@@ -83,7 +83,6 @@ public class CAIssuer implements Editable<CAIssuerBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CAIssuer() {
     }

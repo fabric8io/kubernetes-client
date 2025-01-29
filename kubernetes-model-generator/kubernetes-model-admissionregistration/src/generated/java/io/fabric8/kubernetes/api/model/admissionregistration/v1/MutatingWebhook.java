@@ -107,7 +107,6 @@ public class MutatingWebhook implements Editable<MutatingWebhookBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MutatingWebhook() {
     }

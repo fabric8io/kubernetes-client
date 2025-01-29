@@ -77,7 +77,6 @@ public class GatewayClassStatus implements Editable<GatewayClassStatusBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GatewayClassStatus() {
     }

@@ -83,7 +83,6 @@ public class EventPolicySelector implements Editable<EventPolicySelectorBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EventPolicySelector() {
     }

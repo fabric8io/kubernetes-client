@@ -79,9 +79,7 @@ public class BuildList implements Editable<BuildListBuilder>, KubernetesResource
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "build.openshift.io/v1";
@@ -89,9 +87,7 @@ public class BuildList implements Editable<BuildListBuilder>, KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openshift.api.model.Build> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "BuildList";
@@ -102,7 +98,6 @@ public class BuildList implements Editable<BuildListBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public BuildList() {
     }
@@ -116,9 +111,7 @@ public class BuildList implements Editable<BuildListBuilder>, KubernetesResource
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class BuildList implements Editable<BuildListBuilder>, KubernetesResource
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class BuildList implements Editable<BuildListBuilder>, KubernetesResource
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class BuildList implements Editable<BuildListBuilder>, KubernetesResource
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

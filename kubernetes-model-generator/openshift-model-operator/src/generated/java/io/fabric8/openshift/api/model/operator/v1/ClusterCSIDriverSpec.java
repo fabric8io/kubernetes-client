@@ -89,7 +89,6 @@ public class ClusterCSIDriverSpec implements Editable<ClusterCSIDriverSpecBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClusterCSIDriverSpec() {
     }

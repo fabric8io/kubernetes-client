@@ -72,7 +72,6 @@ public class Timespec implements Editable<TimespecBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Timespec() {
     }

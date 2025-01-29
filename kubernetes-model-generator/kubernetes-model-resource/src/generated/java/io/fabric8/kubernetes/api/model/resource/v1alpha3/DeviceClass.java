@@ -75,16 +75,12 @@ public class DeviceClass implements Editable<DeviceClassBuilder>, HasMetadata
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "resource.k8s.io/v1alpha3";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "DeviceClass";
@@ -97,7 +93,6 @@ public class DeviceClass implements Editable<DeviceClassBuilder>, HasMetadata
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DeviceClass() {
     }
@@ -111,9 +106,7 @@ public class DeviceClass implements Editable<DeviceClassBuilder>, HasMetadata
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -121,9 +114,7 @@ public class DeviceClass implements Editable<DeviceClassBuilder>, HasMetadata
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -131,9 +122,7 @@ public class DeviceClass implements Editable<DeviceClassBuilder>, HasMetadata
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -141,9 +130,7 @@ public class DeviceClass implements Editable<DeviceClassBuilder>, HasMetadata
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

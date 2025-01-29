@@ -111,7 +111,6 @@ public class PipelineRunStatus implements Editable<PipelineRunStatusBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PipelineRunStatus() {
     }

@@ -80,7 +80,6 @@ public class CloudLoadBalancerIPs implements Editable<CloudLoadBalancerIPsBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CloudLoadBalancerIPs() {
     }

@@ -92,7 +92,6 @@ public class HTTPRouteRule implements Editable<HTTPRouteRuleBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HTTPRouteRule() {
     }

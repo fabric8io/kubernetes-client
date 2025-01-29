@@ -100,7 +100,6 @@ public class PodSelectorSpec implements Editable<PodSelectorSpecBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PodSelectorSpec() {
     }

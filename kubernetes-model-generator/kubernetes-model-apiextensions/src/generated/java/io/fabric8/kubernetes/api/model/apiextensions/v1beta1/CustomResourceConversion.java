@@ -78,7 +78,6 @@ public class CustomResourceConversion implements Editable<CustomResourceConversi
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CustomResourceConversion() {
     }

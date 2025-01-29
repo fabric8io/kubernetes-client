@@ -78,7 +78,6 @@ public class PodAutoscalerSpec implements Editable<PodAutoscalerSpecBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PodAutoscalerSpec() {
     }

@@ -76,16 +76,12 @@ public class OverlappingRangeIPReservation implements Editable<OverlappingRangeI
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "whereabouts.cni.cncf.io/v1alpha1";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "OverlappingRangeIPReservation";
@@ -98,7 +94,6 @@ public class OverlappingRangeIPReservation implements Editable<OverlappingRangeI
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public OverlappingRangeIPReservation() {
     }
@@ -112,9 +107,7 @@ public class OverlappingRangeIPReservation implements Editable<OverlappingRangeI
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -122,9 +115,7 @@ public class OverlappingRangeIPReservation implements Editable<OverlappingRangeI
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -132,9 +123,7 @@ public class OverlappingRangeIPReservation implements Editable<OverlappingRangeI
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -142,9 +131,7 @@ public class OverlappingRangeIPReservation implements Editable<OverlappingRangeI
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

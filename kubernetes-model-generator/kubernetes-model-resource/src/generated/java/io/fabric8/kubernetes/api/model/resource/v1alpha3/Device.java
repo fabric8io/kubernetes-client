@@ -72,7 +72,6 @@ public class Device implements Editable<DeviceBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Device() {
     }

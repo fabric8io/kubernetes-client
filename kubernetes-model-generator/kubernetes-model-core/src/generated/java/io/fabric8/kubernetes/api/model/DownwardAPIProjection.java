@@ -43,7 +43,6 @@ public class DownwardAPIProjection implements Editable<DownwardAPIProjectionBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DownwardAPIProjection() {
     }

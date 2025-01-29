@@ -79,7 +79,6 @@ public class AWSClusterDeprovision implements Editable<AWSClusterDeprovisionBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AWSClusterDeprovision() {
     }

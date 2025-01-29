@@ -72,7 +72,6 @@ public class CleanupStatus implements Editable<CleanupStatusBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CleanupStatus() {
     }

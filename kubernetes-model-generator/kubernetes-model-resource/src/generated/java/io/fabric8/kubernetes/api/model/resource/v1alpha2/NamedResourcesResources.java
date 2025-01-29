@@ -72,7 +72,6 @@ public class NamedResourcesResources implements Editable<NamedResourcesResources
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NamedResourcesResources() {
     }

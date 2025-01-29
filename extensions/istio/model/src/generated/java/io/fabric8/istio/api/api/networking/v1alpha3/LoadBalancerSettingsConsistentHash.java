@@ -69,7 +69,6 @@ public class LoadBalancerSettingsConsistentHash implements IsLoadBalancerSetting
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public LoadBalancerSettingsConsistentHash() {
     }

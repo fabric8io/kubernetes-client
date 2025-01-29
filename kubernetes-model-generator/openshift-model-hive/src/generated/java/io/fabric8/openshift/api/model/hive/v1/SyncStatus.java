@@ -90,7 +90,6 @@ public class SyncStatus implements Editable<SyncStatusBuilder>, KubernetesResour
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SyncStatus() {
     }

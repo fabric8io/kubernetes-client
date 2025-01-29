@@ -93,9 +93,7 @@ public class NutanixMachineProviderConfig implements Editable<NutanixMachineProv
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "machine.openshift.io/v1";
@@ -119,9 +117,7 @@ public class NutanixMachineProviderConfig implements Editable<NutanixMachineProv
     @JsonProperty("image")
     private NutanixResourceIdentifier image;
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "NutanixMachineProviderConfig";
@@ -147,7 +143,6 @@ public class NutanixMachineProviderConfig implements Editable<NutanixMachineProv
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NutanixMachineProviderConfig() {
     }
@@ -175,9 +170,7 @@ public class NutanixMachineProviderConfig implements Editable<NutanixMachineProv
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -185,9 +178,7 @@ public class NutanixMachineProviderConfig implements Editable<NutanixMachineProv
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -278,9 +269,7 @@ public class NutanixMachineProviderConfig implements Editable<NutanixMachineProv
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -288,9 +277,7 @@ public class NutanixMachineProviderConfig implements Editable<NutanixMachineProv
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

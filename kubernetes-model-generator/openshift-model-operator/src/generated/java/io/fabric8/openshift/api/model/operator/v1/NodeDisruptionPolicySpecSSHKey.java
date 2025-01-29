@@ -72,7 +72,6 @@ public class NodeDisruptionPolicySpecSSHKey implements Editable<NodeDisruptionPo
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NodeDisruptionPolicySpecSSHKey() {
     }

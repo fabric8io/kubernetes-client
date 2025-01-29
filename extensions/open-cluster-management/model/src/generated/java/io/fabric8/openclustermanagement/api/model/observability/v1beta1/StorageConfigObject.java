@@ -76,7 +76,6 @@ public class StorageConfigObject implements Editable<StorageConfigObjectBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public StorageConfigObject() {
     }

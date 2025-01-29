@@ -78,7 +78,6 @@ public class PipelineTaskInputResource implements Editable<PipelineTaskInputReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PipelineTaskInputResource() {
     }

@@ -72,7 +72,6 @@ public class ClusterTrustBundleSpec implements Editable<ClusterTrustBundleSpecBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClusterTrustBundleSpec() {
     }

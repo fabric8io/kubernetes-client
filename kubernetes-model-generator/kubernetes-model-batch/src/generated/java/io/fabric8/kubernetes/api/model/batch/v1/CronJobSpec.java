@@ -90,7 +90,6 @@ public class CronJobSpec implements Editable<CronJobSpecBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CronJobSpec() {
     }

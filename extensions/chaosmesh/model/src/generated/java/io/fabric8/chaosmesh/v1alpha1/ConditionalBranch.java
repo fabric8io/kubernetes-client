@@ -72,7 +72,6 @@ public class ConditionalBranch implements Editable<ConditionalBranchBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ConditionalBranch() {
     }

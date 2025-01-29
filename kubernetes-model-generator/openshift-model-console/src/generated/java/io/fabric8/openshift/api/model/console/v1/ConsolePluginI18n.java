@@ -69,7 +69,6 @@ public class ConsolePluginI18n implements Editable<ConsolePluginI18nBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ConsolePluginI18n() {
     }

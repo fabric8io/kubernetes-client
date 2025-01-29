@@ -72,7 +72,6 @@ public class APIVersionKind implements Editable<APIVersionKindBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public APIVersionKind() {
     }

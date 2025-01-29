@@ -78,7 +78,6 @@ public class SubscriberStatus implements Editable<SubscriberStatusBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SubscriberStatus() {
     }

@@ -72,7 +72,6 @@ public class TunedProfile implements Editable<TunedProfileBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TunedProfile() {
     }

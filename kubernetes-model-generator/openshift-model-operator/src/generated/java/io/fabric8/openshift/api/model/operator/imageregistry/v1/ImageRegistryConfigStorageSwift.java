@@ -90,7 +90,6 @@ public class ImageRegistryConfigStorageSwift implements Editable<ImageRegistryCo
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ImageRegistryConfigStorageSwift() {
     }

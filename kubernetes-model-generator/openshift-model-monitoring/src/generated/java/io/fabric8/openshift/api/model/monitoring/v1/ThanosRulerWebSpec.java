@@ -72,7 +72,6 @@ public class ThanosRulerWebSpec implements Editable<ThanosRulerWebSpecBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ThanosRulerWebSpec() {
     }

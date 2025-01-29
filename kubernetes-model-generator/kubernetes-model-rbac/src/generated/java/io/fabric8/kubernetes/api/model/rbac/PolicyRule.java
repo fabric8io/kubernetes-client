@@ -88,7 +88,6 @@ public class PolicyRule implements Editable<PolicyRuleBuilder>, KubernetesResour
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PolicyRule() {
     }

@@ -75,7 +75,6 @@ public class HTTPRewrite implements Editable<HTTPRewriteBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HTTPRewrite() {
     }

@@ -75,7 +75,6 @@ public class GroupStrategy implements Editable<GroupStrategyBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GroupStrategy() {
     }

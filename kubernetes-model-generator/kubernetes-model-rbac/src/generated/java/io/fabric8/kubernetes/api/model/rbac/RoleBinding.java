@@ -79,16 +79,12 @@ public class RoleBinding implements Editable<RoleBindingBuilder>, HasMetadata, N
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "rbac.authorization.k8s.io/v1";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "RoleBinding";
@@ -104,7 +100,6 @@ public class RoleBinding implements Editable<RoleBindingBuilder>, HasMetadata, N
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RoleBinding() {
     }
@@ -119,9 +114,7 @@ public class RoleBinding implements Editable<RoleBindingBuilder>, HasMetadata, N
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -129,9 +122,7 @@ public class RoleBinding implements Editable<RoleBindingBuilder>, HasMetadata, N
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -139,9 +130,7 @@ public class RoleBinding implements Editable<RoleBindingBuilder>, HasMetadata, N
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -149,9 +138,7 @@ public class RoleBinding implements Editable<RoleBindingBuilder>, HasMetadata, N
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

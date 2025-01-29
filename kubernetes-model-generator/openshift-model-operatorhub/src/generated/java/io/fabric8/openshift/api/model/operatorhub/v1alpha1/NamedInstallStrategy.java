@@ -72,7 +72,6 @@ public class NamedInstallStrategy implements Editable<NamedInstallStrategyBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NamedInstallStrategy() {
     }

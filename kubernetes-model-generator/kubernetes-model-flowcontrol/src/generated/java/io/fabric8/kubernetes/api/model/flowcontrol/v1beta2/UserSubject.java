@@ -69,7 +69,6 @@ public class UserSubject implements Editable<UserSubjectBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public UserSubject() {
     }

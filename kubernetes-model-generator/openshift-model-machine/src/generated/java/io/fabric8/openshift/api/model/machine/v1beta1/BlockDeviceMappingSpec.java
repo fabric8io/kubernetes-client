@@ -78,7 +78,6 @@ public class BlockDeviceMappingSpec implements Editable<BlockDeviceMappingSpecBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public BlockDeviceMappingSpec() {
     }

@@ -72,7 +72,6 @@ public class NodeSlicePoolSpec implements Editable<NodeSlicePoolSpecBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NodeSlicePoolSpec() {
     }

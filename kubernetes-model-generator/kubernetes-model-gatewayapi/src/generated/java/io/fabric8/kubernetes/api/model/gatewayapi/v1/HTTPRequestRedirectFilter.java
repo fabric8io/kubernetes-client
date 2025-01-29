@@ -81,7 +81,6 @@ public class HTTPRequestRedirectFilter implements Editable<HTTPRequestRedirectFi
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HTTPRequestRedirectFilter() {
     }

@@ -69,7 +69,6 @@ public class ReloadService implements Editable<ReloadServiceBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ReloadService() {
     }

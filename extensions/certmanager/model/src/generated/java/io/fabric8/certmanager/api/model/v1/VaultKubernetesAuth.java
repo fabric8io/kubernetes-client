@@ -79,7 +79,6 @@ public class VaultKubernetesAuth implements Editable<VaultKubernetesAuthBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public VaultKubernetesAuth() {
     }

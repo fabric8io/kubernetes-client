@@ -78,7 +78,6 @@ public class QueryFrontendSpec implements Editable<QueryFrontendSpecBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public QueryFrontendSpec() {
     }

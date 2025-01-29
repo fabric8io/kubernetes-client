@@ -72,7 +72,6 @@ public class Maintainer implements Editable<MaintainerBuilder>, KubernetesResour
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Maintainer() {
     }

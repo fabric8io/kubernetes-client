@@ -78,7 +78,6 @@ public class CPUStressor implements Editable<CPUStressorBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CPUStressor() {
     }

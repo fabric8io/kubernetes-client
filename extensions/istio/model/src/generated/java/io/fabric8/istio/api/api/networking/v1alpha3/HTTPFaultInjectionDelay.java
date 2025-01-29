@@ -77,7 +77,6 @@ public class HTTPFaultInjectionDelay implements Editable<HTTPFaultInjectionDelay
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HTTPFaultInjectionDelay() {
     }

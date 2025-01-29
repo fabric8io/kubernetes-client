@@ -46,7 +46,6 @@ public class StatusCause implements Editable<StatusCauseBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public StatusCause() {
     }

@@ -72,7 +72,6 @@ public class OperatorPublishingStrategy implements Editable<OperatorPublishingSt
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public OperatorPublishingStrategy() {
     }

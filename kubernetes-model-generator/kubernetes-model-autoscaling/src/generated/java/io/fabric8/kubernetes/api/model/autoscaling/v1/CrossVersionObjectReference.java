@@ -75,7 +75,6 @@ public class CrossVersionObjectReference implements Editable<CrossVersionObjectR
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CrossVersionObjectReference() {
     }

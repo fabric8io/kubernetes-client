@@ -78,7 +78,6 @@ public class IngressControllerCaptureHTTPCookie implements Editable<IngressContr
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public IngressControllerCaptureHTTPCookie() {
     }

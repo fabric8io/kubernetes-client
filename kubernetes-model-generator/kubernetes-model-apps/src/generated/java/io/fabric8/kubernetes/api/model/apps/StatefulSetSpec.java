@@ -102,7 +102,6 @@ public class StatefulSetSpec implements Editable<StatefulSetSpecBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public StatefulSetSpec() {
     }

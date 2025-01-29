@@ -69,7 +69,6 @@ public class IngressControllerSetHTTPHeader implements Editable<IngressControlle
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public IngressControllerSetHTTPHeader() {
     }

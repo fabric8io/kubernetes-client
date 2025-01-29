@@ -69,7 +69,6 @@ public class OperatorPKISpec implements Editable<OperatorPKISpecBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public OperatorPKISpec() {
     }

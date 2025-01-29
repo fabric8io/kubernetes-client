@@ -92,7 +92,6 @@ public class MachineConfigSpec implements Editable<MachineConfigSpecBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MachineConfigSpec() {
     }

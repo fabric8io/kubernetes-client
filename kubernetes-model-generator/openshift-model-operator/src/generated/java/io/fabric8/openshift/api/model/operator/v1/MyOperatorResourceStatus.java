@@ -88,7 +88,6 @@ public class MyOperatorResourceStatus implements Editable<MyOperatorResourceStat
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MyOperatorResourceStatus() {
     }

@@ -86,7 +86,6 @@ public class ConfigurationStatus implements Editable<ConfigurationStatusBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ConfigurationStatus() {
     }

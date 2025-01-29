@@ -72,7 +72,6 @@ public class JVMClassMethodSpec implements Editable<JVMClassMethodSpecBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public JVMClassMethodSpec() {
     }

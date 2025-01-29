@@ -72,7 +72,6 @@ public class EquinixMetalPlatformStatus implements Editable<EquinixMetalPlatform
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EquinixMetalPlatformStatus() {
     }

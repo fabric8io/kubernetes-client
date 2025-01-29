@@ -72,7 +72,6 @@ public class KubeClientConfig implements Editable<KubeClientConfigBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public KubeClientConfig() {
     }

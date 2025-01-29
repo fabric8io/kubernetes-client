@@ -72,7 +72,6 @@ public class ConfigurationStatusFields implements Editable<ConfigurationStatusFi
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ConfigurationStatusFields() {
     }

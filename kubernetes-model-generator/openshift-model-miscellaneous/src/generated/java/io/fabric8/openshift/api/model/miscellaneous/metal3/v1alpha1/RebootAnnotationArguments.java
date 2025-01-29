@@ -72,7 +72,6 @@ public class RebootAnnotationArguments implements Editable<RebootAnnotationArgum
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RebootAnnotationArguments() {
     }

@@ -78,7 +78,6 @@ public class SecretObjectReference implements Editable<SecretObjectReferenceBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SecretObjectReference() {
     }

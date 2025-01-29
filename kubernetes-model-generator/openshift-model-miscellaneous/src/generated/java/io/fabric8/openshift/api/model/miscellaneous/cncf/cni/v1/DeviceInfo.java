@@ -84,7 +84,6 @@ public class DeviceInfo implements Editable<DeviceInfoBuilder>, KubernetesResour
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DeviceInfo() {
     }

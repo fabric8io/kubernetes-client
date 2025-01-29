@@ -75,7 +75,6 @@ public class PrismElement implements Editable<PrismElementBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PrismElement() {
     }

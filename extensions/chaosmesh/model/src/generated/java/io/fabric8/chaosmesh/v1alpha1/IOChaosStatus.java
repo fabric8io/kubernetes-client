@@ -79,7 +79,6 @@ public class IOChaosStatus implements Editable<IOChaosStatusBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public IOChaosStatus() {
     }

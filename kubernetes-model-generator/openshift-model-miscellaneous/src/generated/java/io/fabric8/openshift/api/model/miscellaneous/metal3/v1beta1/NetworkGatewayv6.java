@@ -72,7 +72,6 @@ public class NetworkGatewayv6 implements Editable<NetworkGatewayv6Builder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NetworkGatewayv6() {
     }

@@ -84,7 +84,6 @@ public class ClusterManagerStatus implements Editable<ClusterManagerStatusBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClusterManagerStatus() {
     }

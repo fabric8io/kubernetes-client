@@ -69,7 +69,6 @@ public class AWSServiceProviderCredentials implements Editable<AWSServiceProvide
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AWSServiceProviderCredentials() {
     }

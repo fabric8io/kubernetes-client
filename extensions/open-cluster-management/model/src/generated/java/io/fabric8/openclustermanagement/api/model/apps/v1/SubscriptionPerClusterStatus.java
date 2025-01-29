@@ -70,7 +70,6 @@ public class SubscriptionPerClusterStatus implements Editable<SubscriptionPerClu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SubscriptionPerClusterStatus() {
     }

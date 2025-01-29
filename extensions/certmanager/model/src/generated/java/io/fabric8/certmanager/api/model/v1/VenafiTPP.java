@@ -79,7 +79,6 @@ public class VenafiTPP implements Editable<VenafiTPPBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public VenafiTPP() {
     }

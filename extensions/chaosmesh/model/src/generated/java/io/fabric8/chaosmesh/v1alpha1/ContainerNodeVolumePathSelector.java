@@ -84,7 +84,6 @@ public class ContainerNodeVolumePathSelector implements Editable<ContainerNodeVo
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ContainerNodeVolumePathSelector() {
     }

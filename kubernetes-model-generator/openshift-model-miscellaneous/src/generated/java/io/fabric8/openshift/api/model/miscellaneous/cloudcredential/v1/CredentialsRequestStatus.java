@@ -88,7 +88,6 @@ public class CredentialsRequestStatus implements Editable<CredentialsRequestStat
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CredentialsRequestStatus() {
     }

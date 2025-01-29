@@ -93,7 +93,6 @@ public class InfrastructureStatus implements Editable<InfrastructureStatusBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public InfrastructureStatus() {
     }

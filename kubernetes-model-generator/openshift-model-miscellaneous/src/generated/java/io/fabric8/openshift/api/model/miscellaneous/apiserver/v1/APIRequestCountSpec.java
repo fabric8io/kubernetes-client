@@ -69,7 +69,6 @@ public class APIRequestCountSpec implements Editable<APIRequestCountSpecBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public APIRequestCountSpec() {
     }

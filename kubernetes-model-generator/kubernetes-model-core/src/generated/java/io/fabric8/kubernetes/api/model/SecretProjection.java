@@ -49,7 +49,6 @@ public class SecretProjection implements Editable<SecretProjectionBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SecretProjection() {
     }

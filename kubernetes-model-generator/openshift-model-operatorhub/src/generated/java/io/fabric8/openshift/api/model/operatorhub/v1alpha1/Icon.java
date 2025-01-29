@@ -72,7 +72,6 @@ public class Icon implements Editable<IconBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Icon() {
     }

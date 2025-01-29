@@ -87,7 +87,6 @@ public class OperatorStatus implements Editable<OperatorStatusBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public OperatorStatus() {
     }

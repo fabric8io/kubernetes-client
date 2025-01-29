@@ -69,7 +69,6 @@ public class SecretLocalReference implements Editable<SecretLocalReferenceBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SecretLocalReference() {
     }

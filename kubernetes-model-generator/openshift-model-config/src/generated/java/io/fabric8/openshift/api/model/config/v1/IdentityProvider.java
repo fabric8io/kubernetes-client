@@ -102,7 +102,6 @@ public class IdentityProvider implements Editable<IdentityProviderBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public IdentityProvider() {
     }

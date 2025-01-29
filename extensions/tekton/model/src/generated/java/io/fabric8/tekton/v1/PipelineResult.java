@@ -78,7 +78,6 @@ public class PipelineResult implements Editable<PipelineResultBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PipelineResult() {
     }

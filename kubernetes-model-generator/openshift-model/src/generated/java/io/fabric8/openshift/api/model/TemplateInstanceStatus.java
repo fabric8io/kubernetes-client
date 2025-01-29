@@ -76,7 +76,6 @@ public class TemplateInstanceStatus implements Editable<TemplateInstanceStatusBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TemplateInstanceStatus() {
     }

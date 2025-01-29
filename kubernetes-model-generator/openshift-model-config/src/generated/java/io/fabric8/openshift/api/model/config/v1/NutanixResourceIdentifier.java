@@ -75,7 +75,6 @@ public class NutanixResourceIdentifier implements Editable<NutanixResourceIdenti
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NutanixResourceIdentifier() {
     }

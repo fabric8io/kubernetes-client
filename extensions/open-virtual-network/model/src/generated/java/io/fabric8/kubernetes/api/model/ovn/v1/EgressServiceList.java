@@ -79,9 +79,7 @@ public class EgressServiceList implements Editable<EgressServiceListBuilder>, Ku
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "k8s.ovn.org/v1";
@@ -89,9 +87,7 @@ public class EgressServiceList implements Editable<EgressServiceListBuilder>, Ku
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.kubernetes.api.model.ovn.v1.EgressService> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "EgressServiceList";
@@ -102,7 +98,6 @@ public class EgressServiceList implements Editable<EgressServiceListBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EgressServiceList() {
     }
@@ -116,9 +111,7 @@ public class EgressServiceList implements Editable<EgressServiceListBuilder>, Ku
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class EgressServiceList implements Editable<EgressServiceListBuilder>, Ku
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class EgressServiceList implements Editable<EgressServiceListBuilder>, Ku
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class EgressServiceList implements Editable<EgressServiceListBuilder>, Ku
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

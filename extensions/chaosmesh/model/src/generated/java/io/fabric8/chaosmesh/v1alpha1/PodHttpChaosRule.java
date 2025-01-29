@@ -81,7 +81,6 @@ public class PodHttpChaosRule implements Editable<PodHttpChaosRuleBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PodHttpChaosRule() {
     }

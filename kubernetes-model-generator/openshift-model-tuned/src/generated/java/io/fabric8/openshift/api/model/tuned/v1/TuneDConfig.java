@@ -69,7 +69,6 @@ public class TuneDConfig implements Editable<TuneDConfigBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TuneDConfig() {
     }

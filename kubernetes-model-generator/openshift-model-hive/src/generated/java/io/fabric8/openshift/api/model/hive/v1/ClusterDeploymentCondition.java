@@ -84,7 +84,6 @@ public class ClusterDeploymentCondition implements Editable<ClusterDeploymentCon
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClusterDeploymentCondition() {
     }

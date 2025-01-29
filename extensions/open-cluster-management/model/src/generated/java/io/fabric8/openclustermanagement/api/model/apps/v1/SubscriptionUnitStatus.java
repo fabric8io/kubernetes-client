@@ -82,7 +82,6 @@ public class SubscriptionUnitStatus implements Editable<SubscriptionUnitStatusBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SubscriptionUnitStatus() {
     }

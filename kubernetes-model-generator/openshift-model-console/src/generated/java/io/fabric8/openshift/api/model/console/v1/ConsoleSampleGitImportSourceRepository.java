@@ -75,7 +75,6 @@ public class ConsoleSampleGitImportSourceRepository implements Editable<ConsoleS
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ConsoleSampleGitImportSourceRepository() {
     }

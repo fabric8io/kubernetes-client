@@ -73,7 +73,6 @@ public class SequenceSubscriptionStatus implements Editable<SequenceSubscription
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SequenceSubscriptionStatus() {
     }

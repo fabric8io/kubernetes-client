@@ -81,7 +81,6 @@ public class FirmwareComponentStatus implements Editable<FirmwareComponentStatus
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public FirmwareComponentStatus() {
     }

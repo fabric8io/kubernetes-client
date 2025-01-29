@@ -75,7 +75,6 @@ public class PerResourceAPIRequestLog implements Editable<PerResourceAPIRequestL
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PerResourceAPIRequestLog() {
     }

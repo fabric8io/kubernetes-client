@@ -81,7 +81,6 @@ public class FieldError implements Editable<FieldErrorBuilder>, KubernetesResour
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public FieldError() {
     }

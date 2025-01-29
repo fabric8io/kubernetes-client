@@ -78,7 +78,6 @@ public class HTTPRouteRetry implements Editable<HTTPRouteRetryBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HTTPRouteRetry() {
     }

@@ -100,7 +100,6 @@ public class ACMEIssuer implements Editable<ACMEIssuerBuilder>, KubernetesResour
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ACMEIssuer() {
     }

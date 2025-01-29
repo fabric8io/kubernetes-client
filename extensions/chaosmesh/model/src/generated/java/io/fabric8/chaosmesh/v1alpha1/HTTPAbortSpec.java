@@ -87,7 +87,6 @@ public class HTTPAbortSpec implements Editable<HTTPAbortSpecBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HTTPAbortSpec() {
     }

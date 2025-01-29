@@ -43,7 +43,6 @@ public class WeightedPodAffinityTerm implements Editable<WeightedPodAffinityTerm
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public WeightedPodAffinityTerm() {
     }

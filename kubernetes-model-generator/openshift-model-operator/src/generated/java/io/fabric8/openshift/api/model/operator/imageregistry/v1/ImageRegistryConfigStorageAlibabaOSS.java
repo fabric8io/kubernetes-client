@@ -78,7 +78,6 @@ public class ImageRegistryConfigStorageAlibabaOSS implements Editable<ImageRegis
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ImageRegistryConfigStorageAlibabaOSS() {
     }

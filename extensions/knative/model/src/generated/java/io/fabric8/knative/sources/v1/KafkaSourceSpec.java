@@ -104,7 +104,6 @@ public class KafkaSourceSpec implements Editable<KafkaSourceSpecBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public KafkaSourceSpec() {
     }

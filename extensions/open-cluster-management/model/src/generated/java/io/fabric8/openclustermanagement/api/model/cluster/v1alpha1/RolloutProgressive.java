@@ -85,7 +85,6 @@ public class RolloutProgressive implements Editable<RolloutProgressiveBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RolloutProgressive() {
     }

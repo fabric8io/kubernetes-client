@@ -72,7 +72,6 @@ public class EncryptionAlibaba implements Editable<EncryptionAlibabaBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EncryptionAlibaba() {
     }

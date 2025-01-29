@@ -78,7 +78,6 @@ public class EventListenerTriggerGroup implements Editable<EventListenerTriggerG
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EventListenerTriggerGroup() {
     }

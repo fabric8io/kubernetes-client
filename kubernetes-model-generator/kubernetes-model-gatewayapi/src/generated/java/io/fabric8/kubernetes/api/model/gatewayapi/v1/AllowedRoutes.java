@@ -75,7 +75,6 @@ public class AllowedRoutes implements Editable<AllowedRoutesBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AllowedRoutes() {
     }

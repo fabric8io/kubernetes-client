@@ -113,7 +113,6 @@ public class ClusterMetadata implements Editable<ClusterMetadataBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClusterMetadata() {
     }

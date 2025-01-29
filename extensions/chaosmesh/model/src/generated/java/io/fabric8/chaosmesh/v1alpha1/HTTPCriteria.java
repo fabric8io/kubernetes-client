@@ -69,7 +69,6 @@ public class HTTPCriteria implements Editable<HTTPCriteriaBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HTTPCriteria() {
     }

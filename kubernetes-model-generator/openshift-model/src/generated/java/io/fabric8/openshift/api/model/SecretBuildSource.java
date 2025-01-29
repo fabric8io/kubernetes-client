@@ -72,7 +72,6 @@ public class SecretBuildSource implements Editable<SecretBuildSourceBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SecretBuildSource() {
     }

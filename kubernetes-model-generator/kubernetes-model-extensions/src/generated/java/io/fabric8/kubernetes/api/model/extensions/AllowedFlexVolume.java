@@ -69,7 +69,6 @@ public class AllowedFlexVolume implements Editable<AllowedFlexVolumeBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AllowedFlexVolume() {
     }

@@ -78,7 +78,6 @@ public class L4RedirectRule implements Editable<L4RedirectRuleBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public L4RedirectRule() {
     }

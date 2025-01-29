@@ -78,7 +78,6 @@ public class FileReplaceSpec implements Editable<FileReplaceSpecBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public FileReplaceSpec() {
     }

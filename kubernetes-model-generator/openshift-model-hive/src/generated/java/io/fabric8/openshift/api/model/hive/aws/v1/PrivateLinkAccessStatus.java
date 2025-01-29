@@ -75,7 +75,6 @@ public class PrivateLinkAccessStatus implements Editable<PrivateLinkAccessStatus
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PrivateLinkAccessStatus() {
     }

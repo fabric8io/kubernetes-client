@@ -70,7 +70,6 @@ public class ProviderSpec implements Editable<ProviderSpecBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ProviderSpec() {
     }

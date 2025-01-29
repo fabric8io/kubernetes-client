@@ -47,7 +47,6 @@ public class PodAffinity implements Editable<PodAffinityBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PodAffinity() {
     }

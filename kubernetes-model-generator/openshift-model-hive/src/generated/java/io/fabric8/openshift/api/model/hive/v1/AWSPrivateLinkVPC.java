@@ -72,7 +72,6 @@ public class AWSPrivateLinkVPC implements Editable<AWSPrivateLinkVPCBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AWSPrivateLinkVPC() {
     }

@@ -72,7 +72,6 @@ public class InfrastructureSpec implements Editable<InfrastructureSpecBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public InfrastructureSpec() {
     }

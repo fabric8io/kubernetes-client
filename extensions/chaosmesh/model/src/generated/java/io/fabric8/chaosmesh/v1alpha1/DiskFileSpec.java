@@ -72,7 +72,6 @@ public class DiskFileSpec implements Editable<DiskFileSpecBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DiskFileSpec() {
     }

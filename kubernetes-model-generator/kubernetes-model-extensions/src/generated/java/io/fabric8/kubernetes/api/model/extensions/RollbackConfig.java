@@ -69,7 +69,6 @@ public class RollbackConfig implements Editable<RollbackConfigBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RollbackConfig() {
     }

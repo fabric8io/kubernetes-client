@@ -72,7 +72,6 @@ public class NutanixCategory implements Editable<NutanixCategoryBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NutanixCategory() {
     }

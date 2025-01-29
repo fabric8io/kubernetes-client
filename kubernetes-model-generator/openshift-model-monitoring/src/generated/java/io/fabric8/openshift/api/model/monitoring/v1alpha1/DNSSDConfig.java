@@ -81,7 +81,6 @@ public class DNSSDConfig implements Editable<DNSSDConfigBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DNSSDConfig() {
     }

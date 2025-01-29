@@ -79,7 +79,6 @@ public class GenericAnalysisMessage implements Editable<GenericAnalysisMessageBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GenericAnalysisMessage() {
     }

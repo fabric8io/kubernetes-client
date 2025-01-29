@@ -75,7 +75,6 @@ public class ImageContentSource implements Editable<ImageContentSourceBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ImageContentSource() {
     }

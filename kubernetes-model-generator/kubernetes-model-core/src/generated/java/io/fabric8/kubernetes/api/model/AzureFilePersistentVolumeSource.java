@@ -49,7 +49,6 @@ public class AzureFilePersistentVolumeSource implements Editable<AzureFilePersis
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AzureFilePersistentVolumeSource() {
     }

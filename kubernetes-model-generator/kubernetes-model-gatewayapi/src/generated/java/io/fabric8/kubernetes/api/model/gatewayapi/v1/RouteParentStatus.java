@@ -79,7 +79,6 @@ public class RouteParentStatus implements Editable<RouteParentStatusBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RouteParentStatus() {
     }

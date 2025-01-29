@@ -72,7 +72,6 @@ public class SelfSignedIssuer implements Editable<SelfSignedIssuerBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SelfSignedIssuer() {
     }

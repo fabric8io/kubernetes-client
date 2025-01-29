@@ -78,7 +78,6 @@ public class HTTP01Challenge implements Editable<HTTP01ChallengeBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HTTP01Challenge() {
     }

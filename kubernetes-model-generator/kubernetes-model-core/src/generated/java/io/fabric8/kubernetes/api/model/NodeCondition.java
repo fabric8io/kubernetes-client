@@ -55,7 +55,6 @@ public class NodeCondition implements Editable<NodeConditionBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NodeCondition() {
     }

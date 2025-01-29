@@ -79,7 +79,6 @@ public class KeyRef implements Editable<KeyRefBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public KeyRef() {
     }

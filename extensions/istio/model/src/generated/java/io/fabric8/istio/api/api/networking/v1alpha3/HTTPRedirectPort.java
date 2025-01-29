@@ -69,7 +69,6 @@ public class HTTPRedirectPort implements IsHTTPRedirectRedirectPort, Editable<HT
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HTTPRedirectPort() {
     }

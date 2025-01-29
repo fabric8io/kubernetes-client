@@ -78,7 +78,6 @@ public class RunResult implements Editable<RunResultBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RunResult() {
     }

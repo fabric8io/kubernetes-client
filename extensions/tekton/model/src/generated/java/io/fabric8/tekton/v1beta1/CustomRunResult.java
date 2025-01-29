@@ -72,7 +72,6 @@ public class CustomRunResult implements Editable<CustomRunResultBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CustomRunResult() {
     }

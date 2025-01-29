@@ -78,16 +78,12 @@ public class BackendTLSPolicy implements Editable<BackendTLSPolicyBuilder>, HasM
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "gateway.networking.k8s.io/v1alpha3";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "BackendTLSPolicy";
@@ -102,7 +98,6 @@ public class BackendTLSPolicy implements Editable<BackendTLSPolicyBuilder>, HasM
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public BackendTLSPolicy() {
     }
@@ -117,9 +112,7 @@ public class BackendTLSPolicy implements Editable<BackendTLSPolicyBuilder>, HasM
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -127,9 +120,7 @@ public class BackendTLSPolicy implements Editable<BackendTLSPolicyBuilder>, HasM
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -137,9 +128,7 @@ public class BackendTLSPolicy implements Editable<BackendTLSPolicyBuilder>, HasM
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -147,9 +136,7 @@ public class BackendTLSPolicy implements Editable<BackendTLSPolicyBuilder>, HasM
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

@@ -92,7 +92,6 @@ public class PodAutoscalerStatus implements Editable<PodAutoscalerStatusBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PodAutoscalerStatus() {
     }

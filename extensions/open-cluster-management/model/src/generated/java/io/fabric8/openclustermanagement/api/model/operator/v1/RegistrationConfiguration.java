@@ -91,7 +91,6 @@ public class RegistrationConfiguration implements Editable<RegistrationConfigura
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RegistrationConfiguration() {
     }

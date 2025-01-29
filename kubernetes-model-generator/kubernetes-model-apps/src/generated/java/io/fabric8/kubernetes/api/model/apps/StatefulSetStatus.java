@@ -99,7 +99,6 @@ public class StatefulSetStatus implements Editable<StatefulSetStatusBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public StatefulSetStatus() {
     }

@@ -84,7 +84,6 @@ public class VdpaDevice implements Editable<VdpaDeviceBuilder>, KubernetesResour
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public VdpaDevice() {
     }

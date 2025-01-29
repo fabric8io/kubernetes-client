@@ -72,7 +72,6 @@ public class DecisionGroup implements Editable<DecisionGroupBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DecisionGroup() {
     }

@@ -75,7 +75,6 @@ public class ClusterOverrides implements Editable<ClusterOverridesBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClusterOverrides() {
     }

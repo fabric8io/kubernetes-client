@@ -80,7 +80,6 @@ public class MetricStatus implements Editable<MetricStatusBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MetricStatus() {
     }

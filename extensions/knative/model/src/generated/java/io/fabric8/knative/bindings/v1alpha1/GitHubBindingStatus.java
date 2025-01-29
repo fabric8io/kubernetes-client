@@ -98,7 +98,6 @@ public class GitHubBindingStatus implements Editable<GitHubBindingStatusBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GitHubBindingStatus() {
     }

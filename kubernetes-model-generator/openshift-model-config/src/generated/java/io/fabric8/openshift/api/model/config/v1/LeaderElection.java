@@ -84,7 +84,6 @@ public class LeaderElection implements Editable<LeaderElectionBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public LeaderElection() {
     }

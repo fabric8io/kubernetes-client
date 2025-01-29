@@ -84,7 +84,6 @@ public class PackageChannel implements Editable<PackageChannelBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PackageChannel() {
     }

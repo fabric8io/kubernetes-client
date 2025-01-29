@@ -58,7 +58,6 @@ public class ObjectReference implements Editable<ObjectReferenceBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ObjectReference() {
     }

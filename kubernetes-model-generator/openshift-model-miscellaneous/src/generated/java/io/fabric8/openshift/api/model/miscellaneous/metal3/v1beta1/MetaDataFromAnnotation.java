@@ -75,7 +75,6 @@ public class MetaDataFromAnnotation implements Editable<MetaDataFromAnnotationBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MetaDataFromAnnotation() {
     }

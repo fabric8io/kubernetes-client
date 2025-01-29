@@ -78,7 +78,6 @@ public class PodHttpChaosStatus implements Editable<PodHttpChaosStatusBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PodHttpChaosStatus() {
     }

@@ -50,7 +50,6 @@ public class ResourceQuotaSpec implements Editable<ResourceQuotaSpecBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ResourceQuotaSpec() {
     }

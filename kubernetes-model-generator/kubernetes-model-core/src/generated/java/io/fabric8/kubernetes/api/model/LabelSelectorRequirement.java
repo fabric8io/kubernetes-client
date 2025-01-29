@@ -49,7 +49,6 @@ public class LabelSelectorRequirement implements Editable<LabelSelectorRequireme
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public LabelSelectorRequirement() {
     }

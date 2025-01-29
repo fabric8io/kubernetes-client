@@ -72,7 +72,6 @@ public class JVMStressCfgSpec implements Editable<JVMStressCfgSpecBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public JVMStressCfgSpec() {
     }

@@ -83,7 +83,6 @@ public class OperatorSpec implements Editable<OperatorSpecBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public OperatorSpec() {
     }

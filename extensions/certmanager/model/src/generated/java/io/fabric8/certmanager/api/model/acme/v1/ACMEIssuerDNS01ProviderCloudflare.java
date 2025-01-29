@@ -76,7 +76,6 @@ public class ACMEIssuerDNS01ProviderCloudflare implements Editable<ACMEIssuerDNS
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ACMEIssuerDNS01ProviderCloudflare() {
     }

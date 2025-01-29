@@ -72,7 +72,6 @@ public class GitHubWebHookCause implements Editable<GitHubWebHookCauseBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GitHubWebHookCause() {
     }

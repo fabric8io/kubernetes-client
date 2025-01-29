@@ -75,7 +75,6 @@ public class StepInfo implements Editable<StepInfoBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public StepInfo() {
     }

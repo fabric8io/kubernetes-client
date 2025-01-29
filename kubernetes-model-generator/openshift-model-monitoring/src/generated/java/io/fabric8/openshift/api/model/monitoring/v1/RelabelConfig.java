@@ -90,7 +90,6 @@ public class RelabelConfig implements Editable<RelabelConfigBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RelabelConfig() {
     }

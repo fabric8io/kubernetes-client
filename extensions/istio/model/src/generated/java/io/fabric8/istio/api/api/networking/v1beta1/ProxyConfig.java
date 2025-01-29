@@ -90,7 +90,6 @@ public class ProxyConfig implements Editable<ProxyConfigBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ProxyConfig() {
     }

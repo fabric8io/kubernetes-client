@@ -98,7 +98,6 @@ public class GitHubSourceSpec implements Editable<GitHubSourceSpecBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GitHubSourceSpec() {
     }

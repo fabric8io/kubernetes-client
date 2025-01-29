@@ -78,7 +78,6 @@ public class FailedProvisionConfig implements Editable<FailedProvisionConfigBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public FailedProvisionConfig() {
     }

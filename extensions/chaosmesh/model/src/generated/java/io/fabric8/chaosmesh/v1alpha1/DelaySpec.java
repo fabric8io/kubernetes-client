@@ -78,7 +78,6 @@ public class DelaySpec implements Editable<DelaySpecBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DelaySpec() {
     }

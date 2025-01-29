@@ -69,7 +69,6 @@ public class HTTPFaultInjectionAbortGrpcStatus implements IsHTTPFaultInjectionAb
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HTTPFaultInjectionAbortGrpcStatus() {
     }

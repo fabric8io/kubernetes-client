@@ -87,7 +87,6 @@ public class NetworkDataLinkBond implements Editable<NetworkDataLinkBondBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NetworkDataLinkBond() {
     }

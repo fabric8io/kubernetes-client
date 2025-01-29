@@ -75,7 +75,6 @@ public class ClusterClaimStatus implements Editable<ClusterClaimStatusBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClusterClaimStatus() {
     }

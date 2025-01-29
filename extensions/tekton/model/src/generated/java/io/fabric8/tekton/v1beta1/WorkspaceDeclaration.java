@@ -81,7 +81,6 @@ public class WorkspaceDeclaration implements Editable<WorkspaceDeclarationBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public WorkspaceDeclaration() {
     }

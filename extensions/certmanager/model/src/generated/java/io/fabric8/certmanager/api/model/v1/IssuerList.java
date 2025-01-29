@@ -79,9 +79,7 @@ public class IssuerList implements Editable<IssuerListBuilder>, KubernetesResour
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "cert-manager.io/v1";
@@ -89,9 +87,7 @@ public class IssuerList implements Editable<IssuerListBuilder>, KubernetesResour
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.certmanager.api.model.v1.Issuer> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "IssuerList";
@@ -102,7 +98,6 @@ public class IssuerList implements Editable<IssuerListBuilder>, KubernetesResour
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public IssuerList() {
     }
@@ -116,9 +111,7 @@ public class IssuerList implements Editable<IssuerListBuilder>, KubernetesResour
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class IssuerList implements Editable<IssuerListBuilder>, KubernetesResour
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class IssuerList implements Editable<IssuerListBuilder>, KubernetesResour
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class IssuerList implements Editable<IssuerListBuilder>, KubernetesResour
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

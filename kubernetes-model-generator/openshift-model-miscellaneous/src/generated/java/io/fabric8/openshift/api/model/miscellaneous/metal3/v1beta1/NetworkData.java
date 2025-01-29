@@ -75,7 +75,6 @@ public class NetworkData implements Editable<NetworkDataBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NetworkData() {
     }

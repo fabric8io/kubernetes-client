@@ -77,16 +77,12 @@ public class VSphereProviderSpec implements Editable<VSphereProviderSpecBuilder>
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "cloudcredential.openshift.io/v1";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "VSphereProviderSpec";
@@ -98,7 +94,6 @@ public class VSphereProviderSpec implements Editable<VSphereProviderSpecBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public VSphereProviderSpec() {
     }
@@ -111,9 +106,7 @@ public class VSphereProviderSpec implements Editable<VSphereProviderSpecBuilder>
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -121,9 +114,7 @@ public class VSphereProviderSpec implements Editable<VSphereProviderSpecBuilder>
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -131,9 +122,7 @@ public class VSphereProviderSpec implements Editable<VSphereProviderSpecBuilder>
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -141,9 +130,7 @@ public class VSphereProviderSpec implements Editable<VSphereProviderSpecBuilder>
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

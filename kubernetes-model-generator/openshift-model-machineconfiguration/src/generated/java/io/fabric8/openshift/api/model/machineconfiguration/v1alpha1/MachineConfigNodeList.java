@@ -79,9 +79,7 @@ public class MachineConfigNodeList implements Editable<MachineConfigNodeListBuil
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "machineconfiguration.openshift.io/v1alpha1";
@@ -89,9 +87,7 @@ public class MachineConfigNodeList implements Editable<MachineConfigNodeListBuil
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openshift.api.model.machineconfiguration.v1alpha1.MachineConfigNode> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "MachineConfigNodeList";
@@ -102,7 +98,6 @@ public class MachineConfigNodeList implements Editable<MachineConfigNodeListBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MachineConfigNodeList() {
     }
@@ -116,9 +111,7 @@ public class MachineConfigNodeList implements Editable<MachineConfigNodeListBuil
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class MachineConfigNodeList implements Editable<MachineConfigNodeListBuil
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class MachineConfigNodeList implements Editable<MachineConfigNodeListBuil
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class MachineConfigNodeList implements Editable<MachineConfigNodeListBuil
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

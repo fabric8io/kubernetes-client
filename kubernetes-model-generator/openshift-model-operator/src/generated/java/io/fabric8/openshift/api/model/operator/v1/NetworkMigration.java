@@ -78,7 +78,6 @@ public class NetworkMigration implements Editable<NetworkMigrationBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NetworkMigration() {
     }

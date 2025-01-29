@@ -138,7 +138,6 @@ public class SlackConfig implements Editable<SlackConfigBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SlackConfig() {
     }

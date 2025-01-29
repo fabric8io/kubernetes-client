@@ -72,7 +72,6 @@ public class SourceControlUser implements Editable<SourceControlUserBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SourceControlUser() {
     }

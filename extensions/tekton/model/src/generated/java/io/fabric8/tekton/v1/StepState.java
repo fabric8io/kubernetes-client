@@ -107,7 +107,6 @@ public class StepState implements Editable<StepStateBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public StepState() {
     }

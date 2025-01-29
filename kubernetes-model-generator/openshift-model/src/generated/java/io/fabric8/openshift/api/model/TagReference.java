@@ -88,7 +88,6 @@ public class TagReference implements Editable<TagReferenceBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TagReference() {
     }

@@ -83,7 +83,6 @@ public class OpenShiftAPIServerSpec implements Editable<OpenShiftAPIServerSpecBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public OpenShiftAPIServerSpec() {
     }

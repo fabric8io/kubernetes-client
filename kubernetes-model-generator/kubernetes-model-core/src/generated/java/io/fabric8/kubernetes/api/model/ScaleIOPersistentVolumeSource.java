@@ -67,7 +67,6 @@ public class ScaleIOPersistentVolumeSource implements Editable<ScaleIOPersistent
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ScaleIOPersistentVolumeSource() {
     }

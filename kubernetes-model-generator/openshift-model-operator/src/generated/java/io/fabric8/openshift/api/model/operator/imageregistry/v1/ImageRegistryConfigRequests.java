@@ -72,7 +72,6 @@ public class ImageRegistryConfigRequests implements Editable<ImageRegistryConfig
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ImageRegistryConfigRequests() {
     }

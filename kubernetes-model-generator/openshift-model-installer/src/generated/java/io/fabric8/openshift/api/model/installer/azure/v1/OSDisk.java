@@ -78,7 +78,6 @@ public class OSDisk implements Editable<OSDiskBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public OSDisk() {
     }

@@ -69,7 +69,6 @@ public class KMSEncryptionAlibaba implements Editable<KMSEncryptionAlibabaBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public KMSEncryptionAlibaba() {
     }

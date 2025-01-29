@@ -77,16 +77,12 @@ public class DeploymentConfig implements Editable<DeploymentConfigBuilder>, HasM
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "apps.openshift.io/v1";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "DeploymentConfig";
@@ -101,7 +97,6 @@ public class DeploymentConfig implements Editable<DeploymentConfigBuilder>, HasM
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DeploymentConfig() {
     }
@@ -116,9 +111,7 @@ public class DeploymentConfig implements Editable<DeploymentConfigBuilder>, HasM
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class DeploymentConfig implements Editable<DeploymentConfigBuilder>, HasM
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -136,9 +127,7 @@ public class DeploymentConfig implements Editable<DeploymentConfigBuilder>, HasM
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -146,9 +135,7 @@ public class DeploymentConfig implements Editable<DeploymentConfigBuilder>, HasM
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

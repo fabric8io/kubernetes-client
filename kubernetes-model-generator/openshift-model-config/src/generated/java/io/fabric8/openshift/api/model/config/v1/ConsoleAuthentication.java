@@ -69,7 +69,6 @@ public class ConsoleAuthentication implements Editable<ConsoleAuthenticationBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ConsoleAuthentication() {
     }

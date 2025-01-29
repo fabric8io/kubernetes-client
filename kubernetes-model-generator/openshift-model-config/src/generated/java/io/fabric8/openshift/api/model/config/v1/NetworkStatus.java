@@ -90,7 +90,6 @@ public class NetworkStatus implements Editable<NetworkStatusBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NetworkStatus() {
     }

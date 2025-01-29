@@ -73,7 +73,6 @@ public class MultiClusterObservabilityStatus implements Editable<MultiClusterObs
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MultiClusterObservabilityStatus() {
     }

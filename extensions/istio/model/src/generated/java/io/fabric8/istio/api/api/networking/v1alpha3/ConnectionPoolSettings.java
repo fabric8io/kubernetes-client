@@ -72,7 +72,6 @@ public class ConnectionPoolSettings implements Editable<ConnectionPoolSettingsBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ConnectionPoolSettings() {
     }

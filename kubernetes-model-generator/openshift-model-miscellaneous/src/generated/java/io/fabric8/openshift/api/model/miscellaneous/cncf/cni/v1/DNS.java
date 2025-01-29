@@ -83,7 +83,6 @@ public class DNS implements Editable<DNSBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DNS() {
     }

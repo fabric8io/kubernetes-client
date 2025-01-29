@@ -76,16 +76,12 @@ public class ImagePruner implements Editable<ImagePrunerBuilder>, HasMetadata
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "imageregistry.operator.openshift.io/v1";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "ImagePruner";
@@ -100,7 +96,6 @@ public class ImagePruner implements Editable<ImagePrunerBuilder>, HasMetadata
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ImagePruner() {
     }
@@ -115,9 +110,7 @@ public class ImagePruner implements Editable<ImagePrunerBuilder>, HasMetadata
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -125,9 +118,7 @@ public class ImagePruner implements Editable<ImagePrunerBuilder>, HasMetadata
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -135,9 +126,7 @@ public class ImagePruner implements Editable<ImagePrunerBuilder>, HasMetadata
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -145,9 +134,7 @@ public class ImagePruner implements Editable<ImagePrunerBuilder>, HasMetadata
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

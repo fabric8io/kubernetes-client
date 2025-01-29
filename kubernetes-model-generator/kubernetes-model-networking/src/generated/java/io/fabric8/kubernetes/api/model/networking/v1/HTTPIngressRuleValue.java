@@ -72,7 +72,6 @@ public class HTTPIngressRuleValue implements Editable<HTTPIngressRuleValueBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HTTPIngressRuleValue() {
     }

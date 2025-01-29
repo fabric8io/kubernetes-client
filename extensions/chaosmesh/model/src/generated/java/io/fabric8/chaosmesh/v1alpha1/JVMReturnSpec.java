@@ -81,7 +81,6 @@ public class JVMReturnSpec implements Editable<JVMReturnSpecBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public JVMReturnSpec() {
     }

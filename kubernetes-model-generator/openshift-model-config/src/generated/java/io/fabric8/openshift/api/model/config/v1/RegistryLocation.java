@@ -72,7 +72,6 @@ public class RegistryLocation implements Editable<RegistryLocationBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RegistryLocation() {
     }

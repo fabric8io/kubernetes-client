@@ -72,7 +72,6 @@ public class DataDiskManagedDiskParameters implements Editable<DataDiskManagedDi
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DataDiskManagedDiskParameters() {
     }

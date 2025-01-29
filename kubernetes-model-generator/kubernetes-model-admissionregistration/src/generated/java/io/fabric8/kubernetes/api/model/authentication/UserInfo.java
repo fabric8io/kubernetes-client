@@ -82,7 +82,6 @@ public class UserInfo implements Editable<UserInfoBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public UserInfo() {
     }

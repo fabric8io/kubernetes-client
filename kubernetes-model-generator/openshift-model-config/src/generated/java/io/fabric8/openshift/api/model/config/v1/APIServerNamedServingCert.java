@@ -75,7 +75,6 @@ public class APIServerNamedServingCert implements Editable<APIServerNamedServing
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public APIServerNamedServingCert() {
     }

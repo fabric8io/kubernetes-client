@@ -76,7 +76,6 @@ public class RegistrationHubConfiguration implements Editable<RegistrationHubCon
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RegistrationHubConfiguration() {
     }

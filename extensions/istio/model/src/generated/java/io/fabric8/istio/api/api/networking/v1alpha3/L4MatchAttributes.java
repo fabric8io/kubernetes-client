@@ -89,7 +89,6 @@ public class L4MatchAttributes implements Editable<L4MatchAttributesBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public L4MatchAttributes() {
     }

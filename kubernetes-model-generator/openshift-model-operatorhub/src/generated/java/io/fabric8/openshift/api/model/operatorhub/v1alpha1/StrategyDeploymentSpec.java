@@ -77,7 +77,6 @@ public class StrategyDeploymentSpec implements Editable<StrategyDeploymentSpecBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public StrategyDeploymentSpec() {
     }

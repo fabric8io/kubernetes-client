@@ -79,9 +79,7 @@ public class DestinationRuleList implements Editable<DestinationRuleListBuilder>
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "networking.istio.io/v1alpha3";
@@ -89,9 +87,7 @@ public class DestinationRuleList implements Editable<DestinationRuleListBuilder>
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.istio.api.networking.v1alpha3.DestinationRule> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "DestinationRuleList";
@@ -102,7 +98,6 @@ public class DestinationRuleList implements Editable<DestinationRuleListBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DestinationRuleList() {
     }
@@ -116,9 +111,7 @@ public class DestinationRuleList implements Editable<DestinationRuleListBuilder>
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class DestinationRuleList implements Editable<DestinationRuleListBuilder>
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class DestinationRuleList implements Editable<DestinationRuleListBuilder>
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class DestinationRuleList implements Editable<DestinationRuleListBuilder>
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

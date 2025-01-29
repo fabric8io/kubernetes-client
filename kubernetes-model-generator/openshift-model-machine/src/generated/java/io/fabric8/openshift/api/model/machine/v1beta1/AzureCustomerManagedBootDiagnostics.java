@@ -69,7 +69,6 @@ public class AzureCustomerManagedBootDiagnostics implements Editable<AzureCustom
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AzureCustomerManagedBootDiagnostics() {
     }

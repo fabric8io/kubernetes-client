@@ -92,7 +92,6 @@ public class PodDisruptionBudgetStatus implements Editable<PodDisruptionBudgetSt
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PodDisruptionBudgetStatus() {
     }

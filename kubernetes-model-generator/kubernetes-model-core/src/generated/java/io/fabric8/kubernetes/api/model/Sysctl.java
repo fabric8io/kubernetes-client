@@ -43,7 +43,6 @@ public class Sysctl implements Editable<SysctlBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Sysctl() {
     }

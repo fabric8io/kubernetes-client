@@ -75,7 +75,6 @@ public class PolicySetSpec implements Editable<PolicySetSpecBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PolicySetSpec() {
     }

@@ -84,7 +84,6 @@ public class GCESDConfig implements Editable<GCESDConfigBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GCESDConfig() {
     }

@@ -72,7 +72,6 @@ public class PowerVSServiceEndpoint implements Editable<PowerVSServiceEndpointBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PowerVSServiceEndpoint() {
     }

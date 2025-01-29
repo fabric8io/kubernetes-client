@@ -79,7 +79,6 @@ public class GCPChaosStatus implements Editable<GCPChaosStatusBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GCPChaosStatus() {
     }

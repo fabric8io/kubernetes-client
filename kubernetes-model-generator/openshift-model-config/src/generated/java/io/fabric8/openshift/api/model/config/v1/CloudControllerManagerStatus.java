@@ -69,7 +69,6 @@ public class CloudControllerManagerStatus implements Editable<CloudControllerMan
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CloudControllerManagerStatus() {
     }

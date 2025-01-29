@@ -86,7 +86,6 @@ public class NetworkDeviceSpec implements Editable<NetworkDeviceSpecBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NetworkDeviceSpec() {
     }

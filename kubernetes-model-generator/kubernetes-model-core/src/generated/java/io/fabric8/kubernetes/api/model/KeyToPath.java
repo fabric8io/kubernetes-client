@@ -46,7 +46,6 @@ public class KeyToPath implements Editable<KeyToPathBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public KeyToPath() {
     }

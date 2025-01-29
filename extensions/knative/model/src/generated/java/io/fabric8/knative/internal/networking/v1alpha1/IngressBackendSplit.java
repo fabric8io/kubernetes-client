@@ -82,7 +82,6 @@ public class IngressBackendSplit implements Editable<IngressBackendSplitBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public IngressBackendSplit() {
     }

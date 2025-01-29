@@ -79,7 +79,6 @@ public class ValidatingAdmissionPolicyStatus implements Editable<ValidatingAdmis
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ValidatingAdmissionPolicyStatus() {
     }

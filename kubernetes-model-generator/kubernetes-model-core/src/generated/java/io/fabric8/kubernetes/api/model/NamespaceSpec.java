@@ -43,7 +43,6 @@ public class NamespaceSpec implements Editable<NamespaceSpecBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NamespaceSpec() {
     }

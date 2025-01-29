@@ -47,9 +47,7 @@ public class APIGroupList implements Editable<APIGroupListBuilder>, KubernetesRe
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "v1";
@@ -57,9 +55,7 @@ public class APIGroupList implements Editable<APIGroupListBuilder>, KubernetesRe
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<APIGroup> groups = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "APIGroupList";
@@ -68,7 +64,6 @@ public class APIGroupList implements Editable<APIGroupListBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public APIGroupList() {
     }
@@ -81,9 +76,7 @@ public class APIGroupList implements Editable<APIGroupListBuilder>, KubernetesRe
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -91,9 +84,7 @@ public class APIGroupList implements Editable<APIGroupListBuilder>, KubernetesRe
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -112,9 +103,7 @@ public class APIGroupList implements Editable<APIGroupListBuilder>, KubernetesRe
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -122,9 +111,7 @@ public class APIGroupList implements Editable<APIGroupListBuilder>, KubernetesRe
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

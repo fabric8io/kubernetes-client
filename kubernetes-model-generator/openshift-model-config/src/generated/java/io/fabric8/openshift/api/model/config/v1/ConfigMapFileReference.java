@@ -72,7 +72,6 @@ public class ConfigMapFileReference implements Editable<ConfigMapFileReferenceBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ConfigMapFileReference() {
     }

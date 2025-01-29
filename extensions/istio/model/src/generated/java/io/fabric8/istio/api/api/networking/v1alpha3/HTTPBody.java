@@ -71,7 +71,6 @@ public class HTTPBody implements Editable<HTTPBodyBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HTTPBody() {
     }

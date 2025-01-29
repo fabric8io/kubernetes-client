@@ -82,7 +82,6 @@ public class Sigv4 implements Editable<Sigv4Builder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Sigv4() {
     }

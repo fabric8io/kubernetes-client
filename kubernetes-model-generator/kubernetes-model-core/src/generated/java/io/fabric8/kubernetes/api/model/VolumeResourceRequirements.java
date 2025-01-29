@@ -45,7 +45,6 @@ public class VolumeResourceRequirements implements Editable<VolumeResourceRequir
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public VolumeResourceRequirements() {
     }

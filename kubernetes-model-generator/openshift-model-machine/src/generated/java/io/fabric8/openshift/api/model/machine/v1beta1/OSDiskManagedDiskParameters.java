@@ -75,7 +75,6 @@ public class OSDiskManagedDiskParameters implements Editable<OSDiskManagedDiskPa
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public OSDiskManagedDiskParameters() {
     }

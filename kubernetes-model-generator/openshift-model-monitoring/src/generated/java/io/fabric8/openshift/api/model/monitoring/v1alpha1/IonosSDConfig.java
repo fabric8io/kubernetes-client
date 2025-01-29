@@ -104,7 +104,6 @@ public class IonosSDConfig implements Editable<IonosSDConfigBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public IonosSDConfig() {
     }

@@ -72,7 +72,6 @@ public class PagerDutyLinkConfig implements Editable<PagerDutyLinkConfigBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PagerDutyLinkConfig() {
     }

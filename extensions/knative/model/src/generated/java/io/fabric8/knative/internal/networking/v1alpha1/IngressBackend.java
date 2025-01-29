@@ -75,7 +75,6 @@ public class IngressBackend implements Editable<IngressBackendBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public IngressBackend() {
     }

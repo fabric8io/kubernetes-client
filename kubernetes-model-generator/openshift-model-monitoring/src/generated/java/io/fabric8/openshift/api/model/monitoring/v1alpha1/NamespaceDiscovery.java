@@ -75,7 +75,6 @@ public class NamespaceDiscovery implements Editable<NamespaceDiscoveryBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NamespaceDiscovery() {
     }

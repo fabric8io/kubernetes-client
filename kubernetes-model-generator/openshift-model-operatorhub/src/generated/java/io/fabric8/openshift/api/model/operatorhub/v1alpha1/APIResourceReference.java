@@ -75,7 +75,6 @@ public class APIResourceReference implements Editable<APIResourceReferenceBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public APIResourceReference() {
     }

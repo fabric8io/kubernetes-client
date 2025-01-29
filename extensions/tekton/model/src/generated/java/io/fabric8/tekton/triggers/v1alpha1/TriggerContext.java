@@ -75,7 +75,6 @@ public class TriggerContext implements Editable<TriggerContextBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TriggerContext() {
     }

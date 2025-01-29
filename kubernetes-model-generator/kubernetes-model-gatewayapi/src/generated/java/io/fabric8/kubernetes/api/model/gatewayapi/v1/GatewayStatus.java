@@ -81,7 +81,6 @@ public class GatewayStatus implements Editable<GatewayStatusBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GatewayStatus() {
     }

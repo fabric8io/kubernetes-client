@@ -84,7 +84,6 @@ public class APIServerConfig implements Editable<APIServerConfigBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public APIServerConfig() {
     }

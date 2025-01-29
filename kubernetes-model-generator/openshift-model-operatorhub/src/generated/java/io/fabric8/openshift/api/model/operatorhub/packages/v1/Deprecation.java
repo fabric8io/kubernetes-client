@@ -69,7 +69,6 @@ public class Deprecation implements Editable<DeprecationBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Deprecation() {
     }

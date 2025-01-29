@@ -75,7 +75,6 @@ public class Upstream implements Editable<UpstreamBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Upstream() {
     }

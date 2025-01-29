@@ -82,7 +82,6 @@ public class StatementEntry implements Editable<StatementEntryBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public StatementEntry() {
     }

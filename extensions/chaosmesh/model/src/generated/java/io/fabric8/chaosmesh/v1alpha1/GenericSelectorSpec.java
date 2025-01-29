@@ -84,7 +84,6 @@ public class GenericSelectorSpec implements Editable<GenericSelectorSpecBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GenericSelectorSpec() {
     }

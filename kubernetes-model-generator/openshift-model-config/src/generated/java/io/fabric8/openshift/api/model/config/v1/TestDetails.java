@@ -69,7 +69,6 @@ public class TestDetails implements Editable<TestDetailsBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TestDetails() {
     }

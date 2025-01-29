@@ -75,7 +75,6 @@ public class WarmupConfiguration implements Editable<WarmupConfigurationBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public WarmupConfiguration() {
     }

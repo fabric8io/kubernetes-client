@@ -75,7 +75,6 @@ public class SecretParam implements Editable<SecretParamBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SecretParam() {
     }

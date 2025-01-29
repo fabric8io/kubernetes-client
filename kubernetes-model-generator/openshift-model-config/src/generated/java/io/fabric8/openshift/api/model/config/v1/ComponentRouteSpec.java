@@ -78,7 +78,6 @@ public class ComponentRouteSpec implements Editable<ComponentRouteSpecBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ComponentRouteSpec() {
     }

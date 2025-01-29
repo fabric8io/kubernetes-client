@@ -70,7 +70,6 @@ public class IngressStatus implements Editable<IngressStatusBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public IngressStatus() {
     }

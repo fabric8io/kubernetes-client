@@ -81,7 +81,6 @@ public class Release implements Editable<ReleaseBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Release() {
     }

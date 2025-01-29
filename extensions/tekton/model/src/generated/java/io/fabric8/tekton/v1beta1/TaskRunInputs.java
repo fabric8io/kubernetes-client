@@ -76,7 +76,6 @@ public class TaskRunInputs implements Editable<TaskRunInputsBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TaskRunInputs() {
     }

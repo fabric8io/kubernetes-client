@@ -106,7 +106,6 @@ public class Metal3MachineStatus implements Editable<Metal3MachineStatusBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Metal3MachineStatus() {
     }

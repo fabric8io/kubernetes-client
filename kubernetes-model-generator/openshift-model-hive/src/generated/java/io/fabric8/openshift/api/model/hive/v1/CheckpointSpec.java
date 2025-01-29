@@ -75,7 +75,6 @@ public class CheckpointSpec implements Editable<CheckpointSpecBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CheckpointSpec() {
     }

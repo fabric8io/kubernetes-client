@@ -87,7 +87,6 @@ public class InterceptorRequest implements Editable<InterceptorRequestBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public InterceptorRequest() {
     }

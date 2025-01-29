@@ -98,7 +98,6 @@ public class AwsSqsSourceStatus implements Editable<AwsSqsSourceStatusBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AwsSqsSourceStatus() {
     }

@@ -75,7 +75,6 @@ public class FileSDConfig implements Editable<FileSDConfigBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public FileSDConfig() {
     }

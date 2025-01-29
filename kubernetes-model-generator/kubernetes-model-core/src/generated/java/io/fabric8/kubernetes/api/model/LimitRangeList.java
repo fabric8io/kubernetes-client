@@ -48,9 +48,7 @@ public class LimitRangeList implements Editable<LimitRangeListBuilder>, Kubernet
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "v1";
@@ -58,9 +56,7 @@ public class LimitRangeList implements Editable<LimitRangeListBuilder>, Kubernet
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.kubernetes.api.model.LimitRange> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "LimitRangeList";
@@ -71,7 +67,6 @@ public class LimitRangeList implements Editable<LimitRangeListBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public LimitRangeList() {
     }
@@ -85,9 +80,7 @@ public class LimitRangeList implements Editable<LimitRangeListBuilder>, Kubernet
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -95,9 +88,7 @@ public class LimitRangeList implements Editable<LimitRangeListBuilder>, Kubernet
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -116,9 +107,7 @@ public class LimitRangeList implements Editable<LimitRangeListBuilder>, Kubernet
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -126,9 +115,7 @@ public class LimitRangeList implements Editable<LimitRangeListBuilder>, Kubernet
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

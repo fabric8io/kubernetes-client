@@ -49,7 +49,6 @@ public class FieldSelectorRequirement implements Editable<FieldSelectorRequireme
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public FieldSelectorRequirement() {
     }

@@ -77,7 +77,6 @@ public class SyncIdentityProviderSpec implements Editable<SyncIdentityProviderSp
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SyncIdentityProviderSpec() {
     }

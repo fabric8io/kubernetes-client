@@ -120,7 +120,6 @@ public class KubernetesSDConfig implements Editable<KubernetesSDConfigBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public KubernetesSDConfig() {
     }

@@ -75,7 +75,6 @@ public class RemoteClusterCondition implements Editable<RemoteClusterConditionBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RemoteClusterCondition() {
     }

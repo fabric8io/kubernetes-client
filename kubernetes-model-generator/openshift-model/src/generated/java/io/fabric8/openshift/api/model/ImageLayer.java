@@ -75,7 +75,6 @@ public class ImageLayer implements Editable<ImageLayerBuilder>, KubernetesResour
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ImageLayer() {
     }

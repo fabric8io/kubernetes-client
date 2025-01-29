@@ -72,7 +72,6 @@ public class AWSEFSVolumeMetrics implements Editable<AWSEFSVolumeMetricsBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AWSEFSVolumeMetrics() {
     }

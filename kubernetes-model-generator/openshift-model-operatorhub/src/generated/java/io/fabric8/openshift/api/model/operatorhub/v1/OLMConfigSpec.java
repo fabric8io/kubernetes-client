@@ -69,7 +69,6 @@ public class OLMConfigSpec implements Editable<OLMConfigSpecBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public OLMConfigSpec() {
     }

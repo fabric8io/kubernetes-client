@@ -72,7 +72,6 @@ public class ClusterNetworkEntry implements Editable<ClusterNetworkEntryBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClusterNetworkEntry() {
     }

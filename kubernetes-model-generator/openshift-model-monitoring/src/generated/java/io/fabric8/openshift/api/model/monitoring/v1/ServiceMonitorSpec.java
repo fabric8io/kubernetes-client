@@ -136,7 +136,6 @@ public class ServiceMonitorSpec implements Editable<ServiceMonitorSpecBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ServiceMonitorSpec() {
     }

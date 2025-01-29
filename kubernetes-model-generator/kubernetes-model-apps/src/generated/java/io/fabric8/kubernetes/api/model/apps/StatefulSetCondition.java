@@ -81,7 +81,6 @@ public class StatefulSetCondition implements Editable<StatefulSetConditionBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public StatefulSetCondition() {
     }

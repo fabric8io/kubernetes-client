@@ -75,7 +75,6 @@ public class OperandConfig implements Editable<OperandConfigBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public OperandConfig() {
     }

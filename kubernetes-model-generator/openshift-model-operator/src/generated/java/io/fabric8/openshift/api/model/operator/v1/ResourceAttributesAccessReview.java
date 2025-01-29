@@ -77,7 +77,6 @@ public class ResourceAttributesAccessReview implements Editable<ResourceAttribut
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ResourceAttributesAccessReview() {
     }

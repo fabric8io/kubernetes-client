@@ -78,7 +78,6 @@ public class VSpherePlatformVCenterSpec implements Editable<VSpherePlatformVCent
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public VSpherePlatformVCenterSpec() {
     }

@@ -74,7 +74,6 @@ public class CertificateSecretTemplate implements Editable<CertificateSecretTemp
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CertificateSecretTemplate() {
     }

@@ -114,7 +114,6 @@ public class EC2SDConfig implements Editable<EC2SDConfigBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EC2SDConfig() {
     }

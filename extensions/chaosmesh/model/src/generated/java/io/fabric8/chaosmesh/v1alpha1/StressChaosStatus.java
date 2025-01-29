@@ -79,7 +79,6 @@ public class StressChaosStatus implements Editable<StressChaosStatusBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public StressChaosStatus() {
     }

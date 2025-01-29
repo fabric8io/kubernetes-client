@@ -76,7 +76,6 @@ public class TaskResources implements Editable<TaskResourcesBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TaskResources() {
     }

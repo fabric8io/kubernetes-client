@@ -104,7 +104,6 @@ public class Route implements Editable<RouteBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Route() {
     }

@@ -69,7 +69,6 @@ public class AccessLoggingFilter implements Editable<AccessLoggingFilterBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AccessLoggingFilter() {
     }

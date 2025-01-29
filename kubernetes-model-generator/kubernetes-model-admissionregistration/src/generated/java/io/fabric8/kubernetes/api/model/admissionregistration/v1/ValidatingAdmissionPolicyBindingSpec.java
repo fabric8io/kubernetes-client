@@ -81,7 +81,6 @@ public class ValidatingAdmissionPolicyBindingSpec implements Editable<Validating
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ValidatingAdmissionPolicyBindingSpec() {
     }

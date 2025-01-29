@@ -73,7 +73,6 @@ public class AdmissionPluginConfig implements Editable<AdmissionPluginConfigBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AdmissionPluginConfig() {
     }

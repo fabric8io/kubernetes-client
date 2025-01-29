@@ -75,7 +75,6 @@ public class WorkflowNodeCondition implements Editable<WorkflowNodeConditionBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public WorkflowNodeCondition() {
     }

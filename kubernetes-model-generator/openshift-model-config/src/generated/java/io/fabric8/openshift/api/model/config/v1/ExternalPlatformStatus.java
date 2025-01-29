@@ -69,7 +69,6 @@ public class ExternalPlatformStatus implements Editable<ExternalPlatformStatusBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ExternalPlatformStatus() {
     }

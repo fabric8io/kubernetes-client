@@ -94,7 +94,6 @@ public class Metal3MachineSpec implements Editable<Metal3MachineSpecBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Metal3MachineSpec() {
     }

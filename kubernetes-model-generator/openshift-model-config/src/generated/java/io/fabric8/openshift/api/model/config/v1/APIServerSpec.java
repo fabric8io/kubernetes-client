@@ -87,7 +87,6 @@ public class APIServerSpec implements Editable<APIServerSpecBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public APIServerSpec() {
     }

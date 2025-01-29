@@ -79,9 +79,7 @@ public class BackendTLSPolicyList implements Editable<BackendTLSPolicyListBuilde
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "gateway.networking.k8s.io/v1alpha3";
@@ -89,9 +87,7 @@ public class BackendTLSPolicyList implements Editable<BackendTLSPolicyListBuilde
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.kubernetes.api.model.gatewayapi.v1alpha3.BackendTLSPolicy> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "BackendTLSPolicyList";
@@ -102,7 +98,6 @@ public class BackendTLSPolicyList implements Editable<BackendTLSPolicyListBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public BackendTLSPolicyList() {
     }
@@ -116,9 +111,7 @@ public class BackendTLSPolicyList implements Editable<BackendTLSPolicyListBuilde
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class BackendTLSPolicyList implements Editable<BackendTLSPolicyListBuilde
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class BackendTLSPolicyList implements Editable<BackendTLSPolicyListBuilde
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class BackendTLSPolicyList implements Editable<BackendTLSPolicyListBuilde
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

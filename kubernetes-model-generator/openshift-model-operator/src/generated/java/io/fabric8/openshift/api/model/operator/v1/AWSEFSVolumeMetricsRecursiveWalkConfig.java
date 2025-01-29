@@ -72,7 +72,6 @@ public class AWSEFSVolumeMetricsRecursiveWalkConfig implements Editable<AWSEFSVo
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AWSEFSVolumeMetricsRecursiveWalkConfig() {
     }

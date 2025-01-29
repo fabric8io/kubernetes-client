@@ -85,7 +85,6 @@ public class GatewaySpec implements Editable<GatewaySpecBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GatewaySpec() {
     }

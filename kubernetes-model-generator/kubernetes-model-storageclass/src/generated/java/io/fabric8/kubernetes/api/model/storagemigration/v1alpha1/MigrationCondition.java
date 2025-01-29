@@ -81,7 +81,6 @@ public class MigrationCondition implements Editable<MigrationConditionBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MigrationCondition() {
     }

@@ -75,7 +75,6 @@ public class DNSNameResolverResolvedAddress implements Editable<DNSNameResolverR
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DNSNameResolverResolvedAddress() {
     }

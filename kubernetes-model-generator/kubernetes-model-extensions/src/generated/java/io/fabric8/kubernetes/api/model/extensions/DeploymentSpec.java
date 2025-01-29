@@ -93,7 +93,6 @@ public class DeploymentSpec implements Editable<DeploymentSpecBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DeploymentSpec() {
     }

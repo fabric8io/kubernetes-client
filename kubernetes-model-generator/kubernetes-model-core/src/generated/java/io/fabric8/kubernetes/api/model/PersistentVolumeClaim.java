@@ -47,16 +47,12 @@ public class PersistentVolumeClaim implements Editable<PersistentVolumeClaimBuil
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "v1";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "PersistentVolumeClaim";
@@ -71,7 +67,6 @@ public class PersistentVolumeClaim implements Editable<PersistentVolumeClaimBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PersistentVolumeClaim() {
     }
@@ -86,9 +81,7 @@ public class PersistentVolumeClaim implements Editable<PersistentVolumeClaimBuil
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -96,9 +89,7 @@ public class PersistentVolumeClaim implements Editable<PersistentVolumeClaimBuil
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -106,9 +97,7 @@ public class PersistentVolumeClaim implements Editable<PersistentVolumeClaimBuil
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -116,9 +105,7 @@ public class PersistentVolumeClaim implements Editable<PersistentVolumeClaimBuil
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

@@ -75,7 +75,6 @@ public class PlaceableStatus implements Editable<PlaceableStatusBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PlaceableStatus() {
     }

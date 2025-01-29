@@ -72,7 +72,6 @@ public class ExternalMetricSource implements Editable<ExternalMetricSourceBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ExternalMetricSource() {
     }

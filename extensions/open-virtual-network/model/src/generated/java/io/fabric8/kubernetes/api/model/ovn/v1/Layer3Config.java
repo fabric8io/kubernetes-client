@@ -82,7 +82,6 @@ public class Layer3Config implements Editable<Layer3ConfigBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Layer3Config() {
     }

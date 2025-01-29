@@ -84,7 +84,6 @@ public class GenerationStatus implements Editable<GenerationStatusBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GenerationStatus() {
     }

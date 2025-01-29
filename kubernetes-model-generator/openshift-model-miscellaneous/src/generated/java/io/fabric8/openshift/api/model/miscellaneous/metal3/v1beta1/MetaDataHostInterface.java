@@ -72,7 +72,6 @@ public class MetaDataHostInterface implements Editable<MetaDataHostInterfaceBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MetaDataHostInterface() {
     }

@@ -74,7 +74,6 @@ public class EndpointsVisibility implements Editable<EndpointsVisibilityBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EndpointsVisibility() {
     }

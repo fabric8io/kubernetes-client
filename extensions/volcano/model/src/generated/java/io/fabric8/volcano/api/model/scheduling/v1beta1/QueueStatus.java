@@ -92,7 +92,6 @@ public class QueueStatus implements Editable<QueueStatusBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public QueueStatus() {
     }

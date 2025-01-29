@@ -69,7 +69,6 @@ public class EmbedStatusCheck implements Editable<EmbedStatusCheckBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EmbedStatusCheck() {
     }

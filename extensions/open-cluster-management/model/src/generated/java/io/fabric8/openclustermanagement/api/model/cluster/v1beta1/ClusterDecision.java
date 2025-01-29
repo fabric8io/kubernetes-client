@@ -72,7 +72,6 @@ public class ClusterDecision implements Editable<ClusterDecisionBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClusterDecision() {
     }

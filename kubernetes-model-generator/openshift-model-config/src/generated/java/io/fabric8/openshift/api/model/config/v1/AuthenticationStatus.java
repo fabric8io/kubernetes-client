@@ -75,7 +75,6 @@ public class AuthenticationStatus implements Editable<AuthenticationStatusBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AuthenticationStatus() {
     }

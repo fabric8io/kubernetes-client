@@ -79,9 +79,7 @@ public class ImageStreamTagList implements Editable<ImageStreamTagListBuilder>, 
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "image.openshift.io/v1";
@@ -89,9 +87,7 @@ public class ImageStreamTagList implements Editable<ImageStreamTagListBuilder>, 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openshift.api.model.ImageStreamTag> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "ImageStreamTagList";
@@ -102,7 +98,6 @@ public class ImageStreamTagList implements Editable<ImageStreamTagListBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ImageStreamTagList() {
     }
@@ -116,9 +111,7 @@ public class ImageStreamTagList implements Editable<ImageStreamTagListBuilder>, 
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class ImageStreamTagList implements Editable<ImageStreamTagListBuilder>, 
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class ImageStreamTagList implements Editable<ImageStreamTagListBuilder>, 
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class ImageStreamTagList implements Editable<ImageStreamTagListBuilder>, 
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

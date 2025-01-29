@@ -72,7 +72,6 @@ public class NodeSlicePoolStatusAllocations implements Editable<NodeSlicePoolSta
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NodeSlicePoolStatusAllocations() {
     }

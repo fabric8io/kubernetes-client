@@ -75,7 +75,6 @@ public class ChaosCondition implements Editable<ChaosConditionBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ChaosCondition() {
     }

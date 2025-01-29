@@ -111,7 +111,6 @@ public class ServiceEntry implements Editable<ServiceEntryBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ServiceEntry() {
     }

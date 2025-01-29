@@ -48,9 +48,7 @@ public class ReplicationControllerList implements Editable<ReplicationController
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "v1";
@@ -58,9 +56,7 @@ public class ReplicationControllerList implements Editable<ReplicationController
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.kubernetes.api.model.ReplicationController> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "ReplicationControllerList";
@@ -71,7 +67,6 @@ public class ReplicationControllerList implements Editable<ReplicationController
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ReplicationControllerList() {
     }
@@ -85,9 +80,7 @@ public class ReplicationControllerList implements Editable<ReplicationController
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -95,9 +88,7 @@ public class ReplicationControllerList implements Editable<ReplicationController
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -116,9 +107,7 @@ public class ReplicationControllerList implements Editable<ReplicationController
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -126,9 +115,7 @@ public class ReplicationControllerList implements Editable<ReplicationController
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

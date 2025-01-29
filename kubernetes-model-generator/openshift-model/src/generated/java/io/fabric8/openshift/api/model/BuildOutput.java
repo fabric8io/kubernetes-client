@@ -78,7 +78,6 @@ public class BuildOutput implements Editable<BuildOutputBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public BuildOutput() {
     }

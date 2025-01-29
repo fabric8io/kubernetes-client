@@ -40,7 +40,6 @@ public class SleepAction implements Editable<SleepActionBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SleepAction() {
     }

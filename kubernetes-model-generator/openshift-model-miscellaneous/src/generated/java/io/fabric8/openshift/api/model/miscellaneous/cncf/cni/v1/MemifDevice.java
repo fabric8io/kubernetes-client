@@ -75,7 +75,6 @@ public class MemifDevice implements Editable<MemifDeviceBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MemifDevice() {
     }

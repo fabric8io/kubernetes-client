@@ -76,7 +76,6 @@ public class NodePlacement implements Editable<NodePlacementBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NodePlacement() {
     }

@@ -79,7 +79,6 @@ public class ContainerResourceMetricStatus implements Editable<ContainerResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ContainerResourceMetricStatus() {
     }

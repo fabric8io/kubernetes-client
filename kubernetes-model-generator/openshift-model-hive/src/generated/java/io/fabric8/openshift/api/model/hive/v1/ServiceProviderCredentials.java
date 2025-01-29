@@ -69,7 +69,6 @@ public class ServiceProviderCredentials implements Editable<ServiceProviderCrede
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ServiceProviderCredentials() {
     }

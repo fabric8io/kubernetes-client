@@ -72,7 +72,6 @@ public class UserWorkloadCapabilitiesSpec implements Editable<UserWorkloadCapabi
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public UserWorkloadCapabilitiesSpec() {
     }

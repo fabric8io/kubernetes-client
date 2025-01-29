@@ -79,9 +79,7 @@ public class MultiClusterHubList implements Editable<MultiClusterHubListBuilder>
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "operator.open-cluster-management.io/v1";
@@ -89,9 +87,7 @@ public class MultiClusterHubList implements Editable<MultiClusterHubListBuilder>
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openclustermanagement.api.model.operator.v1.MultiClusterHub> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "MultiClusterHubList";
@@ -102,7 +98,6 @@ public class MultiClusterHubList implements Editable<MultiClusterHubListBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MultiClusterHubList() {
     }
@@ -116,9 +111,7 @@ public class MultiClusterHubList implements Editable<MultiClusterHubListBuilder>
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class MultiClusterHubList implements Editable<MultiClusterHubListBuilder>
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class MultiClusterHubList implements Editable<MultiClusterHubListBuilder>
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class MultiClusterHubList implements Editable<MultiClusterHubListBuilder>
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

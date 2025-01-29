@@ -75,7 +75,6 @@ public class NetworkDNSSpec implements Editable<NetworkDNSSpecBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NetworkDNSSpec() {
     }

@@ -78,7 +78,6 @@ public class ClusterInstallLocalReference implements Editable<ClusterInstallLoca
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClusterInstallLocalReference() {
     }

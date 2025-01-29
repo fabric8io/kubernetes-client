@@ -72,7 +72,6 @@ public class Tag implements Editable<TagBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Tag() {
     }

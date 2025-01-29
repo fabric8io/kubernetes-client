@@ -72,7 +72,6 @@ public class IPAMConfig implements Editable<IPAMConfigBuilder>, KubernetesResour
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public IPAMConfig() {
     }

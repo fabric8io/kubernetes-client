@@ -77,7 +77,6 @@ public class DNSNodePlacement implements Editable<DNSNodePlacementBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DNSNodePlacement() {
     }

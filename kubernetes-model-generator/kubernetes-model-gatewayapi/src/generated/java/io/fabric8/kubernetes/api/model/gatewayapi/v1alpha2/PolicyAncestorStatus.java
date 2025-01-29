@@ -80,7 +80,6 @@ public class PolicyAncestorStatus implements Editable<PolicyAncestorStatusBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PolicyAncestorStatus() {
     }

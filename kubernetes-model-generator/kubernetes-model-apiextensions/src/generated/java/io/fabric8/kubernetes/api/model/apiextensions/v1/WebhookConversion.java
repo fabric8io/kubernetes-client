@@ -75,7 +75,6 @@ public class WebhookConversion implements Editable<WebhookConversionBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public WebhookConversion() {
     }

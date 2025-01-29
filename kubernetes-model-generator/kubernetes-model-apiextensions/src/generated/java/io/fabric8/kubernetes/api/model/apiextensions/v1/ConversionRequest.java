@@ -79,7 +79,6 @@ public class ConversionRequest implements Editable<ConversionRequestBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ConversionRequest() {
     }

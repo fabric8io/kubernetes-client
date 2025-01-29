@@ -102,9 +102,7 @@ public class OpenstackProviderSpec implements Editable<OpenstackProviderSpecBuil
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<AdditionalBlockDevice> additionalBlockDevices = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "machine.openshift.io/v1alpha1";
@@ -125,9 +123,7 @@ public class OpenstackProviderSpec implements Editable<OpenstackProviderSpecBuil
     @JsonProperty("keyName")
     private String keyName;
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "OpenstackProviderSpec";
@@ -167,7 +163,6 @@ public class OpenstackProviderSpec implements Editable<OpenstackProviderSpecBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public OpenstackProviderSpec() {
     }
@@ -212,9 +207,7 @@ public class OpenstackProviderSpec implements Editable<OpenstackProviderSpecBuil
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -222,9 +215,7 @@ public class OpenstackProviderSpec implements Editable<OpenstackProviderSpecBuil
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -312,9 +303,7 @@ public class OpenstackProviderSpec implements Editable<OpenstackProviderSpecBuil
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -322,9 +311,7 @@ public class OpenstackProviderSpec implements Editable<OpenstackProviderSpecBuil
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

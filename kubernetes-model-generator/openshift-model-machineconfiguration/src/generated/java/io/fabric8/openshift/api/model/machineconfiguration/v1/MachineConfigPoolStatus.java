@@ -101,7 +101,6 @@ public class MachineConfigPoolStatus implements Editable<MachineConfigPoolStatus
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MachineConfigPoolStatus() {
     }

@@ -45,16 +45,12 @@ public class GetOptions implements Editable<GetOptionsBuilder>, KubernetesResour
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "v1";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "GetOptions";
@@ -65,7 +61,6 @@ public class GetOptions implements Editable<GetOptionsBuilder>, KubernetesResour
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GetOptions() {
     }
@@ -78,9 +73,7 @@ public class GetOptions implements Editable<GetOptionsBuilder>, KubernetesResour
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -88,9 +81,7 @@ public class GetOptions implements Editable<GetOptionsBuilder>, KubernetesResour
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -98,9 +89,7 @@ public class GetOptions implements Editable<GetOptionsBuilder>, KubernetesResour
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -108,9 +97,7 @@ public class GetOptions implements Editable<GetOptionsBuilder>, KubernetesResour
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

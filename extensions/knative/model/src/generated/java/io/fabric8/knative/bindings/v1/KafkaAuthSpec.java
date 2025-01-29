@@ -75,7 +75,6 @@ public class KafkaAuthSpec implements Editable<KafkaAuthSpecBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public KafkaAuthSpec() {
     }

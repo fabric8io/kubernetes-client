@@ -79,7 +79,6 @@ public class ClusterRoleScopeRestriction implements Editable<ClusterRoleScopeRes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClusterRoleScopeRestriction() {
     }

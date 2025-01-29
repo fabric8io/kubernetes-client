@@ -72,7 +72,6 @@ public class HorizontalPodAutoscalerBehavior implements Editable<HorizontalPodAu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HorizontalPodAutoscalerBehavior() {
     }

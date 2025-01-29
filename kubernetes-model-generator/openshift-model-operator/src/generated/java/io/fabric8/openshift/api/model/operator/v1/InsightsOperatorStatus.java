@@ -94,7 +94,6 @@ public class InsightsOperatorStatus implements Editable<InsightsOperatorStatusBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public InsightsOperatorStatus() {
     }

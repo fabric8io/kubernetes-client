@@ -88,7 +88,6 @@ public class OvirtPlatformStatus implements Editable<OvirtPlatformStatusBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public OvirtPlatformStatus() {
     }

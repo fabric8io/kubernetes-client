@@ -81,7 +81,6 @@ public class VPCEndpointService implements Editable<VPCEndpointServiceBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public VPCEndpointService() {
     }

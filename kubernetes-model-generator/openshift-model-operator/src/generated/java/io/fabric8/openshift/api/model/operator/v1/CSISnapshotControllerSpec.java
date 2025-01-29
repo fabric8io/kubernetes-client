@@ -83,7 +83,6 @@ public class CSISnapshotControllerSpec implements Editable<CSISnapshotController
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CSISnapshotControllerSpec() {
     }

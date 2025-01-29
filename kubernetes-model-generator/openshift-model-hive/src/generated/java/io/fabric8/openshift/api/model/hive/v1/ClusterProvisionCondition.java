@@ -84,7 +84,6 @@ public class ClusterProvisionCondition implements Editable<ClusterProvisionCondi
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClusterProvisionCondition() {
     }

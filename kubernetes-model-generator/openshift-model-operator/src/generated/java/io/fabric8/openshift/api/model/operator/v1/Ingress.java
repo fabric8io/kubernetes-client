@@ -72,7 +72,6 @@ public class Ingress implements Editable<IngressBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Ingress() {
     }

@@ -85,7 +85,6 @@ public class QuerySpec implements Editable<QuerySpecBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public QuerySpec() {
     }

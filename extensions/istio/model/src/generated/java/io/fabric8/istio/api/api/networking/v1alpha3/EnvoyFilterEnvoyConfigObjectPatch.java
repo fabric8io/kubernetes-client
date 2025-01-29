@@ -75,7 +75,6 @@ public class EnvoyFilterEnvoyConfigObjectPatch implements Editable<EnvoyFilterEn
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EnvoyFilterEnvoyConfigObjectPatch() {
     }

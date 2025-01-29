@@ -72,7 +72,6 @@ public class TracingEnvironment implements Editable<TracingEnvironmentBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TracingEnvironment() {
     }

@@ -95,7 +95,6 @@ public class FailureDomains implements Editable<FailureDomainsBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public FailureDomains() {
     }

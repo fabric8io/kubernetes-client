@@ -88,7 +88,6 @@ public class OpenShiftAPIServerStatus implements Editable<OpenShiftAPIServerStat
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public OpenShiftAPIServerStatus() {
     }

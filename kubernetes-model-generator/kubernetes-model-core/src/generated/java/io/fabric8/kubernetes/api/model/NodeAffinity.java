@@ -46,7 +46,6 @@ public class NodeAffinity implements Editable<NodeAffinityBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NodeAffinity() {
     }

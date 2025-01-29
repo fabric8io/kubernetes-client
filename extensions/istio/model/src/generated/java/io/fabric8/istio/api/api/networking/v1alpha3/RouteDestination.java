@@ -72,7 +72,6 @@ public class RouteDestination implements Editable<RouteDestinationBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RouteDestination() {
     }

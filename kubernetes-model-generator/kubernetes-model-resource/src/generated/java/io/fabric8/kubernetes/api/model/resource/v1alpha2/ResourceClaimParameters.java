@@ -80,9 +80,7 @@ public class ResourceClaimParameters implements Editable<ResourceClaimParameters
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "resource.k8s.io/v1alpha2";
@@ -92,9 +90,7 @@ public class ResourceClaimParameters implements Editable<ResourceClaimParameters
     @JsonProperty("generatedFrom")
     private ResourceClaimParametersReference generatedFrom;
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "ResourceClaimParameters";
@@ -107,7 +103,6 @@ public class ResourceClaimParameters implements Editable<ResourceClaimParameters
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ResourceClaimParameters() {
     }
@@ -123,9 +118,7 @@ public class ResourceClaimParameters implements Editable<ResourceClaimParameters
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -133,9 +126,7 @@ public class ResourceClaimParameters implements Editable<ResourceClaimParameters
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -164,9 +155,7 @@ public class ResourceClaimParameters implements Editable<ResourceClaimParameters
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -174,9 +163,7 @@ public class ResourceClaimParameters implements Editable<ResourceClaimParameters
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

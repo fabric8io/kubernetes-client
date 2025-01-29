@@ -100,7 +100,6 @@ public class HTTPServingInfo implements Editable<HTTPServingInfoBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HTTPServingInfo() {
     }

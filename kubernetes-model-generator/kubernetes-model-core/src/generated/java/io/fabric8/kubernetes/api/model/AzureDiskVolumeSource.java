@@ -55,7 +55,6 @@ public class AzureDiskVolumeSource implements Editable<AzureDiskVolumeSourceBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AzureDiskVolumeSource() {
     }

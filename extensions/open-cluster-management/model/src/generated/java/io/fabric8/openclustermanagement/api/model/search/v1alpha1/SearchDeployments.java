@@ -78,7 +78,6 @@ public class SearchDeployments implements Editable<SearchDeploymentsBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SearchDeployments() {
     }

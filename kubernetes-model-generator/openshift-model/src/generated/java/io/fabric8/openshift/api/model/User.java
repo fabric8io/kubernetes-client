@@ -79,9 +79,7 @@ public class User implements Editable<UserBuilder>, HasMetadata
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "user.openshift.io/v1";
@@ -94,9 +92,7 @@ public class User implements Editable<UserBuilder>, HasMetadata
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> identities = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "User";
@@ -107,7 +103,6 @@ public class User implements Editable<UserBuilder>, HasMetadata
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public User() {
     }
@@ -123,9 +118,7 @@ public class User implements Editable<UserBuilder>, HasMetadata
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -133,9 +126,7 @@ public class User implements Editable<UserBuilder>, HasMetadata
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -175,9 +166,7 @@ public class User implements Editable<UserBuilder>, HasMetadata
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -185,9 +174,7 @@ public class User implements Editable<UserBuilder>, HasMetadata
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

@@ -76,7 +76,6 @@ public class EnvoyFilterPatch implements Editable<EnvoyFilterPatchBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EnvoyFilterPatch() {
     }

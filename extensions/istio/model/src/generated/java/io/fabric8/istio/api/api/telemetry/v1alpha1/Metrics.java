@@ -79,7 +79,6 @@ public class Metrics implements Editable<MetricsBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Metrics() {
     }

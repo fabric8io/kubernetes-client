@@ -112,7 +112,6 @@ public class HetznerSDConfig implements Editable<HetznerSDConfigBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HetznerSDConfig() {
     }

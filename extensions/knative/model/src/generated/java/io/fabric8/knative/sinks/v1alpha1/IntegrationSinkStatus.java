@@ -93,7 +93,6 @@ public class IntegrationSinkStatus implements Editable<IntegrationSinkStatusBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public IntegrationSinkStatus() {
     }

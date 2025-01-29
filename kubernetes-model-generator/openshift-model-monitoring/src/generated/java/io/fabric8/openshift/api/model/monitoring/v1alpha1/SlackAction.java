@@ -87,7 +87,6 @@ public class SlackAction implements Editable<SlackActionBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SlackAction() {
     }

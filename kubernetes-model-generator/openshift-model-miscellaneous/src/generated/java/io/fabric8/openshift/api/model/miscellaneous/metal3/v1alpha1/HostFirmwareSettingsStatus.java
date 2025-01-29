@@ -83,7 +83,6 @@ public class HostFirmwareSettingsStatus implements Editable<HostFirmwareSettings
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HostFirmwareSettingsStatus() {
     }

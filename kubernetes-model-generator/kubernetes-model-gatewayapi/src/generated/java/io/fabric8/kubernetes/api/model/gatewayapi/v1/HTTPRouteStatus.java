@@ -72,7 +72,6 @@ public class HTTPRouteStatus implements Editable<HTTPRouteStatusBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HTTPRouteStatus() {
     }

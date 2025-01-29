@@ -80,7 +80,6 @@ public class ProbeTargetStaticConfig implements Editable<ProbeTargetStaticConfig
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ProbeTargetStaticConfig() {
     }

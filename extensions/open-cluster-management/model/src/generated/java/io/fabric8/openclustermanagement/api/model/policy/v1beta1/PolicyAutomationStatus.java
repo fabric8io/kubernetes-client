@@ -70,7 +70,6 @@ public class PolicyAutomationStatus implements Editable<PolicyAutomationStatusBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PolicyAutomationStatus() {
     }

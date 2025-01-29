@@ -82,7 +82,6 @@ public class DeveloperConsoleCatalogCategory implements Editable<DeveloperConsol
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DeveloperConsoleCatalogCategory() {
     }

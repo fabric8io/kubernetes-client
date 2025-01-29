@@ -72,7 +72,6 @@ public class StorageVersionMigrationSpec implements Editable<StorageVersionMigra
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public StorageVersionMigrationSpec() {
     }

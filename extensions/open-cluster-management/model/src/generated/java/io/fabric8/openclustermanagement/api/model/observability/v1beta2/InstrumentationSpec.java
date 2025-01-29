@@ -69,7 +69,6 @@ public class InstrumentationSpec implements Editable<InstrumentationSpecBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public InstrumentationSpec() {
     }

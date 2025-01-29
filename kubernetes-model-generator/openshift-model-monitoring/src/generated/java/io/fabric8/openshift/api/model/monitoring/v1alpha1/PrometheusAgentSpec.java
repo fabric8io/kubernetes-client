@@ -381,7 +381,6 @@ public class PrometheusAgentSpec implements Editable<PrometheusAgentSpecBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PrometheusAgentSpec() {
     }

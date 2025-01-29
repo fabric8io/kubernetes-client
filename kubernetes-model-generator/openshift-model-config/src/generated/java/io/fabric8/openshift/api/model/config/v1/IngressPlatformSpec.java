@@ -72,7 +72,6 @@ public class IngressPlatformSpec implements Editable<IngressPlatformSpecBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public IngressPlatformSpec() {
     }

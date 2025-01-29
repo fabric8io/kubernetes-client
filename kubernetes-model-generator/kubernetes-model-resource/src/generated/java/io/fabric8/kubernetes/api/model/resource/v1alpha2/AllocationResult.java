@@ -79,7 +79,6 @@ public class AllocationResult implements Editable<AllocationResultBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AllocationResult() {
     }

@@ -43,7 +43,6 @@ public class NamedContext implements Editable<NamedContextBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NamedContext() {
     }

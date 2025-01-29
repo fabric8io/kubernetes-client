@@ -85,7 +85,6 @@ public class StatusCheckStatus implements Editable<StatusCheckStatusBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public StatusCheckStatus() {
     }

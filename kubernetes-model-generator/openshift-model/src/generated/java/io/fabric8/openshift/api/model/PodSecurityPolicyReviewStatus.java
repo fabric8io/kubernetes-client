@@ -72,7 +72,6 @@ public class PodSecurityPolicyReviewStatus implements Editable<PodSecurityPolicy
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PodSecurityPolicyReviewStatus() {
     }

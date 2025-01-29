@@ -90,7 +90,6 @@ public class TriggerSpec implements Editable<TriggerSpecBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TriggerSpec() {
     }

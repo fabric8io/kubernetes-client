@@ -75,7 +75,6 @@ public class ChannelableSpec implements Editable<ChannelableSpecBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ChannelableSpec() {
     }

@@ -78,7 +78,6 @@ public class ConsoleQuickStartTask implements Editable<ConsoleQuickStartTaskBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ConsoleQuickStartTask() {
     }

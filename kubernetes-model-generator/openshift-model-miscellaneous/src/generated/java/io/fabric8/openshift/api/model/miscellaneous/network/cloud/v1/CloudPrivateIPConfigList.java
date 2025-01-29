@@ -79,9 +79,7 @@ public class CloudPrivateIPConfigList implements Editable<CloudPrivateIPConfigLi
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "cloud.network.openshift.io/v1";
@@ -89,9 +87,7 @@ public class CloudPrivateIPConfigList implements Editable<CloudPrivateIPConfigLi
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openshift.api.model.miscellaneous.network.cloud.v1.CloudPrivateIPConfig> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "CloudPrivateIPConfigList";
@@ -102,7 +98,6 @@ public class CloudPrivateIPConfigList implements Editable<CloudPrivateIPConfigLi
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CloudPrivateIPConfigList() {
     }
@@ -116,9 +111,7 @@ public class CloudPrivateIPConfigList implements Editable<CloudPrivateIPConfigLi
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class CloudPrivateIPConfigList implements Editable<CloudPrivateIPConfigLi
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class CloudPrivateIPConfigList implements Editable<CloudPrivateIPConfigLi
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class CloudPrivateIPConfigList implements Editable<CloudPrivateIPConfigLi
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

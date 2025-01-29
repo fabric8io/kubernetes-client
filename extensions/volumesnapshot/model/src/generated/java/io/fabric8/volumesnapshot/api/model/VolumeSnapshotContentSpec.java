@@ -84,7 +84,6 @@ public class VolumeSnapshotContentSpec implements Editable<VolumeSnapshotContent
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public VolumeSnapshotContentSpec() {
     }

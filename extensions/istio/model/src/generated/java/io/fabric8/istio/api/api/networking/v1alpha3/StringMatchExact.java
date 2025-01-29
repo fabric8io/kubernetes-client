@@ -69,7 +69,6 @@ public class StringMatchExact implements IsStringMatchMatchType, Editable<String
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public StringMatchExact() {
     }

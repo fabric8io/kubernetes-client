@@ -93,7 +93,6 @@ public class RequestReplyStatus implements Editable<RequestReplyStatusBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RequestReplyStatus() {
     }

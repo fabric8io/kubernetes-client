@@ -72,7 +72,6 @@ public class Fraction implements Editable<FractionBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Fraction() {
     }

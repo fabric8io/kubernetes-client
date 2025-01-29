@@ -49,7 +49,6 @@ public class NodeSelectorRequirement implements Editable<NodeSelectorRequirement
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NodeSelectorRequirement() {
     }

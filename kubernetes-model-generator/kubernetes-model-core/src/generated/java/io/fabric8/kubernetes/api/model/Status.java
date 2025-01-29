@@ -50,9 +50,7 @@ public class Status implements Editable<StatusBuilder>, KubernetesResource
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "v1";
@@ -61,9 +59,7 @@ public class Status implements Editable<StatusBuilder>, KubernetesResource
     @JsonProperty("details")
     private StatusDetails details;
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "Status";
@@ -80,7 +76,6 @@ public class Status implements Editable<StatusBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Status() {
     }
@@ -98,9 +93,7 @@ public class Status implements Editable<StatusBuilder>, KubernetesResource
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -108,9 +101,7 @@ public class Status implements Editable<StatusBuilder>, KubernetesResource
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -138,9 +129,7 @@ public class Status implements Editable<StatusBuilder>, KubernetesResource
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -148,9 +137,7 @@ public class Status implements Editable<StatusBuilder>, KubernetesResource
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

@@ -75,7 +75,6 @@ public class BuildSpec implements Editable<BuildSpecBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public BuildSpec() {
     }

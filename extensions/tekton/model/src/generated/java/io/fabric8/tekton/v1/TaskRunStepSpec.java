@@ -72,7 +72,6 @@ public class TaskRunStepSpec implements Editable<TaskRunStepSpecBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TaskRunStepSpec() {
     }

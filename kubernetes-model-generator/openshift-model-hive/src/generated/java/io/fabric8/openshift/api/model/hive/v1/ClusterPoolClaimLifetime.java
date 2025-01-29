@@ -72,7 +72,6 @@ public class ClusterPoolClaimLifetime implements Editable<ClusterPoolClaimLifeti
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClusterPoolClaimLifetime() {
     }

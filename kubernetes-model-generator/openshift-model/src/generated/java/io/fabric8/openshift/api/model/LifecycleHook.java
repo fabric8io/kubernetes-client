@@ -78,7 +78,6 @@ public class LifecycleHook implements Editable<LifecycleHookBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public LifecycleHook() {
     }

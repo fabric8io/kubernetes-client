@@ -72,7 +72,6 @@ public class Layer3Subnet implements Editable<Layer3SubnetBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Layer3Subnet() {
     }

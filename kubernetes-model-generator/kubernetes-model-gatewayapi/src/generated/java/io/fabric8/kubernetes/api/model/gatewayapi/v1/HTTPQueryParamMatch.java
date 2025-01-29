@@ -75,7 +75,6 @@ public class HTTPQueryParamMatch implements Editable<HTTPQueryParamMatchBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HTTPQueryParamMatch() {
     }

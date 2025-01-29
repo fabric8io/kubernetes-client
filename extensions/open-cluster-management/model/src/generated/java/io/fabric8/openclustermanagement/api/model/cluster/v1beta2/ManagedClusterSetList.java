@@ -79,9 +79,7 @@ public class ManagedClusterSetList implements Editable<ManagedClusterSetListBuil
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "cluster.open-cluster-management.io/v1beta2";
@@ -89,9 +87,7 @@ public class ManagedClusterSetList implements Editable<ManagedClusterSetListBuil
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openclustermanagement.api.model.cluster.v1beta2.ManagedClusterSet> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "ManagedClusterSetList";
@@ -102,7 +98,6 @@ public class ManagedClusterSetList implements Editable<ManagedClusterSetListBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ManagedClusterSetList() {
     }
@@ -116,9 +111,7 @@ public class ManagedClusterSetList implements Editable<ManagedClusterSetListBuil
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class ManagedClusterSetList implements Editable<ManagedClusterSetListBuil
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class ManagedClusterSetList implements Editable<ManagedClusterSetListBuil
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class ManagedClusterSetList implements Editable<ManagedClusterSetListBuil
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

@@ -90,7 +90,6 @@ public class HTTPDelaySpec implements Editable<HTTPDelaySpecBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HTTPDelaySpec() {
     }

@@ -72,7 +72,6 @@ public class OSImage implements Editable<OSImageBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public OSImage() {
     }

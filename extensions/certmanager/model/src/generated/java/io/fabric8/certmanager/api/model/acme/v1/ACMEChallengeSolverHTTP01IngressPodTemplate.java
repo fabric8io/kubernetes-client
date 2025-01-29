@@ -72,7 +72,6 @@ public class ACMEChallengeSolverHTTP01IngressPodTemplate implements Editable<ACM
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ACMEChallengeSolverHTTP01IngressPodTemplate() {
     }

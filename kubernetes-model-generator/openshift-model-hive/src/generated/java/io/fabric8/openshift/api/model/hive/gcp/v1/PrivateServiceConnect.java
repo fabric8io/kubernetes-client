@@ -72,7 +72,6 @@ public class PrivateServiceConnect implements Editable<PrivateServiceConnectBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PrivateServiceConnect() {
     }

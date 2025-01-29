@@ -78,7 +78,6 @@ public class Filter implements Editable<FilterBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Filter() {
     }

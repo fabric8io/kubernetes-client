@@ -81,7 +81,6 @@ public class KeystoneIdentityProvider implements Editable<KeystoneIdentityProvid
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public KeystoneIdentityProvider() {
     }

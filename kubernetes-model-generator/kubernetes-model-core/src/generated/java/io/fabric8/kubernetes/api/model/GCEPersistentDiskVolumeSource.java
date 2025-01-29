@@ -49,7 +49,6 @@ public class GCEPersistentDiskVolumeSource implements Editable<GCEPersistentDisk
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GCEPersistentDiskVolumeSource() {
     }

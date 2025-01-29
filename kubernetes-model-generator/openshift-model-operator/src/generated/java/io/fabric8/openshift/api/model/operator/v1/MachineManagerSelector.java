@@ -72,7 +72,6 @@ public class MachineManagerSelector implements Editable<MachineManagerSelectorBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MachineManagerSelector() {
     }

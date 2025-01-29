@@ -92,7 +92,6 @@ public class VSpherePlatformStatus implements Editable<VSpherePlatformStatusBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public VSpherePlatformStatus() {
     }

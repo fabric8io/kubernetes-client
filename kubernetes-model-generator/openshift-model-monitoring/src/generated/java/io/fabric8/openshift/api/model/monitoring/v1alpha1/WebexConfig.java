@@ -81,7 +81,6 @@ public class WebexConfig implements Editable<WebexConfigBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public WebexConfig() {
     }

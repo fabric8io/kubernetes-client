@@ -72,7 +72,6 @@ public class Authority implements Editable<AuthorityBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Authority() {
     }

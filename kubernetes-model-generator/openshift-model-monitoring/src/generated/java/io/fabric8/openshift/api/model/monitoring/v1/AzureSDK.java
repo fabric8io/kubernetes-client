@@ -69,7 +69,6 @@ public class AzureSDK implements Editable<AzureSDKBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AzureSDK() {
     }

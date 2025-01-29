@@ -130,7 +130,6 @@ public class Volume implements Editable<VolumeBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Volume() {
     }

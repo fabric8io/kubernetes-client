@@ -69,7 +69,6 @@ public class IBMCloudCSIDriverConfigSpec implements Editable<IBMCloudCSIDriverCo
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public IBMCloudCSIDriverConfigSpec() {
     }

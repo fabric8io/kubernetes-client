@@ -78,7 +78,6 @@ public class EC2RootVolume implements Editable<EC2RootVolumeBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EC2RootVolume() {
     }

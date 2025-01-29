@@ -81,7 +81,6 @@ public class RedisSentinelRestartSpec implements Editable<RedisSentinelRestartSp
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RedisSentinelRestartSpec() {
     }

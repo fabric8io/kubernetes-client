@@ -72,7 +72,6 @@ public class Argument implements Editable<ArgumentBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Argument() {
     }

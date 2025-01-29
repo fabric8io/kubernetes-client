@@ -72,7 +72,6 @@ public class AWSPrivateLinkSubnet implements Editable<AWSPrivateLinkSubnetBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AWSPrivateLinkSubnet() {
     }

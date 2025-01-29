@@ -84,7 +84,6 @@ public class HTTPHealthCheckConfig implements Editable<HTTPHealthCheckConfigBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HTTPHealthCheckConfig() {
     }

@@ -72,7 +72,6 @@ public class TokenRequestStatus implements Editable<TokenRequestStatusBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TokenRequestStatus() {
     }

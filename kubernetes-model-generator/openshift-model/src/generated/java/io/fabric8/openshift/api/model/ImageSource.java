@@ -82,7 +82,6 @@ public class ImageSource implements Editable<ImageSourceBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ImageSource() {
     }

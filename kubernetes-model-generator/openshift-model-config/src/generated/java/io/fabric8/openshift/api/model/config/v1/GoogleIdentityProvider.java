@@ -75,7 +75,6 @@ public class GoogleIdentityProvider implements Editable<GoogleIdentityProviderBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GoogleIdentityProvider() {
     }

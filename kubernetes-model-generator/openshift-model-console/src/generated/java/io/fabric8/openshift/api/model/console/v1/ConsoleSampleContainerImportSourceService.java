@@ -69,7 +69,6 @@ public class ConsoleSampleContainerImportSourceService implements Editable<Conso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ConsoleSampleContainerImportSourceService() {
     }

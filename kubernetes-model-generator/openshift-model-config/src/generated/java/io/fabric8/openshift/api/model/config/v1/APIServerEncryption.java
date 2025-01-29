@@ -69,7 +69,6 @@ public class APIServerEncryption implements Editable<APIServerEncryptionBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public APIServerEncryption() {
     }

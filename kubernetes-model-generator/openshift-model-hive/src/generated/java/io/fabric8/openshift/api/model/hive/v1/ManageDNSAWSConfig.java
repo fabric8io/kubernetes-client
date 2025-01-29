@@ -72,7 +72,6 @@ public class ManageDNSAWSConfig implements Editable<ManageDNSAWSConfigBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ManageDNSAWSConfig() {
     }

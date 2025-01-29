@@ -77,7 +77,6 @@ public class FeatureGateStatus implements Editable<FeatureGateStatusBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public FeatureGateStatus() {
     }

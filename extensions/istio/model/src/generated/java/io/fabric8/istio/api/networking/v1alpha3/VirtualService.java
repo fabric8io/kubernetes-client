@@ -78,16 +78,12 @@ public class VirtualService implements Editable<VirtualServiceBuilder>, HasMetad
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "networking.istio.io/v1alpha3";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "VirtualService";
@@ -102,7 +98,6 @@ public class VirtualService implements Editable<VirtualServiceBuilder>, HasMetad
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public VirtualService() {
     }
@@ -117,9 +112,7 @@ public class VirtualService implements Editable<VirtualServiceBuilder>, HasMetad
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -127,9 +120,7 @@ public class VirtualService implements Editable<VirtualServiceBuilder>, HasMetad
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -137,9 +128,7 @@ public class VirtualService implements Editable<VirtualServiceBuilder>, HasMetad
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -147,9 +136,7 @@ public class VirtualService implements Editable<VirtualServiceBuilder>, HasMetad
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

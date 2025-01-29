@@ -79,9 +79,7 @@ public class EnvoyFilterList implements Editable<EnvoyFilterListBuilder>, Kubern
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "networking.istio.io/v1alpha3";
@@ -89,9 +87,7 @@ public class EnvoyFilterList implements Editable<EnvoyFilterListBuilder>, Kubern
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.istio.api.networking.v1alpha3.EnvoyFilter> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "EnvoyFilterList";
@@ -102,7 +98,6 @@ public class EnvoyFilterList implements Editable<EnvoyFilterListBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EnvoyFilterList() {
     }
@@ -116,9 +111,7 @@ public class EnvoyFilterList implements Editable<EnvoyFilterListBuilder>, Kubern
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class EnvoyFilterList implements Editable<EnvoyFilterListBuilder>, Kubern
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class EnvoyFilterList implements Editable<EnvoyFilterListBuilder>, Kubern
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class EnvoyFilterList implements Editable<EnvoyFilterListBuilder>, Kubern
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

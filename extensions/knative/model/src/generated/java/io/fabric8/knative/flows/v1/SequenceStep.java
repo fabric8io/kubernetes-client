@@ -83,7 +83,6 @@ public class SequenceStep implements Editable<SequenceStepBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SequenceStep() {
     }

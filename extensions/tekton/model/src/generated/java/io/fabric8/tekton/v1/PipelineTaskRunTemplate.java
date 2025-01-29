@@ -73,7 +73,6 @@ public class PipelineTaskRunTemplate implements Editable<PipelineTaskRunTemplate
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PipelineTaskRunTemplate() {
     }

@@ -81,7 +81,6 @@ public class PodNetworkConnectivityCheckCondition implements Editable<PodNetwork
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PodNetworkConnectivityCheckCondition() {
     }

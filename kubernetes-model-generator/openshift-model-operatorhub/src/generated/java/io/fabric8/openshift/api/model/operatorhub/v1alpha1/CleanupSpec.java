@@ -69,7 +69,6 @@ public class CleanupSpec implements Editable<CleanupSpecBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CleanupSpec() {
     }

@@ -94,7 +94,6 @@ public class GrpcPodConfig implements Editable<GrpcPodConfigBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GrpcPodConfig() {
     }

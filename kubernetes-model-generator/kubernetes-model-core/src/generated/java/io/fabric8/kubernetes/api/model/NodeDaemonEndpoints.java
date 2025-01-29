@@ -40,7 +40,6 @@ public class NodeDaemonEndpoints implements Editable<NodeDaemonEndpointsBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NodeDaemonEndpoints() {
     }

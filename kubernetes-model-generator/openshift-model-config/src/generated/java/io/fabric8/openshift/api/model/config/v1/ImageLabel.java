@@ -72,7 +72,6 @@ public class ImageLabel implements Editable<ImageLabelBuilder>, KubernetesResour
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ImageLabel() {
     }

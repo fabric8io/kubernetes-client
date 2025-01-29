@@ -69,7 +69,6 @@ public class LoadBalancerSettingsConsistentHashLBMaglev implements IsLoadBalance
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public LoadBalancerSettingsConsistentHashLBMaglev() {
     }

@@ -72,7 +72,6 @@ public class AzureResourceTag implements Editable<AzureResourceTagBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AzureResourceTag() {
     }

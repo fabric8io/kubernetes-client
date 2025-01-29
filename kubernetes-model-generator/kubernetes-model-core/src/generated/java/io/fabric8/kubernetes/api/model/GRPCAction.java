@@ -43,7 +43,6 @@ public class GRPCAction implements Editable<GRPCActionBuilder>, KubernetesResour
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GRPCAction() {
     }

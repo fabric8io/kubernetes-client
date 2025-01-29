@@ -99,7 +99,6 @@ public class CRDDescription implements Editable<CRDDescriptionBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CRDDescription() {
     }

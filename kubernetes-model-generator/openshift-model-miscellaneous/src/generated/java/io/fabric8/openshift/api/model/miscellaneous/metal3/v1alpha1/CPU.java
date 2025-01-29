@@ -84,7 +84,6 @@ public class CPU implements Editable<CPUBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CPU() {
     }

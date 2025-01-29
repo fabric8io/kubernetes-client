@@ -120,7 +120,6 @@ public class NetworkChaosSpec implements Editable<NetworkChaosSpecBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NetworkChaosSpec() {
     }

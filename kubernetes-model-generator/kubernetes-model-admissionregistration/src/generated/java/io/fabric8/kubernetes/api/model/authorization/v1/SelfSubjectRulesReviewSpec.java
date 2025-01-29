@@ -69,7 +69,6 @@ public class SelfSubjectRulesReviewSpec implements Editable<SelfSubjectRulesRevi
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SelfSubjectRulesReviewSpec() {
     }

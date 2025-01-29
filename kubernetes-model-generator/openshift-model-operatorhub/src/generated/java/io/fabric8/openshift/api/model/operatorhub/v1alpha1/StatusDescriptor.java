@@ -84,7 +84,6 @@ public class StatusDescriptor implements Editable<StatusDescriptorBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public StatusDescriptor() {
     }

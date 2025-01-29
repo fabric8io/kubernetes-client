@@ -49,7 +49,6 @@ public class ScopedResourceSelectorRequirement implements Editable<ScopedResourc
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ScopedResourceSelectorRequirement() {
     }

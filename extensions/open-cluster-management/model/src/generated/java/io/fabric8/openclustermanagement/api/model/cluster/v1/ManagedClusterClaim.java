@@ -72,7 +72,6 @@ public class ManagedClusterClaim implements Editable<ManagedClusterClaimBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ManagedClusterClaim() {
     }

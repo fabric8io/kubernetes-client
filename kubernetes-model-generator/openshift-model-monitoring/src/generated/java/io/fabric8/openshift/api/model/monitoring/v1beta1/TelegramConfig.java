@@ -96,7 +96,6 @@ public class TelegramConfig implements Editable<TelegramConfigBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TelegramConfig() {
     }

@@ -97,7 +97,6 @@ public class ApiServerSourceSpec implements Editable<ApiServerSourceSpecBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ApiServerSourceSpec() {
     }

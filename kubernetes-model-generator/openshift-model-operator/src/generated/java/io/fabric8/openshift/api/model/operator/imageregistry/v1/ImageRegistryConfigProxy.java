@@ -75,7 +75,6 @@ public class ImageRegistryConfigProxy implements Editable<ImageRegistryConfigPro
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ImageRegistryConfigProxy() {
     }

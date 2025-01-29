@@ -72,7 +72,6 @@ public class CorruptSpec implements Editable<CorruptSpecBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CorruptSpec() {
     }

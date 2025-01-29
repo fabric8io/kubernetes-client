@@ -75,7 +75,6 @@ public class VaultClientCertificateAuth implements Editable<VaultClientCertifica
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public VaultClientCertificateAuth() {
     }

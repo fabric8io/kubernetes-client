@@ -81,7 +81,6 @@ public class RegistryServiceStatus implements Editable<RegistryServiceStatusBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RegistryServiceStatus() {
     }

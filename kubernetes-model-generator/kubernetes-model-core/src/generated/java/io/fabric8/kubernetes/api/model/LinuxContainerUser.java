@@ -49,7 +49,6 @@ public class LinuxContainerUser implements Editable<LinuxContainerUserBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public LinuxContainerUser() {
     }

@@ -78,7 +78,6 @@ public class ProbeTargetIngress implements Editable<ProbeTargetIngressBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ProbeTargetIngress() {
     }

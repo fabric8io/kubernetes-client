@@ -131,7 +131,6 @@ public class WasmPlugin implements Editable<WasmPluginBuilder>, KubernetesResour
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public WasmPlugin() {
     }

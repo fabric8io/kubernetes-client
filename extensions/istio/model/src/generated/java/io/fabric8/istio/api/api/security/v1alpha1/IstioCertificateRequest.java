@@ -76,7 +76,6 @@ public class IstioCertificateRequest implements Editable<IstioCertificateRequest
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public IstioCertificateRequest() {
     }

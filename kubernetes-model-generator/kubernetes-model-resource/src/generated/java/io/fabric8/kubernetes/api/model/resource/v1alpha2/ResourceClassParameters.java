@@ -80,9 +80,7 @@ public class ResourceClassParameters implements Editable<ResourceClassParameters
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "resource.k8s.io/v1alpha2";
@@ -92,9 +90,7 @@ public class ResourceClassParameters implements Editable<ResourceClassParameters
     @JsonProperty("generatedFrom")
     private ResourceClassParametersReference generatedFrom;
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "ResourceClassParameters";
@@ -108,7 +104,6 @@ public class ResourceClassParameters implements Editable<ResourceClassParameters
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ResourceClassParameters() {
     }
@@ -124,9 +119,7 @@ public class ResourceClassParameters implements Editable<ResourceClassParameters
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -134,9 +127,7 @@ public class ResourceClassParameters implements Editable<ResourceClassParameters
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -165,9 +156,7 @@ public class ResourceClassParameters implements Editable<ResourceClassParameters
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -175,9 +164,7 @@ public class ResourceClassParameters implements Editable<ResourceClassParameters
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

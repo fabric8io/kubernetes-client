@@ -130,7 +130,6 @@ public class IOChaosAction implements Editable<IOChaosActionBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public IOChaosAction() {
     }

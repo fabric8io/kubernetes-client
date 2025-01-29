@@ -79,9 +79,7 @@ public class MachinePoolNameLeaseList implements Editable<MachinePoolNameLeaseLi
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "hive.openshift.io/v1";
@@ -89,9 +87,7 @@ public class MachinePoolNameLeaseList implements Editable<MachinePoolNameLeaseLi
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openshift.api.model.hive.v1.MachinePoolNameLease> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "MachinePoolNameLeaseList";
@@ -102,7 +98,6 @@ public class MachinePoolNameLeaseList implements Editable<MachinePoolNameLeaseLi
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MachinePoolNameLeaseList() {
     }
@@ -116,9 +111,7 @@ public class MachinePoolNameLeaseList implements Editable<MachinePoolNameLeaseLi
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class MachinePoolNameLeaseList implements Editable<MachinePoolNameLeaseLi
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class MachinePoolNameLeaseList implements Editable<MachinePoolNameLeaseLi
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class MachinePoolNameLeaseList implements Editable<MachinePoolNameLeaseLi
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

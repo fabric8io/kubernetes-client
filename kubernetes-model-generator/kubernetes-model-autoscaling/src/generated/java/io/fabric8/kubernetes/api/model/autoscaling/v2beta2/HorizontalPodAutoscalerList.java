@@ -79,9 +79,7 @@ public class HorizontalPodAutoscalerList implements Editable<HorizontalPodAutosc
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "autoscaling/v2beta2";
@@ -89,9 +87,7 @@ public class HorizontalPodAutoscalerList implements Editable<HorizontalPodAutosc
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.kubernetes.api.model.autoscaling.v2beta2.HorizontalPodAutoscaler> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "HorizontalPodAutoscalerList";
@@ -102,7 +98,6 @@ public class HorizontalPodAutoscalerList implements Editable<HorizontalPodAutosc
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HorizontalPodAutoscalerList() {
     }
@@ -116,9 +111,7 @@ public class HorizontalPodAutoscalerList implements Editable<HorizontalPodAutosc
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class HorizontalPodAutoscalerList implements Editable<HorizontalPodAutosc
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class HorizontalPodAutoscalerList implements Editable<HorizontalPodAutosc
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class HorizontalPodAutoscalerList implements Editable<HorizontalPodAutosc
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

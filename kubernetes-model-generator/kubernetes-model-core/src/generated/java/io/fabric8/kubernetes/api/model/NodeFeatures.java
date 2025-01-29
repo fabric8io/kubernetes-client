@@ -40,7 +40,6 @@ public class NodeFeatures implements Editable<NodeFeaturesBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NodeFeatures() {
     }

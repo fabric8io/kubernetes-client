@@ -82,18 +82,14 @@ public class PlacementBinding implements Editable<PlacementBindingBuilder>, HasM
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "policy.open-cluster-management.io/v1";
     @JsonProperty("bindingOverrides")
     private BindingOverrides bindingOverrides;
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "PlacementBinding";
@@ -113,7 +109,6 @@ public class PlacementBinding implements Editable<PlacementBindingBuilder>, HasM
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PlacementBinding() {
     }
@@ -131,9 +126,7 @@ public class PlacementBinding implements Editable<PlacementBindingBuilder>, HasM
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -141,9 +134,7 @@ public class PlacementBinding implements Editable<PlacementBindingBuilder>, HasM
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -161,9 +152,7 @@ public class PlacementBinding implements Editable<PlacementBindingBuilder>, HasM
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -171,9 +160,7 @@ public class PlacementBinding implements Editable<PlacementBindingBuilder>, HasM
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

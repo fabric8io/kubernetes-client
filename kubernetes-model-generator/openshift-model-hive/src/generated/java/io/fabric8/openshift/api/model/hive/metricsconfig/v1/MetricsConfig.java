@@ -76,7 +76,6 @@ public class MetricsConfig implements Editable<MetricsConfigBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MetricsConfig() {
     }

@@ -72,7 +72,6 @@ public class EventPolicySpecFrom implements Editable<EventPolicySpecFromBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EventPolicySpecFrom() {
     }

@@ -53,7 +53,6 @@ public class CSIVolumeSource implements Editable<CSIVolumeSourceBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CSIVolumeSource() {
     }

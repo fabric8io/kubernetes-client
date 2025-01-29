@@ -69,7 +69,6 @@ public class DelegatedAuthentication implements Editable<DelegatedAuthentication
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DelegatedAuthentication() {
     }

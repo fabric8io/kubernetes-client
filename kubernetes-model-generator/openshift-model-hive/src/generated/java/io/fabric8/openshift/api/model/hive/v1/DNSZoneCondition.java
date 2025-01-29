@@ -84,7 +84,6 @@ public class DNSZoneCondition implements Editable<DNSZoneConditionBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DNSZoneCondition() {
     }

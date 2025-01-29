@@ -79,7 +79,6 @@ public class ACMEIssuerDNS01ProviderRFC2136 implements Editable<ACMEIssuerDNS01P
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ACMEIssuerDNS01ProviderRFC2136() {
     }

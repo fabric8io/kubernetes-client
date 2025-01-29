@@ -86,7 +86,6 @@ public class AddonAgentConfig implements Editable<AddonAgentConfigBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AddonAgentConfig() {
     }

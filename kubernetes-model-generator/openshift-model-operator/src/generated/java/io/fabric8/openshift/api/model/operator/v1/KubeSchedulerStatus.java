@@ -95,7 +95,6 @@ public class KubeSchedulerStatus implements Editable<KubeSchedulerStatusBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public KubeSchedulerStatus() {
     }

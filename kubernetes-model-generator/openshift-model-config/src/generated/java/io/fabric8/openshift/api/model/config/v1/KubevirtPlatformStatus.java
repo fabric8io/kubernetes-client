@@ -72,7 +72,6 @@ public class KubevirtPlatformStatus implements Editable<KubevirtPlatformStatusBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public KubevirtPlatformStatus() {
     }

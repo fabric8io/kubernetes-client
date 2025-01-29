@@ -72,7 +72,6 @@ public class ServiceCIDRSpec implements Editable<ServiceCIDRSpecBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ServiceCIDRSpec() {
     }

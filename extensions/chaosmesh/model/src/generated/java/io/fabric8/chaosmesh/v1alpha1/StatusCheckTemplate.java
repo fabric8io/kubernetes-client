@@ -93,7 +93,6 @@ public class StatusCheckTemplate implements Editable<StatusCheckTemplateBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public StatusCheckTemplate() {
     }

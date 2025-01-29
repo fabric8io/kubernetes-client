@@ -72,7 +72,6 @@ public class ImageContentPolicySpec implements Editable<ImageContentPolicySpecBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ImageContentPolicySpec() {
     }

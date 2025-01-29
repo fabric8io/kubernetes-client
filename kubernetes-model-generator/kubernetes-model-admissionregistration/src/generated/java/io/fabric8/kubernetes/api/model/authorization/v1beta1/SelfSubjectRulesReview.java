@@ -76,16 +76,12 @@ public class SelfSubjectRulesReview implements Editable<SelfSubjectRulesReviewBu
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "authorization.k8s.io/v1beta1";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "SelfSubjectRulesReview";
@@ -100,7 +96,6 @@ public class SelfSubjectRulesReview implements Editable<SelfSubjectRulesReviewBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SelfSubjectRulesReview() {
     }
@@ -115,9 +110,7 @@ public class SelfSubjectRulesReview implements Editable<SelfSubjectRulesReviewBu
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -125,9 +118,7 @@ public class SelfSubjectRulesReview implements Editable<SelfSubjectRulesReviewBu
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -135,9 +126,7 @@ public class SelfSubjectRulesReview implements Editable<SelfSubjectRulesReviewBu
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -145,9 +134,7 @@ public class SelfSubjectRulesReview implements Editable<SelfSubjectRulesReviewBu
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

@@ -90,7 +90,6 @@ public class ProvisionStatus implements Editable<ProvisionStatusBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ProvisionStatus() {
     }

@@ -73,7 +73,6 @@ public class UDPRouteStatus implements Editable<UDPRouteStatusBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public UDPRouteStatus() {
     }

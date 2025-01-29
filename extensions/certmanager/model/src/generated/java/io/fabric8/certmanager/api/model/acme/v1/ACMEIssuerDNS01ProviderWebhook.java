@@ -76,7 +76,6 @@ public class ACMEIssuerDNS01ProviderWebhook implements Editable<ACMEIssuerDNS01P
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ACMEIssuerDNS01ProviderWebhook() {
     }

@@ -76,7 +76,6 @@ public class ExternalIPPolicy implements Editable<ExternalIPPolicyBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ExternalIPPolicy() {
     }

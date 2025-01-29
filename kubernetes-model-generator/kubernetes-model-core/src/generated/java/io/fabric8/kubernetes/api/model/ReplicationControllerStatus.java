@@ -58,7 +58,6 @@ public class ReplicationControllerStatus implements Editable<ReplicationControll
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ReplicationControllerStatus() {
     }

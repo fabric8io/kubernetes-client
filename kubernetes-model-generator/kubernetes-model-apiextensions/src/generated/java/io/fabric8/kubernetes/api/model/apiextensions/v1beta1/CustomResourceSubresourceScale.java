@@ -75,7 +75,6 @@ public class CustomResourceSubresourceScale implements Editable<CustomResourceSu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CustomResourceSubresourceScale() {
     }

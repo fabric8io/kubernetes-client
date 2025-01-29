@@ -84,7 +84,6 @@ public class GlobalValues implements Editable<GlobalValuesBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GlobalValues() {
     }

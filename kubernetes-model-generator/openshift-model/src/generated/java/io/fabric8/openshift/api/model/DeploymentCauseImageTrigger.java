@@ -69,7 +69,6 @@ public class DeploymentCauseImageTrigger implements Editable<DeploymentCauseImag
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DeploymentCauseImageTrigger() {
     }

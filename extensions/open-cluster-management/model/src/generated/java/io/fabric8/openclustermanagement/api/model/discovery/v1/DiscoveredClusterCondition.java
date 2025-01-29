@@ -78,7 +78,6 @@ public class DiscoveredClusterCondition implements Editable<DiscoveredClusterCon
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DiscoveredClusterCondition() {
     }

@@ -72,7 +72,6 @@ public class FeatureGateSpec implements Editable<FeatureGateSpecBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public FeatureGateSpec() {
     }

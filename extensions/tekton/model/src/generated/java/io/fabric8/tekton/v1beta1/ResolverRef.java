@@ -75,7 +75,6 @@ public class ResolverRef implements Editable<ResolverRefBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ResolverRef() {
     }

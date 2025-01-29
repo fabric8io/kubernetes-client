@@ -88,7 +88,6 @@ public class CSISnapshotControllerStatus implements Editable<CSISnapshotControll
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CSISnapshotControllerStatus() {
     }

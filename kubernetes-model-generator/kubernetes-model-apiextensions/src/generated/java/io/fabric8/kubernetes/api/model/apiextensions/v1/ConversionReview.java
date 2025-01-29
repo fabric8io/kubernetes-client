@@ -75,16 +75,12 @@ public class ConversionReview implements Editable<ConversionReviewBuilder>, Kube
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "apiextensions.k8s.io/v1";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "ConversionReview";
@@ -97,7 +93,6 @@ public class ConversionReview implements Editable<ConversionReviewBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ConversionReview() {
     }
@@ -111,9 +106,7 @@ public class ConversionReview implements Editable<ConversionReviewBuilder>, Kube
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -121,9 +114,7 @@ public class ConversionReview implements Editable<ConversionReviewBuilder>, Kube
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -131,9 +122,7 @@ public class ConversionReview implements Editable<ConversionReviewBuilder>, Kube
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -141,9 +130,7 @@ public class ConversionReview implements Editable<ConversionReviewBuilder>, Kube
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

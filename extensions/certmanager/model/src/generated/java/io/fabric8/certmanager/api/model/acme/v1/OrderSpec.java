@@ -89,7 +89,6 @@ public class OrderSpec implements Editable<OrderSpecBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public OrderSpec() {
     }

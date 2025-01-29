@@ -126,7 +126,6 @@ public class ScheduleSpec implements Editable<ScheduleSpecBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ScheduleSpec() {
     }

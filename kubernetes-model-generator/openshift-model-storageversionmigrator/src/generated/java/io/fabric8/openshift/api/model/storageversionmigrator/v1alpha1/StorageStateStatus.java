@@ -78,7 +78,6 @@ public class StorageStateStatus implements Editable<StorageStateStatusBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public StorageStateStatus() {
     }

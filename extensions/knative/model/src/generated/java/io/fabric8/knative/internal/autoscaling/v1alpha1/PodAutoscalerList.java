@@ -79,9 +79,7 @@ public class PodAutoscalerList implements Editable<PodAutoscalerListBuilder>, Ku
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "autoscaling.internal.knative.dev/v1alpha1";
@@ -89,9 +87,7 @@ public class PodAutoscalerList implements Editable<PodAutoscalerListBuilder>, Ku
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.knative.internal.autoscaling.v1alpha1.PodAutoscaler> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "PodAutoscalerList";
@@ -102,7 +98,6 @@ public class PodAutoscalerList implements Editable<PodAutoscalerListBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PodAutoscalerList() {
     }
@@ -116,9 +111,7 @@ public class PodAutoscalerList implements Editable<PodAutoscalerListBuilder>, Ku
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class PodAutoscalerList implements Editable<PodAutoscalerListBuilder>, Ku
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class PodAutoscalerList implements Editable<PodAutoscalerListBuilder>, Ku
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class PodAutoscalerList implements Editable<PodAutoscalerListBuilder>, Ku
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

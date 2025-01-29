@@ -75,7 +75,6 @@ public class ChannelEntry implements Editable<ChannelEntryBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ChannelEntry() {
     }

@@ -69,7 +69,6 @@ public class ClusterInterceptorSpec implements Editable<ClusterInterceptorSpecBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClusterInterceptorSpec() {
     }

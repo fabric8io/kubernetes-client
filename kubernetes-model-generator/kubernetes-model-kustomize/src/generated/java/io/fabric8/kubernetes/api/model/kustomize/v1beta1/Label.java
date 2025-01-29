@@ -82,7 +82,6 @@ public class Label implements Editable<LabelBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Label() {
     }

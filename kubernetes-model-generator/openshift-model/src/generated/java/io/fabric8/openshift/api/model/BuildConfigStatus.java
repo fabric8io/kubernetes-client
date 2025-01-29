@@ -75,7 +75,6 @@ public class BuildConfigStatus implements Editable<BuildConfigStatusBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public BuildConfigStatus() {
     }

@@ -80,7 +80,6 @@ public class BareMetalPlatformSpec implements Editable<BareMetalPlatformSpecBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public BareMetalPlatformSpec() {
     }

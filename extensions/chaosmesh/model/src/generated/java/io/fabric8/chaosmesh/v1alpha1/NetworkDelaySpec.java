@@ -96,7 +96,6 @@ public class NetworkDelaySpec implements Editable<NetworkDelaySpecBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NetworkDelaySpec() {
     }

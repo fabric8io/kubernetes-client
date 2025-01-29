@@ -84,7 +84,6 @@ public class ActionDescriptor implements Editable<ActionDescriptorBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ActionDescriptor() {
     }

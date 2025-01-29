@@ -76,7 +76,6 @@ public class Provenance implements Editable<ProvenanceBuilder>, KubernetesResour
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Provenance() {
     }

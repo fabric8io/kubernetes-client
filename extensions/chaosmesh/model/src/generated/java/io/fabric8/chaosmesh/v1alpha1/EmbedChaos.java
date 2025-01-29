@@ -108,7 +108,6 @@ public class EmbedChaos implements Editable<EmbedChaosBuilder>, KubernetesResour
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EmbedChaos() {
     }

@@ -88,7 +88,6 @@ public class ServiceCatalogControllerManagerStatus implements Editable<ServiceCa
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ServiceCatalogControllerManagerStatus() {
     }

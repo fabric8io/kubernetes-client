@@ -72,7 +72,6 @@ public class DeploymentTriggerPolicy implements Editable<DeploymentTriggerPolicy
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DeploymentTriggerPolicy() {
     }

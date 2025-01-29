@@ -75,7 +75,6 @@ public class RunAsUserStrategyOptions implements Editable<RunAsUserStrategyOptio
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RunAsUserStrategyOptions() {
     }

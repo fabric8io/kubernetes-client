@@ -80,9 +80,7 @@ public class DeploymentRequest implements Editable<DeploymentRequestBuilder>, Ku
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "apps.openshift.io/v1";
@@ -92,9 +90,7 @@ public class DeploymentRequest implements Editable<DeploymentRequestBuilder>, Ku
     @JsonProperty("force")
     private Boolean force;
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "DeploymentRequest";
@@ -107,7 +103,6 @@ public class DeploymentRequest implements Editable<DeploymentRequestBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DeploymentRequest() {
     }
@@ -123,9 +118,7 @@ public class DeploymentRequest implements Editable<DeploymentRequestBuilder>, Ku
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -133,9 +126,7 @@ public class DeploymentRequest implements Editable<DeploymentRequestBuilder>, Ku
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -164,9 +155,7 @@ public class DeploymentRequest implements Editable<DeploymentRequestBuilder>, Ku
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -174,9 +163,7 @@ public class DeploymentRequest implements Editable<DeploymentRequestBuilder>, Ku
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

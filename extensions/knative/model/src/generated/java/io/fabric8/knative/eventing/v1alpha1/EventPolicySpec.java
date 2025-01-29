@@ -81,7 +81,6 @@ public class EventPolicySpec implements Editable<EventPolicySpecBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EventPolicySpec() {
     }

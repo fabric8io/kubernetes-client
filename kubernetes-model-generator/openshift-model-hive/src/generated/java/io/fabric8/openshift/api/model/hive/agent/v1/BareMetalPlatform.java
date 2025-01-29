@@ -69,7 +69,6 @@ public class BareMetalPlatform implements Editable<BareMetalPlatformBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public BareMetalPlatform() {
     }

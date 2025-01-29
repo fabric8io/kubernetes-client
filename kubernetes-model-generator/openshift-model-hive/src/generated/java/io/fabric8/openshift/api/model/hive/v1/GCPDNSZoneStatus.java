@@ -69,7 +69,6 @@ public class GCPDNSZoneStatus implements Editable<GCPDNSZoneStatusBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GCPDNSZoneStatus() {
     }

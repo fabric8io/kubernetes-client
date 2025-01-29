@@ -42,7 +42,6 @@ public class MicroTime implements Editable<MicroTimeBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MicroTime() {
     }

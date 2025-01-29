@@ -72,7 +72,6 @@ public class ConsoleQuickStartTaskReview implements Editable<ConsoleQuickStartTa
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ConsoleQuickStartTaskReview() {
     }

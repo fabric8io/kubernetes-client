@@ -75,7 +75,6 @@ public class OAuthTemplates implements Editable<OAuthTemplatesBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public OAuthTemplates() {
     }

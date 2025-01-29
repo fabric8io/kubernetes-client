@@ -79,9 +79,7 @@ public class MutatingAdmissionPolicyBindingList implements Editable<MutatingAdmi
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "admissionregistration.k8s.io/v1alpha1";
@@ -89,9 +87,7 @@ public class MutatingAdmissionPolicyBindingList implements Editable<MutatingAdmi
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.kubernetes.api.model.admissionregistration.v1alpha1.MutatingAdmissionPolicyBinding> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "MutatingAdmissionPolicyBindingList";
@@ -102,7 +98,6 @@ public class MutatingAdmissionPolicyBindingList implements Editable<MutatingAdmi
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MutatingAdmissionPolicyBindingList() {
     }
@@ -116,9 +111,7 @@ public class MutatingAdmissionPolicyBindingList implements Editable<MutatingAdmi
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class MutatingAdmissionPolicyBindingList implements Editable<MutatingAdmi
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class MutatingAdmissionPolicyBindingList implements Editable<MutatingAdmi
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class MutatingAdmissionPolicyBindingList implements Editable<MutatingAdmi
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

@@ -75,7 +75,6 @@ public class ResourceManagerTag implements Editable<ResourceManagerTagBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ResourceManagerTag() {
     }

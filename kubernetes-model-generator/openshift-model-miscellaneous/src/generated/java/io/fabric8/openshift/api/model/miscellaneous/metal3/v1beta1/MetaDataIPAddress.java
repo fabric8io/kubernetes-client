@@ -81,7 +81,6 @@ public class MetaDataIPAddress implements Editable<MetaDataIPAddressBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MetaDataIPAddress() {
     }

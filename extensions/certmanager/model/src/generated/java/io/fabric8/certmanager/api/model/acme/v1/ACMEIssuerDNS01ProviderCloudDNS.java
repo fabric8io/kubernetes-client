@@ -76,7 +76,6 @@ public class ACMEIssuerDNS01ProviderCloudDNS implements Editable<ACMEIssuerDNS01
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ACMEIssuerDNS01ProviderCloudDNS() {
     }

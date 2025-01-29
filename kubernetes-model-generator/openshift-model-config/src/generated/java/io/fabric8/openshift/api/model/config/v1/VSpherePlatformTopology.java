@@ -90,7 +90,6 @@ public class VSpherePlatformTopology implements Editable<VSpherePlatformTopology
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public VSpherePlatformTopology() {
     }

@@ -89,7 +89,6 @@ public class Region implements Editable<RegionBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Region() {
     }

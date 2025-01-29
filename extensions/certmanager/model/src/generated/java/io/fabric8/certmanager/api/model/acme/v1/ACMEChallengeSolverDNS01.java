@@ -96,7 +96,6 @@ public class ACMEChallengeSolverDNS01 implements Editable<ACMEChallengeSolverDNS
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ACMEChallengeSolverDNS01() {
     }

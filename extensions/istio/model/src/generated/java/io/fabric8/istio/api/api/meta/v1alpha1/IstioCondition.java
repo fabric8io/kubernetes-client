@@ -84,7 +84,6 @@ public class IstioCondition implements Editable<IstioConditionBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public IstioCondition() {
     }

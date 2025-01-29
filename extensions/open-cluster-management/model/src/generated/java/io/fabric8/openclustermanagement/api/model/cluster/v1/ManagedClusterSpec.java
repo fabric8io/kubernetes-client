@@ -82,7 +82,6 @@ public class ManagedClusterSpec implements Editable<ManagedClusterSpecBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ManagedClusterSpec() {
     }

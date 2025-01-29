@@ -87,7 +87,6 @@ public class RollingDeploymentStrategyParams implements Editable<RollingDeployme
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RollingDeploymentStrategyParams() {
     }

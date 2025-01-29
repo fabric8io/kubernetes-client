@@ -87,7 +87,6 @@ public class ReplicaSetStatus implements Editable<ReplicaSetStatusBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ReplicaSetStatus() {
     }

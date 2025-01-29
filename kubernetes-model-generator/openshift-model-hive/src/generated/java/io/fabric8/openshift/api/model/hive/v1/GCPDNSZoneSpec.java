@@ -69,7 +69,6 @@ public class GCPDNSZoneSpec implements Editable<GCPDNSZoneSpecBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GCPDNSZoneSpec() {
     }

@@ -81,7 +81,6 @@ public class TLSRouteSpec implements Editable<TLSRouteSpecBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TLSRouteSpec() {
     }

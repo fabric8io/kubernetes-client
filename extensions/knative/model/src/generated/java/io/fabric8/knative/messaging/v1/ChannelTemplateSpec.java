@@ -75,16 +75,12 @@ public class ChannelTemplateSpec implements Editable<ChannelTemplateSpecBuilder>
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "messaging.knative.dev/v1";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "ChannelTemplateSpec";
@@ -96,7 +92,6 @@ public class ChannelTemplateSpec implements Editable<ChannelTemplateSpecBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ChannelTemplateSpec() {
     }
@@ -109,9 +104,7 @@ public class ChannelTemplateSpec implements Editable<ChannelTemplateSpecBuilder>
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -119,9 +112,7 @@ public class ChannelTemplateSpec implements Editable<ChannelTemplateSpecBuilder>
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -129,9 +120,7 @@ public class ChannelTemplateSpec implements Editable<ChannelTemplateSpecBuilder>
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -139,9 +128,7 @@ public class ChannelTemplateSpec implements Editable<ChannelTemplateSpecBuilder>
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

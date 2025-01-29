@@ -81,7 +81,6 @@ public class AWSSNS implements Editable<AWSSNSBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AWSSNS() {
     }

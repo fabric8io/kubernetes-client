@@ -73,7 +73,6 @@ public class BasicAuth implements Editable<BasicAuthBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public BasicAuth() {
     }

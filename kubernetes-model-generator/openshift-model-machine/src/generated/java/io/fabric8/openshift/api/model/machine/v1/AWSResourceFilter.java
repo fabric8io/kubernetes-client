@@ -75,7 +75,6 @@ public class AWSResourceFilter implements Editable<AWSResourceFilterBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AWSResourceFilter() {
     }

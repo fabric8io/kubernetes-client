@@ -78,7 +78,6 @@ public class PodIOChaosSpec implements Editable<PodIOChaosSpecBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PodIOChaosSpec() {
     }

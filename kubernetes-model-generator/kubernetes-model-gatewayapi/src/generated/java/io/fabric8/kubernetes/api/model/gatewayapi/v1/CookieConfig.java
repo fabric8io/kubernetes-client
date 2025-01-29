@@ -69,7 +69,6 @@ public class CookieConfig implements Editable<CookieConfigBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CookieConfig() {
     }

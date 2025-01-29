@@ -83,7 +83,6 @@ public class StructuredResourceHandle implements Editable<StructuredResourceHand
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public StructuredResourceHandle() {
     }

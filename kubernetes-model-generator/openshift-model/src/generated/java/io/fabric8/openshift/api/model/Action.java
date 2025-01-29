@@ -94,7 +94,6 @@ public class Action implements Editable<ActionBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Action() {
     }

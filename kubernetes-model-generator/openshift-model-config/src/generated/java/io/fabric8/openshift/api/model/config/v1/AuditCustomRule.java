@@ -72,7 +72,6 @@ public class AuditCustomRule implements Editable<AuditCustomRuleBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AuditCustomRule() {
     }

@@ -96,7 +96,6 @@ public class PackageManifestStatus implements Editable<PackageManifestStatusBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PackageManifestStatus() {
     }

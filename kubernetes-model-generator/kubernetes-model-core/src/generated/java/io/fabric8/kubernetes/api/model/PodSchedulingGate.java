@@ -40,7 +40,6 @@ public class PodSchedulingGate implements Editable<PodSchedulingGateBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PodSchedulingGate() {
     }

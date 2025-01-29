@@ -69,7 +69,6 @@ public class VerticalPodAutoscalerRecommenderSelector implements Editable<Vertic
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public VerticalPodAutoscalerRecommenderSelector() {
     }

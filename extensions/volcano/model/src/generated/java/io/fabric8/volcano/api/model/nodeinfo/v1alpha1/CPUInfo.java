@@ -75,7 +75,6 @@ public class CPUInfo implements Editable<CPUInfoBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CPUInfo() {
     }

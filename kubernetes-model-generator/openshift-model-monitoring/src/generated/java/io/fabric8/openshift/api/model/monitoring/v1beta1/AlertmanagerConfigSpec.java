@@ -83,7 +83,6 @@ public class AlertmanagerConfigSpec implements Editable<AlertmanagerConfigSpecBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AlertmanagerConfigSpec() {
     }

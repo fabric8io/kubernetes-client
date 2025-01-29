@@ -144,7 +144,6 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ProbeSpec() {
     }

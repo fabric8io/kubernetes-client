@@ -48,9 +48,7 @@ public class PersistentVolumeList implements Editable<PersistentVolumeListBuilde
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "v1";
@@ -58,9 +56,7 @@ public class PersistentVolumeList implements Editable<PersistentVolumeListBuilde
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.kubernetes.api.model.PersistentVolume> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "PersistentVolumeList";
@@ -71,7 +67,6 @@ public class PersistentVolumeList implements Editable<PersistentVolumeListBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PersistentVolumeList() {
     }
@@ -85,9 +80,7 @@ public class PersistentVolumeList implements Editable<PersistentVolumeListBuilde
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -95,9 +88,7 @@ public class PersistentVolumeList implements Editable<PersistentVolumeListBuilde
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -116,9 +107,7 @@ public class PersistentVolumeList implements Editable<PersistentVolumeListBuilde
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -126,9 +115,7 @@ public class PersistentVolumeList implements Editable<PersistentVolumeListBuilde
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

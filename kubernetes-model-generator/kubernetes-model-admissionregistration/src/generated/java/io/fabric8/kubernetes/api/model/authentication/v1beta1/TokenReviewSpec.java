@@ -75,7 +75,6 @@ public class TokenReviewSpec implements Editable<TokenReviewSpecBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TokenReviewSpec() {
     }

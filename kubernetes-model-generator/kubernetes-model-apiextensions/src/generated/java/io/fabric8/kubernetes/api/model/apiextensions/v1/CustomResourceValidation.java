@@ -69,7 +69,6 @@ public class CustomResourceValidation implements Editable<CustomResourceValidati
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CustomResourceValidation() {
     }

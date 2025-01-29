@@ -75,7 +75,6 @@ public class GRPCConnectionState implements Editable<GRPCConnectionStateBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GRPCConnectionState() {
     }

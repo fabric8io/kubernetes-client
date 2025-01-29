@@ -75,7 +75,6 @@ public class GCPClusterDeprovision implements Editable<GCPClusterDeprovisionBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GCPClusterDeprovision() {
     }

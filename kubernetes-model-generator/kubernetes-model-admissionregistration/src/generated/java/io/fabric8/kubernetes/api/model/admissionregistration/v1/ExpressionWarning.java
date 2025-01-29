@@ -72,7 +72,6 @@ public class ExpressionWarning implements Editable<ExpressionWarningBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ExpressionWarning() {
     }

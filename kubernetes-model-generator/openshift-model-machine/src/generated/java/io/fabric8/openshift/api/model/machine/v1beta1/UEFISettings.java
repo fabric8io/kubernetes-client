@@ -72,7 +72,6 @@ public class UEFISettings implements Editable<UEFISettingsBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public UEFISettings() {
     }

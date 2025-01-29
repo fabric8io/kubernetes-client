@@ -78,9 +78,7 @@ public class PriorityClass implements Editable<PriorityClassBuilder>, HasMetadat
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "scheduling.k8s.io/v1";
@@ -89,9 +87,7 @@ public class PriorityClass implements Editable<PriorityClassBuilder>, HasMetadat
     @JsonProperty("globalDefault")
     private Boolean globalDefault;
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "PriorityClass";
@@ -106,7 +102,6 @@ public class PriorityClass implements Editable<PriorityClassBuilder>, HasMetadat
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PriorityClass() {
     }
@@ -123,9 +118,7 @@ public class PriorityClass implements Editable<PriorityClassBuilder>, HasMetadat
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -133,9 +126,7 @@ public class PriorityClass implements Editable<PriorityClassBuilder>, HasMetadat
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -163,9 +154,7 @@ public class PriorityClass implements Editable<PriorityClassBuilder>, HasMetadat
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -173,9 +162,7 @@ public class PriorityClass implements Editable<PriorityClassBuilder>, HasMetadat
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

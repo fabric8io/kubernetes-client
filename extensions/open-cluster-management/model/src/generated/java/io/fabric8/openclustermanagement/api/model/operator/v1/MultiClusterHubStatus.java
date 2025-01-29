@@ -85,7 +85,6 @@ public class MultiClusterHubStatus implements Editable<MultiClusterHubStatusBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MultiClusterHubStatus() {
     }

@@ -88,7 +88,6 @@ public class PolicySpec implements Editable<PolicySpecBuilder>, KubernetesResour
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PolicySpec() {
     }

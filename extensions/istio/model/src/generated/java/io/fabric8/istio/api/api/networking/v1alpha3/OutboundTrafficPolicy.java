@@ -72,7 +72,6 @@ public class OutboundTrafficPolicy implements Editable<OutboundTrafficPolicyBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public OutboundTrafficPolicy() {
     }

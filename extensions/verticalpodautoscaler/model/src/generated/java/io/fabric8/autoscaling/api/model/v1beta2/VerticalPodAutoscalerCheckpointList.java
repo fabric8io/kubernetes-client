@@ -79,9 +79,7 @@ public class VerticalPodAutoscalerCheckpointList implements Editable<VerticalPod
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "autoscaling.k8s.io/v1beta2";
@@ -89,9 +87,7 @@ public class VerticalPodAutoscalerCheckpointList implements Editable<VerticalPod
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.autoscaling.api.model.v1beta2.VerticalPodAutoscalerCheckpoint> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "VerticalPodAutoscalerCheckpointList";
@@ -102,7 +98,6 @@ public class VerticalPodAutoscalerCheckpointList implements Editable<VerticalPod
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public VerticalPodAutoscalerCheckpointList() {
     }
@@ -116,9 +111,7 @@ public class VerticalPodAutoscalerCheckpointList implements Editable<VerticalPod
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class VerticalPodAutoscalerCheckpointList implements Editable<VerticalPod
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class VerticalPodAutoscalerCheckpointList implements Editable<VerticalPod
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class VerticalPodAutoscalerCheckpointList implements Editable<VerticalPod
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

@@ -83,9 +83,7 @@ public class ClusterNetwork implements Editable<ClusterNetworkBuilder>, HasMetad
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "network.openshift.io/v1";
@@ -95,9 +93,7 @@ public class ClusterNetwork implements Editable<ClusterNetworkBuilder>, HasMetad
     @JsonProperty("hostsubnetlength")
     private Long hostsubnetlength;
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "ClusterNetwork";
@@ -118,7 +114,6 @@ public class ClusterNetwork implements Editable<ClusterNetworkBuilder>, HasMetad
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClusterNetwork() {
     }
@@ -138,9 +133,7 @@ public class ClusterNetwork implements Editable<ClusterNetworkBuilder>, HasMetad
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -148,9 +141,7 @@ public class ClusterNetwork implements Editable<ClusterNetworkBuilder>, HasMetad
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -179,9 +170,7 @@ public class ClusterNetwork implements Editable<ClusterNetworkBuilder>, HasMetad
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -189,9 +178,7 @@ public class ClusterNetwork implements Editable<ClusterNetworkBuilder>, HasMetad
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

@@ -123,7 +123,6 @@ public class Receiver implements Editable<ReceiverBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Receiver() {
     }

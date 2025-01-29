@@ -84,7 +84,6 @@ public class ClusterDeprovisionCondition implements Editable<ClusterDeprovisionC
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClusterDeprovisionCondition() {
     }

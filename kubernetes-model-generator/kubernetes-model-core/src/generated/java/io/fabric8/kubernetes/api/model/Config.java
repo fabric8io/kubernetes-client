@@ -67,7 +67,6 @@ public class Config implements Editable<ConfigBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Config() {
     }

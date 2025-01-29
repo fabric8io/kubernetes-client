@@ -79,9 +79,7 @@ public class InstallPlanList implements Editable<InstallPlanListBuilder>, Kubern
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "operators.coreos.com/v1alpha1";
@@ -89,9 +87,7 @@ public class InstallPlanList implements Editable<InstallPlanListBuilder>, Kubern
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openshift.api.model.operatorhub.v1alpha1.InstallPlan> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "InstallPlanList";
@@ -102,7 +98,6 @@ public class InstallPlanList implements Editable<InstallPlanListBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public InstallPlanList() {
     }
@@ -116,9 +111,7 @@ public class InstallPlanList implements Editable<InstallPlanListBuilder>, Kubern
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class InstallPlanList implements Editable<InstallPlanListBuilder>, Kubern
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class InstallPlanList implements Editable<InstallPlanListBuilder>, Kubern
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class InstallPlanList implements Editable<InstallPlanListBuilder>, Kubern
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

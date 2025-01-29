@@ -69,7 +69,6 @@ public class GatewayBackendTLS implements Editable<GatewayBackendTLSBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GatewayBackendTLS() {
     }

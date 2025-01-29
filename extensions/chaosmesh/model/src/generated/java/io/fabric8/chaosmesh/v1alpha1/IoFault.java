@@ -72,7 +72,6 @@ public class IoFault implements Editable<IoFaultBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public IoFault() {
     }

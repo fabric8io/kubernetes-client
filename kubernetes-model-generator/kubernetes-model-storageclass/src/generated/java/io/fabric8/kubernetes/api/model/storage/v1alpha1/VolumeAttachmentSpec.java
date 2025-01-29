@@ -75,7 +75,6 @@ public class VolumeAttachmentSpec implements Editable<VolumeAttachmentSpecBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public VolumeAttachmentSpec() {
     }

@@ -69,7 +69,6 @@ public class HTTPFaultInjectionAbortHttp2Error implements IsHTTPFaultInjectionAb
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HTTPFaultInjectionAbortHttp2Error() {
     }

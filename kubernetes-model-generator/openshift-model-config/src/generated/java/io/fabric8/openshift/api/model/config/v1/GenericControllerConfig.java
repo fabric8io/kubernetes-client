@@ -78,7 +78,6 @@ public class GenericControllerConfig implements Editable<GenericControllerConfig
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GenericControllerConfig() {
     }

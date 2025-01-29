@@ -75,7 +75,6 @@ public class Host implements Editable<HostBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Host() {
     }

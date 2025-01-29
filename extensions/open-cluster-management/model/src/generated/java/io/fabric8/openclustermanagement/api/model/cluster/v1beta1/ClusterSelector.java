@@ -72,7 +72,6 @@ public class ClusterSelector implements Editable<ClusterSelectorBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClusterSelector() {
     }

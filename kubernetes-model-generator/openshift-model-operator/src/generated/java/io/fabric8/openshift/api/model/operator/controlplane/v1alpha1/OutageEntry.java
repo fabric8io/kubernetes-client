@@ -85,7 +85,6 @@ public class OutageEntry implements Editable<OutageEntryBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public OutageEntry() {
     }

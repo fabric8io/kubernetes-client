@@ -80,7 +80,6 @@ public class HTTPHeaderFilter implements Editable<HTTPHeaderFilterBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HTTPHeaderFilter() {
     }

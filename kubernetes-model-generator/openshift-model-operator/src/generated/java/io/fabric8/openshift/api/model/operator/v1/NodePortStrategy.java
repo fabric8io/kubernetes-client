@@ -69,7 +69,6 @@ public class NodePortStrategy implements Editable<NodePortStrategyBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NodePortStrategy() {
     }

@@ -72,7 +72,6 @@ public class HTTPMirrorPolicy implements Editable<HTTPMirrorPolicyBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HTTPMirrorPolicy() {
     }

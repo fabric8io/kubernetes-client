@@ -72,7 +72,6 @@ public class HostFirmwareComponentsSpec implements Editable<HostFirmwareComponen
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HostFirmwareComponentsSpec() {
     }

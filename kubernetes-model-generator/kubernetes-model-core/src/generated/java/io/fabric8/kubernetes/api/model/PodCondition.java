@@ -55,7 +55,6 @@ public class PodCondition implements Editable<PodConditionBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PodCondition() {
     }

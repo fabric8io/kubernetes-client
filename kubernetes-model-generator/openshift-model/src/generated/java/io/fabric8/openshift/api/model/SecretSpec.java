@@ -72,7 +72,6 @@ public class SecretSpec implements Editable<SecretSpecBuilder>, KubernetesResour
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SecretSpec() {
     }

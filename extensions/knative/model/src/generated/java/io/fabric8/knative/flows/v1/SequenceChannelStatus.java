@@ -73,7 +73,6 @@ public class SequenceChannelStatus implements Editable<SequenceChannelStatusBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SequenceChannelStatus() {
     }

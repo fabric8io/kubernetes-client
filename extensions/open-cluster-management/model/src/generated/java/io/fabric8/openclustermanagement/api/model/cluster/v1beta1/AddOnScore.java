@@ -72,7 +72,6 @@ public class AddOnScore implements Editable<AddOnScoreBuilder>, KubernetesResour
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AddOnScore() {
     }

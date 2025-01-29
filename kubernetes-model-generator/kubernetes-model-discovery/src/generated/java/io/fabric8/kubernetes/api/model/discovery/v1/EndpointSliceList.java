@@ -79,9 +79,7 @@ public class EndpointSliceList implements Editable<EndpointSliceListBuilder>, Ku
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "discovery.k8s.io/v1";
@@ -89,9 +87,7 @@ public class EndpointSliceList implements Editable<EndpointSliceListBuilder>, Ku
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.kubernetes.api.model.discovery.v1.EndpointSlice> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "EndpointSliceList";
@@ -102,7 +98,6 @@ public class EndpointSliceList implements Editable<EndpointSliceListBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EndpointSliceList() {
     }
@@ -116,9 +111,7 @@ public class EndpointSliceList implements Editable<EndpointSliceListBuilder>, Ku
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class EndpointSliceList implements Editable<EndpointSliceListBuilder>, Ku
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class EndpointSliceList implements Editable<EndpointSliceListBuilder>, Ku
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class EndpointSliceList implements Editable<EndpointSliceListBuilder>, Ku
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

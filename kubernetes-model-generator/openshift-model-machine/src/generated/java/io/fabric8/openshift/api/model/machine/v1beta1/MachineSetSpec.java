@@ -84,7 +84,6 @@ public class MachineSetSpec implements Editable<MachineSetSpecBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MachineSetSpec() {
     }

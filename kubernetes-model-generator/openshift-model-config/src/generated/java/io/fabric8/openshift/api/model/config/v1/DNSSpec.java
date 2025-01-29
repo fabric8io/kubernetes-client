@@ -78,7 +78,6 @@ public class DNSSpec implements Editable<DNSSpecBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DNSSpec() {
     }

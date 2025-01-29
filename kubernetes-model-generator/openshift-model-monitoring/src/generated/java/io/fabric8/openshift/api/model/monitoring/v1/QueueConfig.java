@@ -96,7 +96,6 @@ public class QueueConfig implements Editable<QueueConfigBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public QueueConfig() {
     }

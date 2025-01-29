@@ -79,9 +79,7 @@ public class PinnedImageSetList implements Editable<PinnedImageSetListBuilder>, 
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "machineconfiguration.openshift.io/v1alpha1";
@@ -89,9 +87,7 @@ public class PinnedImageSetList implements Editable<PinnedImageSetListBuilder>, 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openshift.api.model.machineconfiguration.v1alpha1.PinnedImageSet> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "PinnedImageSetList";
@@ -102,7 +98,6 @@ public class PinnedImageSetList implements Editable<PinnedImageSetListBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PinnedImageSetList() {
     }
@@ -116,9 +111,7 @@ public class PinnedImageSetList implements Editable<PinnedImageSetListBuilder>, 
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class PinnedImageSetList implements Editable<PinnedImageSetListBuilder>, 
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class PinnedImageSetList implements Editable<PinnedImageSetListBuilder>, 
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class PinnedImageSetList implements Editable<PinnedImageSetListBuilder>, 
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

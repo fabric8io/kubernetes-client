@@ -75,7 +75,6 @@ public class PipelineWorkspaceDeclaration implements Editable<PipelineWorkspaceD
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PipelineWorkspaceDeclaration() {
     }

@@ -72,7 +72,6 @@ public class DayOfMonthRange implements Editable<DayOfMonthRangeBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DayOfMonthRange() {
     }

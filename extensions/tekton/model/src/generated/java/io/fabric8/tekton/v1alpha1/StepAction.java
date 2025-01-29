@@ -76,16 +76,12 @@ public class StepAction implements Editable<StepActionBuilder>, HasMetadata, Nam
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "tekton.dev/v1alpha1";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "StepAction";
@@ -98,7 +94,6 @@ public class StepAction implements Editable<StepActionBuilder>, HasMetadata, Nam
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public StepAction() {
     }
@@ -112,9 +107,7 @@ public class StepAction implements Editable<StepActionBuilder>, HasMetadata, Nam
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -122,9 +115,7 @@ public class StepAction implements Editable<StepActionBuilder>, HasMetadata, Nam
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -132,9 +123,7 @@ public class StepAction implements Editable<StepActionBuilder>, HasMetadata, Nam
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -142,9 +131,7 @@ public class StepAction implements Editable<StepActionBuilder>, HasMetadata, Nam
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

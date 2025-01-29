@@ -82,7 +82,6 @@ public class HTTPRouteMatch implements Editable<HTTPRouteMatchBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HTTPRouteMatch() {
     }

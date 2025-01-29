@@ -72,7 +72,6 @@ public class MetaDataObjectName implements Editable<MetaDataObjectNameBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MetaDataObjectName() {
     }

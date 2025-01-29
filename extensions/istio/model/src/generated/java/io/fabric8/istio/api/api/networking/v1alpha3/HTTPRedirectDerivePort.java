@@ -69,7 +69,6 @@ public class HTTPRedirectDerivePort implements IsHTTPRedirectRedirectPort, Edita
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HTTPRedirectDerivePort() {
     }

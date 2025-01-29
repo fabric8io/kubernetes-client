@@ -70,7 +70,6 @@ public class HostFirmwareSettingsSpec implements Editable<HostFirmwareSettingsSp
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HostFirmwareSettingsSpec() {
     }

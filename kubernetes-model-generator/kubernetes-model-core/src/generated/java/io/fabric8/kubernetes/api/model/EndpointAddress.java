@@ -49,7 +49,6 @@ public class EndpointAddress implements Editable<EndpointAddressBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EndpointAddress() {
     }

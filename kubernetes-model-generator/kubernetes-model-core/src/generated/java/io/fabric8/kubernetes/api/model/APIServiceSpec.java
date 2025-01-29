@@ -58,7 +58,6 @@ public class APIServiceSpec implements Editable<APIServiceSpecBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public APIServiceSpec() {
     }

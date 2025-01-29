@@ -75,7 +75,6 @@ public class FirmwareConfig implements Editable<FirmwareConfigBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public FirmwareConfig() {
     }

@@ -69,7 +69,6 @@ public class BareMetalPlatformLoadBalancer implements Editable<BareMetalPlatform
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public BareMetalPlatformLoadBalancer() {
     }

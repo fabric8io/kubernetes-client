@@ -72,7 +72,6 @@ public class MetricsWithDuration implements Editable<MetricsWithDurationBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MetricsWithDuration() {
     }

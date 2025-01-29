@@ -78,7 +78,6 @@ public class Perspective implements Editable<PerspectiveBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Perspective() {
     }

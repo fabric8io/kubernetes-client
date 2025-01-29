@@ -78,7 +78,6 @@ public class GCPNetworkInterface implements Editable<GCPNetworkInterfaceBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GCPNetworkInterface() {
     }

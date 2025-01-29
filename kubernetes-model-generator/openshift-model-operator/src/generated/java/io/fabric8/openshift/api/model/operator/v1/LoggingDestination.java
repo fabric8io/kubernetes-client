@@ -75,7 +75,6 @@ public class LoggingDestination implements Editable<LoggingDestinationBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public LoggingDestination() {
     }

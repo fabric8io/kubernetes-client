@@ -119,7 +119,6 @@ public class TaskRunSpec implements Editable<TaskRunSpecBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TaskRunSpec() {
     }

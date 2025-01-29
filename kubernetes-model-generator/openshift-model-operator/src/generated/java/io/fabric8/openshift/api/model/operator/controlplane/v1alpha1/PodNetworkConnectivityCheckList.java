@@ -79,9 +79,7 @@ public class PodNetworkConnectivityCheckList implements Editable<PodNetworkConne
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "controlplane.operator.openshift.io/v1alpha1";
@@ -89,9 +87,7 @@ public class PodNetworkConnectivityCheckList implements Editable<PodNetworkConne
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openshift.api.model.operator.controlplane.v1alpha1.PodNetworkConnectivityCheck> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "PodNetworkConnectivityCheckList";
@@ -102,7 +98,6 @@ public class PodNetworkConnectivityCheckList implements Editable<PodNetworkConne
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PodNetworkConnectivityCheckList() {
     }
@@ -116,9 +111,7 @@ public class PodNetworkConnectivityCheckList implements Editable<PodNetworkConne
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class PodNetworkConnectivityCheckList implements Editable<PodNetworkConne
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class PodNetworkConnectivityCheckList implements Editable<PodNetworkConne
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class PodNetworkConnectivityCheckList implements Editable<PodNetworkConne
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

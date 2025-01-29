@@ -78,7 +78,6 @@ public class AzureAD implements Editable<AzureADBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AzureAD() {
     }

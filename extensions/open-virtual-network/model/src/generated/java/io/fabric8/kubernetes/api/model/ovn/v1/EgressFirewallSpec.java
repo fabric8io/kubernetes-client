@@ -72,7 +72,6 @@ public class EgressFirewallSpec implements Editable<EgressFirewallSpecBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EgressFirewallSpec() {
     }

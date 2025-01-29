@@ -72,7 +72,6 @@ public class IngressControllerCaptureHTTPHeader implements Editable<IngressContr
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public IngressControllerCaptureHTTPHeader() {
     }

@@ -43,7 +43,6 @@ public class PreferredSchedulingTerm implements Editable<PreferredSchedulingTerm
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PreferredSchedulingTerm() {
     }

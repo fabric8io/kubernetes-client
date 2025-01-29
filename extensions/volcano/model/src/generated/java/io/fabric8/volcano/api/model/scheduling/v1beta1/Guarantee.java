@@ -71,7 +71,6 @@ public class Guarantee implements Editable<GuaranteeBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Guarantee() {
     }

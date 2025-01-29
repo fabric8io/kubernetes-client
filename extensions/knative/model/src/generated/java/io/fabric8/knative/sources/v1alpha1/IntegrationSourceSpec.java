@@ -80,7 +80,6 @@ public class IntegrationSourceSpec implements Editable<IntegrationSourceSpecBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public IntegrationSourceSpec() {
     }

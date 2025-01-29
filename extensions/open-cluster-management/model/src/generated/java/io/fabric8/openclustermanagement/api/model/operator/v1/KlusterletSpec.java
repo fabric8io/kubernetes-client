@@ -108,7 +108,6 @@ public class KlusterletSpec implements Editable<KlusterletSpecBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public KlusterletSpec() {
     }

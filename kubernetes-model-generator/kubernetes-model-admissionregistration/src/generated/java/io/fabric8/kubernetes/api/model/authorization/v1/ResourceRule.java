@@ -84,7 +84,6 @@ public class ResourceRule implements Editable<ResourceRuleBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ResourceRule() {
     }

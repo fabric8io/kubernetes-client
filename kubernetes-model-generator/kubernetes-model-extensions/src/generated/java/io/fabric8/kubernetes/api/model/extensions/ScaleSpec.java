@@ -69,7 +69,6 @@ public class ScaleSpec implements Editable<ScaleSpecBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ScaleSpec() {
     }

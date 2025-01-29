@@ -69,7 +69,6 @@ public class ReadinessProbeExec implements IsReadinessProbeHealthCheckMethod, Ed
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ReadinessProbeExec() {
     }

@@ -72,7 +72,6 @@ public class ExternalMetricStatus implements Editable<ExternalMetricStatusBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ExternalMetricStatus() {
     }

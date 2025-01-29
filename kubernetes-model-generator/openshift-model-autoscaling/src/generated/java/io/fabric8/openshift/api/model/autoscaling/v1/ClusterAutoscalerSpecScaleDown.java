@@ -84,7 +84,6 @@ public class ClusterAutoscalerSpecScaleDown implements Editable<ClusterAutoscale
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClusterAutoscalerSpecScaleDown() {
     }

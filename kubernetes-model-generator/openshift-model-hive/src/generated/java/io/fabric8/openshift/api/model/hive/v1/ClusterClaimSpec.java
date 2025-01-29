@@ -82,7 +82,6 @@ public class ClusterClaimSpec implements Editable<ClusterClaimSpecBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClusterClaimSpec() {
     }

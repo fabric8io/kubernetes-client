@@ -43,7 +43,6 @@ public class Lifecycle implements Editable<LifecycleBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Lifecycle() {
     }

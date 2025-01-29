@@ -69,7 +69,6 @@ public class NutanixPlatformLoadBalancer implements Editable<NutanixPlatformLoad
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NutanixPlatformLoadBalancer() {
     }

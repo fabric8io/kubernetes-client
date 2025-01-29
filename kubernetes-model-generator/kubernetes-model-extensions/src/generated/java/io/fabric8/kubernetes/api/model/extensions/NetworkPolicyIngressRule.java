@@ -76,7 +76,6 @@ public class NetworkPolicyIngressRule implements Editable<NetworkPolicyIngressRu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NetworkPolicyIngressRule() {
     }

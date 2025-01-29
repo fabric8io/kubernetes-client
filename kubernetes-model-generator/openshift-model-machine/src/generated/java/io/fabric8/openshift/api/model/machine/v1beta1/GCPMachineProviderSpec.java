@@ -99,9 +99,7 @@ public class GCPMachineProviderSpec implements Editable<GCPMachineProviderSpecBu
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "machine.openshift.io/v1beta1";
@@ -123,9 +121,7 @@ public class GCPMachineProviderSpec implements Editable<GCPMachineProviderSpecBu
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<GCPGPUConfig> gpus = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "GCPMachineProviderSpec";
@@ -172,7 +168,6 @@ public class GCPMachineProviderSpec implements Editable<GCPMachineProviderSpecBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GCPMachineProviderSpec() {
     }
@@ -207,9 +202,7 @@ public class GCPMachineProviderSpec implements Editable<GCPMachineProviderSpecBu
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -217,9 +210,7 @@ public class GCPMachineProviderSpec implements Editable<GCPMachineProviderSpecBu
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -300,9 +291,7 @@ public class GCPMachineProviderSpec implements Editable<GCPMachineProviderSpecBu
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -310,9 +299,7 @@ public class GCPMachineProviderSpec implements Editable<GCPMachineProviderSpecBu
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

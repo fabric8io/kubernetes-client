@@ -77,16 +77,12 @@ public class MutatingWebhookConfiguration implements Editable<MutatingWebhookCon
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "admissionregistration.k8s.io/v1";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "MutatingWebhookConfiguration";
@@ -100,7 +96,6 @@ public class MutatingWebhookConfiguration implements Editable<MutatingWebhookCon
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MutatingWebhookConfiguration() {
     }
@@ -114,9 +109,7 @@ public class MutatingWebhookConfiguration implements Editable<MutatingWebhookCon
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -124,9 +117,7 @@ public class MutatingWebhookConfiguration implements Editable<MutatingWebhookCon
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -134,9 +125,7 @@ public class MutatingWebhookConfiguration implements Editable<MutatingWebhookCon
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -144,9 +133,7 @@ public class MutatingWebhookConfiguration implements Editable<MutatingWebhookCon
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

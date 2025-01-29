@@ -87,7 +87,6 @@ public class TLSConfig implements Editable<TLSConfigBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TLSConfig() {
     }

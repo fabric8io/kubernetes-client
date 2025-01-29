@@ -81,7 +81,6 @@ public class PodHttpChaosTLS implements Editable<PodHttpChaosTLSBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PodHttpChaosTLS() {
     }

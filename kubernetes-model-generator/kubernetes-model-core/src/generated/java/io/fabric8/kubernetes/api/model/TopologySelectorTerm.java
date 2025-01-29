@@ -43,7 +43,6 @@ public class TopologySelectorTerm implements Editable<TopologySelectorTermBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TopologySelectorTerm() {
     }

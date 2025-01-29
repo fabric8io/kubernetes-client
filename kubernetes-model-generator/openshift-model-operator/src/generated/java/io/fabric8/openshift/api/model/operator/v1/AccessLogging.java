@@ -84,7 +84,6 @@ public class AccessLogging implements Editable<AccessLoggingBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AccessLogging() {
     }

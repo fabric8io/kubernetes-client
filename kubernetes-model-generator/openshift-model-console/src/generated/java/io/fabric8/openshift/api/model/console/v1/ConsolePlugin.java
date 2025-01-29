@@ -75,16 +75,12 @@ public class ConsolePlugin implements Editable<ConsolePluginBuilder>, HasMetadat
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "console.openshift.io/v1";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "ConsolePlugin";
@@ -97,7 +93,6 @@ public class ConsolePlugin implements Editable<ConsolePluginBuilder>, HasMetadat
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ConsolePlugin() {
     }
@@ -111,9 +106,7 @@ public class ConsolePlugin implements Editable<ConsolePluginBuilder>, HasMetadat
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -121,9 +114,7 @@ public class ConsolePlugin implements Editable<ConsolePluginBuilder>, HasMetadat
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -131,9 +122,7 @@ public class ConsolePlugin implements Editable<ConsolePluginBuilder>, HasMetadat
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -141,9 +130,7 @@ public class ConsolePlugin implements Editable<ConsolePluginBuilder>, HasMetadat
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

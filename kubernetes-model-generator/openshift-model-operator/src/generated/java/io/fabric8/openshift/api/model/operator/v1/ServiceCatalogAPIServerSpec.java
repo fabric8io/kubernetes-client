@@ -83,7 +83,6 @@ public class ServiceCatalogAPIServerSpec implements Editable<ServiceCatalogAPISe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ServiceCatalogAPIServerSpec() {
     }

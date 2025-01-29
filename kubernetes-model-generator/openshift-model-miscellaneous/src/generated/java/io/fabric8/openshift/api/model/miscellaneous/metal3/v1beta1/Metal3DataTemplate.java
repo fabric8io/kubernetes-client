@@ -77,16 +77,12 @@ public class Metal3DataTemplate implements Editable<Metal3DataTemplateBuilder>, 
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "infrastructure.cluster.x-k8s.io/v1beta1";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "Metal3DataTemplate";
@@ -101,7 +97,6 @@ public class Metal3DataTemplate implements Editable<Metal3DataTemplateBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Metal3DataTemplate() {
     }
@@ -116,9 +111,7 @@ public class Metal3DataTemplate implements Editable<Metal3DataTemplateBuilder>, 
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class Metal3DataTemplate implements Editable<Metal3DataTemplateBuilder>, 
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -136,9 +127,7 @@ public class Metal3DataTemplate implements Editable<Metal3DataTemplateBuilder>, 
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -146,9 +135,7 @@ public class Metal3DataTemplate implements Editable<Metal3DataTemplateBuilder>, 
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

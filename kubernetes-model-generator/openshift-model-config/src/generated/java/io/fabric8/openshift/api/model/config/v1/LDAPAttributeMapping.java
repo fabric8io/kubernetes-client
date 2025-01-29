@@ -84,7 +84,6 @@ public class LDAPAttributeMapping implements Editable<LDAPAttributeMappingBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public LDAPAttributeMapping() {
     }

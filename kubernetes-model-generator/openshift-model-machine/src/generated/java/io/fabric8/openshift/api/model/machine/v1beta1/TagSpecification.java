@@ -72,7 +72,6 @@ public class TagSpecification implements Editable<TagSpecificationBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TagSpecification() {
     }

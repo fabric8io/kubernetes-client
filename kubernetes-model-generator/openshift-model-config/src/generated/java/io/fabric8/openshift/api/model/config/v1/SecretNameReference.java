@@ -69,7 +69,6 @@ public class SecretNameReference implements Editable<SecretNameReferenceBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SecretNameReference() {
     }

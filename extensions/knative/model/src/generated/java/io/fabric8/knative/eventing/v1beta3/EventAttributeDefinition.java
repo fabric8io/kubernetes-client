@@ -75,7 +75,6 @@ public class EventAttributeDefinition implements Editable<EventAttributeDefiniti
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EventAttributeDefinition() {
     }

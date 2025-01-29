@@ -72,7 +72,6 @@ public class InventoryEntry implements Editable<InventoryEntryBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public InventoryEntry() {
     }

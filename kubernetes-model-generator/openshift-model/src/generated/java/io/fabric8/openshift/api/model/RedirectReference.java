@@ -75,7 +75,6 @@ public class RedirectReference implements Editable<RedirectReferenceBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RedirectReference() {
     }

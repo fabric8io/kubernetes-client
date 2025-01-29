@@ -93,9 +93,7 @@ public class Event implements Editable<EventBuilder>, HasMetadata, Namespaced
     @JsonProperty("action")
     private String action;
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "events.k8s.io/v1beta1";
@@ -110,9 +108,7 @@ public class Event implements Editable<EventBuilder>, HasMetadata, Namespaced
     @JsonProperty("eventTime")
     private MicroTime eventTime;
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "Event";
@@ -139,7 +135,6 @@ public class Event implements Editable<EventBuilder>, HasMetadata, Namespaced
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Event() {
     }
@@ -176,9 +171,7 @@ public class Event implements Editable<EventBuilder>, HasMetadata, Namespaced
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -186,9 +179,7 @@ public class Event implements Editable<EventBuilder>, HasMetadata, Namespaced
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -246,9 +237,7 @@ public class Event implements Editable<EventBuilder>, HasMetadata, Namespaced
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -256,9 +245,7 @@ public class Event implements Editable<EventBuilder>, HasMetadata, Namespaced
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

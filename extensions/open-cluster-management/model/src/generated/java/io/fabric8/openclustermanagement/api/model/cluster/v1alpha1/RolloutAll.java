@@ -76,7 +76,6 @@ public class RolloutAll implements Editable<RolloutAllBuilder>, KubernetesResour
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RolloutAll() {
     }

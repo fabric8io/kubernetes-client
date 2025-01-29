@@ -40,7 +40,6 @@ public class HostIP implements Editable<HostIPBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HostIP() {
     }

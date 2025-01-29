@@ -78,7 +78,6 @@ public class BuildVolume implements Editable<BuildVolumeBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public BuildVolume() {
     }

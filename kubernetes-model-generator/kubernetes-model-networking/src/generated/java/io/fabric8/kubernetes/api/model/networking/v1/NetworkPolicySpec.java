@@ -83,7 +83,6 @@ public class NetworkPolicySpec implements Editable<NetworkPolicySpecBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NetworkPolicySpec() {
     }

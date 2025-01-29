@@ -55,7 +55,6 @@ public class PersistentVolumeClaimCondition implements Editable<PersistentVolume
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PersistentVolumeClaimCondition() {
     }

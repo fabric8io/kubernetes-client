@@ -121,7 +121,6 @@ public class NomadSDConfig implements Editable<NomadSDConfigBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NomadSDConfig() {
     }

@@ -96,7 +96,6 @@ public class ClientTLSSettings implements Editable<ClientTLSSettingsBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClientTLSSettings() {
     }

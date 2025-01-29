@@ -78,7 +78,6 @@ public class PreprovisioningImageSpec implements Editable<PreprovisioningImageSp
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PreprovisioningImageSpec() {
     }

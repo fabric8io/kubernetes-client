@@ -43,7 +43,6 @@ public class NodeRuntimeHandler implements Editable<NodeRuntimeHandlerBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NodeRuntimeHandler() {
     }

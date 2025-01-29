@@ -84,7 +84,6 @@ public class CSIDriverConfigSpec implements Editable<CSIDriverConfigSpecBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CSIDriverConfigSpec() {
     }

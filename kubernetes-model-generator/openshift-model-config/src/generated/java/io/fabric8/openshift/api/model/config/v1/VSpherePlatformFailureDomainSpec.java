@@ -81,7 +81,6 @@ public class VSpherePlatformFailureDomainSpec implements Editable<VSpherePlatfor
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public VSpherePlatformFailureDomainSpec() {
     }

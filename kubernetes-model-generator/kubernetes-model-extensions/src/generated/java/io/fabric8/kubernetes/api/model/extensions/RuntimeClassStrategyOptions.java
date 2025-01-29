@@ -75,7 +75,6 @@ public class RuntimeClassStrategyOptions implements Editable<RuntimeClassStrateg
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RuntimeClassStrategyOptions() {
     }

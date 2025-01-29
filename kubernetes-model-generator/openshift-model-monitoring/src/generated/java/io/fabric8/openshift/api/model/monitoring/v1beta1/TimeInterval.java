@@ -75,7 +75,6 @@ public class TimeInterval implements Editable<TimeIntervalBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TimeInterval() {
     }

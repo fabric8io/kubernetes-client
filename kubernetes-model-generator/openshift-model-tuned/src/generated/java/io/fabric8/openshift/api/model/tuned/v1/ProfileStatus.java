@@ -75,7 +75,6 @@ public class ProfileStatus implements Editable<ProfileStatusBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ProfileStatus() {
     }

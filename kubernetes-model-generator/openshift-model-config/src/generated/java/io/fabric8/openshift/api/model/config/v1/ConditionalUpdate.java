@@ -80,7 +80,6 @@ public class ConditionalUpdate implements Editable<ConditionalUpdateBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ConditionalUpdate() {
     }

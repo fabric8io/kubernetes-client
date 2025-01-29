@@ -70,7 +70,6 @@ public class BindingSpec implements Editable<BindingSpecBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public BindingSpec() {
     }

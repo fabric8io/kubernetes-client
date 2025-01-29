@@ -77,16 +77,12 @@ public class PrometheusSource implements Editable<PrometheusSourceBuilder>, HasM
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "sources.knative.dev/v1alpha1";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "PrometheusSource";
@@ -101,7 +97,6 @@ public class PrometheusSource implements Editable<PrometheusSourceBuilder>, HasM
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PrometheusSource() {
     }
@@ -116,9 +111,7 @@ public class PrometheusSource implements Editable<PrometheusSourceBuilder>, HasM
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class PrometheusSource implements Editable<PrometheusSourceBuilder>, HasM
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -136,9 +127,7 @@ public class PrometheusSource implements Editable<PrometheusSourceBuilder>, HasM
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -146,9 +135,7 @@ public class PrometheusSource implements Editable<PrometheusSourceBuilder>, HasM
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

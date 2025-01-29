@@ -87,7 +87,6 @@ public class SubscriptionSpec implements Editable<SubscriptionSpecBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SubscriptionSpec() {
     }

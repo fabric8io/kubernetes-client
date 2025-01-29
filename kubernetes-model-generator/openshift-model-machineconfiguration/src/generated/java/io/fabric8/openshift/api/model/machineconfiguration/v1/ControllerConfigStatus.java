@@ -79,7 +79,6 @@ public class ControllerConfigStatus implements Editable<ControllerConfigStatusBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ControllerConfigStatus() {
     }

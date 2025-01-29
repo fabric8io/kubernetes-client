@@ -75,7 +75,6 @@ public class Var implements Editable<VarBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Var() {
     }

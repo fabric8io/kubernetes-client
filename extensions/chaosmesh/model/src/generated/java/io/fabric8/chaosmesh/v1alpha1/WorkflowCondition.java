@@ -78,7 +78,6 @@ public class WorkflowCondition implements Editable<WorkflowConditionBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public WorkflowCondition() {
     }

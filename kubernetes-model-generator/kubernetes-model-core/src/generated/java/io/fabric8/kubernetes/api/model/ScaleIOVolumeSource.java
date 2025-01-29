@@ -67,7 +67,6 @@ public class ScaleIOVolumeSource implements Editable<ScaleIOVolumeSourceBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ScaleIOVolumeSource() {
     }

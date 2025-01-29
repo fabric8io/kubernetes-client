@@ -75,7 +75,6 @@ public class Task implements Editable<TaskBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Task() {
     }

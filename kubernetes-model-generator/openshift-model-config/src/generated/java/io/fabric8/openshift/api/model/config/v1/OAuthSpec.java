@@ -78,7 +78,6 @@ public class OAuthSpec implements Editable<OAuthSpecBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public OAuthSpec() {
     }

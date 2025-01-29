@@ -75,7 +75,6 @@ public class ExternalIPConfig implements Editable<ExternalIPConfigBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ExternalIPConfig() {
     }

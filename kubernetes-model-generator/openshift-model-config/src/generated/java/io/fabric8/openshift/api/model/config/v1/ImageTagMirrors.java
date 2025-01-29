@@ -78,7 +78,6 @@ public class ImageTagMirrors implements Editable<ImageTagMirrorsBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ImageTagMirrors() {
     }

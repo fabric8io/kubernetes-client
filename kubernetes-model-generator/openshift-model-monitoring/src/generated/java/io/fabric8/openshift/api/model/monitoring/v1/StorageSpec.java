@@ -80,7 +80,6 @@ public class StorageSpec implements Editable<StorageSpecBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public StorageSpec() {
     }

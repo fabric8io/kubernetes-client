@@ -81,7 +81,6 @@ public class Placement implements Editable<PlacementBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Placement() {
     }

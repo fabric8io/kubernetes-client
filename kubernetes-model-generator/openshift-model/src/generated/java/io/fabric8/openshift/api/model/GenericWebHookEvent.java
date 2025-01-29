@@ -81,7 +81,6 @@ public class GenericWebHookEvent implements Editable<GenericWebHookEventBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GenericWebHookEvent() {
     }

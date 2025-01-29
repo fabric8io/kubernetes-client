@@ -76,7 +76,6 @@ public class TLSRoute implements Editable<TLSRouteBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TLSRoute() {
     }

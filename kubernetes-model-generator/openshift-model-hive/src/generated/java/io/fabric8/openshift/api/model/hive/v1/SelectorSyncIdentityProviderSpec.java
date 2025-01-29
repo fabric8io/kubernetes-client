@@ -76,7 +76,6 @@ public class SelectorSyncIdentityProviderSpec implements Editable<SelectorSyncId
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SelectorSyncIdentityProviderSpec() {
     }

@@ -81,7 +81,6 @@ public class ImageRegistryConfigStorageIBMCOS implements Editable<ImageRegistryC
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ImageRegistryConfigStorageIBMCOS() {
     }

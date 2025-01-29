@@ -69,7 +69,6 @@ public class BootVolume implements Editable<BootVolumeBuilder>, KubernetesResour
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public BootVolume() {
     }

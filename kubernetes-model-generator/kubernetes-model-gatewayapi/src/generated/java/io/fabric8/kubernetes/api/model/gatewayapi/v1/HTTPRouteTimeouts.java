@@ -72,7 +72,6 @@ public class HTTPRouteTimeouts implements Editable<HTTPRouteTimeoutsBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HTTPRouteTimeouts() {
     }

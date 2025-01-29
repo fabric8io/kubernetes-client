@@ -81,7 +81,6 @@ public class BuildStrategy implements Editable<BuildStrategyBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public BuildStrategy() {
     }

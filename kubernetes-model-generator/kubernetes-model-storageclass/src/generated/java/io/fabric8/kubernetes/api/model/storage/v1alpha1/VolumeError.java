@@ -72,7 +72,6 @@ public class VolumeError implements Editable<VolumeErrorBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public VolumeError() {
     }

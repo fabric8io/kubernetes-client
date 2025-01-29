@@ -72,7 +72,6 @@ public class TokenRequest implements Editable<TokenRequestBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TokenRequest() {
     }

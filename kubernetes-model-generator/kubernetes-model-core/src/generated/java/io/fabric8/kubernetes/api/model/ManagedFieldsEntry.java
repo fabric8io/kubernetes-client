@@ -58,7 +58,6 @@ public class ManagedFieldsEntry implements Editable<ManagedFieldsEntryBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ManagedFieldsEntry() {
     }

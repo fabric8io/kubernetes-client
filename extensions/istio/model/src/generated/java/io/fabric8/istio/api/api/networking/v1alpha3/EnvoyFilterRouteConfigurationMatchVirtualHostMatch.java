@@ -72,7 +72,6 @@ public class EnvoyFilterRouteConfigurationMatchVirtualHostMatch implements Edita
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EnvoyFilterRouteConfigurationMatchVirtualHostMatch() {
     }

@@ -105,7 +105,6 @@ public class Log implements Editable<LogBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Log() {
     }

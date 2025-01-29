@@ -75,7 +75,6 @@ public class HTTPPathModifier implements Editable<HTTPPathModifierBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HTTPPathModifier() {
     }

@@ -75,7 +75,6 @@ public class HybridOverlayConfig implements Editable<HybridOverlayConfigBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HybridOverlayConfig() {
     }

@@ -87,7 +87,6 @@ public class ResourcePolicyRule implements Editable<ResourcePolicyRuleBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ResourcePolicyRule() {
     }

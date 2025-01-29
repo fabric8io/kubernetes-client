@@ -81,7 +81,6 @@ public class ResourceDeclaration implements Editable<ResourceDeclarationBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ResourceDeclaration() {
     }

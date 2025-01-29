@@ -76,7 +76,6 @@ public class Resources implements Editable<ResourcesBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Resources() {
     }

@@ -74,7 +74,6 @@ public class ControlPlaneMachineSetTemplateObjectMeta implements Editable<Contro
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ControlPlaneMachineSetTemplateObjectMeta() {
     }

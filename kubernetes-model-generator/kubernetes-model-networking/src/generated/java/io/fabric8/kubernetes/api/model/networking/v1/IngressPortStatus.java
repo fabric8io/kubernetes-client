@@ -75,7 +75,6 @@ public class IngressPortStatus implements Editable<IngressPortStatusBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public IngressPortStatus() {
     }

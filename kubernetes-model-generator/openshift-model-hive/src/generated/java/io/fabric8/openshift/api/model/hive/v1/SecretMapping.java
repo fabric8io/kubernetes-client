@@ -72,7 +72,6 @@ public class SecretMapping implements Editable<SecretMappingBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SecretMapping() {
     }

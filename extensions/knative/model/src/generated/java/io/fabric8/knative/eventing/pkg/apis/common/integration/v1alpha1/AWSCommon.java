@@ -75,7 +75,6 @@ public class AWSCommon implements Editable<AWSCommonBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AWSCommon() {
     }

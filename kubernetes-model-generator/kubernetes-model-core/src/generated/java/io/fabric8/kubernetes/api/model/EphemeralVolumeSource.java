@@ -40,7 +40,6 @@ public class EphemeralVolumeSource implements Editable<EphemeralVolumeSourceBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EphemeralVolumeSource() {
     }

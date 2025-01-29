@@ -77,16 +77,12 @@ public class CertificateRequest implements Editable<CertificateRequestBuilder>, 
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "cert-manager.io/v1";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "CertificateRequest";
@@ -101,7 +97,6 @@ public class CertificateRequest implements Editable<CertificateRequestBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CertificateRequest() {
     }
@@ -116,9 +111,7 @@ public class CertificateRequest implements Editable<CertificateRequestBuilder>, 
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class CertificateRequest implements Editable<CertificateRequestBuilder>, 
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -136,9 +127,7 @@ public class CertificateRequest implements Editable<CertificateRequestBuilder>, 
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -146,9 +135,7 @@ public class CertificateRequest implements Editable<CertificateRequestBuilder>, 
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

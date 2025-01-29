@@ -93,7 +93,6 @@ public class StressChaosSpec implements Editable<StressChaosSpecBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public StressChaosSpec() {
     }

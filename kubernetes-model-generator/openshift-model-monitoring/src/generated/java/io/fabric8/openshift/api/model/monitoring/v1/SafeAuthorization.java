@@ -73,7 +73,6 @@ public class SafeAuthorization implements Editable<SafeAuthorizationBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SafeAuthorization() {
     }

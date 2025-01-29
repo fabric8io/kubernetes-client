@@ -75,7 +75,6 @@ public class Proxy implements Editable<ProxyBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Proxy() {
     }

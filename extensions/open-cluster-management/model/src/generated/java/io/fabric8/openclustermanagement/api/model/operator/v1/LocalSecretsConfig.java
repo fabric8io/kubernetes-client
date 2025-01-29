@@ -75,7 +75,6 @@ public class LocalSecretsConfig implements Editable<LocalSecretsConfigBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public LocalSecretsConfig() {
     }

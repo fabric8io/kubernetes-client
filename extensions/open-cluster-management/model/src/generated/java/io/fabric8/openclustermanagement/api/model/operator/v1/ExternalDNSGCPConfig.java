@@ -69,7 +69,6 @@ public class ExternalDNSGCPConfig implements Editable<ExternalDNSGCPConfigBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ExternalDNSGCPConfig() {
     }

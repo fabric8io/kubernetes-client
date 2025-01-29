@@ -78,7 +78,6 @@ public class ConsolePluginProxy implements Editable<ConsolePluginProxyBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ConsolePluginProxy() {
     }

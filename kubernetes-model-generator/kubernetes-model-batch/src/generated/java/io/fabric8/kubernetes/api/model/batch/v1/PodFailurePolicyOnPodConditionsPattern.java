@@ -72,7 +72,6 @@ public class PodFailurePolicyOnPodConditionsPattern implements Editable<PodFailu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PodFailurePolicyOnPodConditionsPattern() {
     }

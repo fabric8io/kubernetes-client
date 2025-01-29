@@ -69,7 +69,6 @@ public class UserWorkloadLogsSpec implements Editable<UserWorkloadLogsSpecBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public UserWorkloadLogsSpec() {
     }

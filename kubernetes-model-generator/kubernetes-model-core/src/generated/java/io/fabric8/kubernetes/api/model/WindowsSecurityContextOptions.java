@@ -49,7 +49,6 @@ public class WindowsSecurityContextOptions implements Editable<WindowsSecurityCo
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public WindowsSecurityContextOptions() {
     }

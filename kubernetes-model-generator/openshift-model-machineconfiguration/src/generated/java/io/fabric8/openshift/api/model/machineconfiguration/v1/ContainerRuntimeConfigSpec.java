@@ -72,7 +72,6 @@ public class ContainerRuntimeConfigSpec implements Editable<ContainerRuntimeConf
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ContainerRuntimeConfigSpec() {
     }

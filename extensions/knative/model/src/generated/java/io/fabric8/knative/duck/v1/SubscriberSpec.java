@@ -99,7 +99,6 @@ public class SubscriberSpec implements Editable<SubscriberSpecBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SubscriberSpec() {
     }

@@ -81,7 +81,6 @@ public class ConsolePluginSpec implements Editable<ConsolePluginSpecBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ConsolePluginSpec() {
     }

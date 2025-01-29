@@ -72,7 +72,6 @@ public class RollingUpdateDaemonSet implements Editable<RollingUpdateDaemonSetBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RollingUpdateDaemonSet() {
     }

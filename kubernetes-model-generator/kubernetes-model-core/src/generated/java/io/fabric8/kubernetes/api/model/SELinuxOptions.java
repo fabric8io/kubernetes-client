@@ -49,7 +49,6 @@ public class SELinuxOptions implements Editable<SELinuxOptionsBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SELinuxOptions() {
     }

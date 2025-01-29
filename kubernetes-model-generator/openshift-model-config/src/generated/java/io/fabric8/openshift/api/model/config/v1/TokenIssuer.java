@@ -78,7 +78,6 @@ public class TokenIssuer implements Editable<TokenIssuerBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TokenIssuer() {
     }

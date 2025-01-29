@@ -79,9 +79,7 @@ public class ServerlessServiceList implements Editable<ServerlessServiceListBuil
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "networking.internal.knative.dev/v1alpha1";
@@ -89,9 +87,7 @@ public class ServerlessServiceList implements Editable<ServerlessServiceListBuil
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.knative.internal.networking.v1alpha1.ServerlessService> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "ServerlessServiceList";
@@ -102,7 +98,6 @@ public class ServerlessServiceList implements Editable<ServerlessServiceListBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ServerlessServiceList() {
     }
@@ -116,9 +111,7 @@ public class ServerlessServiceList implements Editable<ServerlessServiceListBuil
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class ServerlessServiceList implements Editable<ServerlessServiceListBuil
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class ServerlessServiceList implements Editable<ServerlessServiceListBuil
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class ServerlessServiceList implements Editable<ServerlessServiceListBuil
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

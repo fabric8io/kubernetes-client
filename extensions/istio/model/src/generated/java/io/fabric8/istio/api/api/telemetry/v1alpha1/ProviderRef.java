@@ -69,7 +69,6 @@ public class ProviderRef implements Editable<ProviderRefBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ProviderRef() {
     }

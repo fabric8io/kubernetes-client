@@ -93,7 +93,6 @@ public class ResourceAttributes implements Editable<ResourceAttributesBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ResourceAttributes() {
     }

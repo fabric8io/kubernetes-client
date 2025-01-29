@@ -81,7 +81,6 @@ public class GRPCRouteFilter implements Editable<GRPCRouteFilterBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GRPCRouteFilter() {
     }

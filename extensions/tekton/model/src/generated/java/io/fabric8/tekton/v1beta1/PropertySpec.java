@@ -69,7 +69,6 @@ public class PropertySpec implements Editable<PropertySpecBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PropertySpec() {
     }

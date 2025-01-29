@@ -72,7 +72,6 @@ public class RouteHTTPHeader implements Editable<RouteHTTPHeaderBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RouteHTTPHeader() {
     }

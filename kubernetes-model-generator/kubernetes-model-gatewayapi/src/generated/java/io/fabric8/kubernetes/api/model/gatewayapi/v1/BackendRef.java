@@ -84,7 +84,6 @@ public class BackendRef implements Editable<BackendRefBuilder>, KubernetesResour
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public BackendRef() {
     }

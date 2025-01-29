@@ -72,7 +72,6 @@ public class AlibabaCloudResourceTag implements Editable<AlibabaCloudResourceTag
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AlibabaCloudResourceTag() {
     }

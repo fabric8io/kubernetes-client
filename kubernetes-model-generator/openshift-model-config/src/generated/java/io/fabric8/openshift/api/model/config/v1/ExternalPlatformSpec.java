@@ -69,7 +69,6 @@ public class ExternalPlatformSpec implements Editable<ExternalPlatformSpecBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ExternalPlatformSpec() {
     }

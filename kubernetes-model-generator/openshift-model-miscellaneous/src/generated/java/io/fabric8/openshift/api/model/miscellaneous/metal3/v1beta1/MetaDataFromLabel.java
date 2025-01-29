@@ -75,7 +75,6 @@ public class MetaDataFromLabel implements Editable<MetaDataFromLabelBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MetaDataFromLabel() {
     }

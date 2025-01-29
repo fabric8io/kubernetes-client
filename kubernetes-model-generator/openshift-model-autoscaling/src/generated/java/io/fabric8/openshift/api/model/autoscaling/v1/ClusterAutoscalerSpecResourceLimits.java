@@ -81,7 +81,6 @@ public class ClusterAutoscalerSpecResourceLimits implements Editable<ClusterAuto
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClusterAutoscalerSpecResourceLimits() {
     }

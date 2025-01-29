@@ -52,7 +52,6 @@ public class NamespaceCondition implements Editable<NamespaceConditionBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NamespaceCondition() {
     }

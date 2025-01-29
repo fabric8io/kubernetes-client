@@ -75,7 +75,6 @@ public class ClusterStateStatus implements Editable<ClusterStateStatusBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClusterStateStatus() {
     }

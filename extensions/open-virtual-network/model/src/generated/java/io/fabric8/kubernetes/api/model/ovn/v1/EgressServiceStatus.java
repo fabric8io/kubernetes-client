@@ -69,7 +69,6 @@ public class EgressServiceStatus implements Editable<EgressServiceStatusBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EgressServiceStatus() {
     }

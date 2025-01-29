@@ -76,7 +76,6 @@ public class ServiceAccountRestriction implements Editable<ServiceAccountRestric
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ServiceAccountRestriction() {
     }

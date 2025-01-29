@@ -75,7 +75,6 @@ public class MutatingAdmissionPolicyBindingSpec implements Editable<MutatingAdmi
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MutatingAdmissionPolicyBindingSpec() {
     }

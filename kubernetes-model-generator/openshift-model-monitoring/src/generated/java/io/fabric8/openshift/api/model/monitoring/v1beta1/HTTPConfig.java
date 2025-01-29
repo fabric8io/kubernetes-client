@@ -106,7 +106,6 @@ public class HTTPConfig implements Editable<HTTPConfigBuilder>, KubernetesResour
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HTTPConfig() {
     }

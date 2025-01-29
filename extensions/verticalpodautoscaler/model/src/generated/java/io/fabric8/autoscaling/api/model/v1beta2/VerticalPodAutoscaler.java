@@ -77,16 +77,12 @@ public class VerticalPodAutoscaler implements Editable<VerticalPodAutoscalerBuil
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "autoscaling.k8s.io/v1beta2";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "VerticalPodAutoscaler";
@@ -101,7 +97,6 @@ public class VerticalPodAutoscaler implements Editable<VerticalPodAutoscalerBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public VerticalPodAutoscaler() {
     }
@@ -116,9 +111,7 @@ public class VerticalPodAutoscaler implements Editable<VerticalPodAutoscalerBuil
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class VerticalPodAutoscaler implements Editable<VerticalPodAutoscalerBuil
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -136,9 +127,7 @@ public class VerticalPodAutoscaler implements Editable<VerticalPodAutoscalerBuil
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -146,9 +135,7 @@ public class VerticalPodAutoscaler implements Editable<VerticalPodAutoscalerBuil
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

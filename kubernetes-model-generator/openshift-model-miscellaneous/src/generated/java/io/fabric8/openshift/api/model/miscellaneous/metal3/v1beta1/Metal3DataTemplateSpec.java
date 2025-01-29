@@ -78,7 +78,6 @@ public class Metal3DataTemplateSpec implements Editable<Metal3DataTemplateSpecBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Metal3DataTemplateSpec() {
     }

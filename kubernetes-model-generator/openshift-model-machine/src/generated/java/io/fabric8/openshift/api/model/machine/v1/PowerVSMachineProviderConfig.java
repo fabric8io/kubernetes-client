@@ -88,9 +88,7 @@ public class PowerVSMachineProviderConfig implements Editable<PowerVSMachineProv
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "machine.openshift.io/v1";
@@ -101,9 +99,7 @@ public class PowerVSMachineProviderConfig implements Editable<PowerVSMachineProv
     @JsonProperty("keyPairName")
     private String keyPairName;
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "PowerVSMachineProviderConfig";
@@ -131,7 +127,6 @@ public class PowerVSMachineProviderConfig implements Editable<PowerVSMachineProv
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PowerVSMachineProviderConfig() {
     }
@@ -155,9 +150,7 @@ public class PowerVSMachineProviderConfig implements Editable<PowerVSMachineProv
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -165,9 +158,7 @@ public class PowerVSMachineProviderConfig implements Editable<PowerVSMachineProv
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -205,9 +196,7 @@ public class PowerVSMachineProviderConfig implements Editable<PowerVSMachineProv
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -215,9 +204,7 @@ public class PowerVSMachineProviderConfig implements Editable<PowerVSMachineProv
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

@@ -72,7 +72,6 @@ public class TokenRequiredClaim implements Editable<TokenRequiredClaimBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TokenRequiredClaim() {
     }

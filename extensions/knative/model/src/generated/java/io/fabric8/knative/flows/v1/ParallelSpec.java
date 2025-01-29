@@ -80,7 +80,6 @@ public class ParallelSpec implements Editable<ParallelSpecBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ParallelSpec() {
     }

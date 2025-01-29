@@ -81,7 +81,6 @@ public class RouteIngressCondition implements Editable<RouteIngressConditionBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RouteIngressCondition() {
     }

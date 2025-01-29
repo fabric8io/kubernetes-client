@@ -85,7 +85,6 @@ public class FailKernRequest implements Editable<FailKernRequestBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public FailKernRequest() {
     }

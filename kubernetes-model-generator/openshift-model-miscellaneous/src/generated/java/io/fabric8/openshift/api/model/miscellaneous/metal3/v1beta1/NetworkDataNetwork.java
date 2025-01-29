@@ -88,7 +88,6 @@ public class NetworkDataNetwork implements Editable<NetworkDataNetworkBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NetworkDataNetwork() {
     }

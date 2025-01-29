@@ -84,7 +84,6 @@ public class CertificateCondition implements Editable<CertificateConditionBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CertificateCondition() {
     }

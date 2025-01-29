@@ -72,7 +72,6 @@ public class HubSourceStatus implements Editable<HubSourceStatusBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HubSourceStatus() {
     }

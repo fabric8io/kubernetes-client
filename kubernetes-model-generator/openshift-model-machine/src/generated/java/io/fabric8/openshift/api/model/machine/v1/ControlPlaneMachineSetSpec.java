@@ -81,7 +81,6 @@ public class ControlPlaneMachineSetSpec implements Editable<ControlPlaneMachineS
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ControlPlaneMachineSetSpec() {
     }

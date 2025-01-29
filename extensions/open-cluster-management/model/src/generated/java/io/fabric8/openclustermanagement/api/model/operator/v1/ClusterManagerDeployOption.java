@@ -72,7 +72,6 @@ public class ClusterManagerDeployOption implements Editable<ClusterManagerDeploy
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClusterManagerDeployOption() {
     }

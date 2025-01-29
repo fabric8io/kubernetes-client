@@ -79,9 +79,7 @@ public class ObservabilityAddonList implements Editable<ObservabilityAddonListBu
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "observability.open-cluster-management.io/v1beta1";
@@ -89,9 +87,7 @@ public class ObservabilityAddonList implements Editable<ObservabilityAddonListBu
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openclustermanagement.api.model.observability.v1beta1.ObservabilityAddon> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "ObservabilityAddonList";
@@ -102,7 +98,6 @@ public class ObservabilityAddonList implements Editable<ObservabilityAddonListBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ObservabilityAddonList() {
     }
@@ -116,9 +111,7 @@ public class ObservabilityAddonList implements Editable<ObservabilityAddonListBu
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class ObservabilityAddonList implements Editable<ObservabilityAddonListBu
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class ObservabilityAddonList implements Editable<ObservabilityAddonListBu
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class ObservabilityAddonList implements Editable<ObservabilityAddonListBu
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

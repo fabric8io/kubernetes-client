@@ -69,7 +69,6 @@ public class PromQLClusterCondition implements Editable<PromQLClusterConditionBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PromQLClusterCondition() {
     }

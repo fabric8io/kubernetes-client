@@ -119,7 +119,6 @@ public class HTTPRoute implements Editable<HTTPRouteBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HTTPRoute() {
     }

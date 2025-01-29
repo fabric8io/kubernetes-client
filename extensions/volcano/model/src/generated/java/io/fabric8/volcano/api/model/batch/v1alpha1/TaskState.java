@@ -70,7 +70,6 @@ public class TaskState implements Editable<TaskStateBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TaskState() {
     }

@@ -69,7 +69,6 @@ public class ArbitraryFSAccessThroughSMsConfig implements Editable<ArbitraryFSAc
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ArbitraryFSAccessThroughSMsConfig() {
     }

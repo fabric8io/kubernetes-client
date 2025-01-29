@@ -87,7 +87,6 @@ public class InstallPlanSpec implements Editable<InstallPlanSpecBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public InstallPlanSpec() {
     }

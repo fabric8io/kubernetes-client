@@ -118,7 +118,6 @@ public class PipelineTask implements Editable<PipelineTaskBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PipelineTask() {
     }

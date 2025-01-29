@@ -85,7 +85,6 @@ public class OIDCProvider implements Editable<OIDCProviderBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public OIDCProvider() {
     }

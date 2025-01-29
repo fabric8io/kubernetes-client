@@ -91,7 +91,6 @@ public class GlobalSMTPConfig implements Editable<GlobalSMTPConfigBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GlobalSMTPConfig() {
     }

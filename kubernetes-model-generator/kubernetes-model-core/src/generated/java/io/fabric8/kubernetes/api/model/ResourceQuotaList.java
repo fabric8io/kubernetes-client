@@ -48,9 +48,7 @@ public class ResourceQuotaList implements Editable<ResourceQuotaListBuilder>, Ku
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "v1";
@@ -58,9 +56,7 @@ public class ResourceQuotaList implements Editable<ResourceQuotaListBuilder>, Ku
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.kubernetes.api.model.ResourceQuota> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "ResourceQuotaList";
@@ -71,7 +67,6 @@ public class ResourceQuotaList implements Editable<ResourceQuotaListBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ResourceQuotaList() {
     }
@@ -85,9 +80,7 @@ public class ResourceQuotaList implements Editable<ResourceQuotaListBuilder>, Ku
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -95,9 +88,7 @@ public class ResourceQuotaList implements Editable<ResourceQuotaListBuilder>, Ku
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -116,9 +107,7 @@ public class ResourceQuotaList implements Editable<ResourceQuotaListBuilder>, Ku
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -126,9 +115,7 @@ public class ResourceQuotaList implements Editable<ResourceQuotaListBuilder>, Ku
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

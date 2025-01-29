@@ -69,7 +69,6 @@ public class Metal3ClusterTemplateResource implements Editable<Metal3ClusterTemp
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Metal3ClusterTemplateResource() {
     }

@@ -72,7 +72,6 @@ public class StaticHop implements Editable<StaticHopBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public StaticHop() {
     }

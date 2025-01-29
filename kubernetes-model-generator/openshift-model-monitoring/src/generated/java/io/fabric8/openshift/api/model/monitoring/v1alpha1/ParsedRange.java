@@ -72,7 +72,6 @@ public class ParsedRange implements Editable<ParsedRangeBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ParsedRange() {
     }

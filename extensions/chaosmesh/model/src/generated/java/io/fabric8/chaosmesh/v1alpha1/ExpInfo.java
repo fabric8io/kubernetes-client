@@ -195,7 +195,6 @@ public class ExpInfo implements Editable<ExpInfoBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ExpInfo() {
     }

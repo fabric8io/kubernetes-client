@@ -72,7 +72,6 @@ public class EgressIPStatusItem implements Editable<EgressIPStatusItemBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EgressIPStatusItem() {
     }

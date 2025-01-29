@@ -43,7 +43,6 @@ public class Preconditions implements Editable<PreconditionsBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Preconditions() {
     }

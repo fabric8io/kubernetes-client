@@ -88,7 +88,6 @@ public class InterceptorStatus implements Editable<InterceptorStatusBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public InterceptorStatus() {
     }

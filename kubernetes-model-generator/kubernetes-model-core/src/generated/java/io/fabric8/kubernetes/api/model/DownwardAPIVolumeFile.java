@@ -49,7 +49,6 @@ public class DownwardAPIVolumeFile implements Editable<DownwardAPIVolumeFileBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DownwardAPIVolumeFile() {
     }

@@ -111,7 +111,6 @@ public class ServerTLSSettings implements Editable<ServerTLSSettingsBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ServerTLSSettings() {
     }

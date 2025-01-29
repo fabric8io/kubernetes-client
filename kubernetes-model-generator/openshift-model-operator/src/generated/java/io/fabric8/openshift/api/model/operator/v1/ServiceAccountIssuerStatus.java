@@ -72,7 +72,6 @@ public class ServiceAccountIssuerStatus implements Editable<ServiceAccountIssuer
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ServiceAccountIssuerStatus() {
     }

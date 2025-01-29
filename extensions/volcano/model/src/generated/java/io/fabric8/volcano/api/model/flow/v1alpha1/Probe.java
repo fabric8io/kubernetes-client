@@ -80,7 +80,6 @@ public class Probe implements Editable<ProbeBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Probe() {
     }

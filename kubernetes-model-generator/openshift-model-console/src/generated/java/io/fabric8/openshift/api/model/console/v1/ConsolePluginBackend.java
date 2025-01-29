@@ -72,7 +72,6 @@ public class ConsolePluginBackend implements Editable<ConsolePluginBackendBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ConsolePluginBackend() {
     }

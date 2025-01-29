@@ -81,7 +81,6 @@ public class StorageVersionMigrationStatusConditions implements Editable<Storage
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public StorageVersionMigrationStatusConditions() {
     }

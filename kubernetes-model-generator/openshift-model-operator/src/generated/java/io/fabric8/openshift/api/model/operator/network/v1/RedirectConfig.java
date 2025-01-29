@@ -75,7 +75,6 @@ public class RedirectConfig implements Editable<RedirectConfigBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RedirectConfig() {
     }

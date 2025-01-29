@@ -88,7 +88,6 @@ public class OpenShiftControllerManagerStatus implements Editable<OpenShiftContr
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public OpenShiftControllerManagerStatus() {
     }

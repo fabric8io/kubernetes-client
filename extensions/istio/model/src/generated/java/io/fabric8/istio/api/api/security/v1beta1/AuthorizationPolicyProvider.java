@@ -69,7 +69,6 @@ public class AuthorizationPolicyProvider implements IsAuthorizationPolicyActionD
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AuthorizationPolicyProvider() {
     }

@@ -86,7 +86,6 @@ public class RecommendedContainerResources implements Editable<RecommendedContai
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RecommendedContainerResources() {
     }

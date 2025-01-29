@@ -81,7 +81,6 @@ public class EgressRouterSpec implements Editable<EgressRouterSpecBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EgressRouterSpec() {
     }

@@ -84,7 +84,6 @@ public class CertificateSigningRequestCondition implements Editable<CertificateS
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CertificateSigningRequestCondition() {
     }

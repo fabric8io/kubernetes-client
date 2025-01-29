@@ -69,7 +69,6 @@ public class HardwareDataSpec implements Editable<HardwareDataSpecBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HardwareDataSpec() {
     }

@@ -70,7 +70,6 @@ public class NetworkInfo implements Editable<NetworkInfoBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NetworkInfo() {
     }

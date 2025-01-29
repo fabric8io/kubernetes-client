@@ -75,7 +75,6 @@ public class NetworkDiagnostics implements Editable<NetworkDiagnosticsBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NetworkDiagnostics() {
     }

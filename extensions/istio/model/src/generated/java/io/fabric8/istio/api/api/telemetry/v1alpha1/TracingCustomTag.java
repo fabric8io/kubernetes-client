@@ -71,7 +71,6 @@ public class TracingCustomTag implements Editable<TracingCustomTagBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TracingCustomTag() {
     }

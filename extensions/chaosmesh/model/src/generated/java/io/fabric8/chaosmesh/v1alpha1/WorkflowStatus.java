@@ -81,7 +81,6 @@ public class WorkflowStatus implements Editable<WorkflowStatusBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public WorkflowStatus() {
     }

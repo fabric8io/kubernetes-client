@@ -99,7 +99,6 @@ public class VictorOpsConfig implements Editable<VictorOpsConfigBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public VictorOpsConfig() {
     }

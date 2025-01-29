@@ -102,7 +102,6 @@ public class AuthorizationPolicy implements Editable<AuthorizationPolicyBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AuthorizationPolicy() {
     }

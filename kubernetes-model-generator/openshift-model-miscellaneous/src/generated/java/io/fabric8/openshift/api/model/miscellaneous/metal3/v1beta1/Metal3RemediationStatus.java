@@ -75,7 +75,6 @@ public class Metal3RemediationStatus implements Editable<Metal3RemediationStatus
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Metal3RemediationStatus() {
     }

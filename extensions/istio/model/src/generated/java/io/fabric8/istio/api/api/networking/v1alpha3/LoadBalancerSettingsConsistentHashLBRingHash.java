@@ -69,7 +69,6 @@ public class LoadBalancerSettingsConsistentHashLBRingHash implements IsLoadBalan
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public LoadBalancerSettingsConsistentHashLBRingHash() {
     }

@@ -85,7 +85,6 @@ public class OVHCloudSDConfig implements Editable<OVHCloudSDConfigBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public OVHCloudSDConfig() {
     }

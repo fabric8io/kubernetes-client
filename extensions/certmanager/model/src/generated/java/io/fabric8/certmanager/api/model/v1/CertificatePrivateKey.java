@@ -78,7 +78,6 @@ public class CertificatePrivateKey implements Editable<CertificatePrivateKeyBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CertificatePrivateKey() {
     }

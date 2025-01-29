@@ -72,7 +72,6 @@ public class MTUMigration implements Editable<MTUMigrationBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MTUMigration() {
     }

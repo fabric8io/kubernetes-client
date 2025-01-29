@@ -72,7 +72,6 @@ public class HostUpdatePolicySpec implements Editable<HostUpdatePolicySpecBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HostUpdatePolicySpec() {
     }

@@ -80,9 +80,7 @@ public class AWSMachineProviderStatus implements Editable<AWSMachineProviderStat
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "machine.openshift.io/v1beta1";
@@ -94,9 +92,7 @@ public class AWSMachineProviderStatus implements Editable<AWSMachineProviderStat
     @JsonProperty("instanceState")
     private String instanceState;
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "AWSMachineProviderStatus";
@@ -105,7 +101,6 @@ public class AWSMachineProviderStatus implements Editable<AWSMachineProviderStat
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AWSMachineProviderStatus() {
     }
@@ -120,9 +115,7 @@ public class AWSMachineProviderStatus implements Editable<AWSMachineProviderStat
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -130,9 +123,7 @@ public class AWSMachineProviderStatus implements Editable<AWSMachineProviderStat
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -171,9 +162,7 @@ public class AWSMachineProviderStatus implements Editable<AWSMachineProviderStat
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -181,9 +170,7 @@ public class AWSMachineProviderStatus implements Editable<AWSMachineProviderStat
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

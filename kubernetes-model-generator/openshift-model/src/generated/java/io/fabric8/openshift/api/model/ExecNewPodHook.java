@@ -83,7 +83,6 @@ public class ExecNewPodHook implements Editable<ExecNewPodHookBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ExecNewPodHook() {
     }

@@ -79,9 +79,7 @@ public class PolicySetList implements Editable<PolicySetListBuilder>, Kubernetes
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "policy.open-cluster-management.io/v1beta1";
@@ -89,9 +87,7 @@ public class PolicySetList implements Editable<PolicySetListBuilder>, Kubernetes
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openclustermanagement.api.model.policy.v1beta1.PolicySet> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "PolicySetList";
@@ -102,7 +98,6 @@ public class PolicySetList implements Editable<PolicySetListBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PolicySetList() {
     }
@@ -116,9 +111,7 @@ public class PolicySetList implements Editable<PolicySetListBuilder>, Kubernetes
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class PolicySetList implements Editable<PolicySetListBuilder>, Kubernetes
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class PolicySetList implements Editable<PolicySetListBuilder>, Kubernetes
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class PolicySetList implements Editable<PolicySetListBuilder>, Kubernetes
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

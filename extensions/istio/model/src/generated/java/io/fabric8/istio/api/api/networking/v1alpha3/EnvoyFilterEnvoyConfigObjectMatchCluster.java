@@ -69,7 +69,6 @@ public class EnvoyFilterEnvoyConfigObjectMatchCluster implements IsEnvoyFilterEn
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EnvoyFilterEnvoyConfigObjectMatchCluster() {
     }

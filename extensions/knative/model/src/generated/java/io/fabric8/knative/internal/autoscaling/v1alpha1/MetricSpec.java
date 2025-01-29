@@ -75,7 +75,6 @@ public class MetricSpec implements Editable<MetricSpecBuilder>, KubernetesResour
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MetricSpec() {
     }

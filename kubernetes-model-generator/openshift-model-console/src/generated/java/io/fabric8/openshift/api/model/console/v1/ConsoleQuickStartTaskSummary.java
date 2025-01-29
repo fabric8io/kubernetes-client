@@ -72,7 +72,6 @@ public class ConsoleQuickStartTaskSummary implements Editable<ConsoleQuickStartT
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ConsoleQuickStartTaskSummary() {
     }

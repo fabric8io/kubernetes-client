@@ -77,9 +77,7 @@ public class ImageStreamLayers implements Editable<ImageStreamLayersBuilder>, Ha
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "image.openshift.io/v1";
@@ -90,9 +88,7 @@ public class ImageStreamLayers implements Editable<ImageStreamLayersBuilder>, Ha
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, ImageBlobReferences> images = new LinkedHashMap<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "ImageStreamLayers";
@@ -103,7 +99,6 @@ public class ImageStreamLayers implements Editable<ImageStreamLayersBuilder>, Ha
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ImageStreamLayers() {
     }
@@ -118,9 +113,7 @@ public class ImageStreamLayers implements Editable<ImageStreamLayersBuilder>, Ha
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -128,9 +121,7 @@ public class ImageStreamLayers implements Editable<ImageStreamLayersBuilder>, Ha
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -160,9 +151,7 @@ public class ImageStreamLayers implements Editable<ImageStreamLayersBuilder>, Ha
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -170,9 +159,7 @@ public class ImageStreamLayers implements Editable<ImageStreamLayersBuilder>, Ha
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

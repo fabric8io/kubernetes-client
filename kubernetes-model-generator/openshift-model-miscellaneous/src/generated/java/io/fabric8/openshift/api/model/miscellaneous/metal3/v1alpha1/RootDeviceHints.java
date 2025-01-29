@@ -96,7 +96,6 @@ public class RootDeviceHints implements Editable<RootDeviceHintsBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RootDeviceHints() {
     }

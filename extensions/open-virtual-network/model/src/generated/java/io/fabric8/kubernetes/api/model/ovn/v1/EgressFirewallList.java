@@ -79,9 +79,7 @@ public class EgressFirewallList implements Editable<EgressFirewallListBuilder>, 
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "k8s.ovn.org/v1";
@@ -89,9 +87,7 @@ public class EgressFirewallList implements Editable<EgressFirewallListBuilder>, 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.kubernetes.api.model.ovn.v1.EgressFirewall> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "EgressFirewallList";
@@ -102,7 +98,6 @@ public class EgressFirewallList implements Editable<EgressFirewallListBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EgressFirewallList() {
     }
@@ -116,9 +111,7 @@ public class EgressFirewallList implements Editable<EgressFirewallListBuilder>, 
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class EgressFirewallList implements Editable<EgressFirewallListBuilder>, 
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class EgressFirewallList implements Editable<EgressFirewallListBuilder>, 
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class EgressFirewallList implements Editable<EgressFirewallListBuilder>, 
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

@@ -79,7 +79,6 @@ public class NamedTagEventList implements Editable<NamedTagEventListBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NamedTagEventList() {
     }

@@ -80,7 +80,6 @@ public class HeadersHeaderOperations implements Editable<HeadersHeaderOperations
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HeadersHeaderOperations() {
     }

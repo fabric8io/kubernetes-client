@@ -105,7 +105,6 @@ public class SecurityGroupFilter implements Editable<SecurityGroupFilterBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SecurityGroupFilter() {
     }

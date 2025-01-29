@@ -78,7 +78,6 @@ public class FieldOptions implements Editable<FieldOptionsBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public FieldOptions() {
     }

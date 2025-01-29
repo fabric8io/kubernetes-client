@@ -78,7 +78,6 @@ public class FailedProvisionAWSConfig implements Editable<FailedProvisionAWSConf
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public FailedProvisionAWSConfig() {
     }

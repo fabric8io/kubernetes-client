@@ -75,7 +75,6 @@ public class ClusterProvisionStatus implements Editable<ClusterProvisionStatusBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClusterProvisionStatus() {
     }

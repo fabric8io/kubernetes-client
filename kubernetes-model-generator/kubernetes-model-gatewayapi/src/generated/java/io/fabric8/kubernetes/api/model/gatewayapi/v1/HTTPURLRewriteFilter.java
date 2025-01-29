@@ -72,7 +72,6 @@ public class HTTPURLRewriteFilter implements Editable<HTTPURLRewriteFilterBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HTTPURLRewriteFilter() {
     }

@@ -69,7 +69,6 @@ public class AWSDNSSpec implements Editable<AWSDNSSpecBuilder>, KubernetesResour
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AWSDNSSpec() {
     }

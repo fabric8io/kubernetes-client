@@ -75,7 +75,6 @@ public class TemplateInstanceSpec implements Editable<TemplateInstanceSpecBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TemplateInstanceSpec() {
     }

@@ -46,7 +46,6 @@ public class TypedLocalObjectReference implements Editable<TypedLocalObjectRefer
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TypedLocalObjectReference() {
     }

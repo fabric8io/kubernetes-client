@@ -82,7 +82,6 @@ public class AWSDNSZoneSpec implements Editable<AWSDNSZoneSpecBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AWSDNSZoneSpec() {
     }

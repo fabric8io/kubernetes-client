@@ -90,7 +90,6 @@ public class KernelChaosSpec implements Editable<KernelChaosSpecBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public KernelChaosSpec() {
     }

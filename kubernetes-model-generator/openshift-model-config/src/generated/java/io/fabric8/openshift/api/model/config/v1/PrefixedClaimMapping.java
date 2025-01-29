@@ -72,7 +72,6 @@ public class PrefixedClaimMapping implements Editable<PrefixedClaimMappingBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PrefixedClaimMapping() {
     }

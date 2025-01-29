@@ -81,7 +81,6 @@ public class StageInfo implements Editable<StageInfoBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public StageInfo() {
     }

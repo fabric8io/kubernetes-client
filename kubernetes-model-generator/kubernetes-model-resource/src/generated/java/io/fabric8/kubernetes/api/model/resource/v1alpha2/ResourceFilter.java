@@ -72,7 +72,6 @@ public class ResourceFilter implements Editable<ResourceFilterBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ResourceFilter() {
     }

@@ -80,7 +80,6 @@ public class RepositoryImportStatus implements Editable<RepositoryImportStatusBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RepositoryImportStatus() {
     }

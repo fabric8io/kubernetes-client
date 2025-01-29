@@ -72,7 +72,6 @@ public class MetricIdentifier implements Editable<MetricIdentifierBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MetricIdentifier() {
     }

@@ -69,7 +69,6 @@ public class AzureCSIDriverConfigSpec implements Editable<AzureCSIDriverConfigSp
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AzureCSIDriverConfigSpec() {
     }

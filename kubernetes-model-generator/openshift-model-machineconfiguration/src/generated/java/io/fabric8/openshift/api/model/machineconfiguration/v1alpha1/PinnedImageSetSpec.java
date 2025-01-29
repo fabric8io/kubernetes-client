@@ -72,7 +72,6 @@ public class PinnedImageSetSpec implements Editable<PinnedImageSetSpecBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PinnedImageSetSpec() {
     }

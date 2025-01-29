@@ -84,7 +84,6 @@ public class BuildTriggerCause implements Editable<BuildTriggerCauseBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public BuildTriggerCause() {
     }

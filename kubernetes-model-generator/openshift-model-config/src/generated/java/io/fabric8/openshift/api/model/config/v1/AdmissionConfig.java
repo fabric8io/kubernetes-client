@@ -80,7 +80,6 @@ public class AdmissionConfig implements Editable<AdmissionConfigBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AdmissionConfig() {
     }

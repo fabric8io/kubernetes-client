@@ -79,7 +79,6 @@ public class VolumeAttachmentStatus implements Editable<VolumeAttachmentStatusBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public VolumeAttachmentStatus() {
     }

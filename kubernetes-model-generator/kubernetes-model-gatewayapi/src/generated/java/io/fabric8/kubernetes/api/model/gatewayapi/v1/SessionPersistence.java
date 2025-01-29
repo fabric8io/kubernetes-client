@@ -81,7 +81,6 @@ public class SessionPersistence implements Editable<SessionPersistenceBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SessionPersistence() {
     }

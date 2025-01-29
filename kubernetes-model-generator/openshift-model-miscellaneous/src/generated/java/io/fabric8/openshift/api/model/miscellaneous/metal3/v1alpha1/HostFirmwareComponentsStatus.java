@@ -84,7 +84,6 @@ public class HostFirmwareComponentsStatus implements Editable<HostFirmwareCompon
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HostFirmwareComponentsStatus() {
     }

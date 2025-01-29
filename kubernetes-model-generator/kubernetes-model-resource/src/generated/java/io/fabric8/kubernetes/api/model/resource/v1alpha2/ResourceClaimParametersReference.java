@@ -75,7 +75,6 @@ public class ResourceClaimParametersReference implements Editable<ResourceClaimP
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ResourceClaimParametersReference() {
     }

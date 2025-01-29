@@ -81,7 +81,6 @@ public class FlowSchemaCondition implements Editable<FlowSchemaConditionBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public FlowSchemaCondition() {
     }

@@ -72,7 +72,6 @@ public class RecommendedPodResources implements Editable<RecommendedPodResources
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RecommendedPodResources() {
     }

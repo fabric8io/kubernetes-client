@@ -76,7 +76,6 @@ public class FirmwareSchemaSpec implements Editable<FirmwareSchemaSpecBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public FirmwareSchemaSpec() {
     }

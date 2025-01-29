@@ -102,7 +102,6 @@ public class AttrOverrideSpec implements Editable<AttrOverrideSpecBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AttrOverrideSpec() {
     }

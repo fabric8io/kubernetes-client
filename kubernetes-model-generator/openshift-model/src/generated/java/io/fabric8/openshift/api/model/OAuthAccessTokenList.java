@@ -79,9 +79,7 @@ public class OAuthAccessTokenList implements Editable<OAuthAccessTokenListBuilde
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "oauth.openshift.io/v1";
@@ -89,9 +87,7 @@ public class OAuthAccessTokenList implements Editable<OAuthAccessTokenListBuilde
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openshift.api.model.OAuthAccessToken> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "OAuthAccessTokenList";
@@ -102,7 +98,6 @@ public class OAuthAccessTokenList implements Editable<OAuthAccessTokenListBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public OAuthAccessTokenList() {
     }
@@ -116,9 +111,7 @@ public class OAuthAccessTokenList implements Editable<OAuthAccessTokenListBuilde
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class OAuthAccessTokenList implements Editable<OAuthAccessTokenListBuilde
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class OAuthAccessTokenList implements Editable<OAuthAccessTokenListBuilde
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class OAuthAccessTokenList implements Editable<OAuthAccessTokenListBuilde
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

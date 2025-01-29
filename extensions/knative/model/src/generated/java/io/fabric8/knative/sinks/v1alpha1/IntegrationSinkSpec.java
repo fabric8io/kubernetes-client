@@ -72,7 +72,6 @@ public class IntegrationSinkSpec implements Editable<IntegrationSinkSpecBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public IntegrationSinkSpec() {
     }

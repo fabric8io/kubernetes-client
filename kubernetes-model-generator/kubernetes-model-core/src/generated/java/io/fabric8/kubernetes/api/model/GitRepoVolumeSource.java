@@ -46,7 +46,6 @@ public class GitRepoVolumeSource implements Editable<GitRepoVolumeSourceBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GitRepoVolumeSource() {
     }

@@ -95,7 +95,6 @@ public class KubeControllerManagerSpec implements Editable<KubeControllerManager
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public KubeControllerManagerSpec() {
     }

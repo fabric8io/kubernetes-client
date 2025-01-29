@@ -81,9 +81,7 @@ public class HostSubnet implements Editable<HostSubnetBuilder>, HasMetadata
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "network.openshift.io/v1";
@@ -98,9 +96,7 @@ public class HostSubnet implements Editable<HostSubnetBuilder>, HasMetadata
     @JsonProperty("hostIP")
     private String hostIP;
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "HostSubnet";
@@ -113,7 +109,6 @@ public class HostSubnet implements Editable<HostSubnetBuilder>, HasMetadata
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HostSubnet() {
     }
@@ -131,9 +126,7 @@ public class HostSubnet implements Editable<HostSubnetBuilder>, HasMetadata
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -141,9 +134,7 @@ public class HostSubnet implements Editable<HostSubnetBuilder>, HasMetadata
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -193,9 +184,7 @@ public class HostSubnet implements Editable<HostSubnetBuilder>, HasMetadata
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -203,9 +192,7 @@ public class HostSubnet implements Editable<HostSubnetBuilder>, HasMetadata
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

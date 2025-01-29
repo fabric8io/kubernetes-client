@@ -81,7 +81,6 @@ public class GitBuildSource implements Editable<GitBuildSourceBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GitBuildSource() {
     }

@@ -74,7 +74,6 @@ public class SecretOrConfigMap implements Editable<SecretOrConfigMapBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SecretOrConfigMap() {
     }

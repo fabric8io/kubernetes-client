@@ -72,7 +72,6 @@ public class BandwidthProperties implements Editable<BandwidthPropertiesBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public BandwidthProperties() {
     }

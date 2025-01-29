@@ -72,7 +72,6 @@ public class ReplicatedComplianceHistory implements Editable<ReplicatedComplianc
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ReplicatedComplianceHistory() {
     }

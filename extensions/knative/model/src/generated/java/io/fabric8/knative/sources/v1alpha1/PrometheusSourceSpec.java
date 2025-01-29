@@ -91,7 +91,6 @@ public class PrometheusSourceSpec implements Editable<PrometheusSourceSpecBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PrometheusSourceSpec() {
     }

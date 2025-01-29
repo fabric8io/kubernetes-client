@@ -88,7 +88,6 @@ public class ControlPlaneMachineSetStatus implements Editable<ControlPlaneMachin
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ControlPlaneMachineSetStatus() {
     }

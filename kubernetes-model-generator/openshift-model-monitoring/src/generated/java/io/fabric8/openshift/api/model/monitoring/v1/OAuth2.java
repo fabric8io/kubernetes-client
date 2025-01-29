@@ -102,7 +102,6 @@ public class OAuth2 implements Editable<OAuth2Builder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public OAuth2() {
     }

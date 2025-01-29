@@ -72,7 +72,6 @@ public class CertInfo implements Editable<CertInfoBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CertInfo() {
     }

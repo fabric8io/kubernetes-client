@@ -77,16 +77,12 @@ public class VerticalPodAutoscalerCheckpoint implements Editable<VerticalPodAuto
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "autoscaling.k8s.io/v1beta1";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "VerticalPodAutoscalerCheckpoint";
@@ -101,7 +97,6 @@ public class VerticalPodAutoscalerCheckpoint implements Editable<VerticalPodAuto
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public VerticalPodAutoscalerCheckpoint() {
     }
@@ -116,9 +111,7 @@ public class VerticalPodAutoscalerCheckpoint implements Editable<VerticalPodAuto
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class VerticalPodAutoscalerCheckpoint implements Editable<VerticalPodAuto
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -136,9 +127,7 @@ public class VerticalPodAutoscalerCheckpoint implements Editable<VerticalPodAuto
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -146,9 +135,7 @@ public class VerticalPodAutoscalerCheckpoint implements Editable<VerticalPodAuto
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

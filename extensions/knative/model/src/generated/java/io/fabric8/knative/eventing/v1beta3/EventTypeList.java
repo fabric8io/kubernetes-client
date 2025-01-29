@@ -79,9 +79,7 @@ public class EventTypeList implements Editable<EventTypeListBuilder>, Kubernetes
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "eventing.knative.dev/v1beta3";
@@ -89,9 +87,7 @@ public class EventTypeList implements Editable<EventTypeListBuilder>, Kubernetes
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.knative.eventing.v1beta3.EventType> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "EventTypeList";
@@ -102,7 +98,6 @@ public class EventTypeList implements Editable<EventTypeListBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EventTypeList() {
     }
@@ -116,9 +111,7 @@ public class EventTypeList implements Editable<EventTypeListBuilder>, Kubernetes
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class EventTypeList implements Editable<EventTypeListBuilder>, Kubernetes
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class EventTypeList implements Editable<EventTypeListBuilder>, Kubernetes
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class EventTypeList implements Editable<EventTypeListBuilder>, Kubernetes
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

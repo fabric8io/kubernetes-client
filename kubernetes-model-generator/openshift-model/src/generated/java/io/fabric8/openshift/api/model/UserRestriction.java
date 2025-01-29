@@ -80,7 +80,6 @@ public class UserRestriction implements Editable<UserRestrictionBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public UserRestriction() {
     }

@@ -55,7 +55,6 @@ public class QuobyteVolumeSource implements Editable<QuobyteVolumeSourceBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public QuobyteVolumeSource() {
     }

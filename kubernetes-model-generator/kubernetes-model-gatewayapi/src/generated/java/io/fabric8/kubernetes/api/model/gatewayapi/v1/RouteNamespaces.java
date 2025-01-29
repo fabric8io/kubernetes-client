@@ -72,7 +72,6 @@ public class RouteNamespaces implements Editable<RouteNamespacesBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RouteNamespaces() {
     }

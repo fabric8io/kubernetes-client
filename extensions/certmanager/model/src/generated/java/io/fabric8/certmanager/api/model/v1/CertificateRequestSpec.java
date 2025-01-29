@@ -99,7 +99,6 @@ public class CertificateRequestSpec implements Editable<CertificateRequestSpecBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CertificateRequestSpec() {
     }

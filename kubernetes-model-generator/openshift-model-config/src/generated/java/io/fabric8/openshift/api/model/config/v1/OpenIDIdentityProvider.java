@@ -91,7 +91,6 @@ public class OpenIDIdentityProvider implements Editable<OpenIDIdentityProviderBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public OpenIDIdentityProvider() {
     }

@@ -78,7 +78,6 @@ public class ServiceAccountPodSecurityPolicyReviewStatus implements Editable<Ser
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ServiceAccountPodSecurityPolicyReviewStatus() {
     }

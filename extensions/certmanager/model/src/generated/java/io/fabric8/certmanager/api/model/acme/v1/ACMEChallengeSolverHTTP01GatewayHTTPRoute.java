@@ -83,7 +83,6 @@ public class ACMEChallengeSolverHTTP01GatewayHTTPRoute implements Editable<ACMEC
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ACMEChallengeSolverHTTP01GatewayHTTPRoute() {
     }

@@ -72,7 +72,6 @@ public class TcpSocket implements Editable<TcpSocketBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TcpSocket() {
     }

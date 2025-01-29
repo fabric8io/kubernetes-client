@@ -79,9 +79,7 @@ public class ResourceClassList implements Editable<ResourceClassListBuilder>, Ku
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "resource.k8s.io/v1alpha2";
@@ -89,9 +87,7 @@ public class ResourceClassList implements Editable<ResourceClassListBuilder>, Ku
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.kubernetes.api.model.resource.v1alpha2.ResourceClass> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "ResourceClassList";
@@ -102,7 +98,6 @@ public class ResourceClassList implements Editable<ResourceClassListBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ResourceClassList() {
     }
@@ -116,9 +111,7 @@ public class ResourceClassList implements Editable<ResourceClassListBuilder>, Ku
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class ResourceClassList implements Editable<ResourceClassListBuilder>, Ku
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class ResourceClassList implements Editable<ResourceClassListBuilder>, Ku
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class ResourceClassList implements Editable<ResourceClassListBuilder>, Ku
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

@@ -79,9 +79,7 @@ public class PolicyAutomationList implements Editable<PolicyAutomationListBuilde
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "policy.open-cluster-management.io/v1beta1";
@@ -89,9 +87,7 @@ public class PolicyAutomationList implements Editable<PolicyAutomationListBuilde
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openclustermanagement.api.model.policy.v1beta1.PolicyAutomation> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "PolicyAutomationList";
@@ -102,7 +98,6 @@ public class PolicyAutomationList implements Editable<PolicyAutomationListBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PolicyAutomationList() {
     }
@@ -116,9 +111,7 @@ public class PolicyAutomationList implements Editable<PolicyAutomationListBuilde
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class PolicyAutomationList implements Editable<PolicyAutomationListBuilde
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class PolicyAutomationList implements Editable<PolicyAutomationListBuilde
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class PolicyAutomationList implements Editable<PolicyAutomationListBuilde
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

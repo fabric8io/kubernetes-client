@@ -73,7 +73,6 @@ public class HelmChartRepositoryStatus implements Editable<HelmChartRepositorySt
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HelmChartRepositoryStatus() {
     }

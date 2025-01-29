@@ -98,7 +98,6 @@ public class PingSourceStatus implements Editable<PingSourceStatusBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PingSourceStatus() {
     }

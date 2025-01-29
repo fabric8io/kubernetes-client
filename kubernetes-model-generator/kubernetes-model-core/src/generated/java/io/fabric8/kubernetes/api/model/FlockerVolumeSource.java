@@ -43,7 +43,6 @@ public class FlockerVolumeSource implements Editable<FlockerVolumeSourceBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public FlockerVolumeSource() {
     }

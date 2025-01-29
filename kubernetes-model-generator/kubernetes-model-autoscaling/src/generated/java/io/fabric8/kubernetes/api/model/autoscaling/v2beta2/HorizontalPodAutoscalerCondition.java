@@ -81,7 +81,6 @@ public class HorizontalPodAutoscalerCondition implements Editable<HorizontalPodA
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HorizontalPodAutoscalerCondition() {
     }

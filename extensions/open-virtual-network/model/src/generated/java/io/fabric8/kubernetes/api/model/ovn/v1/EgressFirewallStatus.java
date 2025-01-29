@@ -75,7 +75,6 @@ public class EgressFirewallStatus implements Editable<EgressFirewallStatusBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EgressFirewallStatus() {
     }

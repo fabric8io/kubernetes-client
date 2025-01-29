@@ -75,7 +75,6 @@ public class FeatureGateTests implements Editable<FeatureGateTestsBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public FeatureGateTests() {
     }

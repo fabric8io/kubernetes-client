@@ -91,7 +91,6 @@ public class RouteStatus implements Editable<RouteStatusBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RouteStatus() {
     }

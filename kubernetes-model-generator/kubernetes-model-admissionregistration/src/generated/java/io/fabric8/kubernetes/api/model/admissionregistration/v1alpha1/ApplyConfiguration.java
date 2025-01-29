@@ -69,7 +69,6 @@ public class ApplyConfiguration implements Editable<ApplyConfigurationBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ApplyConfiguration() {
     }

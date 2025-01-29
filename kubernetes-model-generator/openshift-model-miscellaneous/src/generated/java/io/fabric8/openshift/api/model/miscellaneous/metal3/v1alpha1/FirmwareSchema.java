@@ -76,16 +76,12 @@ public class FirmwareSchema implements Editable<FirmwareSchemaBuilder>, HasMetad
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "metal3.io/v1alpha1";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "FirmwareSchema";
@@ -98,7 +94,6 @@ public class FirmwareSchema implements Editable<FirmwareSchemaBuilder>, HasMetad
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public FirmwareSchema() {
     }
@@ -112,9 +107,7 @@ public class FirmwareSchema implements Editable<FirmwareSchemaBuilder>, HasMetad
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -122,9 +115,7 @@ public class FirmwareSchema implements Editable<FirmwareSchemaBuilder>, HasMetad
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -132,9 +123,7 @@ public class FirmwareSchema implements Editable<FirmwareSchemaBuilder>, HasMetad
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -142,9 +131,7 @@ public class FirmwareSchema implements Editable<FirmwareSchemaBuilder>, HasMetad
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

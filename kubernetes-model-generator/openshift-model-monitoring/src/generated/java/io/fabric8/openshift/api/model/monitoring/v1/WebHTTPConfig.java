@@ -72,7 +72,6 @@ public class WebHTTPConfig implements Editable<WebHTTPConfigBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public WebHTTPConfig() {
     }

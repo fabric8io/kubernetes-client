@@ -72,7 +72,6 @@ public class DiscoveryConfigSpec implements Editable<DiscoveryConfigSpecBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DiscoveryConfigSpec() {
     }

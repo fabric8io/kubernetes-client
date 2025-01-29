@@ -78,7 +78,6 @@ public class ClientConnectionOverrides implements Editable<ClientConnectionOverr
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClientConnectionOverrides() {
     }

@@ -72,7 +72,6 @@ public class TaskRunSidecarOverride implements Editable<TaskRunSidecarOverrideBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TaskRunSidecarOverride() {
     }

@@ -78,7 +78,6 @@ public class JenkinsPipelineBuildStrategy implements Editable<JenkinsPipelineBui
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public JenkinsPipelineBuildStrategy() {
     }

@@ -82,7 +82,6 @@ public class ReceiveSpec implements Editable<ReceiveSpecBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ReceiveSpec() {
     }

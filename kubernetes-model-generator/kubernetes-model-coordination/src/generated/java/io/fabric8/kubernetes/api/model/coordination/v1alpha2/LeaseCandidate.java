@@ -76,16 +76,12 @@ public class LeaseCandidate implements Editable<LeaseCandidateBuilder>, HasMetad
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "coordination.k8s.io/v1alpha2";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "LeaseCandidate";
@@ -98,7 +94,6 @@ public class LeaseCandidate implements Editable<LeaseCandidateBuilder>, HasMetad
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public LeaseCandidate() {
     }
@@ -112,9 +107,7 @@ public class LeaseCandidate implements Editable<LeaseCandidateBuilder>, HasMetad
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -122,9 +115,7 @@ public class LeaseCandidate implements Editable<LeaseCandidateBuilder>, HasMetad
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -132,9 +123,7 @@ public class LeaseCandidate implements Editable<LeaseCandidateBuilder>, HasMetad
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -142,9 +131,7 @@ public class LeaseCandidate implements Editable<LeaseCandidateBuilder>, HasMetad
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

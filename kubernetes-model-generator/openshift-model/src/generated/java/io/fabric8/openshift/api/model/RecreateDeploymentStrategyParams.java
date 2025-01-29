@@ -78,7 +78,6 @@ public class RecreateDeploymentStrategyParams implements Editable<RecreateDeploy
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RecreateDeploymentStrategyParams() {
     }

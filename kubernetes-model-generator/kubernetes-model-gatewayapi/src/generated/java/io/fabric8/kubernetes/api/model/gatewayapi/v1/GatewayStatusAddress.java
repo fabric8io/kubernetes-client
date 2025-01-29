@@ -72,7 +72,6 @@ public class GatewayStatusAddress implements Editable<GatewayStatusAddressBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GatewayStatusAddress() {
     }

@@ -102,7 +102,6 @@ public class VirtualService implements Editable<VirtualServiceBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public VirtualService() {
     }

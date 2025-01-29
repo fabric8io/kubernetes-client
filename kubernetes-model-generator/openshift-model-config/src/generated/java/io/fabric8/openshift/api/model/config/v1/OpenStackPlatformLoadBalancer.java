@@ -69,7 +69,6 @@ public class OpenStackPlatformLoadBalancer implements Editable<OpenStackPlatform
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public OpenStackPlatformLoadBalancer() {
     }

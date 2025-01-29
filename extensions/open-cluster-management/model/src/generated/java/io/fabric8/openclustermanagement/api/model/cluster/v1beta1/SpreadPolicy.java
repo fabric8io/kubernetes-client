@@ -72,7 +72,6 @@ public class SpreadPolicy implements Editable<SpreadPolicyBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SpreadPolicy() {
     }

@@ -79,9 +79,7 @@ public class CSIStorageCapacityList implements Editable<CSIStorageCapacityListBu
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "storage.k8s.io/v1";
@@ -89,9 +87,7 @@ public class CSIStorageCapacityList implements Editable<CSIStorageCapacityListBu
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.kubernetes.api.model.storage.CSIStorageCapacity> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "CSIStorageCapacityList";
@@ -102,7 +98,6 @@ public class CSIStorageCapacityList implements Editable<CSIStorageCapacityListBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CSIStorageCapacityList() {
     }
@@ -116,9 +111,7 @@ public class CSIStorageCapacityList implements Editable<CSIStorageCapacityListBu
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class CSIStorageCapacityList implements Editable<CSIStorageCapacityListBu
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class CSIStorageCapacityList implements Editable<CSIStorageCapacityListBu
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class CSIStorageCapacityList implements Editable<CSIStorageCapacityListBu
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

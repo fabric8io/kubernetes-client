@@ -75,7 +75,6 @@ public class EvictionRequirement implements Editable<EvictionRequirementBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public EvictionRequirement() {
     }

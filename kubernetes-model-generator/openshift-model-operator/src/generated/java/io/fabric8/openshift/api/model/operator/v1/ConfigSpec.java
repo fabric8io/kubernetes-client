@@ -83,7 +83,6 @@ public class ConfigSpec implements Editable<ConfigSpecBuilder>, KubernetesResour
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ConfigSpec() {
     }

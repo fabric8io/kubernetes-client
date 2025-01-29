@@ -72,7 +72,6 @@ public class RelatedImage implements Editable<RelatedImageBuilder>, KubernetesRe
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RelatedImage() {
     }

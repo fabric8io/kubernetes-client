@@ -80,7 +80,6 @@ public class NetworkDataLink implements Editable<NetworkDataLinkBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NetworkDataLink() {
     }

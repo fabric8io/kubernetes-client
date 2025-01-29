@@ -84,7 +84,6 @@ public class MachinePoolCondition implements Editable<MachinePoolConditionBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MachinePoolCondition() {
     }

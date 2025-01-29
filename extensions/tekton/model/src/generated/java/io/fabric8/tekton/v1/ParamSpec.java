@@ -88,7 +88,6 @@ public class ParamSpec implements Editable<ParamSpecBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ParamSpec() {
     }

@@ -77,18 +77,14 @@ public class AzureProviderStatus implements Editable<AzureProviderStatusBuilder>
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "cloudcredential.openshift.io/v1";
     @JsonProperty("appID")
     private String appID;
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "AzureProviderStatus";
@@ -101,7 +97,6 @@ public class AzureProviderStatus implements Editable<AzureProviderStatusBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AzureProviderStatus() {
     }
@@ -116,9 +111,7 @@ public class AzureProviderStatus implements Editable<AzureProviderStatusBuilder>
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class AzureProviderStatus implements Editable<AzureProviderStatusBuilder>
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -146,9 +137,7 @@ public class AzureProviderStatus implements Editable<AzureProviderStatusBuilder>
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -156,9 +145,7 @@ public class AzureProviderStatus implements Editable<AzureProviderStatusBuilder>
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

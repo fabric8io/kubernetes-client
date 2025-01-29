@@ -75,7 +75,6 @@ public class GitLabInterceptor implements Editable<GitLabInterceptorBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GitLabInterceptor() {
     }

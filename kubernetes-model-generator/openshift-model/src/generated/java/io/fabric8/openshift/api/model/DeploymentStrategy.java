@@ -92,7 +92,6 @@ public class DeploymentStrategy implements Editable<DeploymentStrategyBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DeploymentStrategy() {
     }

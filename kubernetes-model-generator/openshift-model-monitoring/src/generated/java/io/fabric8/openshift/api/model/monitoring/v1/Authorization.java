@@ -76,7 +76,6 @@ public class Authorization implements Editable<AuthorizationBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Authorization() {
     }

@@ -101,7 +101,6 @@ public class GitLabSourceStatus implements Editable<GitLabSourceStatusBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GitLabSourceStatus() {
     }

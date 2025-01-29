@@ -75,7 +75,6 @@ public class GRPCRouteMatch implements Editable<GRPCRouteMatchBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GRPCRouteMatch() {
     }

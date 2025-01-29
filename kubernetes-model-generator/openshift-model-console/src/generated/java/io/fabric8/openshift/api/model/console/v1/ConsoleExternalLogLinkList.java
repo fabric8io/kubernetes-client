@@ -79,9 +79,7 @@ public class ConsoleExternalLogLinkList implements Editable<ConsoleExternalLogLi
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "console.openshift.io/v1";
@@ -89,9 +87,7 @@ public class ConsoleExternalLogLinkList implements Editable<ConsoleExternalLogLi
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openshift.api.model.console.v1.ConsoleExternalLogLink> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "ConsoleExternalLogLinkList";
@@ -102,7 +98,6 @@ public class ConsoleExternalLogLinkList implements Editable<ConsoleExternalLogLi
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ConsoleExternalLogLinkList() {
     }
@@ -116,9 +111,7 @@ public class ConsoleExternalLogLinkList implements Editable<ConsoleExternalLogLi
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class ConsoleExternalLogLinkList implements Editable<ConsoleExternalLogLi
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class ConsoleExternalLogLinkList implements Editable<ConsoleExternalLogLi
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class ConsoleExternalLogLinkList implements Editable<ConsoleExternalLogLi
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

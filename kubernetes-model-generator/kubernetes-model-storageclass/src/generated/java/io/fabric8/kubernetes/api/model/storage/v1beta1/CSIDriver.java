@@ -75,16 +75,12 @@ public class CSIDriver implements Editable<CSIDriverBuilder>, HasMetadata
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "storage.k8s.io/v1beta1";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "CSIDriver";
@@ -97,7 +93,6 @@ public class CSIDriver implements Editable<CSIDriverBuilder>, HasMetadata
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CSIDriver() {
     }
@@ -111,9 +106,7 @@ public class CSIDriver implements Editable<CSIDriverBuilder>, HasMetadata
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -121,9 +114,7 @@ public class CSIDriver implements Editable<CSIDriverBuilder>, HasMetadata
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -131,9 +122,7 @@ public class CSIDriver implements Editable<CSIDriverBuilder>, HasMetadata
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -141,9 +130,7 @@ public class CSIDriver implements Editable<CSIDriverBuilder>, HasMetadata
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

@@ -87,7 +87,6 @@ public class DomainMappingStatus implements Editable<DomainMappingStatusBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DomainMappingStatus() {
     }

@@ -73,7 +73,6 @@ public class ResourceQuotaStatusByNamespace implements Editable<ResourceQuotaSta
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ResourceQuotaStatusByNamespace() {
     }

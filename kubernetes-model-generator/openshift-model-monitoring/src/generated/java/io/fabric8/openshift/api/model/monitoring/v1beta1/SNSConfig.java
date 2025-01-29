@@ -98,7 +98,6 @@ public class SNSConfig implements Editable<SNSConfigBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SNSConfig() {
     }

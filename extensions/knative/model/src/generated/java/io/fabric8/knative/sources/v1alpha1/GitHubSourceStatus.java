@@ -101,7 +101,6 @@ public class GitHubSourceStatus implements Editable<GitHubSourceStatusBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GitHubSourceStatus() {
     }

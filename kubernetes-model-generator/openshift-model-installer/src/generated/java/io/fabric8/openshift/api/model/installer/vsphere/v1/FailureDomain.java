@@ -81,7 +81,6 @@ public class FailureDomain implements Editable<FailureDomainBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public FailureDomain() {
     }

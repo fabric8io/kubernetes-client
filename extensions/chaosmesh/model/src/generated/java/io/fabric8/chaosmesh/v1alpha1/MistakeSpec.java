@@ -75,7 +75,6 @@ public class MistakeSpec implements Editable<MistakeSpecBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MistakeSpec() {
     }

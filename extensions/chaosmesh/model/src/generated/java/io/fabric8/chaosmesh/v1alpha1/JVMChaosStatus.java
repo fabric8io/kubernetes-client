@@ -75,7 +75,6 @@ public class JVMChaosStatus implements Editable<JVMChaosStatusBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public JVMChaosStatus() {
     }

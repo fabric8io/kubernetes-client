@@ -86,7 +86,6 @@ public class NodeStatus implements Editable<NodeStatusBuilder>, KubernetesResour
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NodeStatus() {
     }

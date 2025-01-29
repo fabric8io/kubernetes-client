@@ -92,7 +92,6 @@ public class BareMetalPlatformStatus implements Editable<BareMetalPlatformStatus
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public BareMetalPlatformStatus() {
     }

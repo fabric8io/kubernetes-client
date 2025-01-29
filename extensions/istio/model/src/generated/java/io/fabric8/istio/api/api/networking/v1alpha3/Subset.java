@@ -76,7 +76,6 @@ public class Subset implements Editable<SubsetBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Subset() {
     }

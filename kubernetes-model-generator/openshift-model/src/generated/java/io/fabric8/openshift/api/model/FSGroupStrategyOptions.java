@@ -75,7 +75,6 @@ public class FSGroupStrategyOptions implements Editable<FSGroupStrategyOptionsBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public FSGroupStrategyOptions() {
     }

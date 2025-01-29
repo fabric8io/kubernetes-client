@@ -69,7 +69,6 @@ public class RateSpec implements Editable<RateSpecBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RateSpec() {
     }

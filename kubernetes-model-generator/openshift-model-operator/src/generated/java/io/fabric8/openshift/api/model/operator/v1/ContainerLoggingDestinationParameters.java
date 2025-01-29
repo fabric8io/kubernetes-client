@@ -69,7 +69,6 @@ public class ContainerLoggingDestinationParameters implements Editable<Container
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ContainerLoggingDestinationParameters() {
     }

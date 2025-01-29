@@ -72,7 +72,6 @@ public class IngressServiceBackend implements Editable<IngressServiceBackendBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public IngressServiceBackend() {
     }

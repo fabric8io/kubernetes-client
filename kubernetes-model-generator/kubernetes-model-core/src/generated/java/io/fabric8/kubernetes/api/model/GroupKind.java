@@ -43,7 +43,6 @@ public class GroupKind implements Editable<GroupKindBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GroupKind() {
     }

@@ -78,7 +78,6 @@ public class PodDisruptionBudgetSpec implements Editable<PodDisruptionBudgetSpec
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PodDisruptionBudgetSpec() {
     }

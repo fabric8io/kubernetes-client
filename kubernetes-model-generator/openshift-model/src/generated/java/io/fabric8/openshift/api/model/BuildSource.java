@@ -98,7 +98,6 @@ public class BuildSource implements Editable<BuildSourceBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public BuildSource() {
     }

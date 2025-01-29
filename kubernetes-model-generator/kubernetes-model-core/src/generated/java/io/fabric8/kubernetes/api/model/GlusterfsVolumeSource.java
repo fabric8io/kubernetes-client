@@ -46,7 +46,6 @@ public class GlusterfsVolumeSource implements Editable<GlusterfsVolumeSourceBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public GlusterfsVolumeSource() {
     }

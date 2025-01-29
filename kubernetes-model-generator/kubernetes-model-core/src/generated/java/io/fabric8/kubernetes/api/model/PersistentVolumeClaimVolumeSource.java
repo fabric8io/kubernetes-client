@@ -43,7 +43,6 @@ public class PersistentVolumeClaimVolumeSource implements Editable<PersistentVol
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PersistentVolumeClaimVolumeSource() {
     }

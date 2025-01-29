@@ -72,7 +72,6 @@ public class SignatureStore implements Editable<SignatureStoreBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SignatureStore() {
     }

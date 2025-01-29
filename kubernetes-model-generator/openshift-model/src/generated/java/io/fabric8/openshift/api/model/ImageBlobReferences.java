@@ -82,7 +82,6 @@ public class ImageBlobReferences implements Editable<ImageBlobReferencesBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ImageBlobReferences() {
     }

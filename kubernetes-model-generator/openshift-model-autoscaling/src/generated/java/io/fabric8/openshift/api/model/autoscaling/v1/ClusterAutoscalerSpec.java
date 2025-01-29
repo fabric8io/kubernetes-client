@@ -103,7 +103,6 @@ public class ClusterAutoscalerSpec implements Editable<ClusterAutoscalerSpecBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClusterAutoscalerSpec() {
     }

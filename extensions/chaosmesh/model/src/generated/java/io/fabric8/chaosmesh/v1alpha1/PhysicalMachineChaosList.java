@@ -79,9 +79,7 @@ public class PhysicalMachineChaosList implements Editable<PhysicalMachineChaosLi
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "chaos-mesh.org/v1alpha1";
@@ -89,9 +87,7 @@ public class PhysicalMachineChaosList implements Editable<PhysicalMachineChaosLi
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.chaosmesh.v1alpha1.PhysicalMachineChaos> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "PhysicalMachineChaosList";
@@ -102,7 +98,6 @@ public class PhysicalMachineChaosList implements Editable<PhysicalMachineChaosLi
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PhysicalMachineChaosList() {
     }
@@ -116,9 +111,7 @@ public class PhysicalMachineChaosList implements Editable<PhysicalMachineChaosLi
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class PhysicalMachineChaosList implements Editable<PhysicalMachineChaosLi
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class PhysicalMachineChaosList implements Editable<PhysicalMachineChaosLi
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class PhysicalMachineChaosList implements Editable<PhysicalMachineChaosLi
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

@@ -87,7 +87,6 @@ public class WorkflowNodeStatus implements Editable<WorkflowNodeStatusBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public WorkflowNodeStatus() {
     }

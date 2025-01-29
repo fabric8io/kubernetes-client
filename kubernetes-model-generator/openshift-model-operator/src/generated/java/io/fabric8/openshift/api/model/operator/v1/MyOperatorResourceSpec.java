@@ -83,7 +83,6 @@ public class MyOperatorResourceSpec implements Editable<MyOperatorResourceSpecBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public MyOperatorResourceSpec() {
     }

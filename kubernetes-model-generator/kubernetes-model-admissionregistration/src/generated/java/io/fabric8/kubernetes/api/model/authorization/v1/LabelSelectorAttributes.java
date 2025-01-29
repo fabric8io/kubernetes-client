@@ -76,7 +76,6 @@ public class LabelSelectorAttributes implements Editable<LabelSelectorAttributes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public LabelSelectorAttributes() {
     }

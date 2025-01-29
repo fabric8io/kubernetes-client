@@ -72,7 +72,6 @@ public class ExecHealthCheckConfig implements Editable<ExecHealthCheckConfigBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ExecHealthCheckConfig() {
     }

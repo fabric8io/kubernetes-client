@@ -75,7 +75,6 @@ public class ControlPlaneServingCertificateSpec implements Editable<ControlPlane
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ControlPlaneServingCertificateSpec() {
     }

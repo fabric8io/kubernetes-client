@@ -82,7 +82,6 @@ public class SubjectRulesReviewStatus implements Editable<SubjectRulesReviewStat
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SubjectRulesReviewStatus() {
     }

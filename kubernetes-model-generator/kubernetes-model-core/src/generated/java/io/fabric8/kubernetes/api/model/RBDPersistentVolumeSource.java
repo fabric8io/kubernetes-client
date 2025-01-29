@@ -64,7 +64,6 @@ public class RBDPersistentVolumeSource implements Editable<RBDPersistentVolumeSo
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RBDPersistentVolumeSource() {
     }

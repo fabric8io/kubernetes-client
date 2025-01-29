@@ -72,7 +72,6 @@ public class ClusterRelocateSpec implements Editable<ClusterRelocateSpecBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClusterRelocateSpec() {
     }

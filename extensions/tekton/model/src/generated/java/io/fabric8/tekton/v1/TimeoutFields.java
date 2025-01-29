@@ -76,7 +76,6 @@ public class TimeoutFields implements Editable<TimeoutFieldsBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TimeoutFields() {
     }

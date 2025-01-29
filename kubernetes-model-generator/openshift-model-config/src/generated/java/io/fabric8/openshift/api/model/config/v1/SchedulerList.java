@@ -79,9 +79,7 @@ public class SchedulerList implements Editable<SchedulerListBuilder>, Kubernetes
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "config.openshift.io/v1";
@@ -89,9 +87,7 @@ public class SchedulerList implements Editable<SchedulerListBuilder>, Kubernetes
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openshift.api.model.config.v1.Scheduler> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "SchedulerList";
@@ -102,7 +98,6 @@ public class SchedulerList implements Editable<SchedulerListBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public SchedulerList() {
     }
@@ -116,9 +111,7 @@ public class SchedulerList implements Editable<SchedulerListBuilder>, Kubernetes
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class SchedulerList implements Editable<SchedulerListBuilder>, Kubernetes
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class SchedulerList implements Editable<SchedulerListBuilder>, Kubernetes
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class SchedulerList implements Editable<SchedulerListBuilder>, Kubernetes
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

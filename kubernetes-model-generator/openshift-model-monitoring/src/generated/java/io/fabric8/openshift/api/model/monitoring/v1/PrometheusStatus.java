@@ -97,7 +97,6 @@ public class PrometheusStatus implements Editable<PrometheusStatusBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PrometheusStatus() {
     }

@@ -76,18 +76,14 @@ public class VolumeAttributesClass implements Editable<VolumeAttributesClassBuil
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "storage.k8s.io/v1beta1";
     @JsonProperty("driverName")
     private String driverName;
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "VolumeAttributesClass";
@@ -101,7 +97,6 @@ public class VolumeAttributesClass implements Editable<VolumeAttributesClassBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public VolumeAttributesClass() {
     }
@@ -116,9 +111,7 @@ public class VolumeAttributesClass implements Editable<VolumeAttributesClassBuil
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class VolumeAttributesClass implements Editable<VolumeAttributesClassBuil
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -146,9 +137,7 @@ public class VolumeAttributesClass implements Editable<VolumeAttributesClassBuil
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -156,9 +145,7 @@ public class VolumeAttributesClass implements Editable<VolumeAttributesClassBuil
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

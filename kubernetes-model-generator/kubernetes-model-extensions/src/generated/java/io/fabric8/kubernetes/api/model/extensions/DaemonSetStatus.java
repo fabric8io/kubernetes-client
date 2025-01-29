@@ -99,7 +99,6 @@ public class DaemonSetStatus implements Editable<DaemonSetStatusBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public DaemonSetStatus() {
     }

@@ -77,16 +77,12 @@ public class ManagedClusterSetBinding implements Editable<ManagedClusterSetBindi
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "cluster.open-cluster-management.io/v1beta2";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "ManagedClusterSetBinding";
@@ -101,7 +97,6 @@ public class ManagedClusterSetBinding implements Editable<ManagedClusterSetBindi
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ManagedClusterSetBinding() {
     }
@@ -116,9 +111,7 @@ public class ManagedClusterSetBinding implements Editable<ManagedClusterSetBindi
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class ManagedClusterSetBinding implements Editable<ManagedClusterSetBindi
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -136,9 +127,7 @@ public class ManagedClusterSetBinding implements Editable<ManagedClusterSetBindi
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -146,9 +135,7 @@ public class ManagedClusterSetBinding implements Editable<ManagedClusterSetBindi
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

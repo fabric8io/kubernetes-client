@@ -75,7 +75,6 @@ public class NetworkLinkEthernetMac implements Editable<NetworkLinkEthernetMacBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public NetworkLinkEthernetMac() {
     }

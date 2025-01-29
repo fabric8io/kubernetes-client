@@ -82,7 +82,6 @@ public class WorkAgentConfiguration implements Editable<WorkAgentConfigurationBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public WorkAgentConfiguration() {
     }

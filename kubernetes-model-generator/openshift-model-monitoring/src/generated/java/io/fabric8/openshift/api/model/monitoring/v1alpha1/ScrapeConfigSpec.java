@@ -271,7 +271,6 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ScrapeConfigSpec() {
     }

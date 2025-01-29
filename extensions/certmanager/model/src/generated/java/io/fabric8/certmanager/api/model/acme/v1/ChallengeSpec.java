@@ -93,7 +93,6 @@ public class ChallengeSpec implements Editable<ChallengeSpecBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ChallengeSpec() {
     }

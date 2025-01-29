@@ -75,7 +75,6 @@ public class WebHookTrigger implements Editable<WebHookTriggerBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public WebHookTrigger() {
     }

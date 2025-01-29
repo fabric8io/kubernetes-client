@@ -78,7 +78,6 @@ public class LoadBalancerSettingsConsistentHashLB implements Editable<LoadBalanc
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public LoadBalancerSettingsConsistentHashLB() {
     }

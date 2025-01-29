@@ -81,7 +81,6 @@ public class ObservabilityAddonSpec implements Editable<ObservabilityAddonSpecBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ObservabilityAddonSpec() {
     }

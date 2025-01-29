@@ -85,7 +85,6 @@ public class RuleSpec implements Editable<RuleSpecBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RuleSpec() {
     }

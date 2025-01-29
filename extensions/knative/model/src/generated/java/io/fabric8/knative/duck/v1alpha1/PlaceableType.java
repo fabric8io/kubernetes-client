@@ -76,16 +76,12 @@ public class PlaceableType implements Editable<PlaceableTypeBuilder>, HasMetadat
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "duck.knative.dev/v1alpha1";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "PlaceableType";
@@ -98,7 +94,6 @@ public class PlaceableType implements Editable<PlaceableTypeBuilder>, HasMetadat
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PlaceableType() {
     }
@@ -112,9 +107,7 @@ public class PlaceableType implements Editable<PlaceableTypeBuilder>, HasMetadat
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -122,9 +115,7 @@ public class PlaceableType implements Editable<PlaceableTypeBuilder>, HasMetadat
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -132,9 +123,7 @@ public class PlaceableType implements Editable<PlaceableTypeBuilder>, HasMetadat
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -142,9 +131,7 @@ public class PlaceableType implements Editable<PlaceableTypeBuilder>, HasMetadat
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

@@ -97,7 +97,6 @@ public class AuditConfig implements Editable<AuditConfigBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AuditConfig() {
     }

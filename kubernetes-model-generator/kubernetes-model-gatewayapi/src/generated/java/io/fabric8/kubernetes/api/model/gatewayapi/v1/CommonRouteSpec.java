@@ -72,7 +72,6 @@ public class CommonRouteSpec implements Editable<CommonRouteSpecBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CommonRouteSpec() {
     }

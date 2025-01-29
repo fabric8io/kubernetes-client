@@ -80,9 +80,7 @@ public class ResourceAccessReviewResponse implements Editable<ResourceAccessRevi
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "authorization.openshift.io/v1";
@@ -92,9 +90,7 @@ public class ResourceAccessReviewResponse implements Editable<ResourceAccessRevi
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> groups = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "ResourceAccessReviewResponse";
@@ -108,7 +104,6 @@ public class ResourceAccessReviewResponse implements Editable<ResourceAccessRevi
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ResourceAccessReviewResponse() {
     }
@@ -124,9 +119,7 @@ public class ResourceAccessReviewResponse implements Editable<ResourceAccessRevi
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -134,9 +127,7 @@ public class ResourceAccessReviewResponse implements Editable<ResourceAccessRevi
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -165,9 +156,7 @@ public class ResourceAccessReviewResponse implements Editable<ResourceAccessRevi
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -175,9 +164,7 @@ public class ResourceAccessReviewResponse implements Editable<ResourceAccessRevi
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

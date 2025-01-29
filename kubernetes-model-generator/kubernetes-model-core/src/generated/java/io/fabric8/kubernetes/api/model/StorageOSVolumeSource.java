@@ -52,7 +52,6 @@ public class StorageOSVolumeSource implements Editable<StorageOSVolumeSourceBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public StorageOSVolumeSource() {
     }

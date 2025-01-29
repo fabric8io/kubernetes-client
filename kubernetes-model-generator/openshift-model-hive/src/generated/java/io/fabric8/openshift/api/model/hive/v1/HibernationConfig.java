@@ -69,7 +69,6 @@ public class HibernationConfig implements Editable<HibernationConfigBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public HibernationConfig() {
     }

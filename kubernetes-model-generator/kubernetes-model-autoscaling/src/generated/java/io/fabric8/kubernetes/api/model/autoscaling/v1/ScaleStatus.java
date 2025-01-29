@@ -72,7 +72,6 @@ public class ScaleStatus implements Editable<ScaleStatusBuilder>, KubernetesReso
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ScaleStatus() {
     }

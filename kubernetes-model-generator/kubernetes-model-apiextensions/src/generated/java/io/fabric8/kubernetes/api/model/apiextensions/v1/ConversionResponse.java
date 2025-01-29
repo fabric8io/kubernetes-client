@@ -80,7 +80,6 @@ public class ConversionResponse implements Editable<ConversionResponseBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ConversionResponse() {
     }

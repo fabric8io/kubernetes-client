@@ -80,7 +80,6 @@ public class InternalTaskModifier implements Editable<InternalTaskModifierBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public InternalTaskModifier() {
     }

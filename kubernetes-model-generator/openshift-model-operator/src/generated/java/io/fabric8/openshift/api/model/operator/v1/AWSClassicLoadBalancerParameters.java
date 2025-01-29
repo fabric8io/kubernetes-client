@@ -72,7 +72,6 @@ public class AWSClassicLoadBalancerParameters implements Editable<AWSClassicLoad
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AWSClassicLoadBalancerParameters() {
     }

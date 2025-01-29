@@ -40,7 +40,6 @@ public class ClientIPConfig implements Editable<ClientIPConfigBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClientIPConfig() {
     }

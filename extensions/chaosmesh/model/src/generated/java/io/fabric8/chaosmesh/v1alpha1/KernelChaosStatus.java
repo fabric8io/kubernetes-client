@@ -75,7 +75,6 @@ public class KernelChaosStatus implements Editable<KernelChaosStatusBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public KernelChaosStatus() {
     }

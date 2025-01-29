@@ -46,7 +46,6 @@ public class ContainerState implements Editable<ContainerStateBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ContainerState() {
     }

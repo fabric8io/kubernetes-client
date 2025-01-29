@@ -90,7 +90,6 @@ public class TrafficPolicy implements Editable<TrafficPolicyBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public TrafficPolicy() {
     }

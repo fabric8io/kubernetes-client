@@ -69,7 +69,6 @@ public class ClusterImageSetReference implements Editable<ClusterImageSetReferen
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClusterImageSetReference() {
     }

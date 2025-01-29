@@ -86,9 +86,7 @@ public class BuildRequest implements Editable<BuildRequestBuilder>, HasMetadata,
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "build.openshift.io/v1";
@@ -102,9 +100,7 @@ public class BuildRequest implements Editable<BuildRequestBuilder>, HasMetadata,
     @JsonProperty("from")
     private ObjectReference from;
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "BuildRequest";
@@ -126,7 +122,6 @@ public class BuildRequest implements Editable<BuildRequestBuilder>, HasMetadata,
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public BuildRequest() {
     }
@@ -148,9 +143,7 @@ public class BuildRequest implements Editable<BuildRequestBuilder>, HasMetadata,
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -158,9 +151,7 @@ public class BuildRequest implements Editable<BuildRequestBuilder>, HasMetadata,
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -209,9 +200,7 @@ public class BuildRequest implements Editable<BuildRequestBuilder>, HasMetadata,
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -219,9 +208,7 @@ public class BuildRequest implements Editable<BuildRequestBuilder>, HasMetadata,
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

@@ -69,7 +69,6 @@ public class ConfidentialVM implements Editable<ConfidentialVMBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ConfidentialVM() {
     }

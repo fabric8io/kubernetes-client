@@ -79,9 +79,7 @@ public class CertificateSigningRequestList implements Editable<CertificateSignin
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "certificates.k8s.io/v1";
@@ -89,9 +87,7 @@ public class CertificateSigningRequestList implements Editable<CertificateSignin
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequest> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "CertificateSigningRequestList";
@@ -102,7 +98,6 @@ public class CertificateSigningRequestList implements Editable<CertificateSignin
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CertificateSigningRequestList() {
     }
@@ -116,9 +111,7 @@ public class CertificateSigningRequestList implements Editable<CertificateSignin
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class CertificateSigningRequestList implements Editable<CertificateSignin
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class CertificateSigningRequestList implements Editable<CertificateSignin
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class CertificateSigningRequestList implements Editable<CertificateSignin
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

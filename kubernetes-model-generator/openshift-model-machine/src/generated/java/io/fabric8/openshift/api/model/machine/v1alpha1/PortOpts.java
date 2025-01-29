@@ -121,7 +121,6 @@ public class PortOpts implements Editable<PortOptsBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PortOpts() {
     }

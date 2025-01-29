@@ -72,7 +72,6 @@ public class PrometheusRuleExcludeConfig implements Editable<PrometheusRuleExclu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PrometheusRuleExcludeConfig() {
     }

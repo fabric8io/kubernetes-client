@@ -75,7 +75,6 @@ public class RoleBindingRestrictionSpec implements Editable<RoleBindingRestricti
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public RoleBindingRestrictionSpec() {
     }

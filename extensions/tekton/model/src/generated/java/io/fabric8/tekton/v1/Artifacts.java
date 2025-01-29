@@ -76,7 +76,6 @@ public class Artifacts implements Editable<ArtifactsBuilder>, KubernetesResource
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public Artifacts() {
     }

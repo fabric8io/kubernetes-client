@@ -77,7 +77,6 @@ public class JSONSchemaPropsOrArray implements Editable<JSONSchemaPropsOrArrayBu
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public JSONSchemaPropsOrArray() {
     }

@@ -81,7 +81,6 @@ public class WebHTTPHeaders implements Editable<WebHTTPHeadersBuilder>, Kubernet
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public WebHTTPHeaders() {
     }

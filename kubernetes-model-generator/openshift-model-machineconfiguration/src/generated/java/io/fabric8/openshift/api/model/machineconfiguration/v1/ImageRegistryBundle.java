@@ -72,7 +72,6 @@ public class ImageRegistryBundle implements Editable<ImageRegistryBundleBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ImageRegistryBundle() {
     }

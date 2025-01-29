@@ -75,16 +75,12 @@ public class ClusterTrustBundle implements Editable<ClusterTrustBundleBuilder>, 
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "certificates.k8s.io/v1alpha1";
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "ClusterTrustBundle";
@@ -97,7 +93,6 @@ public class ClusterTrustBundle implements Editable<ClusterTrustBundleBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ClusterTrustBundle() {
     }
@@ -111,9 +106,7 @@ public class ClusterTrustBundle implements Editable<ClusterTrustBundleBuilder>, 
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -121,9 +114,7 @@ public class ClusterTrustBundle implements Editable<ClusterTrustBundleBuilder>, 
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -131,9 +122,7 @@ public class ClusterTrustBundle implements Editable<ClusterTrustBundleBuilder>, 
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -141,9 +130,7 @@ public class ClusterTrustBundle implements Editable<ClusterTrustBundleBuilder>, 
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

@@ -75,7 +75,6 @@ public class QueuingConfiguration implements Editable<QueuingConfigurationBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public QueuingConfiguration() {
     }

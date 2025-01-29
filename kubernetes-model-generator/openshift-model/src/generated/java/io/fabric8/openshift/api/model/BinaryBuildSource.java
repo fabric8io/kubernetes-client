@@ -69,7 +69,6 @@ public class BinaryBuildSource implements Editable<BinaryBuildSourceBuilder>, Ku
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public BinaryBuildSource() {
     }

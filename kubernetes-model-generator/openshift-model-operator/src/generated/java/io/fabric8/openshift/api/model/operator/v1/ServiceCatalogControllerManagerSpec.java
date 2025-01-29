@@ -83,7 +83,6 @@ public class ServiceCatalogControllerManagerSpec implements Editable<ServiceCata
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ServiceCatalogControllerManagerSpec() {
     }

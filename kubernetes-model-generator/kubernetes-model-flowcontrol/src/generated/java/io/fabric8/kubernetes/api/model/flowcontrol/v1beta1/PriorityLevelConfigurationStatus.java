@@ -72,7 +72,6 @@ public class PriorityLevelConfigurationStatus implements Editable<PriorityLevelC
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public PriorityLevelConfigurationStatus() {
     }

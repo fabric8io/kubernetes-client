@@ -79,9 +79,7 @@ public class ServiceMonitorList implements Editable<ServiceMonitorListBuilder>, 
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "monitoring.coreos.com/v1";
@@ -89,9 +87,7 @@ public class ServiceMonitorList implements Editable<ServiceMonitorListBuilder>, 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openshift.api.model.monitoring.v1.ServiceMonitor> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "ServiceMonitorList";
@@ -102,7 +98,6 @@ public class ServiceMonitorList implements Editable<ServiceMonitorListBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ServiceMonitorList() {
     }
@@ -116,9 +111,7 @@ public class ServiceMonitorList implements Editable<ServiceMonitorListBuilder>, 
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class ServiceMonitorList implements Editable<ServiceMonitorListBuilder>, 
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class ServiceMonitorList implements Editable<ServiceMonitorListBuilder>, 
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class ServiceMonitorList implements Editable<ServiceMonitorListBuilder>, 
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

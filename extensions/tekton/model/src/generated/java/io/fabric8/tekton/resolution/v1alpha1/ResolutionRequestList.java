@@ -79,9 +79,7 @@ public class ResolutionRequestList implements Editable<ResolutionRequestListBuil
 {
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     private String apiVersion = "resolution.tekton.dev/v1alpha1";
@@ -89,9 +87,7 @@ public class ResolutionRequestList implements Editable<ResolutionRequestListBuil
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.tekton.resolution.v1alpha1.ResolutionRequest> items = new ArrayList<>();
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     private String kind = "ResolutionRequestList";
@@ -102,7 +98,6 @@ public class ResolutionRequestList implements Editable<ResolutionRequestListBuil
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ResolutionRequestList() {
     }
@@ -116,9 +111,7 @@ public class ResolutionRequestList implements Editable<ResolutionRequestListBuil
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,9 +119,7 @@ public class ResolutionRequestList implements Editable<ResolutionRequestListBuil
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -147,9 +138,7 @@ public class ResolutionRequestList implements Editable<ResolutionRequestListBuil
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,9 +146,7 @@ public class ResolutionRequestList implements Editable<ResolutionRequestListBuil
     }
 
     /**
-     * 
      * (Required)
-     * 
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

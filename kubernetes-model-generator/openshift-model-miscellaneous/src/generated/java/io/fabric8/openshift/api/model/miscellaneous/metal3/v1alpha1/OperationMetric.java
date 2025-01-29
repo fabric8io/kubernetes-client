@@ -72,7 +72,6 @@ public class OperationMetric implements Editable<OperationMetricBuilder>, Kubern
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public OperationMetric() {
     }

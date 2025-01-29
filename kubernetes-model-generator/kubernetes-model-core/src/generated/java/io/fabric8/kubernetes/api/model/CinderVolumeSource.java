@@ -49,7 +49,6 @@ public class CinderVolumeSource implements Editable<CinderVolumeSourceBuilder>, 
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public CinderVolumeSource() {
     }

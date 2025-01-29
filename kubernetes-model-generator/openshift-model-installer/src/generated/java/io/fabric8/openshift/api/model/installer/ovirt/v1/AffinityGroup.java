@@ -78,7 +78,6 @@ public class AffinityGroup implements Editable<AffinityGroupBuilder>, Kubernetes
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public AffinityGroup() {
     }

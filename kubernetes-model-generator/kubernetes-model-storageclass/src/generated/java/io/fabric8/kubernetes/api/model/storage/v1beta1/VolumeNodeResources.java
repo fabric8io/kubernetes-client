@@ -69,7 +69,6 @@ public class VolumeNodeResources implements Editable<VolumeNodeResourcesBuilder>
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public VolumeNodeResources() {
     }

@@ -72,7 +72,6 @@ public class ConfigMapBuildSource implements Editable<ConfigMapBuildSourceBuilde
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ConfigMapBuildSource() {
     }
