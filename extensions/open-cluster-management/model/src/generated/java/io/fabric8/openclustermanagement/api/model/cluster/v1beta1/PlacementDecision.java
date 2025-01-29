@@ -37,6 +37,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PlacementDecision indicates a decision from a placement. PlacementDecision must have a cluster.open-cluster-management.io/placement={placement name} label to reference a certain placement.<br><p> <br><p> If a placement has spec.numberOfClusters specified, the total number of decisions contained in the status.decisions of PlacementDecisions must be the same as NumberOfClusters. Otherwise, the total number of decisions must equal the number of ManagedClusters that match the placement requirements.<br><p> <br><p> Some of the decisions might be empty when there are not enough ManagedClusters to meet the placement requirements.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -75,14 +78,8 @@ import lombok.experimental.Accessors;
 public class PlacementDecision implements Editable<PlacementDecisionBuilder>, HasMetadata, Namespaced
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "cluster.open-cluster-management.io/v1beta1";
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "PlacementDecision";
     @JsonProperty("metadata")
@@ -107,7 +104,7 @@ public class PlacementDecision implements Editable<PlacementDecisionBuilder>, Ha
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -115,7 +112,7 @@ public class PlacementDecision implements Editable<PlacementDecisionBuilder>, Ha
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -123,7 +120,7 @@ public class PlacementDecision implements Editable<PlacementDecisionBuilder>, Ha
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -131,28 +128,40 @@ public class PlacementDecision implements Editable<PlacementDecisionBuilder>, Ha
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * PlacementDecision indicates a decision from a placement. PlacementDecision must have a cluster.open-cluster-management.io/placement={placement name} label to reference a certain placement.<br><p> <br><p> If a placement has spec.numberOfClusters specified, the total number of decisions contained in the status.decisions of PlacementDecisions must be the same as NumberOfClusters. Otherwise, the total number of decisions must equal the number of ManagedClusters that match the placement requirements.<br><p> <br><p> Some of the decisions might be empty when there are not enough ManagedClusters to meet the placement requirements.
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * PlacementDecision indicates a decision from a placement. PlacementDecision must have a cluster.open-cluster-management.io/placement={placement name} label to reference a certain placement.<br><p> <br><p> If a placement has spec.numberOfClusters specified, the total number of decisions contained in the status.decisions of PlacementDecisions must be the same as NumberOfClusters. Otherwise, the total number of decisions must equal the number of ManagedClusters that match the placement requirements.<br><p> <br><p> Some of the decisions might be empty when there are not enough ManagedClusters to meet the placement requirements.
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * PlacementDecision indicates a decision from a placement. PlacementDecision must have a cluster.open-cluster-management.io/placement={placement name} label to reference a certain placement.<br><p> <br><p> If a placement has spec.numberOfClusters specified, the total number of decisions contained in the status.decisions of PlacementDecisions must be the same as NumberOfClusters. Otherwise, the total number of decisions must equal the number of ManagedClusters that match the placement requirements.<br><p> <br><p> Some of the decisions might be empty when there are not enough ManagedClusters to meet the placement requirements.
+     */
     @JsonProperty("status")
     public PlacementDecisionStatus getStatus() {
         return status;
     }
 
+    /**
+     * PlacementDecision indicates a decision from a placement. PlacementDecision must have a cluster.open-cluster-management.io/placement={placement name} label to reference a certain placement.<br><p> <br><p> If a placement has spec.numberOfClusters specified, the total number of decisions contained in the status.decisions of PlacementDecisions must be the same as NumberOfClusters. Otherwise, the total number of decisions must equal the number of ManagedClusters that match the placement requirements.<br><p> <br><p> Some of the decisions might be empty when there are not enough ManagedClusters to meet the placement requirements.
+     */
     @JsonProperty("status")
     public void setStatus(PlacementDecisionStatus status) {
         this.status = status;

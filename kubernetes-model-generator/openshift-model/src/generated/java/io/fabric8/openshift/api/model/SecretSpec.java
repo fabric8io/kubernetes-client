@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SecretSpec specifies a secret to be included in a build pod and its corresponding mount point
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class SecretSpec implements Editable<SecretSpecBuilder>, KubernetesResour
         this.secretSource = secretSource;
     }
 
+    /**
+     * mountPath is the path at which to mount the secret
+     */
     @JsonProperty("mountPath")
     public String getMountPath() {
         return mountPath;
     }
 
+    /**
+     * mountPath is the path at which to mount the secret
+     */
     @JsonProperty("mountPath")
     public void setMountPath(String mountPath) {
         this.mountPath = mountPath;
     }
 
+    /**
+     * SecretSpec specifies a secret to be included in a build pod and its corresponding mount point
+     */
     @JsonProperty("secretSource")
     public LocalObjectReference getSecretSource() {
         return secretSource;
     }
 
+    /**
+     * SecretSpec specifies a secret to be included in a build pod and its corresponding mount point
+     */
     @JsonProperty("secretSource")
     public void setSecretSource(LocalObjectReference secretSource) {
         this.secretSource = secretSource;

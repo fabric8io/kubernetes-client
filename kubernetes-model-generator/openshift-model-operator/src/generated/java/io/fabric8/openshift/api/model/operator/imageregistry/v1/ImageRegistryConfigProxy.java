@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ImageRegistryConfigProxy defines proxy configuration to be used by registry.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class ImageRegistryConfigProxy implements Editable<ImageRegistryConfigPro
         this.noProxy = noProxy;
     }
 
+    /**
+     * http defines the proxy to be used by the image registry when accessing HTTP endpoints.
+     */
     @JsonProperty("http")
     public String getHttp() {
         return http;
     }
 
+    /**
+     * http defines the proxy to be used by the image registry when accessing HTTP endpoints.
+     */
     @JsonProperty("http")
     public void setHttp(String http) {
         this.http = http;
     }
 
+    /**
+     * https defines the proxy to be used by the image registry when accessing HTTPS endpoints.
+     */
     @JsonProperty("https")
     public String getHttps() {
         return https;
     }
 
+    /**
+     * https defines the proxy to be used by the image registry when accessing HTTPS endpoints.
+     */
     @JsonProperty("https")
     public void setHttps(String https) {
         this.https = https;
     }
 
+    /**
+     * noProxy defines a comma-separated list of host names that shouldn't go through any proxy.
+     */
     @JsonProperty("noProxy")
     public String getNoProxy() {
         return noProxy;
     }
 
+    /**
+     * noProxy defines a comma-separated list of host names that shouldn't go through any proxy.
+     */
     @JsonProperty("noProxy")
     public void setNoProxy(String noProxy) {
         this.noProxy = noProxy;

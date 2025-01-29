@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ExternalNextHops contains slices of StaticHops and DynamicHops structures. Minimum is one StaticHop or one DynamicHop.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,23 +89,35 @@ public class ExternalNextHops implements Editable<ExternalNextHopsBuilder>, Kube
         this._static = _static;
     }
 
+    /**
+     * DynamicHops defines a slices of DynamicHop. This field is optional.
+     */
     @JsonProperty("dynamic")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<DynamicHop> getDynamic() {
         return dynamic;
     }
 
+    /**
+     * DynamicHops defines a slices of DynamicHop. This field is optional.
+     */
     @JsonProperty("dynamic")
     public void setDynamic(List<DynamicHop> dynamic) {
         this.dynamic = dynamic;
     }
 
+    /**
+     * StaticHops defines a slice of StaticHop. This field is optional.
+     */
     @JsonProperty("static")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<StaticHop> getStatic() {
         return _static;
     }
 
+    /**
+     * StaticHops defines a slice of StaticHop. This field is optional.
+     */
     @JsonProperty("static")
     public void setStatic(List<StaticHop> _static) {
         this._static = _static;

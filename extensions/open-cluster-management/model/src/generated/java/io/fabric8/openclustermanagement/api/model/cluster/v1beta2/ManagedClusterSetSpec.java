@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ManagedClusterSetSpec describes the attributes of the ManagedClusterSet
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class ManagedClusterSetSpec implements Editable<ManagedClusterSetSpecBuil
         this.clusterSelector = clusterSelector;
     }
 
+    /**
+     * ManagedClusterSetSpec describes the attributes of the ManagedClusterSet
+     */
     @JsonProperty("clusterSelector")
     public ManagedClusterSelector getClusterSelector() {
         return clusterSelector;
     }
 
+    /**
+     * ManagedClusterSetSpec describes the attributes of the ManagedClusterSet
+     */
     @JsonProperty("clusterSelector")
     public void setClusterSelector(ManagedClusterSelector clusterSelector) {
         this.clusterSelector = clusterSelector;

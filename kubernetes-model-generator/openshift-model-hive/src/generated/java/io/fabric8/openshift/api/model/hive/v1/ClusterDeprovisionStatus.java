@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ClusterDeprovisionStatus defines the observed state of ClusterDeprovision
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class ClusterDeprovisionStatus implements Editable<ClusterDeprovisionStat
         this.conditions = conditions;
     }
 
+    /**
+     * Completed is true when the uninstall has completed successfully
+     */
     @JsonProperty("completed")
     public Boolean getCompleted() {
         return completed;
     }
 
+    /**
+     * Completed is true when the uninstall has completed successfully
+     */
     @JsonProperty("completed")
     public void setCompleted(Boolean completed) {
         this.completed = completed;
     }
 
+    /**
+     * Conditions includes more detailed status for the cluster deprovision
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ClusterDeprovisionCondition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Conditions includes more detailed status for the cluster deprovision
+     */
     @JsonProperty("conditions")
     public void setConditions(List<ClusterDeprovisionCondition> conditions) {
         this.conditions = conditions;

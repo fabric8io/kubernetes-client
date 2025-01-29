@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SearchSpec defines the desired state of Search.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -115,93 +118,147 @@ public class SearchSpec implements Editable<SearchSpecBuilder>, KubernetesResour
         this.tolerations = tolerations;
     }
 
+    /**
+     * [PLACEHOLDER, NOT IMPLEMENTED] Specifies deployment replication for improved availability. Options are: Basic and High (default)
+     */
     @JsonProperty("availabilityConfig")
     public String getAvailabilityConfig() {
         return availabilityConfig;
     }
 
+    /**
+     * [PLACEHOLDER, NOT IMPLEMENTED] Specifies deployment replication for improved availability. Options are: Basic and High (default)
+     */
     @JsonProperty("availabilityConfig")
     public void setAvailabilityConfig(String availabilityConfig) {
         this.availabilityConfig = availabilityConfig;
     }
 
+    /**
+     * The config map name contains parameters to override default database parameters.
+     */
     @JsonProperty("dbConfig")
     public String getDbConfig() {
         return dbConfig;
     }
 
+    /**
+     * The config map name contains parameters to override default database parameters.
+     */
     @JsonProperty("dbConfig")
     public void setDbConfig(String dbConfig) {
         this.dbConfig = dbConfig;
     }
 
+    /**
+     * SearchSpec defines the desired state of Search.
+     */
     @JsonProperty("dbStorage")
     public StorageSpec getDbStorage() {
         return dbStorage;
     }
 
+    /**
+     * SearchSpec defines the desired state of Search.
+     */
     @JsonProperty("dbStorage")
     public void setDbStorage(StorageSpec dbStorage) {
         this.dbStorage = dbStorage;
     }
 
+    /**
+     * SearchSpec defines the desired state of Search.
+     */
     @JsonProperty("deployments")
     public SearchDeployments getDeployments() {
         return deployments;
     }
 
+    /**
+     * SearchSpec defines the desired state of Search.
+     */
     @JsonProperty("deployments")
     public void setDeployments(SearchDeployments deployments) {
         this.deployments = deployments;
     }
 
+    /**
+     * [PLACEHOLDER, NOT IMPLEMENTED] Kubernetes secret name containing user provided db secret Secret should contain connection parameters [db_host, db_port, db_user, db_password, db_name, ca_cert] Not supported for development preview.
+     */
     @JsonProperty("externalDBInstance")
     public String getExternalDBInstance() {
         return externalDBInstance;
     }
 
+    /**
+     * [PLACEHOLDER, NOT IMPLEMENTED] Kubernetes secret name containing user provided db secret Secret should contain connection parameters [db_host, db_port, db_user, db_password, db_name, ca_cert] Not supported for development preview.
+     */
     @JsonProperty("externalDBInstance")
     public void setExternalDBInstance(String externalDBInstance) {
         this.externalDBInstance = externalDBInstance;
     }
 
+    /**
+     * ImagePullPolicy
+     */
     @JsonProperty("imagePullPolicy")
     public String getImagePullPolicy() {
         return imagePullPolicy;
     }
 
+    /**
+     * ImagePullPolicy
+     */
     @JsonProperty("imagePullPolicy")
     public void setImagePullPolicy(String imagePullPolicy) {
         this.imagePullPolicy = imagePullPolicy;
     }
 
+    /**
+     * ImagePullSecret
+     */
     @JsonProperty("imagePullSecret")
     public String getImagePullSecret() {
         return imagePullSecret;
     }
 
+    /**
+     * ImagePullSecret
+     */
     @JsonProperty("imagePullSecret")
     public void setImagePullSecret(String imagePullSecret) {
         this.imagePullSecret = imagePullSecret;
     }
 
+    /**
+     * Define the nodes that you want to schedule with matching labels.
+     */
     @JsonProperty("nodeSelector")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getNodeSelector() {
         return nodeSelector;
     }
 
+    /**
+     * Define the nodes that you want to schedule with matching labels.
+     */
     @JsonProperty("nodeSelector")
     public void setNodeSelector(Map<String, String> nodeSelector) {
         this.nodeSelector = nodeSelector;
     }
 
+    /**
+     * Define tolerations to schedule pods on nodes with matching taints.
+     */
     @JsonProperty("tolerations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Toleration> getTolerations() {
         return tolerations;
     }
 
+    /**
+     * Define tolerations to schedule pods on nodes with matching taints.
+     */
     @JsonProperty("tolerations")
     public void setTolerations(List<Toleration> tolerations) {
         this.tolerations = tolerations;

@@ -36,6 +36,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DomainMappingStatus describes the current state of the DomainMapping.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -100,53 +103,83 @@ public class DomainMappingStatus implements Editable<DomainMappingStatusBuilder>
         this.url = url;
     }
 
+    /**
+     * DomainMappingStatus describes the current state of the DomainMapping.
+     */
     @JsonProperty("address")
     public Addressable getAddress() {
         return address;
     }
 
+    /**
+     * DomainMappingStatus describes the current state of the DomainMapping.
+     */
     @JsonProperty("address")
     public void setAddress(Addressable address) {
         this.address = address;
     }
 
+    /**
+     * Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.
+     */
     @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAnnotations() {
         return annotations;
     }
 
+    /**
+     * Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.
+     */
     @JsonProperty("annotations")
     public void setAnnotations(Map<String, String> annotations) {
         this.annotations = annotations;
     }
 
+    /**
+     * Conditions the latest available observations of a resource's current state.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Conditions the latest available observations of a resource's current state.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * ObservedGeneration is the 'Generation' of the Service that was last processed by the controller.
+     */
     @JsonProperty("observedGeneration")
     public Long getObservedGeneration() {
         return observedGeneration;
     }
 
+    /**
+     * ObservedGeneration is the 'Generation' of the Service that was last processed by the controller.
+     */
     @JsonProperty("observedGeneration")
     public void setObservedGeneration(Long observedGeneration) {
         this.observedGeneration = observedGeneration;
     }
 
+    /**
+     * DomainMappingStatus describes the current state of the DomainMapping.
+     */
     @JsonProperty("url")
     public String getUrl() {
         return url;
     }
 
+    /**
+     * DomainMappingStatus describes the current state of the DomainMapping.
+     */
     @JsonProperty("url")
     public void setUrl(String url) {
         this.url = url;

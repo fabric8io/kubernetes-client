@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * WithPodSpec is the shell around the PodSpecable within WithPod.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class WithPodSpec implements Editable<WithPodSpecBuilder>, KubernetesReso
         this.template = template;
     }
 
+    /**
+     * WithPodSpec is the shell around the PodSpecable within WithPod.
+     */
     @JsonProperty("template")
     public PodSpecable getTemplate() {
         return template;
     }
 
+    /**
+     * WithPodSpec is the shell around the PodSpecable within WithPod.
+     */
     @JsonProperty("template")
     public void setTemplate(PodSpecable template) {
         this.template = template;

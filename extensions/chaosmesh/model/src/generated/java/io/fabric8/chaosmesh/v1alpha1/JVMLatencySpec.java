@@ -94,51 +94,81 @@ public class JVMLatencySpec implements Editable<JVMLatencySpecBuilder>, Kubernet
         this.port = port;
     }
 
+    /**
+     * Java class
+     */
     @JsonProperty("class")
     public String getClassName() {
         return className;
     }
 
+    /**
+     * Java class
+     */
     @JsonProperty("class")
     public void setClassName(String className) {
         this.className = className;
     }
 
+    /**
+     * the latency duration for action 'latency', unit ms
+     */
     @JsonProperty("latency")
     public Integer getLatency() {
         return latency;
     }
 
+    /**
+     * the latency duration for action 'latency', unit ms
+     */
     @JsonProperty("latency")
     public void setLatency(Integer latency) {
         this.latency = latency;
     }
 
+    /**
+     * the method in Java class
+     */
     @JsonProperty("method")
     public String getMethod() {
         return method;
     }
 
+    /**
+     * the method in Java class
+     */
     @JsonProperty("method")
     public void setMethod(String method) {
         this.method = method;
     }
 
+    /**
+     * the pid of Java process which needs to attach
+     */
     @JsonProperty("pid")
     public Integer getPid() {
         return pid;
     }
 
+    /**
+     * the pid of Java process which needs to attach
+     */
     @JsonProperty("pid")
     public void setPid(Integer pid) {
         this.pid = pid;
     }
 
+    /**
+     * the port of agent server, default 9277
+     */
     @JsonProperty("port")
     public Integer getPort() {
         return port;
     }
 
+    /**
+     * the port of agent server, default 9277
+     */
     @JsonProperty("port")
     public void setPort(Integer port) {
         this.port = port;

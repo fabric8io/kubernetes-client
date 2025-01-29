@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * OperatorPublishingStrategy is used to control the visibility of the components which can be used to have a mix of public and private resources.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class OperatorPublishingStrategy implements Editable<OperatorPublishingSt
         this.ingress = ingress;
     }
 
+    /**
+     * APIServer sets the visibility of the load balancers servicing the APIserver.
+     */
     @JsonProperty("apiserver")
     public String getApiserver() {
         return apiserver;
     }
 
+    /**
+     * APIServer sets the visibility of the load balancers servicing the APIserver.
+     */
     @JsonProperty("apiserver")
     public void setApiserver(String apiserver) {
         this.apiserver = apiserver;
     }
 
+    /**
+     * Ingress sets the visibility of the created dns resources.
+     */
     @JsonProperty("ingress")
     public String getIngress() {
         return ingress;
     }
 
+    /**
+     * Ingress sets the visibility of the created dns resources.
+     */
     @JsonProperty("ingress")
     public void setIngress(String ingress) {
         this.ingress = ingress;

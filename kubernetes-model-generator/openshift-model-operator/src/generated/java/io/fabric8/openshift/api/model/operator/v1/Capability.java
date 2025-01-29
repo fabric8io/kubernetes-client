@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Capabilities contains set of UI capabilities and their state in the console UI.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class Capability implements Editable<CapabilityBuilder>, KubernetesResour
         this.visibility = visibility;
     }
 
+    /**
+     * name is the unique name of a capability. Available capabilities are LightspeedButton and GettingStartedBanner.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * name is the unique name of a capability. Available capabilities are LightspeedButton and GettingStartedBanner.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Capabilities contains set of UI capabilities and their state in the console UI.
+     */
     @JsonProperty("visibility")
     public CapabilityVisibility getVisibility() {
         return visibility;
     }
 
+    /**
+     * Capabilities contains set of UI capabilities and their state in the console UI.
+     */
     @JsonProperty("visibility")
     public void setVisibility(CapabilityVisibility visibility) {
         this.visibility = visibility;

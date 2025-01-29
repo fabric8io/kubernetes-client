@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * MetricIdentifier defines the name and optionally selector for a metric
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class MetricIdentifier implements Editable<MetricIdentifierBuilder>, Kube
         this.selector = selector;
     }
 
+    /**
+     * name is the name of the given metric
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * name is the name of the given metric
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * MetricIdentifier defines the name and optionally selector for a metric
+     */
     @JsonProperty("selector")
     public LabelSelector getSelector() {
         return selector;
     }
 
+    /**
+     * MetricIdentifier defines the name and optionally selector for a metric
+     */
     @JsonProperty("selector")
     public void setSelector(LabelSelector selector) {
         this.selector = selector;

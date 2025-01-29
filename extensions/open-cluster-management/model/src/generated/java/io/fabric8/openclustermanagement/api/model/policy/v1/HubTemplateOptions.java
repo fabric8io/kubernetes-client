@@ -78,11 +78,17 @@ public class HubTemplateOptions implements Editable<HubTemplateOptionsBuilder>, 
         this.serviceAccountName = serviceAccountName;
     }
 
+    /**
+     * ServiceAccountName is the name of a service account in the same namespace as the policy to use for all hub template lookups. The service account must have list and watch permissions on any object the hub templates look up. If not specified, lookups are restricted to namespaced objects in the same namespace as the policy and to the `ManagedCluster` object associated with the propagated policy.
+     */
     @JsonProperty("serviceAccountName")
     public String getServiceAccountName() {
         return serviceAccountName;
     }
 
+    /**
+     * ServiceAccountName is the name of a service account in the same namespace as the policy to use for all hub template lookups. The service account must have list and watch permissions on any object the hub templates look up. If not specified, lookups are restricted to namespaced objects in the same namespace as the policy and to the `ManagedCluster` object associated with the propagated policy.
+     */
     @JsonProperty("serviceAccountName")
     public void setServiceAccountName(String serviceAccountName) {
         this.serviceAccountName = serviceAccountName;

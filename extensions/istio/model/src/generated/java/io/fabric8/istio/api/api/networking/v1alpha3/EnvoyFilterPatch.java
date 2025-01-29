@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Patch specifies how the selected object should be modified.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -87,31 +90,49 @@ public class EnvoyFilterPatch implements Editable<EnvoyFilterPatchBuilder>, Kube
         this.value = value;
     }
 
+    /**
+     * Patch specifies how the selected object should be modified.
+     */
     @JsonProperty("filterClass")
     public EnvoyFilterPatchFilterClass getFilterClass() {
         return filterClass;
     }
 
+    /**
+     * Patch specifies how the selected object should be modified.
+     */
     @JsonProperty("filterClass")
     public void setFilterClass(EnvoyFilterPatchFilterClass filterClass) {
         this.filterClass = filterClass;
     }
 
+    /**
+     * Patch specifies how the selected object should be modified.
+     */
     @JsonProperty("operation")
     public EnvoyFilterPatchOperation getOperation() {
         return operation;
     }
 
+    /**
+     * Patch specifies how the selected object should be modified.
+     */
     @JsonProperty("operation")
     public void setOperation(EnvoyFilterPatchOperation operation) {
         this.operation = operation;
     }
 
+    /**
+     * Patch specifies how the selected object should be modified.
+     */
     @JsonProperty("value")
     public Object getValue() {
         return value;
     }
 
+    /**
+     * Patch specifies how the selected object should be modified.
+     */
     @JsonProperty("value")
     @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
     public void setValue(Object value) {

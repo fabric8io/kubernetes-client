@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * OSImage defines the image to use for the OS.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class OSImage implements Editable<OSImageBuilder>, KubernetesResource
         this.project = project;
     }
 
+    /**
+     * Name defines the name of the image.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name defines the name of the image.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Project defines the name of the project containing the image.
+     */
     @JsonProperty("project")
     public String getProject() {
         return project;
     }
 
+    /**
+     * Project defines the name of the project containing the image.
+     */
     @JsonProperty("project")
     public void setProject(String project) {
         this.project = project;

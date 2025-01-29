@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * HTTPHeaderMatch describes how to select a HTTP route by matching HTTP request headers.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class HTTPHeaderMatch implements Editable<HTTPHeaderMatchBuilder>, Kubern
         this.value = value;
     }
 
+    /**
+     * Name is the name of the HTTP Header to be matched. Name matching MUST be case insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).<br><p> <br><p> If multiple entries specify equivalent header names, only the first entry with an equivalent name MUST be considered for a match. Subsequent entries with an equivalent header name MUST be ignored. Due to the case-insensitivity of header names, "foo" and "Foo" are considered equivalent.<br><p> <br><p> When a header is repeated in an HTTP request, it is implementation-specific behavior as to how this is represented. Generally, proxies should follow the guidance from the RFC: https://www.rfc-editor.org/rfc/rfc7230.html#section-3.2.2 regarding processing a repeated header, with special handling for "Set-Cookie".
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name is the name of the HTTP Header to be matched. Name matching MUST be case insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).<br><p> <br><p> If multiple entries specify equivalent header names, only the first entry with an equivalent name MUST be considered for a match. Subsequent entries with an equivalent header name MUST be ignored. Due to the case-insensitivity of header names, "foo" and "Foo" are considered equivalent.<br><p> <br><p> When a header is repeated in an HTTP request, it is implementation-specific behavior as to how this is represented. Generally, proxies should follow the guidance from the RFC: https://www.rfc-editor.org/rfc/rfc7230.html#section-3.2.2 regarding processing a repeated header, with special handling for "Set-Cookie".
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Type specifies how to match against the value of the header.<br><p> <br><p> Support: Core (Exact)<br><p> <br><p> Support: Implementation-specific (RegularExpression)<br><p> <br><p> Since RegularExpression HeaderMatchType has implementation-specific conformance, implementations can support POSIX, PCRE or any other dialects of regular expressions. Please read the implementation's documentation to determine the supported dialect.
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * Type specifies how to match against the value of the header.<br><p> <br><p> Support: Core (Exact)<br><p> <br><p> Support: Implementation-specific (RegularExpression)<br><p> <br><p> Since RegularExpression HeaderMatchType has implementation-specific conformance, implementations can support POSIX, PCRE or any other dialects of regular expressions. Please read the implementation's documentation to determine the supported dialect.
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;
     }
 
+    /**
+     * Value is the value of HTTP Header to be matched.
+     */
     @JsonProperty("value")
     public String getValue() {
         return value;
     }
 
+    /**
+     * Value is the value of HTTP Header to be matched.
+     */
     @JsonProperty("value")
     public void setValue(String value) {
         this.value = value;

@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DaemonEndpoint contains information about a single Daemon endpoint.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -49,11 +52,17 @@ public class DaemonEndpoint implements Editable<DaemonEndpointBuilder>, Kubernet
         this.port = port;
     }
 
+    /**
+     * Port number of the given endpoint.
+     */
     @JsonProperty("Port")
     public Integer getPort() {
         return port;
     }
 
+    /**
+     * Port number of the given endpoint.
+     */
     @JsonProperty("Port")
     public void setPort(Integer port) {
         this.port = port;

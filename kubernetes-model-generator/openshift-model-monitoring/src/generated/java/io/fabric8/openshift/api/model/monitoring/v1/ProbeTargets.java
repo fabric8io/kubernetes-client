@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ProbeTargets defines how to discover the probed targets. One of the `staticConfig` or `ingress` must be defined. If both are defined, `staticConfig` takes precedence.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class ProbeTargets implements Editable<ProbeTargetsBuilder>, KubernetesRe
         this.staticConfig = staticConfig;
     }
 
+    /**
+     * ProbeTargets defines how to discover the probed targets. One of the `staticConfig` or `ingress` must be defined. If both are defined, `staticConfig` takes precedence.
+     */
     @JsonProperty("ingress")
     public ProbeTargetIngress getIngress() {
         return ingress;
     }
 
+    /**
+     * ProbeTargets defines how to discover the probed targets. One of the `staticConfig` or `ingress` must be defined. If both are defined, `staticConfig` takes precedence.
+     */
     @JsonProperty("ingress")
     public void setIngress(ProbeTargetIngress ingress) {
         this.ingress = ingress;
     }
 
+    /**
+     * ProbeTargets defines how to discover the probed targets. One of the `staticConfig` or `ingress` must be defined. If both are defined, `staticConfig` takes precedence.
+     */
     @JsonProperty("staticConfig")
     public ProbeTargetStaticConfig getStaticConfig() {
         return staticConfig;
     }
 
+    /**
+     * ProbeTargets defines how to discover the probed targets. One of the `staticConfig` or `ingress` must be defined. If both are defined, `staticConfig` takes precedence.
+     */
     @JsonProperty("staticConfig")
     public void setStaticConfig(ProbeTargetStaticConfig staticConfig) {
         this.staticConfig = staticConfig;

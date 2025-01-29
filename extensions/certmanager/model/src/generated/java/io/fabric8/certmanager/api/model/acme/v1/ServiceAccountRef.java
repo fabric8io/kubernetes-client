@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ServiceAccountRef is a service account used by cert-manager to request a token. The expiration of the token is also set by cert-manager to 10 minutes.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class ServiceAccountRef implements Editable<ServiceAccountRefBuilder>, Ku
         this.name = name;
     }
 
+    /**
+     * TokenAudiences is an optional list of audiences to include in the token passed to AWS. The default token consisting of the issuer's namespace and name is always included. If unset the audience defaults to `sts.amazonaws.com`.
+     */
     @JsonProperty("audiences")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getAudiences() {
         return audiences;
     }
 
+    /**
+     * TokenAudiences is an optional list of audiences to include in the token passed to AWS. The default token consisting of the issuer's namespace and name is always included. If unset the audience defaults to `sts.amazonaws.com`.
+     */
     @JsonProperty("audiences")
     public void setAudiences(List<String> audiences) {
         this.audiences = audiences;
     }
 
+    /**
+     * Name of the ServiceAccount used to request a token.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name of the ServiceAccount used to request a token.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

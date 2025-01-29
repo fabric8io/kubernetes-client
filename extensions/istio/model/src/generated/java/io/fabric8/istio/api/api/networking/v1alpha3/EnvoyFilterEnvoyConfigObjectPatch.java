@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Changes to be made to various envoy config objects.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class EnvoyFilterEnvoyConfigObjectPatch implements Editable<EnvoyFilterEn
         this.patch = patch;
     }
 
+    /**
+     * Changes to be made to various envoy config objects.
+     */
     @JsonProperty("applyTo")
     public EnvoyFilterApplyTo getApplyTo() {
         return applyTo;
     }
 
+    /**
+     * Changes to be made to various envoy config objects.
+     */
     @JsonProperty("applyTo")
     public void setApplyTo(EnvoyFilterApplyTo applyTo) {
         this.applyTo = applyTo;
     }
 
+    /**
+     * Changes to be made to various envoy config objects.
+     */
     @JsonProperty("match")
     public EnvoyFilterEnvoyConfigObjectMatch getMatch() {
         return match;
     }
 
+    /**
+     * Changes to be made to various envoy config objects.
+     */
     @JsonProperty("match")
     public void setMatch(EnvoyFilterEnvoyConfigObjectMatch match) {
         this.match = match;
     }
 
+    /**
+     * Changes to be made to various envoy config objects.
+     */
     @JsonProperty("patch")
     public EnvoyFilterPatch getPatch() {
         return patch;
     }
 
+    /**
+     * Changes to be made to various envoy config objects.
+     */
     @JsonProperty("patch")
     public void setPatch(EnvoyFilterPatch patch) {
         this.patch = patch;

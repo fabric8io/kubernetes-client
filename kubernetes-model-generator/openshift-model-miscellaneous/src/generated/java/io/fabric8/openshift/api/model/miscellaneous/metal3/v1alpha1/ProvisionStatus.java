@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ProvisionStatus holds the state information for a single target.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -106,81 +109,129 @@ public class ProvisionStatus implements Editable<ProvisionStatusBuilder>, Kubern
         this.state = state;
     }
 
+    /**
+     * The hosts's ID from the underlying provisioning tool (e.g. the Ironic node UUID).
+     */
     @JsonProperty("ID")
     public String getID() {
         return iD;
     }
 
+    /**
+     * The hosts's ID from the underlying provisioning tool (e.g. the Ironic node UUID).
+     */
     @JsonProperty("ID")
     public void setID(String iD) {
         this.iD = iD;
     }
 
+    /**
+     * BootMode indicates the boot mode used to provision the node
+     */
     @JsonProperty("bootMode")
     public String getBootMode() {
         return bootMode;
     }
 
+    /**
+     * BootMode indicates the boot mode used to provision the node
+     */
     @JsonProperty("bootMode")
     public void setBootMode(String bootMode) {
         this.bootMode = bootMode;
     }
 
+    /**
+     * ProvisionStatus holds the state information for a single target.
+     */
     @JsonProperty("customDeploy")
     public CustomDeploy getCustomDeploy() {
         return customDeploy;
     }
 
+    /**
+     * ProvisionStatus holds the state information for a single target.
+     */
     @JsonProperty("customDeploy")
     public void setCustomDeploy(CustomDeploy customDeploy) {
         this.customDeploy = customDeploy;
     }
 
+    /**
+     * ProvisionStatus holds the state information for a single target.
+     */
     @JsonProperty("firmware")
     public FirmwareConfig getFirmware() {
         return firmware;
     }
 
+    /**
+     * ProvisionStatus holds the state information for a single target.
+     */
     @JsonProperty("firmware")
     public void setFirmware(FirmwareConfig firmware) {
         this.firmware = firmware;
     }
 
+    /**
+     * ProvisionStatus holds the state information for a single target.
+     */
     @JsonProperty("image")
     public Image getImage() {
         return image;
     }
 
+    /**
+     * ProvisionStatus holds the state information for a single target.
+     */
     @JsonProperty("image")
     public void setImage(Image image) {
         this.image = image;
     }
 
+    /**
+     * ProvisionStatus holds the state information for a single target.
+     */
     @JsonProperty("raid")
     public RAIDConfig getRaid() {
         return raid;
     }
 
+    /**
+     * ProvisionStatus holds the state information for a single target.
+     */
     @JsonProperty("raid")
     public void setRaid(RAIDConfig raid) {
         this.raid = raid;
     }
 
+    /**
+     * ProvisionStatus holds the state information for a single target.
+     */
     @JsonProperty("rootDeviceHints")
     public RootDeviceHints getRootDeviceHints() {
         return rootDeviceHints;
     }
 
+    /**
+     * ProvisionStatus holds the state information for a single target.
+     */
     @JsonProperty("rootDeviceHints")
     public void setRootDeviceHints(RootDeviceHints rootDeviceHints) {
         this.rootDeviceHints = rootDeviceHints;
     }
 
+    /**
+     * An indicator for what the provisioner is doing with the host.
+     */
     @JsonProperty("state")
     public String getState() {
         return state;
     }
 
+    /**
+     * An indicator for what the provisioner is doing with the host.
+     */
     @JsonProperty("state")
     public void setState(String state) {
         this.state = state;

@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SecretEnvSource selects a Secret to populate the environment variables with.<br><p> <br><p> The contents of the target Secret's Data field will represent the key-value pairs as environment variables.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -53,21 +56,33 @@ public class SecretEnvSource implements Editable<SecretEnvSourceBuilder>, Kubern
         this.optional = optional;
     }
 
+    /**
+     * Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name of the referent. This field is effectively required, but due to backwards compatibility is allowed to be empty. Instances of this type with an empty value here are almost certainly wrong. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Specify whether the Secret must be defined
+     */
     @JsonProperty("optional")
     public Boolean getOptional() {
         return optional;
     }
 
+    /**
+     * Specify whether the Secret must be defined
+     */
     @JsonProperty("optional")
     public void setOptional(Boolean optional) {
         this.optional = optional;

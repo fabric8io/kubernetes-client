@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Refers to the name of an image registry push/pull secret needed in the build process.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class ImageSecretObjectReference implements Editable<ImageSecretObjectRef
         this.name = name;
     }
 
+    /**
+     * name is the name of the secret used to push or pull this MachineOSConfig object. this secret must be in the openshift-machine-config-operator namespace.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * name is the name of the secret used to push or pull this MachineOSConfig object. this secret must be in the openshift-machine-config-operator namespace.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

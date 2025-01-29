@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * KeyValue defines a (key, value) tuple.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class KeyValue implements Editable<KeyValueBuilder>, KubernetesResource
         this.value = value;
     }
 
+    /**
+     * Key of the tuple.
+     */
     @JsonProperty("key")
     public String getKey() {
         return key;
     }
 
+    /**
+     * Key of the tuple.
+     */
     @JsonProperty("key")
     public void setKey(String key) {
         this.key = key;
     }
 
+    /**
+     * Value of the tuple.
+     */
     @JsonProperty("value")
     public String getValue() {
         return value;
     }
 
+    /**
+     * Value of the tuple.
+     */
     @JsonProperty("value")
     public void setValue(String value) {
         this.value = value;

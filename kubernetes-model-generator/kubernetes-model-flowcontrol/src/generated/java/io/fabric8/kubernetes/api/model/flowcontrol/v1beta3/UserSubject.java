@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * UserSubject holds detailed information for user-kind subject.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class UserSubject implements Editable<UserSubjectBuilder>, KubernetesReso
         this.name = name;
     }
 
+    /**
+     * `name` is the username that matches, or "&#42;" to match all usernames. Required.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * `name` is the username that matches, or "&#42;" to match all usernames. Required.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

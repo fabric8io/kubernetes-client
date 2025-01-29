@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PinnedImageSetStatus describes the current state of a PinnedImageSet.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,12 +85,18 @@ public class PinnedImageSetStatus implements Editable<PinnedImageSetStatusBuilde
         this.conditions = conditions;
     }
 
+    /**
+     * conditions represent the observations of a pinned image set's current state.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
 
+    /**
+     * conditions represent the observations of a pinned image set's current state.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;

@@ -82,21 +82,33 @@ public class FixedIPs implements Editable<FixedIPsBuilder>, KubernetesResource
         this.subnetID = subnetID;
     }
 
+    /**
+     * ipAddress is a specific IP address to use in the given subnet. Port creation will fail if the address is not available. If not specified, an available IP from the given subnet will be selected automatically.
+     */
     @JsonProperty("ipAddress")
     public String getIpAddress() {
         return ipAddress;
     }
 
+    /**
+     * ipAddress is a specific IP address to use in the given subnet. Port creation will fail if the address is not available. If not specified, an available IP from the given subnet will be selected automatically.
+     */
     @JsonProperty("ipAddress")
     public void setIpAddress(String ipAddress) {
         this.ipAddress = ipAddress;
     }
 
+    /**
+     * subnetID specifies the ID of the subnet where the fixed IP will be allocated.
+     */
     @JsonProperty("subnetID")
     public String getSubnetID() {
         return subnetID;
     }
 
+    /**
+     * subnetID specifies the ID of the subnet where the fixed IP will be allocated.
+     */
     @JsonProperty("subnetID")
     public void setSubnetID(String subnetID) {
         this.subnetID = subnetID;

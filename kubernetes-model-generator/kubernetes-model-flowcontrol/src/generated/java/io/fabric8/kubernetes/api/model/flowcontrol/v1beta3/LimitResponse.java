@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * LimitResponse defines how to handle requests that can not be executed right now.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class LimitResponse implements Editable<LimitResponseBuilder>, Kubernetes
         this.type = type;
     }
 
+    /**
+     * LimitResponse defines how to handle requests that can not be executed right now.
+     */
     @JsonProperty("queuing")
     public QueuingConfiguration getQueuing() {
         return queuing;
     }
 
+    /**
+     * LimitResponse defines how to handle requests that can not be executed right now.
+     */
     @JsonProperty("queuing")
     public void setQueuing(QueuingConfiguration queuing) {
         this.queuing = queuing;
     }
 
+    /**
+     * `type` is "Queue" or "Reject". "Queue" means that requests that can not be executed upon arrival are held in a queue until they can be executed or a queuing limit is reached. "Reject" means that requests that can not be executed upon arrival are rejected. Required.
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * `type` is "Queue" or "Reject". "Queue" means that requests that can not be executed upon arrival are held in a queue until they can be executed or a queuing limit is reached. "Reject" means that requests that can not be executed upon arrival are rejected. Required.
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

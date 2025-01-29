@@ -89,32 +89,50 @@ public class ImageStatus implements Editable<ImageStatusBuilder>, KubernetesReso
         this.internalRegistryHostname = internalRegistryHostname;
     }
 
+    /**
+     * externalRegistryHostnames provides the hostnames for the default external image registry. The external hostname should be set only when the image registry is exposed externally. The first value is used in 'publicDockerImageRepository' field in ImageStreams. The value must be in "hostname[:port]" format.
+     */
     @JsonProperty("externalRegistryHostnames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getExternalRegistryHostnames() {
         return externalRegistryHostnames;
     }
 
+    /**
+     * externalRegistryHostnames provides the hostnames for the default external image registry. The external hostname should be set only when the image registry is exposed externally. The first value is used in 'publicDockerImageRepository' field in ImageStreams. The value must be in "hostname[:port]" format.
+     */
     @JsonProperty("externalRegistryHostnames")
     public void setExternalRegistryHostnames(List<String> externalRegistryHostnames) {
         this.externalRegistryHostnames = externalRegistryHostnames;
     }
 
+    /**
+     * imageStreamImportMode controls the import mode behaviour of imagestreams. It can be `Legacy` or `PreserveOriginal`. `Legacy` indicates that the legacy behaviour should be used. For manifest lists, the legacy behaviour will discard the manifest list and import a single sub-manifest. In this case, the platform is chosen in the following order of priority: 1. tag annotations; 2. control plane arch/os; 3. linux/amd64; 4. the first manifest in the list. `PreserveOriginal` indicates that the original manifest will be preserved. For manifest lists, the manifest list and all its sub-manifests will be imported. This value will be reconciled based on either the spec value or if no spec value is specified, the image registry operator would look at the ClusterVersion status to determine the payload type and set the import mode accordingly, i.e single arch payload implies the import mode is Legacy and multi payload implies PreserveOriginal.<br><p> <br><p> Possible enum values:<br><p>  - `"Legacy"` indicates that the legacy behaviour should be used. For manifest lists, the legacy behaviour will discard the manifest list and import a single sub-manifest. In this case, the platform is chosen in the following order of priority: 1. tag annotations; 2. control plane arch/os; 3. linux/amd64; 4. the first manifest in the list. This mode is the default.<br><p>  - `"PreserveOriginal"` indicates that the original manifest will be preserved. For manifest lists, the manifest list and all its sub-manifests will be imported.
+     */
     @JsonProperty("imageStreamImportMode")
     public String getImageStreamImportMode() {
         return imageStreamImportMode;
     }
 
+    /**
+     * imageStreamImportMode controls the import mode behaviour of imagestreams. It can be `Legacy` or `PreserveOriginal`. `Legacy` indicates that the legacy behaviour should be used. For manifest lists, the legacy behaviour will discard the manifest list and import a single sub-manifest. In this case, the platform is chosen in the following order of priority: 1. tag annotations; 2. control plane arch/os; 3. linux/amd64; 4. the first manifest in the list. `PreserveOriginal` indicates that the original manifest will be preserved. For manifest lists, the manifest list and all its sub-manifests will be imported. This value will be reconciled based on either the spec value or if no spec value is specified, the image registry operator would look at the ClusterVersion status to determine the payload type and set the import mode accordingly, i.e single arch payload implies the import mode is Legacy and multi payload implies PreserveOriginal.<br><p> <br><p> Possible enum values:<br><p>  - `"Legacy"` indicates that the legacy behaviour should be used. For manifest lists, the legacy behaviour will discard the manifest list and import a single sub-manifest. In this case, the platform is chosen in the following order of priority: 1. tag annotations; 2. control plane arch/os; 3. linux/amd64; 4. the first manifest in the list. This mode is the default.<br><p>  - `"PreserveOriginal"` indicates that the original manifest will be preserved. For manifest lists, the manifest list and all its sub-manifests will be imported.
+     */
     @JsonProperty("imageStreamImportMode")
     public void setImageStreamImportMode(String imageStreamImportMode) {
         this.imageStreamImportMode = imageStreamImportMode;
     }
 
+    /**
+     * internalRegistryHostname sets the hostname for the default internal image registry. The value must be in "hostname[:port]" format. This value is set by the image registry operator which controls the internal registry hostname.
+     */
     @JsonProperty("internalRegistryHostname")
     public String getInternalRegistryHostname() {
         return internalRegistryHostname;
     }
 
+    /**
+     * internalRegistryHostname sets the hostname for the default internal image registry. The value must be in "hostname[:port]" format. This value is set by the image registry operator which controls the internal registry hostname.
+     */
     @JsonProperty("internalRegistryHostname")
     public void setInternalRegistryHostname(String internalRegistryHostname) {
         this.internalRegistryHostname = internalRegistryHostname;

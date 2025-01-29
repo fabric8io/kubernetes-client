@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Describes the state of a migration at a certain point.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,51 +97,81 @@ public class MigrationCondition implements Editable<MigrationConditionBuilder>, 
         this.type = type;
     }
 
+    /**
+     * Describes the state of a migration at a certain point.
+     */
     @JsonProperty("lastUpdateTime")
     public String getLastUpdateTime() {
         return lastUpdateTime;
     }
 
+    /**
+     * Describes the state of a migration at a certain point.
+     */
     @JsonProperty("lastUpdateTime")
     public void setLastUpdateTime(String lastUpdateTime) {
         this.lastUpdateTime = lastUpdateTime;
     }
 
+    /**
+     * A human readable message indicating details about the transition.
+     */
     @JsonProperty("message")
     public String getMessage() {
         return message;
     }
 
+    /**
+     * A human readable message indicating details about the transition.
+     */
     @JsonProperty("message")
     public void setMessage(String message) {
         this.message = message;
     }
 
+    /**
+     * The reason for the condition's last transition.
+     */
     @JsonProperty("reason")
     public String getReason() {
         return reason;
     }
 
+    /**
+     * The reason for the condition's last transition.
+     */
     @JsonProperty("reason")
     public void setReason(String reason) {
         this.reason = reason;
     }
 
+    /**
+     * Status of the condition, one of True, False, Unknown.
+     */
     @JsonProperty("status")
     public String getStatus() {
         return status;
     }
 
+    /**
+     * Status of the condition, one of True, False, Unknown.
+     */
     @JsonProperty("status")
     public void setStatus(String status) {
         this.status = status;
     }
 
+    /**
+     * Type of the condition.
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * Type of the condition.
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

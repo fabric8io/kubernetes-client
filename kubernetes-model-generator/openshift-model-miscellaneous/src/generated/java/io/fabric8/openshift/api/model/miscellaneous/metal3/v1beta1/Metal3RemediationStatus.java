@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Metal3RemediationStatus defines the observed state of Metal3Remediation.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class Metal3RemediationStatus implements Editable<Metal3RemediationStatus
         this.retryCount = retryCount;
     }
 
+    /**
+     * Metal3RemediationStatus defines the observed state of Metal3Remediation.
+     */
     @JsonProperty("lastRemediated")
     public String getLastRemediated() {
         return lastRemediated;
     }
 
+    /**
+     * Metal3RemediationStatus defines the observed state of Metal3Remediation.
+     */
     @JsonProperty("lastRemediated")
     public void setLastRemediated(String lastRemediated) {
         this.lastRemediated = lastRemediated;
     }
 
+    /**
+     * Phase represents the current phase of machine remediation. E.g. Pending, Running, Done etc.
+     */
     @JsonProperty("phase")
     public String getPhase() {
         return phase;
     }
 
+    /**
+     * Phase represents the current phase of machine remediation. E.g. Pending, Running, Done etc.
+     */
     @JsonProperty("phase")
     public void setPhase(String phase) {
         this.phase = phase;
     }
 
+    /**
+     * RetryCount can be used as a counter during the remediation. Field can hold number of reboots etc.
+     */
     @JsonProperty("retryCount")
     public Integer getRetryCount() {
         return retryCount;
     }
 
+    /**
+     * RetryCount can be used as a counter during the remediation. Field can hold number of reboots etc.
+     */
     @JsonProperty("retryCount")
     public void setRetryCount(Integer retryCount) {
         this.retryCount = retryCount;

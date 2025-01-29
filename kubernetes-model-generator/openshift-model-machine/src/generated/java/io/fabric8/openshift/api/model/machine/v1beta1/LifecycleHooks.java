@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * LifecycleHooks allow users to pause operations on the machine at certain prefedined points within the machine lifecycle.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,23 +89,35 @@ public class LifecycleHooks implements Editable<LifecycleHooksBuilder>, Kubernet
         this.preTerminate = preTerminate;
     }
 
+    /**
+     * PreDrain hooks prevent the machine from being drained. This also blocks further lifecycle events, such as termination.
+     */
     @JsonProperty("preDrain")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<LifecycleHook> getPreDrain() {
         return preDrain;
     }
 
+    /**
+     * PreDrain hooks prevent the machine from being drained. This also blocks further lifecycle events, such as termination.
+     */
     @JsonProperty("preDrain")
     public void setPreDrain(List<LifecycleHook> preDrain) {
         this.preDrain = preDrain;
     }
 
+    /**
+     * PreTerminate hooks prevent the machine from being terminated. PreTerminate hooks be actioned after the Machine has been drained.
+     */
     @JsonProperty("preTerminate")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<LifecycleHook> getPreTerminate() {
         return preTerminate;
     }
 
+    /**
+     * PreTerminate hooks prevent the machine from being terminated. PreTerminate hooks be actioned after the Machine has been drained.
+     */
     @JsonProperty("preTerminate")
     public void setPreTerminate(List<LifecycleHook> preTerminate) {
         this.preTerminate = preTerminate;

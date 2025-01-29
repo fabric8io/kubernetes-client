@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * GatewayInfrastructure defines infrastructure level attributes about a Gateway instance.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -88,33 +91,51 @@ public class GatewayInfrastructure implements Editable<GatewayInfrastructureBuil
         this.parametersRef = parametersRef;
     }
 
+    /**
+     * Annotations that SHOULD be applied to any resources created in response to this Gateway.<br><p> <br><p> For implementations creating other Kubernetes objects, this should be the `metadata.annotations` field on resources. For other implementations, this refers to any relevant (implementation specific) "annotations" concepts.<br><p> <br><p> An implementation may chose to add additional implementation-specific annotations as they see fit.<br><p> <br><p> Support: Extended
+     */
     @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAnnotations() {
         return annotations;
     }
 
+    /**
+     * Annotations that SHOULD be applied to any resources created in response to this Gateway.<br><p> <br><p> For implementations creating other Kubernetes objects, this should be the `metadata.annotations` field on resources. For other implementations, this refers to any relevant (implementation specific) "annotations" concepts.<br><p> <br><p> An implementation may chose to add additional implementation-specific annotations as they see fit.<br><p> <br><p> Support: Extended
+     */
     @JsonProperty("annotations")
     public void setAnnotations(Map<String, String> annotations) {
         this.annotations = annotations;
     }
 
+    /**
+     * Labels that SHOULD be applied to any resources created in response to this Gateway.<br><p> <br><p> For implementations creating other Kubernetes objects, this should be the `metadata.labels` field on resources. For other implementations, this refers to any relevant (implementation specific) "labels" concepts.<br><p> <br><p> An implementation may chose to add additional implementation-specific labels as they see fit.<br><p> <br><p> If an implementation maps these labels to Pods, or any other resource that would need to be recreated when labels change, it SHOULD clearly warn about this behavior in documentation.<br><p> <br><p> Support: Extended
+     */
     @JsonProperty("labels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getLabels() {
         return labels;
     }
 
+    /**
+     * Labels that SHOULD be applied to any resources created in response to this Gateway.<br><p> <br><p> For implementations creating other Kubernetes objects, this should be the `metadata.labels` field on resources. For other implementations, this refers to any relevant (implementation specific) "labels" concepts.<br><p> <br><p> An implementation may chose to add additional implementation-specific labels as they see fit.<br><p> <br><p> If an implementation maps these labels to Pods, or any other resource that would need to be recreated when labels change, it SHOULD clearly warn about this behavior in documentation.<br><p> <br><p> Support: Extended
+     */
     @JsonProperty("labels")
     public void setLabels(Map<String, String> labels) {
         this.labels = labels;
     }
 
+    /**
+     * GatewayInfrastructure defines infrastructure level attributes about a Gateway instance.
+     */
     @JsonProperty("parametersRef")
     public LocalParametersReference getParametersRef() {
         return parametersRef;
     }
 
+    /**
+     * GatewayInfrastructure defines infrastructure level attributes about a Gateway instance.
+     */
     @JsonProperty("parametersRef")
     public void setParametersRef(LocalParametersReference parametersRef) {
         this.parametersRef = parametersRef;

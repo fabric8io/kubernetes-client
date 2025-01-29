@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Capabilities selects the managed set of optional, core cluster components.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class Capabilities implements Editable<CapabilitiesBuilder>, KubernetesRe
         this.baselineCapabilitySet = baselineCapabilitySet;
     }
 
+    /**
+     * additionalEnabledCapabilities extends the set of managed capabilities beyond the baseline defined in baselineCapabilitySet. The default is an empty set.
+     */
     @JsonProperty("additionalEnabledCapabilities")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getAdditionalEnabledCapabilities() {
         return additionalEnabledCapabilities;
     }
 
+    /**
+     * additionalEnabledCapabilities extends the set of managed capabilities beyond the baseline defined in baselineCapabilitySet. The default is an empty set.
+     */
     @JsonProperty("additionalEnabledCapabilities")
     public void setAdditionalEnabledCapabilities(List<String> additionalEnabledCapabilities) {
         this.additionalEnabledCapabilities = additionalEnabledCapabilities;
     }
 
+    /**
+     * baselineCapabilitySet selects an initial set of optional capabilities to enable, which can be extended via additionalEnabledCapabilities. The default is vCurrent.
+     */
     @JsonProperty("baselineCapabilitySet")
     public String getBaselineCapabilitySet() {
         return baselineCapabilitySet;
     }
 
+    /**
+     * baselineCapabilitySet selects an initial set of optional capabilities to enable, which can be extended via additionalEnabledCapabilities. The default is vCurrent.
+     */
     @JsonProperty("baselineCapabilitySet")
     public void setBaselineCapabilitySet(String baselineCapabilitySet) {
         this.baselineCapabilitySet = baselineCapabilitySet;

@@ -40,6 +40,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NutanixMachineProviderStatus is the type that will be embedded in a Machine.Status.ProviderStatus field. It contains nutanix-specific status information. Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,17 +81,11 @@ import lombok.experimental.Accessors;
 public class NutanixMachineProviderStatus implements Editable<NutanixMachineProviderStatusBuilder>, KubernetesResource, Namespaced
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "machine.openshift.io/v1";
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Condition> conditions = new ArrayList<>();
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "NutanixMachineProviderStatus";
     @JsonProperty("vmUUID")
@@ -111,7 +108,7 @@ public class NutanixMachineProviderStatus implements Editable<NutanixMachineProv
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -119,26 +116,32 @@ public class NutanixMachineProviderStatus implements Editable<NutanixMachineProv
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
+    /**
+     * conditions is a set of conditions associated with the Machine to indicate errors or other status
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
 
+    /**
+     * conditions is a set of conditions associated with the Machine to indicate errors or other status
+     */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -146,18 +149,24 @@ public class NutanixMachineProviderStatus implements Editable<NutanixMachineProv
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * vmUUID is the Machine associated VM's UUID The field is missing before the VM is created. Once the VM is created, the field is filled with the VM's UUID and it will not change. The vmUUID is used to find the VM when updating the Machine status, and to delete the VM when the Machine is deleted.
+     */
     @JsonProperty("vmUUID")
     public String getVmUUID() {
         return vmUUID;
     }
 
+    /**
+     * vmUUID is the Machine associated VM's UUID The field is missing before the VM is created. Once the VM is created, the field is filled with the VM's UUID and it will not change. The vmUUID is used to find the VM when updating the Machine status, and to delete the VM when the Machine is deleted.
+     */
     @JsonProperty("vmUUID")
     public void setVmUUID(String vmUUID) {
         this.vmUUID = vmUUID;

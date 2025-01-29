@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Platform stores all the global configuration that all machinesets use.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
         this.region = region;
     }
 
+    /**
+     * BaseDomainResourceGroupName specifies the resource group where the azure DNS zone for the base domain is found
+     */
     @JsonProperty("baseDomainResourceGroupName")
     public String getBaseDomainResourceGroupName() {
         return baseDomainResourceGroupName;
     }
 
+    /**
+     * BaseDomainResourceGroupName specifies the resource group where the azure DNS zone for the base domain is found
+     */
     @JsonProperty("baseDomainResourceGroupName")
     public void setBaseDomainResourceGroupName(String baseDomainResourceGroupName) {
         this.baseDomainResourceGroupName = baseDomainResourceGroupName;
     }
 
+    /**
+     * cloudName is the name of the Azure cloud environment which can be used to configure the Azure SDK with the appropriate Azure API endpoints. If empty, the value is equal to "AzurePublicCloud".
+     */
     @JsonProperty("cloudName")
     public String getCloudName() {
         return cloudName;
     }
 
+    /**
+     * cloudName is the name of the Azure cloud environment which can be used to configure the Azure SDK with the appropriate Azure API endpoints. If empty, the value is equal to "AzurePublicCloud".
+     */
     @JsonProperty("cloudName")
     public void setCloudName(String cloudName) {
         this.cloudName = cloudName;
     }
 
+    /**
+     * Platform stores all the global configuration that all machinesets use.
+     */
     @JsonProperty("credentialsSecretRef")
     public LocalObjectReference getCredentialsSecretRef() {
         return credentialsSecretRef;
     }
 
+    /**
+     * Platform stores all the global configuration that all machinesets use.
+     */
     @JsonProperty("credentialsSecretRef")
     public void setCredentialsSecretRef(LocalObjectReference credentialsSecretRef) {
         this.credentialsSecretRef = credentialsSecretRef;
     }
 
+    /**
+     * Region specifies the Azure region where the cluster will be created.
+     */
     @JsonProperty("region")
     public String getRegion() {
         return region;
     }
 
+    /**
+     * Region specifies the Azure region where the cluster will be created.
+     */
     @JsonProperty("region")
     public void setRegion(String region) {
         this.region = region;

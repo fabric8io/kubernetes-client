@@ -39,6 +39,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * `Sidecar` describes the configuration of the sidecar proxy that mediates inbound and outbound communication of the workload instance to which it is attached.<br><p> <br><p> &lt;!-- crd generation tags --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -108,53 +111,83 @@ public class Sidecar implements Editable<SidecarBuilder>, KubernetesResource, Na
         this.workloadSelector = workloadSelector;
     }
 
+    /**
+     * Egress specifies the configuration of the sidecar for processing outbound traffic from the attached workload instance to other services in the mesh. If not specified, inherits the system detected defaults from the namespace-wide or the global default Sidecar.
+     */
     @JsonProperty("egress")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<IstioEgressListener> getEgress() {
         return egress;
     }
 
+    /**
+     * Egress specifies the configuration of the sidecar for processing outbound traffic from the attached workload instance to other services in the mesh. If not specified, inherits the system detected defaults from the namespace-wide or the global default Sidecar.
+     */
     @JsonProperty("egress")
     public void setEgress(List<IstioEgressListener> egress) {
         this.egress = egress;
     }
 
+    /**
+     * `Sidecar` describes the configuration of the sidecar proxy that mediates inbound and outbound communication of the workload instance to which it is attached.<br><p> <br><p> &lt;!-- crd generation tags --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+     */
     @JsonProperty("inboundConnectionPool")
     public ConnectionPoolSettings getInboundConnectionPool() {
         return inboundConnectionPool;
     }
 
+    /**
+     * `Sidecar` describes the configuration of the sidecar proxy that mediates inbound and outbound communication of the workload instance to which it is attached.<br><p> <br><p> &lt;!-- crd generation tags --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+     */
     @JsonProperty("inboundConnectionPool")
     public void setInboundConnectionPool(ConnectionPoolSettings inboundConnectionPool) {
         this.inboundConnectionPool = inboundConnectionPool;
     }
 
+    /**
+     * Ingress specifies the configuration of the sidecar for processing inbound traffic to the attached workload instance. If omitted, Istio will automatically configure the sidecar based on the information about the workload obtained from the orchestration platform (e.g., exposed ports, services, etc.). If specified, inbound ports are configured if and only if the workload instance is associated with a service.
+     */
     @JsonProperty("ingress")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<IstioIngressListener> getIngress() {
         return ingress;
     }
 
+    /**
+     * Ingress specifies the configuration of the sidecar for processing inbound traffic to the attached workload instance. If omitted, Istio will automatically configure the sidecar based on the information about the workload obtained from the orchestration platform (e.g., exposed ports, services, etc.). If specified, inbound ports are configured if and only if the workload instance is associated with a service.
+     */
     @JsonProperty("ingress")
     public void setIngress(List<IstioIngressListener> ingress) {
         this.ingress = ingress;
     }
 
+    /**
+     * `Sidecar` describes the configuration of the sidecar proxy that mediates inbound and outbound communication of the workload instance to which it is attached.<br><p> <br><p> &lt;!-- crd generation tags --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+     */
     @JsonProperty("outboundTrafficPolicy")
     public OutboundTrafficPolicy getOutboundTrafficPolicy() {
         return outboundTrafficPolicy;
     }
 
+    /**
+     * `Sidecar` describes the configuration of the sidecar proxy that mediates inbound and outbound communication of the workload instance to which it is attached.<br><p> <br><p> &lt;!-- crd generation tags --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+     */
     @JsonProperty("outboundTrafficPolicy")
     public void setOutboundTrafficPolicy(OutboundTrafficPolicy outboundTrafficPolicy) {
         this.outboundTrafficPolicy = outboundTrafficPolicy;
     }
 
+    /**
+     * `Sidecar` describes the configuration of the sidecar proxy that mediates inbound and outbound communication of the workload instance to which it is attached.<br><p> <br><p> &lt;!-- crd generation tags --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+     */
     @JsonProperty("workloadSelector")
     public WorkloadSelector getWorkloadSelector() {
         return workloadSelector;
     }
 
+    /**
+     * `Sidecar` describes the configuration of the sidecar proxy that mediates inbound and outbound communication of the workload instance to which it is attached.<br><p> <br><p> &lt;!-- crd generation tags --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+     */
     @JsonProperty("workloadSelector")
     public void setWorkloadSelector(WorkloadSelector workloadSelector) {
         this.workloadSelector = workloadSelector;

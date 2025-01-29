@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * CertSpec defines common certificate configuration.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class CertSpec implements Editable<CertSpecBuilder>, KubernetesResource
         this.commonName = commonName;
     }
 
+    /**
+     * commonName is the value in the certificate's CN
+     */
     @JsonProperty("commonName")
     public String getCommonName() {
         return commonName;
     }
 
+    /**
+     * commonName is the value in the certificate's CN
+     */
     @JsonProperty("commonName")
     public void setCommonName(String commonName) {
         this.commonName = commonName;

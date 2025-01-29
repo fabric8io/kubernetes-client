@@ -90,22 +90,34 @@ public class EventTypeSpec implements Editable<EventTypeSpecBuilder>, Kubernetes
         this.reference = reference;
     }
 
+    /**
+     * Attributes is an array of CloudEvent attributes and extension attributes.
+     */
     @JsonProperty("attributes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<EventAttributeDefinition> getAttributes() {
         return attributes;
     }
 
+    /**
+     * Attributes is an array of CloudEvent attributes and extension attributes.
+     */
     @JsonProperty("attributes")
     public void setAttributes(List<EventAttributeDefinition> attributes) {
         this.attributes = attributes;
     }
 
+    /**
+     * Description is an optional field used to describe the EventType, in any meaningful way.
+     */
     @JsonProperty("description")
     public String getDescription() {
         return description;
     }
 
+    /**
+     * Description is an optional field used to describe the EventType, in any meaningful way.
+     */
     @JsonProperty("description")
     public void setDescription(String description) {
         this.description = description;

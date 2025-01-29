@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * MetaDataIndex contains the information to render the index.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,51 +97,81 @@ public class MetaDataIndex implements Editable<MetaDataIndexBuilder>, Kubernetes
         this.suffix = suffix;
     }
 
+    /**
+     * Key will be used as the key to set in the metadata map for cloud-init
+     */
     @JsonProperty("key")
     public String getKey() {
         return key;
     }
 
+    /**
+     * Key will be used as the key to set in the metadata map for cloud-init
+     */
     @JsonProperty("key")
     public void setKey(String key) {
         this.key = key;
     }
 
+    /**
+     * Offset is the offset to apply to the index when rendering it
+     */
     @JsonProperty("offset")
     public Integer getOffset() {
         return offset;
     }
 
+    /**
+     * Offset is the offset to apply to the index when rendering it
+     */
     @JsonProperty("offset")
     public void setOffset(Integer offset) {
         this.offset = offset;
     }
 
+    /**
+     * Prefix is the prefix string
+     */
     @JsonProperty("prefix")
     public String getPrefix() {
         return prefix;
     }
 
+    /**
+     * Prefix is the prefix string
+     */
     @JsonProperty("prefix")
     public void setPrefix(String prefix) {
         this.prefix = prefix;
     }
 
+    /**
+     * Step is the multiplier of the index
+     */
     @JsonProperty("step")
     public Integer getStep() {
         return step;
     }
 
+    /**
+     * Step is the multiplier of the index
+     */
     @JsonProperty("step")
     public void setStep(Integer step) {
         this.step = step;
     }
 
+    /**
+     * Suffix is the suffix string
+     */
     @JsonProperty("suffix")
     public String getSuffix() {
         return suffix;
     }
 
+    /**
+     * Suffix is the suffix string
+     */
     @JsonProperty("suffix")
     public void setSuffix(String suffix) {
         this.suffix = suffix;

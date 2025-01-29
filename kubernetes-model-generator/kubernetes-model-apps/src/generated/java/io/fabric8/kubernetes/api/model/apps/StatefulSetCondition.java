@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * StatefulSetCondition describes the state of a statefulset at a certain point.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,51 +97,81 @@ public class StatefulSetCondition implements Editable<StatefulSetConditionBuilde
         this.type = type;
     }
 
+    /**
+     * StatefulSetCondition describes the state of a statefulset at a certain point.
+     */
     @JsonProperty("lastTransitionTime")
     public String getLastTransitionTime() {
         return lastTransitionTime;
     }
 
+    /**
+     * StatefulSetCondition describes the state of a statefulset at a certain point.
+     */
     @JsonProperty("lastTransitionTime")
     public void setLastTransitionTime(String lastTransitionTime) {
         this.lastTransitionTime = lastTransitionTime;
     }
 
+    /**
+     * A human readable message indicating details about the transition.
+     */
     @JsonProperty("message")
     public String getMessage() {
         return message;
     }
 
+    /**
+     * A human readable message indicating details about the transition.
+     */
     @JsonProperty("message")
     public void setMessage(String message) {
         this.message = message;
     }
 
+    /**
+     * The reason for the condition's last transition.
+     */
     @JsonProperty("reason")
     public String getReason() {
         return reason;
     }
 
+    /**
+     * The reason for the condition's last transition.
+     */
     @JsonProperty("reason")
     public void setReason(String reason) {
         this.reason = reason;
     }
 
+    /**
+     * Status of the condition, one of True, False, Unknown.
+     */
     @JsonProperty("status")
     public String getStatus() {
         return status;
     }
 
+    /**
+     * Status of the condition, one of True, False, Unknown.
+     */
     @JsonProperty("status")
     public void setStatus(String status) {
         this.status = status;
     }
 
+    /**
+     * Type of statefulset condition.
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * Type of statefulset condition.
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

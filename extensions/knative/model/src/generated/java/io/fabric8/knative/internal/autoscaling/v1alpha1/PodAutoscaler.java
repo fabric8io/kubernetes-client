@@ -37,6 +37,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PodAutoscaler is a Knative abstraction that encapsulates the interface by which Knative components instantiate autoscalers.  This definition is an abstraction that may be backed by multiple definitions.  For more information, see the Knative Pluggability presentation: https://docs.google.com/presentation/d/19vW9HFZ6Puxt31biNZF3uLRejDmu82rxJIk1cWmxF7w/edit
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -76,14 +79,8 @@ import lombok.experimental.Accessors;
 public class PodAutoscaler implements Editable<PodAutoscalerBuilder>, HasMetadata, Namespaced
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "autoscaling.internal.knative.dev/v1alpha1";
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "PodAutoscaler";
     @JsonProperty("metadata")
@@ -111,7 +108,7 @@ public class PodAutoscaler implements Editable<PodAutoscalerBuilder>, HasMetadat
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -119,7 +116,7 @@ public class PodAutoscaler implements Editable<PodAutoscalerBuilder>, HasMetadat
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -127,7 +124,7 @@ public class PodAutoscaler implements Editable<PodAutoscalerBuilder>, HasMetadat
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -135,38 +132,56 @@ public class PodAutoscaler implements Editable<PodAutoscalerBuilder>, HasMetadat
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * PodAutoscaler is a Knative abstraction that encapsulates the interface by which Knative components instantiate autoscalers.  This definition is an abstraction that may be backed by multiple definitions.  For more information, see the Knative Pluggability presentation: https://docs.google.com/presentation/d/19vW9HFZ6Puxt31biNZF3uLRejDmu82rxJIk1cWmxF7w/edit
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * PodAutoscaler is a Knative abstraction that encapsulates the interface by which Knative components instantiate autoscalers.  This definition is an abstraction that may be backed by multiple definitions.  For more information, see the Knative Pluggability presentation: https://docs.google.com/presentation/d/19vW9HFZ6Puxt31biNZF3uLRejDmu82rxJIk1cWmxF7w/edit
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * PodAutoscaler is a Knative abstraction that encapsulates the interface by which Knative components instantiate autoscalers.  This definition is an abstraction that may be backed by multiple definitions.  For more information, see the Knative Pluggability presentation: https://docs.google.com/presentation/d/19vW9HFZ6Puxt31biNZF3uLRejDmu82rxJIk1cWmxF7w/edit
+     */
     @JsonProperty("spec")
     public PodAutoscalerSpec getSpec() {
         return spec;
     }
 
+    /**
+     * PodAutoscaler is a Knative abstraction that encapsulates the interface by which Knative components instantiate autoscalers.  This definition is an abstraction that may be backed by multiple definitions.  For more information, see the Knative Pluggability presentation: https://docs.google.com/presentation/d/19vW9HFZ6Puxt31biNZF3uLRejDmu82rxJIk1cWmxF7w/edit
+     */
     @JsonProperty("spec")
     public void setSpec(PodAutoscalerSpec spec) {
         this.spec = spec;
     }
 
+    /**
+     * PodAutoscaler is a Knative abstraction that encapsulates the interface by which Knative components instantiate autoscalers.  This definition is an abstraction that may be backed by multiple definitions.  For more information, see the Knative Pluggability presentation: https://docs.google.com/presentation/d/19vW9HFZ6Puxt31biNZF3uLRejDmu82rxJIk1cWmxF7w/edit
+     */
     @JsonProperty("status")
     public PodAutoscalerStatus getStatus() {
         return status;
     }
 
+    /**
+     * PodAutoscaler is a Knative abstraction that encapsulates the interface by which Knative components instantiate autoscalers.  This definition is an abstraction that may be backed by multiple definitions.  For more information, see the Knative Pluggability presentation: https://docs.google.com/presentation/d/19vW9HFZ6Puxt31biNZF3uLRejDmu82rxJIk1cWmxF7w/edit
+     */
     @JsonProperty("status")
     public void setStatus(PodAutoscalerStatus status) {
         this.status = status;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AlibabaCloudResourceTag is the set of tags to add to apply to resources.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class AlibabaCloudResourceTag implements Editable<AlibabaCloudResourceTag
         this.value = value;
     }
 
+    /**
+     * key is the key of the tag.
+     */
     @JsonProperty("key")
     public String getKey() {
         return key;
     }
 
+    /**
+     * key is the key of the tag.
+     */
     @JsonProperty("key")
     public void setKey(String key) {
         this.key = key;
     }
 
+    /**
+     * value is the value of the tag.
+     */
     @JsonProperty("value")
     public String getValue() {
         return value;
     }
 
+    /**
+     * value is the value of the tag.
+     */
     @JsonProperty("value")
     public void setValue(String value) {
         this.value = value;

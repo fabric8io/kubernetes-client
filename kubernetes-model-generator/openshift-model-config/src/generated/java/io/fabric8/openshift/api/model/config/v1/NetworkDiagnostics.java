@@ -86,11 +86,17 @@ public class NetworkDiagnostics implements Editable<NetworkDiagnosticsBuilder>, 
         this.targetPlacement = targetPlacement;
     }
 
+    /**
+     * mode controls the network diagnostics mode<br><p> <br><p> When omitted, this means the user has no opinion and the platform is left to choose reasonable defaults. These defaults are subject to change over time. The current default is All.
+     */
     @JsonProperty("mode")
     public String getMode() {
         return mode;
     }
 
+    /**
+     * mode controls the network diagnostics mode<br><p> <br><p> When omitted, this means the user has no opinion and the platform is left to choose reasonable defaults. These defaults are subject to change over time. The current default is All.
+     */
     @JsonProperty("mode")
     public void setMode(String mode) {
         this.mode = mode;

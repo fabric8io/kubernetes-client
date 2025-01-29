@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ContainerResizePolicy represents resource resize policy for the container.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -53,21 +56,33 @@ public class ContainerResizePolicy implements Editable<ContainerResizePolicyBuil
         this.restartPolicy = restartPolicy;
     }
 
+    /**
+     * Name of the resource to which this resource resize policy applies. Supported values: cpu, memory.
+     */
     @JsonProperty("resourceName")
     public String getResourceName() {
         return resourceName;
     }
 
+    /**
+     * Name of the resource to which this resource resize policy applies. Supported values: cpu, memory.
+     */
     @JsonProperty("resourceName")
     public void setResourceName(String resourceName) {
         this.resourceName = resourceName;
     }
 
+    /**
+     * Restart policy to apply when specified resource is resized. If not specified, it defaults to NotRequired.
+     */
     @JsonProperty("restartPolicy")
     public String getRestartPolicy() {
         return restartPolicy;
     }
 
+    /**
+     * Restart policy to apply when specified resource is resized. If not specified, it defaults to NotRequired.
+     */
     @JsonProperty("restartPolicy")
     public void setRestartPolicy(String restartPolicy) {
         this.restartPolicy = restartPolicy;

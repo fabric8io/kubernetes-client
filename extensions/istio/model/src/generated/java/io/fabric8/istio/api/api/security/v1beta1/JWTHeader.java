@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * This message specifies a header location to extract JWT token.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class JWTHeader implements Editable<JWTHeaderBuilder>, KubernetesResource
         this.prefix = prefix;
     }
 
+    /**
+     * The HTTP header name.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * The HTTP header name.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * The prefix that should be stripped before decoding the token. For example, for `Authorization: Bearer &lt;token&gt;`, prefix=`Bearer` with a space at the end. If the header doesn't have this exact prefix, it is considered invalid.
+     */
     @JsonProperty("prefix")
     public String getPrefix() {
         return prefix;
     }
 
+    /**
+     * The prefix that should be stripped before decoding the token. For example, for `Authorization: Bearer &lt;token&gt;`, prefix=`Bearer` with a space at the end. If the header doesn't have this exact prefix, it is considered invalid.
+     */
     @JsonProperty("prefix")
     public void setPrefix(String prefix) {
         this.prefix = prefix;

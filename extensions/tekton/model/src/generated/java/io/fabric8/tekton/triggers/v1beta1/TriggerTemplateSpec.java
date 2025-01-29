@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * TriggerTemplateSpec holds the desired state of TriggerTemplate
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,23 +89,35 @@ public class TriggerTemplateSpec implements Editable<TriggerTemplateSpecBuilder>
         this.resourcetemplates = resourcetemplates;
     }
 
+    /**
+     * TriggerTemplateSpec holds the desired state of TriggerTemplate
+     */
     @JsonProperty("params")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ParamSpec> getParams() {
         return params;
     }
 
+    /**
+     * TriggerTemplateSpec holds the desired state of TriggerTemplate
+     */
     @JsonProperty("params")
     public void setParams(List<ParamSpec> params) {
         this.params = params;
     }
 
+    /**
+     * TriggerTemplateSpec holds the desired state of TriggerTemplate
+     */
     @JsonProperty("resourcetemplates")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TriggerResourceTemplate> getResourcetemplates() {
         return resourcetemplates;
     }
 
+    /**
+     * TriggerTemplateSpec holds the desired state of TriggerTemplate
+     */
     @JsonProperty("resourcetemplates")
     public void setResourcetemplates(List<TriggerResourceTemplate> resourcetemplates) {
         this.resourcetemplates = resourcetemplates;

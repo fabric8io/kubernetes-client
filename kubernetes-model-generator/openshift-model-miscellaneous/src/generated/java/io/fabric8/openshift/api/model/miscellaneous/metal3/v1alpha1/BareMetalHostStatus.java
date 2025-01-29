@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * BareMetalHostStatus defines the observed state of BareMetalHost.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -122,121 +125,193 @@ public class BareMetalHostStatus implements Editable<BareMetalHostStatusBuilder>
         this.triedCredentials = triedCredentials;
     }
 
+    /**
+     * ErrorCount records how many times the host has encoutered an error since the last successful operation
+     */
     @JsonProperty("errorCount")
     public Integer getErrorCount() {
         return errorCount;
     }
 
+    /**
+     * ErrorCount records how many times the host has encoutered an error since the last successful operation
+     */
     @JsonProperty("errorCount")
     public void setErrorCount(Integer errorCount) {
         this.errorCount = errorCount;
     }
 
+    /**
+     * The last error message reported by the provisioning subsystem.
+     */
     @JsonProperty("errorMessage")
     public String getErrorMessage() {
         return errorMessage;
     }
 
+    /**
+     * The last error message reported by the provisioning subsystem.
+     */
     @JsonProperty("errorMessage")
     public void setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
     }
 
+    /**
+     * ErrorType indicates the type of failure encountered when the OperationalStatus is OperationalStatusError
+     */
     @JsonProperty("errorType")
     public String getErrorType() {
         return errorType;
     }
 
+    /**
+     * ErrorType indicates the type of failure encountered when the OperationalStatus is OperationalStatusError
+     */
     @JsonProperty("errorType")
     public void setErrorType(String errorType) {
         this.errorType = errorType;
     }
 
+    /**
+     * BareMetalHostStatus defines the observed state of BareMetalHost.
+     */
     @JsonProperty("goodCredentials")
     public CredentialsStatus getGoodCredentials() {
         return goodCredentials;
     }
 
+    /**
+     * BareMetalHostStatus defines the observed state of BareMetalHost.
+     */
     @JsonProperty("goodCredentials")
     public void setGoodCredentials(CredentialsStatus goodCredentials) {
         this.goodCredentials = goodCredentials;
     }
 
+    /**
+     * BareMetalHostStatus defines the observed state of BareMetalHost.
+     */
     @JsonProperty("hardware")
     public HardwareDetails getHardware() {
         return hardware;
     }
 
+    /**
+     * BareMetalHostStatus defines the observed state of BareMetalHost.
+     */
     @JsonProperty("hardware")
     public void setHardware(HardwareDetails hardware) {
         this.hardware = hardware;
     }
 
+    /**
+     * The name of the profile matching the hardware details. Hardware profiles are deprecated and should not be relied on.
+     */
     @JsonProperty("hardwareProfile")
     public String getHardwareProfile() {
         return hardwareProfile;
     }
 
+    /**
+     * The name of the profile matching the hardware details. Hardware profiles are deprecated and should not be relied on.
+     */
     @JsonProperty("hardwareProfile")
     public void setHardwareProfile(String hardwareProfile) {
         this.hardwareProfile = hardwareProfile;
     }
 
+    /**
+     * BareMetalHostStatus defines the observed state of BareMetalHost.
+     */
     @JsonProperty("lastUpdated")
     public String getLastUpdated() {
         return lastUpdated;
     }
 
+    /**
+     * BareMetalHostStatus defines the observed state of BareMetalHost.
+     */
     @JsonProperty("lastUpdated")
     public void setLastUpdated(String lastUpdated) {
         this.lastUpdated = lastUpdated;
     }
 
+    /**
+     * BareMetalHostStatus defines the observed state of BareMetalHost.
+     */
     @JsonProperty("operationHistory")
     public OperationHistory getOperationHistory() {
         return operationHistory;
     }
 
+    /**
+     * BareMetalHostStatus defines the observed state of BareMetalHost.
+     */
     @JsonProperty("operationHistory")
     public void setOperationHistory(OperationHistory operationHistory) {
         this.operationHistory = operationHistory;
     }
 
+    /**
+     * OperationalStatus holds the status of the host
+     */
     @JsonProperty("operationalStatus")
     public String getOperationalStatus() {
         return operationalStatus;
     }
 
+    /**
+     * OperationalStatus holds the status of the host
+     */
     @JsonProperty("operationalStatus")
     public void setOperationalStatus(String operationalStatus) {
         this.operationalStatus = operationalStatus;
     }
 
+    /**
+     * Whether or not the host is currently powered on. This field may get briefly out of sync with the actual state of the hardware while provisioning processes are running.
+     */
     @JsonProperty("poweredOn")
     public Boolean getPoweredOn() {
         return poweredOn;
     }
 
+    /**
+     * Whether or not the host is currently powered on. This field may get briefly out of sync with the actual state of the hardware while provisioning processes are running.
+     */
     @JsonProperty("poweredOn")
     public void setPoweredOn(Boolean poweredOn) {
         this.poweredOn = poweredOn;
     }
 
+    /**
+     * BareMetalHostStatus defines the observed state of BareMetalHost.
+     */
     @JsonProperty("provisioning")
     public ProvisionStatus getProvisioning() {
         return provisioning;
     }
 
+    /**
+     * BareMetalHostStatus defines the observed state of BareMetalHost.
+     */
     @JsonProperty("provisioning")
     public void setProvisioning(ProvisionStatus provisioning) {
         this.provisioning = provisioning;
     }
 
+    /**
+     * BareMetalHostStatus defines the observed state of BareMetalHost.
+     */
     @JsonProperty("triedCredentials")
     public CredentialsStatus getTriedCredentials() {
         return triedCredentials;
     }
 
+    /**
+     * BareMetalHostStatus defines the observed state of BareMetalHost.
+     */
     @JsonProperty("triedCredentials")
     public void setTriedCredentials(CredentialsStatus triedCredentials) {
         this.triedCredentials = triedCredentials;

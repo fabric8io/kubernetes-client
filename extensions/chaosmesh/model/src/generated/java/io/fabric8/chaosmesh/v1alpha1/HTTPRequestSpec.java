@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * used for HTTP request, now only support GET
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class HTTPRequestSpec implements Editable<HTTPRequestSpecBuilder>, Kubern
         this.url = url;
     }
 
+    /**
+     * The number of requests to send
+     */
     @JsonProperty("count")
     public Integer getCount() {
         return count;
     }
 
+    /**
+     * The number of requests to send
+     */
     @JsonProperty("count")
     public void setCount(Integer count) {
         this.count = count;
     }
 
+    /**
+     * Enable connection pool
+     */
     @JsonProperty("enable-conn-pool")
     public Boolean getEnableConnPool() {
         return enableConnPool;
     }
 
+    /**
+     * Enable connection pool
+     */
     @JsonProperty("enable-conn-pool")
     public void setEnableConnPool(Boolean enableConnPool) {
         this.enableConnPool = enableConnPool;
     }
 
+    /**
+     * Request to send"
+     */
     @JsonProperty("url")
     public String getUrl() {
         return url;
     }
 
+    /**
+     * Request to send"
+     */
     @JsonProperty("url")
     public void setUrl(String url) {
         this.url = url;

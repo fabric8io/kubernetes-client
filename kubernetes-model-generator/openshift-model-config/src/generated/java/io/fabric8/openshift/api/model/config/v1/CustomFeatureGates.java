@@ -86,23 +86,35 @@ public class CustomFeatureGates implements Editable<CustomFeatureGatesBuilder>, 
         this.enabled = enabled;
     }
 
+    /**
+     * disabled is a list of all feature gates that you want to force off
+     */
     @JsonProperty("disabled")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getDisabled() {
         return disabled;
     }
 
+    /**
+     * disabled is a list of all feature gates that you want to force off
+     */
     @JsonProperty("disabled")
     public void setDisabled(List<String> disabled) {
         this.disabled = disabled;
     }
 
+    /**
+     * enabled is a list of all feature gates that you want to force on
+     */
     @JsonProperty("enabled")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getEnabled() {
         return enabled;
     }
 
+    /**
+     * enabled is a list of all feature gates that you want to force on
+     */
     @JsonProperty("enabled")
     public void setEnabled(List<String> enabled) {
         this.enabled = enabled;

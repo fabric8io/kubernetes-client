@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PKCS12 configures options for storing a PKCS12 keystore in the `spec.secretName` Secret resource.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -87,31 +90,49 @@ public class PKCS12Keystore implements Editable<PKCS12KeystoreBuilder>, Kubernet
         this.profile = profile;
     }
 
+    /**
+     * Create enables PKCS12 keystore creation for the Certificate. If true, a file named `keystore.p12` will be created in the target Secret resource, encrypted using the password stored in `passwordSecretRef`. The keystore file will be updated immediately. If the issuer provided a CA certificate, a file named `truststore.p12` will also be created in the target Secret resource, encrypted using the password stored in `passwordSecretRef` containing the issuing Certificate Authority
+     */
     @JsonProperty("create")
     public Boolean getCreate() {
         return create;
     }
 
+    /**
+     * Create enables PKCS12 keystore creation for the Certificate. If true, a file named `keystore.p12` will be created in the target Secret resource, encrypted using the password stored in `passwordSecretRef`. The keystore file will be updated immediately. If the issuer provided a CA certificate, a file named `truststore.p12` will also be created in the target Secret resource, encrypted using the password stored in `passwordSecretRef` containing the issuing Certificate Authority
+     */
     @JsonProperty("create")
     public void setCreate(Boolean create) {
         this.create = create;
     }
 
+    /**
+     * PKCS12 configures options for storing a PKCS12 keystore in the `spec.secretName` Secret resource.
+     */
     @JsonProperty("passwordSecretRef")
     public SecretKeySelector getPasswordSecretRef() {
         return passwordSecretRef;
     }
 
+    /**
+     * PKCS12 configures options for storing a PKCS12 keystore in the `spec.secretName` Secret resource.
+     */
     @JsonProperty("passwordSecretRef")
     public void setPasswordSecretRef(SecretKeySelector passwordSecretRef) {
         this.passwordSecretRef = passwordSecretRef;
     }
 
+    /**
+     * Profile specifies the key and certificate encryption algorithms and the HMAC algorithm used to create the PKCS12 keystore. Default value is `LegacyRC2` for backward compatibility.<br><p> <br><p> If provided, allowed values are: `LegacyRC2`: Deprecated. Not supported by default in OpenSSL 3 or Java 20. `LegacyDES`: Less secure algorithm. Use this option for maximal compatibility. `Modern2023`: Secure algorithm. Use this option in case you have to always use secure algorithms (eg. because of company policy). Please note that the security of the algorithm is not that important in reality, because the unencrypted certificate and private key are also stored in the Secret.
+     */
     @JsonProperty("profile")
     public String getProfile() {
         return profile;
     }
 
+    /**
+     * Profile specifies the key and certificate encryption algorithms and the HMAC algorithm used to create the PKCS12 keystore. Default value is `LegacyRC2` for backward compatibility.<br><p> <br><p> If provided, allowed values are: `LegacyRC2`: Deprecated. Not supported by default in OpenSSL 3 or Java 20. `LegacyDES`: Less secure algorithm. Use this option for maximal compatibility. `Modern2023`: Secure algorithm. Use this option in case you have to always use secure algorithms (eg. because of company policy). Please note that the security of the algorithm is not that important in reality, because the unencrypted certificate and private key are also stored in the Secret.
+     */
     @JsonProperty("profile")
     public void setProfile(String profile) {
         this.profile = profile;

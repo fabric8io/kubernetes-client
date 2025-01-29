@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * LoggingConfig holds information about configuring logging DEPRECATED: Use v1.LogLevel instead
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class LoggingConfig implements Editable<LoggingConfigBuilder>, Kubernetes
         this.vmodule = vmodule;
     }
 
+    /**
+     * level is passed to glog.
+     */
     @JsonProperty("level")
     public Long getLevel() {
         return level;
     }
 
+    /**
+     * level is passed to glog.
+     */
     @JsonProperty("level")
     public void setLevel(Long level) {
         this.level = level;
     }
 
+    /**
+     * vmodule is passed to glog.
+     */
     @JsonProperty("vmodule")
     public String getVmodule() {
         return vmodule;
     }
 
+    /**
+     * vmodule is passed to glog.
+     */
     @JsonProperty("vmodule")
     public void setVmodule(String vmodule) {
         this.vmodule = vmodule;

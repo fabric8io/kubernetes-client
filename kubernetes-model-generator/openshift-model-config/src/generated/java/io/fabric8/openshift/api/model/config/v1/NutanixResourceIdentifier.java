@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NutanixResourceIdentifier holds the identity of a Nutanix PC resource (cluster, image, subnet, etc.)
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class NutanixResourceIdentifier implements Editable<NutanixResourceIdenti
         this.uuid = uuid;
     }
 
+    /**
+     * name is the resource name in the PC. It cannot be empty if the type is Name.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * name is the resource name in the PC. It cannot be empty if the type is Name.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * type is the identifier type to use for this resource.
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * type is the identifier type to use for this resource.
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;
     }
 
+    /**
+     * uuid is the UUID of the resource in the PC. It cannot be empty if the type is UUID.
+     */
     @JsonProperty("uuid")
     public String getUuid() {
         return uuid;
     }
 
+    /**
+     * uuid is the UUID of the resource in the PC. It cannot be empty if the type is UUID.
+     */
     @JsonProperty("uuid")
     public void setUuid(String uuid) {
         this.uuid = uuid;

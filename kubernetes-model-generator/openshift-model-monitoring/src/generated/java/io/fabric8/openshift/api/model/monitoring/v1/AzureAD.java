@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AzureAD defines the configuration for remote write's azuread parameters.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class AzureAD implements Editable<AzureADBuilder>, KubernetesResource
         this.sdk = sdk;
     }
 
+    /**
+     * The Azure Cloud. Options are 'AzurePublic', 'AzureChina', or 'AzureGovernment'.
+     */
     @JsonProperty("cloud")
     public String getCloud() {
         return cloud;
     }
 
+    /**
+     * The Azure Cloud. Options are 'AzurePublic', 'AzureChina', or 'AzureGovernment'.
+     */
     @JsonProperty("cloud")
     public void setCloud(String cloud) {
         this.cloud = cloud;
     }
 
+    /**
+     * AzureAD defines the configuration for remote write's azuread parameters.
+     */
     @JsonProperty("managedIdentity")
     public ManagedIdentity getManagedIdentity() {
         return managedIdentity;
     }
 
+    /**
+     * AzureAD defines the configuration for remote write's azuread parameters.
+     */
     @JsonProperty("managedIdentity")
     public void setManagedIdentity(ManagedIdentity managedIdentity) {
         this.managedIdentity = managedIdentity;
     }
 
+    /**
+     * AzureAD defines the configuration for remote write's azuread parameters.
+     */
     @JsonProperty("oauth")
     public AzureOAuth getOauth() {
         return oauth;
     }
 
+    /**
+     * AzureAD defines the configuration for remote write's azuread parameters.
+     */
     @JsonProperty("oauth")
     public void setOauth(AzureOAuth oauth) {
         this.oauth = oauth;
     }
 
+    /**
+     * AzureAD defines the configuration for remote write's azuread parameters.
+     */
     @JsonProperty("sdk")
     public AzureSDK getSdk() {
         return sdk;
     }
 
+    /**
+     * AzureAD defines the configuration for remote write's azuread parameters.
+     */
     @JsonProperty("sdk")
     public void setSdk(AzureSDK sdk) {
         this.sdk = sdk;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Message headers can be manipulated when Envoy forwards requests to, or responses from, a destination service. Header manipulation rules can be specified for a specific route destination or for all destinations. The following VirtualService adds a `test` header with the value `true` to requests that are routed to any `reviews` service destination. It also removes the `foo` response header, but only from responses coming from the `v1` subset (version) of the `reviews` service.<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: VirtualService metadata:<br><p> <br><p> 	name: reviews-route<br><p> <br><p> spec:<br><p> <br><p> 	hosts:<br><p> 	- reviews.prod.svc.cluster.local<br><p> 	http:<br><p> 	- headers:<br><p> 	    request:<br><p> 	      set:<br><p> 	        test: "true"<br><p> 	  route:<br><p> 	  - destination:<br><p> 	      host: reviews.prod.svc.cluster.local<br><p> 	      subset: v2<br><p> 	    weight: 25<br><p> 	  - destination:<br><p> 	      host: reviews.prod.svc.cluster.local<br><p> 	      subset: v1<br><p> 	    headers:<br><p> 	      response:<br><p> 	        remove:<br><p> 	        - foo<br><p> 	    weight: 75<br><p> <br><p> ```
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class Headers implements Editable<HeadersBuilder>, KubernetesResource
         this.response = response;
     }
 
+    /**
+     * Message headers can be manipulated when Envoy forwards requests to, or responses from, a destination service. Header manipulation rules can be specified for a specific route destination or for all destinations. The following VirtualService adds a `test` header with the value `true` to requests that are routed to any `reviews` service destination. It also removes the `foo` response header, but only from responses coming from the `v1` subset (version) of the `reviews` service.<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: VirtualService metadata:<br><p> <br><p> 	name: reviews-route<br><p> <br><p> spec:<br><p> <br><p> 	hosts:<br><p> 	- reviews.prod.svc.cluster.local<br><p> 	http:<br><p> 	- headers:<br><p> 	    request:<br><p> 	      set:<br><p> 	        test: "true"<br><p> 	  route:<br><p> 	  - destination:<br><p> 	      host: reviews.prod.svc.cluster.local<br><p> 	      subset: v2<br><p> 	    weight: 25<br><p> 	  - destination:<br><p> 	      host: reviews.prod.svc.cluster.local<br><p> 	      subset: v1<br><p> 	    headers:<br><p> 	      response:<br><p> 	        remove:<br><p> 	        - foo<br><p> 	    weight: 75<br><p> <br><p> ```
+     */
     @JsonProperty("request")
     public HeadersHeaderOperations getRequest() {
         return request;
     }
 
+    /**
+     * Message headers can be manipulated when Envoy forwards requests to, or responses from, a destination service. Header manipulation rules can be specified for a specific route destination or for all destinations. The following VirtualService adds a `test` header with the value `true` to requests that are routed to any `reviews` service destination. It also removes the `foo` response header, but only from responses coming from the `v1` subset (version) of the `reviews` service.<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: VirtualService metadata:<br><p> <br><p> 	name: reviews-route<br><p> <br><p> spec:<br><p> <br><p> 	hosts:<br><p> 	- reviews.prod.svc.cluster.local<br><p> 	http:<br><p> 	- headers:<br><p> 	    request:<br><p> 	      set:<br><p> 	        test: "true"<br><p> 	  route:<br><p> 	  - destination:<br><p> 	      host: reviews.prod.svc.cluster.local<br><p> 	      subset: v2<br><p> 	    weight: 25<br><p> 	  - destination:<br><p> 	      host: reviews.prod.svc.cluster.local<br><p> 	      subset: v1<br><p> 	    headers:<br><p> 	      response:<br><p> 	        remove:<br><p> 	        - foo<br><p> 	    weight: 75<br><p> <br><p> ```
+     */
     @JsonProperty("request")
     public void setRequest(HeadersHeaderOperations request) {
         this.request = request;
     }
 
+    /**
+     * Message headers can be manipulated when Envoy forwards requests to, or responses from, a destination service. Header manipulation rules can be specified for a specific route destination or for all destinations. The following VirtualService adds a `test` header with the value `true` to requests that are routed to any `reviews` service destination. It also removes the `foo` response header, but only from responses coming from the `v1` subset (version) of the `reviews` service.<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: VirtualService metadata:<br><p> <br><p> 	name: reviews-route<br><p> <br><p> spec:<br><p> <br><p> 	hosts:<br><p> 	- reviews.prod.svc.cluster.local<br><p> 	http:<br><p> 	- headers:<br><p> 	    request:<br><p> 	      set:<br><p> 	        test: "true"<br><p> 	  route:<br><p> 	  - destination:<br><p> 	      host: reviews.prod.svc.cluster.local<br><p> 	      subset: v2<br><p> 	    weight: 25<br><p> 	  - destination:<br><p> 	      host: reviews.prod.svc.cluster.local<br><p> 	      subset: v1<br><p> 	    headers:<br><p> 	      response:<br><p> 	        remove:<br><p> 	        - foo<br><p> 	    weight: 75<br><p> <br><p> ```
+     */
     @JsonProperty("response")
     public HeadersHeaderOperations getResponse() {
         return response;
     }
 
+    /**
+     * Message headers can be manipulated when Envoy forwards requests to, or responses from, a destination service. Header manipulation rules can be specified for a specific route destination or for all destinations. The following VirtualService adds a `test` header with the value `true` to requests that are routed to any `reviews` service destination. It also removes the `foo` response header, but only from responses coming from the `v1` subset (version) of the `reviews` service.<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: VirtualService metadata:<br><p> <br><p> 	name: reviews-route<br><p> <br><p> spec:<br><p> <br><p> 	hosts:<br><p> 	- reviews.prod.svc.cluster.local<br><p> 	http:<br><p> 	- headers:<br><p> 	    request:<br><p> 	      set:<br><p> 	        test: "true"<br><p> 	  route:<br><p> 	  - destination:<br><p> 	      host: reviews.prod.svc.cluster.local<br><p> 	      subset: v2<br><p> 	    weight: 25<br><p> 	  - destination:<br><p> 	      host: reviews.prod.svc.cluster.local<br><p> 	      subset: v1<br><p> 	    headers:<br><p> 	      response:<br><p> 	        remove:<br><p> 	        - foo<br><p> 	    weight: 75<br><p> <br><p> ```
+     */
     @JsonProperty("response")
     public void setResponse(HeadersHeaderOperations response) {
         this.response = response;

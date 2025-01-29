@@ -96,45 +96,69 @@ public class PodNetworkConnectivityCheckStatus implements Editable<PodNetworkCon
         this.successes = successes;
     }
 
+    /**
+     * Conditions summarize the status of the check
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PodNetworkConnectivityCheckCondition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Conditions summarize the status of the check
+     */
     @JsonProperty("conditions")
     public void setConditions(List<PodNetworkConnectivityCheckCondition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * Failures contains logs of unsuccessful check actions
+     */
     @JsonProperty("failures")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<LogEntry> getFailures() {
         return failures;
     }
 
+    /**
+     * Failures contains logs of unsuccessful check actions
+     */
     @JsonProperty("failures")
     public void setFailures(List<LogEntry> failures) {
         this.failures = failures;
     }
 
+    /**
+     * Outages contains logs of time periods of outages
+     */
     @JsonProperty("outages")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<OutageEntry> getOutages() {
         return outages;
     }
 
+    /**
+     * Outages contains logs of time periods of outages
+     */
     @JsonProperty("outages")
     public void setOutages(List<OutageEntry> outages) {
         this.outages = outages;
     }
 
+    /**
+     * Successes contains logs successful check actions
+     */
     @JsonProperty("successes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<LogEntry> getSuccesses() {
         return successes;
     }
 
+    /**
+     * Successes contains logs successful check actions
+     */
     @JsonProperty("successes")
     public void setSuccesses(List<LogEntry> successes) {
         this.successes = successes;

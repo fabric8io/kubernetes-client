@@ -31,6 +31,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ObjectReference is a reference to an object with a given name, kind and group.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,31 +88,49 @@ public class ObjectReference implements Editable<ObjectReferenceBuilder>, Kubern
         this.name = name;
     }
 
+    /**
+     * Group of the resource being referred to.
+     */
     @JsonProperty("group")
     public String getGroup() {
         return group;
     }
 
+    /**
+     * Group of the resource being referred to.
+     */
     @JsonProperty("group")
     public void setGroup(String group) {
         this.group = group;
     }
 
+    /**
+     * Kind of the resource being referred to.
+     */
     @JsonProperty("kind")
     public String getKind() {
         return kind;
     }
 
+    /**
+     * Kind of the resource being referred to.
+     */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * Name of the resource being referred to.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name of the resource being referred to.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

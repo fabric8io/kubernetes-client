@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * StructuredResourceHandle is the in-tree representation of the allocation result.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -95,43 +98,67 @@ public class StructuredResourceHandle implements Editable<StructuredResourceHand
         this.vendorClassParameters = vendorClassParameters;
     }
 
+    /**
+     * NodeName is the name of the node providing the necessary resources if the resources are local to a node.
+     */
     @JsonProperty("nodeName")
     public String getNodeName() {
         return nodeName;
     }
 
+    /**
+     * NodeName is the name of the node providing the necessary resources if the resources are local to a node.
+     */
     @JsonProperty("nodeName")
     public void setNodeName(String nodeName) {
         this.nodeName = nodeName;
     }
 
+    /**
+     * Results lists all allocated driver resources.
+     */
     @JsonProperty("results")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<DriverAllocationResult> getResults() {
         return results;
     }
 
+    /**
+     * Results lists all allocated driver resources.
+     */
     @JsonProperty("results")
     public void setResults(List<DriverAllocationResult> results) {
         this.results = results;
     }
 
+    /**
+     * StructuredResourceHandle is the in-tree representation of the allocation result.
+     */
     @JsonProperty("vendorClaimParameters")
     public Object getVendorClaimParameters() {
         return vendorClaimParameters;
     }
 
+    /**
+     * StructuredResourceHandle is the in-tree representation of the allocation result.
+     */
     @JsonProperty("vendorClaimParameters")
     @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
     public void setVendorClaimParameters(Object vendorClaimParameters) {
         this.vendorClaimParameters = vendorClaimParameters;
     }
 
+    /**
+     * StructuredResourceHandle is the in-tree representation of the allocation result.
+     */
     @JsonProperty("vendorClassParameters")
     public Object getVendorClassParameters() {
         return vendorClassParameters;
     }
 
+    /**
+     * StructuredResourceHandle is the in-tree representation of the allocation result.
+     */
     @JsonProperty("vendorClassParameters")
     @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
     public void setVendorClassParameters(Object vendorClassParameters) {

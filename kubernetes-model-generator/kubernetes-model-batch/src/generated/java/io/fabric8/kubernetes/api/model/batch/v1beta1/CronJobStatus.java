@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * CronJobStatus represents the current state of a cron job.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -89,32 +92,50 @@ public class CronJobStatus implements Editable<CronJobStatusBuilder>, Kubernetes
         this.lastSuccessfulTime = lastSuccessfulTime;
     }
 
+    /**
+     * A list of pointers to currently running jobs.
+     */
     @JsonProperty("active")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ObjectReference> getActive() {
         return active;
     }
 
+    /**
+     * A list of pointers to currently running jobs.
+     */
     @JsonProperty("active")
     public void setActive(List<ObjectReference> active) {
         this.active = active;
     }
 
+    /**
+     * CronJobStatus represents the current state of a cron job.
+     */
     @JsonProperty("lastScheduleTime")
     public String getLastScheduleTime() {
         return lastScheduleTime;
     }
 
+    /**
+     * CronJobStatus represents the current state of a cron job.
+     */
     @JsonProperty("lastScheduleTime")
     public void setLastScheduleTime(String lastScheduleTime) {
         this.lastScheduleTime = lastScheduleTime;
     }
 
+    /**
+     * CronJobStatus represents the current state of a cron job.
+     */
     @JsonProperty("lastSuccessfulTime")
     public String getLastSuccessfulTime() {
         return lastSuccessfulTime;
     }
 
+    /**
+     * CronJobStatus represents the current state of a cron job.
+     */
     @JsonProperty("lastSuccessfulTime")
     public void setLastSuccessfulTime(String lastSuccessfulTime) {
         this.lastSuccessfulTime = lastSuccessfulTime;

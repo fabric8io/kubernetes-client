@@ -78,11 +78,17 @@ public class MachineConfigNodeSpecPinnedImageSet implements Editable<MachineConf
         this.name = name;
     }
 
+    /**
+     * name is the name of the pinned image set. Must be a lowercase RFC-1123 hostname (https://tools.ietf.org/html/rfc1123) It may consist of only alphanumeric characters, hyphens (-) and periods (.) and must be at most 253 characters in length.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * name is the name of the pinned image set. Must be a lowercase RFC-1123 hostname (https://tools.ietf.org/html/rfc1123) It may consist of only alphanumeric characters, hyphens (-) and periods (.) and must be at most 253 characters in length.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

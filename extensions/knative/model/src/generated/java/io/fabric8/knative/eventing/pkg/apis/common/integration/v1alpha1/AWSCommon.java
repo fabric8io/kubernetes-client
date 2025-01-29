@@ -86,31 +86,49 @@ public class AWSCommon implements Editable<AWSCommonBuilder>, KubernetesResource
         this.uriEndpointOverride = uriEndpointOverride;
     }
 
+    /**
+     * Override endpoint URI
+     */
     @JsonProperty("overrideEndpoint")
     public Boolean getOverrideEndpoint() {
         return overrideEndpoint;
     }
 
+    /**
+     * Override endpoint URI
+     */
     @JsonProperty("overrideEndpoint")
     public void setOverrideEndpoint(Boolean overrideEndpoint) {
         this.overrideEndpoint = overrideEndpoint;
     }
 
+    /**
+     * Auth is the S3 authentication (accessKey/secretKey) configuration.
+     */
     @JsonProperty("region")
     public String getRegion() {
         return region;
     }
 
+    /**
+     * Auth is the S3 authentication (accessKey/secretKey) configuration.
+     */
     @JsonProperty("region")
     public void setRegion(String region) {
         this.region = region;
     }
 
+    /**
+     * AWS region
+     */
     @JsonProperty("uriEndpointOverride")
     public String getUriEndpointOverride() {
         return uriEndpointOverride;
     }
 
+    /**
+     * AWS region
+     */
     @JsonProperty("uriEndpointOverride")
     public void setUriEndpointOverride(String uriEndpointOverride) {
         this.uriEndpointOverride = uriEndpointOverride;

@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * HostFirmwareComponentsStatus defines the observed state of HostFirmwareComponents.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -96,44 +99,68 @@ public class HostFirmwareComponentsStatus implements Editable<HostFirmwareCompon
         this.updates = updates;
     }
 
+    /**
+     * Components is the list of all available firmware components and their information.
+     */
     @JsonProperty("components")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<FirmwareComponentStatus> getComponents() {
         return components;
     }
 
+    /**
+     * Components is the list of all available firmware components and their information.
+     */
     @JsonProperty("components")
     public void setComponents(List<FirmwareComponentStatus> components) {
         this.components = components;
     }
 
+    /**
+     * Track whether updates stored in the spec are valid based on the schema
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Track whether updates stored in the spec are valid based on the schema
+     */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * HostFirmwareComponentsStatus defines the observed state of HostFirmwareComponents.
+     */
     @JsonProperty("lastUpdated")
     public String getLastUpdated() {
         return lastUpdated;
     }
 
+    /**
+     * HostFirmwareComponentsStatus defines the observed state of HostFirmwareComponents.
+     */
     @JsonProperty("lastUpdated")
     public void setLastUpdated(String lastUpdated) {
         this.lastUpdated = lastUpdated;
     }
 
+    /**
+     * Updates is the list of all firmware components that should be updated they are specified via name and url fields.
+     */
     @JsonProperty("updates")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<FirmwareUpdate> getUpdates() {
         return updates;
     }
 
+    /**
+     * Updates is the list of all firmware components that should be updated they are specified via name and url fields.
+     */
     @JsonProperty("updates")
     public void setUpdates(List<FirmwareUpdate> updates) {
         this.updates = updates;

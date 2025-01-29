@@ -38,6 +38,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * `WorkloadGroup` enables specifying the properties of a single workload for bootstrap and provides a template for `WorkloadEntry`, similar to how `Deployment` specifies properties of workloads via `Pod` templates. A `WorkloadGroup` can have more than one `WorkloadEntry`. `WorkloadGroup` has no relationship to resources which control service registry like `ServiceEntry` and as such doesn't configure host name for these workloads.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -77,14 +80,8 @@ import lombok.experimental.Accessors;
 public class WorkloadGroup implements Editable<WorkloadGroupBuilder>, HasMetadata, Namespaced
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "networking.istio.io/v1";
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "WorkloadGroup";
     @JsonProperty("metadata")
@@ -112,7 +109,7 @@ public class WorkloadGroup implements Editable<WorkloadGroupBuilder>, HasMetadat
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -120,7 +117,7 @@ public class WorkloadGroup implements Editable<WorkloadGroupBuilder>, HasMetadat
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -128,7 +125,7 @@ public class WorkloadGroup implements Editable<WorkloadGroupBuilder>, HasMetadat
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -136,38 +133,56 @@ public class WorkloadGroup implements Editable<WorkloadGroupBuilder>, HasMetadat
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * `WorkloadGroup` enables specifying the properties of a single workload for bootstrap and provides a template for `WorkloadEntry`, similar to how `Deployment` specifies properties of workloads via `Pod` templates. A `WorkloadGroup` can have more than one `WorkloadEntry`. `WorkloadGroup` has no relationship to resources which control service registry like `ServiceEntry` and as such doesn't configure host name for these workloads.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * `WorkloadGroup` enables specifying the properties of a single workload for bootstrap and provides a template for `WorkloadEntry`, similar to how `Deployment` specifies properties of workloads via `Pod` templates. A `WorkloadGroup` can have more than one `WorkloadEntry`. `WorkloadGroup` has no relationship to resources which control service registry like `ServiceEntry` and as such doesn't configure host name for these workloads.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * `WorkloadGroup` enables specifying the properties of a single workload for bootstrap and provides a template for `WorkloadEntry`, similar to how `Deployment` specifies properties of workloads via `Pod` templates. A `WorkloadGroup` can have more than one `WorkloadEntry`. `WorkloadGroup` has no relationship to resources which control service registry like `ServiceEntry` and as such doesn't configure host name for these workloads.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+     */
     @JsonProperty("spec")
     public io.fabric8.istio.api.api.networking.v1alpha3.WorkloadGroup getSpec() {
         return spec;
     }
 
+    /**
+     * `WorkloadGroup` enables specifying the properties of a single workload for bootstrap and provides a template for `WorkloadEntry`, similar to how `Deployment` specifies properties of workloads via `Pod` templates. A `WorkloadGroup` can have more than one `WorkloadEntry`. `WorkloadGroup` has no relationship to resources which control service registry like `ServiceEntry` and as such doesn't configure host name for these workloads.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+     */
     @JsonProperty("spec")
     public void setSpec(io.fabric8.istio.api.api.networking.v1alpha3.WorkloadGroup spec) {
         this.spec = spec;
     }
 
+    /**
+     * `WorkloadGroup` enables specifying the properties of a single workload for bootstrap and provides a template for `WorkloadEntry`, similar to how `Deployment` specifies properties of workloads via `Pod` templates. A `WorkloadGroup` can have more than one `WorkloadEntry`. `WorkloadGroup` has no relationship to resources which control service registry like `ServiceEntry` and as such doesn't configure host name for these workloads.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+     */
     @JsonProperty("status")
     public IstioStatus getStatus() {
         return status;
     }
 
+    /**
+     * `WorkloadGroup` enables specifying the properties of a single workload for bootstrap and provides a template for `WorkloadEntry`, similar to how `Deployment` specifies properties of workloads via `Pod` templates. A `WorkloadGroup` can have more than one `WorkloadEntry`. `WorkloadGroup` has no relationship to resources which control service registry like `ServiceEntry` and as such doesn't configure host name for these workloads.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+     */
     @JsonProperty("status")
     public void setStatus(IstioStatus status) {
         this.status = status;

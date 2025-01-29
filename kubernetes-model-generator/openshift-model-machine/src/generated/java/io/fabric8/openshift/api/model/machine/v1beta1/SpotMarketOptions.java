@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SpotMarketOptions defines the options available to a user when configuring Machines to run on Spot instances. Most users should provide an empty struct.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class SpotMarketOptions implements Editable<SpotMarketOptionsBuilder>, Ku
         this.maxPrice = maxPrice;
     }
 
+    /**
+     * The maximum price the user is willing to pay for their instances Default: On-Demand price
+     */
     @JsonProperty("maxPrice")
     public String getMaxPrice() {
         return maxPrice;
     }
 
+    /**
+     * The maximum price the user is willing to pay for their instances Default: On-Demand price
+     */
     @JsonProperty("maxPrice")
     public void setMaxPrice(String maxPrice) {
         this.maxPrice = maxPrice;

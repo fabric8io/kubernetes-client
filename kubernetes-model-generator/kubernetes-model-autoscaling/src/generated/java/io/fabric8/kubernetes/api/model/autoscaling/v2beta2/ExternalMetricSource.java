@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ExternalMetricSource indicates how to scale on a metric not associated with any Kubernetes object (for example length of queue in cloud messaging service, or QPS from loadbalancer running outside of cluster).
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class ExternalMetricSource implements Editable<ExternalMetricSourceBuilde
         this.target = target;
     }
 
+    /**
+     * ExternalMetricSource indicates how to scale on a metric not associated with any Kubernetes object (for example length of queue in cloud messaging service, or QPS from loadbalancer running outside of cluster).
+     */
     @JsonProperty("metric")
     public MetricIdentifier getMetric() {
         return metric;
     }
 
+    /**
+     * ExternalMetricSource indicates how to scale on a metric not associated with any Kubernetes object (for example length of queue in cloud messaging service, or QPS from loadbalancer running outside of cluster).
+     */
     @JsonProperty("metric")
     public void setMetric(MetricIdentifier metric) {
         this.metric = metric;
     }
 
+    /**
+     * ExternalMetricSource indicates how to scale on a metric not associated with any Kubernetes object (for example length of queue in cloud messaging service, or QPS from loadbalancer running outside of cluster).
+     */
     @JsonProperty("target")
     public MetricTarget getTarget() {
         return target;
     }
 
+    /**
+     * ExternalMetricSource indicates how to scale on a metric not associated with any Kubernetes object (for example length of queue in cloud messaging service, or QPS from loadbalancer running outside of cluster).
+     */
     @JsonProperty("target")
     public void setTarget(MetricTarget target) {
         this.target = target;

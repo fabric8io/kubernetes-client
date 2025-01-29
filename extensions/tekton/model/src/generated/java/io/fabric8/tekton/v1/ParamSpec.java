@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ParamSpec defines arbitrary parameters needed beyond typed inputs (such as resources). Parameter values are provided by users as inputs on a TaskRun or PipelineRun.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -102,63 +105,99 @@ public class ParamSpec implements Editable<ParamSpecBuilder>, KubernetesResource
         this.type = type;
     }
 
+    /**
+     * ParamSpec defines arbitrary parameters needed beyond typed inputs (such as resources). Parameter values are provided by users as inputs on a TaskRun or PipelineRun.
+     */
     @JsonProperty("default")
     public ParamValue getDefault() {
         return _default;
     }
 
+    /**
+     * ParamSpec defines arbitrary parameters needed beyond typed inputs (such as resources). Parameter values are provided by users as inputs on a TaskRun or PipelineRun.
+     */
     @JsonProperty("default")
     public void setDefault(ParamValue _default) {
         this._default = _default;
     }
 
+    /**
+     * Description is a user-facing description of the parameter that may be used to populate a UI.
+     */
     @JsonProperty("description")
     public String getDescription() {
         return description;
     }
 
+    /**
+     * Description is a user-facing description of the parameter that may be used to populate a UI.
+     */
     @JsonProperty("description")
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * Enum declares a set of allowed param input values for tasks/pipelines that can be validated. If Enum is not set, no input validation is performed for the param.
+     */
     @JsonProperty("enum")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getEnum() {
         return _enum;
     }
 
+    /**
+     * Enum declares a set of allowed param input values for tasks/pipelines that can be validated. If Enum is not set, no input validation is performed for the param.
+     */
     @JsonProperty("enum")
     public void setEnum(List<String> _enum) {
         this._enum = _enum;
     }
 
+    /**
+     * Name declares the name by which a parameter is referenced.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name declares the name by which a parameter is referenced.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Properties is the JSON Schema properties to support key-value pairs parameter.
+     */
     @JsonProperty("properties")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, PropertySpec> getProperties() {
         return properties;
     }
 
+    /**
+     * Properties is the JSON Schema properties to support key-value pairs parameter.
+     */
     @JsonProperty("properties")
     public void setProperties(Map<String, PropertySpec> properties) {
         this.properties = properties;
     }
 
+    /**
+     * Type is the user-specified type of the parameter. The possible types are currently "string", "array" and "object", and "string" is the default.
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * Type is the user-specified type of the parameter. The possible types are currently "string", "array" and "object", and "string" is the default.
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

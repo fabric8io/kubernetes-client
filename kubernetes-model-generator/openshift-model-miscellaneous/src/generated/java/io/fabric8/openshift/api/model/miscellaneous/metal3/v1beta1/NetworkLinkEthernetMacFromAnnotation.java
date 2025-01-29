@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NetworkLinkEthernetMacFromAnnotation contains the information to fetch an annotation content, if the label does not exist, it is rendered as empty string.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class NetworkLinkEthernetMacFromAnnotation implements Editable<NetworkLin
         this.object = object;
     }
 
+    /**
+     * Annotation is the key of the Annotation to fetch
+     */
     @JsonProperty("annotation")
     public String getAnnotation() {
         return annotation;
     }
 
+    /**
+     * Annotation is the key of the Annotation to fetch
+     */
     @JsonProperty("annotation")
     public void setAnnotation(String annotation) {
         this.annotation = annotation;
     }
 
+    /**
+     * Object is the type of the object from which we retrieve the name
+     */
     @JsonProperty("object")
     public String getObject() {
         return object;
     }
 
+    /**
+     * Object is the type of the object from which we retrieve the name
+     */
     @JsonProperty("object")
     public void setObject(String object) {
         this.object = object;

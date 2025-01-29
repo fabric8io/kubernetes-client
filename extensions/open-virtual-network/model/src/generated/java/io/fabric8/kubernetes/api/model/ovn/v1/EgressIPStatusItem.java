@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * The per node status, for those egress IPs who have been assigned.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class EgressIPStatusItem implements Editable<EgressIPStatusItemBuilder>, 
         this.node = node;
     }
 
+    /**
+     * Assigned egress IP
+     */
     @JsonProperty("egressIP")
     public String getEgressIP() {
         return egressIP;
     }
 
+    /**
+     * Assigned egress IP
+     */
     @JsonProperty("egressIP")
     public void setEgressIP(String egressIP) {
         this.egressIP = egressIP;
     }
 
+    /**
+     * Assigned node name
+     */
     @JsonProperty("node")
     public String getNode() {
         return node;
     }
 
+    /**
+     * Assigned node name
+     */
     @JsonProperty("node")
     public void setNode(String node) {
         this.node = node;

@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AlertRelabelConfigsSpec is the desired state of an AlertRelabelConfig resource.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -81,12 +84,18 @@ public class AlertRelabelConfigSpec implements Editable<AlertRelabelConfigSpecBu
         this.configs = configs;
     }
 
+    /**
+     * configs is a list of sequentially evaluated alert relabel configs.
+     */
     @JsonProperty("configs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<RelabelConfig> getConfigs() {
         return configs;
     }
 
+    /**
+     * configs is a list of sequentially evaluated alert relabel configs.
+     */
     @JsonProperty("configs")
     public void setConfigs(List<RelabelConfig> configs) {
         this.configs = configs;

@@ -40,6 +40,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PhysicalMachineList contains a list of PhysicalMachine
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,17 +81,11 @@ import lombok.experimental.Accessors;
 public class PhysicalMachineList implements Editable<PhysicalMachineListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.chaosmesh.v1alpha1.PhysicalMachine>
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "chaos-mesh.org/v1alpha1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.chaosmesh.v1alpha1.PhysicalMachine> items = new ArrayList<>();
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "PhysicalMachineList";
     @JsonProperty("metadata")
@@ -111,7 +108,7 @@ public class PhysicalMachineList implements Editable<PhysicalMachineListBuilder>
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -119,26 +116,32 @@ public class PhysicalMachineList implements Editable<PhysicalMachineListBuilder>
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
+    /**
+     * PhysicalMachineList contains a list of PhysicalMachine
+     */
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.chaosmesh.v1alpha1.PhysicalMachine> getItems() {
         return items;
     }
 
+    /**
+     * PhysicalMachineList contains a list of PhysicalMachine
+     */
     @JsonProperty("items")
     public void setItems(List<io.fabric8.chaosmesh.v1alpha1.PhysicalMachine> items) {
         this.items = items;
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -146,18 +149,24 @@ public class PhysicalMachineList implements Editable<PhysicalMachineListBuilder>
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * PhysicalMachineList contains a list of PhysicalMachine
+     */
     @JsonProperty("metadata")
     public ListMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * PhysicalMachineList contains a list of PhysicalMachine
+     */
     @JsonProperty("metadata")
     public void setMetadata(ListMeta metadata) {
         this.metadata = metadata;

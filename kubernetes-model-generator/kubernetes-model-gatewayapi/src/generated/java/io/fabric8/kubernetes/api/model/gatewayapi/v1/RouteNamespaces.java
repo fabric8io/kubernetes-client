@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * RouteNamespaces indicate which namespaces Routes should be selected from.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class RouteNamespaces implements Editable<RouteNamespacesBuilder>, Kubern
         this.selector = selector;
     }
 
+    /**
+     * From indicates where Routes will be selected for this Gateway. Possible values are:<br><p> <br><p> &#42; All: Routes in all namespaces may be used by this Gateway. &#42; Selector: Routes in namespaces selected by the selector may be used by<br><p>   this Gateway.<br><p> &#42; Same: Only Routes in the same namespace may be used by this Gateway.<br><p> <br><p> Support: Core
+     */
     @JsonProperty("from")
     public String getFrom() {
         return from;
     }
 
+    /**
+     * From indicates where Routes will be selected for this Gateway. Possible values are:<br><p> <br><p> &#42; All: Routes in all namespaces may be used by this Gateway. &#42; Selector: Routes in namespaces selected by the selector may be used by<br><p>   this Gateway.<br><p> &#42; Same: Only Routes in the same namespace may be used by this Gateway.<br><p> <br><p> Support: Core
+     */
     @JsonProperty("from")
     public void setFrom(String from) {
         this.from = from;
     }
 
+    /**
+     * RouteNamespaces indicate which namespaces Routes should be selected from.
+     */
     @JsonProperty("selector")
     public LabelSelector getSelector() {
         return selector;
     }
 
+    /**
+     * RouteNamespaces indicate which namespaces Routes should be selected from.
+     */
     @JsonProperty("selector")
     public void setSelector(LabelSelector selector) {
         this.selector = selector;

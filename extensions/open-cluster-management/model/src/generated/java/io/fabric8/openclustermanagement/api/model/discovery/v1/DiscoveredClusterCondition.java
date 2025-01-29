@@ -110,21 +110,33 @@ public class DiscoveredClusterCondition implements Editable<DiscoveredClusterCon
         this.lastUpdateTime = lastUpdateTime;
     }
 
+    /**
+     * Status is the status of the condition. One of True, False, Unknown.
+     */
     @JsonProperty("status")
     public String getStatus() {
         return status;
     }
 
+    /**
+     * Status is the status of the condition. One of True, False, Unknown.
+     */
     @JsonProperty("status")
     public void setStatus(String status) {
         this.status = status;
     }
 
+    /**
+     * Type is the type of the discovered cluster condition.
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * Type is the type of the discovered cluster condition.
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * gathererStatus represents information about a particular data gatherer.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,32 +93,50 @@ public class GathererStatus implements Editable<GathererStatusBuilder>, Kubernet
         this.name = name;
     }
 
+    /**
+     * conditions provide details on the status of each gatherer.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
 
+    /**
+     * conditions provide details on the status of each gatherer.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * gathererStatus represents information about a particular data gatherer.
+     */
     @JsonProperty("lastGatherDuration")
     public String getLastGatherDuration() {
         return lastGatherDuration;
     }
 
+    /**
+     * gathererStatus represents information about a particular data gatherer.
+     */
     @JsonProperty("lastGatherDuration")
     public void setLastGatherDuration(String lastGatherDuration) {
         this.lastGatherDuration = lastGatherDuration;
     }
 
+    /**
+     * name is the name of the gatherer.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * name is the name of the gatherer.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

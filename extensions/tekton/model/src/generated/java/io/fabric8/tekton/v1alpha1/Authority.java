@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * The Authority block defines the keys for validating signatures.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class Authority implements Editable<AuthorityBuilder>, KubernetesResource
         this.name = name;
     }
 
+    /**
+     * The Authority block defines the keys for validating signatures.
+     */
     @JsonProperty("key")
     public KeyRef getKey() {
         return key;
     }
 
+    /**
+     * The Authority block defines the keys for validating signatures.
+     */
     @JsonProperty("key")
     public void setKey(KeyRef key) {
         this.key = key;
     }
 
+    /**
+     * Name is the name for this authority.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name is the name for this authority.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PackageManifestStatus represents the current status of the PackageManifest
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -113,92 +116,146 @@ public class PackageManifestStatus implements Editable<PackageManifestStatusBuil
         this.provider = provider;
     }
 
+    /**
+     * CatalogSource is the name of the CatalogSource this package belongs to
+     */
     @JsonProperty("catalogSource")
     public String getCatalogSource() {
         return catalogSource;
     }
 
+    /**
+     * CatalogSource is the name of the CatalogSource this package belongs to
+     */
     @JsonProperty("catalogSource")
     public void setCatalogSource(String catalogSource) {
         this.catalogSource = catalogSource;
     }
 
+    /**
+     * PackageManifestStatus represents the current status of the PackageManifest
+     */
     @JsonProperty("catalogSourceDisplayName")
     public String getCatalogSourceDisplayName() {
         return catalogSourceDisplayName;
     }
 
+    /**
+     * PackageManifestStatus represents the current status of the PackageManifest
+     */
     @JsonProperty("catalogSourceDisplayName")
     public void setCatalogSourceDisplayName(String catalogSourceDisplayName) {
         this.catalogSourceDisplayName = catalogSourceDisplayName;
     }
 
+    /**
+     * CatalogSourceNamespace is the namespace of the owning CatalogSource
+     */
     @JsonProperty("catalogSourceNamespace")
     public String getCatalogSourceNamespace() {
         return catalogSourceNamespace;
     }
 
+    /**
+     * CatalogSourceNamespace is the namespace of the owning CatalogSource
+     */
     @JsonProperty("catalogSourceNamespace")
     public void setCatalogSourceNamespace(String catalogSourceNamespace) {
         this.catalogSourceNamespace = catalogSourceNamespace;
     }
 
+    /**
+     * PackageManifestStatus represents the current status of the PackageManifest
+     */
     @JsonProperty("catalogSourcePublisher")
     public String getCatalogSourcePublisher() {
         return catalogSourcePublisher;
     }
 
+    /**
+     * PackageManifestStatus represents the current status of the PackageManifest
+     */
     @JsonProperty("catalogSourcePublisher")
     public void setCatalogSourcePublisher(String catalogSourcePublisher) {
         this.catalogSourcePublisher = catalogSourcePublisher;
     }
 
+    /**
+     * Channels are the declared channels for the package, ala `stable` or `alpha`.
+     */
     @JsonProperty("channels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PackageChannel> getChannels() {
         return channels;
     }
 
+    /**
+     * Channels are the declared channels for the package, ala `stable` or `alpha`.
+     */
     @JsonProperty("channels")
     public void setChannels(List<PackageChannel> channels) {
         this.channels = channels;
     }
 
+    /**
+     * DefaultChannel is, if specified, the name of the default channel for the package. The default channel will be installed if no other channel is explicitly given. If the package has a single channel, then that channel is implicitly the default.
+     */
     @JsonProperty("defaultChannel")
     public String getDefaultChannel() {
         return defaultChannel;
     }
 
+    /**
+     * DefaultChannel is, if specified, the name of the default channel for the package. The default channel will be installed if no other channel is explicitly given. If the package has a single channel, then that channel is implicitly the default.
+     */
     @JsonProperty("defaultChannel")
     public void setDefaultChannel(String defaultChannel) {
         this.defaultChannel = defaultChannel;
     }
 
+    /**
+     * PackageManifestStatus represents the current status of the PackageManifest
+     */
     @JsonProperty("deprecation")
     public Deprecation getDeprecation() {
         return deprecation;
     }
 
+    /**
+     * PackageManifestStatus represents the current status of the PackageManifest
+     */
     @JsonProperty("deprecation")
     public void setDeprecation(Deprecation deprecation) {
         this.deprecation = deprecation;
     }
 
+    /**
+     * PackageName is the name of the overall package, ala `etcd`.
+     */
     @JsonProperty("packageName")
     public String getPackageName() {
         return packageName;
     }
 
+    /**
+     * PackageName is the name of the overall package, ala `etcd`.
+     */
     @JsonProperty("packageName")
     public void setPackageName(String packageName) {
         this.packageName = packageName;
     }
 
+    /**
+     * PackageManifestStatus represents the current status of the PackageManifest
+     */
     @JsonProperty("provider")
     public AppLink getProvider() {
         return provider;
     }
 
+    /**
+     * PackageManifestStatus represents the current status of the PackageManifest
+     */
     @JsonProperty("provider")
     public void setProvider(AppLink provider) {
         this.provider = provider;

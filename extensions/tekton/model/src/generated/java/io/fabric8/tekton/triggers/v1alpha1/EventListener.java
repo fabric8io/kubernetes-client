@@ -37,6 +37,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * EventListener exposes a service to accept HTTP event payloads.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -76,14 +79,8 @@ import lombok.experimental.Accessors;
 public class EventListener implements Editable<EventListenerBuilder>, HasMetadata, Namespaced
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "triggers.tekton.dev/v1alpha1";
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "EventListener";
     @JsonProperty("metadata")
@@ -111,7 +108,7 @@ public class EventListener implements Editable<EventListenerBuilder>, HasMetadat
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -119,7 +116,7 @@ public class EventListener implements Editable<EventListenerBuilder>, HasMetadat
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -127,7 +124,7 @@ public class EventListener implements Editable<EventListenerBuilder>, HasMetadat
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -135,38 +132,56 @@ public class EventListener implements Editable<EventListenerBuilder>, HasMetadat
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * EventListener exposes a service to accept HTTP event payloads.
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * EventListener exposes a service to accept HTTP event payloads.
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * EventListener exposes a service to accept HTTP event payloads.
+     */
     @JsonProperty("spec")
     public EventListenerSpec getSpec() {
         return spec;
     }
 
+    /**
+     * EventListener exposes a service to accept HTTP event payloads.
+     */
     @JsonProperty("spec")
     public void setSpec(EventListenerSpec spec) {
         this.spec = spec;
     }
 
+    /**
+     * EventListener exposes a service to accept HTTP event payloads.
+     */
     @JsonProperty("status")
     public EventListenerStatus getStatus() {
         return status;
     }
 
+    /**
+     * EventListener exposes a service to accept HTTP event payloads.
+     */
     @JsonProperty("status")
     public void setStatus(EventListenerStatus status) {
         this.status = status;

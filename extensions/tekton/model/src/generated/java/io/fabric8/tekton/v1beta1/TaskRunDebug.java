@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * TaskRunDebug defines the breakpoint config for a particular TaskRun
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class TaskRunDebug implements Editable<TaskRunDebugBuilder>, KubernetesRe
         this.breakpoints = breakpoints;
     }
 
+    /**
+     * TaskRunDebug defines the breakpoint config for a particular TaskRun
+     */
     @JsonProperty("breakpoints")
     public TaskBreakpoints getBreakpoints() {
         return breakpoints;
     }
 
+    /**
+     * TaskRunDebug defines the breakpoint config for a particular TaskRun
+     */
     @JsonProperty("breakpoints")
     public void setBreakpoints(TaskBreakpoints breakpoints) {
         this.breakpoints = breakpoints;

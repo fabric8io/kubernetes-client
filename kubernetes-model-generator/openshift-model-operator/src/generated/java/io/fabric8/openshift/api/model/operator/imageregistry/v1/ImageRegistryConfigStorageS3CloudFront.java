@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ImageRegistryConfigStorageS3CloudFront holds the configuration to use Amazon Cloudfront as the storage middleware in a registry. https://docs.docker.com/registry/configuration/#cloudfront
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -91,41 +94,65 @@ public class ImageRegistryConfigStorageS3CloudFront implements Editable<ImageReg
         this.privateKey = privateKey;
     }
 
+    /**
+     * baseURL contains the SCHEME://HOST[/PATH] at which Cloudfront is served.
+     */
     @JsonProperty("baseURL")
     public String getBaseURL() {
         return baseURL;
     }
 
+    /**
+     * baseURL contains the SCHEME://HOST[/PATH] at which Cloudfront is served.
+     */
     @JsonProperty("baseURL")
     public void setBaseURL(String baseURL) {
         this.baseURL = baseURL;
     }
 
+    /**
+     * ImageRegistryConfigStorageS3CloudFront holds the configuration to use Amazon Cloudfront as the storage middleware in a registry. https://docs.docker.com/registry/configuration/#cloudfront
+     */
     @JsonProperty("duration")
     public String getDuration() {
         return duration;
     }
 
+    /**
+     * ImageRegistryConfigStorageS3CloudFront holds the configuration to use Amazon Cloudfront as the storage middleware in a registry. https://docs.docker.com/registry/configuration/#cloudfront
+     */
     @JsonProperty("duration")
     public void setDuration(String duration) {
         this.duration = duration;
     }
 
+    /**
+     * keypairID is key pair ID provided by AWS.
+     */
     @JsonProperty("keypairID")
     public String getKeypairID() {
         return keypairID;
     }
 
+    /**
+     * keypairID is key pair ID provided by AWS.
+     */
     @JsonProperty("keypairID")
     public void setKeypairID(String keypairID) {
         this.keypairID = keypairID;
     }
 
+    /**
+     * ImageRegistryConfigStorageS3CloudFront holds the configuration to use Amazon Cloudfront as the storage middleware in a registry. https://docs.docker.com/registry/configuration/#cloudfront
+     */
     @JsonProperty("privateKey")
     public SecretKeySelector getPrivateKey() {
         return privateKey;
     }
 
+    /**
+     * ImageRegistryConfigStorageS3CloudFront holds the configuration to use Amazon Cloudfront as the storage middleware in a registry. https://docs.docker.com/registry/configuration/#cloudfront
+     */
     @JsonProperty("privateKey")
     public void setPrivateKey(SecretKeySelector privateKey) {
         this.privateKey = privateKey;

@@ -38,6 +38,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * HTTPConfig defines a client HTTP configuration. See https://prometheus.io/docs/alerting/latest/configuration/#http_config
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -125,112 +128,178 @@ public class HTTPConfig implements Editable<HTTPConfigBuilder>, KubernetesResour
         this.tlsConfig = tlsConfig;
     }
 
+    /**
+     * HTTPConfig defines a client HTTP configuration. See https://prometheus.io/docs/alerting/latest/configuration/#http_config
+     */
     @JsonProperty("authorization")
     public SafeAuthorization getAuthorization() {
         return authorization;
     }
 
+    /**
+     * HTTPConfig defines a client HTTP configuration. See https://prometheus.io/docs/alerting/latest/configuration/#http_config
+     */
     @JsonProperty("authorization")
     public void setAuthorization(SafeAuthorization authorization) {
         this.authorization = authorization;
     }
 
+    /**
+     * HTTPConfig defines a client HTTP configuration. See https://prometheus.io/docs/alerting/latest/configuration/#http_config
+     */
     @JsonProperty("basicAuth")
     public BasicAuth getBasicAuth() {
         return basicAuth;
     }
 
+    /**
+     * HTTPConfig defines a client HTTP configuration. See https://prometheus.io/docs/alerting/latest/configuration/#http_config
+     */
     @JsonProperty("basicAuth")
     public void setBasicAuth(BasicAuth basicAuth) {
         this.basicAuth = basicAuth;
     }
 
+    /**
+     * HTTPConfig defines a client HTTP configuration. See https://prometheus.io/docs/alerting/latest/configuration/#http_config
+     */
     @JsonProperty("bearerTokenSecret")
     public SecretKeySelector getBearerTokenSecret() {
         return bearerTokenSecret;
     }
 
+    /**
+     * HTTPConfig defines a client HTTP configuration. See https://prometheus.io/docs/alerting/latest/configuration/#http_config
+     */
     @JsonProperty("bearerTokenSecret")
     public void setBearerTokenSecret(SecretKeySelector bearerTokenSecret) {
         this.bearerTokenSecret = bearerTokenSecret;
     }
 
+    /**
+     * FollowRedirects specifies whether the client should follow HTTP 3xx redirects.
+     */
     @JsonProperty("followRedirects")
     public Boolean getFollowRedirects() {
         return followRedirects;
     }
 
+    /**
+     * FollowRedirects specifies whether the client should follow HTTP 3xx redirects.
+     */
     @JsonProperty("followRedirects")
     public void setFollowRedirects(Boolean followRedirects) {
         this.followRedirects = followRedirects;
     }
 
+    /**
+     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0 or Alertmanager &gt;= 0.25.0.
+     */
     @JsonProperty("noProxy")
     public String getNoProxy() {
         return noProxy;
     }
 
+    /**
+     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0 or Alertmanager &gt;= 0.25.0.
+     */
     @JsonProperty("noProxy")
     public void setNoProxy(String noProxy) {
         this.noProxy = noProxy;
     }
 
+    /**
+     * HTTPConfig defines a client HTTP configuration. See https://prometheus.io/docs/alerting/latest/configuration/#http_config
+     */
     @JsonProperty("oauth2")
     public OAuth2 getOauth2() {
         return oauth2;
     }
 
+    /**
+     * HTTPConfig defines a client HTTP configuration. See https://prometheus.io/docs/alerting/latest/configuration/#http_config
+     */
     @JsonProperty("oauth2")
     public void setOauth2(OAuth2 oauth2) {
         this.oauth2 = oauth2;
     }
 
+    /**
+     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0 or Alertmanager &gt;= 0.25.0.
+     */
     @JsonProperty("proxyConnectHeader")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, List<SecretKeySelector>> getProxyConnectHeader() {
         return proxyConnectHeader;
     }
 
+    /**
+     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0 or Alertmanager &gt;= 0.25.0.
+     */
     @JsonProperty("proxyConnectHeader")
     public void setProxyConnectHeader(Map<String, List<SecretKeySelector>> proxyConnectHeader) {
         this.proxyConnectHeader = proxyConnectHeader;
     }
 
+    /**
+     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0 or Alertmanager &gt;= 0.25.0.
+     */
     @JsonProperty("proxyFromEnvironment")
     public Boolean getProxyFromEnvironment() {
         return proxyFromEnvironment;
     }
 
+    /**
+     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0 or Alertmanager &gt;= 0.25.0.
+     */
     @JsonProperty("proxyFromEnvironment")
     public void setProxyFromEnvironment(Boolean proxyFromEnvironment) {
         this.proxyFromEnvironment = proxyFromEnvironment;
     }
 
+    /**
+     * Optional proxy URL.<br><p> <br><p> If defined, this field takes precedence over `proxyUrl`.
+     */
     @JsonProperty("proxyURL")
     public String getProxyURL() {
         return proxyURL;
     }
 
+    /**
+     * Optional proxy URL.<br><p> <br><p> If defined, this field takes precedence over `proxyUrl`.
+     */
     @JsonProperty("proxyURL")
     public void setProxyURL(String proxyURL) {
         this.proxyURL = proxyURL;
     }
 
+    /**
+     * `proxyURL` defines the HTTP proxy server to use.
+     */
     @JsonProperty("proxyUrl")
     public String getProxyUrl() {
         return proxyUrl;
     }
 
+    /**
+     * `proxyURL` defines the HTTP proxy server to use.
+     */
     @JsonProperty("proxyUrl")
     public void setProxyUrl(String proxyUrl) {
         this.proxyUrl = proxyUrl;
     }
 
+    /**
+     * HTTPConfig defines a client HTTP configuration. See https://prometheus.io/docs/alerting/latest/configuration/#http_config
+     */
     @JsonProperty("tlsConfig")
     public SafeTLSConfig getTlsConfig() {
         return tlsConfig;
     }
 
+    /**
+     * HTTPConfig defines a client HTTP configuration. See https://prometheus.io/docs/alerting/latest/configuration/#http_config
+     */
     @JsonProperty("tlsConfig")
     public void setTlsConfig(SafeTLSConfig tlsConfig) {
         this.tlsConfig = tlsConfig;

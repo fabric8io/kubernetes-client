@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * CustomResourceDefinitionVersion describes a version for CRD.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -109,82 +112,130 @@ public class CustomResourceDefinitionVersion implements Editable<CustomResourceD
         this.subresources = subresources;
     }
 
+    /**
+     * additionalPrinterColumns specifies additional columns returned in Table output. See https://kubernetes.io/docs/reference/using-api/api-concepts/#receiving-resources-as-tables for details. Top-level and per-version columns are mutually exclusive. Per-version columns must not all be set to identical values (top-level columns should be used instead). If no top-level or per-version columns are specified, a single column displaying the age of the custom resource is used.
+     */
     @JsonProperty("additionalPrinterColumns")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<CustomResourceColumnDefinition> getAdditionalPrinterColumns() {
         return additionalPrinterColumns;
     }
 
+    /**
+     * additionalPrinterColumns specifies additional columns returned in Table output. See https://kubernetes.io/docs/reference/using-api/api-concepts/#receiving-resources-as-tables for details. Top-level and per-version columns are mutually exclusive. Per-version columns must not all be set to identical values (top-level columns should be used instead). If no top-level or per-version columns are specified, a single column displaying the age of the custom resource is used.
+     */
     @JsonProperty("additionalPrinterColumns")
     public void setAdditionalPrinterColumns(List<CustomResourceColumnDefinition> additionalPrinterColumns) {
         this.additionalPrinterColumns = additionalPrinterColumns;
     }
 
+    /**
+     * deprecated indicates this version of the custom resource API is deprecated. When set to true, API requests to this version receive a warning header in the server response. Defaults to false.
+     */
     @JsonProperty("deprecated")
     public Boolean getDeprecated() {
         return deprecated;
     }
 
+    /**
+     * deprecated indicates this version of the custom resource API is deprecated. When set to true, API requests to this version receive a warning header in the server response. Defaults to false.
+     */
     @JsonProperty("deprecated")
     public void setDeprecated(Boolean deprecated) {
         this.deprecated = deprecated;
     }
 
+    /**
+     * deprecationWarning overrides the default warning returned to API clients. May only be set when `deprecated` is true. The default warning indicates this version is deprecated and recommends use of the newest served version of equal or greater stability, if one exists.
+     */
     @JsonProperty("deprecationWarning")
     public String getDeprecationWarning() {
         return deprecationWarning;
     }
 
+    /**
+     * deprecationWarning overrides the default warning returned to API clients. May only be set when `deprecated` is true. The default warning indicates this version is deprecated and recommends use of the newest served version of equal or greater stability, if one exists.
+     */
     @JsonProperty("deprecationWarning")
     public void setDeprecationWarning(String deprecationWarning) {
         this.deprecationWarning = deprecationWarning;
     }
 
+    /**
+     * name is the version name, e.g. "v1", "v2beta1", etc. The custom resources are served under this version at `/apis/&lt;group&gt;/&lt;version&gt;/...` if `served` is true.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * name is the version name, e.g. "v1", "v2beta1", etc. The custom resources are served under this version at `/apis/&lt;group&gt;/&lt;version&gt;/...` if `served` is true.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * CustomResourceDefinitionVersion describes a version for CRD.
+     */
     @JsonProperty("schema")
     public CustomResourceValidation getSchema() {
         return schema;
     }
 
+    /**
+     * CustomResourceDefinitionVersion describes a version for CRD.
+     */
     @JsonProperty("schema")
     public void setSchema(CustomResourceValidation schema) {
         this.schema = schema;
     }
 
+    /**
+     * served is a flag enabling/disabling this version from being served via REST APIs
+     */
     @JsonProperty("served")
     public Boolean getServed() {
         return served;
     }
 
+    /**
+     * served is a flag enabling/disabling this version from being served via REST APIs
+     */
     @JsonProperty("served")
     public void setServed(Boolean served) {
         this.served = served;
     }
 
+    /**
+     * storage indicates this version should be used when persisting custom resources to storage. There must be exactly one version with storage=true.
+     */
     @JsonProperty("storage")
     public Boolean getStorage() {
         return storage;
     }
 
+    /**
+     * storage indicates this version should be used when persisting custom resources to storage. There must be exactly one version with storage=true.
+     */
     @JsonProperty("storage")
     public void setStorage(Boolean storage) {
         this.storage = storage;
     }
 
+    /**
+     * CustomResourceDefinitionVersion describes a version for CRD.
+     */
     @JsonProperty("subresources")
     public CustomResourceSubresources getSubresources() {
         return subresources;
     }
 
+    /**
+     * CustomResourceDefinitionVersion describes a version for CRD.
+     */
     @JsonProperty("subresources")
     public void setSubresources(CustomResourceSubresources subresources) {
         this.subresources = subresources;

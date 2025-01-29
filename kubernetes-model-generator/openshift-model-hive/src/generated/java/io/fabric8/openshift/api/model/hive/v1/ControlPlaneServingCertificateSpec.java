@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ControlPlaneServingCertificateSpec specifies serving certificate settings for the control plane of the target cluster.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class ControlPlaneServingCertificateSpec implements Editable<ControlPlane
         this._default = _default;
     }
 
+    /**
+     * Additional is a list of additional domains and certificates that are also associated with the control plane's api endpoint.
+     */
     @JsonProperty("additional")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ControlPlaneAdditionalCertificate> getAdditional() {
         return additional;
     }
 
+    /**
+     * Additional is a list of additional domains and certificates that are also associated with the control plane's api endpoint.
+     */
     @JsonProperty("additional")
     public void setAdditional(List<ControlPlaneAdditionalCertificate> additional) {
         this.additional = additional;
     }
 
+    /**
+     * Default references the name of a CertificateBundle in the ClusterDeployment that should be used for the control plane's default endpoint.
+     */
     @JsonProperty("default")
     public String getDefault() {
         return _default;
     }
 
+    /**
+     * Default references the name of a CertificateBundle in the ClusterDeployment that should be used for the control plane's default endpoint.
+     */
     @JsonProperty("default")
     public void setDefault(String _default) {
         this._default = _default;

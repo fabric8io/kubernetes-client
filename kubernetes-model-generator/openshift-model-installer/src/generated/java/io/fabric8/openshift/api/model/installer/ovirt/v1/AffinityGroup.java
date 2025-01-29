@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AffinityGroup defines the affinity group that the installer will create
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class AffinityGroup implements Editable<AffinityGroupBuilder>, Kubernetes
         this.priority = priority;
     }
 
+    /**
+     * Description of the affinity group
+     */
     @JsonProperty("description")
     public String getDescription() {
         return description;
     }
 
+    /**
+     * Description of the affinity group
+     */
     @JsonProperty("description")
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * Enforcing whether to create a hard affinity rule, default is false
+     */
     @JsonProperty("enforcing")
     public Boolean getEnforcing() {
         return enforcing;
     }
 
+    /**
+     * Enforcing whether to create a hard affinity rule, default is false
+     */
     @JsonProperty("enforcing")
     public void setEnforcing(Boolean enforcing) {
         this.enforcing = enforcing;
     }
 
+    /**
+     * Name name of the affinity group
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name name of the affinity group
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Priority of the affinity group, needs to be between 1 (lowest) - 5 (highest)
+     */
     @JsonProperty("priority")
     public Integer getPriority() {
         return priority;
     }
 
+    /**
+     * Priority of the affinity group, needs to be between 1 (lowest) - 5 (highest)
+     */
     @JsonProperty("priority")
     public void setPriority(Integer priority) {
         this.priority = priority;

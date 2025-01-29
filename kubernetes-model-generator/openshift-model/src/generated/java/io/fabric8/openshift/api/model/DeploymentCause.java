@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DeploymentCause captures information about a particular cause of a deployment.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class DeploymentCause implements Editable<DeploymentCauseBuilder>, Kubern
         this.type = type;
     }
 
+    /**
+     * DeploymentCause captures information about a particular cause of a deployment.
+     */
     @JsonProperty("imageTrigger")
     public DeploymentCauseImageTrigger getImageTrigger() {
         return imageTrigger;
     }
 
+    /**
+     * DeploymentCause captures information about a particular cause of a deployment.
+     */
     @JsonProperty("imageTrigger")
     public void setImageTrigger(DeploymentCauseImageTrigger imageTrigger) {
         this.imageTrigger = imageTrigger;
     }
 
+    /**
+     * Type of the trigger that resulted in the creation of a new deployment
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * Type of the trigger that resulted in the creation of a new deployment
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

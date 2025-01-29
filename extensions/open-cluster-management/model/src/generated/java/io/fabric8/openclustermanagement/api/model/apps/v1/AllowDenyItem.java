@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AllowDenyItem defines a group of resources allowed or denied for deployment
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class AllowDenyItem implements Editable<AllowDenyItemBuilder>, Kubernetes
         this.kinds = kinds;
     }
 
+    /**
+     * APIVersion specifies the API version for the group of resources
+     */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
         return apiVersion;
     }
 
+    /**
+     * APIVersion specifies the API version for the group of resources
+     */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
+    /**
+     * Kinds specifies a list of kinds under the same API version for the group of resources
+     */
     @JsonProperty("kinds")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getKinds() {
         return kinds;
     }
 
+    /**
+     * Kinds specifies a list of kinds under the same API version for the group of resources
+     */
     @JsonProperty("kinds")
     public void setKinds(List<String> kinds) {
         this.kinds = kinds;

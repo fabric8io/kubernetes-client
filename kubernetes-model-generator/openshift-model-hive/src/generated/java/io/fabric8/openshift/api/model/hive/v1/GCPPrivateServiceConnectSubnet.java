@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * GCPPrivateServiceConnectSubnet defines subnet and the corresponding GCP region.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class GCPPrivateServiceConnectSubnet implements Editable<GCPPrivateServic
         this.subnet = subnet;
     }
 
+    /**
+     * GCPPrivateServiceConnectSubnet defines subnet and the corresponding GCP region.
+     */
     @JsonProperty("region")
     public String getRegion() {
         return region;
     }
 
+    /**
+     * GCPPrivateServiceConnectSubnet defines subnet and the corresponding GCP region.
+     */
     @JsonProperty("region")
     public void setRegion(String region) {
         this.region = region;
     }
 
+    /**
+     * GCPPrivateServiceConnectSubnet defines subnet and the corresponding GCP region.
+     */
     @JsonProperty("subnet")
     public String getSubnet() {
         return subnet;
     }
 
+    /**
+     * GCPPrivateServiceConnectSubnet defines subnet and the corresponding GCP region.
+     */
     @JsonProperty("subnet")
     public void setSubnet(String subnet) {
         this.subnet = subnet;

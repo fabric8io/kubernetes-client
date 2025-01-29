@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * HardwareRAIDVolume defines the desired configuration of volume in hardware RAID.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -105,72 +108,114 @@ public class HardwareRAIDVolume implements Editable<HardwareRAIDVolumeBuilder>, 
         this.sizeGibibytes = sizeGibibytes;
     }
 
+    /**
+     * The name of the RAID controller to use.
+     */
     @JsonProperty("controller")
     public String getController() {
         return controller;
     }
 
+    /**
+     * The name of the RAID controller to use.
+     */
     @JsonProperty("controller")
     public void setController(String controller) {
         this.controller = controller;
     }
 
+    /**
+     * RAID level for the logical disk. The following levels are supported: 0, 1, 2, 5, 6, 1+0, 5+0, 6+0 (drivers may support only some of them).
+     */
     @JsonProperty("level")
     public String getLevel() {
         return level;
     }
 
+    /**
+     * RAID level for the logical disk. The following levels are supported: 0, 1, 2, 5, 6, 1+0, 5+0, 6+0 (drivers may support only some of them).
+     */
     @JsonProperty("level")
     public void setLevel(String level) {
         this.level = level;
     }
 
+    /**
+     * Name of the volume. Should be unique within the Node. If not specified, the name will be auto-generated.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name of the volume. Should be unique within the Node. If not specified, the name will be auto-generated.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Integer, number of physical disks to use for the logical disk. Defaults to minimum number of disks required for the particular RAID level.
+     */
     @JsonProperty("numberOfPhysicalDisks")
     public Integer getNumberOfPhysicalDisks() {
         return numberOfPhysicalDisks;
     }
 
+    /**
+     * Integer, number of physical disks to use for the logical disk. Defaults to minimum number of disks required for the particular RAID level.
+     */
     @JsonProperty("numberOfPhysicalDisks")
     public void setNumberOfPhysicalDisks(Integer numberOfPhysicalDisks) {
         this.numberOfPhysicalDisks = numberOfPhysicalDisks;
     }
 
+    /**
+     * Optional list of physical disk names to be used for the hardware RAID volumes. The disk names are interpreted by the hardware RAID controller, and the format is hardware specific.
+     */
     @JsonProperty("physicalDisks")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getPhysicalDisks() {
         return physicalDisks;
     }
 
+    /**
+     * Optional list of physical disk names to be used for the hardware RAID volumes. The disk names are interpreted by the hardware RAID controller, and the format is hardware specific.
+     */
     @JsonProperty("physicalDisks")
     public void setPhysicalDisks(List<String> physicalDisks) {
         this.physicalDisks = physicalDisks;
     }
 
+    /**
+     * Select disks with only rotational (if set to true) or solid-state (if set to false) storage. By default, any disks can be picked.
+     */
     @JsonProperty("rotational")
     public Boolean getRotational() {
         return rotational;
     }
 
+    /**
+     * Select disks with only rotational (if set to true) or solid-state (if set to false) storage. By default, any disks can be picked.
+     */
     @JsonProperty("rotational")
     public void setRotational(Boolean rotational) {
         this.rotational = rotational;
     }
 
+    /**
+     * Size of the logical disk to be created in GiB. If unspecified or set be 0, the maximum capacity of disk will be used for logical disk.
+     */
     @JsonProperty("sizeGibibytes")
     public Integer getSizeGibibytes() {
         return sizeGibibytes;
     }
 
+    /**
+     * Size of the logical disk to be created in GiB. If unspecified or set be 0, the maximum capacity of disk will be used for logical disk.
+     */
     @JsonProperty("sizeGibibytes")
     public void setSizeGibibytes(Integer sizeGibibytes) {
         this.sizeGibibytes = sizeGibibytes;

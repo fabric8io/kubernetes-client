@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Thanos Rule Spec.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -98,53 +101,83 @@ public class RuleSpec implements Editable<RuleSpecBuilder>, KubernetesResource
         this.serviceAccountAnnotations = serviceAccountAnnotations;
     }
 
+    /**
+     * WARNING: Use only with guidance from Red Hat Support. Using this feature incorrectly can lead to an unrecoverable state, data loss, or both, which is not covered by Red Hat Support.
+     */
     @JsonProperty("containers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Container> getContainers() {
         return containers;
     }
 
+    /**
+     * WARNING: Use only with guidance from Red Hat Support. Using this feature incorrectly can lead to an unrecoverable state, data loss, or both, which is not covered by Red Hat Support.
+     */
     @JsonProperty("containers")
     public void setContainers(List<Container> containers) {
         this.containers = containers;
     }
 
+    /**
+     * Evaluation interval
+     */
     @JsonProperty("evalInterval")
     public String getEvalInterval() {
         return evalInterval;
     }
 
+    /**
+     * Evaluation interval
+     */
     @JsonProperty("evalInterval")
     public void setEvalInterval(String evalInterval) {
         this.evalInterval = evalInterval;
     }
 
+    /**
+     * Replicas for this component.
+     */
     @JsonProperty("replicas")
     public Integer getReplicas() {
         return replicas;
     }
 
+    /**
+     * Replicas for this component.
+     */
     @JsonProperty("replicas")
     public void setReplicas(Integer replicas) {
         this.replicas = replicas;
     }
 
+    /**
+     * Thanos Rule Spec.
+     */
     @JsonProperty("resources")
     public ResourceRequirements getResources() {
         return resources;
     }
 
+    /**
+     * Thanos Rule Spec.
+     */
     @JsonProperty("resources")
     public void setResources(ResourceRequirements resources) {
         this.resources = resources;
     }
 
+    /**
+     * Annotations is an unstructured key value map stored with a service account
+     */
     @JsonProperty("serviceAccountAnnotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getServiceAccountAnnotations() {
         return serviceAccountAnnotations;
     }
 
+    /**
+     * Annotations is an unstructured key value map stored with a service account
+     */
     @JsonProperty("serviceAccountAnnotations")
     public void setServiceAccountAnnotations(Map<String, String> serviceAccountAnnotations) {
         this.serviceAccountAnnotations = serviceAccountAnnotations;

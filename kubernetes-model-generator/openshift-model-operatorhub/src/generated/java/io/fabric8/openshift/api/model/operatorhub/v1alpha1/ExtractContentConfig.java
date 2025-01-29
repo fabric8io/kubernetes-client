@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ExtractContentConfig configures context extraction from a file-based catalog index image.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class ExtractContentConfig implements Editable<ExtractContentConfigBuilde
         this.catalogDir = catalogDir;
     }
 
+    /**
+     * CacheDir is the directory storing the pre-calculated API cache.
+     */
     @JsonProperty("cacheDir")
     public String getCacheDir() {
         return cacheDir;
     }
 
+    /**
+     * CacheDir is the directory storing the pre-calculated API cache.
+     */
     @JsonProperty("cacheDir")
     public void setCacheDir(String cacheDir) {
         this.cacheDir = cacheDir;
     }
 
+    /**
+     * CatalogDir is the directory storing the file-based catalog contents.
+     */
     @JsonProperty("catalogDir")
     public String getCatalogDir() {
         return catalogDir;
     }
 
+    /**
+     * CatalogDir is the directory storing the file-based catalog contents.
+     */
     @JsonProperty("catalogDir")
     public void setCatalogDir(String catalogDir) {
         this.catalogDir = catalogDir;

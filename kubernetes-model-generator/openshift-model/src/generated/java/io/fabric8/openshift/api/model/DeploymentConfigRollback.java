@@ -37,6 +37,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DeploymentConfigRollback provides the input to rollback generation.<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -76,14 +79,8 @@ import lombok.experimental.Accessors;
 public class DeploymentConfigRollback implements Editable<DeploymentConfigRollbackBuilder>, KubernetesResource, Namespaced
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "apps.openshift.io/v1";
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "DeploymentConfigRollback";
     @JsonProperty("name")
@@ -112,7 +109,7 @@ public class DeploymentConfigRollback implements Editable<DeploymentConfigRollba
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -120,7 +117,7 @@ public class DeploymentConfigRollback implements Editable<DeploymentConfigRollba
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -128,7 +125,7 @@ public class DeploymentConfigRollback implements Editable<DeploymentConfigRollba
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -136,39 +133,57 @@ public class DeploymentConfigRollback implements Editable<DeploymentConfigRollba
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * Name of the deployment config that will be rolled back.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name of the deployment config that will be rolled back.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * DeploymentConfigRollback provides the input to rollback generation.<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("spec")
     public DeploymentConfigRollbackSpec getSpec() {
         return spec;
     }
 
+    /**
+     * DeploymentConfigRollback provides the input to rollback generation.<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("spec")
     public void setSpec(DeploymentConfigRollbackSpec spec) {
         this.spec = spec;
     }
 
+    /**
+     * UpdatedAnnotations is a set of new annotations that will be added in the deployment config.
+     */
     @JsonProperty("updatedAnnotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getUpdatedAnnotations() {
         return updatedAnnotations;
     }
 
+    /**
+     * UpdatedAnnotations is a set of new annotations that will be added in the deployment config.
+     */
     @JsonProperty("updatedAnnotations")
     public void setUpdatedAnnotations(Map<String, String> updatedAnnotations) {
         this.updatedAnnotations = updatedAnnotations;

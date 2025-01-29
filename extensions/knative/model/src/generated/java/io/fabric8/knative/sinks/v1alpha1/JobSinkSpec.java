@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * JobSinkSpec defines the desired state of the JobSink.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -79,11 +82,17 @@ public class JobSinkSpec implements Editable<JobSinkSpecBuilder>, KubernetesReso
         this.job = job;
     }
 
+    /**
+     * JobSinkSpec defines the desired state of the JobSink.
+     */
     @JsonProperty("job")
     public Job getJob() {
         return job;
     }
 
+    /**
+     * JobSinkSpec defines the desired state of the JobSink.
+     */
     @JsonProperty("job")
     public void setJob(Job job) {
         this.job = job;

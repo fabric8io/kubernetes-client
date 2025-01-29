@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Metadata contains vSphere metadata (e.g. for uninstalling the cluster).
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -97,52 +100,82 @@ public class Metadata implements Editable<MetadataBuilder>, KubernetesResource
         this.vCenter = vCenter;
     }
 
+    /**
+     * VCenters collection of vcenters when multi vcenter support is enabled
+     */
     @JsonProperty("VCenters")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<VCenters> getVCenters() {
         return vCenters;
     }
 
+    /**
+     * VCenters collection of vcenters when multi vcenter support is enabled
+     */
     @JsonProperty("VCenters")
     public void setVCenters(List<VCenters> vCenters) {
         this.vCenters = vCenters;
     }
 
+    /**
+     * Password is the password for the user to use to connect to the vCenter.
+     */
     @JsonProperty("password")
     public String getPassword() {
         return password;
     }
 
+    /**
+     * Password is the password for the user to use to connect to the vCenter.
+     */
     @JsonProperty("password")
     public void setPassword(String password) {
         this.password = password;
     }
 
+    /**
+     * TerraformPlatform is the type...
+     */
     @JsonProperty("terraform_platform")
     public String getTerraformPlatform() {
         return terraformPlatform;
     }
 
+    /**
+     * TerraformPlatform is the type...
+     */
     @JsonProperty("terraform_platform")
     public void setTerraformPlatform(String terraformPlatform) {
         this.terraformPlatform = terraformPlatform;
     }
 
+    /**
+     * Username is the name of the user to use to connect to the vCenter.
+     */
     @JsonProperty("username")
     public String getUsername() {
         return username;
     }
 
+    /**
+     * Username is the name of the user to use to connect to the vCenter.
+     */
     @JsonProperty("username")
     public void setUsername(String username) {
         this.username = username;
     }
 
+    /**
+     * VCenter is the domain name or IP address of the vCenter.
+     */
     @JsonProperty("vCenter")
     public String getVCenter() {
         return vCenter;
     }
 
+    /**
+     * VCenter is the domain name or IP address of the vCenter.
+     */
     @JsonProperty("vCenter")
     public void setVCenter(String vCenter) {
         this.vCenter = vCenter;

@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NamespaceDiscovery is the configuration for discovering Kubernetes namespaces.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class NamespaceDiscovery implements Editable<NamespaceDiscoveryBuilder>, 
         this.ownNamespace = ownNamespace;
     }
 
+    /**
+     * List of namespaces where to watch for resources. If empty and `ownNamespace` isn't true, Prometheus watches for resources in all namespaces.
+     */
     @JsonProperty("names")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getNames() {
         return names;
     }
 
+    /**
+     * List of namespaces where to watch for resources. If empty and `ownNamespace` isn't true, Prometheus watches for resources in all namespaces.
+     */
     @JsonProperty("names")
     public void setNames(List<String> names) {
         this.names = names;
     }
 
+    /**
+     * Includes the namespace in which the Prometheus pod runs to the list of watched namespaces.
+     */
     @JsonProperty("ownNamespace")
     public Boolean getOwnNamespace() {
         return ownNamespace;
     }
 
+    /**
+     * Includes the namespace in which the Prometheus pod runs to the list of watched namespaces.
+     */
     @JsonProperty("ownNamespace")
     public void setOwnNamespace(Boolean ownNamespace) {
         this.ownNamespace = ownNamespace;

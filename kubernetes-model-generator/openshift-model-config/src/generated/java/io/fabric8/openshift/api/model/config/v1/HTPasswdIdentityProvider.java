@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * HTPasswdPasswordIdentityProvider provides identities for users authenticating using htpasswd credentials
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class HTPasswdIdentityProvider implements Editable<HTPasswdIdentityProvid
         this.fileData = fileData;
     }
 
+    /**
+     * HTPasswdPasswordIdentityProvider provides identities for users authenticating using htpasswd credentials
+     */
     @JsonProperty("fileData")
     public SecretNameReference getFileData() {
         return fileData;
     }
 
+    /**
+     * HTPasswdPasswordIdentityProvider provides identities for users authenticating using htpasswd credentials
+     */
     @JsonProperty("fileData")
     public void setFileData(SecretNameReference fileData) {
         this.fileData = fileData;

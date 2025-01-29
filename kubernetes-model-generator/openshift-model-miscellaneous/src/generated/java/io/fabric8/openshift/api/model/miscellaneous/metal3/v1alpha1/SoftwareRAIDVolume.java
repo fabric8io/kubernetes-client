@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SoftwareRAIDVolume defines the desired configuration of volume in software RAID.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -89,32 +92,50 @@ public class SoftwareRAIDVolume implements Editable<SoftwareRAIDVolumeBuilder>, 
         this.sizeGibibytes = sizeGibibytes;
     }
 
+    /**
+     * RAID level for the logical disk. The following levels are supported: 0, 1 and 1+0.
+     */
     @JsonProperty("level")
     public String getLevel() {
         return level;
     }
 
+    /**
+     * RAID level for the logical disk. The following levels are supported: 0, 1 and 1+0.
+     */
     @JsonProperty("level")
     public void setLevel(String level) {
         this.level = level;
     }
 
+    /**
+     * A list of device hints, the number of items should be greater than or equal to 2.
+     */
     @JsonProperty("physicalDisks")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<RootDeviceHints> getPhysicalDisks() {
         return physicalDisks;
     }
 
+    /**
+     * A list of device hints, the number of items should be greater than or equal to 2.
+     */
     @JsonProperty("physicalDisks")
     public void setPhysicalDisks(List<RootDeviceHints> physicalDisks) {
         this.physicalDisks = physicalDisks;
     }
 
+    /**
+     * Size of the logical disk to be created in GiB. If unspecified or set be 0, the maximum capacity of disk will be used for logical disk.
+     */
     @JsonProperty("sizeGibibytes")
     public Integer getSizeGibibytes() {
         return sizeGibibytes;
     }
 
+    /**
+     * Size of the logical disk to be created in GiB. If unspecified or set be 0, the maximum capacity of disk will be used for logical disk.
+     */
     @JsonProperty("sizeGibibytes")
     public void setSizeGibibytes(Integer sizeGibibytes) {
         this.sizeGibibytes = sizeGibibytes;

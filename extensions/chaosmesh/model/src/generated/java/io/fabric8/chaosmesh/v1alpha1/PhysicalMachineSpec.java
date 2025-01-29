@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PhysicalMachineSpec defines the desired state of PhysicalMachine
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class PhysicalMachineSpec implements Editable<PhysicalMachineSpecBuilder>
         this.address = address;
     }
 
+    /**
+     * Address represents the address of the physical machine
+     */
     @JsonProperty("address")
     public String getAddress() {
         return address;
     }
 
+    /**
+     * Address represents the address of the physical machine
+     */
     @JsonProperty("address")
     public void setAddress(String address) {
         this.address = address;

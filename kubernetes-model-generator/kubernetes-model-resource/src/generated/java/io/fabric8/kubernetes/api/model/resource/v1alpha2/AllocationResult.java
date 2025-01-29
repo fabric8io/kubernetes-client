@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AllocationResult contains attributes of an allocated resource.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,32 +93,50 @@ public class AllocationResult implements Editable<AllocationResultBuilder>, Kube
         this.shareable = shareable;
     }
 
+    /**
+     * AllocationResult contains attributes of an allocated resource.
+     */
     @JsonProperty("availableOnNodes")
     public NodeSelector getAvailableOnNodes() {
         return availableOnNodes;
     }
 
+    /**
+     * AllocationResult contains attributes of an allocated resource.
+     */
     @JsonProperty("availableOnNodes")
     public void setAvailableOnNodes(NodeSelector availableOnNodes) {
         this.availableOnNodes = availableOnNodes;
     }
 
+    /**
+     * ResourceHandles contain the state associated with an allocation that should be maintained throughout the lifetime of a claim. Each ResourceHandle contains data that should be passed to a specific kubelet plugin once it lands on a node. This data is returned by the driver after a successful allocation and is opaque to Kubernetes. Driver documentation may explain to users how to interpret this data if needed.<br><p> <br><p> Setting this field is optional. It has a maximum size of 32 entries. If null (or empty), it is assumed this allocation will be processed by a single kubelet plugin with no ResourceHandle data attached. The name of the kubelet plugin invoked will match the DriverName set in the ResourceClaimStatus this AllocationResult is embedded in.
+     */
     @JsonProperty("resourceHandles")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ResourceHandle> getResourceHandles() {
         return resourceHandles;
     }
 
+    /**
+     * ResourceHandles contain the state associated with an allocation that should be maintained throughout the lifetime of a claim. Each ResourceHandle contains data that should be passed to a specific kubelet plugin once it lands on a node. This data is returned by the driver after a successful allocation and is opaque to Kubernetes. Driver documentation may explain to users how to interpret this data if needed.<br><p> <br><p> Setting this field is optional. It has a maximum size of 32 entries. If null (or empty), it is assumed this allocation will be processed by a single kubelet plugin with no ResourceHandle data attached. The name of the kubelet plugin invoked will match the DriverName set in the ResourceClaimStatus this AllocationResult is embedded in.
+     */
     @JsonProperty("resourceHandles")
     public void setResourceHandles(List<ResourceHandle> resourceHandles) {
         this.resourceHandles = resourceHandles;
     }
 
+    /**
+     * Shareable determines whether the resource supports more than one consumer at a time.
+     */
     @JsonProperty("shareable")
     public Boolean getShareable() {
         return shareable;
     }
 
+    /**
+     * Shareable determines whether the resource supports more than one consumer at a time.
+     */
     @JsonProperty("shareable")
     public void setShareable(Boolean shareable) {
         this.shareable = shareable;

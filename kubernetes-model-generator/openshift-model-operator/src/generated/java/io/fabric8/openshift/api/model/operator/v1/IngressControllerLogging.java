@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * IngressControllerLogging describes what should be logged where.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class IngressControllerLogging implements Editable<IngressControllerLoggi
         this.access = access;
     }
 
+    /**
+     * IngressControllerLogging describes what should be logged where.
+     */
     @JsonProperty("access")
     public AccessLogging getAccess() {
         return access;
     }
 
+    /**
+     * IngressControllerLogging describes what should be logged where.
+     */
     @JsonProperty("access")
     public void setAccess(AccessLogging access) {
         this.access = access;

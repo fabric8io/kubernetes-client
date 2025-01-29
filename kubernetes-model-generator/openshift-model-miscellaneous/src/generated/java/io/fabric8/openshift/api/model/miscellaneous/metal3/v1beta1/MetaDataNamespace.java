@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * MetaDataNamespace contains the information to render the namespace.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class MetaDataNamespace implements Editable<MetaDataNamespaceBuilder>, Ku
         this.key = key;
     }
 
+    /**
+     * Key will be used as the key to set in the metadata map for cloud-init
+     */
     @JsonProperty("key")
     public String getKey() {
         return key;
     }
 
+    /**
+     * Key will be used as the key to set in the metadata map for cloud-init
+     */
     @JsonProperty("key")
     public void setKey(String key) {
         this.key = key;

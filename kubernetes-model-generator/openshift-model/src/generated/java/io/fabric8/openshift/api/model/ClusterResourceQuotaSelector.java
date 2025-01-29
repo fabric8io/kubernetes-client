@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ClusterResourceQuotaSelector is used to select projects.  At least one of LabelSelector or AnnotationSelector must present.  If only one is present, it is the only selection criteria.  If both are specified, the project must match both restrictions.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -83,22 +86,34 @@ public class ClusterResourceQuotaSelector implements Editable<ClusterResourceQuo
         this.labels = labels;
     }
 
+    /**
+     * AnnotationSelector is used to select projects by annotation.
+     */
     @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAnnotations() {
         return annotations;
     }
 
+    /**
+     * AnnotationSelector is used to select projects by annotation.
+     */
     @JsonProperty("annotations")
     public void setAnnotations(Map<String, String> annotations) {
         this.annotations = annotations;
     }
 
+    /**
+     * ClusterResourceQuotaSelector is used to select projects.  At least one of LabelSelector or AnnotationSelector must present.  If only one is present, it is the only selection criteria.  If both are specified, the project must match both restrictions.
+     */
     @JsonProperty("labels")
     public LabelSelector getLabels() {
         return labels;
     }
 
+    /**
+     * ClusterResourceQuotaSelector is used to select projects.  At least one of LabelSelector or AnnotationSelector must present.  If only one is present, it is the only selection criteria.  If both are specified, the project must match both restrictions.
+     */
     @JsonProperty("labels")
     public void setLabels(LabelSelector labels) {
         this.labels = labels;

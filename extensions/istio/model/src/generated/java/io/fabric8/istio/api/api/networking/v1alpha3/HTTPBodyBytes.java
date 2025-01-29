@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * response body as base64 encoded bytes.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class HTTPBodyBytes implements IsHTTPBodySpecifier, Editable<HTTPBodyByte
         this.bytes = bytes;
     }
 
+    /**
+     * response body as base64 encoded bytes.
+     */
     @JsonProperty("bytes")
     public String getBytes() {
         return bytes;
     }
 
+    /**
+     * response body as base64 encoded bytes.
+     */
     @JsonProperty("bytes")
     public void setBytes(String bytes) {
         this.bytes = bytes;

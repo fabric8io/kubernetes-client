@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AWSLoadBalancerParameters provides configuration settings that are specific to AWS load balancers.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class AWSLoadBalancerParameters implements Editable<AWSLoadBalancerParame
         this.type = type;
     }
 
+    /**
+     * AWSLoadBalancerParameters provides configuration settings that are specific to AWS load balancers.
+     */
     @JsonProperty("classicLoadBalancer")
     public AWSClassicLoadBalancerParameters getClassicLoadBalancer() {
         return classicLoadBalancer;
     }
 
+    /**
+     * AWSLoadBalancerParameters provides configuration settings that are specific to AWS load balancers.
+     */
     @JsonProperty("classicLoadBalancer")
     public void setClassicLoadBalancer(AWSClassicLoadBalancerParameters classicLoadBalancer) {
         this.classicLoadBalancer = classicLoadBalancer;
     }
 
+    /**
+     * AWSLoadBalancerParameters provides configuration settings that are specific to AWS load balancers.
+     */
     @JsonProperty("networkLoadBalancer")
     public AWSNetworkLoadBalancerParameters getNetworkLoadBalancer() {
         return networkLoadBalancer;
     }
 
+    /**
+     * AWSLoadBalancerParameters provides configuration settings that are specific to AWS load balancers.
+     */
     @JsonProperty("networkLoadBalancer")
     public void setNetworkLoadBalancer(AWSNetworkLoadBalancerParameters networkLoadBalancer) {
         this.networkLoadBalancer = networkLoadBalancer;
     }
 
+    /**
+     * type is the type of AWS load balancer to instantiate for an ingresscontroller.<br><p> <br><p> Valid values are:<br><p> <br><p> &#42; "Classic": A Classic Load Balancer that makes routing decisions at either<br><p>   the transport layer (TCP/SSL) or the application layer (HTTP/HTTPS). See<br><p>   the following for additional details:<br><p> <br><p>     https://docs.aws.amazon.com/AmazonECS/latest/developerguide/load-balancer-types.html#clb<br><p> <br><p> &#42; "NLB": A Network Load Balancer that makes routing decisions at the<br><p>   transport layer (TCP/SSL). See the following for additional details:<br><p> <br><p>     https://docs.aws.amazon.com/AmazonECS/latest/developerguide/load-balancer-types.html#nlb
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * type is the type of AWS load balancer to instantiate for an ingresscontroller.<br><p> <br><p> Valid values are:<br><p> <br><p> &#42; "Classic": A Classic Load Balancer that makes routing decisions at either<br><p>   the transport layer (TCP/SSL) or the application layer (HTTP/HTTPS). See<br><p>   the following for additional details:<br><p> <br><p>     https://docs.aws.amazon.com/AmazonECS/latest/developerguide/load-balancer-types.html#clb<br><p> <br><p> &#42; "NLB": A Network Load Balancer that makes routing decisions at the<br><p>   transport layer (TCP/SSL). See the following for additional details:<br><p> <br><p>     https://docs.aws.amazon.com/AmazonECS/latest/developerguide/load-balancer-types.html#nlb
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

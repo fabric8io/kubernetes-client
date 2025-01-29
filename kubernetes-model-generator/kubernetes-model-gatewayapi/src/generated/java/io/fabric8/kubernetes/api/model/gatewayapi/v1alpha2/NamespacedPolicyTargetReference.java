@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NamespacedPolicyTargetReference identifies an API object to apply a direct or inherited policy to, potentially in a different namespace. This should only be used as part of Policy resources that need to be able to target resources in different namespaces. For more information on how this policy attachment model works, and a sample Policy resource, refer to the policy attachment documentation for Gateway API.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class NamespacedPolicyTargetReference implements Editable<NamespacedPolic
         this.namespace = namespace;
     }
 
+    /**
+     * Group is the group of the target resource.
+     */
     @JsonProperty("group")
     public String getGroup() {
         return group;
     }
 
+    /**
+     * Group is the group of the target resource.
+     */
     @JsonProperty("group")
     public void setGroup(String group) {
         this.group = group;
     }
 
+    /**
+     * Kind is kind of the target resource.
+     */
     @JsonProperty("kind")
     public String getKind() {
         return kind;
     }
 
+    /**
+     * Kind is kind of the target resource.
+     */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * Name is the name of the target resource.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name is the name of the target resource.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Namespace is the namespace of the referent. When unspecified, the local namespace is inferred. Even when policy targets a resource in a different namespace, it MUST only apply to traffic originating from the same namespace as the policy.
+     */
     @JsonProperty("namespace")
     public String getNamespace() {
         return namespace;
     }
 
+    /**
+     * Namespace is the namespace of the referent. When unspecified, the local namespace is inferred. Even when policy targets a resource in a different namespace, it MUST only apply to traffic originating from the same namespace as the policy.
+     */
     @JsonProperty("namespace")
     public void setNamespace(String namespace) {
         this.namespace = namespace;

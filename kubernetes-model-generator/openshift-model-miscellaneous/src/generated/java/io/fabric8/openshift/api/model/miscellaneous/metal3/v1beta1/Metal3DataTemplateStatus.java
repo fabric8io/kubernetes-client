@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Metal3DataTemplateStatus defines the observed state of Metal3DataTemplate.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -83,22 +86,34 @@ public class Metal3DataTemplateStatus implements Editable<Metal3DataTemplateStat
         this.lastUpdated = lastUpdated;
     }
 
+    /**
+     * Indexes contains the map of Metal3Machine and index used
+     */
     @JsonProperty("indexes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Integer> getIndexes() {
         return indexes;
     }
 
+    /**
+     * Indexes contains the map of Metal3Machine and index used
+     */
     @JsonProperty("indexes")
     public void setIndexes(Map<String, Integer> indexes) {
         this.indexes = indexes;
     }
 
+    /**
+     * Metal3DataTemplateStatus defines the observed state of Metal3DataTemplate.
+     */
     @JsonProperty("lastUpdated")
     public String getLastUpdated() {
         return lastUpdated;
     }
 
+    /**
+     * Metal3DataTemplateStatus defines the observed state of Metal3DataTemplate.
+     */
     @JsonProperty("lastUpdated")
     public void setLastUpdated(String lastUpdated) {
         this.lastUpdated = lastUpdated;

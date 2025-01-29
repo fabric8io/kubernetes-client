@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * TagImageHook is a request to tag the image in a particular container onto an ImageStreamTag.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class TagImageHook implements Editable<TagImageHookBuilder>, KubernetesRe
         this.to = to;
     }
 
+    /**
+     * ContainerName is the name of a container in the deployment config whose image value will be used as the source of the tag. If there is only a single container this value will be defaulted to the name of that container.
+     */
     @JsonProperty("containerName")
     public String getContainerName() {
         return containerName;
     }
 
+    /**
+     * ContainerName is the name of a container in the deployment config whose image value will be used as the source of the tag. If there is only a single container this value will be defaulted to the name of that container.
+     */
     @JsonProperty("containerName")
     public void setContainerName(String containerName) {
         this.containerName = containerName;
     }
 
+    /**
+     * TagImageHook is a request to tag the image in a particular container onto an ImageStreamTag.
+     */
     @JsonProperty("to")
     public ObjectReference getTo() {
         return to;
     }
 
+    /**
+     * TagImageHook is a request to tag the image in a particular container onto an ImageStreamTag.
+     */
     @JsonProperty("to")
     public void setTo(ObjectReference to) {
         this.to = to;

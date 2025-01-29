@@ -97,52 +97,82 @@ public class HTTPHealthCheckConfig implements Editable<HTTPHealthCheckConfigBuil
         this.scheme = scheme;
     }
 
+    /**
+     * Host name to connect to, defaults to the pod IP. You probably want to set "Host" in httpHeaders instead.
+     */
     @JsonProperty("host")
     public String getHost() {
         return host;
     }
 
+    /**
+     * Host name to connect to, defaults to the pod IP. You probably want to set "Host" in httpHeaders instead.
+     */
     @JsonProperty("host")
     public void setHost(String host) {
         this.host = host;
     }
 
+    /**
+     * Headers the proxy will pass on to make the request. Allows repeated headers.
+     */
     @JsonProperty("httpHeaders")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<HTTPHeader> getHttpHeaders() {
         return httpHeaders;
     }
 
+    /**
+     * Headers the proxy will pass on to make the request. Allows repeated headers.
+     */
     @JsonProperty("httpHeaders")
     public void setHttpHeaders(List<HTTPHeader> httpHeaders) {
         this.httpHeaders = httpHeaders;
     }
 
+    /**
+     * Path to access on the HTTP server.
+     */
     @JsonProperty("path")
     public String getPath() {
         return path;
     }
 
+    /**
+     * Path to access on the HTTP server.
+     */
     @JsonProperty("path")
     public void setPath(String path) {
         this.path = path;
     }
 
+    /**
+     * Port on which the endpoint lives.
+     */
     @JsonProperty("port")
     public Long getPort() {
         return port;
     }
 
+    /**
+     * Port on which the endpoint lives.
+     */
     @JsonProperty("port")
     public void setPort(Long port) {
         this.port = port;
     }
 
+    /**
+     * HTTP or HTTPS, defaults to HTTP
+     */
     @JsonProperty("scheme")
     public String getScheme() {
         return scheme;
     }
 
+    /**
+     * HTTP or HTTPS, defaults to HTTP
+     */
     @JsonProperty("scheme")
     public void setScheme(String scheme) {
         this.scheme = scheme;

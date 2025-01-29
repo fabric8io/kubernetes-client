@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * TCPRouteStatus defines the observed state of TCPRoute
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,12 +85,18 @@ public class TCPRouteStatus implements Editable<TCPRouteStatusBuilder>, Kubernet
         this.parents = parents;
     }
 
+    /**
+     * Parents is a list of parent resources (usually Gateways) that are associated with the route, and the status of the route with respect to each parent. When this route attaches to a parent, the controller that manages the parent must add an entry to this list when the controller first sees the route and should update the entry as appropriate when the route or gateway is modified.<br><p> <br><p> Note that parent references that cannot be resolved by an implementation of this API will not be added to this list. Implementations of this API can only populate Route status for the Gateways/parent resources they are responsible for.<br><p> <br><p> A maximum of 32 Gateways will be represented in this list. An empty list means the route has not been attached to any Gateway.
+     */
     @JsonProperty("parents")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<RouteParentStatus> getParents() {
         return parents;
     }
 
+    /**
+     * Parents is a list of parent resources (usually Gateways) that are associated with the route, and the status of the route with respect to each parent. When this route attaches to a parent, the controller that manages the parent must add an entry to this list when the controller first sees the route and should update the entry as appropriate when the route or gateway is modified.<br><p> <br><p> Note that parent references that cannot be resolved by an implementation of this API will not be added to this list. Implementations of this API can only populate Route status for the Gateways/parent resources they are responsible for.<br><p> <br><p> A maximum of 32 Gateways will be represented in this list. An empty list means the route has not been attached to any Gateway.
+     */
     @JsonProperty("parents")
     public void setParents(List<RouteParentStatus> parents) {
         this.parents = parents;

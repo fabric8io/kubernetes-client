@@ -78,11 +78,17 @@ public class MetricSelectorCustomMetric implements IsMetricSelectorMetricMatch, 
         this.customMetric = customMetric;
     }
 
+    /**
+     * Allows free-form specification of a metric. No validation of custom metrics is provided.
+     */
     @JsonProperty("customMetric")
     public String getCustomMetric() {
         return customMetric;
     }
 
+    /**
+     * Allows free-form specification of a metric. No validation of custom metrics is provided.
+     */
     @JsonProperty("customMetric")
     public void setCustomMetric(String customMetric) {
         this.customMetric = customMetric;

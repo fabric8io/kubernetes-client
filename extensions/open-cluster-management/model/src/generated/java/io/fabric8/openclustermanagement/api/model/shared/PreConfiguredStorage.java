@@ -94,51 +94,81 @@ public class PreConfiguredStorage implements Editable<PreConfiguredStorageBuilde
         this.tlsSecretName = tlsSecretName;
     }
 
+    /**
+     * The key of the secret to select from. Must be a valid secret key. Refer to https://thanos.io/tip/thanos/storage.md/#configuring-access-to-object-storage for a valid content of key.
+     */
     @JsonProperty("key")
     public String getKey() {
         return key;
     }
 
+    /**
+     * The key of the secret to select from. Must be a valid secret key. Refer to https://thanos.io/tip/thanos/storage.md/#configuring-access-to-object-storage for a valid content of key.
+     */
     @JsonProperty("key")
     public void setKey(String key) {
         this.key = key;
     }
 
+    /**
+     * Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * serviceAccountProjection indicates whether mount service account token to thanos pods. Default is false.
+     */
     @JsonProperty("serviceAccountProjection")
     public Boolean getServiceAccountProjection() {
         return serviceAccountProjection;
     }
 
+    /**
+     * serviceAccountProjection indicates whether mount service account token to thanos pods. Default is false.
+     */
     @JsonProperty("serviceAccountProjection")
     public void setServiceAccountProjection(Boolean serviceAccountProjection) {
         this.serviceAccountProjection = serviceAccountProjection;
     }
 
+    /**
+     * TLS secret mount path for the custom certificate for the object store
+     */
     @JsonProperty("tlsSecretMountPath")
     public String getTlsSecretMountPath() {
         return tlsSecretMountPath;
     }
 
+    /**
+     * TLS secret mount path for the custom certificate for the object store
+     */
     @JsonProperty("tlsSecretMountPath")
     public void setTlsSecretMountPath(String tlsSecretMountPath) {
         this.tlsSecretMountPath = tlsSecretMountPath;
     }
 
+    /**
+     * TLS secret contains the custom certificate for the object store
+     */
     @JsonProperty("tlsSecretName")
     public String getTlsSecretName() {
         return tlsSecretName;
     }
 
+    /**
+     * TLS secret contains the custom certificate for the object store
+     */
     @JsonProperty("tlsSecretName")
     public void setTlsSecretName(String tlsSecretName) {
         this.tlsSecretName = tlsSecretName;

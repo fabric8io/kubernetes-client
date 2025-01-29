@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SubnetFilter defines a subnet by ID and/or name.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class SubnetFilter implements Editable<SubnetFilterBuilder>, KubernetesRe
         this.name = name;
     }
 
+    /**
+     * SubnetFilter defines a subnet by ID and/or name.
+     */
     @JsonProperty("id")
     public String getId() {
         return id;
     }
 
+    /**
+     * SubnetFilter defines a subnet by ID and/or name.
+     */
     @JsonProperty("id")
     public void setId(String id) {
         this.id = id;
     }
 
+    /**
+     * SubnetFilter defines a subnet by ID and/or name.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * SubnetFilter defines a subnet by ID and/or name.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

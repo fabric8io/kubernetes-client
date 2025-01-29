@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AzureDisk represents an Azure Data Disk mount on the host and bind mount to the pod.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -69,61 +72,97 @@ public class AzureDiskVolumeSource implements Editable<AzureDiskVolumeSourceBuil
         this.readOnly = readOnly;
     }
 
+    /**
+     * cachingMode is the Host Caching mode: None, Read Only, Read Write.
+     */
     @JsonProperty("cachingMode")
     public String getCachingMode() {
         return cachingMode;
     }
 
+    /**
+     * cachingMode is the Host Caching mode: None, Read Only, Read Write.
+     */
     @JsonProperty("cachingMode")
     public void setCachingMode(String cachingMode) {
         this.cachingMode = cachingMode;
     }
 
+    /**
+     * diskName is the Name of the data disk in the blob storage
+     */
     @JsonProperty("diskName")
     public String getDiskName() {
         return diskName;
     }
 
+    /**
+     * diskName is the Name of the data disk in the blob storage
+     */
     @JsonProperty("diskName")
     public void setDiskName(String diskName) {
         this.diskName = diskName;
     }
 
+    /**
+     * diskURI is the URI of data disk in the blob storage
+     */
     @JsonProperty("diskURI")
     public String getDiskURI() {
         return diskURI;
     }
 
+    /**
+     * diskURI is the URI of data disk in the blob storage
+     */
     @JsonProperty("diskURI")
     public void setDiskURI(String diskURI) {
         this.diskURI = diskURI;
     }
 
+    /**
+     * fsType is Filesystem type to mount. Must be a filesystem type supported by the host operating system. Ex. "ext4", "xfs", "ntfs". Implicitly inferred to be "ext4" if unspecified.
+     */
     @JsonProperty("fsType")
     public String getFsType() {
         return fsType;
     }
 
+    /**
+     * fsType is Filesystem type to mount. Must be a filesystem type supported by the host operating system. Ex. "ext4", "xfs", "ntfs". Implicitly inferred to be "ext4" if unspecified.
+     */
     @JsonProperty("fsType")
     public void setFsType(String fsType) {
         this.fsType = fsType;
     }
 
+    /**
+     * kind expected values are Shared: multiple blob disks per storage account  Dedicated: single blob disk per storage account  Managed: azure managed data disk (only in managed availability set). defaults to shared
+     */
     @JsonProperty("kind")
     public String getKind() {
         return kind;
     }
 
+    /**
+     * kind expected values are Shared: multiple blob disks per storage account  Dedicated: single blob disk per storage account  Managed: azure managed data disk (only in managed availability set). defaults to shared
+     */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * readOnly Defaults to false (read/write). ReadOnly here will force the ReadOnly setting in VolumeMounts.
+     */
     @JsonProperty("readOnly")
     public Boolean getReadOnly() {
         return readOnly;
     }
 
+    /**
+     * readOnly Defaults to false (read/write). ReadOnly here will force the ReadOnly setting in VolumeMounts.
+     */
     @JsonProperty("readOnly")
     public void setReadOnly(Boolean readOnly) {
         this.readOnly = readOnly;

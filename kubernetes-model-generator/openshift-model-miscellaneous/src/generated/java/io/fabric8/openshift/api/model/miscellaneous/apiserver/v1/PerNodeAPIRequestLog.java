@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PerNodeAPIRequestLog contains logs of requests to a certain node.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -89,32 +92,50 @@ public class PerNodeAPIRequestLog implements Editable<PerNodeAPIRequestLogBuilde
         this.requestCount = requestCount;
     }
 
+    /**
+     * byUser contains request details by top .spec.numberOfUsersToReport users. Note that because in the case of an apiserver, restart the list of top users is determined on a best-effort basis, the list might be imprecise. In addition, some system users may be explicitly included in the list.
+     */
     @JsonProperty("byUser")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PerUserAPIRequestCount> getByUser() {
         return byUser;
     }
 
+    /**
+     * byUser contains request details by top .spec.numberOfUsersToReport users. Note that because in the case of an apiserver, restart the list of top users is determined on a best-effort basis, the list might be imprecise. In addition, some system users may be explicitly included in the list.
+     */
     @JsonProperty("byUser")
     public void setByUser(List<PerUserAPIRequestCount> byUser) {
         this.byUser = byUser;
     }
 
+    /**
+     * nodeName where the request are being handled.
+     */
     @JsonProperty("nodeName")
     public String getNodeName() {
         return nodeName;
     }
 
+    /**
+     * nodeName where the request are being handled.
+     */
     @JsonProperty("nodeName")
     public void setNodeName(String nodeName) {
         this.nodeName = nodeName;
     }
 
+    /**
+     * requestCount is a sum of all requestCounts across all users, even those outside of the top 10 users.
+     */
     @JsonProperty("requestCount")
     public Long getRequestCount() {
         return requestCount;
     }
 
+    /**
+     * requestCount is a sum of all requestCounts across all users, even those outside of the top 10 users.
+     */
     @JsonProperty("requestCount")
     public void setRequestCount(Long requestCount) {
         this.requestCount = requestCount;

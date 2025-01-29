@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AWSServiceProviderCredentials is used to configure credentials related to being a service provider on AWS.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class AWSServiceProviderCredentials implements Editable<AWSServiceProvide
         this.credentialsSecretRef = credentialsSecretRef;
     }
 
+    /**
+     * AWSServiceProviderCredentials is used to configure credentials related to being a service provider on AWS.
+     */
     @JsonProperty("credentialsSecretRef")
     public LocalObjectReference getCredentialsSecretRef() {
         return credentialsSecretRef;
     }
 
+    /**
+     * AWSServiceProviderCredentials is used to configure credentials related to being a service provider on AWS.
+     */
     @JsonProperty("credentialsSecretRef")
     public void setCredentialsSecretRef(LocalObjectReference credentialsSecretRef) {
         this.credentialsSecretRef = credentialsSecretRef;

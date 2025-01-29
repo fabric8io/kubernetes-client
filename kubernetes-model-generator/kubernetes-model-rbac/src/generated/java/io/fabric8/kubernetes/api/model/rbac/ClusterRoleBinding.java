@@ -38,6 +38,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ClusterRoleBinding references a ClusterRole, but not contain it.  It can reference a ClusterRole in the global namespace, and adds who information via Subject.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -77,14 +80,8 @@ import lombok.experimental.Accessors;
 public class ClusterRoleBinding implements Editable<ClusterRoleBindingBuilder>, HasMetadata
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "rbac.authorization.k8s.io/v1";
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "ClusterRoleBinding";
     @JsonProperty("metadata")
@@ -113,7 +110,7 @@ public class ClusterRoleBinding implements Editable<ClusterRoleBindingBuilder>, 
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -121,7 +118,7 @@ public class ClusterRoleBinding implements Editable<ClusterRoleBindingBuilder>, 
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -129,7 +126,7 @@ public class ClusterRoleBinding implements Editable<ClusterRoleBindingBuilder>, 
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -137,39 +134,57 @@ public class ClusterRoleBinding implements Editable<ClusterRoleBindingBuilder>, 
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * ClusterRoleBinding references a ClusterRole, but not contain it.  It can reference a ClusterRole in the global namespace, and adds who information via Subject.
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * ClusterRoleBinding references a ClusterRole, but not contain it.  It can reference a ClusterRole in the global namespace, and adds who information via Subject.
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * ClusterRoleBinding references a ClusterRole, but not contain it.  It can reference a ClusterRole in the global namespace, and adds who information via Subject.
+     */
     @JsonProperty("roleRef")
     public RoleRef getRoleRef() {
         return roleRef;
     }
 
+    /**
+     * ClusterRoleBinding references a ClusterRole, but not contain it.  It can reference a ClusterRole in the global namespace, and adds who information via Subject.
+     */
     @JsonProperty("roleRef")
     public void setRoleRef(RoleRef roleRef) {
         this.roleRef = roleRef;
     }
 
+    /**
+     * Subjects holds references to the objects the role applies to.
+     */
     @JsonProperty("subjects")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Subject> getSubjects() {
         return subjects;
     }
 
+    /**
+     * Subjects holds references to the objects the role applies to.
+     */
     @JsonProperty("subjects")
     public void setSubjects(List<Subject> subjects) {
         this.subjects = subjects;

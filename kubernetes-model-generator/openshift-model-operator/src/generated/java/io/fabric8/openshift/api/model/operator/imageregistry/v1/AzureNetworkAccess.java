@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AzureNetworkAccess defines the network access properties for the storage account.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class AzureNetworkAccess implements Editable<AzureNetworkAccessBuilder>, 
         this.type = type;
     }
 
+    /**
+     * AzureNetworkAccess defines the network access properties for the storage account.
+     */
     @JsonProperty("internal")
     public AzureNetworkAccessInternal getInternal() {
         return internal;
     }
 
+    /**
+     * AzureNetworkAccess defines the network access properties for the storage account.
+     */
     @JsonProperty("internal")
     public void setInternal(AzureNetworkAccessInternal internal) {
         this.internal = internal;
     }
 
+    /**
+     * type is the network access level to be used for the storage account. type: Internal means the storage account will be private, type: External means the storage account will be publicly accessible. Internal storage accounts are only exposed within the cluster's vnet. External storage accounts are publicly exposed on the internet. When type: Internal is used, a vnetName, subNetName and privateEndpointName may optionally be specified. If unspecificed, the image registry operator will discover vnet and subnet names, and generate a privateEndpointName. Defaults to "External".
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * type is the network access level to be used for the storage account. type: Internal means the storage account will be private, type: External means the storage account will be publicly accessible. Internal storage accounts are only exposed within the cluster's vnet. External storage accounts are publicly exposed on the internet. When type: Internal is used, a vnetName, subNetName and privateEndpointName may optionally be specified. If unspecificed, the image registry operator will discover vnet and subnet names, and generate a privateEndpointName. Defaults to "External".
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

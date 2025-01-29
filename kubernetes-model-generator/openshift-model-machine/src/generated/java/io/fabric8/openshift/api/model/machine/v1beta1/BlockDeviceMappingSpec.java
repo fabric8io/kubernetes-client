@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * BlockDeviceMappingSpec describes a block device mapping
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class BlockDeviceMappingSpec implements Editable<BlockDeviceMappingSpecBu
         this.virtualName = virtualName;
     }
 
+    /**
+     * The device name exposed to the machine (for example, /dev/sdh or xvdh).
+     */
     @JsonProperty("deviceName")
     public String getDeviceName() {
         return deviceName;
     }
 
+    /**
+     * The device name exposed to the machine (for example, /dev/sdh or xvdh).
+     */
     @JsonProperty("deviceName")
     public void setDeviceName(String deviceName) {
         this.deviceName = deviceName;
     }
 
+    /**
+     * BlockDeviceMappingSpec describes a block device mapping
+     */
     @JsonProperty("ebs")
     public EBSBlockDeviceSpec getEbs() {
         return ebs;
     }
 
+    /**
+     * BlockDeviceMappingSpec describes a block device mapping
+     */
     @JsonProperty("ebs")
     public void setEbs(EBSBlockDeviceSpec ebs) {
         this.ebs = ebs;
     }
 
+    /**
+     * Suppresses the specified device included in the block device mapping of the AMI.
+     */
     @JsonProperty("noDevice")
     public String getNoDevice() {
         return noDevice;
     }
 
+    /**
+     * Suppresses the specified device included in the block device mapping of the AMI.
+     */
     @JsonProperty("noDevice")
     public void setNoDevice(String noDevice) {
         this.noDevice = noDevice;
     }
 
+    /**
+     * The virtual device name (ephemeralN). Machine store volumes are numbered starting from 0. An machine type with 2 available machine store volumes can specify mappings for ephemeral0 and ephemeral1.The number of available machine store volumes depends on the machine type. After you connect to the machine, you must mount the volume.<br><p> <br><p> Constraints: For M3 machines, you must specify machine store volumes in the block device mapping for the machine. When you launch an M3 machine, we ignore any machine store volumes specified in the block device mapping for the AMI.
+     */
     @JsonProperty("virtualName")
     public String getVirtualName() {
         return virtualName;
     }
 
+    /**
+     * The virtual device name (ephemeralN). Machine store volumes are numbered starting from 0. An machine type with 2 available machine store volumes can specify mappings for ephemeral0 and ephemeral1.The number of available machine store volumes depends on the machine type. After you connect to the machine, you must mount the volume.<br><p> <br><p> Constraints: For M3 machines, you must specify machine store volumes in the block device mapping for the machine. When you launch an M3 machine, we ignore any machine store volumes specified in the block device mapping for the AMI.
+     */
     @JsonProperty("virtualName")
     public void setVirtualName(String virtualName) {
         this.virtualName = virtualName;

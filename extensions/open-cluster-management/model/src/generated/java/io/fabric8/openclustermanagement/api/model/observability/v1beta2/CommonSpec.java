@@ -82,11 +82,17 @@ public class CommonSpec implements Editable<CommonSpecBuilder>, KubernetesResour
         this.resources = resources;
     }
 
+    /**
+     * Replicas for this component.
+     */
     @JsonProperty("replicas")
     public Integer getReplicas() {
         return replicas;
     }
 
+    /**
+     * Replicas for this component.
+     */
     @JsonProperty("replicas")
     public void setReplicas(Integer replicas) {
         this.replicas = replicas;

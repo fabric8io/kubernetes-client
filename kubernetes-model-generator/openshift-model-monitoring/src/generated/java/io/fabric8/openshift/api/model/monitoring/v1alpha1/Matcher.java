@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Matcher defines how to match on alert's labels.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class Matcher implements Editable<MatcherBuilder>, KubernetesResource
         this.value = value;
     }
 
+    /**
+     * Match operation available with AlertManager &gt;= v0.22.0 and takes precedence over Regex (deprecated) if non-empty.
+     */
     @JsonProperty("matchType")
     public String getMatchType() {
         return matchType;
     }
 
+    /**
+     * Match operation available with AlertManager &gt;= v0.22.0 and takes precedence over Regex (deprecated) if non-empty.
+     */
     @JsonProperty("matchType")
     public void setMatchType(String matchType) {
         this.matchType = matchType;
     }
 
+    /**
+     * Label to match.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Label to match.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Whether to match on equality (false) or regular-expression (true). Deprecated: for AlertManager &gt;= v0.22.0, `matchType` should be used instead.
+     */
     @JsonProperty("regex")
     public Boolean getRegex() {
         return regex;
     }
 
+    /**
+     * Whether to match on equality (false) or regular-expression (true). Deprecated: for AlertManager &gt;= v0.22.0, `matchType` should be used instead.
+     */
     @JsonProperty("regex")
     public void setRegex(Boolean regex) {
         this.regex = regex;
     }
 
+    /**
+     * Label value to match.
+     */
     @JsonProperty("value")
     public String getValue() {
         return value;
     }
 
+    /**
+     * Label value to match.
+     */
     @JsonProperty("value")
     public void setValue(String value) {
         this.value = value;

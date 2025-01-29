@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * GCPChaosSpec is the content of the specification for a GCPChaos
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -109,82 +112,130 @@ public class GCPChaosSpec implements Editable<GCPChaosSpecBuilder>, KubernetesRe
         this.zone = zone;
     }
 
+    /**
+     * Action defines the specific gcp chaos action. Supported action: node-stop / node-reset / disk-loss Default action: node-stop
+     */
     @JsonProperty("action")
     public String getAction() {
         return action;
     }
 
+    /**
+     * Action defines the specific gcp chaos action. Supported action: node-stop / node-reset / disk-loss Default action: node-stop
+     */
     @JsonProperty("action")
     public void setAction(String action) {
         this.action = action;
     }
 
+    /**
+     * The device name of disks to detach. Needed in disk-loss.
+     */
     @JsonProperty("deviceNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getDeviceNames() {
         return deviceNames;
     }
 
+    /**
+     * The device name of disks to detach. Needed in disk-loss.
+     */
     @JsonProperty("deviceNames")
     public void setDeviceNames(List<String> deviceNames) {
         this.deviceNames = deviceNames;
     }
 
+    /**
+     * Duration represents the duration of the chaos action.
+     */
     @JsonProperty("duration")
     public String getDuration() {
         return duration;
     }
 
+    /**
+     * Duration represents the duration of the chaos action.
+     */
     @JsonProperty("duration")
     public void setDuration(String duration) {
         this.duration = duration;
     }
 
+    /**
+     * Instance defines the name of the instance
+     */
     @JsonProperty("instance")
     public String getInstance() {
         return instance;
     }
 
+    /**
+     * Instance defines the name of the instance
+     */
     @JsonProperty("instance")
     public void setInstance(String instance) {
         this.instance = instance;
     }
 
+    /**
+     * Project defines the ID of gcp project.
+     */
     @JsonProperty("project")
     public String getProject() {
         return project;
     }
 
+    /**
+     * Project defines the ID of gcp project.
+     */
     @JsonProperty("project")
     public void setProject(String project) {
         this.project = project;
     }
 
+    /**
+     * RemoteCluster represents the remote cluster where the chaos will be deployed
+     */
     @JsonProperty("remoteCluster")
     public String getRemoteCluster() {
         return remoteCluster;
     }
 
+    /**
+     * RemoteCluster represents the remote cluster where the chaos will be deployed
+     */
     @JsonProperty("remoteCluster")
     public void setRemoteCluster(String remoteCluster) {
         this.remoteCluster = remoteCluster;
     }
 
+    /**
+     * SecretName defines the name of kubernetes secret. It is used for GCP credentials.
+     */
     @JsonProperty("secretName")
     public String getSecretName() {
         return secretName;
     }
 
+    /**
+     * SecretName defines the name of kubernetes secret. It is used for GCP credentials.
+     */
     @JsonProperty("secretName")
     public void setSecretName(String secretName) {
         this.secretName = secretName;
     }
 
+    /**
+     * Zone defines the zone of gcp project.
+     */
     @JsonProperty("zone")
     public String getZone() {
         return zone;
     }
 
+    /**
+     * Zone defines the zone of gcp project.
+     */
     @JsonProperty("zone")
     public void setZone(String zone) {
         this.zone = zone;

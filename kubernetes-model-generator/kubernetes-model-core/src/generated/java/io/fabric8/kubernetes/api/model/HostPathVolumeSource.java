@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Represents a host path mapped into a pod. Host path volumes do not support ownership management or SELinux relabeling.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -53,21 +56,33 @@ public class HostPathVolumeSource implements Editable<HostPathVolumeSourceBuilde
         this.type = type;
     }
 
+    /**
+     * path of the directory on the host. If the path is a symlink, it will follow the link to the real path. More info: https://kubernetes.io/docs/concepts/storage/volumes#hostpath
+     */
     @JsonProperty("path")
     public String getPath() {
         return path;
     }
 
+    /**
+     * path of the directory on the host. If the path is a symlink, it will follow the link to the real path. More info: https://kubernetes.io/docs/concepts/storage/volumes#hostpath
+     */
     @JsonProperty("path")
     public void setPath(String path) {
         this.path = path;
     }
 
+    /**
+     * type for HostPath Volume Defaults to "" More info: https://kubernetes.io/docs/concepts/storage/volumes#hostpath
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * type for HostPath Volume Defaults to "" More info: https://kubernetes.io/docs/concepts/storage/volumes#hostpath
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

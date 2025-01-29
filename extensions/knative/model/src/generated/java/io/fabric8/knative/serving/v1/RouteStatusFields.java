@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * RouteStatusFields holds the fields of Route's status that are not generally shared.  This is defined separately and inlined so that other types can readily consume these fields via duck typing.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,32 +93,50 @@ public class RouteStatusFields implements Editable<RouteStatusFieldsBuilder>, Ku
         this.url = url;
     }
 
+    /**
+     * RouteStatusFields holds the fields of Route's status that are not generally shared.  This is defined separately and inlined so that other types can readily consume these fields via duck typing.
+     */
     @JsonProperty("address")
     public Addressable getAddress() {
         return address;
     }
 
+    /**
+     * RouteStatusFields holds the fields of Route's status that are not generally shared.  This is defined separately and inlined so that other types can readily consume these fields via duck typing.
+     */
     @JsonProperty("address")
     public void setAddress(Addressable address) {
         this.address = address;
     }
 
+    /**
+     * Traffic holds the configured traffic distribution. These entries will always contain RevisionName references. When ConfigurationName appears in the spec, this will hold the LatestReadyRevisionName that we last observed.
+     */
     @JsonProperty("traffic")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TrafficTarget> getTraffic() {
         return traffic;
     }
 
+    /**
+     * Traffic holds the configured traffic distribution. These entries will always contain RevisionName references. When ConfigurationName appears in the spec, this will hold the LatestReadyRevisionName that we last observed.
+     */
     @JsonProperty("traffic")
     public void setTraffic(List<TrafficTarget> traffic) {
         this.traffic = traffic;
     }
 
+    /**
+     * RouteStatusFields holds the fields of Route's status that are not generally shared.  This is defined separately and inlined so that other types can readily consume these fields via duck typing.
+     */
     @JsonProperty("url")
     public String getUrl() {
         return url;
     }
 
+    /**
+     * RouteStatusFields holds the fields of Route's status that are not generally shared.  This is defined separately and inlined so that other types can readily consume these fields via duck typing.
+     */
     @JsonProperty("url")
     public void setUrl(String url) {
         this.url = url;

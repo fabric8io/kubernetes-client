@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PushoverConfig configures notifications via Pushover. See https://prometheus.io/docs/alerting/latest/configuration/#pushover_config
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -143,171 +146,273 @@ public class PushoverConfig implements Editable<PushoverConfigBuilder>, Kubernet
         this.userKeyFile = userKeyFile;
     }
 
+    /**
+     * The name of a device to send the notification to
+     */
     @JsonProperty("device")
     public String getDevice() {
         return device;
     }
 
+    /**
+     * The name of a device to send the notification to
+     */
     @JsonProperty("device")
     public void setDevice(String device) {
         this.device = device;
     }
 
+    /**
+     * How long your notification will continue to be retried for, unless the user acknowledges the notification.
+     */
     @JsonProperty("expire")
     public String getExpire() {
         return expire;
     }
 
+    /**
+     * How long your notification will continue to be retried for, unless the user acknowledges the notification.
+     */
     @JsonProperty("expire")
     public void setExpire(String expire) {
         this.expire = expire;
     }
 
+    /**
+     * Whether notification message is HTML or plain text.
+     */
     @JsonProperty("html")
     public Boolean getHtml() {
         return html;
     }
 
+    /**
+     * Whether notification message is HTML or plain text.
+     */
     @JsonProperty("html")
     public void setHtml(Boolean html) {
         this.html = html;
     }
 
+    /**
+     * PushoverConfig configures notifications via Pushover. See https://prometheus.io/docs/alerting/latest/configuration/#pushover_config
+     */
     @JsonProperty("httpConfig")
     public HTTPConfig getHttpConfig() {
         return httpConfig;
     }
 
+    /**
+     * PushoverConfig configures notifications via Pushover. See https://prometheus.io/docs/alerting/latest/configuration/#pushover_config
+     */
     @JsonProperty("httpConfig")
     public void setHttpConfig(HTTPConfig httpConfig) {
         this.httpConfig = httpConfig;
     }
 
+    /**
+     * Notification message.
+     */
     @JsonProperty("message")
     public String getMessage() {
         return message;
     }
 
+    /**
+     * Notification message.
+     */
     @JsonProperty("message")
     public void setMessage(String message) {
         this.message = message;
     }
 
+    /**
+     * Priority, see https://pushover.net/api#priority
+     */
     @JsonProperty("priority")
     public String getPriority() {
         return priority;
     }
 
+    /**
+     * Priority, see https://pushover.net/api#priority
+     */
     @JsonProperty("priority")
     public void setPriority(String priority) {
         this.priority = priority;
     }
 
+    /**
+     * How often the Pushover servers will send the same notification to the user. Must be at least 30 seconds.
+     */
     @JsonProperty("retry")
     public String getRetry() {
         return retry;
     }
 
+    /**
+     * How often the Pushover servers will send the same notification to the user. Must be at least 30 seconds.
+     */
     @JsonProperty("retry")
     public void setRetry(String retry) {
         this.retry = retry;
     }
 
+    /**
+     * Whether or not to notify about resolved alerts.
+     */
     @JsonProperty("sendResolved")
     public Boolean getSendResolved() {
         return sendResolved;
     }
 
+    /**
+     * Whether or not to notify about resolved alerts.
+     */
     @JsonProperty("sendResolved")
     public void setSendResolved(Boolean sendResolved) {
         this.sendResolved = sendResolved;
     }
 
+    /**
+     * The name of one of the sounds supported by device clients to override the user's default sound choice
+     */
     @JsonProperty("sound")
     public String getSound() {
         return sound;
     }
 
+    /**
+     * The name of one of the sounds supported by device clients to override the user's default sound choice
+     */
     @JsonProperty("sound")
     public void setSound(String sound) {
         this.sound = sound;
     }
 
+    /**
+     * Notification title.
+     */
     @JsonProperty("title")
     public String getTitle() {
         return title;
     }
 
+    /**
+     * Notification title.
+     */
     @JsonProperty("title")
     public void setTitle(String title) {
         this.title = title;
     }
 
+    /**
+     * PushoverConfig configures notifications via Pushover. See https://prometheus.io/docs/alerting/latest/configuration/#pushover_config
+     */
     @JsonProperty("token")
     public SecretKeySelector getToken() {
         return token;
     }
 
+    /**
+     * PushoverConfig configures notifications via Pushover. See https://prometheus.io/docs/alerting/latest/configuration/#pushover_config
+     */
     @JsonProperty("token")
     public void setToken(SecretKeySelector token) {
         this.token = token;
     }
 
+    /**
+     * The token file that contains the registered application's API token, see https://pushover.net/apps. Either `token` or `tokenFile` is required. It requires Alertmanager &gt;= v0.26.0.
+     */
     @JsonProperty("tokenFile")
     public String getTokenFile() {
         return tokenFile;
     }
 
+    /**
+     * The token file that contains the registered application's API token, see https://pushover.net/apps. Either `token` or `tokenFile` is required. It requires Alertmanager &gt;= v0.26.0.
+     */
     @JsonProperty("tokenFile")
     public void setTokenFile(String tokenFile) {
         this.tokenFile = tokenFile;
     }
 
+    /**
+     * The time to live definition for the alert notification
+     */
     @JsonProperty("ttl")
     public String getTtl() {
         return ttl;
     }
 
+    /**
+     * The time to live definition for the alert notification
+     */
     @JsonProperty("ttl")
     public void setTtl(String ttl) {
         this.ttl = ttl;
     }
 
+    /**
+     * A supplementary URL shown alongside the message.
+     */
     @JsonProperty("url")
     public String getUrl() {
         return url;
     }
 
+    /**
+     * A supplementary URL shown alongside the message.
+     */
     @JsonProperty("url")
     public void setUrl(String url) {
         this.url = url;
     }
 
+    /**
+     * A title for supplementary URL, otherwise just the URL is shown
+     */
     @JsonProperty("urlTitle")
     public String getUrlTitle() {
         return urlTitle;
     }
 
+    /**
+     * A title for supplementary URL, otherwise just the URL is shown
+     */
     @JsonProperty("urlTitle")
     public void setUrlTitle(String urlTitle) {
         this.urlTitle = urlTitle;
     }
 
+    /**
+     * PushoverConfig configures notifications via Pushover. See https://prometheus.io/docs/alerting/latest/configuration/#pushover_config
+     */
     @JsonProperty("userKey")
     public SecretKeySelector getUserKey() {
         return userKey;
     }
 
+    /**
+     * PushoverConfig configures notifications via Pushover. See https://prometheus.io/docs/alerting/latest/configuration/#pushover_config
+     */
     @JsonProperty("userKey")
     public void setUserKey(SecretKeySelector userKey) {
         this.userKey = userKey;
     }
 
+    /**
+     * The user key file that contains the recipient user's user key. Either `userKey` or `userKeyFile` is required. It requires Alertmanager &gt;= v0.26.0.
+     */
     @JsonProperty("userKeyFile")
     public String getUserKeyFile() {
         return userKeyFile;
     }
 
+    /**
+     * The user key file that contains the recipient user's user key. Either `userKey` or `userKeyFile` is required. It requires Alertmanager &gt;= v0.26.0.
+     */
     @JsonProperty("userKeyFile")
     public void setUserKeyFile(String userKeyFile) {
         this.userKeyFile = userKeyFile;

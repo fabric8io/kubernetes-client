@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * StatusCondition contains condition information.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -98,61 +101,97 @@ public class HubCondition implements Editable<HubConditionBuilder>, KubernetesRe
         this.type = type;
     }
 
+    /**
+     * StatusCondition contains condition information.
+     */
     @JsonProperty("lastTransitionTime")
     public String getLastTransitionTime() {
         return lastTransitionTime;
     }
 
+    /**
+     * StatusCondition contains condition information.
+     */
     @JsonProperty("lastTransitionTime")
     public void setLastTransitionTime(String lastTransitionTime) {
         this.lastTransitionTime = lastTransitionTime;
     }
 
+    /**
+     * StatusCondition contains condition information.
+     */
     @JsonProperty("lastUpdateTime")
     public String getLastUpdateTime() {
         return lastUpdateTime;
     }
 
+    /**
+     * StatusCondition contains condition information.
+     */
     @JsonProperty("lastUpdateTime")
     public void setLastUpdateTime(String lastUpdateTime) {
         this.lastUpdateTime = lastUpdateTime;
     }
 
+    /**
+     * Message is a human-readable message indicating details about the last status change.
+     */
     @JsonProperty("message")
     public String getMessage() {
         return message;
     }
 
+    /**
+     * Message is a human-readable message indicating details about the last status change.
+     */
     @JsonProperty("message")
     public void setMessage(String message) {
         this.message = message;
     }
 
+    /**
+     * Reason is a (brief) reason for the condition's last status change.
+     */
     @JsonProperty("reason")
     public String getReason() {
         return reason;
     }
 
+    /**
+     * Reason is a (brief) reason for the condition's last status change.
+     */
     @JsonProperty("reason")
     public void setReason(String reason) {
         this.reason = reason;
     }
 
+    /**
+     * Status is the status of the condition. One of True, False, Unknown.
+     */
     @JsonProperty("status")
     public String getStatus() {
         return status;
     }
 
+    /**
+     * Status is the status of the condition. One of True, False, Unknown.
+     */
     @JsonProperty("status")
     public void setStatus(String status) {
         this.status = status;
     }
 
+    /**
+     * Type is the type of the cluster condition.
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * Type is the type of the cluster condition.
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

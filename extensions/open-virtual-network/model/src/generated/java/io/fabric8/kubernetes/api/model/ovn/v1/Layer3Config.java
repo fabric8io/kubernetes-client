@@ -94,43 +94,67 @@ public class Layer3Config implements Editable<Layer3ConfigBuilder>, KubernetesRe
         this.subnets = subnets;
     }
 
+    /**
+     * JoinSubnets are used inside the OVN network topology.<br><p> <br><p> Dual-stack clusters may set 2 subnets (one for each IP family), otherwise only 1 subnet is allowed. This field is only allowed for "Primary" network. It is not recommended to set this field without explicit need and understanding of the OVN network topology. When omitted, the platform will choose a reasonable default which is subject to change over time.
+     */
     @JsonProperty("joinSubnets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getJoinSubnets() {
         return joinSubnets;
     }
 
+    /**
+     * JoinSubnets are used inside the OVN network topology.<br><p> <br><p> Dual-stack clusters may set 2 subnets (one for each IP family), otherwise only 1 subnet is allowed. This field is only allowed for "Primary" network. It is not recommended to set this field without explicit need and understanding of the OVN network topology. When omitted, the platform will choose a reasonable default which is subject to change over time.
+     */
     @JsonProperty("joinSubnets")
     public void setJoinSubnets(List<String> joinSubnets) {
         this.joinSubnets = joinSubnets;
     }
 
+    /**
+     * MTU is the maximum transmission unit for a network.<br><p> <br><p> MTU is optional, if not provided, the globally configured value in OVN-Kubernetes (defaults to 1400) is used for the network.
+     */
     @JsonProperty("mtu")
     public Integer getMtu() {
         return mtu;
     }
 
+    /**
+     * MTU is the maximum transmission unit for a network.<br><p> <br><p> MTU is optional, if not provided, the globally configured value in OVN-Kubernetes (defaults to 1400) is used for the network.
+     */
     @JsonProperty("mtu")
     public void setMtu(Integer mtu) {
         this.mtu = mtu;
     }
 
+    /**
+     * Role describes the network role in the pod.<br><p> <br><p> Allowed values are "Primary" and "Secondary". Primary network is automatically assigned to every pod created in the same namespace. Secondary network is only assigned to pods that use `k8s.v1.cni.cncf.io/networks` annotation to select given network.
+     */
     @JsonProperty("role")
     public String getRole() {
         return role;
     }
 
+    /**
+     * Role describes the network role in the pod.<br><p> <br><p> Allowed values are "Primary" and "Secondary". Primary network is automatically assigned to every pod created in the same namespace. Secondary network is only assigned to pods that use `k8s.v1.cni.cncf.io/networks` annotation to select given network.
+     */
     @JsonProperty("role")
     public void setRole(String role) {
         this.role = role;
     }
 
+    /**
+     * Subnets are used for the pod network across the cluster.<br><p> <br><p> Dual-stack clusters may set 2 subnets (one for each IP family), otherwise only 1 subnet is allowed. Given subnet is split into smaller subnets for every node.
+     */
     @JsonProperty("subnets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Layer3Subnet> getSubnets() {
         return subnets;
     }
 
+    /**
+     * Subnets are used for the pod network across the cluster.<br><p> <br><p> Dual-stack clusters may set 2 subnets (one for each IP family), otherwise only 1 subnet is allowed. Given subnet is split into smaller subnets for every node.
+     */
     @JsonProperty("subnets")
     public void setSubnets(List<Layer3Subnet> subnets) {
         this.subnets = subnets;

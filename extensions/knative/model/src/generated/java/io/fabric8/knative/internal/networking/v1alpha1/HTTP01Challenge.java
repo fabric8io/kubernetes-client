@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * HTTP01Challenge defines the status of a HTTP01 challenge that a certificate needs to fulfill.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class HTTP01Challenge implements Editable<HTTP01ChallengeBuilder>, Kubern
         this.url = url;
     }
 
+    /**
+     * ServiceName is the name of the service to serve HTTP01 challenge requests.
+     */
     @JsonProperty("serviceName")
     public String getServiceName() {
         return serviceName;
     }
 
+    /**
+     * ServiceName is the name of the service to serve HTTP01 challenge requests.
+     */
     @JsonProperty("serviceName")
     public void setServiceName(String serviceName) {
         this.serviceName = serviceName;
     }
 
+    /**
+     * ServiceNamespace is the namespace of the service to serve HTTP01 challenge requests.
+     */
     @JsonProperty("serviceNamespace")
     public String getServiceNamespace() {
         return serviceNamespace;
     }
 
+    /**
+     * ServiceNamespace is the namespace of the service to serve HTTP01 challenge requests.
+     */
     @JsonProperty("serviceNamespace")
     public void setServiceNamespace(String serviceNamespace) {
         this.serviceNamespace = serviceNamespace;
     }
 
+    /**
+     * HTTP01Challenge defines the status of a HTTP01 challenge that a certificate needs to fulfill.
+     */
     @JsonProperty("servicePort")
     public IntOrString getServicePort() {
         return servicePort;
     }
 
+    /**
+     * HTTP01Challenge defines the status of a HTTP01 challenge that a certificate needs to fulfill.
+     */
     @JsonProperty("servicePort")
     public void setServicePort(IntOrString servicePort) {
         this.servicePort = servicePort;
     }
 
+    /**
+     * HTTP01Challenge defines the status of a HTTP01 challenge that a certificate needs to fulfill.
+     */
     @JsonProperty("url")
     public String getUrl() {
         return url;
     }
 
+    /**
+     * HTTP01Challenge defines the status of a HTTP01 challenge that a certificate needs to fulfill.
+     */
     @JsonProperty("url")
     public void setUrl(String url) {
         this.url = url;

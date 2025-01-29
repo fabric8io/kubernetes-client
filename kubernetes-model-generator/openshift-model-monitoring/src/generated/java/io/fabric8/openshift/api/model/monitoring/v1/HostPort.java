@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * HostPort represents a "host:port" network address.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class HostPort implements Editable<HostPortBuilder>, KubernetesResource
         this.port = port;
     }
 
+    /**
+     * Defines the host's address, it can be a DNS name or a literal IP address.
+     */
     @JsonProperty("host")
     public String getHost() {
         return host;
     }
 
+    /**
+     * Defines the host's address, it can be a DNS name or a literal IP address.
+     */
     @JsonProperty("host")
     public void setHost(String host) {
         this.host = host;
     }
 
+    /**
+     * Defines the host's port, it can be a literal port number or a port name.
+     */
     @JsonProperty("port")
     public String getPort() {
         return port;
     }
 
+    /**
+     * Defines the host's port, it can be a literal port number or a port name.
+     */
     @JsonProperty("port")
     public void setPort(String port) {
         this.port = port;

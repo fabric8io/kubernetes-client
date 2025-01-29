@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DNSNameResolverResolvedName describes the details of a resolved DNS name.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -95,43 +98,67 @@ public class DNSNameResolverResolvedName implements Editable<DNSNameResolverReso
         this.resolvedAddresses = resolvedAddresses;
     }
 
+    /**
+     * conditions provide information about the state of the DNS name. Known .status.conditions.type is: "Degraded". "Degraded" is true when the last resolution failed for the DNS name, and false otherwise.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
 
+    /**
+     * conditions provide information about the state of the DNS name. Known .status.conditions.type is: "Degraded". "Degraded" is true when the last resolution failed for the DNS name, and false otherwise.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * dnsName is the resolved DNS name matching the name field of DNSNameResolverSpec. This field can store both regular and wildcard DNS names which match the spec.name field. When the spec.name field contains a regular DNS name, this field will store the same regular DNS name after it is successfully resolved. When the spec.name field contains a wildcard DNS name, each resolvedName.dnsName will store the regular DNS names which match the wildcard DNS name and have been successfully resolved. If the wildcard DNS name can also be successfully resolved, then this field will store the wildcard DNS name as well.
+     */
     @JsonProperty("dnsName")
     public String getDnsName() {
         return dnsName;
     }
 
+    /**
+     * dnsName is the resolved DNS name matching the name field of DNSNameResolverSpec. This field can store both regular and wildcard DNS names which match the spec.name field. When the spec.name field contains a regular DNS name, this field will store the same regular DNS name after it is successfully resolved. When the spec.name field contains a wildcard DNS name, each resolvedName.dnsName will store the regular DNS names which match the wildcard DNS name and have been successfully resolved. If the wildcard DNS name can also be successfully resolved, then this field will store the wildcard DNS name as well.
+     */
     @JsonProperty("dnsName")
     public void setDnsName(String dnsName) {
         this.dnsName = dnsName;
     }
 
+    /**
+     * resolutionFailures keeps the count of how many consecutive times the DNS resolution failed for the dnsName. If the DNS resolution succeeds then the field will be set to zero. Upon every failure, the value of the field will be incremented by one. The details about the DNS name will be removed, if the value of resolutionFailures reaches 5 and the TTL of all the associated IP addresses have expired.
+     */
     @JsonProperty("resolutionFailures")
     public Integer getResolutionFailures() {
         return resolutionFailures;
     }
 
+    /**
+     * resolutionFailures keeps the count of how many consecutive times the DNS resolution failed for the dnsName. If the DNS resolution succeeds then the field will be set to zero. Upon every failure, the value of the field will be incremented by one. The details about the DNS name will be removed, if the value of resolutionFailures reaches 5 and the TTL of all the associated IP addresses have expired.
+     */
     @JsonProperty("resolutionFailures")
     public void setResolutionFailures(Integer resolutionFailures) {
         this.resolutionFailures = resolutionFailures;
     }
 
+    /**
+     * resolvedAddresses gives the list of associated IP addresses and their corresponding TTLs and last lookup times for the dnsName.
+     */
     @JsonProperty("resolvedAddresses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<DNSNameResolverResolvedAddress> getResolvedAddresses() {
         return resolvedAddresses;
     }
 
+    /**
+     * resolvedAddresses gives the list of associated IP addresses and their corresponding TTLs and last lookup times for the dnsName.
+     */
     @JsonProperty("resolvedAddresses")
     public void setResolvedAddresses(List<DNSNameResolverResolvedAddress> resolvedAddresses) {
         this.resolvedAddresses = resolvedAddresses;

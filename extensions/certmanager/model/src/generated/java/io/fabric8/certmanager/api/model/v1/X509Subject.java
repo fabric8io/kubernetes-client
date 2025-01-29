@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * X509Subject Full X509 name specification
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -115,88 +118,136 @@ public class X509Subject implements Editable<X509SubjectBuilder>, KubernetesReso
         this.streetAddresses = streetAddresses;
     }
 
+    /**
+     * Countries to be used on the Certificate.
+     */
     @JsonProperty("countries")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getCountries() {
         return countries;
     }
 
+    /**
+     * Countries to be used on the Certificate.
+     */
     @JsonProperty("countries")
     public void setCountries(List<String> countries) {
         this.countries = countries;
     }
 
+    /**
+     * Cities to be used on the Certificate.
+     */
     @JsonProperty("localities")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getLocalities() {
         return localities;
     }
 
+    /**
+     * Cities to be used on the Certificate.
+     */
     @JsonProperty("localities")
     public void setLocalities(List<String> localities) {
         this.localities = localities;
     }
 
+    /**
+     * Organizational Units to be used on the Certificate.
+     */
     @JsonProperty("organizationalUnits")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getOrganizationalUnits() {
         return organizationalUnits;
     }
 
+    /**
+     * Organizational Units to be used on the Certificate.
+     */
     @JsonProperty("organizationalUnits")
     public void setOrganizationalUnits(List<String> organizationalUnits) {
         this.organizationalUnits = organizationalUnits;
     }
 
+    /**
+     * Organizations to be used on the Certificate.
+     */
     @JsonProperty("organizations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getOrganizations() {
         return organizations;
     }
 
+    /**
+     * Organizations to be used on the Certificate.
+     */
     @JsonProperty("organizations")
     public void setOrganizations(List<String> organizations) {
         this.organizations = organizations;
     }
 
+    /**
+     * Postal codes to be used on the Certificate.
+     */
     @JsonProperty("postalCodes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getPostalCodes() {
         return postalCodes;
     }
 
+    /**
+     * Postal codes to be used on the Certificate.
+     */
     @JsonProperty("postalCodes")
     public void setPostalCodes(List<String> postalCodes) {
         this.postalCodes = postalCodes;
     }
 
+    /**
+     * State/Provinces to be used on the Certificate.
+     */
     @JsonProperty("provinces")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getProvinces() {
         return provinces;
     }
 
+    /**
+     * State/Provinces to be used on the Certificate.
+     */
     @JsonProperty("provinces")
     public void setProvinces(List<String> provinces) {
         this.provinces = provinces;
     }
 
+    /**
+     * Serial number to be used on the Certificate.
+     */
     @JsonProperty("serialNumber")
     public String getSerialNumber() {
         return serialNumber;
     }
 
+    /**
+     * Serial number to be used on the Certificate.
+     */
     @JsonProperty("serialNumber")
     public void setSerialNumber(String serialNumber) {
         this.serialNumber = serialNumber;
     }
 
+    /**
+     * Street addresses to be used on the Certificate.
+     */
     @JsonProperty("streetAddresses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getStreetAddresses() {
         return streetAddresses;
     }
 
+    /**
+     * Street addresses to be used on the Certificate.
+     */
     @JsonProperty("streetAddresses")
     public void setStreetAddresses(List<String> streetAddresses) {
         this.streetAddresses = streetAddresses;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PagerDutyImageConfig attaches images to an incident
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class PagerDutyImageConfig implements Editable<PagerDutyImageConfigBuilde
         this.src = src;
     }
 
+    /**
+     * Alt is the optional alternative text for the image.
+     */
     @JsonProperty("alt")
     public String getAlt() {
         return alt;
     }
 
+    /**
+     * Alt is the optional alternative text for the image.
+     */
     @JsonProperty("alt")
     public void setAlt(String alt) {
         this.alt = alt;
     }
 
+    /**
+     * Optional URL; makes the image a clickable link.
+     */
     @JsonProperty("href")
     public String getHref() {
         return href;
     }
 
+    /**
+     * Optional URL; makes the image a clickable link.
+     */
     @JsonProperty("href")
     public void setHref(String href) {
         this.href = href;
     }
 
+    /**
+     * Src of the image being attached to the incident
+     */
     @JsonProperty("src")
     public String getSrc() {
         return src;
     }
 
+    /**
+     * Src of the image being attached to the incident
+     */
     @JsonProperty("src")
     public void setSrc(String src) {
         this.src = src;

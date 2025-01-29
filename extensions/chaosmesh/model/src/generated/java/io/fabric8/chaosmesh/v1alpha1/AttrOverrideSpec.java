@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AttrOverrideSpec represents an override of attribution
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -122,121 +125,193 @@ public class AttrOverrideSpec implements Editable<AttrOverrideSpecBuilder>, Kube
         this.uid = uid;
     }
 
+    /**
+     * AttrOverrideSpec represents an override of attribution
+     */
     @JsonProperty("atime")
     public Timespec getAtime() {
         return atime;
     }
 
+    /**
+     * AttrOverrideSpec represents an override of attribution
+     */
     @JsonProperty("atime")
     public void setAtime(Timespec atime) {
         this.atime = atime;
     }
 
+    /**
+     * AttrOverrideSpec represents an override of attribution
+     */
     @JsonProperty("blocks")
     public Long getBlocks() {
         return blocks;
     }
 
+    /**
+     * AttrOverrideSpec represents an override of attribution
+     */
     @JsonProperty("blocks")
     public void setBlocks(Long blocks) {
         this.blocks = blocks;
     }
 
+    /**
+     * AttrOverrideSpec represents an override of attribution
+     */
     @JsonProperty("ctime")
     public Timespec getCtime() {
         return ctime;
     }
 
+    /**
+     * AttrOverrideSpec represents an override of attribution
+     */
     @JsonProperty("ctime")
     public void setCtime(Timespec ctime) {
         this.ctime = ctime;
     }
 
+    /**
+     * AttrOverrideSpec represents an override of attribution
+     */
     @JsonProperty("gid")
     public Long getGid() {
         return gid;
     }
 
+    /**
+     * AttrOverrideSpec represents an override of attribution
+     */
     @JsonProperty("gid")
     public void setGid(Long gid) {
         this.gid = gid;
     }
 
+    /**
+     * AttrOverrideSpec represents an override of attribution
+     */
     @JsonProperty("ino")
     public Long getIno() {
         return ino;
     }
 
+    /**
+     * AttrOverrideSpec represents an override of attribution
+     */
     @JsonProperty("ino")
     public void setIno(Long ino) {
         this.ino = ino;
     }
 
+    /**
+     * AttrOverrideSpec represents an override of attribution
+     */
     @JsonProperty("kind")
     public String getKind() {
         return kind;
     }
 
+    /**
+     * AttrOverrideSpec represents an override of attribution
+     */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * AttrOverrideSpec represents an override of attribution
+     */
     @JsonProperty("mtime")
     public Timespec getMtime() {
         return mtime;
     }
 
+    /**
+     * AttrOverrideSpec represents an override of attribution
+     */
     @JsonProperty("mtime")
     public void setMtime(Timespec mtime) {
         this.mtime = mtime;
     }
 
+    /**
+     * AttrOverrideSpec represents an override of attribution
+     */
     @JsonProperty("nlink")
     public Long getNlink() {
         return nlink;
     }
 
+    /**
+     * AttrOverrideSpec represents an override of attribution
+     */
     @JsonProperty("nlink")
     public void setNlink(Long nlink) {
         this.nlink = nlink;
     }
 
+    /**
+     * AttrOverrideSpec represents an override of attribution
+     */
     @JsonProperty("perm")
     public Integer getPerm() {
         return perm;
     }
 
+    /**
+     * AttrOverrideSpec represents an override of attribution
+     */
     @JsonProperty("perm")
     public void setPerm(Integer perm) {
         this.perm = perm;
     }
 
+    /**
+     * AttrOverrideSpec represents an override of attribution
+     */
     @JsonProperty("rdev")
     public Long getRdev() {
         return rdev;
     }
 
+    /**
+     * AttrOverrideSpec represents an override of attribution
+     */
     @JsonProperty("rdev")
     public void setRdev(Long rdev) {
         this.rdev = rdev;
     }
 
+    /**
+     * AttrOverrideSpec represents an override of attribution
+     */
     @JsonProperty("size")
     public Long getSize() {
         return size;
     }
 
+    /**
+     * AttrOverrideSpec represents an override of attribution
+     */
     @JsonProperty("size")
     public void setSize(Long size) {
         this.size = size;
     }
 
+    /**
+     * AttrOverrideSpec represents an override of attribution
+     */
     @JsonProperty("uid")
     public Long getUid() {
         return uid;
     }
 
+    /**
+     * AttrOverrideSpec represents an override of attribution
+     */
     @JsonProperty("uid")
     public void setUid(Long uid) {
         this.uid = uid;

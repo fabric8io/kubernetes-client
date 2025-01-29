@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ConsoleSampleGitImportSource let the user import code from a public Git repository.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class ConsoleSampleGitImportSource implements Editable<ConsoleSampleGitIm
         this.service = service;
     }
 
+    /**
+     * ConsoleSampleGitImportSource let the user import code from a public Git repository.
+     */
     @JsonProperty("repository")
     public ConsoleSampleGitImportSourceRepository getRepository() {
         return repository;
     }
 
+    /**
+     * ConsoleSampleGitImportSource let the user import code from a public Git repository.
+     */
     @JsonProperty("repository")
     public void setRepository(ConsoleSampleGitImportSourceRepository repository) {
         this.repository = repository;
     }
 
+    /**
+     * ConsoleSampleGitImportSource let the user import code from a public Git repository.
+     */
     @JsonProperty("service")
     public ConsoleSampleGitImportSourceService getService() {
         return service;
     }
 
+    /**
+     * ConsoleSampleGitImportSource let the user import code from a public Git repository.
+     */
     @JsonProperty("service")
     public void setService(ConsoleSampleGitImportSourceService service) {
         this.service = service;

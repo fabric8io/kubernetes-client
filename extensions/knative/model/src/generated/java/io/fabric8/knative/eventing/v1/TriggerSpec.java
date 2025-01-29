@@ -104,11 +104,17 @@ public class TriggerSpec implements Editable<TriggerSpecBuilder>, KubernetesReso
         this.subscriber = subscriber;
     }
 
+    /**
+     * Broker is the broker that this trigger receives events from.
+     */
     @JsonProperty("broker")
     public String getBroker() {
         return broker;
     }
 
+    /**
+     * Broker is the broker that this trigger receives events from.
+     */
     @JsonProperty("broker")
     public void setBroker(String broker) {
         this.broker = broker;
@@ -144,12 +150,18 @@ public class TriggerSpec implements Editable<TriggerSpecBuilder>, KubernetesReso
         this.filter = filter;
     }
 
+    /**
+     * Filters is an experimental field that conforms to the CNCF CloudEvents Subscriptions API. It's an array of filter expressions that evaluate to true or false. If any filter expression in the array evaluates to false, the event MUST NOT be sent to the Subscriber. If all the filter expressions in the array evaluate to true, the event MUST be attempted to be delivered. Absence of a filter or empty array implies a value of true. In the event of users specifying both Filter and Filters, then the latter will override the former. This will allow users to try out the effect of the new Filters field without compromising the existing attribute-based Filter and try it out on existing Trigger objects.
+     */
     @JsonProperty("filters")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<SubscriptionsAPIFilter> getFilters() {
         return filters;
     }
 
+    /**
+     * Filters is an experimental field that conforms to the CNCF CloudEvents Subscriptions API. It's an array of filter expressions that evaluate to true or false. If any filter expression in the array evaluates to false, the event MUST NOT be sent to the Subscriber. If all the filter expressions in the array evaluate to true, the event MUST be attempted to be delivered. Absence of a filter or empty array implies a value of true. In the event of users specifying both Filter and Filters, then the latter will override the former. This will allow users to try out the effect of the new Filters field without compromising the existing attribute-based Filter and try it out on existing Trigger objects.
+     */
     @JsonProperty("filters")
     public void setFilters(List<SubscriptionsAPIFilter> filters) {
         this.filters = filters;

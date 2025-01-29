@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DEPRECATED.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class RollbackConfig implements Editable<RollbackConfigBuilder>, Kubernet
         this.revision = revision;
     }
 
+    /**
+     * The revision to rollback to. If set to 0, rollback to the last revision.
+     */
     @JsonProperty("revision")
     public Long getRevision() {
         return revision;
     }
 
+    /**
+     * The revision to rollback to. If set to 0, rollback to the last revision.
+     */
     @JsonProperty("revision")
     public void setRevision(Long revision) {
         this.revision = revision;

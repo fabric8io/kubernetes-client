@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Conditions to match a specific filter within a filter chain.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class EnvoyFilterListenerMatchFilterMatch implements Editable<EnvoyFilter
         this.subFilter = subFilter;
     }
 
+    /**
+     * The filter name to match on. For standard Envoy filters, [canonical filter](https://www.envoyproxy.io/docs/envoy/latest/version_history/v1.14.0#deprecated) names should be used.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * The filter name to match on. For standard Envoy filters, [canonical filter](https://www.envoyproxy.io/docs/envoy/latest/version_history/v1.14.0#deprecated) names should be used.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Conditions to match a specific filter within a filter chain.
+     */
     @JsonProperty("subFilter")
     public EnvoyFilterListenerMatchSubFilterMatch getSubFilter() {
         return subFilter;
     }
 
+    /**
+     * Conditions to match a specific filter within a filter chain.
+     */
     @JsonProperty("subFilter")
     public void setSubFilter(EnvoyFilterListenerMatchSubFilterMatch subFilter) {
         this.subFilter = subFilter;

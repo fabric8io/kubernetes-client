@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ConditionalUpdateRisk represents a reason and cluster-state for not recommending a conditional update.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -93,42 +96,66 @@ public class ConditionalUpdateRisk implements Editable<ConditionalUpdateRiskBuil
         this.url = url;
     }
 
+    /**
+     * matchingRules is a slice of conditions for deciding which clusters match the risk and which do not. The slice is ordered by decreasing precedence. The cluster-version operator will walk the slice in order, and stop after the first it can successfully evaluate. If no condition can be successfully evaluated, the update will not be recommended.
+     */
     @JsonProperty("matchingRules")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ClusterCondition> getMatchingRules() {
         return matchingRules;
     }
 
+    /**
+     * matchingRules is a slice of conditions for deciding which clusters match the risk and which do not. The slice is ordered by decreasing precedence. The cluster-version operator will walk the slice in order, and stop after the first it can successfully evaluate. If no condition can be successfully evaluated, the update will not be recommended.
+     */
     @JsonProperty("matchingRules")
     public void setMatchingRules(List<ClusterCondition> matchingRules) {
         this.matchingRules = matchingRules;
     }
 
+    /**
+     * message provides additional information about the risk of updating, in the event that matchingRules match the cluster state. This is only to be consumed by humans. It may contain Line Feed characters (U+000A), which should be rendered as new lines.
+     */
     @JsonProperty("message")
     public String getMessage() {
         return message;
     }
 
+    /**
+     * message provides additional information about the risk of updating, in the event that matchingRules match the cluster state. This is only to be consumed by humans. It may contain Line Feed characters (U+000A), which should be rendered as new lines.
+     */
     @JsonProperty("message")
     public void setMessage(String message) {
         this.message = message;
     }
 
+    /**
+     * name is the CamelCase reason for not recommending a conditional update, in the event that matchingRules match the cluster state.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * name is the CamelCase reason for not recommending a conditional update, in the event that matchingRules match the cluster state.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * url contains information about this risk.
+     */
     @JsonProperty("url")
     public String getUrl() {
         return url;
     }
 
+    /**
+     * url contains information about this risk.
+     */
     @JsonProperty("url")
     public void setUrl(String url) {
         this.url = url;

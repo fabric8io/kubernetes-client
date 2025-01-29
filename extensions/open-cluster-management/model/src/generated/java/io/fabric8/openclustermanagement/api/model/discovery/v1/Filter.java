@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Filter ...
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class Filter implements Editable<FilterBuilder>, KubernetesResource
         this.openShiftVersions = openShiftVersions;
     }
 
+    /**
+     * LastActive is the last active in days of clusters to discover, determined by activity timestamp
+     */
     @JsonProperty("lastActive")
     public Integer getLastActive() {
         return lastActive;
     }
 
+    /**
+     * LastActive is the last active in days of clusters to discover, determined by activity timestamp
+     */
     @JsonProperty("lastActive")
     public void setLastActive(Integer lastActive) {
         this.lastActive = lastActive;
     }
 
+    /**
+     * OpenShiftVersions is the list of release versions of OpenShift of the form "&lt;Major&gt;.&lt;Minor&gt;"
+     */
     @JsonProperty("openShiftVersions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getOpenShiftVersions() {
         return openShiftVersions;
     }
 
+    /**
+     * OpenShiftVersions is the list of release versions of OpenShift of the form "&lt;Major&gt;.&lt;Minor&gt;"
+     */
     @JsonProperty("openShiftVersions")
     public void setOpenShiftVersions(List<String> openShiftVersions) {
         this.openShiftVersions = openShiftVersions;

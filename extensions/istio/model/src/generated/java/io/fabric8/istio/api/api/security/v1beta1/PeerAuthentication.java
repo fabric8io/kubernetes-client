@@ -38,6 +38,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PeerAuthentication defines mutual TLS (mTLS) requirements for incoming connections.<br><p> <br><p> In sidecar mode, PeerAuthentication determines whether or not mTLS is allowed or required for connections to an Envoy proxy sidecar.<br><p> <br><p> In ambient mode, security is transparently enabled for a pod by the ztunnel node agent. (Traffic between proxies uses the HBONE protocol, which includes encryption with mTLS.) Because of this, `DISABLE` mode is not supported. `STRICT` mode is useful to ensure that connections that bypass the mesh are not possible.<br><p> <br><p> Examples:<br><p> <br><p> Policy to require mTLS traffic for all workloads under namespace `foo`: ```yaml apiVersion: security.istio.io/v1 kind: PeerAuthentication metadata:<br><p> <br><p> 	name: default<br><p> 	namespace: foo<br><p> <br><p> spec:<br><p> <br><p> 	mtls:<br><p> 	  mode: STRICT<br><p> <br><p> ``` For mesh level, put the policy in root-namespace according to your Istio installation.<br><p> <br><p> Policies to allow both mTLS and plaintext traffic for all workloads under namespace `foo`, but require mTLS for workload `finance`. ```yaml apiVersion: security.istio.io/v1 kind: PeerAuthentication metadata:<br><p> <br><p> 	name: default<br><p> 	namespace: foo<br><p> <br><p> spec:<br><p> <br><p> 	mtls:<br><p> 	  mode: PERMISSIVE
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -98,32 +101,50 @@ public class PeerAuthentication implements Editable<PeerAuthenticationBuilder>, 
         this.selector = selector;
     }
 
+    /**
+     * PeerAuthentication defines mutual TLS (mTLS) requirements for incoming connections.<br><p> <br><p> In sidecar mode, PeerAuthentication determines whether or not mTLS is allowed or required for connections to an Envoy proxy sidecar.<br><p> <br><p> In ambient mode, security is transparently enabled for a pod by the ztunnel node agent. (Traffic between proxies uses the HBONE protocol, which includes encryption with mTLS.) Because of this, `DISABLE` mode is not supported. `STRICT` mode is useful to ensure that connections that bypass the mesh are not possible.<br><p> <br><p> Examples:<br><p> <br><p> Policy to require mTLS traffic for all workloads under namespace `foo`: ```yaml apiVersion: security.istio.io/v1 kind: PeerAuthentication metadata:<br><p> <br><p> 	name: default<br><p> 	namespace: foo<br><p> <br><p> spec:<br><p> <br><p> 	mtls:<br><p> 	  mode: STRICT<br><p> <br><p> ``` For mesh level, put the policy in root-namespace according to your Istio installation.<br><p> <br><p> Policies to allow both mTLS and plaintext traffic for all workloads under namespace `foo`, but require mTLS for workload `finance`. ```yaml apiVersion: security.istio.io/v1 kind: PeerAuthentication metadata:<br><p> <br><p> 	name: default<br><p> 	namespace: foo<br><p> <br><p> spec:<br><p> <br><p> 	mtls:<br><p> 	  mode: PERMISSIVE
+     */
     @JsonProperty("mtls")
     public PeerAuthenticationMutualTLS getMtls() {
         return mtls;
     }
 
+    /**
+     * PeerAuthentication defines mutual TLS (mTLS) requirements for incoming connections.<br><p> <br><p> In sidecar mode, PeerAuthentication determines whether or not mTLS is allowed or required for connections to an Envoy proxy sidecar.<br><p> <br><p> In ambient mode, security is transparently enabled for a pod by the ztunnel node agent. (Traffic between proxies uses the HBONE protocol, which includes encryption with mTLS.) Because of this, `DISABLE` mode is not supported. `STRICT` mode is useful to ensure that connections that bypass the mesh are not possible.<br><p> <br><p> Examples:<br><p> <br><p> Policy to require mTLS traffic for all workloads under namespace `foo`: ```yaml apiVersion: security.istio.io/v1 kind: PeerAuthentication metadata:<br><p> <br><p> 	name: default<br><p> 	namespace: foo<br><p> <br><p> spec:<br><p> <br><p> 	mtls:<br><p> 	  mode: STRICT<br><p> <br><p> ``` For mesh level, put the policy in root-namespace according to your Istio installation.<br><p> <br><p> Policies to allow both mTLS and plaintext traffic for all workloads under namespace `foo`, but require mTLS for workload `finance`. ```yaml apiVersion: security.istio.io/v1 kind: PeerAuthentication metadata:<br><p> <br><p> 	name: default<br><p> 	namespace: foo<br><p> <br><p> spec:<br><p> <br><p> 	mtls:<br><p> 	  mode: PERMISSIVE
+     */
     @JsonProperty("mtls")
     public void setMtls(PeerAuthenticationMutualTLS mtls) {
         this.mtls = mtls;
     }
 
+    /**
+     * Port specific mutual TLS settings. These only apply when a workload selector is specified. The port refers to the port of the workload, not the port of the Kubernetes service.
+     */
     @JsonProperty("portLevelMtls")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, PeerAuthenticationMutualTLS> getPortLevelMtls() {
         return portLevelMtls;
     }
 
+    /**
+     * Port specific mutual TLS settings. These only apply when a workload selector is specified. The port refers to the port of the workload, not the port of the Kubernetes service.
+     */
     @JsonProperty("portLevelMtls")
     public void setPortLevelMtls(Map<String, PeerAuthenticationMutualTLS> portLevelMtls) {
         this.portLevelMtls = portLevelMtls;
     }
 
+    /**
+     * PeerAuthentication defines mutual TLS (mTLS) requirements for incoming connections.<br><p> <br><p> In sidecar mode, PeerAuthentication determines whether or not mTLS is allowed or required for connections to an Envoy proxy sidecar.<br><p> <br><p> In ambient mode, security is transparently enabled for a pod by the ztunnel node agent. (Traffic between proxies uses the HBONE protocol, which includes encryption with mTLS.) Because of this, `DISABLE` mode is not supported. `STRICT` mode is useful to ensure that connections that bypass the mesh are not possible.<br><p> <br><p> Examples:<br><p> <br><p> Policy to require mTLS traffic for all workloads under namespace `foo`: ```yaml apiVersion: security.istio.io/v1 kind: PeerAuthentication metadata:<br><p> <br><p> 	name: default<br><p> 	namespace: foo<br><p> <br><p> spec:<br><p> <br><p> 	mtls:<br><p> 	  mode: STRICT<br><p> <br><p> ``` For mesh level, put the policy in root-namespace according to your Istio installation.<br><p> <br><p> Policies to allow both mTLS and plaintext traffic for all workloads under namespace `foo`, but require mTLS for workload `finance`. ```yaml apiVersion: security.istio.io/v1 kind: PeerAuthentication metadata:<br><p> <br><p> 	name: default<br><p> 	namespace: foo<br><p> <br><p> spec:<br><p> <br><p> 	mtls:<br><p> 	  mode: PERMISSIVE
+     */
     @JsonProperty("selector")
     public WorkloadSelector getSelector() {
         return selector;
     }
 
+    /**
+     * PeerAuthentication defines mutual TLS (mTLS) requirements for incoming connections.<br><p> <br><p> In sidecar mode, PeerAuthentication determines whether or not mTLS is allowed or required for connections to an Envoy proxy sidecar.<br><p> <br><p> In ambient mode, security is transparently enabled for a pod by the ztunnel node agent. (Traffic between proxies uses the HBONE protocol, which includes encryption with mTLS.) Because of this, `DISABLE` mode is not supported. `STRICT` mode is useful to ensure that connections that bypass the mesh are not possible.<br><p> <br><p> Examples:<br><p> <br><p> Policy to require mTLS traffic for all workloads under namespace `foo`: ```yaml apiVersion: security.istio.io/v1 kind: PeerAuthentication metadata:<br><p> <br><p> 	name: default<br><p> 	namespace: foo<br><p> <br><p> spec:<br><p> <br><p> 	mtls:<br><p> 	  mode: STRICT<br><p> <br><p> ``` For mesh level, put the policy in root-namespace according to your Istio installation.<br><p> <br><p> Policies to allow both mTLS and plaintext traffic for all workloads under namespace `foo`, but require mTLS for workload `finance`. ```yaml apiVersion: security.istio.io/v1 kind: PeerAuthentication metadata:<br><p> <br><p> 	name: default<br><p> 	namespace: foo<br><p> <br><p> spec:<br><p> <br><p> 	mtls:<br><p> 	  mode: PERMISSIVE
+     */
     @JsonProperty("selector")
     public void setSelector(WorkloadSelector selector) {
         this.selector = selector;

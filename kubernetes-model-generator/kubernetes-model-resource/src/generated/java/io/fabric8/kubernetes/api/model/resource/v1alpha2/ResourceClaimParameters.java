@@ -39,6 +39,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ResourceClaimParameters defines resource requests for a ResourceClaim in an in-tree format understood by Kubernetes.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -79,9 +82,6 @@ import lombok.experimental.Accessors;
 public class ResourceClaimParameters implements Editable<ResourceClaimParametersBuilder>, HasMetadata, Namespaced
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "resource.k8s.io/v1alpha2";
     @JsonProperty("driverRequests")
@@ -89,9 +89,6 @@ public class ResourceClaimParameters implements Editable<ResourceClaimParameters
     private List<DriverRequests> driverRequests = new ArrayList<>();
     @JsonProperty("generatedFrom")
     private ResourceClaimParametersReference generatedFrom;
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "ResourceClaimParameters";
     @JsonProperty("metadata")
@@ -118,7 +115,7 @@ public class ResourceClaimParameters implements Editable<ResourceClaimParameters
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -126,36 +123,48 @@ public class ResourceClaimParameters implements Editable<ResourceClaimParameters
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
+    /**
+     * DriverRequests describes all resources that are needed for the allocated claim. A single claim may use resources coming from different drivers. For each driver, this array has at most one entry which then may have one or more per-driver requests.<br><p> <br><p> May be empty, in which case the claim can always be allocated.
+     */
     @JsonProperty("driverRequests")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<DriverRequests> getDriverRequests() {
         return driverRequests;
     }
 
+    /**
+     * DriverRequests describes all resources that are needed for the allocated claim. A single claim may use resources coming from different drivers. For each driver, this array has at most one entry which then may have one or more per-driver requests.<br><p> <br><p> May be empty, in which case the claim can always be allocated.
+     */
     @JsonProperty("driverRequests")
     public void setDriverRequests(List<DriverRequests> driverRequests) {
         this.driverRequests = driverRequests;
     }
 
+    /**
+     * ResourceClaimParameters defines resource requests for a ResourceClaim in an in-tree format understood by Kubernetes.
+     */
     @JsonProperty("generatedFrom")
     public ResourceClaimParametersReference getGeneratedFrom() {
         return generatedFrom;
     }
 
+    /**
+     * ResourceClaimParameters defines resource requests for a ResourceClaim in an in-tree format understood by Kubernetes.
+     */
     @JsonProperty("generatedFrom")
     public void setGeneratedFrom(ResourceClaimParametersReference generatedFrom) {
         this.generatedFrom = generatedFrom;
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -163,28 +172,40 @@ public class ResourceClaimParameters implements Editable<ResourceClaimParameters
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * ResourceClaimParameters defines resource requests for a ResourceClaim in an in-tree format understood by Kubernetes.
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * ResourceClaimParameters defines resource requests for a ResourceClaim in an in-tree format understood by Kubernetes.
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * Shareable indicates whether the allocated claim is meant to be shareable by multiple consumers at the same time.
+     */
     @JsonProperty("shareable")
     public Boolean getShareable() {
         return shareable;
     }
 
+    /**
+     * Shareable indicates whether the allocated claim is meant to be shareable by multiple consumers at the same time.
+     */
     @JsonProperty("shareable")
     public void setShareable(Boolean shareable) {
         this.shareable = shareable;

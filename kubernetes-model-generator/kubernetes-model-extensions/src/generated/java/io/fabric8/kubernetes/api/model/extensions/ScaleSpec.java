@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * describes the attributes of a scale subresource
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class ScaleSpec implements Editable<ScaleSpecBuilder>, KubernetesResource
         this.replicas = replicas;
     }
 
+    /**
+     * desired number of instances for the scaled object.
+     */
     @JsonProperty("replicas")
     public Integer getReplicas() {
         return replicas;
     }
 
+    /**
+     * desired number of instances for the scaled object.
+     */
     @JsonProperty("replicas")
     public void setReplicas(Integer replicas) {
         this.replicas = replicas;

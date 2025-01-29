@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AllocationResult contains attributes of an allocated resource.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -83,21 +86,33 @@ public class AllocationResult implements Editable<AllocationResultBuilder>, Kube
         this.nodeSelector = nodeSelector;
     }
 
+    /**
+     * AllocationResult contains attributes of an allocated resource.
+     */
     @JsonProperty("devices")
     public DeviceAllocationResult getDevices() {
         return devices;
     }
 
+    /**
+     * AllocationResult contains attributes of an allocated resource.
+     */
     @JsonProperty("devices")
     public void setDevices(DeviceAllocationResult devices) {
         this.devices = devices;
     }
 
+    /**
+     * AllocationResult contains attributes of an allocated resource.
+     */
     @JsonProperty("nodeSelector")
     public NodeSelector getNodeSelector() {
         return nodeSelector;
     }
 
+    /**
+     * AllocationResult contains attributes of an allocated resource.
+     */
     @JsonProperty("nodeSelector")
     public void setNodeSelector(NodeSelector nodeSelector) {
         this.nodeSelector = nodeSelector;

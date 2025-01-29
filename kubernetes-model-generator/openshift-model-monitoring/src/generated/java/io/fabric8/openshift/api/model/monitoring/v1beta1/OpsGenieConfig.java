@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * OpsGenieConfig configures notifications via OpsGenie. See https://prometheus.io/docs/alerting/latest/configuration/#opsgenie_config
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -134,143 +137,227 @@ public class OpsGenieConfig implements Editable<OpsGenieConfigBuilder>, Kubernet
         this.tags = tags;
     }
 
+    /**
+     * Comma separated list of actions that will be available for the alert.
+     */
     @JsonProperty("actions")
     public String getActions() {
         return actions;
     }
 
+    /**
+     * Comma separated list of actions that will be available for the alert.
+     */
     @JsonProperty("actions")
     public void setActions(String actions) {
         this.actions = actions;
     }
 
+    /**
+     * OpsGenieConfig configures notifications via OpsGenie. See https://prometheus.io/docs/alerting/latest/configuration/#opsgenie_config
+     */
     @JsonProperty("apiKey")
     public SecretKeySelector getApiKey() {
         return apiKey;
     }
 
+    /**
+     * OpsGenieConfig configures notifications via OpsGenie. See https://prometheus.io/docs/alerting/latest/configuration/#opsgenie_config
+     */
     @JsonProperty("apiKey")
     public void setApiKey(SecretKeySelector apiKey) {
         this.apiKey = apiKey;
     }
 
+    /**
+     * The URL to send OpsGenie API requests to.
+     */
     @JsonProperty("apiURL")
     public String getApiURL() {
         return apiURL;
     }
 
+    /**
+     * The URL to send OpsGenie API requests to.
+     */
     @JsonProperty("apiURL")
     public void setApiURL(String apiURL) {
         this.apiURL = apiURL;
     }
 
+    /**
+     * Description of the incident.
+     */
     @JsonProperty("description")
     public String getDescription() {
         return description;
     }
 
+    /**
+     * Description of the incident.
+     */
     @JsonProperty("description")
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * A set of arbitrary key/value pairs that provide further detail about the incident.
+     */
     @JsonProperty("details")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<KeyValue> getDetails() {
         return details;
     }
 
+    /**
+     * A set of arbitrary key/value pairs that provide further detail about the incident.
+     */
     @JsonProperty("details")
     public void setDetails(List<KeyValue> details) {
         this.details = details;
     }
 
+    /**
+     * Optional field that can be used to specify which domain alert is related to.
+     */
     @JsonProperty("entity")
     public String getEntity() {
         return entity;
     }
 
+    /**
+     * Optional field that can be used to specify which domain alert is related to.
+     */
     @JsonProperty("entity")
     public void setEntity(String entity) {
         this.entity = entity;
     }
 
+    /**
+     * OpsGenieConfig configures notifications via OpsGenie. See https://prometheus.io/docs/alerting/latest/configuration/#opsgenie_config
+     */
     @JsonProperty("httpConfig")
     public HTTPConfig getHttpConfig() {
         return httpConfig;
     }
 
+    /**
+     * OpsGenieConfig configures notifications via OpsGenie. See https://prometheus.io/docs/alerting/latest/configuration/#opsgenie_config
+     */
     @JsonProperty("httpConfig")
     public void setHttpConfig(HTTPConfig httpConfig) {
         this.httpConfig = httpConfig;
     }
 
+    /**
+     * Alert text limited to 130 characters.
+     */
     @JsonProperty("message")
     public String getMessage() {
         return message;
     }
 
+    /**
+     * Alert text limited to 130 characters.
+     */
     @JsonProperty("message")
     public void setMessage(String message) {
         this.message = message;
     }
 
+    /**
+     * Additional alert note.
+     */
     @JsonProperty("note")
     public String getNote() {
         return note;
     }
 
+    /**
+     * Additional alert note.
+     */
     @JsonProperty("note")
     public void setNote(String note) {
         this.note = note;
     }
 
+    /**
+     * Priority level of alert. Possible values are P1, P2, P3, P4, and P5.
+     */
     @JsonProperty("priority")
     public String getPriority() {
         return priority;
     }
 
+    /**
+     * Priority level of alert. Possible values are P1, P2, P3, P4, and P5.
+     */
     @JsonProperty("priority")
     public void setPriority(String priority) {
         this.priority = priority;
     }
 
+    /**
+     * List of responders responsible for notifications.
+     */
     @JsonProperty("responders")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<OpsGenieConfigResponder> getResponders() {
         return responders;
     }
 
+    /**
+     * List of responders responsible for notifications.
+     */
     @JsonProperty("responders")
     public void setResponders(List<OpsGenieConfigResponder> responders) {
         this.responders = responders;
     }
 
+    /**
+     * Whether or not to notify about resolved alerts.
+     */
     @JsonProperty("sendResolved")
     public Boolean getSendResolved() {
         return sendResolved;
     }
 
+    /**
+     * Whether or not to notify about resolved alerts.
+     */
     @JsonProperty("sendResolved")
     public void setSendResolved(Boolean sendResolved) {
         this.sendResolved = sendResolved;
     }
 
+    /**
+     * Backlink to the sender of the notification.
+     */
     @JsonProperty("source")
     public String getSource() {
         return source;
     }
 
+    /**
+     * Backlink to the sender of the notification.
+     */
     @JsonProperty("source")
     public void setSource(String source) {
         this.source = source;
     }
 
+    /**
+     * Comma separated list of tags attached to the notifications.
+     */
     @JsonProperty("tags")
     public String getTags() {
         return tags;
     }
 
+    /**
+     * Comma separated list of tags attached to the notifications.
+     */
     @JsonProperty("tags")
     public void setTags(String tags) {
         this.tags = tags;

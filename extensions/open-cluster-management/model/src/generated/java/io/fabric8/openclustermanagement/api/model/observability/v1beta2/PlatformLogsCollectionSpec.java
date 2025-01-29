@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PlatformLogsCollectionSpec defines the spec for the addon to collect and forward logs from fleet managed clusters using the ClusterLogForwarder custom resource.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class PlatformLogsCollectionSpec implements Editable<PlatformLogsCollecti
         this.enabled = enabled;
     }
 
+    /**
+     * Enabled defines a flag to enable/disable the platform log collection.
+     */
     @JsonProperty("enabled")
     public Boolean getEnabled() {
         return enabled;
     }
 
+    /**
+     * Enabled defines a flag to enable/disable the platform log collection.
+     */
     @JsonProperty("enabled")
     public void setEnabled(Boolean enabled) {
         this.enabled = enabled;

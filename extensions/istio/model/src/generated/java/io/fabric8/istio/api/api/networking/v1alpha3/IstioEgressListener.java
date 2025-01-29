@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * `IstioEgressListener` specifies the properties of an outbound traffic listener on the sidecar proxy attached to a workload instance.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -93,42 +96,66 @@ public class IstioEgressListener implements Editable<IstioEgressListenerBuilder>
         this.port = port;
     }
 
+    /**
+     * The IP(IPv4 or IPv6) or the Unix domain socket to which the listener should be bound to. Port MUST be specified if bind is not empty. Format: IPv4 or IPv6 address formats or `unix:///path/to/uds` or `unix://@foobar` (Linux abstract namespace). If omitted, Istio will automatically configure the defaults based on imported services, the workload instances to which this configuration is applied to and the captureMode. If captureMode is `NONE`, bind will default to 127.0.0.1.
+     */
     @JsonProperty("bind")
     public String getBind() {
         return bind;
     }
 
+    /**
+     * The IP(IPv4 or IPv6) or the Unix domain socket to which the listener should be bound to. Port MUST be specified if bind is not empty. Format: IPv4 or IPv6 address formats or `unix:///path/to/uds` or `unix://@foobar` (Linux abstract namespace). If omitted, Istio will automatically configure the defaults based on imported services, the workload instances to which this configuration is applied to and the captureMode. If captureMode is `NONE`, bind will default to 127.0.0.1.
+     */
     @JsonProperty("bind")
     public void setBind(String bind) {
         this.bind = bind;
     }
 
+    /**
+     * `IstioEgressListener` specifies the properties of an outbound traffic listener on the sidecar proxy attached to a workload instance.
+     */
     @JsonProperty("captureMode")
     public CaptureMode getCaptureMode() {
         return captureMode;
     }
 
+    /**
+     * `IstioEgressListener` specifies the properties of an outbound traffic listener on the sidecar proxy attached to a workload instance.
+     */
     @JsonProperty("captureMode")
     public void setCaptureMode(CaptureMode captureMode) {
         this.captureMode = captureMode;
     }
 
+    /**
+     * One or more service hosts exposed by the listener in `namespace/dnsName` format. Services in the specified namespace matching `dnsName` will be exposed. The corresponding service can be a service in the service registry (e.g., a Kubernetes or cloud foundry service) or a service specified using a `ServiceEntry` or `VirtualService` configuration. Any associated `DestinationRule` in the same namespace will also be used.<br><p> <br><p> The `dnsName` should be specified using FQDN format, optionally including a wildcard character in the left-most component (e.g., `prod/&#42;.example.com`). Set the `dnsName` to `&#42;` to select all services from the specified namespace (e.g., `prod/&#42;`).<br><p> <br><p> The `namespace` can be set to `&#42;`, `.`, or `~`, representing any, the current, or no namespace, respectively. For example, `&#42;/foo.example.com` selects the service from any available namespace while `./foo.example.com` only selects the service from the namespace of the sidecar. If a host is set to `&#42;/&#42;`, Istio will configure the sidecar to be able to reach every service in the mesh that is exported to the sidecar's namespace. The value `~/&#42;` can be used to completely trim the configuration for sidecars that simply receive traffic and respond, but make no outbound connections of their own.<br><p> <br><p> NOTE: Only services and configuration artifacts exported to the sidecar's namespace (e.g., `exportTo` value of `&#42;`) can be referenced. Private configurations (e.g., `exportTo` set to `.`) will not be available. Refer to the `exportTo` setting in `VirtualService`, `DestinationRule`, and `ServiceEntry` configurations for details.
+     */
     @JsonProperty("hosts")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getHosts() {
         return hosts;
     }
 
+    /**
+     * One or more service hosts exposed by the listener in `namespace/dnsName` format. Services in the specified namespace matching `dnsName` will be exposed. The corresponding service can be a service in the service registry (e.g., a Kubernetes or cloud foundry service) or a service specified using a `ServiceEntry` or `VirtualService` configuration. Any associated `DestinationRule` in the same namespace will also be used.<br><p> <br><p> The `dnsName` should be specified using FQDN format, optionally including a wildcard character in the left-most component (e.g., `prod/&#42;.example.com`). Set the `dnsName` to `&#42;` to select all services from the specified namespace (e.g., `prod/&#42;`).<br><p> <br><p> The `namespace` can be set to `&#42;`, `.`, or `~`, representing any, the current, or no namespace, respectively. For example, `&#42;/foo.example.com` selects the service from any available namespace while `./foo.example.com` only selects the service from the namespace of the sidecar. If a host is set to `&#42;/&#42;`, Istio will configure the sidecar to be able to reach every service in the mesh that is exported to the sidecar's namespace. The value `~/&#42;` can be used to completely trim the configuration for sidecars that simply receive traffic and respond, but make no outbound connections of their own.<br><p> <br><p> NOTE: Only services and configuration artifacts exported to the sidecar's namespace (e.g., `exportTo` value of `&#42;`) can be referenced. Private configurations (e.g., `exportTo` set to `.`) will not be available. Refer to the `exportTo` setting in `VirtualService`, `DestinationRule`, and `ServiceEntry` configurations for details.
+     */
     @JsonProperty("hosts")
     public void setHosts(List<String> hosts) {
         this.hosts = hosts;
     }
 
+    /**
+     * `IstioEgressListener` specifies the properties of an outbound traffic listener on the sidecar proxy attached to a workload instance.
+     */
     @JsonProperty("port")
     public SidecarPort getPort() {
         return port;
     }
 
+    /**
+     * `IstioEgressListener` specifies the properties of an outbound traffic listener on the sidecar proxy attached to a workload instance.
+     */
     @JsonProperty("port")
     public void setPort(SidecarPort port) {
         this.port = port;

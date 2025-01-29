@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * GCPDisk describes disks for GCP.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -103,72 +106,114 @@ public class GCPDisk implements Editable<GCPDiskBuilder>, KubernetesResource
         this.type = type;
     }
 
+    /**
+     * AutoDelete indicates if the disk will be auto-deleted when the instance is deleted (default false).
+     */
     @JsonProperty("autoDelete")
     public Boolean getAutoDelete() {
         return autoDelete;
     }
 
+    /**
+     * AutoDelete indicates if the disk will be auto-deleted when the instance is deleted (default false).
+     */
     @JsonProperty("autoDelete")
     public void setAutoDelete(Boolean autoDelete) {
         this.autoDelete = autoDelete;
     }
 
+    /**
+     * Boot indicates if this is a boot disk (default false).
+     */
     @JsonProperty("boot")
     public Boolean getBoot() {
         return boot;
     }
 
+    /**
+     * Boot indicates if this is a boot disk (default false).
+     */
     @JsonProperty("boot")
     public void setBoot(Boolean boot) {
         this.boot = boot;
     }
 
+    /**
+     * GCPDisk describes disks for GCP.
+     */
     @JsonProperty("encryptionKey")
     public GCPEncryptionKeyReference getEncryptionKey() {
         return encryptionKey;
     }
 
+    /**
+     * GCPDisk describes disks for GCP.
+     */
     @JsonProperty("encryptionKey")
     public void setEncryptionKey(GCPEncryptionKeyReference encryptionKey) {
         this.encryptionKey = encryptionKey;
     }
 
+    /**
+     * Image is the source image to create this disk.
+     */
     @JsonProperty("image")
     public String getImage() {
         return image;
     }
 
+    /**
+     * Image is the source image to create this disk.
+     */
     @JsonProperty("image")
     public void setImage(String image) {
         this.image = image;
     }
 
+    /**
+     * Labels list of labels to apply to the disk.
+     */
     @JsonProperty("labels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getLabels() {
         return labels;
     }
 
+    /**
+     * Labels list of labels to apply to the disk.
+     */
     @JsonProperty("labels")
     public void setLabels(Map<String, String> labels) {
         this.labels = labels;
     }
 
+    /**
+     * SizeGB is the size of the disk (in GB).
+     */
     @JsonProperty("sizeGb")
     public Long getSizeGb() {
         return sizeGb;
     }
 
+    /**
+     * SizeGB is the size of the disk (in GB).
+     */
     @JsonProperty("sizeGb")
     public void setSizeGb(Long sizeGb) {
         this.sizeGb = sizeGb;
     }
 
+    /**
+     * Type is the type of the disk (eg: pd-standard).
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * Type is the type of the disk (eg: pd-standard).
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

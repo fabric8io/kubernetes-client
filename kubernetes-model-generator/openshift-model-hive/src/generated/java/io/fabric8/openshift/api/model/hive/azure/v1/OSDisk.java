@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * OSDisk defines the disk for machines on Azure.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class OSDisk implements Editable<OSDiskBuilder>, KubernetesResource
         this.diskType = diskType;
     }
 
+    /**
+     * OSDisk defines the disk for machines on Azure.
+     */
     @JsonProperty("diskEncryptionSet")
     public DiskEncryptionSet getDiskEncryptionSet() {
         return diskEncryptionSet;
     }
 
+    /**
+     * OSDisk defines the disk for machines on Azure.
+     */
     @JsonProperty("diskEncryptionSet")
     public void setDiskEncryptionSet(DiskEncryptionSet diskEncryptionSet) {
         this.diskEncryptionSet = diskEncryptionSet;
     }
 
+    /**
+     * DiskSizeGB defines the size of disk in GB.
+     */
     @JsonProperty("diskSizeGB")
     public Integer getDiskSizeGB() {
         return diskSizeGB;
     }
 
+    /**
+     * DiskSizeGB defines the size of disk in GB.
+     */
     @JsonProperty("diskSizeGB")
     public void setDiskSizeGB(Integer diskSizeGB) {
         this.diskSizeGB = diskSizeGB;
     }
 
+    /**
+     * DiskType defines the type of disk. For control plane nodes, the valid values are Premium_LRS and StandardSSD_LRS. Default is Premium_LRS.
+     */
     @JsonProperty("diskType")
     public String getDiskType() {
         return diskType;
     }
 
+    /**
+     * DiskType defines the type of disk. For control plane nodes, the valid values are Premium_LRS and StandardSSD_LRS. Default is Premium_LRS.
+     */
     @JsonProperty("diskType")
     public void setDiskType(String diskType) {
         this.diskType = diskType;

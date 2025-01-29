@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ImageLayerData contains metadata about an image layer.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class ImageLayerData implements Editable<ImageLayerDataBuilder>, Kubernet
         this.size = size;
     }
 
+    /**
+     * MediaType of the referenced object.
+     */
     @JsonProperty("mediaType")
     public String getMediaType() {
         return mediaType;
     }
 
+    /**
+     * MediaType of the referenced object.
+     */
     @JsonProperty("mediaType")
     public void setMediaType(String mediaType) {
         this.mediaType = mediaType;
     }
 
+    /**
+     * Size of the layer in bytes as defined by the underlying store. This field is optional if the necessary information about size is not available.
+     */
     @JsonProperty("size")
     public Long getSize() {
         return size;
     }
 
+    /**
+     * Size of the layer in bytes as defined by the underlying store. This field is optional if the necessary information about size is not available.
+     */
     @JsonProperty("size")
     public void setSize(Long size) {
         this.size = size;

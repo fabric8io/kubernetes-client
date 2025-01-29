@@ -36,6 +36,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ManagedCluster represents the desired state and current status of a managed cluster. ManagedCluster is a cluster-scoped resource. The name is the cluster UID.<br><p> <br><p> The cluster join process is a double opt-in process. See the following join process steps:<br><p> <br><p> 1. The agent on the managed cluster creates a CSR on the hub with the cluster UID and agent name. 2. The agent on the managed cluster creates a ManagedCluster on the hub. 3. The cluster admin on the hub cluster approves the CSR for the UID and agent name of the ManagedCluster. 4. The cluster admin sets the spec.acceptClient of the ManagedCluster to true. 5. The cluster admin on the managed cluster creates a credential of the kubeconfig for the hub cluster.<br><p> <br><p> After the hub cluster creates the cluster namespace, the klusterlet agent on the ManagedCluster pushes the credential to the hub cluster to use against the kube-apiserver of the ManagedCluster.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -75,14 +78,8 @@ import lombok.experimental.Accessors;
 public class ManagedCluster implements Editable<ManagedClusterBuilder>, HasMetadata
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "cluster.open-cluster-management.io/v1";
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "ManagedCluster";
     @JsonProperty("metadata")
@@ -110,7 +107,7 @@ public class ManagedCluster implements Editable<ManagedClusterBuilder>, HasMetad
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -118,7 +115,7 @@ public class ManagedCluster implements Editable<ManagedClusterBuilder>, HasMetad
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -126,7 +123,7 @@ public class ManagedCluster implements Editable<ManagedClusterBuilder>, HasMetad
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -134,38 +131,56 @@ public class ManagedCluster implements Editable<ManagedClusterBuilder>, HasMetad
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * ManagedCluster represents the desired state and current status of a managed cluster. ManagedCluster is a cluster-scoped resource. The name is the cluster UID.<br><p> <br><p> The cluster join process is a double opt-in process. See the following join process steps:<br><p> <br><p> 1. The agent on the managed cluster creates a CSR on the hub with the cluster UID and agent name. 2. The agent on the managed cluster creates a ManagedCluster on the hub. 3. The cluster admin on the hub cluster approves the CSR for the UID and agent name of the ManagedCluster. 4. The cluster admin sets the spec.acceptClient of the ManagedCluster to true. 5. The cluster admin on the managed cluster creates a credential of the kubeconfig for the hub cluster.<br><p> <br><p> After the hub cluster creates the cluster namespace, the klusterlet agent on the ManagedCluster pushes the credential to the hub cluster to use against the kube-apiserver of the ManagedCluster.
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * ManagedCluster represents the desired state and current status of a managed cluster. ManagedCluster is a cluster-scoped resource. The name is the cluster UID.<br><p> <br><p> The cluster join process is a double opt-in process. See the following join process steps:<br><p> <br><p> 1. The agent on the managed cluster creates a CSR on the hub with the cluster UID and agent name. 2. The agent on the managed cluster creates a ManagedCluster on the hub. 3. The cluster admin on the hub cluster approves the CSR for the UID and agent name of the ManagedCluster. 4. The cluster admin sets the spec.acceptClient of the ManagedCluster to true. 5. The cluster admin on the managed cluster creates a credential of the kubeconfig for the hub cluster.<br><p> <br><p> After the hub cluster creates the cluster namespace, the klusterlet agent on the ManagedCluster pushes the credential to the hub cluster to use against the kube-apiserver of the ManagedCluster.
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * ManagedCluster represents the desired state and current status of a managed cluster. ManagedCluster is a cluster-scoped resource. The name is the cluster UID.<br><p> <br><p> The cluster join process is a double opt-in process. See the following join process steps:<br><p> <br><p> 1. The agent on the managed cluster creates a CSR on the hub with the cluster UID and agent name. 2. The agent on the managed cluster creates a ManagedCluster on the hub. 3. The cluster admin on the hub cluster approves the CSR for the UID and agent name of the ManagedCluster. 4. The cluster admin sets the spec.acceptClient of the ManagedCluster to true. 5. The cluster admin on the managed cluster creates a credential of the kubeconfig for the hub cluster.<br><p> <br><p> After the hub cluster creates the cluster namespace, the klusterlet agent on the ManagedCluster pushes the credential to the hub cluster to use against the kube-apiserver of the ManagedCluster.
+     */
     @JsonProperty("spec")
     public ManagedClusterSpec getSpec() {
         return spec;
     }
 
+    /**
+     * ManagedCluster represents the desired state and current status of a managed cluster. ManagedCluster is a cluster-scoped resource. The name is the cluster UID.<br><p> <br><p> The cluster join process is a double opt-in process. See the following join process steps:<br><p> <br><p> 1. The agent on the managed cluster creates a CSR on the hub with the cluster UID and agent name. 2. The agent on the managed cluster creates a ManagedCluster on the hub. 3. The cluster admin on the hub cluster approves the CSR for the UID and agent name of the ManagedCluster. 4. The cluster admin sets the spec.acceptClient of the ManagedCluster to true. 5. The cluster admin on the managed cluster creates a credential of the kubeconfig for the hub cluster.<br><p> <br><p> After the hub cluster creates the cluster namespace, the klusterlet agent on the ManagedCluster pushes the credential to the hub cluster to use against the kube-apiserver of the ManagedCluster.
+     */
     @JsonProperty("spec")
     public void setSpec(ManagedClusterSpec spec) {
         this.spec = spec;
     }
 
+    /**
+     * ManagedCluster represents the desired state and current status of a managed cluster. ManagedCluster is a cluster-scoped resource. The name is the cluster UID.<br><p> <br><p> The cluster join process is a double opt-in process. See the following join process steps:<br><p> <br><p> 1. The agent on the managed cluster creates a CSR on the hub with the cluster UID and agent name. 2. The agent on the managed cluster creates a ManagedCluster on the hub. 3. The cluster admin on the hub cluster approves the CSR for the UID and agent name of the ManagedCluster. 4. The cluster admin sets the spec.acceptClient of the ManagedCluster to true. 5. The cluster admin on the managed cluster creates a credential of the kubeconfig for the hub cluster.<br><p> <br><p> After the hub cluster creates the cluster namespace, the klusterlet agent on the ManagedCluster pushes the credential to the hub cluster to use against the kube-apiserver of the ManagedCluster.
+     */
     @JsonProperty("status")
     public ManagedClusterStatus getStatus() {
         return status;
     }
 
+    /**
+     * ManagedCluster represents the desired state and current status of a managed cluster. ManagedCluster is a cluster-scoped resource. The name is the cluster UID.<br><p> <br><p> The cluster join process is a double opt-in process. See the following join process steps:<br><p> <br><p> 1. The agent on the managed cluster creates a CSR on the hub with the cluster UID and agent name. 2. The agent on the managed cluster creates a ManagedCluster on the hub. 3. The cluster admin on the hub cluster approves the CSR for the UID and agent name of the ManagedCluster. 4. The cluster admin sets the spec.acceptClient of the ManagedCluster to true. 5. The cluster admin on the managed cluster creates a credential of the kubeconfig for the hub cluster.<br><p> <br><p> After the hub cluster creates the cluster namespace, the klusterlet agent on the ManagedCluster pushes the credential to the hub cluster to use against the kube-apiserver of the ManagedCluster.
+     */
     @JsonProperty("status")
     public void setStatus(ManagedClusterStatus status) {
         this.status = status;

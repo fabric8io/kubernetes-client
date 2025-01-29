@@ -14,11 +14,11 @@
     limitations under the License.
 }}
 {{#fields}}
-{{#legacyRequired}}
+{{#description}}
     /**
-     * (Required)
+     * {{.}}
      */
-{{/legacyRequired}}
+{{/description}}
     @JsonProperty("{{propertyName}}")
 {{#jsonInclude}}
     @JsonInclude(JsonInclude.Include.{{.}})
@@ -30,11 +30,11 @@
         return {{name}};
     }
 
-{{#legacyRequired}}
+{{#description}}
     /**
-     * (Required)
+     * {{.}}
      */
-{{/legacyRequired}}
+{{/description}}
     @JsonProperty("{{propertyName}}")
 {{#deserializeUsing}}
     @JsonDeserialize(using = {{.}})

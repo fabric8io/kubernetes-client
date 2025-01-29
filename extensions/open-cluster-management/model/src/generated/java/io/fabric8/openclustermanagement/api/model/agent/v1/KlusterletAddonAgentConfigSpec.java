@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * KlusterletAddonAgentConfigSpec defines configuration for each addon agent.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class KlusterletAddonAgentConfigSpec implements Editable<KlusterletAddonA
         this.proxyPolicy = proxyPolicy;
     }
 
+    /**
+     * Enabled is the flag to enable/disable the addon. default is false.
+     */
     @JsonProperty("enabled")
     public Boolean getEnabled() {
         return enabled;
     }
 
+    /**
+     * Enabled is the flag to enable/disable the addon. default is false.
+     */
     @JsonProperty("enabled")
     public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
     }
 
+    /**
+     * ProxyPolicy defines the policy to set proxy for each addon agent. default is Disabled. Disabled means that the addon agent pods do not configure the proxy env variables. OCPGlobalProxy means that the addon agent pods use the cluster-wide proxy config of OCP cluster provisioned by ACM. CustomProxy means that the addon agent pods use the ProxyConfig specified in KlusterletAddonConfig.
+     */
     @JsonProperty("proxyPolicy")
     public String getProxyPolicy() {
         return proxyPolicy;
     }
 
+    /**
+     * ProxyPolicy defines the policy to set proxy for each addon agent. default is Disabled. Disabled means that the addon agent pods do not configure the proxy env variables. OCPGlobalProxy means that the addon agent pods use the cluster-wide proxy config of OCP cluster provisioned by ACM. CustomProxy means that the addon agent pods use the ProxyConfig specified in KlusterletAddonConfig.
+     */
     @JsonProperty("proxyPolicy")
     public void setProxyPolicy(String proxyPolicy) {
         this.proxyPolicy = proxyPolicy;

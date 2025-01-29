@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PhysicalMachineSelectorSpec defines some selectors to select objects. If the all selectors are empty, all objects will be used in chaos experiment.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -101,56 +104,86 @@ public class PhysicalMachineSelectorSpec implements Editable<PhysicalMachineSele
         this.physicalMachines = physicalMachines;
     }
 
+    /**
+     * Map of string keys and values that can be used to select objects. A selector based on annotations.
+     */
     @JsonProperty("annotationSelectors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAnnotationSelectors() {
         return annotationSelectors;
     }
 
+    /**
+     * Map of string keys and values that can be used to select objects. A selector based on annotations.
+     */
     @JsonProperty("annotationSelectors")
     public void setAnnotationSelectors(Map<String, String> annotationSelectors) {
         this.annotationSelectors = annotationSelectors;
     }
 
+    /**
+     * Map of string keys and values that can be used to select objects. A selector based on fields.
+     */
     @JsonProperty("fieldSelectors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getFieldSelectors() {
         return fieldSelectors;
     }
 
+    /**
+     * Map of string keys and values that can be used to select objects. A selector based on fields.
+     */
     @JsonProperty("fieldSelectors")
     public void setFieldSelectors(Map<String, String> fieldSelectors) {
         this.fieldSelectors = fieldSelectors;
     }
 
+    /**
+     * Map of string keys and values that can be used to select objects. A selector based on labels.
+     */
     @JsonProperty("labelSelectors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getLabelSelectors() {
         return labelSelectors;
     }
 
+    /**
+     * Map of string keys and values that can be used to select objects. A selector based on labels.
+     */
     @JsonProperty("labelSelectors")
     public void setLabelSelectors(Map<String, String> labelSelectors) {
         this.labelSelectors = labelSelectors;
     }
 
+    /**
+     * Namespaces is a set of namespace to which objects belong.
+     */
     @JsonProperty("namespaces")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getNamespaces() {
         return namespaces;
     }
 
+    /**
+     * Namespaces is a set of namespace to which objects belong.
+     */
     @JsonProperty("namespaces")
     public void setNamespaces(List<String> namespaces) {
         this.namespaces = namespaces;
     }
 
+    /**
+     * PhysicalMachines is a map of string keys and a set values that used to select physical machines. The key defines the namespace which physical machine belong, and each value is a set of physical machine names.
+     */
     @JsonProperty("physicalMachines")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, List<String>> getPhysicalMachines() {
         return physicalMachines;
     }
 
+    /**
+     * PhysicalMachines is a map of string keys and a set values that used to select physical machines. The key defines the namespace which physical machine belong, and each value is a set of physical machine names.
+     */
     @JsonProperty("physicalMachines")
     public void setPhysicalMachines(Map<String, List<String>> physicalMachines) {
         this.physicalMachines = physicalMachines;

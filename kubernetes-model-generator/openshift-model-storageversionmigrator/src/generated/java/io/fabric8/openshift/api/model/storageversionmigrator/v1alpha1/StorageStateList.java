@@ -78,17 +78,11 @@ import lombok.experimental.Accessors;
 public class StorageStateList implements Editable<StorageStateListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.storageversionmigrator.v1alpha1.StorageState>
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "migration.k8s.io/v1alpha1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openshift.api.model.storageversionmigrator.v1alpha1.StorageState> items = new ArrayList<>();
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "StorageStateList";
     @JsonProperty("metadata")
@@ -110,17 +104,11 @@ public class StorageStateList implements Editable<StorageStateListBuilder>, Kube
         this.metadata = metadata;
     }
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
         return apiVersion;
     }
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
@@ -137,17 +125,11 @@ public class StorageStateList implements Editable<StorageStateListBuilder>, Kube
         this.items = items;
     }
 
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     public String getKind() {
         return kind;
     }
 
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;

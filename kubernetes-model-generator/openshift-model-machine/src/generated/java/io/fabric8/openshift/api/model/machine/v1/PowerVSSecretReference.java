@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PowerVSSecretReference contains enough information to locate the referenced secret inside the same namespace.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class PowerVSSecretReference implements Editable<PowerVSSecretReferenceBu
         this.name = name;
     }
 
+    /**
+     * Name of the secret.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name of the secret.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

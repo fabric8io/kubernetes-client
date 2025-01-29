@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * IngressControllerStatus defines the observed status of the IngressController.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -114,92 +117,146 @@ public class IngressControllerStatus implements Editable<IngressControllerStatus
         this.tlsProfile = tlsProfile;
     }
 
+    /**
+     * availableReplicas is number of observed available replicas according to the ingress controller deployment.
+     */
     @JsonProperty("availableReplicas")
     public Integer getAvailableReplicas() {
         return availableReplicas;
     }
 
+    /**
+     * availableReplicas is number of observed available replicas according to the ingress controller deployment.
+     */
     @JsonProperty("availableReplicas")
     public void setAvailableReplicas(Integer availableReplicas) {
         this.availableReplicas = availableReplicas;
     }
 
+    /**
+     * conditions is a list of conditions and their status.<br><p> <br><p> Available means the ingress controller deployment is available and servicing route and ingress resources (i.e, .status.availableReplicas equals .spec.replicas)<br><p> <br><p> There are additional conditions which indicate the status of other ingress controller features and capabilities.<br><p> <br><p>   &#42; LoadBalancerManaged<br><p>   - True if the following conditions are met:<br><p>     &#42; The endpoint publishing strategy requires a service load balancer.<br><p>   - False if any of those conditions are unsatisfied.<br><p> <br><p>   &#42; LoadBalancerReady<br><p>   - True if the following conditions are met:<br><p>     &#42; A load balancer is managed.<br><p>     &#42; The load balancer is ready.<br><p>   - False if any of those conditions are unsatisfied.<br><p> <br><p>   &#42; DNSManaged<br><p>   - True if the following conditions are met:<br><p>     &#42; The endpoint publishing strategy and platform support DNS.<br><p>     &#42; The ingress controller domain is set.<br><p>     &#42; dns.config.openshift.io/cluster configures DNS zones.<br><p>   - False if any of those conditions are unsatisfied.<br><p> <br><p>   &#42; DNSReady<br><p>   - True if the following conditions are met:<br><p>     &#42; DNS is managed.<br><p>     &#42; DNS records have been successfully created.<br><p>   - False if any of those conditions are unsatisfied.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<OperatorCondition> getConditions() {
         return conditions;
     }
 
+    /**
+     * conditions is a list of conditions and their status.<br><p> <br><p> Available means the ingress controller deployment is available and servicing route and ingress resources (i.e, .status.availableReplicas equals .spec.replicas)<br><p> <br><p> There are additional conditions which indicate the status of other ingress controller features and capabilities.<br><p> <br><p>   &#42; LoadBalancerManaged<br><p>   - True if the following conditions are met:<br><p>     &#42; The endpoint publishing strategy requires a service load balancer.<br><p>   - False if any of those conditions are unsatisfied.<br><p> <br><p>   &#42; LoadBalancerReady<br><p>   - True if the following conditions are met:<br><p>     &#42; A load balancer is managed.<br><p>     &#42; The load balancer is ready.<br><p>   - False if any of those conditions are unsatisfied.<br><p> <br><p>   &#42; DNSManaged<br><p>   - True if the following conditions are met:<br><p>     &#42; The endpoint publishing strategy and platform support DNS.<br><p>     &#42; The ingress controller domain is set.<br><p>     &#42; dns.config.openshift.io/cluster configures DNS zones.<br><p>   - False if any of those conditions are unsatisfied.<br><p> <br><p>   &#42; DNSReady<br><p>   - True if the following conditions are met:<br><p>     &#42; DNS is managed.<br><p>     &#42; DNS records have been successfully created.<br><p>   - False if any of those conditions are unsatisfied.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<OperatorCondition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * domain is the actual domain in use.
+     */
     @JsonProperty("domain")
     public String getDomain() {
         return domain;
     }
 
+    /**
+     * domain is the actual domain in use.
+     */
     @JsonProperty("domain")
     public void setDomain(String domain) {
         this.domain = domain;
     }
 
+    /**
+     * IngressControllerStatus defines the observed status of the IngressController.
+     */
     @JsonProperty("endpointPublishingStrategy")
     public EndpointPublishingStrategy getEndpointPublishingStrategy() {
         return endpointPublishingStrategy;
     }
 
+    /**
+     * IngressControllerStatus defines the observed status of the IngressController.
+     */
     @JsonProperty("endpointPublishingStrategy")
     public void setEndpointPublishingStrategy(EndpointPublishingStrategy endpointPublishingStrategy) {
         this.endpointPublishingStrategy = endpointPublishingStrategy;
     }
 
+    /**
+     * IngressControllerStatus defines the observed status of the IngressController.
+     */
     @JsonProperty("namespaceSelector")
     public LabelSelector getNamespaceSelector() {
         return namespaceSelector;
     }
 
+    /**
+     * IngressControllerStatus defines the observed status of the IngressController.
+     */
     @JsonProperty("namespaceSelector")
     public void setNamespaceSelector(LabelSelector namespaceSelector) {
         this.namespaceSelector = namespaceSelector;
     }
 
+    /**
+     * observedGeneration is the most recent generation observed.
+     */
     @JsonProperty("observedGeneration")
     public Long getObservedGeneration() {
         return observedGeneration;
     }
 
+    /**
+     * observedGeneration is the most recent generation observed.
+     */
     @JsonProperty("observedGeneration")
     public void setObservedGeneration(Long observedGeneration) {
         this.observedGeneration = observedGeneration;
     }
 
+    /**
+     * IngressControllerStatus defines the observed status of the IngressController.
+     */
     @JsonProperty("routeSelector")
     public LabelSelector getRouteSelector() {
         return routeSelector;
     }
 
+    /**
+     * IngressControllerStatus defines the observed status of the IngressController.
+     */
     @JsonProperty("routeSelector")
     public void setRouteSelector(LabelSelector routeSelector) {
         this.routeSelector = routeSelector;
     }
 
+    /**
+     * selector is a label selector, in string format, for ingress controller pods corresponding to the IngressController. The number of matching pods should equal the value of availableReplicas.
+     */
     @JsonProperty("selector")
     public String getSelector() {
         return selector;
     }
 
+    /**
+     * selector is a label selector, in string format, for ingress controller pods corresponding to the IngressController. The number of matching pods should equal the value of availableReplicas.
+     */
     @JsonProperty("selector")
     public void setSelector(String selector) {
         this.selector = selector;
     }
 
+    /**
+     * IngressControllerStatus defines the observed status of the IngressController.
+     */
     @JsonProperty("tlsProfile")
     public TLSProfileSpec getTlsProfile() {
         return tlsProfile;
     }
 
+    /**
+     * IngressControllerStatus defines the observed status of the IngressController.
+     */
     @JsonProperty("tlsProfile")
     public void setTlsProfile(TLSProfileSpec tlsProfile) {
         this.tlsProfile = tlsProfile;

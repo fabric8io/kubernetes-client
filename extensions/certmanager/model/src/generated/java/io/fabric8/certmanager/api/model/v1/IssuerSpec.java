@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * IssuerSpec is the specification of an Issuer. This includes any configuration required for the issuer.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -95,51 +98,81 @@ public class IssuerSpec implements Editable<IssuerSpecBuilder>, KubernetesResour
         this.venafi = venafi;
     }
 
+    /**
+     * IssuerSpec is the specification of an Issuer. This includes any configuration required for the issuer.
+     */
     @JsonProperty("acme")
     public ACMEIssuer getAcme() {
         return acme;
     }
 
+    /**
+     * IssuerSpec is the specification of an Issuer. This includes any configuration required for the issuer.
+     */
     @JsonProperty("acme")
     public void setAcme(ACMEIssuer acme) {
         this.acme = acme;
     }
 
+    /**
+     * IssuerSpec is the specification of an Issuer. This includes any configuration required for the issuer.
+     */
     @JsonProperty("ca")
     public CAIssuer getCa() {
         return ca;
     }
 
+    /**
+     * IssuerSpec is the specification of an Issuer. This includes any configuration required for the issuer.
+     */
     @JsonProperty("ca")
     public void setCa(CAIssuer ca) {
         this.ca = ca;
     }
 
+    /**
+     * IssuerSpec is the specification of an Issuer. This includes any configuration required for the issuer.
+     */
     @JsonProperty("selfSigned")
     public SelfSignedIssuer getSelfSigned() {
         return selfSigned;
     }
 
+    /**
+     * IssuerSpec is the specification of an Issuer. This includes any configuration required for the issuer.
+     */
     @JsonProperty("selfSigned")
     public void setSelfSigned(SelfSignedIssuer selfSigned) {
         this.selfSigned = selfSigned;
     }
 
+    /**
+     * IssuerSpec is the specification of an Issuer. This includes any configuration required for the issuer.
+     */
     @JsonProperty("vault")
     public VaultIssuer getVault() {
         return vault;
     }
 
+    /**
+     * IssuerSpec is the specification of an Issuer. This includes any configuration required for the issuer.
+     */
     @JsonProperty("vault")
     public void setVault(VaultIssuer vault) {
         this.vault = vault;
     }
 
+    /**
+     * IssuerSpec is the specification of an Issuer. This includes any configuration required for the issuer.
+     */
     @JsonProperty("venafi")
     public VenafiIssuer getVenafi() {
         return venafi;
     }
 
+    /**
+     * IssuerSpec is the specification of an Issuer. This includes any configuration required for the issuer.
+     */
     @JsonProperty("venafi")
     public void setVenafi(VenafiIssuer venafi) {
         this.venafi = venafi;

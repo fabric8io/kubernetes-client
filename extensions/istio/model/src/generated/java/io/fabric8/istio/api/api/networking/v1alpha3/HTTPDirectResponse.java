@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * HTTPDirectResponse can be used to send a fixed response to clients. For example, the following rule returns a fixed 503 status with a body to requests for /v1/getProductRatings API.<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: VirtualService metadata:<br><p> <br><p> 	name: ratings-route<br><p> <br><p> spec:<br><p> <br><p> 	hosts:<br><p> 	- ratings.prod.svc.cluster.local<br><p> 	http:<br><p> 	- match:<br><p> 	  - uri:<br><p> 	      exact: /v1/getProductRatings<br><p> 	  directResponse:<br><p> 	    status: 503<br><p> 	    body:<br><p> 	      string: "unknown error"<br><p> 	...<br><p> <br><p> ```<br><p> <br><p> It is also possible to specify a binary response body. This is mostly useful for non text-based protocols such as gRPC.<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: VirtualService metadata:<br><p> <br><p> 	name: ratings-route<br><p> <br><p> spec:<br><p> <br><p> 	hosts:<br><p> 	- ratings.prod.svc.cluster.local<br><p> 	http:<br><p> 	- match:<br><p> 	  - uri:<br><p> 	      exact: /v1/getProductRatings<br><p> 	  directResponse:<br><p> 	    status: 503<br><p> 	    body:<br><p> 	      bytes: "dW5rbm93biBlcnJvcg==" # "unknown error" in base64<br><p> 	...<br><p> <br><p> ```<br><p> <br><p> It is good practice to add headers in the HTTPRoute as well as the direct_response, for example to specify the returned Content-Type.<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: VirtualService metadata:<br><p> <br><p> 	name: ratings-route<br><p> <br><p> spec:<br><p> <br><p> 	hosts:<br><p> 	- ratings.prod.svc.cluster.local<br><p> 	http:<br><p> 	- match:<br><p> 	  - uri:<br><p> 	      exact: /v1/getProductRatings<br><p> 	  directResponse:<br><p> 	    status: 503<br><p> 	    body:<br><p> 	      string: "{\"error\": \"unknown error\"}"<br><p> 	  headers:<br><p> 	    response:<br><p> 	      set:<br><p> 	        content-type: "text/plain"<br><p> 	...<br><p> <br><p> ```
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class HTTPDirectResponse implements Editable<HTTPDirectResponseBuilder>, 
         this.status = status;
     }
 
+    /**
+     * HTTPDirectResponse can be used to send a fixed response to clients. For example, the following rule returns a fixed 503 status with a body to requests for /v1/getProductRatings API.<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: VirtualService metadata:<br><p> <br><p> 	name: ratings-route<br><p> <br><p> spec:<br><p> <br><p> 	hosts:<br><p> 	- ratings.prod.svc.cluster.local<br><p> 	http:<br><p> 	- match:<br><p> 	  - uri:<br><p> 	      exact: /v1/getProductRatings<br><p> 	  directResponse:<br><p> 	    status: 503<br><p> 	    body:<br><p> 	      string: "unknown error"<br><p> 	...<br><p> <br><p> ```<br><p> <br><p> It is also possible to specify a binary response body. This is mostly useful for non text-based protocols such as gRPC.<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: VirtualService metadata:<br><p> <br><p> 	name: ratings-route<br><p> <br><p> spec:<br><p> <br><p> 	hosts:<br><p> 	- ratings.prod.svc.cluster.local<br><p> 	http:<br><p> 	- match:<br><p> 	  - uri:<br><p> 	      exact: /v1/getProductRatings<br><p> 	  directResponse:<br><p> 	    status: 503<br><p> 	    body:<br><p> 	      bytes: "dW5rbm93biBlcnJvcg==" # "unknown error" in base64<br><p> 	...<br><p> <br><p> ```<br><p> <br><p> It is good practice to add headers in the HTTPRoute as well as the direct_response, for example to specify the returned Content-Type.<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: VirtualService metadata:<br><p> <br><p> 	name: ratings-route<br><p> <br><p> spec:<br><p> <br><p> 	hosts:<br><p> 	- ratings.prod.svc.cluster.local<br><p> 	http:<br><p> 	- match:<br><p> 	  - uri:<br><p> 	      exact: /v1/getProductRatings<br><p> 	  directResponse:<br><p> 	    status: 503<br><p> 	    body:<br><p> 	      string: "{\"error\": \"unknown error\"}"<br><p> 	  headers:<br><p> 	    response:<br><p> 	      set:<br><p> 	        content-type: "text/plain"<br><p> 	...<br><p> <br><p> ```
+     */
     @JsonProperty("body")
     public HTTPBody getBody() {
         return body;
     }
 
+    /**
+     * HTTPDirectResponse can be used to send a fixed response to clients. For example, the following rule returns a fixed 503 status with a body to requests for /v1/getProductRatings API.<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: VirtualService metadata:<br><p> <br><p> 	name: ratings-route<br><p> <br><p> spec:<br><p> <br><p> 	hosts:<br><p> 	- ratings.prod.svc.cluster.local<br><p> 	http:<br><p> 	- match:<br><p> 	  - uri:<br><p> 	      exact: /v1/getProductRatings<br><p> 	  directResponse:<br><p> 	    status: 503<br><p> 	    body:<br><p> 	      string: "unknown error"<br><p> 	...<br><p> <br><p> ```<br><p> <br><p> It is also possible to specify a binary response body. This is mostly useful for non text-based protocols such as gRPC.<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: VirtualService metadata:<br><p> <br><p> 	name: ratings-route<br><p> <br><p> spec:<br><p> <br><p> 	hosts:<br><p> 	- ratings.prod.svc.cluster.local<br><p> 	http:<br><p> 	- match:<br><p> 	  - uri:<br><p> 	      exact: /v1/getProductRatings<br><p> 	  directResponse:<br><p> 	    status: 503<br><p> 	    body:<br><p> 	      bytes: "dW5rbm93biBlcnJvcg==" # "unknown error" in base64<br><p> 	...<br><p> <br><p> ```<br><p> <br><p> It is good practice to add headers in the HTTPRoute as well as the direct_response, for example to specify the returned Content-Type.<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: VirtualService metadata:<br><p> <br><p> 	name: ratings-route<br><p> <br><p> spec:<br><p> <br><p> 	hosts:<br><p> 	- ratings.prod.svc.cluster.local<br><p> 	http:<br><p> 	- match:<br><p> 	  - uri:<br><p> 	      exact: /v1/getProductRatings<br><p> 	  directResponse:<br><p> 	    status: 503<br><p> 	    body:<br><p> 	      string: "{\"error\": \"unknown error\"}"<br><p> 	  headers:<br><p> 	    response:<br><p> 	      set:<br><p> 	        content-type: "text/plain"<br><p> 	...<br><p> <br><p> ```
+     */
     @JsonProperty("body")
     public void setBody(HTTPBody body) {
         this.body = body;
     }
 
+    /**
+     * Specifies the HTTP response status to be returned.
+     */
     @JsonProperty("status")
     public Long getStatus() {
         return status;
     }
 
+    /**
+     * Specifies the HTTP response status to be returned.
+     */
     @JsonProperty("status")
     public void setStatus(Long status) {
         this.status = status;

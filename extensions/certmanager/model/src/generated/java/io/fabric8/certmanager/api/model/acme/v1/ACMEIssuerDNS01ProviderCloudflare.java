@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ACMEIssuerDNS01ProviderCloudflare is a structure containing the DNS configuration for Cloudflare. One of `apiKeySecretRef` or `apiTokenSecretRef` must be provided.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -87,31 +90,49 @@ public class ACMEIssuerDNS01ProviderCloudflare implements Editable<ACMEIssuerDNS
         this.email = email;
     }
 
+    /**
+     * ACMEIssuerDNS01ProviderCloudflare is a structure containing the DNS configuration for Cloudflare. One of `apiKeySecretRef` or `apiTokenSecretRef` must be provided.
+     */
     @JsonProperty("apiKeySecretRef")
     public SecretKeySelector getApiKeySecretRef() {
         return apiKeySecretRef;
     }
 
+    /**
+     * ACMEIssuerDNS01ProviderCloudflare is a structure containing the DNS configuration for Cloudflare. One of `apiKeySecretRef` or `apiTokenSecretRef` must be provided.
+     */
     @JsonProperty("apiKeySecretRef")
     public void setApiKeySecretRef(SecretKeySelector apiKeySecretRef) {
         this.apiKeySecretRef = apiKeySecretRef;
     }
 
+    /**
+     * ACMEIssuerDNS01ProviderCloudflare is a structure containing the DNS configuration for Cloudflare. One of `apiKeySecretRef` or `apiTokenSecretRef` must be provided.
+     */
     @JsonProperty("apiTokenSecretRef")
     public SecretKeySelector getApiTokenSecretRef() {
         return apiTokenSecretRef;
     }
 
+    /**
+     * ACMEIssuerDNS01ProviderCloudflare is a structure containing the DNS configuration for Cloudflare. One of `apiKeySecretRef` or `apiTokenSecretRef` must be provided.
+     */
     @JsonProperty("apiTokenSecretRef")
     public void setApiTokenSecretRef(SecretKeySelector apiTokenSecretRef) {
         this.apiTokenSecretRef = apiTokenSecretRef;
     }
 
+    /**
+     * Email of the account, only required when using API key based authentication.
+     */
     @JsonProperty("email")
     public String getEmail() {
         return email;
     }
 
+    /**
+     * Email of the account, only required when using API key based authentication.
+     */
     @JsonProperty("email")
     public void setEmail(String email) {
         this.email = email;

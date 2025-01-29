@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PlatformStatus holds the current status specific to the underlying infrastructure provider of the current cluster. Since these are used at status-level for the underlying cluster, it is supposed that only one of the status structs is set.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -134,151 +137,241 @@ public class PlatformStatus implements Editable<PlatformStatusBuilder>, Kubernet
         this.vsphere = vsphere;
     }
 
+    /**
+     * PlatformStatus holds the current status specific to the underlying infrastructure provider of the current cluster. Since these are used at status-level for the underlying cluster, it is supposed that only one of the status structs is set.
+     */
     @JsonProperty("alibabaCloud")
     public AlibabaCloudPlatformStatus getAlibabaCloud() {
         return alibabaCloud;
     }
 
+    /**
+     * PlatformStatus holds the current status specific to the underlying infrastructure provider of the current cluster. Since these are used at status-level for the underlying cluster, it is supposed that only one of the status structs is set.
+     */
     @JsonProperty("alibabaCloud")
     public void setAlibabaCloud(AlibabaCloudPlatformStatus alibabaCloud) {
         this.alibabaCloud = alibabaCloud;
     }
 
+    /**
+     * PlatformStatus holds the current status specific to the underlying infrastructure provider of the current cluster. Since these are used at status-level for the underlying cluster, it is supposed that only one of the status structs is set.
+     */
     @JsonProperty("aws")
     public AWSPlatformStatus getAws() {
         return aws;
     }
 
+    /**
+     * PlatformStatus holds the current status specific to the underlying infrastructure provider of the current cluster. Since these are used at status-level for the underlying cluster, it is supposed that only one of the status structs is set.
+     */
     @JsonProperty("aws")
     public void setAws(AWSPlatformStatus aws) {
         this.aws = aws;
     }
 
+    /**
+     * PlatformStatus holds the current status specific to the underlying infrastructure provider of the current cluster. Since these are used at status-level for the underlying cluster, it is supposed that only one of the status structs is set.
+     */
     @JsonProperty("azure")
     public AzurePlatformStatus getAzure() {
         return azure;
     }
 
+    /**
+     * PlatformStatus holds the current status specific to the underlying infrastructure provider of the current cluster. Since these are used at status-level for the underlying cluster, it is supposed that only one of the status structs is set.
+     */
     @JsonProperty("azure")
     public void setAzure(AzurePlatformStatus azure) {
         this.azure = azure;
     }
 
+    /**
+     * PlatformStatus holds the current status specific to the underlying infrastructure provider of the current cluster. Since these are used at status-level for the underlying cluster, it is supposed that only one of the status structs is set.
+     */
     @JsonProperty("baremetal")
     public BareMetalPlatformStatus getBaremetal() {
         return baremetal;
     }
 
+    /**
+     * PlatformStatus holds the current status specific to the underlying infrastructure provider of the current cluster. Since these are used at status-level for the underlying cluster, it is supposed that only one of the status structs is set.
+     */
     @JsonProperty("baremetal")
     public void setBaremetal(BareMetalPlatformStatus baremetal) {
         this.baremetal = baremetal;
     }
 
+    /**
+     * PlatformStatus holds the current status specific to the underlying infrastructure provider of the current cluster. Since these are used at status-level for the underlying cluster, it is supposed that only one of the status structs is set.
+     */
     @JsonProperty("equinixMetal")
     public EquinixMetalPlatformStatus getEquinixMetal() {
         return equinixMetal;
     }
 
+    /**
+     * PlatformStatus holds the current status specific to the underlying infrastructure provider of the current cluster. Since these are used at status-level for the underlying cluster, it is supposed that only one of the status structs is set.
+     */
     @JsonProperty("equinixMetal")
     public void setEquinixMetal(EquinixMetalPlatformStatus equinixMetal) {
         this.equinixMetal = equinixMetal;
     }
 
+    /**
+     * PlatformStatus holds the current status specific to the underlying infrastructure provider of the current cluster. Since these are used at status-level for the underlying cluster, it is supposed that only one of the status structs is set.
+     */
     @JsonProperty("external")
     public ExternalPlatformStatus getExternal() {
         return external;
     }
 
+    /**
+     * PlatformStatus holds the current status specific to the underlying infrastructure provider of the current cluster. Since these are used at status-level for the underlying cluster, it is supposed that only one of the status structs is set.
+     */
     @JsonProperty("external")
     public void setExternal(ExternalPlatformStatus external) {
         this.external = external;
     }
 
+    /**
+     * PlatformStatus holds the current status specific to the underlying infrastructure provider of the current cluster. Since these are used at status-level for the underlying cluster, it is supposed that only one of the status structs is set.
+     */
     @JsonProperty("gcp")
     public GCPPlatformStatus getGcp() {
         return gcp;
     }
 
+    /**
+     * PlatformStatus holds the current status specific to the underlying infrastructure provider of the current cluster. Since these are used at status-level for the underlying cluster, it is supposed that only one of the status structs is set.
+     */
     @JsonProperty("gcp")
     public void setGcp(GCPPlatformStatus gcp) {
         this.gcp = gcp;
     }
 
+    /**
+     * PlatformStatus holds the current status specific to the underlying infrastructure provider of the current cluster. Since these are used at status-level for the underlying cluster, it is supposed that only one of the status structs is set.
+     */
     @JsonProperty("ibmcloud")
     public IBMCloudPlatformStatus getIbmcloud() {
         return ibmcloud;
     }
 
+    /**
+     * PlatformStatus holds the current status specific to the underlying infrastructure provider of the current cluster. Since these are used at status-level for the underlying cluster, it is supposed that only one of the status structs is set.
+     */
     @JsonProperty("ibmcloud")
     public void setIbmcloud(IBMCloudPlatformStatus ibmcloud) {
         this.ibmcloud = ibmcloud;
     }
 
+    /**
+     * PlatformStatus holds the current status specific to the underlying infrastructure provider of the current cluster. Since these are used at status-level for the underlying cluster, it is supposed that only one of the status structs is set.
+     */
     @JsonProperty("kubevirt")
     public KubevirtPlatformStatus getKubevirt() {
         return kubevirt;
     }
 
+    /**
+     * PlatformStatus holds the current status specific to the underlying infrastructure provider of the current cluster. Since these are used at status-level for the underlying cluster, it is supposed that only one of the status structs is set.
+     */
     @JsonProperty("kubevirt")
     public void setKubevirt(KubevirtPlatformStatus kubevirt) {
         this.kubevirt = kubevirt;
     }
 
+    /**
+     * PlatformStatus holds the current status specific to the underlying infrastructure provider of the current cluster. Since these are used at status-level for the underlying cluster, it is supposed that only one of the status structs is set.
+     */
     @JsonProperty("nutanix")
     public NutanixPlatformStatus getNutanix() {
         return nutanix;
     }
 
+    /**
+     * PlatformStatus holds the current status specific to the underlying infrastructure provider of the current cluster. Since these are used at status-level for the underlying cluster, it is supposed that only one of the status structs is set.
+     */
     @JsonProperty("nutanix")
     public void setNutanix(NutanixPlatformStatus nutanix) {
         this.nutanix = nutanix;
     }
 
+    /**
+     * PlatformStatus holds the current status specific to the underlying infrastructure provider of the current cluster. Since these are used at status-level for the underlying cluster, it is supposed that only one of the status structs is set.
+     */
     @JsonProperty("openstack")
     public OpenStackPlatformStatus getOpenstack() {
         return openstack;
     }
 
+    /**
+     * PlatformStatus holds the current status specific to the underlying infrastructure provider of the current cluster. Since these are used at status-level for the underlying cluster, it is supposed that only one of the status structs is set.
+     */
     @JsonProperty("openstack")
     public void setOpenstack(OpenStackPlatformStatus openstack) {
         this.openstack = openstack;
     }
 
+    /**
+     * PlatformStatus holds the current status specific to the underlying infrastructure provider of the current cluster. Since these are used at status-level for the underlying cluster, it is supposed that only one of the status structs is set.
+     */
     @JsonProperty("ovirt")
     public OvirtPlatformStatus getOvirt() {
         return ovirt;
     }
 
+    /**
+     * PlatformStatus holds the current status specific to the underlying infrastructure provider of the current cluster. Since these are used at status-level for the underlying cluster, it is supposed that only one of the status structs is set.
+     */
     @JsonProperty("ovirt")
     public void setOvirt(OvirtPlatformStatus ovirt) {
         this.ovirt = ovirt;
     }
 
+    /**
+     * PlatformStatus holds the current status specific to the underlying infrastructure provider of the current cluster. Since these are used at status-level for the underlying cluster, it is supposed that only one of the status structs is set.
+     */
     @JsonProperty("powervs")
     public PowerVSPlatformStatus getPowervs() {
         return powervs;
     }
 
+    /**
+     * PlatformStatus holds the current status specific to the underlying infrastructure provider of the current cluster. Since these are used at status-level for the underlying cluster, it is supposed that only one of the status structs is set.
+     */
     @JsonProperty("powervs")
     public void setPowervs(PowerVSPlatformStatus powervs) {
         this.powervs = powervs;
     }
 
+    /**
+     * type is the underlying infrastructure provider for the cluster. This value controls whether infrastructure automation such as service load balancers, dynamic volume provisioning, machine creation and deletion, and other integrations are enabled. If None, no infrastructure automation is enabled. Allowed values are "AWS", "Azure", "BareMetal", "GCP", "Libvirt", "OpenStack", "VSphere", "oVirt", "EquinixMetal", "PowerVS", "AlibabaCloud", "Nutanix" and "None". Individual components may not support all platforms, and must handle unrecognized platforms as None if they do not support that platform.<br><p> <br><p> This value will be synced with to the `status.platform` and `status.platformStatus.type`. Currently this value cannot be changed once set.
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * type is the underlying infrastructure provider for the cluster. This value controls whether infrastructure automation such as service load balancers, dynamic volume provisioning, machine creation and deletion, and other integrations are enabled. If None, no infrastructure automation is enabled. Allowed values are "AWS", "Azure", "BareMetal", "GCP", "Libvirt", "OpenStack", "VSphere", "oVirt", "EquinixMetal", "PowerVS", "AlibabaCloud", "Nutanix" and "None". Individual components may not support all platforms, and must handle unrecognized platforms as None if they do not support that platform.<br><p> <br><p> This value will be synced with to the `status.platform` and `status.platformStatus.type`. Currently this value cannot be changed once set.
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;
     }
 
+    /**
+     * PlatformStatus holds the current status specific to the underlying infrastructure provider of the current cluster. Since these are used at status-level for the underlying cluster, it is supposed that only one of the status structs is set.
+     */
     @JsonProperty("vsphere")
     public VSpherePlatformStatus getVsphere() {
         return vsphere;
     }
 
+    /**
+     * PlatformStatus holds the current status specific to the underlying infrastructure provider of the current cluster. Since these are used at status-level for the underlying cluster, it is supposed that only one of the status structs is set.
+     */
     @JsonProperty("vsphere")
     public void setVsphere(VSpherePlatformStatus vsphere) {
         this.vsphere = vsphere;

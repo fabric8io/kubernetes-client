@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * GitLabBindingSpec holds the desired state of the GitLabBinding (from the client).
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -83,21 +86,33 @@ public class GitLabBindingSpec implements Editable<GitLabBindingSpecBuilder>, Ku
         this.subject = subject;
     }
 
+    /**
+     * GitLabBindingSpec holds the desired state of the GitLabBinding (from the client).
+     */
     @JsonProperty("accessToken")
     public SecretValueFromSource getAccessToken() {
         return accessToken;
     }
 
+    /**
+     * GitLabBindingSpec holds the desired state of the GitLabBinding (from the client).
+     */
     @JsonProperty("accessToken")
     public void setAccessToken(SecretValueFromSource accessToken) {
         this.accessToken = accessToken;
     }
 
+    /**
+     * GitLabBindingSpec holds the desired state of the GitLabBinding (from the client).
+     */
     @JsonProperty("subject")
     public Reference getSubject() {
         return subject;
     }
 
+    /**
+     * GitLabBindingSpec holds the desired state of the GitLabBinding (from the client).
+     */
     @JsonProperty("subject")
     public void setSubject(Reference subject) {
         this.subject = subject;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ConsoleLinkSpec is the desired console link configuration.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,51 +97,81 @@ public class ConsoleLinkSpec implements Editable<ConsoleLinkSpecBuilder>, Kubern
         this.text = text;
     }
 
+    /**
+     * ConsoleLinkSpec is the desired console link configuration.
+     */
     @JsonProperty("applicationMenu")
     public ApplicationMenuSpec getApplicationMenu() {
         return applicationMenu;
     }
 
+    /**
+     * ConsoleLinkSpec is the desired console link configuration.
+     */
     @JsonProperty("applicationMenu")
     public void setApplicationMenu(ApplicationMenuSpec applicationMenu) {
         this.applicationMenu = applicationMenu;
     }
 
+    /**
+     * href is the absolute secure URL for the link (must use https)
+     */
     @JsonProperty("href")
     public String getHref() {
         return href;
     }
 
+    /**
+     * href is the absolute secure URL for the link (must use https)
+     */
     @JsonProperty("href")
     public void setHref(String href) {
         this.href = href;
     }
 
+    /**
+     * location determines which location in the console the link will be appended to (ApplicationMenu, HelpMenu, UserMenu, NamespaceDashboard).
+     */
     @JsonProperty("location")
     public String getLocation() {
         return location;
     }
 
+    /**
+     * location determines which location in the console the link will be appended to (ApplicationMenu, HelpMenu, UserMenu, NamespaceDashboard).
+     */
     @JsonProperty("location")
     public void setLocation(String location) {
         this.location = location;
     }
 
+    /**
+     * ConsoleLinkSpec is the desired console link configuration.
+     */
     @JsonProperty("namespaceDashboard")
     public NamespaceDashboardSpec getNamespaceDashboard() {
         return namespaceDashboard;
     }
 
+    /**
+     * ConsoleLinkSpec is the desired console link configuration.
+     */
     @JsonProperty("namespaceDashboard")
     public void setNamespaceDashboard(NamespaceDashboardSpec namespaceDashboard) {
         this.namespaceDashboard = namespaceDashboard;
     }
 
+    /**
+     * text is the display text for the link
+     */
     @JsonProperty("text")
     public String getText() {
         return text;
     }
 
+    /**
+     * text is the display text for the link
+     */
     @JsonProperty("text")
     public void setText(String text) {
         this.text = text;

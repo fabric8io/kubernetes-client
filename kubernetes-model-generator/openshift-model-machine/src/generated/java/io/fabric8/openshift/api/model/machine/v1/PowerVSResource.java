@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PowerVSResource is a reference to a specific PowerVS resource by ID, Name or RegEx Only one of ID, Name or RegEx may be specified. Specifying more than one will result in a validation error.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class PowerVSResource implements Editable<PowerVSResourceBuilder>, Kubern
         this.type = type;
     }
 
+    /**
+     * ID of resource
+     */
     @JsonProperty("id")
     public String getId() {
         return id;
     }
 
+    /**
+     * ID of resource
+     */
     @JsonProperty("id")
     public void setId(String id) {
         this.id = id;
     }
 
+    /**
+     * Name of resource
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name of resource
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Regex to find resource Regex contains the pattern to match to find a resource
+     */
     @JsonProperty("regex")
     public String getRegex() {
         return regex;
     }
 
+    /**
+     * Regex to find resource Regex contains the pattern to match to find a resource
+     */
     @JsonProperty("regex")
     public void setRegex(String regex) {
         this.regex = regex;
     }
 
+    /**
+     * Type identifies the resource type for this entry. Valid values are ID, Name and RegEx
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * Type identifies the resource type for this entry. Valid values are ID, Name and RegEx
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

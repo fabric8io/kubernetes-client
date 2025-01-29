@@ -82,21 +82,33 @@ public class FileRenameSpec implements Editable<FileRenameSpecBuilder>, Kubernet
         this.sourceFile = sourceFile;
     }
 
+    /**
+     * DestFile is the name to be renamed.
+     */
     @JsonProperty("dest-file")
     public String getDestFile() {
         return destFile;
     }
 
+    /**
+     * DestFile is the name to be renamed.
+     */
     @JsonProperty("dest-file")
     public void setDestFile(String destFile) {
         this.destFile = destFile;
     }
 
+    /**
+     * SourceFile is the name need to be renamed.
+     */
     @JsonProperty("source-file")
     public String getSourceFile() {
         return sourceFile;
     }
 
+    /**
+     * SourceFile is the name need to be renamed.
+     */
     @JsonProperty("source-file")
     public void setSourceFile(String sourceFile) {
         this.sourceFile = sourceFile;

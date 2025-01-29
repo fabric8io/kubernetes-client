@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ClusterDeploymentCondition contains details for the current condition of a cluster deployment
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -98,61 +101,97 @@ public class ClusterDeploymentCondition implements Editable<ClusterDeploymentCon
         this.type = type;
     }
 
+    /**
+     * ClusterDeploymentCondition contains details for the current condition of a cluster deployment
+     */
     @JsonProperty("lastProbeTime")
     public String getLastProbeTime() {
         return lastProbeTime;
     }
 
+    /**
+     * ClusterDeploymentCondition contains details for the current condition of a cluster deployment
+     */
     @JsonProperty("lastProbeTime")
     public void setLastProbeTime(String lastProbeTime) {
         this.lastProbeTime = lastProbeTime;
     }
 
+    /**
+     * ClusterDeploymentCondition contains details for the current condition of a cluster deployment
+     */
     @JsonProperty("lastTransitionTime")
     public String getLastTransitionTime() {
         return lastTransitionTime;
     }
 
+    /**
+     * ClusterDeploymentCondition contains details for the current condition of a cluster deployment
+     */
     @JsonProperty("lastTransitionTime")
     public void setLastTransitionTime(String lastTransitionTime) {
         this.lastTransitionTime = lastTransitionTime;
     }
 
+    /**
+     * Message is a human-readable message indicating details about last transition.
+     */
     @JsonProperty("message")
     public String getMessage() {
         return message;
     }
 
+    /**
+     * Message is a human-readable message indicating details about last transition.
+     */
     @JsonProperty("message")
     public void setMessage(String message) {
         this.message = message;
     }
 
+    /**
+     * Reason is a unique, one-word, CamelCase reason for the condition's last transition.
+     */
     @JsonProperty("reason")
     public String getReason() {
         return reason;
     }
 
+    /**
+     * Reason is a unique, one-word, CamelCase reason for the condition's last transition.
+     */
     @JsonProperty("reason")
     public void setReason(String reason) {
         this.reason = reason;
     }
 
+    /**
+     * Status is the status of the condition.
+     */
     @JsonProperty("status")
     public String getStatus() {
         return status;
     }
 
+    /**
+     * Status is the status of the condition.
+     */
     @JsonProperty("status")
     public void setStatus(String status) {
         this.status = status;
     }
 
+    /**
+     * Type is the type of the condition.
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * Type is the type of the condition.
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

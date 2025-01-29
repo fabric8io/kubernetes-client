@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * BareMetalPlatform defines agent based install configuration specific to bare metal clusters. Can only be used with spec.installStrategy.agent.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class BareMetalPlatform implements Editable<BareMetalPlatformBuilder>, Ku
         this.agentSelector = agentSelector;
     }
 
+    /**
+     * BareMetalPlatform defines agent based install configuration specific to bare metal clusters. Can only be used with spec.installStrategy.agent.
+     */
     @JsonProperty("agentSelector")
     public LabelSelector getAgentSelector() {
         return agentSelector;
     }
 
+    /**
+     * BareMetalPlatform defines agent based install configuration specific to bare metal clusters. Can only be used with spec.installStrategy.agent.
+     */
     @JsonProperty("agentSelector")
     public void setAgentSelector(LabelSelector agentSelector) {
         this.agentSelector = agentSelector;

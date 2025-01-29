@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SkippedTask is used to describe the Tasks that were skipped due to their When Expressions evaluating to False. This is a struct because we are looking into including more details about the When Expressions that caused this Task to be skipped.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -89,32 +92,50 @@ public class SkippedTask implements Editable<SkippedTaskBuilder>, KubernetesReso
         this.whenExpressions = whenExpressions;
     }
 
+    /**
+     * Name is the Pipeline Task name
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name is the Pipeline Task name
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Reason is the cause of the PipelineTask being skipped.
+     */
     @JsonProperty("reason")
     public String getReason() {
         return reason;
     }
 
+    /**
+     * Reason is the cause of the PipelineTask being skipped.
+     */
     @JsonProperty("reason")
     public void setReason(String reason) {
         this.reason = reason;
     }
 
+    /**
+     * WhenExpressions is the list of checks guarding the execution of the PipelineTask
+     */
     @JsonProperty("whenExpressions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<WhenExpression> getWhenExpressions() {
         return whenExpressions;
     }
 
+    /**
+     * WhenExpressions is the list of checks guarding the execution of the PipelineTask
+     */
     @JsonProperty("whenExpressions")
     public void setWhenExpressions(List<WhenExpression> whenExpressions) {
         this.whenExpressions = whenExpressions;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ControlPlaneMachineSet represents the configuration of the ControlPlaneMachineSet.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,51 +97,81 @@ public class ControlPlaneMachineSetSpec implements Editable<ControlPlaneMachineS
         this.template = template;
     }
 
+    /**
+     * Replicas defines how many Control Plane Machines should be created by this ControlPlaneMachineSet. This field is immutable and cannot be changed after cluster installation. The ControlPlaneMachineSet only operates with 3 or 5 node control planes, 3 and 5 are the only valid values for this field.
+     */
     @JsonProperty("replicas")
     public Integer getReplicas() {
         return replicas;
     }
 
+    /**
+     * Replicas defines how many Control Plane Machines should be created by this ControlPlaneMachineSet. This field is immutable and cannot be changed after cluster installation. The ControlPlaneMachineSet only operates with 3 or 5 node control planes, 3 and 5 are the only valid values for this field.
+     */
     @JsonProperty("replicas")
     public void setReplicas(Integer replicas) {
         this.replicas = replicas;
     }
 
+    /**
+     * ControlPlaneMachineSet represents the configuration of the ControlPlaneMachineSet.
+     */
     @JsonProperty("selector")
     public LabelSelector getSelector() {
         return selector;
     }
 
+    /**
+     * ControlPlaneMachineSet represents the configuration of the ControlPlaneMachineSet.
+     */
     @JsonProperty("selector")
     public void setSelector(LabelSelector selector) {
         this.selector = selector;
     }
 
+    /**
+     * State defines whether the ControlPlaneMachineSet is Active or Inactive. When Inactive, the ControlPlaneMachineSet will not take any action on the state of the Machines within the cluster. When Active, the ControlPlaneMachineSet will reconcile the Machines and will update the Machines as necessary. Once Active, a ControlPlaneMachineSet cannot be made Inactive. To prevent further action please remove the ControlPlaneMachineSet.
+     */
     @JsonProperty("state")
     public String getState() {
         return state;
     }
 
+    /**
+     * State defines whether the ControlPlaneMachineSet is Active or Inactive. When Inactive, the ControlPlaneMachineSet will not take any action on the state of the Machines within the cluster. When Active, the ControlPlaneMachineSet will reconcile the Machines and will update the Machines as necessary. Once Active, a ControlPlaneMachineSet cannot be made Inactive. To prevent further action please remove the ControlPlaneMachineSet.
+     */
     @JsonProperty("state")
     public void setState(String state) {
         this.state = state;
     }
 
+    /**
+     * ControlPlaneMachineSet represents the configuration of the ControlPlaneMachineSet.
+     */
     @JsonProperty("strategy")
     public ControlPlaneMachineSetStrategy getStrategy() {
         return strategy;
     }
 
+    /**
+     * ControlPlaneMachineSet represents the configuration of the ControlPlaneMachineSet.
+     */
     @JsonProperty("strategy")
     public void setStrategy(ControlPlaneMachineSetStrategy strategy) {
         this.strategy = strategy;
     }
 
+    /**
+     * ControlPlaneMachineSet represents the configuration of the ControlPlaneMachineSet.
+     */
     @JsonProperty("template")
     public ControlPlaneMachineSetTemplate getTemplate() {
         return template;
     }
 
+    /**
+     * ControlPlaneMachineSet represents the configuration of the ControlPlaneMachineSet.
+     */
     @JsonProperty("template")
     public void setTemplate(ControlPlaneMachineSetTemplate template) {
         this.template = template;

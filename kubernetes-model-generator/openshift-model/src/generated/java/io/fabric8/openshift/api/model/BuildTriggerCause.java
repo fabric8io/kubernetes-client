@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * BuildTriggerCause holds information about a triggered build. It is used for displaying build trigger data for each build and build configuration in oc describe. It is also used to describe which triggers led to the most recent update in the build configuration.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -98,61 +101,97 @@ public class BuildTriggerCause implements Editable<BuildTriggerCauseBuilder>, Ku
         this.message = message;
     }
 
+    /**
+     * BuildTriggerCause holds information about a triggered build. It is used for displaying build trigger data for each build and build configuration in oc describe. It is also used to describe which triggers led to the most recent update in the build configuration.
+     */
     @JsonProperty("bitbucketWebHook")
     public BitbucketWebHookCause getBitbucketWebHook() {
         return bitbucketWebHook;
     }
 
+    /**
+     * BuildTriggerCause holds information about a triggered build. It is used for displaying build trigger data for each build and build configuration in oc describe. It is also used to describe which triggers led to the most recent update in the build configuration.
+     */
     @JsonProperty("bitbucketWebHook")
     public void setBitbucketWebHook(BitbucketWebHookCause bitbucketWebHook) {
         this.bitbucketWebHook = bitbucketWebHook;
     }
 
+    /**
+     * BuildTriggerCause holds information about a triggered build. It is used for displaying build trigger data for each build and build configuration in oc describe. It is also used to describe which triggers led to the most recent update in the build configuration.
+     */
     @JsonProperty("genericWebHook")
     public GenericWebHookCause getGenericWebHook() {
         return genericWebHook;
     }
 
+    /**
+     * BuildTriggerCause holds information about a triggered build. It is used for displaying build trigger data for each build and build configuration in oc describe. It is also used to describe which triggers led to the most recent update in the build configuration.
+     */
     @JsonProperty("genericWebHook")
     public void setGenericWebHook(GenericWebHookCause genericWebHook) {
         this.genericWebHook = genericWebHook;
     }
 
+    /**
+     * BuildTriggerCause holds information about a triggered build. It is used for displaying build trigger data for each build and build configuration in oc describe. It is also used to describe which triggers led to the most recent update in the build configuration.
+     */
     @JsonProperty("githubWebHook")
     public GitHubWebHookCause getGithubWebHook() {
         return githubWebHook;
     }
 
+    /**
+     * BuildTriggerCause holds information about a triggered build. It is used for displaying build trigger data for each build and build configuration in oc describe. It is also used to describe which triggers led to the most recent update in the build configuration.
+     */
     @JsonProperty("githubWebHook")
     public void setGithubWebHook(GitHubWebHookCause githubWebHook) {
         this.githubWebHook = githubWebHook;
     }
 
+    /**
+     * BuildTriggerCause holds information about a triggered build. It is used for displaying build trigger data for each build and build configuration in oc describe. It is also used to describe which triggers led to the most recent update in the build configuration.
+     */
     @JsonProperty("gitlabWebHook")
     public GitLabWebHookCause getGitlabWebHook() {
         return gitlabWebHook;
     }
 
+    /**
+     * BuildTriggerCause holds information about a triggered build. It is used for displaying build trigger data for each build and build configuration in oc describe. It is also used to describe which triggers led to the most recent update in the build configuration.
+     */
     @JsonProperty("gitlabWebHook")
     public void setGitlabWebHook(GitLabWebHookCause gitlabWebHook) {
         this.gitlabWebHook = gitlabWebHook;
     }
 
+    /**
+     * BuildTriggerCause holds information about a triggered build. It is used for displaying build trigger data for each build and build configuration in oc describe. It is also used to describe which triggers led to the most recent update in the build configuration.
+     */
     @JsonProperty("imageChangeBuild")
     public ImageChangeCause getImageChangeBuild() {
         return imageChangeBuild;
     }
 
+    /**
+     * BuildTriggerCause holds information about a triggered build. It is used for displaying build trigger data for each build and build configuration in oc describe. It is also used to describe which triggers led to the most recent update in the build configuration.
+     */
     @JsonProperty("imageChangeBuild")
     public void setImageChangeBuild(ImageChangeCause imageChangeBuild) {
         this.imageChangeBuild = imageChangeBuild;
     }
 
+    /**
+     * message is used to store a human readable message for why the build was triggered. E.g.: "Manually triggered by user", "Configuration change",etc.
+     */
     @JsonProperty("message")
     public String getMessage() {
         return message;
     }
 
+    /**
+     * message is used to store a human readable message for why the build was triggered. E.g.: "Manually triggered by user", "Configuration change",etc.
+     */
     @JsonProperty("message")
     public void setMessage(String message) {
         this.message = message;

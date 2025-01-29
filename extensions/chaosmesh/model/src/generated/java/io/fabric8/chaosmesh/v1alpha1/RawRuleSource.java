@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * RawRuleSource represents the name and namespace of the source network chaos
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class RawRuleSource implements Editable<RawRuleSourceBuilder>, Kubernetes
         this.source = source;
     }
 
+    /**
+     * RawRuleSource represents the name and namespace of the source network chaos
+     */
     @JsonProperty("source")
     public String getSource() {
         return source;
     }
 
+    /**
+     * RawRuleSource represents the name and namespace of the source network chaos
+     */
     @JsonProperty("source")
     public void setSource(String source) {
         this.source = source;

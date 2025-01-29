@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * On a redirect, dynamically set the port: &#42; FROM_PROTOCOL_DEFAULT: automatically set to 80 for HTTP and 443 for HTTPS. &#42; FROM_REQUEST_PORT: automatically use the port of the request.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class HTTPRedirectDerivePort implements IsHTTPRedirectRedirectPort, Edita
         this.derivePort = derivePort;
     }
 
+    /**
+     * On a redirect, dynamically set the port: &#42; FROM_PROTOCOL_DEFAULT: automatically set to 80 for HTTP and 443 for HTTPS. &#42; FROM_REQUEST_PORT: automatically use the port of the request.
+     */
     @JsonProperty("derivePort")
     public HTTPRedirectRedirectPortSelection getDerivePort() {
         return derivePort;
     }
 
+    /**
+     * On a redirect, dynamically set the port: &#42; FROM_PROTOCOL_DEFAULT: automatically set to 80 for HTTP and 443 for HTTPS. &#42; FROM_REQUEST_PORT: automatically use the port of the request.
+     */
     @JsonProperty("derivePort")
     public void setDerivePort(HTTPRedirectRedirectPortSelection derivePort) {
         this.derivePort = derivePort;

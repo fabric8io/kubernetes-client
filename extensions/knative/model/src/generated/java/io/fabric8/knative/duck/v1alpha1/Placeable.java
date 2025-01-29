@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Placeable is a list of podName and virtual replicas pairs. Each pair represents the assignment of virtual replicas to a pod
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class Placeable implements Editable<PlaceableBuilder>, KubernetesResource
         this.placements = placements;
     }
 
+    /**
+     * Placeable is a list of podName and virtual replicas pairs. Each pair represents the assignment of virtual replicas to a pod
+     */
     @JsonProperty("maxAllowedVReplicas")
     public Integer getMaxAllowedVReplicas() {
         return maxAllowedVReplicas;
     }
 
+    /**
+     * Placeable is a list of podName and virtual replicas pairs. Each pair represents the assignment of virtual replicas to a pod
+     */
     @JsonProperty("maxAllowedVReplicas")
     public void setMaxAllowedVReplicas(Integer maxAllowedVReplicas) {
         this.maxAllowedVReplicas = maxAllowedVReplicas;
     }
 
+    /**
+     * Placeable is a list of podName and virtual replicas pairs. Each pair represents the assignment of virtual replicas to a pod
+     */
     @JsonProperty("placements")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Placement> getPlacements() {
         return placements;
     }
 
+    /**
+     * Placeable is a list of podName and virtual replicas pairs. Each pair represents the assignment of virtual replicas to a pod
+     */
     @JsonProperty("placements")
     public void setPlacements(List<Placement> placements) {
         this.placements = placements;

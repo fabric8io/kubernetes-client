@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ImageContentSource defines a list of sources/repositories that can be used to pull content. The field is deprecated. Please use imageDigestSources.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class ImageContentSource implements Editable<ImageContentSourceBuilder>, 
         this.source = source;
     }
 
+    /**
+     * Mirrors is one or more repositories that may also contain the same images.
+     */
     @JsonProperty("mirrors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getMirrors() {
         return mirrors;
     }
 
+    /**
+     * Mirrors is one or more repositories that may also contain the same images.
+     */
     @JsonProperty("mirrors")
     public void setMirrors(List<String> mirrors) {
         this.mirrors = mirrors;
     }
 
+    /**
+     * Source is the repository that users refer to, e.g. in image pull specifications.
+     */
     @JsonProperty("source")
     public String getSource() {
         return source;
     }
 
+    /**
+     * Source is the repository that users refer to, e.g. in image pull specifications.
+     */
     @JsonProperty("source")
     public void setSource(String source) {
         this.source = source;

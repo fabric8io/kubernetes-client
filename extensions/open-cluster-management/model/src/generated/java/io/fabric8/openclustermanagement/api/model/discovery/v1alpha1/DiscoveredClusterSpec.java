@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DiscoveredClusterSpec defines the desired state of DiscoveredCluster
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -122,121 +125,193 @@ public class DiscoveredClusterSpec implements Editable<DiscoveredClusterSpecBuil
         this.type = type;
     }
 
+    /**
+     * DiscoveredClusterSpec defines the desired state of DiscoveredCluster
+     */
     @JsonProperty("activityTimestamp")
     public String getActivityTimestamp() {
         return activityTimestamp;
     }
 
+    /**
+     * DiscoveredClusterSpec defines the desired state of DiscoveredCluster
+     */
     @JsonProperty("activityTimestamp")
     public void setActivityTimestamp(String activityTimestamp) {
         this.activityTimestamp = activityTimestamp;
     }
 
+    /**
+     * DiscoveredClusterSpec defines the desired state of DiscoveredCluster
+     */
     @JsonProperty("apiUrl")
     public String getApiUrl() {
         return apiUrl;
     }
 
+    /**
+     * DiscoveredClusterSpec defines the desired state of DiscoveredCluster
+     */
     @JsonProperty("apiUrl")
     public void setApiUrl(String apiUrl) {
         this.apiUrl = apiUrl;
     }
 
+    /**
+     * DiscoveredClusterSpec defines the desired state of DiscoveredCluster
+     */
     @JsonProperty("cloudProvider")
     public String getCloudProvider() {
         return cloudProvider;
     }
 
+    /**
+     * DiscoveredClusterSpec defines the desired state of DiscoveredCluster
+     */
     @JsonProperty("cloudProvider")
     public void setCloudProvider(String cloudProvider) {
         this.cloudProvider = cloudProvider;
     }
 
+    /**
+     * DiscoveredClusterSpec defines the desired state of DiscoveredCluster
+     */
     @JsonProperty("console")
     public String getConsole() {
         return console;
     }
 
+    /**
+     * DiscoveredClusterSpec defines the desired state of DiscoveredCluster
+     */
     @JsonProperty("console")
     public void setConsole(String console) {
         this.console = console;
     }
 
+    /**
+     * DiscoveredClusterSpec defines the desired state of DiscoveredCluster
+     */
     @JsonProperty("creationTimestamp")
     public String getCreationTimestamp() {
         return creationTimestamp;
     }
 
+    /**
+     * DiscoveredClusterSpec defines the desired state of DiscoveredCluster
+     */
     @JsonProperty("creationTimestamp")
     public void setCreationTimestamp(String creationTimestamp) {
         this.creationTimestamp = creationTimestamp;
     }
 
+    /**
+     * DiscoveredClusterSpec defines the desired state of DiscoveredCluster
+     */
     @JsonProperty("credential")
     public ObjectReference getCredential() {
         return credential;
     }
 
+    /**
+     * DiscoveredClusterSpec defines the desired state of DiscoveredCluster
+     */
     @JsonProperty("credential")
     public void setCredential(ObjectReference credential) {
         this.credential = credential;
     }
 
+    /**
+     * DiscoveredClusterSpec defines the desired state of DiscoveredCluster
+     */
     @JsonProperty("displayName")
     public String getDisplayName() {
         return displayName;
     }
 
+    /**
+     * DiscoveredClusterSpec defines the desired state of DiscoveredCluster
+     */
     @JsonProperty("displayName")
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
     }
 
+    /**
+     * DiscoveredClusterSpec defines the desired state of DiscoveredCluster
+     */
     @JsonProperty("isManagedCluster")
     public Boolean getIsManagedCluster() {
         return isManagedCluster;
     }
 
+    /**
+     * DiscoveredClusterSpec defines the desired state of DiscoveredCluster
+     */
     @JsonProperty("isManagedCluster")
     public void setIsManagedCluster(Boolean isManagedCluster) {
         this.isManagedCluster = isManagedCluster;
     }
 
+    /**
+     * DiscoveredClusterSpec defines the desired state of DiscoveredCluster
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * DiscoveredClusterSpec defines the desired state of DiscoveredCluster
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * DiscoveredClusterSpec defines the desired state of DiscoveredCluster
+     */
     @JsonProperty("openshiftVersion")
     public String getOpenshiftVersion() {
         return openshiftVersion;
     }
 
+    /**
+     * DiscoveredClusterSpec defines the desired state of DiscoveredCluster
+     */
     @JsonProperty("openshiftVersion")
     public void setOpenshiftVersion(String openshiftVersion) {
         this.openshiftVersion = openshiftVersion;
     }
 
+    /**
+     * DiscoveredClusterSpec defines the desired state of DiscoveredCluster
+     */
     @JsonProperty("status")
     public String getStatus() {
         return status;
     }
 
+    /**
+     * DiscoveredClusterSpec defines the desired state of DiscoveredCluster
+     */
     @JsonProperty("status")
     public void setStatus(String status) {
         this.status = status;
     }
 
+    /**
+     * DiscoveredClusterSpec defines the desired state of DiscoveredCluster
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * DiscoveredClusterSpec defines the desired state of DiscoveredCluster
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

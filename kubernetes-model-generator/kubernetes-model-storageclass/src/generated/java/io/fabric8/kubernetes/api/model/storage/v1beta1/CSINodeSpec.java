@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * CSINodeSpec holds information about the specification of all CSI drivers installed on a node
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -81,12 +84,18 @@ public class CSINodeSpec implements Editable<CSINodeSpecBuilder>, KubernetesReso
         this.drivers = drivers;
     }
 
+    /**
+     * drivers is a list of information of all CSI Drivers existing on a node. If all drivers in the list are uninstalled, this can become empty.
+     */
     @JsonProperty("drivers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<CSINodeDriver> getDrivers() {
         return drivers;
     }
 
+    /**
+     * drivers is a list of information of all CSI Drivers existing on a node. If all drivers in the list are uninstalled, this can become empty.
+     */
     @JsonProperty("drivers")
     public void setDrivers(List<CSINodeDriver> drivers) {
         this.drivers = drivers;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * `OutboundTrafficPolicy` sets the default behavior of the sidecar for handling unknown outbound traffic from the application.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class OutboundTrafficPolicy implements Editable<OutboundTrafficPolicyBuil
         this.mode = mode;
     }
 
+    /**
+     * `OutboundTrafficPolicy` sets the default behavior of the sidecar for handling unknown outbound traffic from the application.
+     */
     @JsonProperty("egressProxy")
     public Destination getEgressProxy() {
         return egressProxy;
     }
 
+    /**
+     * `OutboundTrafficPolicy` sets the default behavior of the sidecar for handling unknown outbound traffic from the application.
+     */
     @JsonProperty("egressProxy")
     public void setEgressProxy(Destination egressProxy) {
         this.egressProxy = egressProxy;
     }
 
+    /**
+     * `OutboundTrafficPolicy` sets the default behavior of the sidecar for handling unknown outbound traffic from the application.
+     */
     @JsonProperty("mode")
     public OutboundTrafficPolicyMode getMode() {
         return mode;
     }
 
+    /**
+     * `OutboundTrafficPolicy` sets the default behavior of the sidecar for handling unknown outbound traffic from the application.
+     */
     @JsonProperty("mode")
     public void setMode(OutboundTrafficPolicyMode mode) {
         this.mode = mode;

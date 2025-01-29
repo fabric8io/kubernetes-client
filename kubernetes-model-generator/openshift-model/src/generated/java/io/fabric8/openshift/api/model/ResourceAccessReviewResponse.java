@@ -39,6 +39,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ResourceAccessReviewResponse describes who can perform the action<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -79,9 +82,6 @@ import lombok.experimental.Accessors;
 public class ResourceAccessReviewResponse implements Editable<ResourceAccessReviewResponseBuilder>, KubernetesResource, Namespaced
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "authorization.openshift.io/v1";
     @JsonProperty("evalutionError")
@@ -89,9 +89,6 @@ public class ResourceAccessReviewResponse implements Editable<ResourceAccessRevi
     @JsonProperty("groups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> groups = new ArrayList<>();
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "ResourceAccessReviewResponse";
     @JsonProperty("namespace")
@@ -119,7 +116,7 @@ public class ResourceAccessReviewResponse implements Editable<ResourceAccessRevi
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -127,36 +124,48 @@ public class ResourceAccessReviewResponse implements Editable<ResourceAccessRevi
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
+    /**
+     * EvaluationError is an indication that some error occurred during resolution, but partial results can still be returned. It is entirely possible to get an error and be able to continue determine authorization status in spite of it.  This is most common when a bound role is missing, but enough roles are still present and bound to reason about the request.
+     */
     @JsonProperty("evalutionError")
     public String getEvalutionError() {
         return evalutionError;
     }
 
+    /**
+     * EvaluationError is an indication that some error occurred during resolution, but partial results can still be returned. It is entirely possible to get an error and be able to continue determine authorization status in spite of it.  This is most common when a bound role is missing, but enough roles are still present and bound to reason about the request.
+     */
     @JsonProperty("evalutionError")
     public void setEvalutionError(String evalutionError) {
         this.evalutionError = evalutionError;
     }
 
+    /**
+     * GroupsSlice is the list of groups who can perform the action
+     */
     @JsonProperty("groups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getGroups() {
         return groups;
     }
 
+    /**
+     * GroupsSlice is the list of groups who can perform the action
+     */
     @JsonProperty("groups")
     public void setGroups(List<String> groups) {
         this.groups = groups;
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -164,29 +173,41 @@ public class ResourceAccessReviewResponse implements Editable<ResourceAccessRevi
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * Namespace is the namespace used for the access review
+     */
     @JsonProperty("namespace")
     public String getNamespace() {
         return namespace;
     }
 
+    /**
+     * Namespace is the namespace used for the access review
+     */
     @JsonProperty("namespace")
     public void setNamespace(String namespace) {
         this.namespace = namespace;
     }
 
+    /**
+     * UsersSlice is the list of users who can perform the action
+     */
     @JsonProperty("users")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getUsers() {
         return users;
     }
 
+    /**
+     * UsersSlice is the list of users who can perform the action
+     */
     @JsonProperty("users")
     public void setUsers(List<String> users) {
         this.users = users;

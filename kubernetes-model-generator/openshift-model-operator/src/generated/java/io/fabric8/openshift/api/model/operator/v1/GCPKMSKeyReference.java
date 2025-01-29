@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * GCPKMSKeyReference gathers required fields for looking up a GCP KMS Key
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class GCPKMSKeyReference implements Editable<GCPKMSKeyReferenceBuilder>, 
         this.projectID = projectID;
     }
 
+    /**
+     * keyRing is the name of the KMS Key Ring which the KMS Key belongs to. The value should correspond to an existing KMS key ring and should consist of only alphanumeric characters, hyphens (-) and underscores (_), and be at most 63 characters in length.
+     */
     @JsonProperty("keyRing")
     public String getKeyRing() {
         return keyRing;
     }
 
+    /**
+     * keyRing is the name of the KMS Key Ring which the KMS Key belongs to. The value should correspond to an existing KMS key ring and should consist of only alphanumeric characters, hyphens (-) and underscores (_), and be at most 63 characters in length.
+     */
     @JsonProperty("keyRing")
     public void setKeyRing(String keyRing) {
         this.keyRing = keyRing;
     }
 
+    /**
+     * location is the GCP location in which the Key Ring exists. The value must match an existing GCP location, or "global". Defaults to global, if not set.
+     */
     @JsonProperty("location")
     public String getLocation() {
         return location;
     }
 
+    /**
+     * location is the GCP location in which the Key Ring exists. The value must match an existing GCP location, or "global". Defaults to global, if not set.
+     */
     @JsonProperty("location")
     public void setLocation(String location) {
         this.location = location;
     }
 
+    /**
+     * name is the name of the customer-managed encryption key to be used for disk encryption. The value should correspond to an existing KMS key and should consist of only alphanumeric characters, hyphens (-) and underscores (_), and be at most 63 characters in length.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * name is the name of the customer-managed encryption key to be used for disk encryption. The value should correspond to an existing KMS key and should consist of only alphanumeric characters, hyphens (-) and underscores (_), and be at most 63 characters in length.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * projectID is the ID of the Project in which the KMS Key Ring exists. It must be 6 to 30 lowercase letters, digits, or hyphens. It must start with a letter. Trailing hyphens are prohibited.
+     */
     @JsonProperty("projectID")
     public String getProjectID() {
         return projectID;
     }
 
+    /**
+     * projectID is the ID of the Project in which the KMS Key Ring exists. It must be 6 to 30 lowercase letters, digits, or hyphens. It must start with a letter. Trailing hyphens are prohibited.
+     */
     @JsonProperty("projectID")
     public void setProjectID(String projectID) {
         this.projectID = projectID;

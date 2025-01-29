@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Metadata contains IBM Cloud metadata (e.g. for uninstalling the cluster).
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -115,93 +118,147 @@ public class Metadata implements Editable<MetadataBuilder>, KubernetesResource
         this.vpc = vpc;
     }
 
+    /**
+     * Metadata contains IBM Cloud metadata (e.g. for uninstalling the cluster).
+     */
     @JsonProperty("accountID")
     public String getAccountID() {
         return accountID;
     }
 
+    /**
+     * Metadata contains IBM Cloud metadata (e.g. for uninstalling the cluster).
+     */
     @JsonProperty("accountID")
     public void setAccountID(String accountID) {
         this.accountID = accountID;
     }
 
+    /**
+     * Metadata contains IBM Cloud metadata (e.g. for uninstalling the cluster).
+     */
     @JsonProperty("baseDomain")
     public String getBaseDomain() {
         return baseDomain;
     }
 
+    /**
+     * Metadata contains IBM Cloud metadata (e.g. for uninstalling the cluster).
+     */
     @JsonProperty("baseDomain")
     public void setBaseDomain(String baseDomain) {
         this.baseDomain = baseDomain;
     }
 
+    /**
+     * Metadata contains IBM Cloud metadata (e.g. for uninstalling the cluster).
+     */
     @JsonProperty("cisInstanceCRN")
     public String getCisInstanceCRN() {
         return cisInstanceCRN;
     }
 
+    /**
+     * Metadata contains IBM Cloud metadata (e.g. for uninstalling the cluster).
+     */
     @JsonProperty("cisInstanceCRN")
     public void setCisInstanceCRN(String cisInstanceCRN) {
         this.cisInstanceCRN = cisInstanceCRN;
     }
 
+    /**
+     * Metadata contains IBM Cloud metadata (e.g. for uninstalling the cluster).
+     */
     @JsonProperty("dnsInstanceID")
     public String getDnsInstanceID() {
         return dnsInstanceID;
     }
 
+    /**
+     * Metadata contains IBM Cloud metadata (e.g. for uninstalling the cluster).
+     */
     @JsonProperty("dnsInstanceID")
     public void setDnsInstanceID(String dnsInstanceID) {
         this.dnsInstanceID = dnsInstanceID;
     }
 
+    /**
+     * Metadata contains IBM Cloud metadata (e.g. for uninstalling the cluster).
+     */
     @JsonProperty("region")
     public String getRegion() {
         return region;
     }
 
+    /**
+     * Metadata contains IBM Cloud metadata (e.g. for uninstalling the cluster).
+     */
     @JsonProperty("region")
     public void setRegion(String region) {
         this.region = region;
     }
 
+    /**
+     * Metadata contains IBM Cloud metadata (e.g. for uninstalling the cluster).
+     */
     @JsonProperty("resourceGroupName")
     public String getResourceGroupName() {
         return resourceGroupName;
     }
 
+    /**
+     * Metadata contains IBM Cloud metadata (e.g. for uninstalling the cluster).
+     */
     @JsonProperty("resourceGroupName")
     public void setResourceGroupName(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
     }
 
+    /**
+     * Metadata contains IBM Cloud metadata (e.g. for uninstalling the cluster).
+     */
     @JsonProperty("serviceEndpoints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<IBMCloudServiceEndpoint> getServiceEndpoints() {
         return serviceEndpoints;
     }
 
+    /**
+     * Metadata contains IBM Cloud metadata (e.g. for uninstalling the cluster).
+     */
     @JsonProperty("serviceEndpoints")
     public void setServiceEndpoints(List<IBMCloudServiceEndpoint> serviceEndpoints) {
         this.serviceEndpoints = serviceEndpoints;
     }
 
+    /**
+     * Metadata contains IBM Cloud metadata (e.g. for uninstalling the cluster).
+     */
     @JsonProperty("subnets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getSubnets() {
         return subnets;
     }
 
+    /**
+     * Metadata contains IBM Cloud metadata (e.g. for uninstalling the cluster).
+     */
     @JsonProperty("subnets")
     public void setSubnets(List<String> subnets) {
         this.subnets = subnets;
     }
 
+    /**
+     * Metadata contains IBM Cloud metadata (e.g. for uninstalling the cluster).
+     */
     @JsonProperty("vpc")
     public String getVpc() {
         return vpc;
     }
 
+    /**
+     * Metadata contains IBM Cloud metadata (e.g. for uninstalling the cluster).
+     */
     @JsonProperty("vpc")
     public void setVpc(String vpc) {
         this.vpc = vpc;

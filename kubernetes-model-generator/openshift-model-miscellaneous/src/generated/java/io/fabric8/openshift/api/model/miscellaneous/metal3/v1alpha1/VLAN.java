@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * VLAN represents the name and ID of a VLAN.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class VLAN implements Editable<VLANBuilder>, KubernetesResource
         this.name = name;
     }
 
+    /**
+     * VLAN represents the name and ID of a VLAN.
+     */
     @JsonProperty("id")
     public Integer getId() {
         return id;
     }
 
+    /**
+     * VLAN represents the name and ID of a VLAN.
+     */
     @JsonProperty("id")
     public void setId(Integer id) {
         this.id = id;
     }
 
+    /**
+     * VLAN represents the name and ID of a VLAN.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * VLAN represents the name and ID of a VLAN.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

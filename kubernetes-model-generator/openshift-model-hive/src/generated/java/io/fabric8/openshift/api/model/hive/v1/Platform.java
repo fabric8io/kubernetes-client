@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Platform is the configuration for the specific platform upon which to perform the installation. Only one of the platform configuration should be set.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -115,101 +118,161 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
         this.vsphere = vsphere;
     }
 
+    /**
+     * Platform is the configuration for the specific platform upon which to perform the installation. Only one of the platform configuration should be set.
+     */
     @JsonProperty("agentBareMetal")
     public BareMetalPlatform getAgentBareMetal() {
         return agentBareMetal;
     }
 
+    /**
+     * Platform is the configuration for the specific platform upon which to perform the installation. Only one of the platform configuration should be set.
+     */
     @JsonProperty("agentBareMetal")
     public void setAgentBareMetal(BareMetalPlatform agentBareMetal) {
         this.agentBareMetal = agentBareMetal;
     }
 
+    /**
+     * Platform is the configuration for the specific platform upon which to perform the installation. Only one of the platform configuration should be set.
+     */
     @JsonProperty("aws")
     public io.fabric8.openshift.api.model.hive.aws.v1.Platform getAws() {
         return aws;
     }
 
+    /**
+     * Platform is the configuration for the specific platform upon which to perform the installation. Only one of the platform configuration should be set.
+     */
     @JsonProperty("aws")
     public void setAws(io.fabric8.openshift.api.model.hive.aws.v1.Platform aws) {
         this.aws = aws;
     }
 
+    /**
+     * Platform is the configuration for the specific platform upon which to perform the installation. Only one of the platform configuration should be set.
+     */
     @JsonProperty("azure")
     public io.fabric8.openshift.api.model.hive.azure.v1.Platform getAzure() {
         return azure;
     }
 
+    /**
+     * Platform is the configuration for the specific platform upon which to perform the installation. Only one of the platform configuration should be set.
+     */
     @JsonProperty("azure")
     public void setAzure(io.fabric8.openshift.api.model.hive.azure.v1.Platform azure) {
         this.azure = azure;
     }
 
+    /**
+     * Platform is the configuration for the specific platform upon which to perform the installation. Only one of the platform configuration should be set.
+     */
     @JsonProperty("baremetal")
     public io.fabric8.openshift.api.model.hive.baremetal.v1.Platform getBaremetal() {
         return baremetal;
     }
 
+    /**
+     * Platform is the configuration for the specific platform upon which to perform the installation. Only one of the platform configuration should be set.
+     */
     @JsonProperty("baremetal")
     public void setBaremetal(io.fabric8.openshift.api.model.hive.baremetal.v1.Platform baremetal) {
         this.baremetal = baremetal;
     }
 
+    /**
+     * Platform is the configuration for the specific platform upon which to perform the installation. Only one of the platform configuration should be set.
+     */
     @JsonProperty("gcp")
     public io.fabric8.openshift.api.model.hive.gcp.v1.Platform getGcp() {
         return gcp;
     }
 
+    /**
+     * Platform is the configuration for the specific platform upon which to perform the installation. Only one of the platform configuration should be set.
+     */
     @JsonProperty("gcp")
     public void setGcp(io.fabric8.openshift.api.model.hive.gcp.v1.Platform gcp) {
         this.gcp = gcp;
     }
 
+    /**
+     * Platform is the configuration for the specific platform upon which to perform the installation. Only one of the platform configuration should be set.
+     */
     @JsonProperty("ibmcloud")
     public io.fabric8.openshift.api.model.hive.ibmcloud.v1.Platform getIbmcloud() {
         return ibmcloud;
     }
 
+    /**
+     * Platform is the configuration for the specific platform upon which to perform the installation. Only one of the platform configuration should be set.
+     */
     @JsonProperty("ibmcloud")
     public void setIbmcloud(io.fabric8.openshift.api.model.hive.ibmcloud.v1.Platform ibmcloud) {
         this.ibmcloud = ibmcloud;
     }
 
+    /**
+     * Platform is the configuration for the specific platform upon which to perform the installation. Only one of the platform configuration should be set.
+     */
     @JsonProperty("none")
     public io.fabric8.openshift.api.model.hive.none.v1.Platform getNone() {
         return none;
     }
 
+    /**
+     * Platform is the configuration for the specific platform upon which to perform the installation. Only one of the platform configuration should be set.
+     */
     @JsonProperty("none")
     public void setNone(io.fabric8.openshift.api.model.hive.none.v1.Platform none) {
         this.none = none;
     }
 
+    /**
+     * Platform is the configuration for the specific platform upon which to perform the installation. Only one of the platform configuration should be set.
+     */
     @JsonProperty("openstack")
     public io.fabric8.openshift.api.model.hive.openstack.v1.Platform getOpenstack() {
         return openstack;
     }
 
+    /**
+     * Platform is the configuration for the specific platform upon which to perform the installation. Only one of the platform configuration should be set.
+     */
     @JsonProperty("openstack")
     public void setOpenstack(io.fabric8.openshift.api.model.hive.openstack.v1.Platform openstack) {
         this.openstack = openstack;
     }
 
+    /**
+     * Platform is the configuration for the specific platform upon which to perform the installation. Only one of the platform configuration should be set.
+     */
     @JsonProperty("ovirt")
     public io.fabric8.openshift.api.model.hive.ovirt.v1.Platform getOvirt() {
         return ovirt;
     }
 
+    /**
+     * Platform is the configuration for the specific platform upon which to perform the installation. Only one of the platform configuration should be set.
+     */
     @JsonProperty("ovirt")
     public void setOvirt(io.fabric8.openshift.api.model.hive.ovirt.v1.Platform ovirt) {
         this.ovirt = ovirt;
     }
 
+    /**
+     * Platform is the configuration for the specific platform upon which to perform the installation. Only one of the platform configuration should be set.
+     */
     @JsonProperty("vsphere")
     public io.fabric8.openshift.api.model.hive.vsphere.v1.Platform getVsphere() {
         return vsphere;
     }
 
+    /**
+     * Platform is the configuration for the specific platform upon which to perform the installation. Only one of the platform configuration should be set.
+     */
     @JsonProperty("vsphere")
     public void setVsphere(io.fabric8.openshift.api.model.hive.vsphere.v1.Platform vsphere) {
         this.vsphere = vsphere;

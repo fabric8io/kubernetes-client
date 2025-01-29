@@ -78,11 +78,17 @@ public class EtcdBackupSpec implements Editable<EtcdBackupSpecBuilder>, Kubernet
         this.pvcName = pvcName;
     }
 
+    /**
+     * PVCName specifies the name of the PersistentVolumeClaim (PVC) which binds a PersistentVolume where the etcd backup file would be saved The PVC itself must always be created in the "openshift-etcd" namespace If the PVC is left unspecified "" then the platform will choose a reasonable default location to save the backup. In the future this would be backups saved across the control-plane master nodes.
+     */
     @JsonProperty("pvcName")
     public String getPvcName() {
         return pvcName;
     }
 
+    /**
+     * PVCName specifies the name of the PersistentVolumeClaim (PVC) which binds a PersistentVolume where the etcd backup file would be saved The PVC itself must always be created in the "openshift-etcd" namespace If the PVC is left unspecified "" then the platform will choose a reasonable default location to save the backup. In the future this would be backups saved across the control-plane master nodes.
+     */
     @JsonProperty("pvcName")
     public void setPvcName(String pvcName) {
         this.pvcName = pvcName;

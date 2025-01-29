@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ClusterClaimSelector is a claim query over a set of ManagedClusters. An empty cluster claim selector matches all objects. A null cluster claim selector matches no objects.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,12 +85,18 @@ public class ClusterClaimSelector implements Editable<ClusterClaimSelectorBuilde
         this.matchExpressions = matchExpressions;
     }
 
+    /**
+     * matchExpressions is a list of cluster claim selector requirements. The requirements are ANDed.
+     */
     @JsonProperty("matchExpressions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<LabelSelectorRequirement> getMatchExpressions() {
         return matchExpressions;
     }
 
+    /**
+     * matchExpressions is a list of cluster claim selector requirements. The requirements are ANDed.
+     */
     @JsonProperty("matchExpressions")
     public void setMatchExpressions(List<LabelSelectorRequirement> matchExpressions) {
         this.matchExpressions = matchExpressions;

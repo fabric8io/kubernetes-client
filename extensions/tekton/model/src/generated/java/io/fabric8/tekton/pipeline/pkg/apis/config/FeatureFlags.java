@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * FeatureFlags holds the features configurations
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -162,221 +165,353 @@ public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesRe
         this.verificationNoMatchPolicy = verificationNoMatchPolicy;
     }
 
+    /**
+     * FeatureFlags holds the features configurations
+     */
     @JsonProperty("AwaitSidecarReadiness")
     public Boolean getAwaitSidecarReadiness() {
         return awaitSidecarReadiness;
     }
 
+    /**
+     * FeatureFlags holds the features configurations
+     */
     @JsonProperty("AwaitSidecarReadiness")
     public void setAwaitSidecarReadiness(Boolean awaitSidecarReadiness) {
         this.awaitSidecarReadiness = awaitSidecarReadiness;
     }
 
+    /**
+     * FeatureFlags holds the features configurations
+     */
     @JsonProperty("Coschedule")
     public String getCoschedule() {
         return coschedule;
     }
 
+    /**
+     * FeatureFlags holds the features configurations
+     */
     @JsonProperty("Coschedule")
     public void setCoschedule(String coschedule) {
         this.coschedule = coschedule;
     }
 
+    /**
+     * FeatureFlags holds the features configurations
+     */
     @JsonProperty("DisableAffinityAssistant")
     public Boolean getDisableAffinityAssistant() {
         return disableAffinityAssistant;
     }
 
+    /**
+     * FeatureFlags holds the features configurations
+     */
     @JsonProperty("DisableAffinityAssistant")
     public void setDisableAffinityAssistant(Boolean disableAffinityAssistant) {
         this.disableAffinityAssistant = disableAffinityAssistant;
     }
 
+    /**
+     * FeatureFlags holds the features configurations
+     */
     @JsonProperty("DisableCredsInit")
     public Boolean getDisableCredsInit() {
         return disableCredsInit;
     }
 
+    /**
+     * FeatureFlags holds the features configurations
+     */
     @JsonProperty("DisableCredsInit")
     public void setDisableCredsInit(Boolean disableCredsInit) {
         this.disableCredsInit = disableCredsInit;
     }
 
+    /**
+     * FeatureFlags holds the features configurations
+     */
     @JsonProperty("DisableInlineSpec")
     public String getDisableInlineSpec() {
         return disableInlineSpec;
     }
 
+    /**
+     * FeatureFlags holds the features configurations
+     */
     @JsonProperty("DisableInlineSpec")
     public void setDisableInlineSpec(String disableInlineSpec) {
         this.disableInlineSpec = disableInlineSpec;
     }
 
+    /**
+     * EnableTektonOCIBundles           bool // Deprecated: this is now ignored ScopeWhenExpressionsToTask       bool // Deprecated: this is now ignored
+     */
     @JsonProperty("EnableAPIFields")
     public String getEnableAPIFields() {
         return enableAPIFields;
     }
 
+    /**
+     * EnableTektonOCIBundles           bool // Deprecated: this is now ignored ScopeWhenExpressionsToTask       bool // Deprecated: this is now ignored
+     */
     @JsonProperty("EnableAPIFields")
     public void setEnableAPIFields(String enableAPIFields) {
         this.enableAPIFields = enableAPIFields;
     }
 
+    /**
+     * FeatureFlags holds the features configurations
+     */
     @JsonProperty("EnableArtifacts")
     public Boolean getEnableArtifacts() {
         return enableArtifacts;
     }
 
+    /**
+     * FeatureFlags holds the features configurations
+     */
     @JsonProperty("EnableArtifacts")
     public void setEnableArtifacts(Boolean enableArtifacts) {
         this.enableArtifacts = enableArtifacts;
     }
 
+    /**
+     * FeatureFlags holds the features configurations
+     */
     @JsonProperty("EnableCELInWhenExpression")
     public Boolean getEnableCELInWhenExpression() {
         return enableCELInWhenExpression;
     }
 
+    /**
+     * FeatureFlags holds the features configurations
+     */
     @JsonProperty("EnableCELInWhenExpression")
     public void setEnableCELInWhenExpression(Boolean enableCELInWhenExpression) {
         this.enableCELInWhenExpression = enableCELInWhenExpression;
     }
 
+    /**
+     * FeatureFlags holds the features configurations
+     */
     @JsonProperty("EnableConciseResolverSyntax")
     public Boolean getEnableConciseResolverSyntax() {
         return enableConciseResolverSyntax;
     }
 
+    /**
+     * FeatureFlags holds the features configurations
+     */
     @JsonProperty("EnableConciseResolverSyntax")
     public void setEnableConciseResolverSyntax(Boolean enableConciseResolverSyntax) {
         this.enableConciseResolverSyntax = enableConciseResolverSyntax;
     }
 
+    /**
+     * FeatureFlags holds the features configurations
+     */
     @JsonProperty("EnableKeepPodOnCancel")
     public Boolean getEnableKeepPodOnCancel() {
         return enableKeepPodOnCancel;
     }
 
+    /**
+     * FeatureFlags holds the features configurations
+     */
     @JsonProperty("EnableKeepPodOnCancel")
     public void setEnableKeepPodOnCancel(Boolean enableKeepPodOnCancel) {
         this.enableKeepPodOnCancel = enableKeepPodOnCancel;
     }
 
+    /**
+     * FeatureFlags holds the features configurations
+     */
     @JsonProperty("EnableKubernetesSidecar")
     public Boolean getEnableKubernetesSidecar() {
         return enableKubernetesSidecar;
     }
 
+    /**
+     * FeatureFlags holds the features configurations
+     */
     @JsonProperty("EnableKubernetesSidecar")
     public void setEnableKubernetesSidecar(Boolean enableKubernetesSidecar) {
         this.enableKubernetesSidecar = enableKubernetesSidecar;
     }
 
+    /**
+     * FeatureFlags holds the features configurations
+     */
     @JsonProperty("EnableParamEnum")
     public Boolean getEnableParamEnum() {
         return enableParamEnum;
     }
 
+    /**
+     * FeatureFlags holds the features configurations
+     */
     @JsonProperty("EnableParamEnum")
     public void setEnableParamEnum(Boolean enableParamEnum) {
         this.enableParamEnum = enableParamEnum;
     }
 
+    /**
+     * FeatureFlags holds the features configurations
+     */
     @JsonProperty("EnableProvenanceInStatus")
     public Boolean getEnableProvenanceInStatus() {
         return enableProvenanceInStatus;
     }
 
+    /**
+     * FeatureFlags holds the features configurations
+     */
     @JsonProperty("EnableProvenanceInStatus")
     public void setEnableProvenanceInStatus(Boolean enableProvenanceInStatus) {
         this.enableProvenanceInStatus = enableProvenanceInStatus;
     }
 
+    /**
+     * FeatureFlags holds the features configurations
+     */
     @JsonProperty("EnableStepActions")
     public Boolean getEnableStepActions() {
         return enableStepActions;
     }
 
+    /**
+     * FeatureFlags holds the features configurations
+     */
     @JsonProperty("EnableStepActions")
     public void setEnableStepActions(Boolean enableStepActions) {
         this.enableStepActions = enableStepActions;
     }
 
+    /**
+     * FeatureFlags holds the features configurations
+     */
     @JsonProperty("EnforceNonfalsifiability")
     public String getEnforceNonfalsifiability() {
         return enforceNonfalsifiability;
     }
 
+    /**
+     * FeatureFlags holds the features configurations
+     */
     @JsonProperty("EnforceNonfalsifiability")
     public void setEnforceNonfalsifiability(String enforceNonfalsifiability) {
         this.enforceNonfalsifiability = enforceNonfalsifiability;
     }
 
+    /**
+     * FeatureFlags holds the features configurations
+     */
     @JsonProperty("MaxResultSize")
     public Integer getMaxResultSize() {
         return maxResultSize;
     }
 
+    /**
+     * FeatureFlags holds the features configurations
+     */
     @JsonProperty("MaxResultSize")
     public void setMaxResultSize(Integer maxResultSize) {
         this.maxResultSize = maxResultSize;
     }
 
+    /**
+     * FeatureFlags holds the features configurations
+     */
     @JsonProperty("RequireGitSSHSecretKnownHosts")
     public Boolean getRequireGitSSHSecretKnownHosts() {
         return requireGitSSHSecretKnownHosts;
     }
 
+    /**
+     * FeatureFlags holds the features configurations
+     */
     @JsonProperty("RequireGitSSHSecretKnownHosts")
     public void setRequireGitSSHSecretKnownHosts(Boolean requireGitSSHSecretKnownHosts) {
         this.requireGitSSHSecretKnownHosts = requireGitSSHSecretKnownHosts;
     }
 
+    /**
+     * FeatureFlags holds the features configurations
+     */
     @JsonProperty("ResultExtractionMethod")
     public String getResultExtractionMethod() {
         return resultExtractionMethod;
     }
 
+    /**
+     * FeatureFlags holds the features configurations
+     */
     @JsonProperty("ResultExtractionMethod")
     public void setResultExtractionMethod(String resultExtractionMethod) {
         this.resultExtractionMethod = resultExtractionMethod;
     }
 
+    /**
+     * FeatureFlags holds the features configurations
+     */
     @JsonProperty("RunningInEnvWithInjectedSidecars")
     public Boolean getRunningInEnvWithInjectedSidecars() {
         return runningInEnvWithInjectedSidecars;
     }
 
+    /**
+     * FeatureFlags holds the features configurations
+     */
     @JsonProperty("RunningInEnvWithInjectedSidecars")
     public void setRunningInEnvWithInjectedSidecars(Boolean runningInEnvWithInjectedSidecars) {
         this.runningInEnvWithInjectedSidecars = runningInEnvWithInjectedSidecars;
     }
 
+    /**
+     * FeatureFlags holds the features configurations
+     */
     @JsonProperty("SendCloudEventsForRuns")
     public Boolean getSendCloudEventsForRuns() {
         return sendCloudEventsForRuns;
     }
 
+    /**
+     * FeatureFlags holds the features configurations
+     */
     @JsonProperty("SendCloudEventsForRuns")
     public void setSendCloudEventsForRuns(Boolean sendCloudEventsForRuns) {
         this.sendCloudEventsForRuns = sendCloudEventsForRuns;
     }
 
+    /**
+     * FeatureFlags holds the features configurations
+     */
     @JsonProperty("SetSecurityContext")
     public Boolean getSetSecurityContext() {
         return setSecurityContext;
     }
 
+    /**
+     * FeatureFlags holds the features configurations
+     */
     @JsonProperty("SetSecurityContext")
     public void setSetSecurityContext(Boolean setSecurityContext) {
         this.setSecurityContext = setSecurityContext;
     }
 
+    /**
+     * VerificationNoMatchPolicy is the feature flag for "trusted-resources-verification-no-match-policy" VerificationNoMatchPolicy can be set to "ignore", "warn" and "fail" values. ignore: skip trusted resources verification when no matching verification policies found warn: skip trusted resources verification when no matching verification policies found and log a warning fail: fail the taskrun or pipelines run if no matching verification policies found
+     */
     @JsonProperty("VerificationNoMatchPolicy")
     public String getVerificationNoMatchPolicy() {
         return verificationNoMatchPolicy;
     }
 
+    /**
+     * VerificationNoMatchPolicy is the feature flag for "trusted-resources-verification-no-match-policy" VerificationNoMatchPolicy can be set to "ignore", "warn" and "fail" values. ignore: skip trusted resources verification when no matching verification policies found warn: skip trusted resources verification when no matching verification policies found and log a warning fail: fail the taskrun or pipelines run if no matching verification policies found
+     */
     @JsonProperty("VerificationNoMatchPolicy")
     public void setVerificationNoMatchPolicy(String verificationNoMatchPolicy) {
         this.verificationNoMatchPolicy = verificationNoMatchPolicy;

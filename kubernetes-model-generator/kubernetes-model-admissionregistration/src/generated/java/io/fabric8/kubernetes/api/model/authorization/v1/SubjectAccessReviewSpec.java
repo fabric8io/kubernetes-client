@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SubjectAccessReviewSpec is a description of the access request.  Exactly one of ResourceAuthorizationAttributes and NonResourceAuthorizationAttributes must be set
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -102,63 +105,99 @@ public class SubjectAccessReviewSpec implements Editable<SubjectAccessReviewSpec
         this.user = user;
     }
 
+    /**
+     * Extra corresponds to the user.Info.GetExtra() method from the authenticator.  Since that is input to the authorizer it needs a reflection here.
+     */
     @JsonProperty("extra")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, List<String>> getExtra() {
         return extra;
     }
 
+    /**
+     * Extra corresponds to the user.Info.GetExtra() method from the authenticator.  Since that is input to the authorizer it needs a reflection here.
+     */
     @JsonProperty("extra")
     public void setExtra(Map<String, List<String>> extra) {
         this.extra = extra;
     }
 
+    /**
+     * Groups is the groups you're testing for.
+     */
     @JsonProperty("groups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getGroups() {
         return groups;
     }
 
+    /**
+     * Groups is the groups you're testing for.
+     */
     @JsonProperty("groups")
     public void setGroups(List<String> groups) {
         this.groups = groups;
     }
 
+    /**
+     * SubjectAccessReviewSpec is a description of the access request.  Exactly one of ResourceAuthorizationAttributes and NonResourceAuthorizationAttributes must be set
+     */
     @JsonProperty("nonResourceAttributes")
     public NonResourceAttributes getNonResourceAttributes() {
         return nonResourceAttributes;
     }
 
+    /**
+     * SubjectAccessReviewSpec is a description of the access request.  Exactly one of ResourceAuthorizationAttributes and NonResourceAuthorizationAttributes must be set
+     */
     @JsonProperty("nonResourceAttributes")
     public void setNonResourceAttributes(NonResourceAttributes nonResourceAttributes) {
         this.nonResourceAttributes = nonResourceAttributes;
     }
 
+    /**
+     * SubjectAccessReviewSpec is a description of the access request.  Exactly one of ResourceAuthorizationAttributes and NonResourceAuthorizationAttributes must be set
+     */
     @JsonProperty("resourceAttributes")
     public ResourceAttributes getResourceAttributes() {
         return resourceAttributes;
     }
 
+    /**
+     * SubjectAccessReviewSpec is a description of the access request.  Exactly one of ResourceAuthorizationAttributes and NonResourceAuthorizationAttributes must be set
+     */
     @JsonProperty("resourceAttributes")
     public void setResourceAttributes(ResourceAttributes resourceAttributes) {
         this.resourceAttributes = resourceAttributes;
     }
 
+    /**
+     * UID information about the requesting user.
+     */
     @JsonProperty("uid")
     public String getUid() {
         return uid;
     }
 
+    /**
+     * UID information about the requesting user.
+     */
     @JsonProperty("uid")
     public void setUid(String uid) {
         this.uid = uid;
     }
 
+    /**
+     * User is the user you're testing for. If you specify "User" but not "Groups", then is it interpreted as "What if User were not a member of any groups
+     */
     @JsonProperty("user")
     public String getUser() {
         return user;
     }
 
+    /**
+     * User is the user you're testing for. If you specify "User" but not "Groups", then is it interpreted as "What if User were not a member of any groups
+     */
     @JsonProperty("user")
     public void setUser(String user) {
         this.user = user;

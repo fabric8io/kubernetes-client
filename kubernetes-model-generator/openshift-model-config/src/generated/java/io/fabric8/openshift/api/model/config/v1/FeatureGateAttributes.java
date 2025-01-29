@@ -78,11 +78,17 @@ public class FeatureGateAttributes implements Editable<FeatureGateAttributesBuil
         this.name = name;
     }
 
+    /**
+     * name is the name of the FeatureGate.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * name is the name of the FeatureGate.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

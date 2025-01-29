@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AzureOAuth defines the Azure OAuth settings.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -87,31 +90,49 @@ public class AzureOAuth implements Editable<AzureOAuthBuilder>, KubernetesResour
         this.tenantId = tenantId;
     }
 
+    /**
+     * `clientID` is the clientId of the Azure Active Directory application that is being used to authenticate.
+     */
     @JsonProperty("clientId")
     public String getClientId() {
         return clientId;
     }
 
+    /**
+     * `clientID` is the clientId of the Azure Active Directory application that is being used to authenticate.
+     */
     @JsonProperty("clientId")
     public void setClientId(String clientId) {
         this.clientId = clientId;
     }
 
+    /**
+     * AzureOAuth defines the Azure OAuth settings.
+     */
     @JsonProperty("clientSecret")
     public SecretKeySelector getClientSecret() {
         return clientSecret;
     }
 
+    /**
+     * AzureOAuth defines the Azure OAuth settings.
+     */
     @JsonProperty("clientSecret")
     public void setClientSecret(SecretKeySelector clientSecret) {
         this.clientSecret = clientSecret;
     }
 
+    /**
+     * `tenantId` is the tenant ID of the Azure Active Directory application that is being used to authenticate.
+     */
     @JsonProperty("tenantId")
     public String getTenantId() {
         return tenantId;
     }
 
+    /**
+     * `tenantId` is the tenant ID of the Azure Active Directory application that is being used to authenticate.
+     */
     @JsonProperty("tenantId")
     public void setTenantId(String tenantId) {
         this.tenantId = tenantId;

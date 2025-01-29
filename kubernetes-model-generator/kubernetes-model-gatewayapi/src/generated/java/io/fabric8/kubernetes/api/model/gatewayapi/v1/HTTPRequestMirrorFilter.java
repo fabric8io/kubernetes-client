@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * HTTPRequestMirrorFilter defines configuration for the RequestMirror filter.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class HTTPRequestMirrorFilter implements Editable<HTTPRequestMirrorFilter
         this.percent = percent;
     }
 
+    /**
+     * HTTPRequestMirrorFilter defines configuration for the RequestMirror filter.
+     */
     @JsonProperty("backendRef")
     public BackendObjectReference getBackendRef() {
         return backendRef;
     }
 
+    /**
+     * HTTPRequestMirrorFilter defines configuration for the RequestMirror filter.
+     */
     @JsonProperty("backendRef")
     public void setBackendRef(BackendObjectReference backendRef) {
         this.backendRef = backendRef;
     }
 
+    /**
+     * HTTPRequestMirrorFilter defines configuration for the RequestMirror filter.
+     */
     @JsonProperty("fraction")
     public Fraction getFraction() {
         return fraction;
     }
 
+    /**
+     * HTTPRequestMirrorFilter defines configuration for the RequestMirror filter.
+     */
     @JsonProperty("fraction")
     public void setFraction(Fraction fraction) {
         this.fraction = fraction;
     }
 
+    /**
+     * Percent represents the percentage of requests that should be mirrored to BackendRef. Its minimum value is 0 (indicating 0% of requests) and its maximum value is 100 (indicating 100% of requests).<br><p> <br><p> Only one of Fraction or Percent may be specified. If neither field is specified, 100% of requests will be mirrored.<br><p> <br><p> &lt;gateway:experimental&gt;
+     */
     @JsonProperty("percent")
     public Integer getPercent() {
         return percent;
     }
 
+    /**
+     * Percent represents the percentage of requests that should be mirrored to BackendRef. Its minimum value is 0 (indicating 0% of requests) and its maximum value is 100 (indicating 100% of requests).<br><p> <br><p> Only one of Fraction or Percent may be specified. If neither field is specified, 100% of requests will be mirrored.<br><p> <br><p> &lt;gateway:experimental&gt;
+     */
     @JsonProperty("percent")
     public void setPercent(Integer percent) {
         this.percent = percent;

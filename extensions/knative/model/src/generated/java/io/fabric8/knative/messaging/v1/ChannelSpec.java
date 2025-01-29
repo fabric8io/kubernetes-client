@@ -36,6 +36,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ChannelSpec defines which subscribers have expressed interest in receiving events from this Channel. It also defines the ChannelTemplate to use in order to create the CRD Channel backing this Channel.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -91,32 +94,50 @@ public class ChannelSpec implements Editable<ChannelSpecBuilder>, KubernetesReso
         this.subscribers = subscribers;
     }
 
+    /**
+     * ChannelSpec defines which subscribers have expressed interest in receiving events from this Channel. It also defines the ChannelTemplate to use in order to create the CRD Channel backing this Channel.
+     */
     @JsonProperty("channelTemplate")
     public ChannelTemplateSpec getChannelTemplate() {
         return channelTemplate;
     }
 
+    /**
+     * ChannelSpec defines which subscribers have expressed interest in receiving events from this Channel. It also defines the ChannelTemplate to use in order to create the CRD Channel backing this Channel.
+     */
     @JsonProperty("channelTemplate")
     public void setChannelTemplate(ChannelTemplateSpec channelTemplate) {
         this.channelTemplate = channelTemplate;
     }
 
+    /**
+     * ChannelSpec defines which subscribers have expressed interest in receiving events from this Channel. It also defines the ChannelTemplate to use in order to create the CRD Channel backing this Channel.
+     */
     @JsonProperty("delivery")
     public DeliverySpec getDelivery() {
         return delivery;
     }
 
+    /**
+     * ChannelSpec defines which subscribers have expressed interest in receiving events from this Channel. It also defines the ChannelTemplate to use in order to create the CRD Channel backing this Channel.
+     */
     @JsonProperty("delivery")
     public void setDelivery(DeliverySpec delivery) {
         this.delivery = delivery;
     }
 
+    /**
+     * This is the list of subscriptions for this subscribable.
+     */
     @JsonProperty("subscribers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<SubscriberSpec> getSubscribers() {
         return subscribers;
     }
 
+    /**
+     * This is the list of subscriptions for this subscribable.
+     */
     @JsonProperty("subscribers")
     public void setSubscribers(List<SubscriberSpec> subscribers) {
         this.subscribers = subscribers;

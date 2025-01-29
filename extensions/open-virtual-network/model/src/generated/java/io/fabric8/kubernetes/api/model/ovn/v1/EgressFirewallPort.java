@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * EgressFirewallPort specifies the port to allow or deny traffic to
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class EgressFirewallPort implements Editable<EgressFirewallPortBuilder>, 
         this.protocol = protocol;
     }
 
+    /**
+     * port that the traffic must match
+     */
     @JsonProperty("port")
     public Integer getPort() {
         return port;
     }
 
+    /**
+     * port that the traffic must match
+     */
     @JsonProperty("port")
     public void setPort(Integer port) {
         this.port = port;
     }
 
+    /**
+     * protocol (tcp, udp, sctp) that the traffic must match.
+     */
     @JsonProperty("protocol")
     public String getProtocol() {
         return protocol;
     }
 
+    /**
+     * protocol (tcp, udp, sctp) that the traffic must match.
+     */
     @JsonProperty("protocol")
     public void setProtocol(String protocol) {
         this.protocol = protocol;

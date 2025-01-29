@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ReorderSpec defines details of packet reorder.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class ReorderSpec implements Editable<ReorderSpecBuilder>, KubernetesReso
         this.reorder = reorder;
     }
 
+    /**
+     * ReorderSpec defines details of packet reorder.
+     */
     @JsonProperty("correlation")
     public String getCorrelation() {
         return correlation;
     }
 
+    /**
+     * ReorderSpec defines details of packet reorder.
+     */
     @JsonProperty("correlation")
     public void setCorrelation(String correlation) {
         this.correlation = correlation;
     }
 
+    /**
+     * ReorderSpec defines details of packet reorder.
+     */
     @JsonProperty("gap")
     public Integer getGap() {
         return gap;
     }
 
+    /**
+     * ReorderSpec defines details of packet reorder.
+     */
     @JsonProperty("gap")
     public void setGap(Integer gap) {
         this.gap = gap;
     }
 
+    /**
+     * ReorderSpec defines details of packet reorder.
+     */
     @JsonProperty("reorder")
     public String getReorder() {
         return reorder;
     }
 
+    /**
+     * ReorderSpec defines details of packet reorder.
+     */
     @JsonProperty("reorder")
     public void setReorder(String reorder) {
         this.reorder = reorder;

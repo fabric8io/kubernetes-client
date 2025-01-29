@@ -78,14 +78,8 @@ import lombok.experimental.Accessors;
 public class NodeMetrics implements Editable<NodeMetricsBuilder>, HasMetadata
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "metrics.k8s.io/v1beta1";
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "NodeMetrics";
     @JsonProperty("metadata")
@@ -116,33 +110,21 @@ public class NodeMetrics implements Editable<NodeMetricsBuilder>, HasMetadata
         this.window = window;
     }
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
         return apiVersion;
     }
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     public String getKind() {
         return kind;
     }
 
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;

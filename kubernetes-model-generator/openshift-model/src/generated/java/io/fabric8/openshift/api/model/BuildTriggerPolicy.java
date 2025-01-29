@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * BuildTriggerPolicy describes a policy for a single trigger that results in a new Build.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -98,61 +101,97 @@ public class BuildTriggerPolicy implements Editable<BuildTriggerPolicyBuilder>, 
         this.type = type;
     }
 
+    /**
+     * BuildTriggerPolicy describes a policy for a single trigger that results in a new Build.
+     */
     @JsonProperty("bitbucket")
     public WebHookTrigger getBitbucket() {
         return bitbucket;
     }
 
+    /**
+     * BuildTriggerPolicy describes a policy for a single trigger that results in a new Build.
+     */
     @JsonProperty("bitbucket")
     public void setBitbucket(WebHookTrigger bitbucket) {
         this.bitbucket = bitbucket;
     }
 
+    /**
+     * BuildTriggerPolicy describes a policy for a single trigger that results in a new Build.
+     */
     @JsonProperty("generic")
     public WebHookTrigger getGeneric() {
         return generic;
     }
 
+    /**
+     * BuildTriggerPolicy describes a policy for a single trigger that results in a new Build.
+     */
     @JsonProperty("generic")
     public void setGeneric(WebHookTrigger generic) {
         this.generic = generic;
     }
 
+    /**
+     * BuildTriggerPolicy describes a policy for a single trigger that results in a new Build.
+     */
     @JsonProperty("github")
     public WebHookTrigger getGithub() {
         return github;
     }
 
+    /**
+     * BuildTriggerPolicy describes a policy for a single trigger that results in a new Build.
+     */
     @JsonProperty("github")
     public void setGithub(WebHookTrigger github) {
         this.github = github;
     }
 
+    /**
+     * BuildTriggerPolicy describes a policy for a single trigger that results in a new Build.
+     */
     @JsonProperty("gitlab")
     public WebHookTrigger getGitlab() {
         return gitlab;
     }
 
+    /**
+     * BuildTriggerPolicy describes a policy for a single trigger that results in a new Build.
+     */
     @JsonProperty("gitlab")
     public void setGitlab(WebHookTrigger gitlab) {
         this.gitlab = gitlab;
     }
 
+    /**
+     * BuildTriggerPolicy describes a policy for a single trigger that results in a new Build.
+     */
     @JsonProperty("imageChange")
     public ImageChangeTrigger getImageChange() {
         return imageChange;
     }
 
+    /**
+     * BuildTriggerPolicy describes a policy for a single trigger that results in a new Build.
+     */
     @JsonProperty("imageChange")
     public void setImageChange(ImageChangeTrigger imageChange) {
         this.imageChange = imageChange;
     }
 
+    /**
+     * type is the type of build trigger. Valid values:<br><p> <br><p> - GitHub GitHubWebHookBuildTriggerType represents a trigger that launches builds on GitHub webhook invocations<br><p> <br><p> - Generic GenericWebHookBuildTriggerType represents a trigger that launches builds on generic webhook invocations<br><p> <br><p> - GitLab GitLabWebHookBuildTriggerType represents a trigger that launches builds on GitLab webhook invocations<br><p> <br><p> - Bitbucket BitbucketWebHookBuildTriggerType represents a trigger that launches builds on Bitbucket webhook invocations<br><p> <br><p> - ImageChange ImageChangeBuildTriggerType represents a trigger that launches builds on availability of a new version of an image<br><p> <br><p> - ConfigChange ConfigChangeBuildTriggerType will trigger a build on an initial build config creation WARNING: In the future the behavior will change to trigger a build on any config change
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * type is the type of build trigger. Valid values:<br><p> <br><p> - GitHub GitHubWebHookBuildTriggerType represents a trigger that launches builds on GitHub webhook invocations<br><p> <br><p> - Generic GenericWebHookBuildTriggerType represents a trigger that launches builds on generic webhook invocations<br><p> <br><p> - GitLab GitLabWebHookBuildTriggerType represents a trigger that launches builds on GitLab webhook invocations<br><p> <br><p> - Bitbucket BitbucketWebHookBuildTriggerType represents a trigger that launches builds on Bitbucket webhook invocations<br><p> <br><p> - ImageChange ImageChangeBuildTriggerType represents a trigger that launches builds on availability of a new version of an image<br><p> <br><p> - ConfigChange ConfigChangeBuildTriggerType will trigger a build on an initial build config creation WARNING: In the future the behavior will change to trigger a build on any config change
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

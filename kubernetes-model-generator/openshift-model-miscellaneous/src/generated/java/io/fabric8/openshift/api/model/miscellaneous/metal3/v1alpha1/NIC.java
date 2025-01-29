@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NIC describes one network interface on the host.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -109,82 +112,130 @@ public class NIC implements Editable<NICBuilder>, KubernetesResource
         this.vlans = vlans;
     }
 
+    /**
+     * The IP address of the interface. This will be an IPv4 or IPv6 address if one is present.  If both IPv4 and IPv6 addresses are present in a dual-stack environment, two nics will be output, one with each IP.
+     */
     @JsonProperty("ip")
     public String getIp() {
         return ip;
     }
 
+    /**
+     * The IP address of the interface. This will be an IPv4 or IPv6 address if one is present.  If both IPv4 and IPv6 addresses are present in a dual-stack environment, two nics will be output, one with each IP.
+     */
     @JsonProperty("ip")
     public void setIp(String ip) {
         this.ip = ip;
     }
 
+    /**
+     * The device MAC address
+     */
     @JsonProperty("mac")
     public String getMac() {
         return mac;
     }
 
+    /**
+     * The device MAC address
+     */
     @JsonProperty("mac")
     public void setMac(String mac) {
         this.mac = mac;
     }
 
+    /**
+     * The vendor and product IDs of the NIC, e.g. "0x8086 0x1572"
+     */
     @JsonProperty("model")
     public String getModel() {
         return model;
     }
 
+    /**
+     * The vendor and product IDs of the NIC, e.g. "0x8086 0x1572"
+     */
     @JsonProperty("model")
     public void setModel(String model) {
         this.model = model;
     }
 
+    /**
+     * The name of the network interface, e.g. "en0"
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * The name of the network interface, e.g. "en0"
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Whether the NIC is PXE Bootable
+     */
     @JsonProperty("pxe")
     public Boolean getPxe() {
         return pxe;
     }
 
+    /**
+     * Whether the NIC is PXE Bootable
+     */
     @JsonProperty("pxe")
     public void setPxe(Boolean pxe) {
         this.pxe = pxe;
     }
 
+    /**
+     * The speed of the device in Gigabits per second
+     */
     @JsonProperty("speedGbps")
     public Integer getSpeedGbps() {
         return speedGbps;
     }
 
+    /**
+     * The speed of the device in Gigabits per second
+     */
     @JsonProperty("speedGbps")
     public void setSpeedGbps(Integer speedGbps) {
         this.speedGbps = speedGbps;
     }
 
+    /**
+     * The untagged VLAN ID
+     */
     @JsonProperty("vlanId")
     public Integer getVlanId() {
         return vlanId;
     }
 
+    /**
+     * The untagged VLAN ID
+     */
     @JsonProperty("vlanId")
     public void setVlanId(Integer vlanId) {
         this.vlanId = vlanId;
     }
 
+    /**
+     * The VLANs available
+     */
     @JsonProperty("vlans")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<VLAN> getVlans() {
         return vlans;
     }
 
+    /**
+     * The VLANs available
+     */
     @JsonProperty("vlans")
     public void setVlans(List<VLAN> vlans) {
         this.vlans = vlans;

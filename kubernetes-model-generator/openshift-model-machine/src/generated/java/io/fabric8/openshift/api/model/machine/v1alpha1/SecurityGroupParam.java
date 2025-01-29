@@ -96,21 +96,33 @@ public class SecurityGroupParam implements Editable<SecurityGroupParamBuilder>, 
         this.filter = filter;
     }
 
+    /**
+     * Security Group name
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Security Group name
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Security Group UUID
+     */
     @JsonProperty("uuid")
     public String getUuid() {
         return uuid;
     }
 
+    /**
+     * Security Group UUID
+     */
     @JsonProperty("uuid")
     public void setUuid(String uuid) {
         this.uuid = uuid;

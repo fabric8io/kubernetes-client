@@ -86,31 +86,49 @@ public class TriggerContext implements Editable<TriggerContextBuilder>, Kubernet
         this.triggerId = triggerId;
     }
 
+    /**
+     * EventID is a unique ID assigned by Triggers to each event
+     */
     @JsonProperty("event_id")
     public String getEventId() {
         return eventId;
     }
 
+    /**
+     * EventID is a unique ID assigned by Triggers to each event
+     */
     @JsonProperty("event_id")
     public void setEventId(String eventId) {
         this.eventId = eventId;
     }
 
+    /**
+     * EventURL is the URL of the incoming event
+     */
     @JsonProperty("event_url")
     public String getEventUrl() {
         return eventUrl;
     }
 
+    /**
+     * EventURL is the URL of the incoming event
+     */
     @JsonProperty("event_url")
     public void setEventUrl(String eventUrl) {
         this.eventUrl = eventUrl;
     }
 
+    /**
+     * TriggerID is of the form namespace/$ns/triggers/$name
+     */
     @JsonProperty("trigger_id")
     public String getTriggerId() {
         return triggerId;
     }
 
+    /**
+     * TriggerID is of the form namespace/$ns/triggers/$name
+     */
     @JsonProperty("trigger_id")
     public void setTriggerId(String triggerId) {
         this.triggerId = triggerId;

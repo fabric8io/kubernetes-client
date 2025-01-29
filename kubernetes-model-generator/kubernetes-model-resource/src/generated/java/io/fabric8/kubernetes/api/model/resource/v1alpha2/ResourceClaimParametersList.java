@@ -40,6 +40,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ResourceClaimParametersList is a collection of ResourceClaimParameters.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,17 +81,11 @@ import lombok.experimental.Accessors;
 public class ResourceClaimParametersList implements Editable<ResourceClaimParametersListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.resource.v1alpha2.ResourceClaimParameters>
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "resource.k8s.io/v1alpha2";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.kubernetes.api.model.resource.v1alpha2.ResourceClaimParameters> items = new ArrayList<>();
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "ResourceClaimParametersList";
     @JsonProperty("metadata")
@@ -111,7 +108,7 @@ public class ResourceClaimParametersList implements Editable<ResourceClaimParame
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -119,26 +116,32 @@ public class ResourceClaimParametersList implements Editable<ResourceClaimParame
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
+    /**
+     * Items is the list of node resource capacity objects.
+     */
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.kubernetes.api.model.resource.v1alpha2.ResourceClaimParameters> getItems() {
         return items;
     }
 
+    /**
+     * Items is the list of node resource capacity objects.
+     */
     @JsonProperty("items")
     public void setItems(List<io.fabric8.kubernetes.api.model.resource.v1alpha2.ResourceClaimParameters> items) {
         this.items = items;
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -146,18 +149,24 @@ public class ResourceClaimParametersList implements Editable<ResourceClaimParame
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * ResourceClaimParametersList is a collection of ResourceClaimParameters.
+     */
     @JsonProperty("metadata")
     public ListMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * ResourceClaimParametersList is a collection of ResourceClaimParameters.
+     */
     @JsonProperty("metadata")
     public void setMetadata(ListMeta metadata) {
         this.metadata = metadata;

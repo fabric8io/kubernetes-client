@@ -78,11 +78,17 @@ public class AttachMetadata implements Editable<AttachMetadataBuilder>, Kubernet
         this.node = node;
     }
 
+    /**
+     * Attaches node metadata to discovered targets. When set to true, Prometheus must have the `get` permission on the `Nodes` objects. Only valid for Pod, Endpoint and Endpointslice roles.
+     */
     @JsonProperty("node")
     public Boolean getNode() {
         return node;
     }
 
+    /**
+     * Attaches node metadata to discovered targets. When set to true, Prometheus must have the `get` permission on the `Nodes` objects. Only valid for Pod, Endpoint and Endpointslice roles.
+     */
     @JsonProperty("node")
     public void setNode(Boolean node) {
         this.node = node;

@@ -39,6 +39,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AWSProviderSpec contains the required information to create a user policy in AWS.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -77,14 +80,8 @@ import lombok.experimental.Accessors;
 public class AWSProviderSpec implements Editable<AWSProviderSpecBuilder>, KubernetesResource, Namespaced
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "cloudcredential.openshift.io/v1";
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "AWSProviderSpec";
     @JsonProperty("statementEntries")
@@ -110,7 +107,7 @@ public class AWSProviderSpec implements Editable<AWSProviderSpecBuilder>, Kubern
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -118,7 +115,7 @@ public class AWSProviderSpec implements Editable<AWSProviderSpecBuilder>, Kubern
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -126,7 +123,7 @@ public class AWSProviderSpec implements Editable<AWSProviderSpecBuilder>, Kubern
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -134,29 +131,41 @@ public class AWSProviderSpec implements Editable<AWSProviderSpecBuilder>, Kubern
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * StatementEntries contains a list of policy statements that should be associated with this credentials access key.
+     */
     @JsonProperty("statementEntries")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<StatementEntry> getStatementEntries() {
         return statementEntries;
     }
 
+    /**
+     * StatementEntries contains a list of policy statements that should be associated with this credentials access key.
+     */
     @JsonProperty("statementEntries")
     public void setStatementEntries(List<StatementEntry> statementEntries) {
         this.statementEntries = statementEntries;
     }
 
+    /**
+     * stsIAMRoleARN is the Amazon Resource Name (ARN) of an IAM Role which was created manually for the associated CredentialsRequest. The presence of an stsIAMRoleARN within the AWSProviderSpec initiates creation of a secret containing IAM Role details necessary for assuming the IAM Role via Amazon's Secure Token Service.
+     */
     @JsonProperty("stsIAMRoleARN")
     public String getStsIAMRoleARN() {
         return stsIAMRoleARN;
     }
 
+    /**
+     * stsIAMRoleARN is the Amazon Resource Name (ARN) of an IAM Role which was created manually for the associated CredentialsRequest. The presence of an stsIAMRoleARN within the AWSProviderSpec initiates creation of a secret containing IAM Role details necessary for assuming the IAM Role via Amazon's Secure Token Service.
+     */
     @JsonProperty("stsIAMRoleARN")
     public void setStsIAMRoleARN(String stsIAMRoleARN) {
         this.stsIAMRoleARN = stsIAMRoleARN;

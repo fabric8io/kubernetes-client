@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PodNetworkConnectivityCheckCondition represents the overall status of the pod network connectivity.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,51 +97,81 @@ public class PodNetworkConnectivityCheckCondition implements Editable<PodNetwork
         this.type = type;
     }
 
+    /**
+     * PodNetworkConnectivityCheckCondition represents the overall status of the pod network connectivity.
+     */
     @JsonProperty("lastTransitionTime")
     public String getLastTransitionTime() {
         return lastTransitionTime;
     }
 
+    /**
+     * PodNetworkConnectivityCheckCondition represents the overall status of the pod network connectivity.
+     */
     @JsonProperty("lastTransitionTime")
     public void setLastTransitionTime(String lastTransitionTime) {
         this.lastTransitionTime = lastTransitionTime;
     }
 
+    /**
+     * Message indicating details about last transition in a human readable format.
+     */
     @JsonProperty("message")
     public String getMessage() {
         return message;
     }
 
+    /**
+     * Message indicating details about last transition in a human readable format.
+     */
     @JsonProperty("message")
     public void setMessage(String message) {
         this.message = message;
     }
 
+    /**
+     * Reason for the condition's last status transition in a machine readable format.
+     */
     @JsonProperty("reason")
     public String getReason() {
         return reason;
     }
 
+    /**
+     * Reason for the condition's last status transition in a machine readable format.
+     */
     @JsonProperty("reason")
     public void setReason(String reason) {
         this.reason = reason;
     }
 
+    /**
+     * Status of the condition
+     */
     @JsonProperty("status")
     public String getStatus() {
         return status;
     }
 
+    /**
+     * Status of the condition
+     */
     @JsonProperty("status")
     public void setStatus(String status) {
         this.status = status;
     }
 
+    /**
+     * Type of the condition
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * Type of the condition
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

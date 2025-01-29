@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SecretLocalReference contains information that points to the local secret being used
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class SecretLocalReference implements Editable<SecretLocalReferenceBuilde
         this.name = name;
     }
 
+    /**
+     * Name is the name of the resource in the same namespace being referenced
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name is the name of the resource in the same namespace being referenced
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

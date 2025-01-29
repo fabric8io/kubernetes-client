@@ -19,6 +19,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * A label selector is a label query over a set of resources. The result of matchLabels and matchExpressions are ANDed. An empty label selector matches all objects. A null label selector matches no objects.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -57,23 +60,35 @@ public class LabelSelector implements Editable<LabelSelectorBuilder>, Kubernetes
         this.matchLabels = matchLabels;
     }
 
+    /**
+     * matchExpressions is a list of label selector requirements. The requirements are ANDed.
+     */
     @JsonProperty("matchExpressions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<LabelSelectorRequirement> getMatchExpressions() {
         return matchExpressions;
     }
 
+    /**
+     * matchExpressions is a list of label selector requirements. The requirements are ANDed.
+     */
     @JsonProperty("matchExpressions")
     public void setMatchExpressions(List<LabelSelectorRequirement> matchExpressions) {
         this.matchExpressions = matchExpressions;
     }
 
+    /**
+     * matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed.
+     */
     @JsonProperty("matchLabels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getMatchLabels() {
         return matchLabels;
     }
 
+    /**
+     * matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed.
+     */
     @JsonProperty("matchLabels")
     public void setMatchLabels(Map<String, String> matchLabels) {
         this.matchLabels = matchLabels;

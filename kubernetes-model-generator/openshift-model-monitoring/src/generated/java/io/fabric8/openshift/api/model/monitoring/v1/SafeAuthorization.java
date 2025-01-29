@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SafeAuthorization specifies a subset of the Authorization struct, that is safe for use because it doesn't provide access to the Prometheus container's filesystem.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -83,21 +86,33 @@ public class SafeAuthorization implements Editable<SafeAuthorizationBuilder>, Ku
         this.type = type;
     }
 
+    /**
+     * SafeAuthorization specifies a subset of the Authorization struct, that is safe for use because it doesn't provide access to the Prometheus container's filesystem.
+     */
     @JsonProperty("credentials")
     public SecretKeySelector getCredentials() {
         return credentials;
     }
 
+    /**
+     * SafeAuthorization specifies a subset of the Authorization struct, that is safe for use because it doesn't provide access to the Prometheus container's filesystem.
+     */
     @JsonProperty("credentials")
     public void setCredentials(SecretKeySelector credentials) {
         this.credentials = credentials;
     }
 
+    /**
+     * Defines the authentication type. The value is case-insensitive.<br><p> <br><p> "Basic" is not a supported value.<br><p> <br><p> Default: "Bearer"
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * Defines the authentication type. The value is case-insensitive.<br><p> <br><p> "Basic" is not a supported value.<br><p> <br><p> Default: "Bearer"
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

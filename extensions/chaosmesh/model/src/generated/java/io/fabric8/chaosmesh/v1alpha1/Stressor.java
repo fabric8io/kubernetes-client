@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Stressor defines common configurations of a stressor
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class Stressor implements Editable<StressorBuilder>, KubernetesResource
         this.workers = workers;
     }
 
+    /**
+     * Workers specifies N workers to apply the stressor. Maximum 8192 workers can run by stress-ng
+     */
     @JsonProperty("workers")
     public Integer getWorkers() {
         return workers;
     }
 
+    /**
+     * Workers specifies N workers to apply the stressor. Maximum 8192 workers can run by stress-ng
+     */
     @JsonProperty("workers")
     public void setWorkers(Integer workers) {
         this.workers = workers;

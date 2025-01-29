@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PodHttpChaosPatchBodyAction defines patch body action of HttpChaos.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class PodHttpChaosPatchBodyAction implements Editable<PodHttpChaosPatchBo
         this.value = value;
     }
 
+    /**
+     * Type represents the patch type, only support `JSON` as [merge patch json](https://tools.ietf.org/html/rfc7396) currently.
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * Type represents the patch type, only support `JSON` as [merge patch json](https://tools.ietf.org/html/rfc7396) currently.
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;
     }
 
+    /**
+     * Value is the patch contents.
+     */
     @JsonProperty("value")
     public String getValue() {
         return value;
     }
 
+    /**
+     * Value is the patch contents.
+     */
     @JsonProperty("value")
     public void setValue(String value) {
         this.value = value;

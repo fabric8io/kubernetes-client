@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ImageSpec holds the desired state of the Image (from the client).
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -89,32 +92,50 @@ public class ImageSpec implements Editable<ImageSpecBuilder>, KubernetesResource
         this.serviceAccountName = serviceAccountName;
     }
 
+    /**
+     * Image is the name of the container image url to cache across the cluster.
+     */
     @JsonProperty("image")
     public String getImage() {
         return image;
     }
 
+    /**
+     * Image is the name of the container image url to cache across the cluster.
+     */
     @JsonProperty("image")
     public void setImage(String image) {
         this.image = image;
     }
 
+    /**
+     * ImagePullSecrets contains the names of the Kubernetes Secrets containing login information used by the Pods which will run this container.
+     */
     @JsonProperty("imagePullSecrets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<LocalObjectReference> getImagePullSecrets() {
         return imagePullSecrets;
     }
 
+    /**
+     * ImagePullSecrets contains the names of the Kubernetes Secrets containing login information used by the Pods which will run this container.
+     */
     @JsonProperty("imagePullSecrets")
     public void setImagePullSecrets(List<LocalObjectReference> imagePullSecrets) {
         this.imagePullSecrets = imagePullSecrets;
     }
 
+    /**
+     * ServiceAccountName is the name of the Kubernetes ServiceAccount as which the Pods will run this container.  This is potentially used to authenticate the image pull if the service account has attached pull secrets.  For more information: https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/#add-imagepullsecrets-to-a-service-account
+     */
     @JsonProperty("serviceAccountName")
     public String getServiceAccountName() {
         return serviceAccountName;
     }
 
+    /**
+     * ServiceAccountName is the name of the Kubernetes ServiceAccount as which the Pods will run this container.  This is potentially used to authenticate the image pull if the service account has attached pull secrets.  For more information: https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/#add-imagepullsecrets-to-a-service-account
+     */
     @JsonProperty("serviceAccountName")
     public void setServiceAccountName(String serviceAccountName) {
         this.serviceAccountName = serviceAccountName;

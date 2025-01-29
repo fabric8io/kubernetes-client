@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ProberSpec contains specification parameters for the Prober used for probing.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class ProberSpec implements Editable<ProberSpecBuilder>, KubernetesResour
         this.url = url;
     }
 
+    /**
+     * Path to collect metrics from. Defaults to `/probe`.
+     */
     @JsonProperty("path")
     public String getPath() {
         return path;
     }
 
+    /**
+     * Path to collect metrics from. Defaults to `/probe`.
+     */
     @JsonProperty("path")
     public void setPath(String path) {
         this.path = path;
     }
 
+    /**
+     * Optional ProxyURL.
+     */
     @JsonProperty("proxyUrl")
     public String getProxyUrl() {
         return proxyUrl;
     }
 
+    /**
+     * Optional ProxyURL.
+     */
     @JsonProperty("proxyUrl")
     public void setProxyUrl(String proxyUrl) {
         this.proxyUrl = proxyUrl;
     }
 
+    /**
+     * HTTP scheme to use for scraping. `http` and `https` are the expected values unless you rewrite the `__scheme__` label via relabeling. If empty, Prometheus uses the default value `http`.
+     */
     @JsonProperty("scheme")
     public String getScheme() {
         return scheme;
     }
 
+    /**
+     * HTTP scheme to use for scraping. `http` and `https` are the expected values unless you rewrite the `__scheme__` label via relabeling. If empty, Prometheus uses the default value `http`.
+     */
     @JsonProperty("scheme")
     public void setScheme(String scheme) {
         this.scheme = scheme;
     }
 
+    /**
+     * Mandatory URL of the prober.
+     */
     @JsonProperty("url")
     public String getUrl() {
         return url;
     }
 
+    /**
+     * Mandatory URL of the prober.
+     */
     @JsonProperty("url")
     public void setUrl(String url) {
         this.url = url;

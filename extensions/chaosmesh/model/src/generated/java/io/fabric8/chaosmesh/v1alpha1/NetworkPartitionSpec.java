@@ -98,61 +98,97 @@ public class NetworkPartitionSpec implements Editable<NetworkPartitionSpecBuilde
         this.ipProtocol = ipProtocol;
     }
 
+    /**
+     * only the packet which match the tcp flag can be accepted, others will be dropped. only set when the IPProtocol is tcp, used for partition.
+     */
     @JsonProperty("accept-tcp-flags")
     public String getAcceptTcpFlags() {
         return acceptTcpFlags;
     }
 
+    /**
+     * only the packet which match the tcp flag can be accepted, others will be dropped. only set when the IPProtocol is tcp, used for partition.
+     */
     @JsonProperty("accept-tcp-flags")
     public void setAcceptTcpFlags(String acceptTcpFlags) {
         this.acceptTcpFlags = acceptTcpFlags;
     }
 
+    /**
+     * the network interface to impact
+     */
     @JsonProperty("device")
     public String getDevice() {
         return device;
     }
 
+    /**
+     * the network interface to impact
+     */
     @JsonProperty("device")
     public void setDevice(String device) {
         this.device = device;
     }
 
+    /**
+     * specifies the partition direction, values can be 'from', 'to'. 'from' means packets coming from the 'IPAddress' or 'Hostname' and going to your server, 'to' means packets originating from your server and going to the 'IPAddress' or 'Hostname'.
+     */
     @JsonProperty("direction")
     public String getDirection() {
         return direction;
     }
 
+    /**
+     * specifies the partition direction, values can be 'from', 'to'. 'from' means packets coming from the 'IPAddress' or 'Hostname' and going to your server, 'to' means packets originating from your server and going to the 'IPAddress' or 'Hostname'.
+     */
     @JsonProperty("direction")
     public void setDirection(String direction) {
         this.direction = direction;
     }
 
+    /**
+     * only impact traffic to these hostnames
+     */
     @JsonProperty("hostname")
     public String getHostname() {
         return hostname;
     }
 
+    /**
+     * only impact traffic to these hostnames
+     */
     @JsonProperty("hostname")
     public void setHostname(String hostname) {
         this.hostname = hostname;
     }
 
+    /**
+     * only impact egress traffic to these IP addresses
+     */
     @JsonProperty("ip-address")
     public String getIpAddress() {
         return ipAddress;
     }
 
+    /**
+     * only impact egress traffic to these IP addresses
+     */
     @JsonProperty("ip-address")
     public void setIpAddress(String ipAddress) {
         this.ipAddress = ipAddress;
     }
 
+    /**
+     * only impact egress traffic to these IP addresses
+     */
     @JsonProperty("ip-protocol")
     public String getIpProtocol() {
         return ipProtocol;
     }
 
+    /**
+     * only impact egress traffic to these IP addresses
+     */
     @JsonProperty("ip-protocol")
     public void setIpProtocol(String ipProtocol) {
         this.ipProtocol = ipProtocol;

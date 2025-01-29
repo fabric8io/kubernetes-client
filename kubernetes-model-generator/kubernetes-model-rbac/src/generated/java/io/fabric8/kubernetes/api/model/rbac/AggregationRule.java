@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AggregationRule describes how to locate ClusterRoles to aggregate into the ClusterRole
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -81,12 +84,18 @@ public class AggregationRule implements Editable<AggregationRuleBuilder>, Kubern
         this.clusterRoleSelectors = clusterRoleSelectors;
     }
 
+    /**
+     * ClusterRoleSelectors holds a list of selectors which will be used to find ClusterRoles and create the rules. If any of the selectors match, then the ClusterRole's permissions will be added
+     */
     @JsonProperty("clusterRoleSelectors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<LabelSelector> getClusterRoleSelectors() {
         return clusterRoleSelectors;
     }
 
+    /**
+     * ClusterRoleSelectors holds a list of selectors which will be used to find ClusterRoles and create the rules. If any of the selectors match, then the ClusterRole's permissions will be added
+     */
     @JsonProperty("clusterRoleSelectors")
     public void setClusterRoleSelectors(List<LabelSelector> clusterRoleSelectors) {
         this.clusterRoleSelectors = clusterRoleSelectors;

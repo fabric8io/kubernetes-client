@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * IPAddressSpec describe the attributes in an IP Address.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class IPAddressSpec implements Editable<IPAddressSpecBuilder>, Kubernetes
         this.parentRef = parentRef;
     }
 
+    /**
+     * IPAddressSpec describe the attributes in an IP Address.
+     */
     @JsonProperty("parentRef")
     public ParentReference getParentRef() {
         return parentRef;
     }
 
+    /**
+     * IPAddressSpec describe the attributes in an IP Address.
+     */
     @JsonProperty("parentRef")
     public void setParentRef(ParentReference parentRef) {
         this.parentRef = parentRef;

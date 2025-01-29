@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * CloudLoadBalancerIPs contains the Load Balancer IPs for the cloud's API, API-Int and Ingress Load balancers. They will be populated as soon as the respective Load Balancers have been configured. These values are utilized to configure the DNS solution hosted within the cluster.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -91,34 +94,52 @@ public class CloudLoadBalancerIPs implements Editable<CloudLoadBalancerIPsBuilde
         this.ingressLoadBalancerIPs = ingressLoadBalancerIPs;
     }
 
+    /**
+     * apiIntLoadBalancerIPs holds Load Balancer IPs for the internal API service. These Load Balancer IP addresses can be IPv4 and/or IPv6 addresses. Entries in the apiIntLoadBalancerIPs must be unique. A maximum of 16 IP addresses are permitted.
+     */
     @JsonProperty("apiIntLoadBalancerIPs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getApiIntLoadBalancerIPs() {
         return apiIntLoadBalancerIPs;
     }
 
+    /**
+     * apiIntLoadBalancerIPs holds Load Balancer IPs for the internal API service. These Load Balancer IP addresses can be IPv4 and/or IPv6 addresses. Entries in the apiIntLoadBalancerIPs must be unique. A maximum of 16 IP addresses are permitted.
+     */
     @JsonProperty("apiIntLoadBalancerIPs")
     public void setApiIntLoadBalancerIPs(List<String> apiIntLoadBalancerIPs) {
         this.apiIntLoadBalancerIPs = apiIntLoadBalancerIPs;
     }
 
+    /**
+     * apiLoadBalancerIPs holds Load Balancer IPs for the API service. These Load Balancer IP addresses can be IPv4 and/or IPv6 addresses. Could be empty for private clusters. Entries in the apiLoadBalancerIPs must be unique. A maximum of 16 IP addresses are permitted.
+     */
     @JsonProperty("apiLoadBalancerIPs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getApiLoadBalancerIPs() {
         return apiLoadBalancerIPs;
     }
 
+    /**
+     * apiLoadBalancerIPs holds Load Balancer IPs for the API service. These Load Balancer IP addresses can be IPv4 and/or IPv6 addresses. Could be empty for private clusters. Entries in the apiLoadBalancerIPs must be unique. A maximum of 16 IP addresses are permitted.
+     */
     @JsonProperty("apiLoadBalancerIPs")
     public void setApiLoadBalancerIPs(List<String> apiLoadBalancerIPs) {
         this.apiLoadBalancerIPs = apiLoadBalancerIPs;
     }
 
+    /**
+     * ingressLoadBalancerIPs holds IPs for Ingress Load Balancers. These Load Balancer IP addresses can be IPv4 and/or IPv6 addresses. Entries in the ingressLoadBalancerIPs must be unique. A maximum of 16 IP addresses are permitted.
+     */
     @JsonProperty("ingressLoadBalancerIPs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getIngressLoadBalancerIPs() {
         return ingressLoadBalancerIPs;
     }
 
+    /**
+     * ingressLoadBalancerIPs holds IPs for Ingress Load Balancers. These Load Balancer IP addresses can be IPv4 and/or IPv6 addresses. Entries in the ingressLoadBalancerIPs must be unique. A maximum of 16 IP addresses are permitted.
+     */
     @JsonProperty("ingressLoadBalancerIPs")
     public void setIngressLoadBalancerIPs(List<String> ingressLoadBalancerIPs) {
         this.ingressLoadBalancerIPs = ingressLoadBalancerIPs;

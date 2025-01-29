@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * The node this Taint is attached to has the "effect" on any pod that does not tolerate the Taint.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -61,41 +64,65 @@ public class Taint implements Editable<TaintBuilder>, KubernetesResource
         this.value = value;
     }
 
+    /**
+     * Required. The effect of the taint on pods that do not tolerate the taint. Valid effects are NoSchedule, PreferNoSchedule and NoExecute.
+     */
     @JsonProperty("effect")
     public String getEffect() {
         return effect;
     }
 
+    /**
+     * Required. The effect of the taint on pods that do not tolerate the taint. Valid effects are NoSchedule, PreferNoSchedule and NoExecute.
+     */
     @JsonProperty("effect")
     public void setEffect(String effect) {
         this.effect = effect;
     }
 
+    /**
+     * Required. The taint key to be applied to a node.
+     */
     @JsonProperty("key")
     public String getKey() {
         return key;
     }
 
+    /**
+     * Required. The taint key to be applied to a node.
+     */
     @JsonProperty("key")
     public void setKey(String key) {
         this.key = key;
     }
 
+    /**
+     * The node this Taint is attached to has the "effect" on any pod that does not tolerate the Taint.
+     */
     @JsonProperty("timeAdded")
     public String getTimeAdded() {
         return timeAdded;
     }
 
+    /**
+     * The node this Taint is attached to has the "effect" on any pod that does not tolerate the Taint.
+     */
     @JsonProperty("timeAdded")
     public void setTimeAdded(String timeAdded) {
         this.timeAdded = timeAdded;
     }
 
+    /**
+     * The taint value corresponding to the taint key.
+     */
     @JsonProperty("value")
     public String getValue() {
         return value;
     }
 
+    /**
+     * The taint value corresponding to the taint key.
+     */
     @JsonProperty("value")
     public void setValue(String value) {
         this.value = value;

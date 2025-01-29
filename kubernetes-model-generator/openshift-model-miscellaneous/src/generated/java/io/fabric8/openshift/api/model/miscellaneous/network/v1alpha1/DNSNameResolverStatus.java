@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DNSNameResolverStatus defines the observed status of DNSNameResolver.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -81,12 +84,18 @@ public class DNSNameResolverStatus implements Editable<DNSNameResolverStatusBuil
         this.resolvedNames = resolvedNames;
     }
 
+    /**
+     * resolvedNames contains a list of matching DNS names and their corresponding IP addresses along with their TTL and last DNS lookup times.
+     */
     @JsonProperty("resolvedNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<DNSNameResolverResolvedName> getResolvedNames() {
         return resolvedNames;
     }
 
+    /**
+     * resolvedNames contains a list of matching DNS names and their corresponding IP addresses along with their TTL and last DNS lookup times.
+     */
     @JsonProperty("resolvedNames")
     public void setResolvedNames(List<DNSNameResolverResolvedName> resolvedNames) {
         this.resolvedNames = resolvedNames;

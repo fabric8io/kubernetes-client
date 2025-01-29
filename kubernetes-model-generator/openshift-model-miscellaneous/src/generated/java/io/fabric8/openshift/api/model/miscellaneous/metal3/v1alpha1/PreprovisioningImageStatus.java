@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PreprovisioningImageStatus defines the observed state of PreprovisioningImage.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -106,72 +109,114 @@ public class PreprovisioningImageStatus implements Editable<PreprovisioningImage
         this.networkData = networkData;
     }
 
+    /**
+     * architecture is the processor architecture for which the image is built
+     */
     @JsonProperty("architecture")
     public String getArchitecture() {
         return architecture;
     }
 
+    /**
+     * architecture is the processor architecture for which the image is built
+     */
     @JsonProperty("architecture")
     public void setArchitecture(String architecture) {
         this.architecture = architecture;
     }
 
+    /**
+     * conditions describe the state of the built image
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
 
+    /**
+     * conditions describe the state of the built image
+     */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * extraKernelParams is a string with extra parameters to pass to the kernel when booting the image over network. Only makes sense for initrd images.
+     */
     @JsonProperty("extraKernelParams")
     public String getExtraKernelParams() {
         return extraKernelParams;
     }
 
+    /**
+     * extraKernelParams is a string with extra parameters to pass to the kernel when booting the image over network. Only makes sense for initrd images.
+     */
     @JsonProperty("extraKernelParams")
     public void setExtraKernelParams(String extraKernelParams) {
         this.extraKernelParams = extraKernelParams;
     }
 
+    /**
+     * format is the type of image that is available at the download url: either iso or initrd.
+     */
     @JsonProperty("format")
     public String getFormat() {
         return format;
     }
 
+    /**
+     * format is the type of image that is available at the download url: either iso or initrd.
+     */
     @JsonProperty("format")
     public void setFormat(String format) {
         this.format = format;
     }
 
+    /**
+     * imageUrl is the URL from which the built image can be downloaded.
+     */
     @JsonProperty("imageUrl")
     public String getImageUrl() {
         return imageUrl;
     }
 
+    /**
+     * imageUrl is the URL from which the built image can be downloaded.
+     */
     @JsonProperty("imageUrl")
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
 
+    /**
+     * kernelUrl is the URL from which the kernel of the image can be downloaded. Only makes sense for initrd images.
+     */
     @JsonProperty("kernelUrl")
     public String getKernelUrl() {
         return kernelUrl;
     }
 
+    /**
+     * kernelUrl is the URL from which the kernel of the image can be downloaded. Only makes sense for initrd images.
+     */
     @JsonProperty("kernelUrl")
     public void setKernelUrl(String kernelUrl) {
         this.kernelUrl = kernelUrl;
     }
 
+    /**
+     * PreprovisioningImageStatus defines the observed state of PreprovisioningImage.
+     */
     @JsonProperty("networkData")
     public SecretStatus getNetworkData() {
         return networkData;
     }
 
+    /**
+     * PreprovisioningImageStatus defines the observed state of PreprovisioningImage.
+     */
     @JsonProperty("networkData")
     public void setNetworkData(SecretStatus networkData) {
         this.networkData = networkData;

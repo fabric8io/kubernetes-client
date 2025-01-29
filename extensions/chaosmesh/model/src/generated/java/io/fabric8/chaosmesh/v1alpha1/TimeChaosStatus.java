@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * TimeChaosStatus defines the observed state of TimeChaos
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class TimeChaosStatus implements Editable<TimeChaosStatusBuilder>, Kubern
         this.experiment = experiment;
     }
 
+    /**
+     * Conditions represents the current global condition of the chaos
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ChaosCondition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Conditions represents the current global condition of the chaos
+     */
     @JsonProperty("conditions")
     public void setConditions(List<ChaosCondition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * TimeChaosStatus defines the observed state of TimeChaos
+     */
     @JsonProperty("experiment")
     public ExperimentStatus getExperiment() {
         return experiment;
     }
 
+    /**
+     * TimeChaosStatus defines the observed state of TimeChaos
+     */
     @JsonProperty("experiment")
     public void setExperiment(ExperimentStatus experiment) {
         this.experiment = experiment;

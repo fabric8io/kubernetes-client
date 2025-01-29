@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ImageBlobReferences describes the blob references within an image.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,43 +97,67 @@ public class ImageBlobReferences implements Editable<ImageBlobReferencesBuilder>
         this.manifests = manifests;
     }
 
+    /**
+     * config, if set, is the blob that contains the image config. Some images do not have separate config blobs and this field will be set to nil if so.
+     */
     @JsonProperty("config")
     public String getConfig() {
         return config;
     }
 
+    /**
+     * config, if set, is the blob that contains the image config. Some images do not have separate config blobs and this field will be set to nil if so.
+     */
     @JsonProperty("config")
     public void setConfig(String config) {
         this.config = config;
     }
 
+    /**
+     * imageMissing is true if the image is referenced by the image stream but the image object has been deleted from the API by an administrator. When this field is set, layers and config fields may be empty and callers that depend on the image metadata should consider the image to be unavailable for download or viewing.
+     */
     @JsonProperty("imageMissing")
     public Boolean getImageMissing() {
         return imageMissing;
     }
 
+    /**
+     * imageMissing is true if the image is referenced by the image stream but the image object has been deleted from the API by an administrator. When this field is set, layers and config fields may be empty and callers that depend on the image metadata should consider the image to be unavailable for download or viewing.
+     */
     @JsonProperty("imageMissing")
     public void setImageMissing(Boolean imageMissing) {
         this.imageMissing = imageMissing;
     }
 
+    /**
+     * layers is the list of blobs that compose this image, from base layer to top layer. All layers referenced by this array will be defined in the blobs map. Some images may have zero layers.
+     */
     @JsonProperty("layers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getLayers() {
         return layers;
     }
 
+    /**
+     * layers is the list of blobs that compose this image, from base layer to top layer. All layers referenced by this array will be defined in the blobs map. Some images may have zero layers.
+     */
     @JsonProperty("layers")
     public void setLayers(List<String> layers) {
         this.layers = layers;
     }
 
+    /**
+     * manifests is the list of other image names that this image points to. For a single architecture image, it is empty. For a multi-arch image, it consists of the digests of single architecture images, such images shouldn't have layers nor config.
+     */
     @JsonProperty("manifests")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getManifests() {
         return manifests;
     }
 
+    /**
+     * manifests is the list of other image names that this image points to. For a single architecture image, it is empty. For a multi-arch image, it consists of the digests of single architecture images, such images shouldn't have layers nor config.
+     */
     @JsonProperty("manifests")
     public void setManifests(List<String> manifests) {
         this.manifests = manifests;

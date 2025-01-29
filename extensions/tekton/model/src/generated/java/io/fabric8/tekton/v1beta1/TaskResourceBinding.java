@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * TaskResourceBinding points to the PipelineResource that will be used for the Task input or output called Name.<br><p> <br><p> Deprecated: Unused, preserved only for backwards compatibility
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,42 +97,66 @@ public class TaskResourceBinding implements Editable<TaskResourceBindingBuilder>
         this.resourceSpec = resourceSpec;
     }
 
+    /**
+     * Name is the name of the PipelineResource in the Pipeline's declaration
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name is the name of the PipelineResource in the Pipeline's declaration
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Paths will probably be removed in #1284, and then PipelineResourceBinding can be used instead. The optional Path field corresponds to a path on disk at which the Resource can be found (used when providing the resource via mounted volume, overriding the default logic to fetch the Resource).
+     */
     @JsonProperty("paths")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getPaths() {
         return paths;
     }
 
+    /**
+     * Paths will probably be removed in #1284, and then PipelineResourceBinding can be used instead. The optional Path field corresponds to a path on disk at which the Resource can be found (used when providing the resource via mounted volume, overriding the default logic to fetch the Resource).
+     */
     @JsonProperty("paths")
     public void setPaths(List<String> paths) {
         this.paths = paths;
     }
 
+    /**
+     * TaskResourceBinding points to the PipelineResource that will be used for the Task input or output called Name.<br><p> <br><p> Deprecated: Unused, preserved only for backwards compatibility
+     */
     @JsonProperty("resourceRef")
     public PipelineResourceRef getResourceRef() {
         return resourceRef;
     }
 
+    /**
+     * TaskResourceBinding points to the PipelineResource that will be used for the Task input or output called Name.<br><p> <br><p> Deprecated: Unused, preserved only for backwards compatibility
+     */
     @JsonProperty("resourceRef")
     public void setResourceRef(PipelineResourceRef resourceRef) {
         this.resourceRef = resourceRef;
     }
 
+    /**
+     * TaskResourceBinding points to the PipelineResource that will be used for the Task input or output called Name.<br><p> <br><p> Deprecated: Unused, preserved only for backwards compatibility
+     */
     @JsonProperty("resourceSpec")
     public PipelineResourceSpec getResourceSpec() {
         return resourceSpec;
     }
 
+    /**
+     * TaskResourceBinding points to the PipelineResource that will be used for the Task input or output called Name.<br><p> <br><p> Deprecated: Unused, preserved only for backwards compatibility
+     */
     @JsonProperty("resourceSpec")
     public void setResourceSpec(PipelineResourceSpec resourceSpec) {
         this.resourceSpec = resourceSpec;

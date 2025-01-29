@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * GitLabInterceptor provides a webhook to intercept and pre-process events
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class GitLabInterceptor implements Editable<GitLabInterceptorBuilder>, Ku
         this.secretRef = secretRef;
     }
 
+    /**
+     * GitLabInterceptor provides a webhook to intercept and pre-process events
+     */
     @JsonProperty("eventTypes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getEventTypes() {
         return eventTypes;
     }
 
+    /**
+     * GitLabInterceptor provides a webhook to intercept and pre-process events
+     */
     @JsonProperty("eventTypes")
     public void setEventTypes(List<String> eventTypes) {
         this.eventTypes = eventTypes;
     }
 
+    /**
+     * GitLabInterceptor provides a webhook to intercept and pre-process events
+     */
     @JsonProperty("secretRef")
     public SecretRef getSecretRef() {
         return secretRef;
     }
 
+    /**
+     * GitLabInterceptor provides a webhook to intercept and pre-process events
+     */
     @JsonProperty("secretRef")
     public void setSecretRef(SecretRef secretRef) {
         this.secretRef = secretRef;

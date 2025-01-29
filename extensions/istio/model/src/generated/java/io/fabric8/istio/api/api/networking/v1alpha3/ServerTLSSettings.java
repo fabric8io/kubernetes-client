@@ -132,52 +132,82 @@ public class ServerTLSSettings implements Editable<ServerTLSSettingsBuilder>, Ku
         this.verifyCertificateSpki = verifyCertificateSpki;
     }
 
+    /**
+     * REQUIRED if mode is `MUTUAL` or `OPTIONAL_MUTUAL`. The path to a file containing certificate authority certificates to use in verifying a presented client side certificate.
+     */
     @JsonProperty("caCertificates")
     public String getCaCertificates() {
         return caCertificates;
     }
 
+    /**
+     * REQUIRED if mode is `MUTUAL` or `OPTIONAL_MUTUAL`. The path to a file containing certificate authority certificates to use in verifying a presented client side certificate.
+     */
     @JsonProperty("caCertificates")
     public void setCaCertificates(String caCertificates) {
         this.caCertificates = caCertificates;
     }
 
+    /**
+     * OPTIONAL: The path to the file containing the certificate revocation list (CRL) to use in verifying a presented client side certificate. `CRL` is a list of certificates that have been revoked by the CA (Certificate Authority) before their scheduled expiration date. If specified, the proxy will verify if the presented certificate is part of the revoked list of certificates. If omitted, the proxy will not verify the certificate against the `crl`.
+     */
     @JsonProperty("caCrl")
     public String getCaCrl() {
         return caCrl;
     }
 
+    /**
+     * OPTIONAL: The path to the file containing the certificate revocation list (CRL) to use in verifying a presented client side certificate. `CRL` is a list of certificates that have been revoked by the CA (Certificate Authority) before their scheduled expiration date. If specified, the proxy will verify if the presented certificate is part of the revoked list of certificates. If omitted, the proxy will not verify the certificate against the `crl`.
+     */
     @JsonProperty("caCrl")
     public void setCaCrl(String caCrl) {
         this.caCrl = caCrl;
     }
 
+    /**
+     * Optional: If specified, only support the specified cipher list. Otherwise default to the default cipher list supported by Envoy as specified [here](https://www.envoyproxy.io/docs/envoy/latest/api-v3/extensions/transport_sockets/tls/v3/common.proto). The supported list of ciphers are: &#42; `ECDHE-ECDSA-AES128-GCM-SHA256` &#42; `ECDHE-RSA-AES128-GCM-SHA256` &#42; `ECDHE-ECDSA-AES256-GCM-SHA384` &#42; `ECDHE-RSA-AES256-GCM-SHA384` &#42; `ECDHE-ECDSA-CHACHA20-POLY1305` &#42; `ECDHE-RSA-CHACHA20-POLY1305` &#42; `ECDHE-ECDSA-AES128-SHA` &#42; `ECDHE-RSA-AES128-SHA` &#42; `ECDHE-ECDSA-AES256-SHA` &#42; `ECDHE-RSA-AES256-SHA` &#42; `AES128-GCM-SHA256` &#42; `AES256-GCM-SHA384` &#42; `AES128-SHA` &#42; `AES256-SHA` &#42; `DES-CBC3-SHA`
+     */
     @JsonProperty("cipherSuites")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getCipherSuites() {
         return cipherSuites;
     }
 
+    /**
+     * Optional: If specified, only support the specified cipher list. Otherwise default to the default cipher list supported by Envoy as specified [here](https://www.envoyproxy.io/docs/envoy/latest/api-v3/extensions/transport_sockets/tls/v3/common.proto). The supported list of ciphers are: &#42; `ECDHE-ECDSA-AES128-GCM-SHA256` &#42; `ECDHE-RSA-AES128-GCM-SHA256` &#42; `ECDHE-ECDSA-AES256-GCM-SHA384` &#42; `ECDHE-RSA-AES256-GCM-SHA384` &#42; `ECDHE-ECDSA-CHACHA20-POLY1305` &#42; `ECDHE-RSA-CHACHA20-POLY1305` &#42; `ECDHE-ECDSA-AES128-SHA` &#42; `ECDHE-RSA-AES128-SHA` &#42; `ECDHE-ECDSA-AES256-SHA` &#42; `ECDHE-RSA-AES256-SHA` &#42; `AES128-GCM-SHA256` &#42; `AES256-GCM-SHA384` &#42; `AES128-SHA` &#42; `AES256-SHA` &#42; `DES-CBC3-SHA`
+     */
     @JsonProperty("cipherSuites")
     public void setCipherSuites(List<String> cipherSuites) {
         this.cipherSuites = cipherSuites;
     }
 
+    /**
+     * For gateways running on Kubernetes, the name of the secret that holds the TLS certs including the CA certificates. Applicable only on Kubernetes. An Opaque secret should contain the following keys and values: `tls.key: &lt;privateKey&gt;` and `tls.crt: &lt;serverCert&gt;` or `key: &lt;privateKey&gt;` and `cert: &lt;serverCert&gt;`. For mutual TLS, `cacert: &lt;CACertificate&gt;` and `crl: &lt;CertificateRevocationList&gt;` can be provided in the same secret or a separate secret named `&lt;secret&gt;-cacert`. A TLS secret for server certificates with an additional `tls.ocsp-staple` key for specifying OCSP staple information, `ca.crt` key for CA certificates and `ca.crl` for certificate revocation list is also supported. Only one of server certificates and CA certificate or credentialName can be specified.
+     */
     @JsonProperty("credentialName")
     public String getCredentialName() {
         return credentialName;
     }
 
+    /**
+     * For gateways running on Kubernetes, the name of the secret that holds the TLS certs including the CA certificates. Applicable only on Kubernetes. An Opaque secret should contain the following keys and values: `tls.key: &lt;privateKey&gt;` and `tls.crt: &lt;serverCert&gt;` or `key: &lt;privateKey&gt;` and `cert: &lt;serverCert&gt;`. For mutual TLS, `cacert: &lt;CACertificate&gt;` and `crl: &lt;CertificateRevocationList&gt;` can be provided in the same secret or a separate secret named `&lt;secret&gt;-cacert`. A TLS secret for server certificates with an additional `tls.ocsp-staple` key for specifying OCSP staple information, `ca.crt` key for CA certificates and `ca.crl` for certificate revocation list is also supported. Only one of server certificates and CA certificate or credentialName can be specified.
+     */
     @JsonProperty("credentialName")
     public void setCredentialName(String credentialName) {
         this.credentialName = credentialName;
     }
 
+    /**
+     * If set to true, the load balancer will send a 301 redirect for all http connections, asking the clients to use HTTPS.
+     */
     @JsonProperty("httpsRedirect")
     public Boolean getHttpsRedirect() {
         return httpsRedirect;
     }
 
+    /**
+     * If set to true, the load balancer will send a 301 redirect for all http connections, asking the clients to use HTTPS.
+     */
     @JsonProperty("httpsRedirect")
     public void setHttpsRedirect(Boolean httpsRedirect) {
         this.httpsRedirect = httpsRedirect;
@@ -213,54 +243,84 @@ public class ServerTLSSettings implements Editable<ServerTLSSettingsBuilder>, Ku
         this.mode = mode;
     }
 
+    /**
+     * REQUIRED if mode is `SIMPLE` or `MUTUAL`. The path to the file holding the server's private key.
+     */
     @JsonProperty("privateKey")
     public String getPrivateKey() {
         return privateKey;
     }
 
+    /**
+     * REQUIRED if mode is `SIMPLE` or `MUTUAL`. The path to the file holding the server's private key.
+     */
     @JsonProperty("privateKey")
     public void setPrivateKey(String privateKey) {
         this.privateKey = privateKey;
     }
 
+    /**
+     * REQUIRED if mode is `SIMPLE` or `MUTUAL`. The path to the file holding the server-side TLS certificate to use.
+     */
     @JsonProperty("serverCertificate")
     public String getServerCertificate() {
         return serverCertificate;
     }
 
+    /**
+     * REQUIRED if mode is `SIMPLE` or `MUTUAL`. The path to the file holding the server-side TLS certificate to use.
+     */
     @JsonProperty("serverCertificate")
     public void setServerCertificate(String serverCertificate) {
         this.serverCertificate = serverCertificate;
     }
 
+    /**
+     * A list of alternate names to verify the subject identity in the certificate presented by the client.
+     */
     @JsonProperty("subjectAltNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getSubjectAltNames() {
         return subjectAltNames;
     }
 
+    /**
+     * A list of alternate names to verify the subject identity in the certificate presented by the client.
+     */
     @JsonProperty("subjectAltNames")
     public void setSubjectAltNames(List<String> subjectAltNames) {
         this.subjectAltNames = subjectAltNames;
     }
 
+    /**
+     * An optional list of hex-encoded SHA-256 hashes of the authorized client certificates. Both simple and colon separated formats are acceptable. Note: When both verify_certificate_hash and verify_certificate_spki are specified, a hash matching either value will result in the certificate being accepted.
+     */
     @JsonProperty("verifyCertificateHash")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getVerifyCertificateHash() {
         return verifyCertificateHash;
     }
 
+    /**
+     * An optional list of hex-encoded SHA-256 hashes of the authorized client certificates. Both simple and colon separated formats are acceptable. Note: When both verify_certificate_hash and verify_certificate_spki are specified, a hash matching either value will result in the certificate being accepted.
+     */
     @JsonProperty("verifyCertificateHash")
     public void setVerifyCertificateHash(List<String> verifyCertificateHash) {
         this.verifyCertificateHash = verifyCertificateHash;
     }
 
+    /**
+     * An optional list of base64-encoded SHA-256 hashes of the SPKIs of authorized client certificates. Note: When both verify_certificate_hash and verify_certificate_spki are specified, a hash matching either value will result in the certificate being accepted.
+     */
     @JsonProperty("verifyCertificateSpki")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getVerifyCertificateSpki() {
         return verifyCertificateSpki;
     }
 
+    /**
+     * An optional list of base64-encoded SHA-256 hashes of the SPKIs of authorized client certificates. Note: When both verify_certificate_hash and verify_certificate_spki are specified, a hash matching either value will result in the certificate being accepted.
+     */
     @JsonProperty("verifyCertificateSpki")
     public void setVerifyCertificateSpki(List<String> verifyCertificateSpki) {
         this.verifyCertificateSpki = verifyCertificateSpki;

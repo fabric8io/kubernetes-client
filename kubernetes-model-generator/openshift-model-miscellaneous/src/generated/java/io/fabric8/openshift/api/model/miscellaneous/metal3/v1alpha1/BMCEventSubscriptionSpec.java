@@ -91,31 +91,49 @@ public class BMCEventSubscriptionSpec implements Editable<BMCEventSubscriptionSp
         this.httpHeadersRef = httpHeadersRef;
     }
 
+    /**
+     * Arbitrary user-provided context for the event
+     */
     @JsonProperty("context")
     public String getContext() {
         return context;
     }
 
+    /**
+     * Arbitrary user-provided context for the event
+     */
     @JsonProperty("context")
     public void setContext(String context) {
         this.context = context;
     }
 
+    /**
+     * A webhook URL to send events to
+     */
     @JsonProperty("destination")
     public String getDestination() {
         return destination;
     }
 
+    /**
+     * A webhook URL to send events to
+     */
     @JsonProperty("destination")
     public void setDestination(String destination) {
         this.destination = destination;
     }
 
+    /**
+     * A reference to a BareMetalHost
+     */
     @JsonProperty("hostName")
     public String getHostName() {
         return hostName;
     }
 
+    /**
+     * A reference to a BareMetalHost
+     */
     @JsonProperty("hostName")
     public void setHostName(String hostName) {
         this.hostName = hostName;

@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ClientIPConfig represents the configurations of Client IP based session affinity.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -49,11 +52,17 @@ public class ClientIPConfig implements Editable<ClientIPConfigBuilder>, Kubernet
         this.timeoutSeconds = timeoutSeconds;
     }
 
+    /**
+     * timeoutSeconds specifies the seconds of ClientIP type session sticky time. The value must be &gt;0 &amp;&amp; &lt;=86400(for 1 day) if ServiceAffinity == "ClientIP". Default value is 10800(for 3 hours).
+     */
     @JsonProperty("timeoutSeconds")
     public Integer getTimeoutSeconds() {
         return timeoutSeconds;
     }
 
+    /**
+     * timeoutSeconds specifies the seconds of ClientIP type session sticky time. The value must be &gt;0 &amp;&amp; &lt;=86400(for 1 day) if ServiceAffinity == "ClientIP". Default value is 10800(for 3 hours).
+     */
     @JsonProperty("timeoutSeconds")
     public void setTimeoutSeconds(Integer timeoutSeconds) {
         this.timeoutSeconds = timeoutSeconds;

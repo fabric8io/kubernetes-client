@@ -48,9 +48,6 @@ import lombok.experimental.Accessors;
 public class UpdateOptions implements Editable<UpdateOptionsBuilder>, KubernetesResource
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "v1";
     @JsonProperty("dryRun")
@@ -60,9 +57,6 @@ public class UpdateOptions implements Editable<UpdateOptionsBuilder>, Kubernetes
     private String fieldManager;
     @JsonProperty("fieldValidation")
     private String fieldValidation;
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "UpdateOptions";
     @JsonIgnore
@@ -83,17 +77,11 @@ public class UpdateOptions implements Editable<UpdateOptionsBuilder>, Kubernetes
         this.kind = kind;
     }
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
         return apiVersion;
     }
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
@@ -130,17 +118,11 @@ public class UpdateOptions implements Editable<UpdateOptionsBuilder>, Kubernetes
         this.fieldValidation = fieldValidation;
     }
 
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     public String getKind() {
         return kind;
     }
 
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;

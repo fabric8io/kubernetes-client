@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * OutageEntry records time period of an outage
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -98,53 +101,83 @@ public class OutageEntry implements Editable<OutageEntryBuilder>, KubernetesReso
         this.startLogs = startLogs;
     }
 
+    /**
+     * OutageEntry records time period of an outage
+     */
     @JsonProperty("end")
     public String getEnd() {
         return end;
     }
 
+    /**
+     * OutageEntry records time period of an outage
+     */
     @JsonProperty("end")
     public void setEnd(String end) {
         this.end = end;
     }
 
+    /**
+     * EndLogs contains log entries related to the end of this outage. Should contain the success entry that resolved the outage and possibly a few of the failure log entries that preceded it.
+     */
     @JsonProperty("endLogs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<LogEntry> getEndLogs() {
         return endLogs;
     }
 
+    /**
+     * EndLogs contains log entries related to the end of this outage. Should contain the success entry that resolved the outage and possibly a few of the failure log entries that preceded it.
+     */
     @JsonProperty("endLogs")
     public void setEndLogs(List<LogEntry> endLogs) {
         this.endLogs = endLogs;
     }
 
+    /**
+     * Message summarizes outage details in a human readable format.
+     */
     @JsonProperty("message")
     public String getMessage() {
         return message;
     }
 
+    /**
+     * Message summarizes outage details in a human readable format.
+     */
     @JsonProperty("message")
     public void setMessage(String message) {
         this.message = message;
     }
 
+    /**
+     * OutageEntry records time period of an outage
+     */
     @JsonProperty("start")
     public String getStart() {
         return start;
     }
 
+    /**
+     * OutageEntry records time period of an outage
+     */
     @JsonProperty("start")
     public void setStart(String start) {
         this.start = start;
     }
 
+    /**
+     * StartLogs contains log entries related to the start of this outage. Should contain the original failure, any entries where the failure mode changed.
+     */
     @JsonProperty("startLogs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<LogEntry> getStartLogs() {
         return startLogs;
     }
 
+    /**
+     * StartLogs contains log entries related to the start of this outage. Should contain the original failure, any entries where the failure mode changed.
+     */
     @JsonProperty("startLogs")
     public void setStartLogs(List<LogEntry> startLogs) {
         this.startLogs = startLogs;

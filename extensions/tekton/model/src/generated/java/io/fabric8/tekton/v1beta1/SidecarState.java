@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SidecarState reports the results of running a sidecar in a Task.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -101,61 +104,97 @@ public class SidecarState implements Editable<SidecarStateBuilder>, KubernetesRe
         this.waiting = waiting;
     }
 
+    /**
+     * SidecarState reports the results of running a sidecar in a Task.
+     */
     @JsonProperty("container")
     public String getContainer() {
         return container;
     }
 
+    /**
+     * SidecarState reports the results of running a sidecar in a Task.
+     */
     @JsonProperty("container")
     public void setContainer(String container) {
         this.container = container;
     }
 
+    /**
+     * SidecarState reports the results of running a sidecar in a Task.
+     */
     @JsonProperty("imageID")
     public String getImageID() {
         return imageID;
     }
 
+    /**
+     * SidecarState reports the results of running a sidecar in a Task.
+     */
     @JsonProperty("imageID")
     public void setImageID(String imageID) {
         this.imageID = imageID;
     }
 
+    /**
+     * SidecarState reports the results of running a sidecar in a Task.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * SidecarState reports the results of running a sidecar in a Task.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * SidecarState reports the results of running a sidecar in a Task.
+     */
     @JsonProperty("running")
     public ContainerStateRunning getRunning() {
         return running;
     }
 
+    /**
+     * SidecarState reports the results of running a sidecar in a Task.
+     */
     @JsonProperty("running")
     public void setRunning(ContainerStateRunning running) {
         this.running = running;
     }
 
+    /**
+     * SidecarState reports the results of running a sidecar in a Task.
+     */
     @JsonProperty("terminated")
     public ContainerStateTerminated getTerminated() {
         return terminated;
     }
 
+    /**
+     * SidecarState reports the results of running a sidecar in a Task.
+     */
     @JsonProperty("terminated")
     public void setTerminated(ContainerStateTerminated terminated) {
         this.terminated = terminated;
     }
 
+    /**
+     * SidecarState reports the results of running a sidecar in a Task.
+     */
     @JsonProperty("waiting")
     public ContainerStateWaiting getWaiting() {
         return waiting;
     }
 
+    /**
+     * SidecarState reports the results of running a sidecar in a Task.
+     */
     @JsonProperty("waiting")
     public void setWaiting(ContainerStateWaiting waiting) {
         this.waiting = waiting;

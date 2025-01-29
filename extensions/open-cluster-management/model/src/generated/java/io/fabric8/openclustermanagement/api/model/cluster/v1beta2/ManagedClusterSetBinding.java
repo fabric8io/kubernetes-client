@@ -37,6 +37,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ManagedClusterSetBinding projects a ManagedClusterSet into a certain namespace. You can create a ManagedClusterSetBinding in a namespace and bind it to a ManagedClusterSet if both have a RBAC rules to CREATE on the virtual subresource of managedclustersets/bind. Workloads that you create in the same namespace can only be distributed to ManagedClusters in ManagedClusterSets that are bound in this namespace by higher-level controllers.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -76,14 +79,8 @@ import lombok.experimental.Accessors;
 public class ManagedClusterSetBinding implements Editable<ManagedClusterSetBindingBuilder>, HasMetadata, Namespaced
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "cluster.open-cluster-management.io/v1beta2";
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "ManagedClusterSetBinding";
     @JsonProperty("metadata")
@@ -111,7 +108,7 @@ public class ManagedClusterSetBinding implements Editable<ManagedClusterSetBindi
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -119,7 +116,7 @@ public class ManagedClusterSetBinding implements Editable<ManagedClusterSetBindi
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -127,7 +124,7 @@ public class ManagedClusterSetBinding implements Editable<ManagedClusterSetBindi
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -135,38 +132,56 @@ public class ManagedClusterSetBinding implements Editable<ManagedClusterSetBindi
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * ManagedClusterSetBinding projects a ManagedClusterSet into a certain namespace. You can create a ManagedClusterSetBinding in a namespace and bind it to a ManagedClusterSet if both have a RBAC rules to CREATE on the virtual subresource of managedclustersets/bind. Workloads that you create in the same namespace can only be distributed to ManagedClusters in ManagedClusterSets that are bound in this namespace by higher-level controllers.
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * ManagedClusterSetBinding projects a ManagedClusterSet into a certain namespace. You can create a ManagedClusterSetBinding in a namespace and bind it to a ManagedClusterSet if both have a RBAC rules to CREATE on the virtual subresource of managedclustersets/bind. Workloads that you create in the same namespace can only be distributed to ManagedClusters in ManagedClusterSets that are bound in this namespace by higher-level controllers.
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * ManagedClusterSetBinding projects a ManagedClusterSet into a certain namespace. You can create a ManagedClusterSetBinding in a namespace and bind it to a ManagedClusterSet if both have a RBAC rules to CREATE on the virtual subresource of managedclustersets/bind. Workloads that you create in the same namespace can only be distributed to ManagedClusters in ManagedClusterSets that are bound in this namespace by higher-level controllers.
+     */
     @JsonProperty("spec")
     public ManagedClusterSetBindingSpec getSpec() {
         return spec;
     }
 
+    /**
+     * ManagedClusterSetBinding projects a ManagedClusterSet into a certain namespace. You can create a ManagedClusterSetBinding in a namespace and bind it to a ManagedClusterSet if both have a RBAC rules to CREATE on the virtual subresource of managedclustersets/bind. Workloads that you create in the same namespace can only be distributed to ManagedClusters in ManagedClusterSets that are bound in this namespace by higher-level controllers.
+     */
     @JsonProperty("spec")
     public void setSpec(ManagedClusterSetBindingSpec spec) {
         this.spec = spec;
     }
 
+    /**
+     * ManagedClusterSetBinding projects a ManagedClusterSet into a certain namespace. You can create a ManagedClusterSetBinding in a namespace and bind it to a ManagedClusterSet if both have a RBAC rules to CREATE on the virtual subresource of managedclustersets/bind. Workloads that you create in the same namespace can only be distributed to ManagedClusters in ManagedClusterSets that are bound in this namespace by higher-level controllers.
+     */
     @JsonProperty("status")
     public ManagedClusterSetBindingStatus getStatus() {
         return status;
     }
 
+    /**
+     * ManagedClusterSetBinding projects a ManagedClusterSet into a certain namespace. You can create a ManagedClusterSetBinding in a namespace and bind it to a ManagedClusterSet if both have a RBAC rules to CREATE on the virtual subresource of managedclustersets/bind. Workloads that you create in the same namespace can only be distributed to ManagedClusters in ManagedClusterSets that are bound in this namespace by higher-level controllers.
+     */
     @JsonProperty("status")
     public void setStatus(ManagedClusterSetBindingStatus status) {
         this.status = status;

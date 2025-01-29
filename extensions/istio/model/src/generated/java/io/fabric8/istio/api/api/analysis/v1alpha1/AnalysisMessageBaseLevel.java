@@ -4,6 +4,9 @@ package io.fabric8.istio.api.api.analysis.v1alpha1;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
+/**
+ * The values here are chosen so that more severe messages get sorted higher, as well as leaving space in between to add more later
+ */
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public enum AnalysisMessageBaseLevel 
 {

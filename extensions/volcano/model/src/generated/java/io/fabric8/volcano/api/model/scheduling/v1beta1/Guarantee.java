@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Guarantee represents configuration of queue resource reservation
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -80,12 +83,18 @@ public class Guarantee implements Editable<GuaranteeBuilder>, KubernetesResource
         this.resource = resource;
     }
 
+    /**
+     * The amount of cluster resource reserved for queue. Just set either `percentage` or `resource`
+     */
     @JsonProperty("resource")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Quantity> getResource() {
         return resource;
     }
 
+    /**
+     * The amount of cluster resource reserved for queue. Just set either `percentage` or `resource`
+     */
     @JsonProperty("resource")
     public void setResource(Map<String, Quantity> resource) {
         this.resource = resource;

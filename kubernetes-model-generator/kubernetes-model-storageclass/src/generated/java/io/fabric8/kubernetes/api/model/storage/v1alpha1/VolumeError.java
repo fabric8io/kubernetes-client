@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * VolumeError captures an error encountered during a volume operation.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class VolumeError implements Editable<VolumeErrorBuilder>, KubernetesReso
         this.time = time;
     }
 
+    /**
+     * String detailing the error encountered during Attach or Detach operation. This string maybe logged, so it should not contain sensitive information.
+     */
     @JsonProperty("message")
     public String getMessage() {
         return message;
     }
 
+    /**
+     * String detailing the error encountered during Attach or Detach operation. This string maybe logged, so it should not contain sensitive information.
+     */
     @JsonProperty("message")
     public void setMessage(String message) {
         this.message = message;
     }
 
+    /**
+     * VolumeError captures an error encountered during a volume operation.
+     */
     @JsonProperty("time")
     public String getTime() {
         return time;
     }
 
+    /**
+     * VolumeError captures an error encountered during a volume operation.
+     */
     @JsonProperty("time")
     public void setTime(String time) {
         this.time = time;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * TagEvent is used by ImageStreamStatus to keep a historical record of images associated with a tag.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class TagEvent implements Editable<TagEventBuilder>, KubernetesResource
         this.image = image;
     }
 
+    /**
+     * TagEvent is used by ImageStreamStatus to keep a historical record of images associated with a tag.
+     */
     @JsonProperty("created")
     public String getCreated() {
         return created;
     }
 
+    /**
+     * TagEvent is used by ImageStreamStatus to keep a historical record of images associated with a tag.
+     */
     @JsonProperty("created")
     public void setCreated(String created) {
         this.created = created;
     }
 
+    /**
+     * DockerImageReference is the string that can be used to pull this image
+     */
     @JsonProperty("dockerImageReference")
     public String getDockerImageReference() {
         return dockerImageReference;
     }
 
+    /**
+     * DockerImageReference is the string that can be used to pull this image
+     */
     @JsonProperty("dockerImageReference")
     public void setDockerImageReference(String dockerImageReference) {
         this.dockerImageReference = dockerImageReference;
     }
 
+    /**
+     * Generation is the spec tag generation that resulted in this tag being updated
+     */
     @JsonProperty("generation")
     public Long getGeneration() {
         return generation;
     }
 
+    /**
+     * Generation is the spec tag generation that resulted in this tag being updated
+     */
     @JsonProperty("generation")
     public void setGeneration(Long generation) {
         this.generation = generation;
     }
 
+    /**
+     * Image is the image
+     */
     @JsonProperty("image")
     public String getImage() {
         return image;
     }
 
+    /**
+     * Image is the image
+     */
     @JsonProperty("image")
     public void setImage(String image) {
         this.image = image;

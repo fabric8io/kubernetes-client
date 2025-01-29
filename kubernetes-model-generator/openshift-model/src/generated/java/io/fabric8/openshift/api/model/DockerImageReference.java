@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DockerImageReference points to a container image.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,51 +97,81 @@ public class DockerImageReference implements Editable<DockerImageReferenceBuilde
         this.tag = tag;
     }
 
+    /**
+     * ID is the identifier for the container image
+     */
     @JsonProperty("iD")
     public String getID() {
         return iD;
     }
 
+    /**
+     * ID is the identifier for the container image
+     */
     @JsonProperty("iD")
     public void setID(String iD) {
         this.iD = iD;
     }
 
+    /**
+     * Name is the name of the container image
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name is the name of the container image
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Namespace is the namespace that contains the container image
+     */
     @JsonProperty("namespace")
     public String getNamespace() {
         return namespace;
     }
 
+    /**
+     * Namespace is the namespace that contains the container image
+     */
     @JsonProperty("namespace")
     public void setNamespace(String namespace) {
         this.namespace = namespace;
     }
 
+    /**
+     * Registry is the registry that contains the container image
+     */
     @JsonProperty("registry")
     public String getRegistry() {
         return registry;
     }
 
+    /**
+     * Registry is the registry that contains the container image
+     */
     @JsonProperty("registry")
     public void setRegistry(String registry) {
         this.registry = registry;
     }
 
+    /**
+     * Tag is which tag of the container image is being referenced
+     */
     @JsonProperty("tag")
     public String getTag() {
         return tag;
     }
 
+    /**
+     * Tag is which tag of the container image is being referenced
+     */
     @JsonProperty("tag")
     public void setTag(String tag) {
         this.tag = tag;

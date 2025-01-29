@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * CustomResourceDefinitionSpec describes how a user wants their resource to appear
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -101,62 +104,98 @@ public class CustomResourceDefinitionSpec implements Editable<CustomResourceDefi
         this.versions = versions;
     }
 
+    /**
+     * CustomResourceDefinitionSpec describes how a user wants their resource to appear
+     */
     @JsonProperty("conversion")
     public CustomResourceConversion getConversion() {
         return conversion;
     }
 
+    /**
+     * CustomResourceDefinitionSpec describes how a user wants their resource to appear
+     */
     @JsonProperty("conversion")
     public void setConversion(CustomResourceConversion conversion) {
         this.conversion = conversion;
     }
 
+    /**
+     * group is the API group of the defined custom resource. The custom resources are served under `/apis/&lt;group&gt;/...`. Must match the name of the CustomResourceDefinition (in the form `&lt;names.plural&gt;.&lt;group&gt;`).
+     */
     @JsonProperty("group")
     public String getGroup() {
         return group;
     }
 
+    /**
+     * group is the API group of the defined custom resource. The custom resources are served under `/apis/&lt;group&gt;/...`. Must match the name of the CustomResourceDefinition (in the form `&lt;names.plural&gt;.&lt;group&gt;`).
+     */
     @JsonProperty("group")
     public void setGroup(String group) {
         this.group = group;
     }
 
+    /**
+     * CustomResourceDefinitionSpec describes how a user wants their resource to appear
+     */
     @JsonProperty("names")
     public CustomResourceDefinitionNames getNames() {
         return names;
     }
 
+    /**
+     * CustomResourceDefinitionSpec describes how a user wants their resource to appear
+     */
     @JsonProperty("names")
     public void setNames(CustomResourceDefinitionNames names) {
         this.names = names;
     }
 
+    /**
+     * preserveUnknownFields indicates that object fields which are not specified in the OpenAPI schema should be preserved when persisting to storage. apiVersion, kind, metadata and known fields inside metadata are always preserved. This field is deprecated in favor of setting `x-preserve-unknown-fields` to true in `spec.versions[&#42;].schema.openAPIV3Schema`. See https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#field-pruning for details.
+     */
     @JsonProperty("preserveUnknownFields")
     public Boolean getPreserveUnknownFields() {
         return preserveUnknownFields;
     }
 
+    /**
+     * preserveUnknownFields indicates that object fields which are not specified in the OpenAPI schema should be preserved when persisting to storage. apiVersion, kind, metadata and known fields inside metadata are always preserved. This field is deprecated in favor of setting `x-preserve-unknown-fields` to true in `spec.versions[&#42;].schema.openAPIV3Schema`. See https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#field-pruning for details.
+     */
     @JsonProperty("preserveUnknownFields")
     public void setPreserveUnknownFields(Boolean preserveUnknownFields) {
         this.preserveUnknownFields = preserveUnknownFields;
     }
 
+    /**
+     * scope indicates whether the defined custom resource is cluster- or namespace-scoped. Allowed values are `Cluster` and `Namespaced`.
+     */
     @JsonProperty("scope")
     public String getScope() {
         return scope;
     }
 
+    /**
+     * scope indicates whether the defined custom resource is cluster- or namespace-scoped. Allowed values are `Cluster` and `Namespaced`.
+     */
     @JsonProperty("scope")
     public void setScope(String scope) {
         this.scope = scope;
     }
 
+    /**
+     * versions is the list of all API versions of the defined custom resource. Version names are used to compute the order in which served versions are listed in API discovery. If the version string is "kube-like", it will sort above non "kube-like" version strings, which are ordered lexicographically. "Kube-like" versions start with a "v", then are followed by a number (the major version), then optionally the string "alpha" or "beta" and another number (the minor version). These are sorted first by GA &gt; beta &gt; alpha (where GA is a version with no suffix such as beta or alpha), and then by comparing major version, then minor version. An example sorted list of versions: v10, v2, v1, v11beta2, v10beta3, v3beta1, v12alpha1, v11alpha2, foo1, foo10.
+     */
     @JsonProperty("versions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<CustomResourceDefinitionVersion> getVersions() {
         return versions;
     }
 
+    /**
+     * versions is the list of all API versions of the defined custom resource. Version names are used to compute the order in which served versions are listed in API discovery. If the version string is "kube-like", it will sort above non "kube-like" version strings, which are ordered lexicographically. "Kube-like" versions start with a "v", then are followed by a number (the major version), then optionally the string "alpha" or "beta" and another number (the minor version). These are sorted first by GA &gt; beta &gt; alpha (where GA is a version with no suffix such as beta or alpha), and then by comparing major version, then minor version. An example sorted list of versions: v10, v2, v1, v11beta2, v10beta3, v3beta1, v12alpha1, v11alpha2, foo1, foo10.
+     */
     @JsonProperty("versions")
     public void setVersions(List<CustomResourceDefinitionVersion> versions) {
         this.versions = versions;

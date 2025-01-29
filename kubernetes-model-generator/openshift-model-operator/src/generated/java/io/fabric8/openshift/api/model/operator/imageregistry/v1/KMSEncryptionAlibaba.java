@@ -78,11 +78,17 @@ public class KMSEncryptionAlibaba implements Editable<KMSEncryptionAlibabaBuilde
         this.keyID = keyID;
     }
 
+    /**
+     * KeyID holds the KMS encryption key ID
+     */
     @JsonProperty("keyID")
     public String getKeyID() {
         return keyID;
     }
 
+    /**
+     * KeyID holds the KMS encryption key ID
+     */
     @JsonProperty("keyID")
     public void setKeyID(String keyID) {
         this.keyID = keyID;

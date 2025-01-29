@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * A Circuit breaker implementation that tracks the status of each individual host in the upstream service.  Applicable to both HTTP and TCP services.  For HTTP services, hosts that continually return 5xx errors for API calls are ejected from the pool for a pre-defined period of time. For TCP services, connection timeouts or connection failures to a given host counts as an error when measuring the consecutive errors metric. See Envoy's [outlier detection](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/upstream/outlier) for more details.<br><p> <br><p> The following rule sets a connection pool size of 100 HTTP1 connections with no more than 10 req/connection to the "reviews" service. In addition, it sets a limit of 1000 concurrent HTTP2 requests and configures upstream hosts to be scanned every 5 mins so that any host that fails 7 consecutive times with a 502, 503, or 504 error code will be ejected for 15 minutes.<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: DestinationRule metadata:<br><p> <br><p> 	name: reviews-cb-policy<br><p> <br><p> spec:<br><p> <br><p> 	host: reviews.prod.svc.cluster.local<br><p> 	trafficPolicy:<br><p> 	  connectionPool:<br><p> 	    tcp:<br><p> 	      maxConnections: 100<br><p> 	    http:<br><p> 	      http2MaxRequests: 1000<br><p> 	      maxRequestsPerConnection: 10<br><p> 	  outlierDetection:<br><p> 	    consecutive5xxErrors: 7<br><p> 	    interval: 5m<br><p> 	    baseEjectionTime: 15m<br><p> <br><p> ```
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -110,91 +113,145 @@ public class OutlierDetection implements Editable<OutlierDetectionBuilder>, Kube
         this.splitExternalLocalOriginErrors = splitExternalLocalOriginErrors;
     }
 
+    /**
+     * A Circuit breaker implementation that tracks the status of each individual host in the upstream service.  Applicable to both HTTP and TCP services.  For HTTP services, hosts that continually return 5xx errors for API calls are ejected from the pool for a pre-defined period of time. For TCP services, connection timeouts or connection failures to a given host counts as an error when measuring the consecutive errors metric. See Envoy's [outlier detection](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/upstream/outlier) for more details.<br><p> <br><p> The following rule sets a connection pool size of 100 HTTP1 connections with no more than 10 req/connection to the "reviews" service. In addition, it sets a limit of 1000 concurrent HTTP2 requests and configures upstream hosts to be scanned every 5 mins so that any host that fails 7 consecutive times with a 502, 503, or 504 error code will be ejected for 15 minutes.<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: DestinationRule metadata:<br><p> <br><p> 	name: reviews-cb-policy<br><p> <br><p> spec:<br><p> <br><p> 	host: reviews.prod.svc.cluster.local<br><p> 	trafficPolicy:<br><p> 	  connectionPool:<br><p> 	    tcp:<br><p> 	      maxConnections: 100<br><p> 	    http:<br><p> 	      http2MaxRequests: 1000<br><p> 	      maxRequestsPerConnection: 10<br><p> 	  outlierDetection:<br><p> 	    consecutive5xxErrors: 7<br><p> 	    interval: 5m<br><p> 	    baseEjectionTime: 15m<br><p> <br><p> ```
+     */
     @JsonProperty("baseEjectionTime")
     public String getBaseEjectionTime() {
         return baseEjectionTime;
     }
 
+    /**
+     * A Circuit breaker implementation that tracks the status of each individual host in the upstream service.  Applicable to both HTTP and TCP services.  For HTTP services, hosts that continually return 5xx errors for API calls are ejected from the pool for a pre-defined period of time. For TCP services, connection timeouts or connection failures to a given host counts as an error when measuring the consecutive errors metric. See Envoy's [outlier detection](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/upstream/outlier) for more details.<br><p> <br><p> The following rule sets a connection pool size of 100 HTTP1 connections with no more than 10 req/connection to the "reviews" service. In addition, it sets a limit of 1000 concurrent HTTP2 requests and configures upstream hosts to be scanned every 5 mins so that any host that fails 7 consecutive times with a 502, 503, or 504 error code will be ejected for 15 minutes.<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: DestinationRule metadata:<br><p> <br><p> 	name: reviews-cb-policy<br><p> <br><p> spec:<br><p> <br><p> 	host: reviews.prod.svc.cluster.local<br><p> 	trafficPolicy:<br><p> 	  connectionPool:<br><p> 	    tcp:<br><p> 	      maxConnections: 100<br><p> 	    http:<br><p> 	      http2MaxRequests: 1000<br><p> 	      maxRequestsPerConnection: 10<br><p> 	  outlierDetection:<br><p> 	    consecutive5xxErrors: 7<br><p> 	    interval: 5m<br><p> 	    baseEjectionTime: 15m<br><p> <br><p> ```
+     */
     @JsonProperty("baseEjectionTime")
     public void setBaseEjectionTime(String baseEjectionTime) {
         this.baseEjectionTime = baseEjectionTime;
     }
 
+    /**
+     * A Circuit breaker implementation that tracks the status of each individual host in the upstream service.  Applicable to both HTTP and TCP services.  For HTTP services, hosts that continually return 5xx errors for API calls are ejected from the pool for a pre-defined period of time. For TCP services, connection timeouts or connection failures to a given host counts as an error when measuring the consecutive errors metric. See Envoy's [outlier detection](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/upstream/outlier) for more details.<br><p> <br><p> The following rule sets a connection pool size of 100 HTTP1 connections with no more than 10 req/connection to the "reviews" service. In addition, it sets a limit of 1000 concurrent HTTP2 requests and configures upstream hosts to be scanned every 5 mins so that any host that fails 7 consecutive times with a 502, 503, or 504 error code will be ejected for 15 minutes.<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: DestinationRule metadata:<br><p> <br><p> 	name: reviews-cb-policy<br><p> <br><p> spec:<br><p> <br><p> 	host: reviews.prod.svc.cluster.local<br><p> 	trafficPolicy:<br><p> 	  connectionPool:<br><p> 	    tcp:<br><p> 	      maxConnections: 100<br><p> 	    http:<br><p> 	      http2MaxRequests: 1000<br><p> 	      maxRequestsPerConnection: 10<br><p> 	  outlierDetection:<br><p> 	    consecutive5xxErrors: 7<br><p> 	    interval: 5m<br><p> 	    baseEjectionTime: 15m<br><p> <br><p> ```
+     */
     @JsonProperty("consecutive5xxErrors")
     public Integer getConsecutive5xxErrors() {
         return consecutive5xxErrors;
     }
 
+    /**
+     * A Circuit breaker implementation that tracks the status of each individual host in the upstream service.  Applicable to both HTTP and TCP services.  For HTTP services, hosts that continually return 5xx errors for API calls are ejected from the pool for a pre-defined period of time. For TCP services, connection timeouts or connection failures to a given host counts as an error when measuring the consecutive errors metric. See Envoy's [outlier detection](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/upstream/outlier) for more details.<br><p> <br><p> The following rule sets a connection pool size of 100 HTTP1 connections with no more than 10 req/connection to the "reviews" service. In addition, it sets a limit of 1000 concurrent HTTP2 requests and configures upstream hosts to be scanned every 5 mins so that any host that fails 7 consecutive times with a 502, 503, or 504 error code will be ejected for 15 minutes.<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: DestinationRule metadata:<br><p> <br><p> 	name: reviews-cb-policy<br><p> <br><p> spec:<br><p> <br><p> 	host: reviews.prod.svc.cluster.local<br><p> 	trafficPolicy:<br><p> 	  connectionPool:<br><p> 	    tcp:<br><p> 	      maxConnections: 100<br><p> 	    http:<br><p> 	      http2MaxRequests: 1000<br><p> 	      maxRequestsPerConnection: 10<br><p> 	  outlierDetection:<br><p> 	    consecutive5xxErrors: 7<br><p> 	    interval: 5m<br><p> 	    baseEjectionTime: 15m<br><p> <br><p> ```
+     */
     @JsonProperty("consecutive5xxErrors")
     public void setConsecutive5xxErrors(Integer consecutive5xxErrors) {
         this.consecutive5xxErrors = consecutive5xxErrors;
     }
 
+    /**
+     * Number of errors before a host is ejected from the connection pool. Defaults to 5. When the upstream host is accessed over HTTP, a 502, 503, or 504 return code qualifies as an error. When the upstream host is accessed over an opaque TCP connection, connect timeouts and connection error/failure events qualify as an error. $hide_from_docs<br><p> <br><p> Deprecated: Marked as deprecated in networking/v1alpha3/destination_rule.proto.
+     */
     @JsonProperty("consecutiveErrors")
     public Integer getConsecutiveErrors() {
         return consecutiveErrors;
     }
 
+    /**
+     * Number of errors before a host is ejected from the connection pool. Defaults to 5. When the upstream host is accessed over HTTP, a 502, 503, or 504 return code qualifies as an error. When the upstream host is accessed over an opaque TCP connection, connect timeouts and connection error/failure events qualify as an error. $hide_from_docs<br><p> <br><p> Deprecated: Marked as deprecated in networking/v1alpha3/destination_rule.proto.
+     */
     @JsonProperty("consecutiveErrors")
     public void setConsecutiveErrors(Integer consecutiveErrors) {
         this.consecutiveErrors = consecutiveErrors;
     }
 
+    /**
+     * A Circuit breaker implementation that tracks the status of each individual host in the upstream service.  Applicable to both HTTP and TCP services.  For HTTP services, hosts that continually return 5xx errors for API calls are ejected from the pool for a pre-defined period of time. For TCP services, connection timeouts or connection failures to a given host counts as an error when measuring the consecutive errors metric. See Envoy's [outlier detection](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/upstream/outlier) for more details.<br><p> <br><p> The following rule sets a connection pool size of 100 HTTP1 connections with no more than 10 req/connection to the "reviews" service. In addition, it sets a limit of 1000 concurrent HTTP2 requests and configures upstream hosts to be scanned every 5 mins so that any host that fails 7 consecutive times with a 502, 503, or 504 error code will be ejected for 15 minutes.<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: DestinationRule metadata:<br><p> <br><p> 	name: reviews-cb-policy<br><p> <br><p> spec:<br><p> <br><p> 	host: reviews.prod.svc.cluster.local<br><p> 	trafficPolicy:<br><p> 	  connectionPool:<br><p> 	    tcp:<br><p> 	      maxConnections: 100<br><p> 	    http:<br><p> 	      http2MaxRequests: 1000<br><p> 	      maxRequestsPerConnection: 10<br><p> 	  outlierDetection:<br><p> 	    consecutive5xxErrors: 7<br><p> 	    interval: 5m<br><p> 	    baseEjectionTime: 15m<br><p> <br><p> ```
+     */
     @JsonProperty("consecutiveGatewayErrors")
     public Integer getConsecutiveGatewayErrors() {
         return consecutiveGatewayErrors;
     }
 
+    /**
+     * A Circuit breaker implementation that tracks the status of each individual host in the upstream service.  Applicable to both HTTP and TCP services.  For HTTP services, hosts that continually return 5xx errors for API calls are ejected from the pool for a pre-defined period of time. For TCP services, connection timeouts or connection failures to a given host counts as an error when measuring the consecutive errors metric. See Envoy's [outlier detection](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/upstream/outlier) for more details.<br><p> <br><p> The following rule sets a connection pool size of 100 HTTP1 connections with no more than 10 req/connection to the "reviews" service. In addition, it sets a limit of 1000 concurrent HTTP2 requests and configures upstream hosts to be scanned every 5 mins so that any host that fails 7 consecutive times with a 502, 503, or 504 error code will be ejected for 15 minutes.<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: DestinationRule metadata:<br><p> <br><p> 	name: reviews-cb-policy<br><p> <br><p> spec:<br><p> <br><p> 	host: reviews.prod.svc.cluster.local<br><p> 	trafficPolicy:<br><p> 	  connectionPool:<br><p> 	    tcp:<br><p> 	      maxConnections: 100<br><p> 	    http:<br><p> 	      http2MaxRequests: 1000<br><p> 	      maxRequestsPerConnection: 10<br><p> 	  outlierDetection:<br><p> 	    consecutive5xxErrors: 7<br><p> 	    interval: 5m<br><p> 	    baseEjectionTime: 15m<br><p> <br><p> ```
+     */
     @JsonProperty("consecutiveGatewayErrors")
     public void setConsecutiveGatewayErrors(Integer consecutiveGatewayErrors) {
         this.consecutiveGatewayErrors = consecutiveGatewayErrors;
     }
 
+    /**
+     * A Circuit breaker implementation that tracks the status of each individual host in the upstream service.  Applicable to both HTTP and TCP services.  For HTTP services, hosts that continually return 5xx errors for API calls are ejected from the pool for a pre-defined period of time. For TCP services, connection timeouts or connection failures to a given host counts as an error when measuring the consecutive errors metric. See Envoy's [outlier detection](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/upstream/outlier) for more details.<br><p> <br><p> The following rule sets a connection pool size of 100 HTTP1 connections with no more than 10 req/connection to the "reviews" service. In addition, it sets a limit of 1000 concurrent HTTP2 requests and configures upstream hosts to be scanned every 5 mins so that any host that fails 7 consecutive times with a 502, 503, or 504 error code will be ejected for 15 minutes.<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: DestinationRule metadata:<br><p> <br><p> 	name: reviews-cb-policy<br><p> <br><p> spec:<br><p> <br><p> 	host: reviews.prod.svc.cluster.local<br><p> 	trafficPolicy:<br><p> 	  connectionPool:<br><p> 	    tcp:<br><p> 	      maxConnections: 100<br><p> 	    http:<br><p> 	      http2MaxRequests: 1000<br><p> 	      maxRequestsPerConnection: 10<br><p> 	  outlierDetection:<br><p> 	    consecutive5xxErrors: 7<br><p> 	    interval: 5m<br><p> 	    baseEjectionTime: 15m<br><p> <br><p> ```
+     */
     @JsonProperty("consecutiveLocalOriginFailures")
     public Integer getConsecutiveLocalOriginFailures() {
         return consecutiveLocalOriginFailures;
     }
 
+    /**
+     * A Circuit breaker implementation that tracks the status of each individual host in the upstream service.  Applicable to both HTTP and TCP services.  For HTTP services, hosts that continually return 5xx errors for API calls are ejected from the pool for a pre-defined period of time. For TCP services, connection timeouts or connection failures to a given host counts as an error when measuring the consecutive errors metric. See Envoy's [outlier detection](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/upstream/outlier) for more details.<br><p> <br><p> The following rule sets a connection pool size of 100 HTTP1 connections with no more than 10 req/connection to the "reviews" service. In addition, it sets a limit of 1000 concurrent HTTP2 requests and configures upstream hosts to be scanned every 5 mins so that any host that fails 7 consecutive times with a 502, 503, or 504 error code will be ejected for 15 minutes.<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: DestinationRule metadata:<br><p> <br><p> 	name: reviews-cb-policy<br><p> <br><p> spec:<br><p> <br><p> 	host: reviews.prod.svc.cluster.local<br><p> 	trafficPolicy:<br><p> 	  connectionPool:<br><p> 	    tcp:<br><p> 	      maxConnections: 100<br><p> 	    http:<br><p> 	      http2MaxRequests: 1000<br><p> 	      maxRequestsPerConnection: 10<br><p> 	  outlierDetection:<br><p> 	    consecutive5xxErrors: 7<br><p> 	    interval: 5m<br><p> 	    baseEjectionTime: 15m<br><p> <br><p> ```
+     */
     @JsonProperty("consecutiveLocalOriginFailures")
     public void setConsecutiveLocalOriginFailures(Integer consecutiveLocalOriginFailures) {
         this.consecutiveLocalOriginFailures = consecutiveLocalOriginFailures;
     }
 
+    /**
+     * A Circuit breaker implementation that tracks the status of each individual host in the upstream service.  Applicable to both HTTP and TCP services.  For HTTP services, hosts that continually return 5xx errors for API calls are ejected from the pool for a pre-defined period of time. For TCP services, connection timeouts or connection failures to a given host counts as an error when measuring the consecutive errors metric. See Envoy's [outlier detection](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/upstream/outlier) for more details.<br><p> <br><p> The following rule sets a connection pool size of 100 HTTP1 connections with no more than 10 req/connection to the "reviews" service. In addition, it sets a limit of 1000 concurrent HTTP2 requests and configures upstream hosts to be scanned every 5 mins so that any host that fails 7 consecutive times with a 502, 503, or 504 error code will be ejected for 15 minutes.<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: DestinationRule metadata:<br><p> <br><p> 	name: reviews-cb-policy<br><p> <br><p> spec:<br><p> <br><p> 	host: reviews.prod.svc.cluster.local<br><p> 	trafficPolicy:<br><p> 	  connectionPool:<br><p> 	    tcp:<br><p> 	      maxConnections: 100<br><p> 	    http:<br><p> 	      http2MaxRequests: 1000<br><p> 	      maxRequestsPerConnection: 10<br><p> 	  outlierDetection:<br><p> 	    consecutive5xxErrors: 7<br><p> 	    interval: 5m<br><p> 	    baseEjectionTime: 15m<br><p> <br><p> ```
+     */
     @JsonProperty("interval")
     public String getInterval() {
         return interval;
     }
 
+    /**
+     * A Circuit breaker implementation that tracks the status of each individual host in the upstream service.  Applicable to both HTTP and TCP services.  For HTTP services, hosts that continually return 5xx errors for API calls are ejected from the pool for a pre-defined period of time. For TCP services, connection timeouts or connection failures to a given host counts as an error when measuring the consecutive errors metric. See Envoy's [outlier detection](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/upstream/outlier) for more details.<br><p> <br><p> The following rule sets a connection pool size of 100 HTTP1 connections with no more than 10 req/connection to the "reviews" service. In addition, it sets a limit of 1000 concurrent HTTP2 requests and configures upstream hosts to be scanned every 5 mins so that any host that fails 7 consecutive times with a 502, 503, or 504 error code will be ejected for 15 minutes.<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: DestinationRule metadata:<br><p> <br><p> 	name: reviews-cb-policy<br><p> <br><p> spec:<br><p> <br><p> 	host: reviews.prod.svc.cluster.local<br><p> 	trafficPolicy:<br><p> 	  connectionPool:<br><p> 	    tcp:<br><p> 	      maxConnections: 100<br><p> 	    http:<br><p> 	      http2MaxRequests: 1000<br><p> 	      maxRequestsPerConnection: 10<br><p> 	  outlierDetection:<br><p> 	    consecutive5xxErrors: 7<br><p> 	    interval: 5m<br><p> 	    baseEjectionTime: 15m<br><p> <br><p> ```
+     */
     @JsonProperty("interval")
     public void setInterval(String interval) {
         this.interval = interval;
     }
 
+    /**
+     * Maximum % of hosts in the load balancing pool for the upstream service that can be ejected. Defaults to 10%.
+     */
     @JsonProperty("maxEjectionPercent")
     public Integer getMaxEjectionPercent() {
         return maxEjectionPercent;
     }
 
+    /**
+     * Maximum % of hosts in the load balancing pool for the upstream service that can be ejected. Defaults to 10%.
+     */
     @JsonProperty("maxEjectionPercent")
     public void setMaxEjectionPercent(Integer maxEjectionPercent) {
         this.maxEjectionPercent = maxEjectionPercent;
     }
 
+    /**
+     * Outlier detection will be enabled as long as the associated load balancing pool has at least min_health_percent hosts in healthy mode. When the percentage of healthy hosts in the load balancing pool drops below this threshold, outlier detection will be disabled and the proxy will load balance across all hosts in the pool (healthy and unhealthy). The threshold can be disabled by setting it to 0%. The default is 0% as it's not typically applicable in k8s environments with few pods per service.
+     */
     @JsonProperty("minHealthPercent")
     public Integer getMinHealthPercent() {
         return minHealthPercent;
     }
 
+    /**
+     * Outlier detection will be enabled as long as the associated load balancing pool has at least min_health_percent hosts in healthy mode. When the percentage of healthy hosts in the load balancing pool drops below this threshold, outlier detection will be disabled and the proxy will load balance across all hosts in the pool (healthy and unhealthy). The threshold can be disabled by setting it to 0%. The default is 0% as it's not typically applicable in k8s environments with few pods per service.
+     */
     @JsonProperty("minHealthPercent")
     public void setMinHealthPercent(Integer minHealthPercent) {
         this.minHealthPercent = minHealthPercent;
     }
 
+    /**
+     * Determines whether to distinguish local origin failures from external errors. If set to true consecutive_local_origin_failure is taken into account for outlier detection calculations. This should be used when you want to derive the outlier detection status based on the errors seen locally such as failure to connect, timeout while connecting etc. rather than the status code returned by upstream service. This is especially useful when the upstream service explicitly returns a 5xx for some requests and you want to ignore those responses from upstream service while determining the outlier detection status of a host. Defaults to false.
+     */
     @JsonProperty("splitExternalLocalOriginErrors")
     public Boolean getSplitExternalLocalOriginErrors() {
         return splitExternalLocalOriginErrors;
     }
 
+    /**
+     * Determines whether to distinguish local origin failures from external errors. If set to true consecutive_local_origin_failure is taken into account for outlier detection calculations. This should be used when you want to derive the outlier detection status based on the errors seen locally such as failure to connect, timeout while connecting etc. rather than the status code returned by upstream service. This is especially useful when the upstream service explicitly returns a 5xx for some requests and you want to ignore those responses from upstream service while determining the outlier detection status of a host. Defaults to false.
+     */
     @JsonProperty("splitExternalLocalOriginErrors")
     public void setSplitExternalLocalOriginErrors(Boolean splitExternalLocalOriginErrors) {
         this.splitExternalLocalOriginErrors = splitExternalLocalOriginErrors;

@@ -36,6 +36,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * MachineOSBuild describes a build process managed and deployed by the MCO Compatibility level 4: No compatibility is provided, the API can change at any point for any reason. These capabilities should not be used by applications needing long term support.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -75,14 +78,8 @@ import lombok.experimental.Accessors;
 public class MachineOSBuild implements Editable<MachineOSBuildBuilder>, HasMetadata
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "machineconfiguration.openshift.io/v1alpha1";
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "MachineOSBuild";
     @JsonProperty("metadata")
@@ -110,7 +107,7 @@ public class MachineOSBuild implements Editable<MachineOSBuildBuilder>, HasMetad
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -118,7 +115,7 @@ public class MachineOSBuild implements Editable<MachineOSBuildBuilder>, HasMetad
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -126,7 +123,7 @@ public class MachineOSBuild implements Editable<MachineOSBuildBuilder>, HasMetad
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -134,38 +131,56 @@ public class MachineOSBuild implements Editable<MachineOSBuildBuilder>, HasMetad
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * MachineOSBuild describes a build process managed and deployed by the MCO Compatibility level 4: No compatibility is provided, the API can change at any point for any reason. These capabilities should not be used by applications needing long term support.
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * MachineOSBuild describes a build process managed and deployed by the MCO Compatibility level 4: No compatibility is provided, the API can change at any point for any reason. These capabilities should not be used by applications needing long term support.
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * MachineOSBuild describes a build process managed and deployed by the MCO Compatibility level 4: No compatibility is provided, the API can change at any point for any reason. These capabilities should not be used by applications needing long term support.
+     */
     @JsonProperty("spec")
     public MachineOSBuildSpec getSpec() {
         return spec;
     }
 
+    /**
+     * MachineOSBuild describes a build process managed and deployed by the MCO Compatibility level 4: No compatibility is provided, the API can change at any point for any reason. These capabilities should not be used by applications needing long term support.
+     */
     @JsonProperty("spec")
     public void setSpec(MachineOSBuildSpec spec) {
         this.spec = spec;
     }
 
+    /**
+     * MachineOSBuild describes a build process managed and deployed by the MCO Compatibility level 4: No compatibility is provided, the API can change at any point for any reason. These capabilities should not be used by applications needing long term support.
+     */
     @JsonProperty("status")
     public MachineOSBuildStatus getStatus() {
         return status;
     }
 
+    /**
+     * MachineOSBuild describes a build process managed and deployed by the MCO Compatibility level 4: No compatibility is provided, the API can change at any point for any reason. These capabilities should not be used by applications needing long term support.
+     */
     @JsonProperty("status")
     public void setStatus(MachineOSBuildStatus status) {
         this.status = status;

@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ACMEIssuerDNS01ProviderRFC2136 is a structure containing the configuration for RFC2136 DNS
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -91,41 +94,65 @@ public class ACMEIssuerDNS01ProviderRFC2136 implements Editable<ACMEIssuerDNS01P
         this.tsigSecretSecretRef = tsigSecretSecretRef;
     }
 
+    /**
+     * The IP address or hostname of an authoritative DNS server supporting RFC2136 in the form host:port. If the host is an IPv6 address it must be enclosed in square brackets (e.g [2001:db8::1]) ; port is optional. This field is required.
+     */
     @JsonProperty("nameserver")
     public String getNameserver() {
         return nameserver;
     }
 
+    /**
+     * The IP address or hostname of an authoritative DNS server supporting RFC2136 in the form host:port. If the host is an IPv6 address it must be enclosed in square brackets (e.g [2001:db8::1]) ; port is optional. This field is required.
+     */
     @JsonProperty("nameserver")
     public void setNameserver(String nameserver) {
         this.nameserver = nameserver;
     }
 
+    /**
+     * The TSIG Algorithm configured in the DNS supporting RFC2136. Used only when ``tsigSecretSecretRef`` and ``tsigKeyName`` are defined. Supported values are (case-insensitive): ``HMACMD5`` (default), ``HMACSHA1``, ``HMACSHA256`` or ``HMACSHA512``.
+     */
     @JsonProperty("tsigAlgorithm")
     public String getTsigAlgorithm() {
         return tsigAlgorithm;
     }
 
+    /**
+     * The TSIG Algorithm configured in the DNS supporting RFC2136. Used only when ``tsigSecretSecretRef`` and ``tsigKeyName`` are defined. Supported values are (case-insensitive): ``HMACMD5`` (default), ``HMACSHA1``, ``HMACSHA256`` or ``HMACSHA512``.
+     */
     @JsonProperty("tsigAlgorithm")
     public void setTsigAlgorithm(String tsigAlgorithm) {
         this.tsigAlgorithm = tsigAlgorithm;
     }
 
+    /**
+     * The TSIG Key name configured in the DNS. If ``tsigSecretSecretRef`` is defined, this field is required.
+     */
     @JsonProperty("tsigKeyName")
     public String getTsigKeyName() {
         return tsigKeyName;
     }
 
+    /**
+     * The TSIG Key name configured in the DNS. If ``tsigSecretSecretRef`` is defined, this field is required.
+     */
     @JsonProperty("tsigKeyName")
     public void setTsigKeyName(String tsigKeyName) {
         this.tsigKeyName = tsigKeyName;
     }
 
+    /**
+     * ACMEIssuerDNS01ProviderRFC2136 is a structure containing the configuration for RFC2136 DNS
+     */
     @JsonProperty("tsigSecretSecretRef")
     public SecretKeySelector getTsigSecretSecretRef() {
         return tsigSecretSecretRef;
     }
 
+    /**
+     * ACMEIssuerDNS01ProviderRFC2136 is a structure containing the configuration for RFC2136 DNS
+     */
     @JsonProperty("tsigSecretSecretRef")
     public void setTsigSecretSecretRef(SecretKeySelector tsigSecretSecretRef) {
         this.tsigSecretSecretRef = tsigSecretSecretRef;

@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ACMEIssuerDNS01ProviderDigitalOcean is a structure containing the DNS configuration for DigitalOcean Domains
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -79,11 +82,17 @@ public class ACMEIssuerDNS01ProviderDigitalOcean implements Editable<ACMEIssuerD
         this.tokenSecretRef = tokenSecretRef;
     }
 
+    /**
+     * ACMEIssuerDNS01ProviderDigitalOcean is a structure containing the DNS configuration for DigitalOcean Domains
+     */
     @JsonProperty("tokenSecretRef")
     public SecretKeySelector getTokenSecretRef() {
         return tokenSecretRef;
     }
 
+    /**
+     * ACMEIssuerDNS01ProviderDigitalOcean is a structure containing the DNS configuration for DigitalOcean Domains
+     */
     @JsonProperty("tokenSecretRef")
     public void setTokenSecretRef(SecretKeySelector tokenSecretRef) {
         this.tokenSecretRef = tokenSecretRef;

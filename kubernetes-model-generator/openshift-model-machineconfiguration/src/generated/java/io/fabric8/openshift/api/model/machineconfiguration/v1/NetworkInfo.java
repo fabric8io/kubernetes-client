@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Network contains network related configuration
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -79,11 +82,17 @@ public class NetworkInfo implements Editable<NetworkInfoBuilder>, KubernetesReso
         this.mtuMigration = mtuMigration;
     }
 
+    /**
+     * Network contains network related configuration
+     */
     @JsonProperty("mtuMigration")
     public MTUMigration getMtuMigration() {
         return mtuMigration;
     }
 
+    /**
+     * Network contains network related configuration
+     */
     @JsonProperty("mtuMigration")
     public void setMtuMigration(MTUMigration mtuMigration) {
         this.mtuMigration = mtuMigration;

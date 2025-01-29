@@ -98,61 +98,97 @@ public class RootVolume implements Editable<RootVolumeBuilder>, KubernetesResour
         this.volumeType = volumeType;
     }
 
+    /**
+     * availabilityZone specifies the Cinder availability where the root volume will be created.
+     */
     @JsonProperty("availabilityZone")
     public String getAvailabilityZone() {
         return availabilityZone;
     }
 
+    /**
+     * availabilityZone specifies the Cinder availability where the root volume will be created.
+     */
     @JsonProperty("availabilityZone")
     public void setAvailabilityZone(String availabilityZone) {
         this.availabilityZone = availabilityZone;
     }
 
+    /**
+     * Deprecated: deviceType will be silently ignored. There is no replacement.
+     */
     @JsonProperty("deviceType")
     public String getDeviceType() {
         return deviceType;
     }
 
+    /**
+     * Deprecated: deviceType will be silently ignored. There is no replacement.
+     */
     @JsonProperty("deviceType")
     public void setDeviceType(String deviceType) {
         this.deviceType = deviceType;
     }
 
+    /**
+     * diskSize specifies the size, in GB, of the created root volume.
+     */
     @JsonProperty("diskSize")
     public Integer getDiskSize() {
         return diskSize;
     }
 
+    /**
+     * diskSize specifies the size, in GB, of the created root volume.
+     */
     @JsonProperty("diskSize")
     public void setDiskSize(Integer diskSize) {
         this.diskSize = diskSize;
     }
 
+    /**
+     * Deprecated: sourceType will be silently ignored. There is no replacement.
+     */
     @JsonProperty("sourceType")
     public String getSourceType() {
         return sourceType;
     }
 
+    /**
+     * Deprecated: sourceType will be silently ignored. There is no replacement.
+     */
     @JsonProperty("sourceType")
     public void setSourceType(String sourceType) {
         this.sourceType = sourceType;
     }
 
+    /**
+     * sourceUUID specifies the UUID of a glance image used to populate the root volume. Deprecated: set image in the platform spec instead. This will be ignored if image is set in the platform spec.
+     */
     @JsonProperty("sourceUUID")
     public String getSourceUUID() {
         return sourceUUID;
     }
 
+    /**
+     * sourceUUID specifies the UUID of a glance image used to populate the root volume. Deprecated: set image in the platform spec instead. This will be ignored if image is set in the platform spec.
+     */
     @JsonProperty("sourceUUID")
     public void setSourceUUID(String sourceUUID) {
         this.sourceUUID = sourceUUID;
     }
 
+    /**
+     * volumeType specifies a volume type to use when creating the root volume. If not specified the default volume type will be used.
+     */
     @JsonProperty("volumeType")
     public String getVolumeType() {
         return volumeType;
     }
 
+    /**
+     * volumeType specifies a volume type to use when creating the root volume. If not specified the default volume type will be used.
+     */
     @JsonProperty("volumeType")
     public void setVolumeType(String volumeType) {
         this.volumeType = volumeType;

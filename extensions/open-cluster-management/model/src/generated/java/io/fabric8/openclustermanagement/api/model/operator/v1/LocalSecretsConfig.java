@@ -85,22 +85,34 @@ public class LocalSecretsConfig implements Editable<LocalSecretsConfigBuilder>, 
         this.kubeConfigSecrets = kubeConfigSecrets;
     }
 
+    /**
+     * HubConnectionTimeoutSeconds is used to set the timeout of connecting to the hub cluster. When agent loses the connection to the hub over the timeout seconds, the agent do a rebootstrap. By default is 10 mins.
+     */
     @JsonProperty("hubConnectionTimeoutSeconds")
     public Integer getHubConnectionTimeoutSeconds() {
         return hubConnectionTimeoutSeconds;
     }
 
+    /**
+     * HubConnectionTimeoutSeconds is used to set the timeout of connecting to the hub cluster. When agent loses the connection to the hub over the timeout seconds, the agent do a rebootstrap. By default is 10 mins.
+     */
     @JsonProperty("hubConnectionTimeoutSeconds")
     public void setHubConnectionTimeoutSeconds(Integer hubConnectionTimeoutSeconds) {
         this.hubConnectionTimeoutSeconds = hubConnectionTimeoutSeconds;
     }
 
+    /**
+     * KubeConfigSecrets is a list of secret names. The secrets are in the same namespace where the agent controller runs.
+     */
     @JsonProperty("kubeConfigSecrets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<KubeConfigSecret> getKubeConfigSecrets() {
         return kubeConfigSecrets;
     }
 
+    /**
+     * KubeConfigSecrets is a list of secret names. The secrets are in the same namespace where the agent controller runs.
+     */
     @JsonProperty("kubeConfigSecrets")
     public void setKubeConfigSecrets(List<KubeConfigSecret> kubeConfigSecrets) {
         this.kubeConfigSecrets = kubeConfigSecrets;

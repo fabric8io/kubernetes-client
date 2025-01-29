@@ -86,11 +86,17 @@ public class Auth implements Editable<AuthBuilder>, KubernetesResource
         this.secretKey = secretKey;
     }
 
+    /**
+     * AccessKey is the AWS access key ID.
+     */
     @JsonProperty("accessKey")
     public String getAccessKey() {
         return accessKey;
     }
 
+    /**
+     * AccessKey is the AWS access key ID.
+     */
     @JsonProperty("accessKey")
     public void setAccessKey(String accessKey) {
         this.accessKey = accessKey;
@@ -106,11 +112,17 @@ public class Auth implements Editable<AuthBuilder>, KubernetesResource
         this.secret = secret;
     }
 
+    /**
+     * SecretKey is the AWS secret access key.
+     */
     @JsonProperty("secretKey")
     public String getSecretKey() {
         return secretKey;
     }
 
+    /**
+     * SecretKey is the AWS secret access key.
+     */
     @JsonProperty("secretKey")
     public void setSecretKey(String secretKey) {
         this.secretKey = secretKey;

@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ResourceQuotaStatusByNamespace gives status for a particular project
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -83,21 +86,33 @@ public class ResourceQuotaStatusByNamespace implements Editable<ResourceQuotaSta
         this.status = status;
     }
 
+    /**
+     * Namespace the project this status applies to
+     */
     @JsonProperty("namespace")
     public String getNamespace() {
         return namespace;
     }
 
+    /**
+     * Namespace the project this status applies to
+     */
     @JsonProperty("namespace")
     public void setNamespace(String namespace) {
         this.namespace = namespace;
     }
 
+    /**
+     * ResourceQuotaStatusByNamespace gives status for a particular project
+     */
     @JsonProperty("status")
     public ResourceQuotaStatus getStatus() {
         return status;
     }
 
+    /**
+     * ResourceQuotaStatusByNamespace gives status for a particular project
+     */
     @JsonProperty("status")
     public void setStatus(ResourceQuotaStatus status) {
         this.status = status;

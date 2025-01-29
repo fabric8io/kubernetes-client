@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * OverlappingRangeIPReservationSpec defines the desired state of OverlappingRangeIPReservation
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class OverlappingRangeIPReservationSpec implements Editable<OverlappingRa
         this.podref = podref;
     }
 
+    /**
+     * OverlappingRangeIPReservationSpec defines the desired state of OverlappingRangeIPReservation
+     */
     @JsonProperty("containerid")
     public String getContainerid() {
         return containerid;
     }
 
+    /**
+     * OverlappingRangeIPReservationSpec defines the desired state of OverlappingRangeIPReservation
+     */
     @JsonProperty("containerid")
     public void setContainerid(String containerid) {
         this.containerid = containerid;
     }
 
+    /**
+     * OverlappingRangeIPReservationSpec defines the desired state of OverlappingRangeIPReservation
+     */
     @JsonProperty("ifname")
     public String getIfname() {
         return ifname;
     }
 
+    /**
+     * OverlappingRangeIPReservationSpec defines the desired state of OverlappingRangeIPReservation
+     */
     @JsonProperty("ifname")
     public void setIfname(String ifname) {
         this.ifname = ifname;
     }
 
+    /**
+     * OverlappingRangeIPReservationSpec defines the desired state of OverlappingRangeIPReservation
+     */
     @JsonProperty("podref")
     public String getPodref() {
         return podref;
     }
 
+    /**
+     * OverlappingRangeIPReservationSpec defines the desired state of OverlappingRangeIPReservation
+     */
     @JsonProperty("podref")
     public void setPodref(String podref) {
         this.podref = podref;

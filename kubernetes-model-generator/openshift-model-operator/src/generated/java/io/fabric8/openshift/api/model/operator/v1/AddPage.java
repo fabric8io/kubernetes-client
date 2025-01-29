@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AddPage allows customizing actions on the Add page in developer perspective.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -81,12 +84,18 @@ public class AddPage implements Editable<AddPageBuilder>, KubernetesResource
         this.disabledActions = disabledActions;
     }
 
+    /**
+     * disabledActions is a list of actions that are not shown to users. Each action in the list is represented by its ID.
+     */
     @JsonProperty("disabledActions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getDisabledActions() {
         return disabledActions;
     }
 
+    /**
+     * disabledActions is a list of actions that are not shown to users. Each action in the list is represented by its ID.
+     */
     @JsonProperty("disabledActions")
     public void setDisabledActions(List<String> disabledActions) {
         this.disabledActions = disabledActions;

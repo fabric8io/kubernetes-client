@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * MSTeamsConfig configures notifications via Microsoft Teams. It requires Alertmanager &gt;= 0.26.0.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -99,61 +102,97 @@ public class MSTeamsConfig implements Editable<MSTeamsConfigBuilder>, Kubernetes
         this.webhookUrl = webhookUrl;
     }
 
+    /**
+     * MSTeamsConfig configures notifications via Microsoft Teams. It requires Alertmanager &gt;= 0.26.0.
+     */
     @JsonProperty("httpConfig")
     public HTTPConfig getHttpConfig() {
         return httpConfig;
     }
 
+    /**
+     * MSTeamsConfig configures notifications via Microsoft Teams. It requires Alertmanager &gt;= 0.26.0.
+     */
     @JsonProperty("httpConfig")
     public void setHttpConfig(HTTPConfig httpConfig) {
         this.httpConfig = httpConfig;
     }
 
+    /**
+     * Whether to notify about resolved alerts.
+     */
     @JsonProperty("sendResolved")
     public Boolean getSendResolved() {
         return sendResolved;
     }
 
+    /**
+     * Whether to notify about resolved alerts.
+     */
     @JsonProperty("sendResolved")
     public void setSendResolved(Boolean sendResolved) {
         this.sendResolved = sendResolved;
     }
 
+    /**
+     * Message summary template. It requires Alertmanager &gt;= 0.27.0.
+     */
     @JsonProperty("summary")
     public String getSummary() {
         return summary;
     }
 
+    /**
+     * Message summary template. It requires Alertmanager &gt;= 0.27.0.
+     */
     @JsonProperty("summary")
     public void setSummary(String summary) {
         this.summary = summary;
     }
 
+    /**
+     * Message body template.
+     */
     @JsonProperty("text")
     public String getText() {
         return text;
     }
 
+    /**
+     * Message body template.
+     */
     @JsonProperty("text")
     public void setText(String text) {
         this.text = text;
     }
 
+    /**
+     * Message title template.
+     */
     @JsonProperty("title")
     public String getTitle() {
         return title;
     }
 
+    /**
+     * Message title template.
+     */
     @JsonProperty("title")
     public void setTitle(String title) {
         this.title = title;
     }
 
+    /**
+     * MSTeamsConfig configures notifications via Microsoft Teams. It requires Alertmanager &gt;= 0.26.0.
+     */
     @JsonProperty("webhookUrl")
     public SecretKeySelector getWebhookUrl() {
         return webhookUrl;
     }
 
+    /**
+     * MSTeamsConfig configures notifications via Microsoft Teams. It requires Alertmanager &gt;= 0.26.0.
+     */
     @JsonProperty("webhookUrl")
     public void setWebhookUrl(SecretKeySelector webhookUrl) {
         this.webhookUrl = webhookUrl;

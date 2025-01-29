@@ -108,52 +108,82 @@ public class PrometheusTracingConfig implements Editable<PrometheusTracingConfig
         this.tlsConfig = tlsConfig;
     }
 
+    /**
+     * Client used to export the traces. Supported values are `http` or `grpc`.
+     */
     @JsonProperty("clientType")
     public String getClientType() {
         return clientType;
     }
 
+    /**
+     * Client used to export the traces. Supported values are `http` or `grpc`.
+     */
     @JsonProperty("clientType")
     public void setClientType(String clientType) {
         this.clientType = clientType;
     }
 
+    /**
+     * Compression key for supported compression types. The only supported value is `gzip`.
+     */
     @JsonProperty("compression")
     public String getCompression() {
         return compression;
     }
 
+    /**
+     * Compression key for supported compression types. The only supported value is `gzip`.
+     */
     @JsonProperty("compression")
     public void setCompression(String compression) {
         this.compression = compression;
     }
 
+    /**
+     * Endpoint to send the traces to. Should be provided in format &lt;host&gt;:&lt;port&gt;.
+     */
     @JsonProperty("endpoint")
     public String getEndpoint() {
         return endpoint;
     }
 
+    /**
+     * Endpoint to send the traces to. Should be provided in format &lt;host&gt;:&lt;port&gt;.
+     */
     @JsonProperty("endpoint")
     public void setEndpoint(String endpoint) {
         this.endpoint = endpoint;
     }
 
+    /**
+     * Key-value pairs to be used as headers associated with gRPC or HTTP requests.
+     */
     @JsonProperty("headers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getHeaders() {
         return headers;
     }
 
+    /**
+     * Key-value pairs to be used as headers associated with gRPC or HTTP requests.
+     */
     @JsonProperty("headers")
     public void setHeaders(Map<String, String> headers) {
         this.headers = headers;
     }
 
+    /**
+     * If disabled, the client will use a secure connection.
+     */
     @JsonProperty("insecure")
     public Boolean getInsecure() {
         return insecure;
     }
 
+    /**
+     * If disabled, the client will use a secure connection.
+     */
     @JsonProperty("insecure")
     public void setInsecure(Boolean insecure) {
         this.insecure = insecure;
@@ -169,11 +199,17 @@ public class PrometheusTracingConfig implements Editable<PrometheusTracingConfig
         this.samplingFraction = samplingFraction;
     }
 
+    /**
+     * Maximum time the exporter will wait for each batch export.
+     */
     @JsonProperty("timeout")
     public String getTimeout() {
         return timeout;
     }
 
+    /**
+     * Maximum time the exporter will wait for each batch export.
+     */
     @JsonProperty("timeout")
     public void setTimeout(String timeout) {
         this.timeout = timeout;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PipelineTaskRun reports the results of running a step in the Task. Each task has the potential to succeed or fail (based on the exit code) and produces logs.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class PipelineTaskRun implements Editable<PipelineTaskRunBuilder>, Kubern
         this.name = name;
     }
 
+    /**
+     * PipelineTaskRun reports the results of running a step in the Task. Each task has the potential to succeed or fail (based on the exit code) and produces logs.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * PipelineTaskRun reports the results of running a step in the Task. Each task has the potential to succeed or fail (based on the exit code) and produces logs.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

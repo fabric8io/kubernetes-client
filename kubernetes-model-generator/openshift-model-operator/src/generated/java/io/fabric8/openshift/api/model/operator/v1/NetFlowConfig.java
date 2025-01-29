@@ -81,12 +81,18 @@ public class NetFlowConfig implements Editable<NetFlowConfigBuilder>, Kubernetes
         this.collectors = collectors;
     }
 
+    /**
+     * netFlow defines the NetFlow collectors that will consume the flow data exported from OVS. It is a list of strings formatted as ip:port with a maximum of ten items
+     */
     @JsonProperty("collectors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getCollectors() {
         return collectors;
     }
 
+    /**
+     * netFlow defines the NetFlow collectors that will consume the flow data exported from OVS. It is a list of strings formatted as ip:port with a maximum of ten items
+     */
     @JsonProperty("collectors")
     public void setCollectors(List<String> collectors) {
         this.collectors = collectors;

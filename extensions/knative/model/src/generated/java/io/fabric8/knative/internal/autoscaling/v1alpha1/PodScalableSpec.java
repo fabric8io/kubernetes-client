@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PodScalableSpec is the specification for the desired state of a PodScalable (or at least our shared portion).
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class PodScalableSpec implements Editable<PodScalableSpecBuilder>, Kubern
         this.template = template;
     }
 
+    /**
+     * PodScalableSpec is the specification for the desired state of a PodScalable (or at least our shared portion).
+     */
     @JsonProperty("replicas")
     public Integer getReplicas() {
         return replicas;
     }
 
+    /**
+     * PodScalableSpec is the specification for the desired state of a PodScalable (or at least our shared portion).
+     */
     @JsonProperty("replicas")
     public void setReplicas(Integer replicas) {
         this.replicas = replicas;
     }
 
+    /**
+     * PodScalableSpec is the specification for the desired state of a PodScalable (or at least our shared portion).
+     */
     @JsonProperty("selector")
     public LabelSelector getSelector() {
         return selector;
     }
 
+    /**
+     * PodScalableSpec is the specification for the desired state of a PodScalable (or at least our shared portion).
+     */
     @JsonProperty("selector")
     public void setSelector(LabelSelector selector) {
         this.selector = selector;
     }
 
+    /**
+     * PodScalableSpec is the specification for the desired state of a PodScalable (or at least our shared portion).
+     */
     @JsonProperty("template")
     public PodTemplateSpec getTemplate() {
         return template;
     }
 
+    /**
+     * PodScalableSpec is the specification for the desired state of a PodScalable (or at least our shared portion).
+     */
     @JsonProperty("template")
     public void setTemplate(PodTemplateSpec template) {
         this.template = template;

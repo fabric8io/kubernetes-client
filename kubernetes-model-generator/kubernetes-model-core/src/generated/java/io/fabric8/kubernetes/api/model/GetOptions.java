@@ -44,14 +44,8 @@ import lombok.experimental.Accessors;
 public class GetOptions implements Editable<GetOptionsBuilder>, KubernetesResource
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "v1";
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "GetOptions";
     @JsonProperty("resourceVersion")
@@ -72,33 +66,21 @@ public class GetOptions implements Editable<GetOptionsBuilder>, KubernetesResour
         this.resourceVersion = resourceVersion;
     }
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
         return apiVersion;
     }
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     public String getKind() {
         return kind;
     }
 
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;

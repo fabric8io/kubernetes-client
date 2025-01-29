@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Placement field to be referenced in specs, align with Fedv2, add placementref
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -93,42 +96,66 @@ public class Placement implements Editable<PlacementBuilder>, KubernetesResource
         this.placementRef = placementRef;
     }
 
+    /**
+     * Placement field to be referenced in specs, align with Fedv2, add placementref
+     */
     @JsonProperty("clusterSelector")
     public LabelSelector getClusterSelector() {
         return clusterSelector;
     }
 
+    /**
+     * Placement field to be referenced in specs, align with Fedv2, add placementref
+     */
     @JsonProperty("clusterSelector")
     public void setClusterSelector(LabelSelector clusterSelector) {
         this.clusterSelector = clusterSelector;
     }
 
+    /**
+     * Placement field to be referenced in specs, align with Fedv2, add placementref
+     */
     @JsonProperty("clusters")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<GenericClusterReference> getClusters() {
         return clusters;
     }
 
+    /**
+     * Placement field to be referenced in specs, align with Fedv2, add placementref
+     */
     @JsonProperty("clusters")
     public void setClusters(List<GenericClusterReference> clusters) {
         this.clusters = clusters;
     }
 
+    /**
+     * It indicates a standalone subscription if the Local pointer is set to be true
+     */
     @JsonProperty("local")
     public Boolean getLocal() {
         return local;
     }
 
+    /**
+     * It indicates a standalone subscription if the Local pointer is set to be true
+     */
     @JsonProperty("local")
     public void setLocal(Boolean local) {
         this.local = local;
     }
 
+    /**
+     * Placement field to be referenced in specs, align with Fedv2, add placementref
+     */
     @JsonProperty("placementRef")
     public ObjectReference getPlacementRef() {
         return placementRef;
     }
 
+    /**
+     * Placement field to be referenced in specs, align with Fedv2, add placementref
+     */
     @JsonProperty("placementRef")
     public void setPlacementRef(ObjectReference placementRef) {
         this.placementRef = placementRef;

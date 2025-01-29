@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SyncIdentityProviderCommonSpec defines the identity providers to sync
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,12 +85,18 @@ public class SyncIdentityProviderCommonSpec implements Editable<SyncIdentityProv
         this.identityProviders = identityProviders;
     }
 
+    /**
+     * IdentityProviders is an ordered list of ways for a user to identify themselves
+     */
     @JsonProperty("identityProviders")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<IdentityProvider> getIdentityProviders() {
         return identityProviders;
     }
 
+    /**
+     * IdentityProviders is an ordered list of ways for a user to identify themselves
+     */
     @JsonProperty("identityProviders")
     public void setIdentityProviders(List<IdentityProvider> identityProviders) {
         this.identityProviders = identityProviders;

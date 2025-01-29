@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PodGroupCondition contains details for the current state of this pod group.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -98,61 +101,97 @@ public class PodGroupCondition implements Editable<PodGroupConditionBuilder>, Ku
         this.type = type;
     }
 
+    /**
+     * PodGroupCondition contains details for the current state of this pod group.
+     */
     @JsonProperty("lastTransitionTime")
     public String getLastTransitionTime() {
         return lastTransitionTime;
     }
 
+    /**
+     * PodGroupCondition contains details for the current state of this pod group.
+     */
     @JsonProperty("lastTransitionTime")
     public void setLastTransitionTime(String lastTransitionTime) {
         this.lastTransitionTime = lastTransitionTime;
     }
 
+    /**
+     * Human-readable message indicating details about last transition.
+     */
     @JsonProperty("message")
     public String getMessage() {
         return message;
     }
 
+    /**
+     * Human-readable message indicating details about last transition.
+     */
     @JsonProperty("message")
     public void setMessage(String message) {
         this.message = message;
     }
 
+    /**
+     * Unique, one-word, CamelCase reason for the phase's last transition.
+     */
     @JsonProperty("reason")
     public String getReason() {
         return reason;
     }
 
+    /**
+     * Unique, one-word, CamelCase reason for the phase's last transition.
+     */
     @JsonProperty("reason")
     public void setReason(String reason) {
         this.reason = reason;
     }
 
+    /**
+     * Status is the status of the condition.
+     */
     @JsonProperty("status")
     public String getStatus() {
         return status;
     }
 
+    /**
+     * Status is the status of the condition.
+     */
     @JsonProperty("status")
     public void setStatus(String status) {
         this.status = status;
     }
 
+    /**
+     * The ID of condition transition.
+     */
     @JsonProperty("transitionID")
     public String getTransitionID() {
         return transitionID;
     }
 
+    /**
+     * The ID of condition transition.
+     */
     @JsonProperty("transitionID")
     public void setTransitionID(String transitionID) {
         this.transitionID = transitionID;
     }
 
+    /**
+     * Type is the type of the condition
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * Type is the type of the condition
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

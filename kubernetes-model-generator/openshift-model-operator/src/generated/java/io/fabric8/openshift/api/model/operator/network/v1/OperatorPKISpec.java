@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * OperatorPKISpec is the PKI configuration.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class OperatorPKISpec implements Editable<OperatorPKISpecBuilder>, Kubern
         this.targetCert = targetCert;
     }
 
+    /**
+     * OperatorPKISpec is the PKI configuration.
+     */
     @JsonProperty("targetCert")
     public CertSpec getTargetCert() {
         return targetCert;
     }
 
+    /**
+     * OperatorPKISpec is the PKI configuration.
+     */
     @JsonProperty("targetCert")
     public void setTargetCert(CertSpec targetCert) {
         this.targetCert = targetCert;

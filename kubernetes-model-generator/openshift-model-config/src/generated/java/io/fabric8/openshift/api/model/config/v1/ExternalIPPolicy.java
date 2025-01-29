@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ExternalIPPolicy configures exactly which IPs are allowed for the ExternalIP field in a Service. If the zero struct is supplied, then none are permitted. The policy controller always allows automatically assigned external IPs.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,23 +89,35 @@ public class ExternalIPPolicy implements Editable<ExternalIPPolicyBuilder>, Kube
         this.rejectedCIDRs = rejectedCIDRs;
     }
 
+    /**
+     * allowedCIDRs is the list of allowed CIDRs.
+     */
     @JsonProperty("allowedCIDRs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getAllowedCIDRs() {
         return allowedCIDRs;
     }
 
+    /**
+     * allowedCIDRs is the list of allowed CIDRs.
+     */
     @JsonProperty("allowedCIDRs")
     public void setAllowedCIDRs(List<String> allowedCIDRs) {
         this.allowedCIDRs = allowedCIDRs;
     }
 
+    /**
+     * rejectedCIDRs is the list of disallowed CIDRs. These take precedence over allowedCIDRs.
+     */
     @JsonProperty("rejectedCIDRs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getRejectedCIDRs() {
         return rejectedCIDRs;
     }
 
+    /**
+     * rejectedCIDRs is the list of disallowed CIDRs. These take precedence over allowedCIDRs.
+     */
     @JsonProperty("rejectedCIDRs")
     public void setRejectedCIDRs(List<String> rejectedCIDRs) {
         this.rejectedCIDRs = rejectedCIDRs;

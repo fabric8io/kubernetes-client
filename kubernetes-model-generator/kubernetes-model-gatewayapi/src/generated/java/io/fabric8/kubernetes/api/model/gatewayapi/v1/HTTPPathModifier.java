@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * HTTPPathModifier defines configuration for path modifiers. &lt;gateway:experimental&gt;
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class HTTPPathModifier implements Editable<HTTPPathModifierBuilder>, Kube
         this.type = type;
     }
 
+    /**
+     * ReplaceFullPath specifies the value with which to replace the full path of a request during a rewrite or redirect.
+     */
     @JsonProperty("replaceFullPath")
     public String getReplaceFullPath() {
         return replaceFullPath;
     }
 
+    /**
+     * ReplaceFullPath specifies the value with which to replace the full path of a request during a rewrite or redirect.
+     */
     @JsonProperty("replaceFullPath")
     public void setReplaceFullPath(String replaceFullPath) {
         this.replaceFullPath = replaceFullPath;
     }
 
+    /**
+     * ReplacePrefixMatch specifies the value with which to replace the prefix match of a request during a rewrite or redirect. For example, a request to "/foo/bar" with a prefix match of "/foo" and a ReplacePrefixMatch of "/xyz" would be modified to "/xyz/bar".<br><p> <br><p> Note that this matches the behavior of the PathPrefix match type. This matches full path elements. A path element refers to the list of labels in the path split by the `/` separator. When specified, a trailing `/` is ignored. For example, the paths `/abc`, `/abc/`, and `/abc/def` would all match the prefix `/abc`, but the path `/abcd` would not.<br><p> <br><p> ReplacePrefixMatch is only compatible with a `PathPrefix` HTTPRouteMatch. Using any other HTTPRouteMatch type on the same HTTPRouteRule will result in the implementation setting the Accepted Condition for the Route to `status: False`.<br><p> <br><p> Request Path | Prefix Match | Replace Prefix | Modified Path -------------|--------------|----------------|---------- /foo/bar     | /foo         | /xyz           | /xyz/bar /foo/bar     | /foo         | /xyz/          | /xyz/bar /foo/bar     | /foo/        | /xyz           | /xyz/bar /foo/bar     | /foo/        | /xyz/          | /xyz/bar /foo         | /foo         | /xyz           | /xyz /foo/        | /foo         | /xyz           | /xyz/ /foo/bar     | /foo         | &lt;empty string&gt; | /bar /foo/        | /foo         | &lt;empty string&gt; | / /foo         | /foo         | &lt;empty string&gt; | / /foo/        | /foo         | /              | / /foo         | /foo         | /              | /
+     */
     @JsonProperty("replacePrefixMatch")
     public String getReplacePrefixMatch() {
         return replacePrefixMatch;
     }
 
+    /**
+     * ReplacePrefixMatch specifies the value with which to replace the prefix match of a request during a rewrite or redirect. For example, a request to "/foo/bar" with a prefix match of "/foo" and a ReplacePrefixMatch of "/xyz" would be modified to "/xyz/bar".<br><p> <br><p> Note that this matches the behavior of the PathPrefix match type. This matches full path elements. A path element refers to the list of labels in the path split by the `/` separator. When specified, a trailing `/` is ignored. For example, the paths `/abc`, `/abc/`, and `/abc/def` would all match the prefix `/abc`, but the path `/abcd` would not.<br><p> <br><p> ReplacePrefixMatch is only compatible with a `PathPrefix` HTTPRouteMatch. Using any other HTTPRouteMatch type on the same HTTPRouteRule will result in the implementation setting the Accepted Condition for the Route to `status: False`.<br><p> <br><p> Request Path | Prefix Match | Replace Prefix | Modified Path -------------|--------------|----------------|---------- /foo/bar     | /foo         | /xyz           | /xyz/bar /foo/bar     | /foo         | /xyz/          | /xyz/bar /foo/bar     | /foo/        | /xyz           | /xyz/bar /foo/bar     | /foo/        | /xyz/          | /xyz/bar /foo         | /foo         | /xyz           | /xyz /foo/        | /foo         | /xyz           | /xyz/ /foo/bar     | /foo         | &lt;empty string&gt; | /bar /foo/        | /foo         | &lt;empty string&gt; | / /foo         | /foo         | &lt;empty string&gt; | / /foo/        | /foo         | /              | / /foo         | /foo         | /              | /
+     */
     @JsonProperty("replacePrefixMatch")
     public void setReplacePrefixMatch(String replacePrefixMatch) {
         this.replacePrefixMatch = replacePrefixMatch;
     }
 
+    /**
+     * Type defines the type of path modifier. Additional types may be added in a future release of the API.<br><p> <br><p> Note that values may be added to this enum, implementations must ensure that unknown values will not cause a crash.<br><p> <br><p> Unknown values here must result in the implementation setting the Accepted Condition for the Route to `status: False`, with a Reason of `UnsupportedValue`.
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * Type defines the type of path modifier. Additional types may be added in a future release of the API.<br><p> <br><p> Note that values may be added to this enum, implementations must ensure that unknown values will not cause a crash.<br><p> <br><p> Unknown values here must result in the implementation setting the Accepted Condition for the Route to `status: False`, with a Reason of `UnsupportedValue`.
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

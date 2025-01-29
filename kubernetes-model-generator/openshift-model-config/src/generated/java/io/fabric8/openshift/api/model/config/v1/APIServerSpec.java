@@ -101,12 +101,18 @@ public class APIServerSpec implements Editable<APIServerSpecBuilder>, Kubernetes
         this.tlsSecurityProfile = tlsSecurityProfile;
     }
 
+    /**
+     * additionalCORSAllowedOrigins lists additional, user-defined regular expressions describing hosts for which the API server allows access using the CORS headers. This may be needed to access the API and the integrated OAuth server from JavaScript applications. The values are regular expressions that correspond to the Golang regular expression language.
+     */
     @JsonProperty("additionalCORSAllowedOrigins")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getAdditionalCORSAllowedOrigins() {
         return additionalCORSAllowedOrigins;
     }
 
+    /**
+     * additionalCORSAllowedOrigins lists additional, user-defined regular expressions describing hosts for which the API server allows access using the CORS headers. This may be needed to access the API and the integrated OAuth server from JavaScript applications. The values are regular expressions that correspond to the Golang regular expression language.
+     */
     @JsonProperty("additionalCORSAllowedOrigins")
     public void setAdditionalCORSAllowedOrigins(List<String> additionalCORSAllowedOrigins) {
         this.additionalCORSAllowedOrigins = additionalCORSAllowedOrigins;

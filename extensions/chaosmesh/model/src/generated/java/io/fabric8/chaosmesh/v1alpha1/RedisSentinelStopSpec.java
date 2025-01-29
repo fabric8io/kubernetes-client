@@ -94,51 +94,81 @@ public class RedisSentinelStopSpec implements Editable<RedisSentinelStopSpecBuil
         this.redisPath = redisPath;
     }
 
+    /**
+     * The adress of Redis server
+     */
     @JsonProperty("addr")
     public String getAddr() {
         return addr;
     }
 
+    /**
+     * The adress of Redis server
+     */
     @JsonProperty("addr")
     public void setAddr(String addr) {
         this.addr = addr;
     }
 
+    /**
+     * The path of Sentinel conf
+     */
     @JsonProperty("conf")
     public String getConf() {
         return conf;
     }
 
+    /**
+     * The path of Sentinel conf
+     */
     @JsonProperty("conf")
     public void setConf(String conf) {
         this.conf = conf;
     }
 
+    /**
+     * The control flag determines whether to flush config
+     */
     @JsonProperty("flushConfig")
     public Boolean getFlushConfig() {
         return flushConfig;
     }
 
+    /**
+     * The control flag determines whether to flush config
+     */
     @JsonProperty("flushConfig")
     public void setFlushConfig(Boolean flushConfig) {
         this.flushConfig = flushConfig;
     }
 
+    /**
+     * The password of Redis server
+     */
     @JsonProperty("password")
     public String getPassword() {
         return password;
     }
 
+    /**
+     * The password of Redis server
+     */
     @JsonProperty("password")
     public void setPassword(String password) {
         this.password = password;
     }
 
+    /**
+     * The path of `redis-server` command-line tool
+     */
     @JsonProperty("redisPath")
     public Boolean getRedisPath() {
         return redisPath;
     }
 
+    /**
+     * The path of `redis-server` command-line tool
+     */
     @JsonProperty("redisPath")
     public void setRedisPath(Boolean redisPath) {
         this.redisPath = redisPath;

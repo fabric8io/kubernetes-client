@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Delay specification is used to inject latency into the request forwarding path. The following example will introduce a 5 second delay in 1 out of every 1000 requests to the "v1" version of the "reviews" service from all pods with label env: prod<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: VirtualService metadata:<br><p> <br><p> 	name: reviews-route<br><p> <br><p> spec:<br><p> <br><p> 	hosts:<br><p> 	- reviews.prod.svc.cluster.local<br><p> 	http:<br><p> 	- match:<br><p> 	  - sourceLabels:<br><p> 	      env: prod<br><p> 	  route:<br><p> 	  - destination:<br><p> 	      host: reviews.prod.svc.cluster.local<br><p> 	      subset: v1<br><p> 	  fault:<br><p> 	    delay:<br><p> 	      percentage:<br><p> 	        value: 0.1<br><p> 	      fixedDelay: 5s<br><p> <br><p> ```<br><p> <br><p> The _fixedDelay_ field is used to indicate the amount of delay in seconds. The optional _percentage_ field can be used to only delay a certain percentage of requests. If left unspecified, no request will be delayed.
+ */
 @JsonDeserialize(using = io.fabric8.kubernetes.model.jackson.JsonUnwrappedDeserializer.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -88,32 +91,50 @@ public class HTTPFaultInjectionDelay implements Editable<HTTPFaultInjectionDelay
         this.percentage = percentage;
     }
 
+    /**
+     * Delay specification is used to inject latency into the request forwarding path. The following example will introduce a 5 second delay in 1 out of every 1000 requests to the "v1" version of the "reviews" service from all pods with label env: prod<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: VirtualService metadata:<br><p> <br><p> 	name: reviews-route<br><p> <br><p> spec:<br><p> <br><p> 	hosts:<br><p> 	- reviews.prod.svc.cluster.local<br><p> 	http:<br><p> 	- match:<br><p> 	  - sourceLabels:<br><p> 	      env: prod<br><p> 	  route:<br><p> 	  - destination:<br><p> 	      host: reviews.prod.svc.cluster.local<br><p> 	      subset: v1<br><p> 	  fault:<br><p> 	    delay:<br><p> 	      percentage:<br><p> 	        value: 0.1<br><p> 	      fixedDelay: 5s<br><p> <br><p> ```<br><p> <br><p> The _fixedDelay_ field is used to indicate the amount of delay in seconds. The optional _percentage_ field can be used to only delay a certain percentage of requests. If left unspecified, no request will be delayed.
+     */
     @JsonProperty("HttpDelayType")
     @JsonUnwrapped
     public IsHTTPFaultInjectionDelayHttpDelayType getHttpDelayType() {
         return httpDelayType;
     }
 
+    /**
+     * Delay specification is used to inject latency into the request forwarding path. The following example will introduce a 5 second delay in 1 out of every 1000 requests to the "v1" version of the "reviews" service from all pods with label env: prod<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: VirtualService metadata:<br><p> <br><p> 	name: reviews-route<br><p> <br><p> spec:<br><p> <br><p> 	hosts:<br><p> 	- reviews.prod.svc.cluster.local<br><p> 	http:<br><p> 	- match:<br><p> 	  - sourceLabels:<br><p> 	      env: prod<br><p> 	  route:<br><p> 	  - destination:<br><p> 	      host: reviews.prod.svc.cluster.local<br><p> 	      subset: v1<br><p> 	  fault:<br><p> 	    delay:<br><p> 	      percentage:<br><p> 	        value: 0.1<br><p> 	      fixedDelay: 5s<br><p> <br><p> ```<br><p> <br><p> The _fixedDelay_ field is used to indicate the amount of delay in seconds. The optional _percentage_ field can be used to only delay a certain percentage of requests. If left unspecified, no request will be delayed.
+     */
     @JsonProperty("HttpDelayType")
     public void setHttpDelayType(IsHTTPFaultInjectionDelayHttpDelayType httpDelayType) {
         this.httpDelayType = httpDelayType;
     }
 
+    /**
+     * Percentage of requests on which the delay will be injected (0-100). Use of integer `percent` value is deprecated. Use the double `percentage` field instead.<br><p> <br><p> Deprecated: Marked as deprecated in networking/v1alpha3/virtual_service.proto.
+     */
     @JsonProperty("percent")
     public Integer getPercent() {
         return percent;
     }
 
+    /**
+     * Percentage of requests on which the delay will be injected (0-100). Use of integer `percent` value is deprecated. Use the double `percentage` field instead.<br><p> <br><p> Deprecated: Marked as deprecated in networking/v1alpha3/virtual_service.proto.
+     */
     @JsonProperty("percent")
     public void setPercent(Integer percent) {
         this.percent = percent;
     }
 
+    /**
+     * Delay specification is used to inject latency into the request forwarding path. The following example will introduce a 5 second delay in 1 out of every 1000 requests to the "v1" version of the "reviews" service from all pods with label env: prod<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: VirtualService metadata:<br><p> <br><p> 	name: reviews-route<br><p> <br><p> spec:<br><p> <br><p> 	hosts:<br><p> 	- reviews.prod.svc.cluster.local<br><p> 	http:<br><p> 	- match:<br><p> 	  - sourceLabels:<br><p> 	      env: prod<br><p> 	  route:<br><p> 	  - destination:<br><p> 	      host: reviews.prod.svc.cluster.local<br><p> 	      subset: v1<br><p> 	  fault:<br><p> 	    delay:<br><p> 	      percentage:<br><p> 	        value: 0.1<br><p> 	      fixedDelay: 5s<br><p> <br><p> ```<br><p> <br><p> The _fixedDelay_ field is used to indicate the amount of delay in seconds. The optional _percentage_ field can be used to only delay a certain percentage of requests. If left unspecified, no request will be delayed.
+     */
     @JsonProperty("percentage")
     public Percent getPercentage() {
         return percentage;
     }
 
+    /**
+     * Delay specification is used to inject latency into the request forwarding path. The following example will introduce a 5 second delay in 1 out of every 1000 requests to the "v1" version of the "reviews" service from all pods with label env: prod<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: VirtualService metadata:<br><p> <br><p> 	name: reviews-route<br><p> <br><p> spec:<br><p> <br><p> 	hosts:<br><p> 	- reviews.prod.svc.cluster.local<br><p> 	http:<br><p> 	- match:<br><p> 	  - sourceLabels:<br><p> 	      env: prod<br><p> 	  route:<br><p> 	  - destination:<br><p> 	      host: reviews.prod.svc.cluster.local<br><p> 	      subset: v1<br><p> 	  fault:<br><p> 	    delay:<br><p> 	      percentage:<br><p> 	        value: 0.1<br><p> 	      fixedDelay: 5s<br><p> <br><p> ```<br><p> <br><p> The _fixedDelay_ field is used to indicate the amount of delay in seconds. The optional _percentage_ field can be used to only delay a certain percentage of requests. If left unspecified, no request will be delayed.
+     */
     @JsonProperty("percentage")
     public void setPercentage(Percent percentage) {
         this.percentage = percentage;

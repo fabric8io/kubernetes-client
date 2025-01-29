@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PortTarget defines, directly or indirectly, one or more subnets where to attach a port.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class PortTarget implements Editable<PortTargetBuilder>, KubernetesResour
         this.network = network;
     }
 
+    /**
+     * Specify subnets of the network where control plane port will be discovered.
+     */
     @JsonProperty("fixedIPs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<FixedIP> getFixedIPs() {
         return fixedIPs;
     }
 
+    /**
+     * Specify subnets of the network where control plane port will be discovered.
+     */
     @JsonProperty("fixedIPs")
     public void setFixedIPs(List<FixedIP> fixedIPs) {
         this.fixedIPs = fixedIPs;
     }
 
+    /**
+     * PortTarget defines, directly or indirectly, one or more subnets where to attach a port.
+     */
     @JsonProperty("network")
     public NetworkFilter getNetwork() {
         return network;
     }
 
+    /**
+     * PortTarget defines, directly or indirectly, one or more subnets where to attach a port.
+     */
     @JsonProperty("network")
     public void setNetwork(NetworkFilter network) {
         this.network = network;

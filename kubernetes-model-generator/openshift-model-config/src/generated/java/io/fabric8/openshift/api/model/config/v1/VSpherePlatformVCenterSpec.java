@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * VSpherePlatformVCenterSpec stores the vCenter connection fields. This is used by the vSphere CCM.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -89,32 +92,50 @@ public class VSpherePlatformVCenterSpec implements Editable<VSpherePlatformVCent
         this.server = server;
     }
 
+    /**
+     * The vCenter Datacenters in which the RHCOS vm guests are located. This field will be used by the Cloud Controller Manager. Each datacenter listed here should be used within a topology.
+     */
     @JsonProperty("datacenters")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getDatacenters() {
         return datacenters;
     }
 
+    /**
+     * The vCenter Datacenters in which the RHCOS vm guests are located. This field will be used by the Cloud Controller Manager. Each datacenter listed here should be used within a topology.
+     */
     @JsonProperty("datacenters")
     public void setDatacenters(List<String> datacenters) {
         this.datacenters = datacenters;
     }
 
+    /**
+     * port is the TCP port that will be used to communicate to the vCenter endpoint. When omitted, this means the user has no opinion and it is up to the platform to choose a sensible default, which is subject to change over time.
+     */
     @JsonProperty("port")
     public Integer getPort() {
         return port;
     }
 
+    /**
+     * port is the TCP port that will be used to communicate to the vCenter endpoint. When omitted, this means the user has no opinion and it is up to the platform to choose a sensible default, which is subject to change over time.
+     */
     @JsonProperty("port")
     public void setPort(Integer port) {
         this.port = port;
     }
 
+    /**
+     * server is the fully-qualified domain name or the IP address of the vCenter server.
+     */
     @JsonProperty("server")
     public String getServer() {
         return server;
     }
 
+    /**
+     * server is the fully-qualified domain name or the IP address of the vCenter server.
+     */
     @JsonProperty("server")
     public void setServer(String server) {
         this.server = server;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AWSFailureDomainPlacement configures the placement information for the AWSFailureDomain.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class AWSFailureDomainPlacement implements Editable<AWSFailureDomainPlace
         this.availabilityZone = availabilityZone;
     }
 
+    /**
+     * AvailabilityZone is the availability zone of the instance.
+     */
     @JsonProperty("availabilityZone")
     public String getAvailabilityZone() {
         return availabilityZone;
     }
 
+    /**
+     * AvailabilityZone is the availability zone of the instance.
+     */
     @JsonProperty("availabilityZone")
     public void setAvailabilityZone(String availabilityZone) {
         this.availabilityZone = availabilityZone;

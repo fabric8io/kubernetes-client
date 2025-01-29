@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ChannelEntry defines a member of a package channel.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class ChannelEntry implements Editable<ChannelEntryBuilder>, KubernetesRe
         this.version = version;
     }
 
+    /**
+     * ChannelEntry defines a member of a package channel.
+     */
     @JsonProperty("deprecation")
     public Deprecation getDeprecation() {
         return deprecation;
     }
 
+    /**
+     * ChannelEntry defines a member of a package channel.
+     */
     @JsonProperty("deprecation")
     public void setDeprecation(Deprecation deprecation) {
         this.deprecation = deprecation;
     }
 
+    /**
+     * Name is the name of the bundle for this entry.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name is the name of the bundle for this entry.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Version is the version of the bundle for this entry.
+     */
     @JsonProperty("version")
     public String getVersion() {
         return version;
     }
 
+    /**
+     * Version is the version of the bundle for this entry.
+     */
     @JsonProperty("version")
     public void setVersion(String version) {
         this.version = version;

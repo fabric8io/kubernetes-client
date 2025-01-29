@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * TaskRunOutputs holds the output values that this task was invoked with.<br><p> <br><p> Deprecated: Unused, preserved only for backwards compatibility
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -81,12 +84,18 @@ public class TaskRunOutputs implements Editable<TaskRunOutputsBuilder>, Kubernet
         this.resources = resources;
     }
 
+    /**
+     * TaskRunOutputs holds the output values that this task was invoked with.<br><p> <br><p> Deprecated: Unused, preserved only for backwards compatibility
+     */
     @JsonProperty("resources")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TaskResourceBinding> getResources() {
         return resources;
     }
 
+    /**
+     * TaskRunOutputs holds the output values that this task was invoked with.<br><p> <br><p> Deprecated: Unused, preserved only for backwards compatibility
+     */
     @JsonProperty("resources")
     public void setResources(List<TaskResourceBinding> resources) {
         this.resources = resources;

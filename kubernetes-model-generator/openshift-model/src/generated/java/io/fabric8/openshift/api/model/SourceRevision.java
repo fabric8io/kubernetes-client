@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SourceRevision is the revision or commit information from the source for the build
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class SourceRevision implements Editable<SourceRevisionBuilder>, Kubernet
         this.type = type;
     }
 
+    /**
+     * SourceRevision is the revision or commit information from the source for the build
+     */
     @JsonProperty("git")
     public GitSourceRevision getGit() {
         return git;
     }
 
+    /**
+     * SourceRevision is the revision or commit information from the source for the build
+     */
     @JsonProperty("git")
     public void setGit(GitSourceRevision git) {
         this.git = git;
     }
 
+    /**
+     * type of the build source, may be one of 'Source', 'Dockerfile', 'Binary', or 'Images'
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * type of the build source, may be one of 'Source', 'Dockerfile', 'Binary', or 'Images'
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

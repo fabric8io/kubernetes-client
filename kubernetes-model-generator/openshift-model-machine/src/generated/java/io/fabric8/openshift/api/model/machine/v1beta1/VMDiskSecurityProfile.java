@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * VMDiskSecurityProfile specifies the security profile settings for the managed disk. It can be set only for Confidential VMs.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class VMDiskSecurityProfile implements Editable<VMDiskSecurityProfileBuil
         this.securityEncryptionType = securityEncryptionType;
     }
 
+    /**
+     * VMDiskSecurityProfile specifies the security profile settings for the managed disk. It can be set only for Confidential VMs.
+     */
     @JsonProperty("diskEncryptionSet")
     public DiskEncryptionSetParameters getDiskEncryptionSet() {
         return diskEncryptionSet;
     }
 
+    /**
+     * VMDiskSecurityProfile specifies the security profile settings for the managed disk. It can be set only for Confidential VMs.
+     */
     @JsonProperty("diskEncryptionSet")
     public void setDiskEncryptionSet(DiskEncryptionSetParameters diskEncryptionSet) {
         this.diskEncryptionSet = diskEncryptionSet;
     }
 
+    /**
+     * securityEncryptionType specifies the encryption type of the managed disk. It is set to DiskWithVMGuestState to encrypt the managed disk along with the VMGuestState blob, and to VMGuestStateOnly to encrypt the VMGuestState blob only. When set to VMGuestStateOnly, the vTPM should be enabled. When set to DiskWithVMGuestState, both SecureBoot and vTPM should be enabled. If the above conditions are not fulfilled, the VM will not be created and the respective error will be returned. It can be set only for Confidential VMs. Confidential VMs are defined by their SecurityProfile.SecurityType being set to ConfidentialVM, the SecurityEncryptionType of their OS disk being set to one of the allowed values and by enabling the respective SecurityProfile.UEFISettings of the VM (i.e. vTPM and SecureBoot), depending on the selected SecurityEncryptionType. For further details on Azure Confidential VMs, please refer to the respective documentation: https://learn.microsoft.com/azure/confidential-computing/confidential-vm-overview
+     */
     @JsonProperty("securityEncryptionType")
     public String getSecurityEncryptionType() {
         return securityEncryptionType;
     }
 
+    /**
+     * securityEncryptionType specifies the encryption type of the managed disk. It is set to DiskWithVMGuestState to encrypt the managed disk along with the VMGuestState blob, and to VMGuestStateOnly to encrypt the VMGuestState blob only. When set to VMGuestStateOnly, the vTPM should be enabled. When set to DiskWithVMGuestState, both SecureBoot and vTPM should be enabled. If the above conditions are not fulfilled, the VM will not be created and the respective error will be returned. It can be set only for Confidential VMs. Confidential VMs are defined by their SecurityProfile.SecurityType being set to ConfidentialVM, the SecurityEncryptionType of their OS disk being set to one of the allowed values and by enabling the respective SecurityProfile.UEFISettings of the VM (i.e. vTPM and SecureBoot), depending on the selected SecurityEncryptionType. For further details on Azure Confidential VMs, please refer to the respective documentation: https://learn.microsoft.com/azure/confidential-computing/confidential-vm-overview
+     */
     @JsonProperty("securityEncryptionType")
     public void setSecurityEncryptionType(String securityEncryptionType) {
         this.securityEncryptionType = securityEncryptionType;

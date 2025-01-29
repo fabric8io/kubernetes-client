@@ -40,6 +40,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ClusterNetworkList is a collection of ClusterNetworks<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,17 +81,11 @@ import lombok.experimental.Accessors;
 public class ClusterNetworkList implements Editable<ClusterNetworkListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.miscellaneous.network.v1.ClusterNetwork>
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "network.openshift.io/v1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.openshift.api.model.miscellaneous.network.v1.ClusterNetwork> items = new ArrayList<>();
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "ClusterNetworkList";
     @JsonProperty("metadata")
@@ -111,7 +108,7 @@ public class ClusterNetworkList implements Editable<ClusterNetworkListBuilder>, 
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -119,26 +116,32 @@ public class ClusterNetworkList implements Editable<ClusterNetworkListBuilder>, 
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
+    /**
+     * Items is the list of cluster networks
+     */
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.miscellaneous.network.v1.ClusterNetwork> getItems() {
         return items;
     }
 
+    /**
+     * Items is the list of cluster networks
+     */
     @JsonProperty("items")
     public void setItems(List<io.fabric8.openshift.api.model.miscellaneous.network.v1.ClusterNetwork> items) {
         this.items = items;
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -146,18 +149,24 @@ public class ClusterNetworkList implements Editable<ClusterNetworkListBuilder>, 
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * ClusterNetworkList is a collection of ClusterNetworks<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("metadata")
     public ListMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * ClusterNetworkList is a collection of ClusterNetworks<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("metadata")
     public void setMetadata(ListMeta metadata) {
         this.metadata = metadata;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * GCPClusterDeprovision contains GCP-specific configuration for a ClusterDeprovision
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class GCPClusterDeprovision implements Editable<GCPClusterDeprovisionBuil
         this.region = region;
     }
 
+    /**
+     * GCPClusterDeprovision contains GCP-specific configuration for a ClusterDeprovision
+     */
     @JsonProperty("credentialsSecretRef")
     public LocalObjectReference getCredentialsSecretRef() {
         return credentialsSecretRef;
     }
 
+    /**
+     * GCPClusterDeprovision contains GCP-specific configuration for a ClusterDeprovision
+     */
     @JsonProperty("credentialsSecretRef")
     public void setCredentialsSecretRef(LocalObjectReference credentialsSecretRef) {
         this.credentialsSecretRef = credentialsSecretRef;
     }
 
+    /**
+     * NetworkProjectID is used for shared VPC setups
+     */
     @JsonProperty("networkProjectID")
     public String getNetworkProjectID() {
         return networkProjectID;
     }
 
+    /**
+     * NetworkProjectID is used for shared VPC setups
+     */
     @JsonProperty("networkProjectID")
     public void setNetworkProjectID(String networkProjectID) {
         this.networkProjectID = networkProjectID;
     }
 
+    /**
+     * Region is the GCP region for this deprovision
+     */
     @JsonProperty("region")
     public String getRegion() {
         return region;
     }
 
+    /**
+     * Region is the GCP region for this deprovision
+     */
     @JsonProperty("region")
     public void setRegion(String region) {
         this.region = region;

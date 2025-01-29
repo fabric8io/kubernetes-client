@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * CustomResourceValidation is a list of validation methods for CustomResources.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class CustomResourceValidation implements Editable<CustomResourceValidati
         this.openAPIV3Schema = openAPIV3Schema;
     }
 
+    /**
+     * CustomResourceValidation is a list of validation methods for CustomResources.
+     */
     @JsonProperty("openAPIV3Schema")
     public JSONSchemaProps getOpenAPIV3Schema() {
         return openAPIV3Schema;
     }
 
+    /**
+     * CustomResourceValidation is a list of validation methods for CustomResources.
+     */
     @JsonProperty("openAPIV3Schema")
     public void setOpenAPIV3Schema(JSONSchemaProps openAPIV3Schema) {
         this.openAPIV3Schema = openAPIV3Schema;

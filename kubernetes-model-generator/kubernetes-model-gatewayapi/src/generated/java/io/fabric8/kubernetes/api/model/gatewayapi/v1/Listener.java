@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Listener embodies the concept of a logical endpoint where a Gateway accepts network connections.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -98,61 +101,97 @@ public class Listener implements Editable<ListenerBuilder>, KubernetesResource
         this.tls = tls;
     }
 
+    /**
+     * Listener embodies the concept of a logical endpoint where a Gateway accepts network connections.
+     */
     @JsonProperty("allowedRoutes")
     public AllowedRoutes getAllowedRoutes() {
         return allowedRoutes;
     }
 
+    /**
+     * Listener embodies the concept of a logical endpoint where a Gateway accepts network connections.
+     */
     @JsonProperty("allowedRoutes")
     public void setAllowedRoutes(AllowedRoutes allowedRoutes) {
         this.allowedRoutes = allowedRoutes;
     }
 
+    /**
+     * Hostname specifies the virtual hostname to match for protocol types that define this concept. When unspecified, all hostnames are matched. This field is ignored for protocols that don't require hostname based matching.<br><p> <br><p> Implementations MUST apply Hostname matching appropriately for each of the following protocols:<br><p> <br><p> &#42; TLS: The Listener Hostname MUST match the SNI. &#42; HTTP: The Listener Hostname MUST match the Host header of the request. &#42; HTTPS: The Listener Hostname SHOULD match at both the TLS and HTTP<br><p>   protocol layers as described above. If an implementation does not<br><p>   ensure that both the SNI and Host header match the Listener hostname,<br><p>   it MUST clearly document that.<br><p> <br><p> For HTTPRoute and TLSRoute resources, there is an interaction with the `spec.hostnames` array. When both listener and route specify hostnames, there MUST be an intersection between the values for a Route to be accepted. For more information, refer to the Route specific Hostnames documentation.<br><p> <br><p> Hostnames that are prefixed with a wildcard label (`&#42;.`) are interpreted as a suffix match. That means that a match for `&#42;.example.com` would match both `test.example.com`, and `foo.test.example.com`, but not `example.com`.<br><p> <br><p> Support: Core
+     */
     @JsonProperty("hostname")
     public String getHostname() {
         return hostname;
     }
 
+    /**
+     * Hostname specifies the virtual hostname to match for protocol types that define this concept. When unspecified, all hostnames are matched. This field is ignored for protocols that don't require hostname based matching.<br><p> <br><p> Implementations MUST apply Hostname matching appropriately for each of the following protocols:<br><p> <br><p> &#42; TLS: The Listener Hostname MUST match the SNI. &#42; HTTP: The Listener Hostname MUST match the Host header of the request. &#42; HTTPS: The Listener Hostname SHOULD match at both the TLS and HTTP<br><p>   protocol layers as described above. If an implementation does not<br><p>   ensure that both the SNI and Host header match the Listener hostname,<br><p>   it MUST clearly document that.<br><p> <br><p> For HTTPRoute and TLSRoute resources, there is an interaction with the `spec.hostnames` array. When both listener and route specify hostnames, there MUST be an intersection between the values for a Route to be accepted. For more information, refer to the Route specific Hostnames documentation.<br><p> <br><p> Hostnames that are prefixed with a wildcard label (`&#42;.`) are interpreted as a suffix match. That means that a match for `&#42;.example.com` would match both `test.example.com`, and `foo.test.example.com`, but not `example.com`.<br><p> <br><p> Support: Core
+     */
     @JsonProperty("hostname")
     public void setHostname(String hostname) {
         this.hostname = hostname;
     }
 
+    /**
+     * Name is the name of the Listener. This name MUST be unique within a Gateway.<br><p> <br><p> Support: Core
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name is the name of the Listener. This name MUST be unique within a Gateway.<br><p> <br><p> Support: Core
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Port is the network port. Multiple listeners may use the same port, subject to the Listener compatibility rules.<br><p> <br><p> Support: Core
+     */
     @JsonProperty("port")
     public Integer getPort() {
         return port;
     }
 
+    /**
+     * Port is the network port. Multiple listeners may use the same port, subject to the Listener compatibility rules.<br><p> <br><p> Support: Core
+     */
     @JsonProperty("port")
     public void setPort(Integer port) {
         this.port = port;
     }
 
+    /**
+     * Protocol specifies the network protocol this listener expects to receive.<br><p> <br><p> Support: Core
+     */
     @JsonProperty("protocol")
     public String getProtocol() {
         return protocol;
     }
 
+    /**
+     * Protocol specifies the network protocol this listener expects to receive.<br><p> <br><p> Support: Core
+     */
     @JsonProperty("protocol")
     public void setProtocol(String protocol) {
         this.protocol = protocol;
     }
 
+    /**
+     * Listener embodies the concept of a logical endpoint where a Gateway accepts network connections.
+     */
     @JsonProperty("tls")
     public GatewayTLSConfig getTls() {
         return tls;
     }
 
+    /**
+     * Listener embodies the concept of a logical endpoint where a Gateway accepts network connections.
+     */
     @JsonProperty("tls")
     public void setTls(GatewayTLSConfig tls) {
         this.tls = tls;

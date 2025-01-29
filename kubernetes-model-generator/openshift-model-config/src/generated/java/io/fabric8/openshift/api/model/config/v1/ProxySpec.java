@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ProxySpec contains cluster proxy creation configuration.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -97,52 +100,82 @@ public class ProxySpec implements Editable<ProxySpecBuilder>, KubernetesResource
         this.trustedCA = trustedCA;
     }
 
+    /**
+     * httpProxy is the URL of the proxy for HTTP requests.  Empty means unset and will not result in an env var.
+     */
     @JsonProperty("httpProxy")
     public String getHttpProxy() {
         return httpProxy;
     }
 
+    /**
+     * httpProxy is the URL of the proxy for HTTP requests.  Empty means unset and will not result in an env var.
+     */
     @JsonProperty("httpProxy")
     public void setHttpProxy(String httpProxy) {
         this.httpProxy = httpProxy;
     }
 
+    /**
+     * httpsProxy is the URL of the proxy for HTTPS requests.  Empty means unset and will not result in an env var.
+     */
     @JsonProperty("httpsProxy")
     public String getHttpsProxy() {
         return httpsProxy;
     }
 
+    /**
+     * httpsProxy is the URL of the proxy for HTTPS requests.  Empty means unset and will not result in an env var.
+     */
     @JsonProperty("httpsProxy")
     public void setHttpsProxy(String httpsProxy) {
         this.httpsProxy = httpsProxy;
     }
 
+    /**
+     * noProxy is a comma-separated list of hostnames and/or CIDRs and/or IPs for which the proxy should not be used. Empty means unset and will not result in an env var.
+     */
     @JsonProperty("noProxy")
     public String getNoProxy() {
         return noProxy;
     }
 
+    /**
+     * noProxy is a comma-separated list of hostnames and/or CIDRs and/or IPs for which the proxy should not be used. Empty means unset and will not result in an env var.
+     */
     @JsonProperty("noProxy")
     public void setNoProxy(String noProxy) {
         this.noProxy = noProxy;
     }
 
+    /**
+     * readinessEndpoints is a list of endpoints used to verify readiness of the proxy.
+     */
     @JsonProperty("readinessEndpoints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getReadinessEndpoints() {
         return readinessEndpoints;
     }
 
+    /**
+     * readinessEndpoints is a list of endpoints used to verify readiness of the proxy.
+     */
     @JsonProperty("readinessEndpoints")
     public void setReadinessEndpoints(List<String> readinessEndpoints) {
         this.readinessEndpoints = readinessEndpoints;
     }
 
+    /**
+     * ProxySpec contains cluster proxy creation configuration.
+     */
     @JsonProperty("trustedCA")
     public ConfigMapNameReference getTrustedCA() {
         return trustedCA;
     }
 
+    /**
+     * ProxySpec contains cluster proxy creation configuration.
+     */
     @JsonProperty("trustedCA")
     public void setTrustedCA(ConfigMapNameReference trustedCA) {
         this.trustedCA = trustedCA;

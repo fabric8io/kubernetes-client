@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PowerVSPlatformSpec holds the desired state of the IBM Power Systems Virtual Servers infrastructure provider. This only includes fields that can be modified in the cluster.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -81,12 +84,18 @@ public class PowerVSPlatformSpec implements Editable<PowerVSPlatformSpecBuilder>
         this.serviceEndpoints = serviceEndpoints;
     }
 
+    /**
+     * serviceEndpoints is a list of custom endpoints which will override the default service endpoints of a Power VS service.
+     */
     @JsonProperty("serviceEndpoints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PowerVSServiceEndpoint> getServiceEndpoints() {
         return serviceEndpoints;
     }
 
+    /**
+     * serviceEndpoints is a list of custom endpoints which will override the default service endpoints of a Power VS service.
+     */
     @JsonProperty("serviceEndpoints")
     public void setServiceEndpoints(List<PowerVSServiceEndpoint> serviceEndpoints) {
         this.serviceEndpoints = serviceEndpoints;

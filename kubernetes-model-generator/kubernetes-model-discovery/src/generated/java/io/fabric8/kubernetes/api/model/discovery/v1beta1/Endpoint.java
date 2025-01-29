@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Endpoint represents a single logical "backend" implementing a service.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -106,73 +109,115 @@ public class Endpoint implements Editable<EndpointBuilder>, KubernetesResource
         this.topology = topology;
     }
 
+    /**
+     * addresses of this endpoint. The contents of this field are interpreted according to the corresponding EndpointSlice addressType field. Consumers must handle different types of addresses in the context of their own capabilities. This must contain at least one address but no more than 100.
+     */
     @JsonProperty("addresses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getAddresses() {
         return addresses;
     }
 
+    /**
+     * addresses of this endpoint. The contents of this field are interpreted according to the corresponding EndpointSlice addressType field. Consumers must handle different types of addresses in the context of their own capabilities. This must contain at least one address but no more than 100.
+     */
     @JsonProperty("addresses")
     public void setAddresses(List<String> addresses) {
         this.addresses = addresses;
     }
 
+    /**
+     * Endpoint represents a single logical "backend" implementing a service.
+     */
     @JsonProperty("conditions")
     public EndpointConditions getConditions() {
         return conditions;
     }
 
+    /**
+     * Endpoint represents a single logical "backend" implementing a service.
+     */
     @JsonProperty("conditions")
     public void setConditions(EndpointConditions conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * Endpoint represents a single logical "backend" implementing a service.
+     */
     @JsonProperty("hints")
     public EndpointHints getHints() {
         return hints;
     }
 
+    /**
+     * Endpoint represents a single logical "backend" implementing a service.
+     */
     @JsonProperty("hints")
     public void setHints(EndpointHints hints) {
         this.hints = hints;
     }
 
+    /**
+     * hostname of this endpoint. This field may be used by consumers of endpoints to distinguish endpoints from each other (e.g. in DNS names). Multiple endpoints which use the same hostname should be considered fungible (e.g. multiple A values in DNS). Must be lowercase and pass DNS Label (RFC 1123) validation.
+     */
     @JsonProperty("hostname")
     public String getHostname() {
         return hostname;
     }
 
+    /**
+     * hostname of this endpoint. This field may be used by consumers of endpoints to distinguish endpoints from each other (e.g. in DNS names). Multiple endpoints which use the same hostname should be considered fungible (e.g. multiple A values in DNS). Must be lowercase and pass DNS Label (RFC 1123) validation.
+     */
     @JsonProperty("hostname")
     public void setHostname(String hostname) {
         this.hostname = hostname;
     }
 
+    /**
+     * nodeName represents the name of the Node hosting this endpoint. This can be used to determine endpoints local to a Node. This field can be enabled with the EndpointSliceNodeName feature gate.
+     */
     @JsonProperty("nodeName")
     public String getNodeName() {
         return nodeName;
     }
 
+    /**
+     * nodeName represents the name of the Node hosting this endpoint. This can be used to determine endpoints local to a Node. This field can be enabled with the EndpointSliceNodeName feature gate.
+     */
     @JsonProperty("nodeName")
     public void setNodeName(String nodeName) {
         this.nodeName = nodeName;
     }
 
+    /**
+     * Endpoint represents a single logical "backend" implementing a service.
+     */
     @JsonProperty("targetRef")
     public ObjectReference getTargetRef() {
         return targetRef;
     }
 
+    /**
+     * Endpoint represents a single logical "backend" implementing a service.
+     */
     @JsonProperty("targetRef")
     public void setTargetRef(ObjectReference targetRef) {
         this.targetRef = targetRef;
     }
 
+    /**
+     * topology contains arbitrary topology information associated with the endpoint. These key/value pairs must conform with the label format. https://kubernetes.io/docs/concepts/overview/working-with-objects/labels Topology may include a maximum of 16 key/value pairs. This includes, but is not limited to the following well known keys: &#42; kubernetes.io/hostname: the value indicates the hostname of the node<br><p>   where the endpoint is located. This should match the corresponding<br><p>   node label.<br><p> &#42; topology.kubernetes.io/zone: the value indicates the zone where the<br><p>   endpoint is located. This should match the corresponding node label.<br><p> &#42; topology.kubernetes.io/region: the value indicates the region where the<br><p>   endpoint is located. This should match the corresponding node label.<br><p> This field is deprecated and will be removed in future api versions.
+     */
     @JsonProperty("topology")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getTopology() {
         return topology;
     }
 
+    /**
+     * topology contains arbitrary topology information associated with the endpoint. These key/value pairs must conform with the label format. https://kubernetes.io/docs/concepts/overview/working-with-objects/labels Topology may include a maximum of 16 key/value pairs. This includes, but is not limited to the following well known keys: &#42; kubernetes.io/hostname: the value indicates the hostname of the node<br><p>   where the endpoint is located. This should match the corresponding<br><p>   node label.<br><p> &#42; topology.kubernetes.io/zone: the value indicates the zone where the<br><p>   endpoint is located. This should match the corresponding node label.<br><p> &#42; topology.kubernetes.io/region: the value indicates the region where the<br><p>   endpoint is located. This should match the corresponding node label.<br><p> This field is deprecated and will be removed in future api versions.
+     */
     @JsonProperty("topology")
     public void setTopology(Map<String, String> topology) {
         this.topology = topology;

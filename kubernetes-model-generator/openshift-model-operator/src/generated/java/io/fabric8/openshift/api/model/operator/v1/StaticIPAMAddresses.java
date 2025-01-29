@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * StaticIPAMAddresses provides IP address and Gateway for static IPAM addresses
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class StaticIPAMAddresses implements Editable<StaticIPAMAddressesBuilder>
         this.gateway = gateway;
     }
 
+    /**
+     * Address is the IP address in CIDR format
+     */
     @JsonProperty("address")
     public String getAddress() {
         return address;
     }
 
+    /**
+     * Address is the IP address in CIDR format
+     */
     @JsonProperty("address")
     public void setAddress(String address) {
         this.address = address;
     }
 
+    /**
+     * Gateway is IP inside of subnet to designate as the gateway
+     */
     @JsonProperty("gateway")
     public String getGateway() {
         return gateway;
     }
 
+    /**
+     * Gateway is IP inside of subnet to designate as the gateway
+     */
     @JsonProperty("gateway")
     public void setGateway(String gateway) {
         this.gateway = gateway;

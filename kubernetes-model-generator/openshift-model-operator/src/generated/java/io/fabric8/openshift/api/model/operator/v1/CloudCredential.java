@@ -36,6 +36,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * CloudCredential provides a means to configure an operator to manage CredentialsRequests.<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -75,14 +78,8 @@ import lombok.experimental.Accessors;
 public class CloudCredential implements Editable<CloudCredentialBuilder>, HasMetadata
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "operator.openshift.io/v1";
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "CloudCredential";
     @JsonProperty("metadata")
@@ -110,7 +107,7 @@ public class CloudCredential implements Editable<CloudCredentialBuilder>, HasMet
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -118,7 +115,7 @@ public class CloudCredential implements Editable<CloudCredentialBuilder>, HasMet
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -126,7 +123,7 @@ public class CloudCredential implements Editable<CloudCredentialBuilder>, HasMet
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -134,38 +131,56 @@ public class CloudCredential implements Editable<CloudCredentialBuilder>, HasMet
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * CloudCredential provides a means to configure an operator to manage CredentialsRequests.<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * CloudCredential provides a means to configure an operator to manage CredentialsRequests.<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * CloudCredential provides a means to configure an operator to manage CredentialsRequests.<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("spec")
     public CloudCredentialSpec getSpec() {
         return spec;
     }
 
+    /**
+     * CloudCredential provides a means to configure an operator to manage CredentialsRequests.<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("spec")
     public void setSpec(CloudCredentialSpec spec) {
         this.spec = spec;
     }
 
+    /**
+     * CloudCredential provides a means to configure an operator to manage CredentialsRequests.<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("status")
     public CloudCredentialStatus getStatus() {
         return status;
     }
 
+    /**
+     * CloudCredential provides a means to configure an operator to manage CredentialsRequests.<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("status")
     public void setStatus(CloudCredentialStatus status) {
         this.status = status;

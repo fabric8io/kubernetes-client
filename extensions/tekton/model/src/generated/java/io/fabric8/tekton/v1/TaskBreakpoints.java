@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * TaskBreakpoints defines the breakpoint config for a particular Task
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class TaskBreakpoints implements Editable<TaskBreakpointsBuilder>, Kubern
         this.onFailure = onFailure;
     }
 
+    /**
+     * TaskBreakpoints defines the breakpoint config for a particular Task
+     */
     @JsonProperty("beforeSteps")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getBeforeSteps() {
         return beforeSteps;
     }
 
+    /**
+     * TaskBreakpoints defines the breakpoint config for a particular Task
+     */
     @JsonProperty("beforeSteps")
     public void setBeforeSteps(List<String> beforeSteps) {
         this.beforeSteps = beforeSteps;
     }
 
+    /**
+     * if enabled, pause TaskRun on failure of a step failed step will not exit
+     */
     @JsonProperty("onFailure")
     public String getOnFailure() {
         return onFailure;
     }
 
+    /**
+     * if enabled, pause TaskRun on failure of a step failed step will not exit
+     */
     @JsonProperty("onFailure")
     public void setOnFailure(String onFailure) {
         this.onFailure = onFailure;

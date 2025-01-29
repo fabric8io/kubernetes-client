@@ -96,21 +96,33 @@ public class ServiceCatalogAPIServerSpec implements Editable<ServiceCatalogAPISe
         this.unsupportedConfigOverrides = unsupportedConfigOverrides;
     }
 
+    /**
+     * logLevel is an intent based logging for an overall component.  It does not give fine grained control, but it is a simple way to manage coarse grained logging choices that operators have to interpret for their operands.<br><p> <br><p> Valid values are: "Normal", "Debug", "Trace", "TraceAll". Defaults to "Normal".
+     */
     @JsonProperty("logLevel")
     public String getLogLevel() {
         return logLevel;
     }
 
+    /**
+     * logLevel is an intent based logging for an overall component.  It does not give fine grained control, but it is a simple way to manage coarse grained logging choices that operators have to interpret for their operands.<br><p> <br><p> Valid values are: "Normal", "Debug", "Trace", "TraceAll". Defaults to "Normal".
+     */
     @JsonProperty("logLevel")
     public void setLogLevel(String logLevel) {
         this.logLevel = logLevel;
     }
 
+    /**
+     * managementState indicates whether and how the operator should manage the component
+     */
     @JsonProperty("managementState")
     public String getManagementState() {
         return managementState;
     }
 
+    /**
+     * managementState indicates whether and how the operator should manage the component
+     */
     @JsonProperty("managementState")
     public void setManagementState(String managementState) {
         this.managementState = managementState;
@@ -127,11 +139,17 @@ public class ServiceCatalogAPIServerSpec implements Editable<ServiceCatalogAPISe
         this.observedConfig = observedConfig;
     }
 
+    /**
+     * operatorLogLevel is an intent based logging for the operator itself.  It does not give fine grained control, but it is a simple way to manage coarse grained logging choices that operators have to interpret for themselves.<br><p> <br><p> Valid values are: "Normal", "Debug", "Trace", "TraceAll". Defaults to "Normal".
+     */
     @JsonProperty("operatorLogLevel")
     public String getOperatorLogLevel() {
         return operatorLogLevel;
     }
 
+    /**
+     * operatorLogLevel is an intent based logging for the operator itself.  It does not give fine grained control, but it is a simple way to manage coarse grained logging choices that operators have to interpret for themselves.<br><p> <br><p> Valid values are: "Normal", "Debug", "Trace", "TraceAll". Defaults to "Normal".
+     */
     @JsonProperty("operatorLogLevel")
     public void setOperatorLogLevel(String operatorLogLevel) {
         this.operatorLogLevel = operatorLogLevel;

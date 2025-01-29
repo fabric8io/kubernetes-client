@@ -43,14 +43,8 @@ import lombok.experimental.Accessors;
 public class TypeMeta implements Editable<TypeMetaBuilder>, KubernetesResource
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "v1";
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "TypeMeta";
     @JsonIgnore
@@ -68,33 +62,21 @@ public class TypeMeta implements Editable<TypeMetaBuilder>, KubernetesResource
         this.kind = kind;
     }
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
         return apiVersion;
     }
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     public String getKind() {
         return kind;
     }
 
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;

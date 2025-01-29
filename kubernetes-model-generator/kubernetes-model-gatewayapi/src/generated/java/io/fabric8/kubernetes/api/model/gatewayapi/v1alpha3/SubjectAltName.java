@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SubjectAltName represents Subject Alternative Name.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class SubjectAltName implements Editable<SubjectAltNameBuilder>, Kubernet
         this.uri = uri;
     }
 
+    /**
+     * Hostname contains Subject Alternative Name specified in DNS name format. Required when Type is set to Hostname, ignored otherwise.<br><p> <br><p> Support: Core
+     */
     @JsonProperty("hostname")
     public String getHostname() {
         return hostname;
     }
 
+    /**
+     * Hostname contains Subject Alternative Name specified in DNS name format. Required when Type is set to Hostname, ignored otherwise.<br><p> <br><p> Support: Core
+     */
     @JsonProperty("hostname")
     public void setHostname(String hostname) {
         this.hostname = hostname;
     }
 
+    /**
+     * Type determines the format of the Subject Alternative Name. Always required.<br><p> <br><p> Support: Core
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * Type determines the format of the Subject Alternative Name. Always required.<br><p> <br><p> Support: Core
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;
     }
 
+    /**
+     * URI contains Subject Alternative Name specified in a full URI format. It MUST include both a scheme (e.g., "http" or "ftp") and a scheme-specific-part. Common values include SPIFFE IDs like "spiffe://mycluster.example.com/ns/myns/sa/svc1sa". Required when Type is set to URI, ignored otherwise.<br><p> <br><p> Support: Core
+     */
     @JsonProperty("uri")
     public String getUri() {
         return uri;
     }
 
+    /**
+     * URI contains Subject Alternative Name specified in a full URI format. It MUST include both a scheme (e.g., "http" or "ftp") and a scheme-specific-part. Common values include SPIFFE IDs like "spiffe://mycluster.example.com/ns/myns/sa/svc1sa". Required when Type is set to URI, ignored otherwise.<br><p> <br><p> Support: Core
+     */
     @JsonProperty("uri")
     public void setUri(String uri) {
         this.uri = uri;

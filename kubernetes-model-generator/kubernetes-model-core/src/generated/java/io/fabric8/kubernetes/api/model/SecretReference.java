@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SecretReference represents a Secret Reference. It has enough information to retrieve secret in any namespace
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -53,21 +56,33 @@ public class SecretReference implements Editable<SecretReferenceBuilder>, Kubern
         this.namespace = namespace;
     }
 
+    /**
+     * name is unique within a namespace to reference a secret resource.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * name is unique within a namespace to reference a secret resource.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * namespace defines the space within which the secret name must be unique.
+     */
     @JsonProperty("namespace")
     public String getNamespace() {
         return namespace;
     }
 
+    /**
+     * namespace defines the space within which the secret name must be unique.
+     */
     @JsonProperty("namespace")
     public void setNamespace(String namespace) {
         this.namespace = namespace;

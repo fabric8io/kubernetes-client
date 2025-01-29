@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AppliedEventPolicyRef is the reference to an EventPolicy
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class AppliedEventPolicyRef implements Editable<AppliedEventPolicyRefBuil
         this.name = name;
     }
 
+    /**
+     * APIVersion of the applied EventPolicy. This indicates, which version of EventPolicy is supported by the resource.
+     */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
         return apiVersion;
     }
 
+    /**
+     * APIVersion of the applied EventPolicy. This indicates, which version of EventPolicy is supported by the resource.
+     */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
+    /**
+     * Name of the applied EventPolicy
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name of the applied EventPolicy
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

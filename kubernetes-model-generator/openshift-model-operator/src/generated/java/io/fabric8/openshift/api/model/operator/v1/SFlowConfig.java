@@ -81,12 +81,18 @@ public class SFlowConfig implements Editable<SFlowConfigBuilder>, KubernetesReso
         this.collectors = collectors;
     }
 
+    /**
+     * sFlowCollectors is list of strings formatted as ip:port with a maximum of ten items
+     */
     @JsonProperty("collectors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getCollectors() {
         return collectors;
     }
 
+    /**
+     * sFlowCollectors is list of strings formatted as ip:port with a maximum of ten items
+     */
     @JsonProperty("collectors")
     public void setCollectors(List<String> collectors) {
         this.collectors = collectors;

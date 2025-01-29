@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * `ObjectMeta` describes metadata that will be attached to a `WorkloadEntry`. It is a subset of the supported Kubernetes metadata.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -84,23 +87,35 @@ public class WorkloadGroupObjectMeta implements Editable<WorkloadGroupObjectMeta
         this.labels = labels;
     }
 
+    /**
+     * Annotations to attach
+     */
     @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAnnotations() {
         return annotations;
     }
 
+    /**
+     * Annotations to attach
+     */
     @JsonProperty("annotations")
     public void setAnnotations(Map<String, String> annotations) {
         this.annotations = annotations;
     }
 
+    /**
+     * Labels to attach
+     */
     @JsonProperty("labels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getLabels() {
         return labels;
     }
 
+    /**
+     * Labels to attach
+     */
     @JsonProperty("labels")
     public void setLabels(Map<String, String> labels) {
         this.labels = labels;

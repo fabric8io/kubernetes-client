@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * MachinePool stores the configuration for a machine pool installed on Azure.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -109,82 +112,130 @@ public class MachinePool implements Editable<MachinePoolBuilder>, KubernetesReso
         this.zones = zones;
     }
 
+    /**
+     * EncryptionAtHost enables encryption at the VM host.
+     */
     @JsonProperty("encryptionAtHost")
     public Boolean getEncryptionAtHost() {
         return encryptionAtHost;
     }
 
+    /**
+     * EncryptionAtHost enables encryption at the VM host.
+     */
     @JsonProperty("encryptionAtHost")
     public void setEncryptionAtHost(Boolean encryptionAtHost) {
         this.encryptionAtHost = encryptionAtHost;
     }
 
+    /**
+     * MachinePool stores the configuration for a machine pool installed on Azure.
+     */
     @JsonProperty("osDisk")
     public OSDisk getOsDisk() {
         return osDisk;
     }
 
+    /**
+     * MachinePool stores the configuration for a machine pool installed on Azure.
+     */
     @JsonProperty("osDisk")
     public void setOsDisk(OSDisk osDisk) {
         this.osDisk = osDisk;
     }
 
+    /**
+     * MachinePool stores the configuration for a machine pool installed on Azure.
+     */
     @JsonProperty("osImage")
     public OSImage getOsImage() {
         return osImage;
     }
 
+    /**
+     * MachinePool stores the configuration for a machine pool installed on Azure.
+     */
     @JsonProperty("osImage")
     public void setOsImage(OSImage osImage) {
         this.osImage = osImage;
     }
 
+    /**
+     * MachinePool stores the configuration for a machine pool installed on Azure.
+     */
     @JsonProperty("settings")
     public SecuritySettings getSettings() {
         return settings;
     }
 
+    /**
+     * MachinePool stores the configuration for a machine pool installed on Azure.
+     */
     @JsonProperty("settings")
     public void setSettings(SecuritySettings settings) {
         this.settings = settings;
     }
 
+    /**
+     * InstanceType defines the azure instance type. eg. Standard_DS_V2
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * InstanceType defines the azure instance type. eg. Standard_DS_V2
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;
     }
 
+    /**
+     * ultraSSDCapability defines if the instance should use Ultra SSD disks.
+     */
     @JsonProperty("ultraSSDCapability")
     public String getUltraSSDCapability() {
         return ultraSSDCapability;
     }
 
+    /**
+     * ultraSSDCapability defines if the instance should use Ultra SSD disks.
+     */
     @JsonProperty("ultraSSDCapability")
     public void setUltraSSDCapability(String ultraSSDCapability) {
         this.ultraSSDCapability = ultraSSDCapability;
     }
 
+    /**
+     * VMNetworkingType specifies whether to enable accelerated networking. Accelerated networking enables single root I/O virtualization (SR-IOV) to a VM, greatly improving its networking performance. eg. values: "Accelerated", "Basic"
+     */
     @JsonProperty("vmNetworkingType")
     public String getVmNetworkingType() {
         return vmNetworkingType;
     }
 
+    /**
+     * VMNetworkingType specifies whether to enable accelerated networking. Accelerated networking enables single root I/O virtualization (SR-IOV) to a VM, greatly improving its networking performance. eg. values: "Accelerated", "Basic"
+     */
     @JsonProperty("vmNetworkingType")
     public void setVmNetworkingType(String vmNetworkingType) {
         this.vmNetworkingType = vmNetworkingType;
     }
 
+    /**
+     * Zones is list of availability zones that can be used. eg. ["1", "2", "3"]
+     */
     @JsonProperty("zones")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getZones() {
         return zones;
     }
 
+    /**
+     * Zones is list of availability zones that can be used. eg. ["1", "2", "3"]
+     */
     @JsonProperty("zones")
     public void setZones(List<String> zones) {
         this.zones = zones;

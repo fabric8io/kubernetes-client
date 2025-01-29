@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ControlPlaneMachineSetStrategy defines the strategy for applying updates to the Control Plane Machines managed by the ControlPlaneMachineSet.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class ControlPlaneMachineSetStrategy implements Editable<ControlPlaneMach
         this.type = type;
     }
 
+    /**
+     * Type defines the type of update strategy that should be used when updating Machines owned by the ControlPlaneMachineSet. Valid values are "RollingUpdate" and "OnDelete". The current default value is "RollingUpdate".
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * Type defines the type of update strategy that should be used when updating Machines owned by the ControlPlaneMachineSet. Valid values are "RollingUpdate" and "OnDelete". The current default value is "RollingUpdate".
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

@@ -86,31 +86,49 @@ public class OIDCClientReference implements Editable<OIDCClientReferenceBuilder>
         this.oidcProviderName = oidcProviderName;
     }
 
+    /**
+     * ClientID is the identifier of the OIDC client from the OIDC provider
+     */
     @JsonProperty("clientID")
     public String getClientID() {
         return clientID;
     }
 
+    /**
+     * ClientID is the identifier of the OIDC client from the OIDC provider
+     */
     @JsonProperty("clientID")
     public void setClientID(String clientID) {
         this.clientID = clientID;
     }
 
+    /**
+     * URL is the serving URL of the token issuer. Must use the https:// scheme.
+     */
     @JsonProperty("issuerURL")
     public String getIssuerURL() {
         return issuerURL;
     }
 
+    /**
+     * URL is the serving URL of the token issuer. Must use the https:// scheme.
+     */
     @JsonProperty("issuerURL")
     public void setIssuerURL(String issuerURL) {
         this.issuerURL = issuerURL;
     }
 
+    /**
+     * OIDCName refers to the `name` of the provider from `oidcProviders`
+     */
     @JsonProperty("oidcProviderName")
     public String getOidcProviderName() {
         return oidcProviderName;
     }
 
+    /**
+     * OIDCName refers to the `name` of the provider from `oidcProviders`
+     */
     @JsonProperty("oidcProviderName")
     public void setOidcProviderName(String oidcProviderName) {
         this.oidcProviderName = oidcProviderName;

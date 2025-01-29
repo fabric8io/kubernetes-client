@@ -98,43 +98,67 @@ public class DeploymentConfig implements Editable<DeploymentConfigBuilder>, Kube
         this.resources = resources;
     }
 
+    /**
+     * Container Arguments
+     */
     @JsonProperty("arguments")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getArguments() {
         return arguments;
     }
 
+    /**
+     * Container Arguments
+     */
     @JsonProperty("arguments")
     public void setArguments(List<String> arguments) {
         this.arguments = arguments;
     }
 
+    /**
+     * Container Env variables
+     */
     @JsonProperty("envVar")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<EnvVar> getEnvVar() {
         return envVar;
     }
 
+    /**
+     * Container Env variables
+     */
     @JsonProperty("envVar")
     public void setEnvVar(List<EnvVar> envVar) {
         this.envVar = envVar;
     }
 
+    /**
+     * Image_override
+     */
     @JsonProperty("imageOverride")
     public String getImageOverride() {
         return imageOverride;
     }
 
+    /**
+     * Image_override
+     */
     @JsonProperty("imageOverride")
     public void setImageOverride(String imageOverride) {
         this.imageOverride = imageOverride;
     }
 
+    /**
+     * Number of pod instances for the deployment.
+     */
     @JsonProperty("replicaCount")
     public Integer getReplicaCount() {
         return replicaCount;
     }
 
+    /**
+     * Number of pod instances for the deployment.
+     */
     @JsonProperty("replicaCount")
     public void setReplicaCount(Integer replicaCount) {
         this.replicaCount = replicaCount;

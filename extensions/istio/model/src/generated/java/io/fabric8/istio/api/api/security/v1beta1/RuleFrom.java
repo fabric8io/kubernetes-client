@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * From includes a list of sources.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class RuleFrom implements Editable<RuleFromBuilder>, KubernetesResource
         this.source = source;
     }
 
+    /**
+     * From includes a list of sources.
+     */
     @JsonProperty("source")
     public Source getSource() {
         return source;
     }
 
+    /**
+     * From includes a list of sources.
+     */
     @JsonProperty("source")
     public void setSource(Source source) {
         this.source = source;

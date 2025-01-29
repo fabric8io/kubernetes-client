@@ -36,6 +36,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Identity records a successful authentication of a user with an identity provider. The information about the source of authentication is stored on the identity, and the identity is then associated with a single user object. Multiple identities can reference a single user. Information retrieved from the authentication provider is stored in the extra field using a schema determined by the provider.<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -77,17 +80,11 @@ import lombok.experimental.Accessors;
 public class Identity implements Editable<IdentityBuilder>, HasMetadata
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "user.openshift.io/v1";
     @JsonProperty("extra")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> extra = new LinkedHashMap<>();
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "Identity";
     @JsonProperty("metadata")
@@ -119,7 +116,7 @@ public class Identity implements Editable<IdentityBuilder>, HasMetadata
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -127,26 +124,32 @@ public class Identity implements Editable<IdentityBuilder>, HasMetadata
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
+    /**
+     * Extra holds extra information about this identity
+     */
     @JsonProperty("extra")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getExtra() {
         return extra;
     }
 
+    /**
+     * Extra holds extra information about this identity
+     */
     @JsonProperty("extra")
     public void setExtra(Map<String, String> extra) {
         this.extra = extra;
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -154,48 +157,72 @@ public class Identity implements Editable<IdentityBuilder>, HasMetadata
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * Identity records a successful authentication of a user with an identity provider. The information about the source of authentication is stored on the identity, and the identity is then associated with a single user object. Multiple identities can reference a single user. Information retrieved from the authentication provider is stored in the extra field using a schema determined by the provider.<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * Identity records a successful authentication of a user with an identity provider. The information about the source of authentication is stored on the identity, and the identity is then associated with a single user object. Multiple identities can reference a single user. Information retrieved from the authentication provider is stored in the extra field using a schema determined by the provider.<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * ProviderName is the source of identity information
+     */
     @JsonProperty("providerName")
     public String getProviderName() {
         return providerName;
     }
 
+    /**
+     * ProviderName is the source of identity information
+     */
     @JsonProperty("providerName")
     public void setProviderName(String providerName) {
         this.providerName = providerName;
     }
 
+    /**
+     * ProviderUserName uniquely represents this identity in the scope of the provider
+     */
     @JsonProperty("providerUserName")
     public String getProviderUserName() {
         return providerUserName;
     }
 
+    /**
+     * ProviderUserName uniquely represents this identity in the scope of the provider
+     */
     @JsonProperty("providerUserName")
     public void setProviderUserName(String providerUserName) {
         this.providerUserName = providerUserName;
     }
 
+    /**
+     * Identity records a successful authentication of a user with an identity provider. The information about the source of authentication is stored on the identity, and the identity is then associated with a single user object. Multiple identities can reference a single user. Information retrieved from the authentication provider is stored in the extra field using a schema determined by the provider.<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("user")
     public ObjectReference getUser() {
         return user;
     }
 
+    /**
+     * Identity records a successful authentication of a user with an identity provider. The information about the source of authentication is stored on the identity, and the identity is then associated with a single user object. Multiple identities can reference a single user. Information retrieved from the authentication provider is stored in the extra field using a schema determined by the provider.<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("user")
     public void setUser(ObjectReference user) {
         this.user = user;

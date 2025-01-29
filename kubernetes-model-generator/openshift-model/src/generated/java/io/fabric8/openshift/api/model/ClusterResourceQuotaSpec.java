@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ClusterResourceQuotaSpec defines the desired quota restrictions
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -83,21 +86,33 @@ public class ClusterResourceQuotaSpec implements Editable<ClusterResourceQuotaSp
         this.selector = selector;
     }
 
+    /**
+     * ClusterResourceQuotaSpec defines the desired quota restrictions
+     */
     @JsonProperty("quota")
     public ResourceQuotaSpec getQuota() {
         return quota;
     }
 
+    /**
+     * ClusterResourceQuotaSpec defines the desired quota restrictions
+     */
     @JsonProperty("quota")
     public void setQuota(ResourceQuotaSpec quota) {
         this.quota = quota;
     }
 
+    /**
+     * ClusterResourceQuotaSpec defines the desired quota restrictions
+     */
     @JsonProperty("selector")
     public ClusterResourceQuotaSelector getSelector() {
         return selector;
     }
 
+    /**
+     * ClusterResourceQuotaSpec defines the desired quota restrictions
+     */
     @JsonProperty("selector")
     public void setSelector(ClusterResourceQuotaSelector selector) {
         this.selector = selector;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DeploymentSpec is the specification of the desired behavior of the Deployment.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -106,81 +109,129 @@ public class DeploymentSpec implements Editable<DeploymentSpecBuilder>, Kubernet
         this.template = template;
     }
 
+    /**
+     * Minimum number of seconds for which a newly created pod should be ready without any of its container crashing, for it to be considered available. Defaults to 0 (pod will be considered available as soon as it is ready)
+     */
     @JsonProperty("minReadySeconds")
     public Integer getMinReadySeconds() {
         return minReadySeconds;
     }
 
+    /**
+     * Minimum number of seconds for which a newly created pod should be ready without any of its container crashing, for it to be considered available. Defaults to 0 (pod will be considered available as soon as it is ready)
+     */
     @JsonProperty("minReadySeconds")
     public void setMinReadySeconds(Integer minReadySeconds) {
         this.minReadySeconds = minReadySeconds;
     }
 
+    /**
+     * Indicates that the deployment is paused.
+     */
     @JsonProperty("paused")
     public Boolean getPaused() {
         return paused;
     }
 
+    /**
+     * Indicates that the deployment is paused.
+     */
     @JsonProperty("paused")
     public void setPaused(Boolean paused) {
         this.paused = paused;
     }
 
+    /**
+     * The maximum time in seconds for a deployment to make progress before it is considered to be failed. The deployment controller will continue to process failed deployments and a condition with a ProgressDeadlineExceeded reason will be surfaced in the deployment status. Note that progress will not be estimated during the time a deployment is paused. Defaults to 600s.
+     */
     @JsonProperty("progressDeadlineSeconds")
     public Integer getProgressDeadlineSeconds() {
         return progressDeadlineSeconds;
     }
 
+    /**
+     * The maximum time in seconds for a deployment to make progress before it is considered to be failed. The deployment controller will continue to process failed deployments and a condition with a ProgressDeadlineExceeded reason will be surfaced in the deployment status. Note that progress will not be estimated during the time a deployment is paused. Defaults to 600s.
+     */
     @JsonProperty("progressDeadlineSeconds")
     public void setProgressDeadlineSeconds(Integer progressDeadlineSeconds) {
         this.progressDeadlineSeconds = progressDeadlineSeconds;
     }
 
+    /**
+     * Number of desired pods. This is a pointer to distinguish between explicit zero and not specified. Defaults to 1.
+     */
     @JsonProperty("replicas")
     public Integer getReplicas() {
         return replicas;
     }
 
+    /**
+     * Number of desired pods. This is a pointer to distinguish between explicit zero and not specified. Defaults to 1.
+     */
     @JsonProperty("replicas")
     public void setReplicas(Integer replicas) {
         this.replicas = replicas;
     }
 
+    /**
+     * The number of old ReplicaSets to retain to allow rollback. This is a pointer to distinguish between explicit zero and not specified. Defaults to 10.
+     */
     @JsonProperty("revisionHistoryLimit")
     public Integer getRevisionHistoryLimit() {
         return revisionHistoryLimit;
     }
 
+    /**
+     * The number of old ReplicaSets to retain to allow rollback. This is a pointer to distinguish between explicit zero and not specified. Defaults to 10.
+     */
     @JsonProperty("revisionHistoryLimit")
     public void setRevisionHistoryLimit(Integer revisionHistoryLimit) {
         this.revisionHistoryLimit = revisionHistoryLimit;
     }
 
+    /**
+     * DeploymentSpec is the specification of the desired behavior of the Deployment.
+     */
     @JsonProperty("selector")
     public LabelSelector getSelector() {
         return selector;
     }
 
+    /**
+     * DeploymentSpec is the specification of the desired behavior of the Deployment.
+     */
     @JsonProperty("selector")
     public void setSelector(LabelSelector selector) {
         this.selector = selector;
     }
 
+    /**
+     * DeploymentSpec is the specification of the desired behavior of the Deployment.
+     */
     @JsonProperty("strategy")
     public DeploymentStrategy getStrategy() {
         return strategy;
     }
 
+    /**
+     * DeploymentSpec is the specification of the desired behavior of the Deployment.
+     */
     @JsonProperty("strategy")
     public void setStrategy(DeploymentStrategy strategy) {
         this.strategy = strategy;
     }
 
+    /**
+     * DeploymentSpec is the specification of the desired behavior of the Deployment.
+     */
     @JsonProperty("template")
     public PodTemplateSpec getTemplate() {
         return template;
     }
 
+    /**
+     * DeploymentSpec is the specification of the desired behavior of the Deployment.
+     */
     @JsonProperty("template")
     public void setTemplate(PodTemplateSpec template) {
         this.template = template;

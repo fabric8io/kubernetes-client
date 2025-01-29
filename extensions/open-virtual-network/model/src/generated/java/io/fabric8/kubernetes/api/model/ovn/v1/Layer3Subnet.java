@@ -82,21 +82,33 @@ public class Layer3Subnet implements Editable<Layer3SubnetBuilder>, KubernetesRe
         this.hostSubnet = hostSubnet;
     }
 
+    /**
+     * CIDR specifies L3Subnet, which is split into smaller subnets for every node.
+     */
     @JsonProperty("cidr")
     public String getCidr() {
         return cidr;
     }
 
+    /**
+     * CIDR specifies L3Subnet, which is split into smaller subnets for every node.
+     */
     @JsonProperty("cidr")
     public void setCidr(String cidr) {
         this.cidr = cidr;
     }
 
+    /**
+     * HostSubnet specifies the subnet size for every node.<br><p> <br><p> When not set, it will be assigned automatically.
+     */
     @JsonProperty("hostSubnet")
     public Integer getHostSubnet() {
         return hostSubnet;
     }
 
+    /**
+     * HostSubnet specifies the subnet size for every node.<br><p> <br><p> When not set, it will be assigned automatically.
+     */
     @JsonProperty("hostSubnet")
     public void setHostSubnet(Integer hostSubnet) {
         this.hostSubnet = hostSubnet;

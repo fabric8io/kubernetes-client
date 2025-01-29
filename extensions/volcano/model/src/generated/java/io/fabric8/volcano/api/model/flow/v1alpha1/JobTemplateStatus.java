@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * JobTemplateStatus defines the observed state of JobTemplate
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -81,12 +84,18 @@ public class JobTemplateStatus implements Editable<JobTemplateStatusBuilder>, Ku
         this.jobDependsOnList = jobDependsOnList;
     }
 
+    /**
+     * Describes the Jobs generated from the JobTemplate
+     */
     @JsonProperty("jobDependsOnList")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getJobDependsOnList() {
         return jobDependsOnList;
     }
 
+    /**
+     * Describes the Jobs generated from the JobTemplate
+     */
     @JsonProperty("jobDependsOnList")
     public void setJobDependsOnList(List<String> jobDependsOnList) {
         this.jobDependsOnList = jobDependsOnList;

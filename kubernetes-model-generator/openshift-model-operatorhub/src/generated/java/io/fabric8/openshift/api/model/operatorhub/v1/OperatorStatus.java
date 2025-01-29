@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * OperatorStatus defines the observed state of an Operator and its components
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class OperatorStatus implements Editable<OperatorStatusBuilder>, Kubernet
         this.components = components;
     }
 
+    /**
+     * OperatorStatus defines the observed state of an Operator and its components
+     */
     @JsonProperty("components")
     public Components getComponents() {
         return components;
     }
 
+    /**
+     * OperatorStatus defines the observed state of an Operator and its components
+     */
     @JsonProperty("components")
     public void setComponents(Components components) {
         this.components = components;

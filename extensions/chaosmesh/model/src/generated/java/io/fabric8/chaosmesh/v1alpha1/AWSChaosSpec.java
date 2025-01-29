@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AWSChaosSpec is the content of the specification for an AWSChaos
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -110,91 +113,145 @@ public class AWSChaosSpec implements Editable<AWSChaosSpecBuilder>, KubernetesRe
         this.volumeID = volumeID;
     }
 
+    /**
+     * Action defines the specific aws chaos action. Supported action: ec2-stop / ec2-restart / detach-volume Default action: ec2-stop
+     */
     @JsonProperty("action")
     public String getAction() {
         return action;
     }
 
+    /**
+     * Action defines the specific aws chaos action. Supported action: ec2-stop / ec2-restart / detach-volume Default action: ec2-stop
+     */
     @JsonProperty("action")
     public void setAction(String action) {
         this.action = action;
     }
 
+    /**
+     * AWSRegion defines the region of aws.
+     */
     @JsonProperty("awsRegion")
     public String getAwsRegion() {
         return awsRegion;
     }
 
+    /**
+     * AWSRegion defines the region of aws.
+     */
     @JsonProperty("awsRegion")
     public void setAwsRegion(String awsRegion) {
         this.awsRegion = awsRegion;
     }
 
+    /**
+     * DeviceName indicates the name of the device. Needed in detach-volume.
+     */
     @JsonProperty("deviceName")
     public String getDeviceName() {
         return deviceName;
     }
 
+    /**
+     * DeviceName indicates the name of the device. Needed in detach-volume.
+     */
     @JsonProperty("deviceName")
     public void setDeviceName(String deviceName) {
         this.deviceName = deviceName;
     }
 
+    /**
+     * Duration represents the duration of the chaos action.
+     */
     @JsonProperty("duration")
     public String getDuration() {
         return duration;
     }
 
+    /**
+     * Duration represents the duration of the chaos action.
+     */
     @JsonProperty("duration")
     public void setDuration(String duration) {
         this.duration = duration;
     }
 
+    /**
+     * Ec2Instance indicates the ID of the ec2 instance.
+     */
     @JsonProperty("ec2Instance")
     public String getEc2Instance() {
         return ec2Instance;
     }
 
+    /**
+     * Ec2Instance indicates the ID of the ec2 instance.
+     */
     @JsonProperty("ec2Instance")
     public void setEc2Instance(String ec2Instance) {
         this.ec2Instance = ec2Instance;
     }
 
+    /**
+     * Endpoint indicates the endpoint of the aws server. Just used it in test now.
+     */
     @JsonProperty("endpoint")
     public String getEndpoint() {
         return endpoint;
     }
 
+    /**
+     * Endpoint indicates the endpoint of the aws server. Just used it in test now.
+     */
     @JsonProperty("endpoint")
     public void setEndpoint(String endpoint) {
         this.endpoint = endpoint;
     }
 
+    /**
+     * RemoteCluster represents the remote cluster where the chaos will be deployed
+     */
     @JsonProperty("remoteCluster")
     public String getRemoteCluster() {
         return remoteCluster;
     }
 
+    /**
+     * RemoteCluster represents the remote cluster where the chaos will be deployed
+     */
     @JsonProperty("remoteCluster")
     public void setRemoteCluster(String remoteCluster) {
         this.remoteCluster = remoteCluster;
     }
 
+    /**
+     * SecretName defines the name of kubernetes secret.
+     */
     @JsonProperty("secretName")
     public String getSecretName() {
         return secretName;
     }
 
+    /**
+     * SecretName defines the name of kubernetes secret.
+     */
     @JsonProperty("secretName")
     public void setSecretName(String secretName) {
         this.secretName = secretName;
     }
 
+    /**
+     * EbsVolume indicates the ID of the EBS volume. Needed in detach-volume.
+     */
     @JsonProperty("volumeID")
     public String getVolumeID() {
         return volumeID;
     }
 
+    /**
+     * EbsVolume indicates the ID of the EBS volume. Needed in detach-volume.
+     */
     @JsonProperty("volumeID")
     public void setVolumeID(String volumeID) {
         this.volumeID = volumeID;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * OLMConfigSpec is the spec for an OLMConfig resource.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class OLMConfigSpec implements Editable<OLMConfigSpecBuilder>, Kubernetes
         this.features = features;
     }
 
+    /**
+     * OLMConfigSpec is the spec for an OLMConfig resource.
+     */
     @JsonProperty("features")
     public Features getFeatures() {
         return features;
     }
 
+    /**
+     * OLMConfigSpec is the spec for an OLMConfig resource.
+     */
     @JsonProperty("features")
     public void setFeatures(Features features) {
         this.features = features;

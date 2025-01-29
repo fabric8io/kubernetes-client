@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Overrides defines a list of contents that will be overridden to a given resource
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -89,32 +92,50 @@ public class Overrides implements Editable<OverridesBuilder>, KubernetesResource
         this.packageOverrides = packageOverrides;
     }
 
+    /**
+     * PackageAlias defines the alias of the package name that will be onverriden
+     */
     @JsonProperty("packageAlias")
     public String getPackageAlias() {
         return packageAlias;
     }
 
+    /**
+     * PackageAlias defines the alias of the package name that will be onverriden
+     */
     @JsonProperty("packageAlias")
     public void setPackageAlias(String packageAlias) {
         this.packageAlias = packageAlias;
     }
 
+    /**
+     * PackageName defines the package name that will be onverriden
+     */
     @JsonProperty("packageName")
     public String getPackageName() {
         return packageName;
     }
 
+    /**
+     * PackageName defines the package name that will be onverriden
+     */
     @JsonProperty("packageName")
     public void setPackageName(String packageName) {
         this.packageName = packageName;
     }
 
+    /**
+     * PackageOverrides defines a list of content for override
+     */
     @JsonProperty("packageOverrides")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PackageOverride> getPackageOverrides() {
         return packageOverrides;
     }
 
+    /**
+     * PackageOverrides defines a list of content for override
+     */
     @JsonProperty("packageOverrides")
     public void setPackageOverrides(List<PackageOverride> packageOverrides) {
         this.packageOverrides = packageOverrides;

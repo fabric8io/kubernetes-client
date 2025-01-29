@@ -37,6 +37,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Channel represents a generic Channel. It is normally used when we want a Channel, but do not need a specific Channel implementation.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -76,14 +79,8 @@ import lombok.experimental.Accessors;
 public class Channel implements Editable<ChannelBuilder>, HasMetadata, Namespaced
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "messaging.knative.dev/v1";
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "Channel";
     @JsonProperty("metadata")
@@ -111,7 +108,7 @@ public class Channel implements Editable<ChannelBuilder>, HasMetadata, Namespace
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -119,7 +116,7 @@ public class Channel implements Editable<ChannelBuilder>, HasMetadata, Namespace
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -127,7 +124,7 @@ public class Channel implements Editable<ChannelBuilder>, HasMetadata, Namespace
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -135,38 +132,56 @@ public class Channel implements Editable<ChannelBuilder>, HasMetadata, Namespace
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * Channel represents a generic Channel. It is normally used when we want a Channel, but do not need a specific Channel implementation.
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * Channel represents a generic Channel. It is normally used when we want a Channel, but do not need a specific Channel implementation.
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * Channel represents a generic Channel. It is normally used when we want a Channel, but do not need a specific Channel implementation.
+     */
     @JsonProperty("spec")
     public ChannelSpec getSpec() {
         return spec;
     }
 
+    /**
+     * Channel represents a generic Channel. It is normally used when we want a Channel, but do not need a specific Channel implementation.
+     */
     @JsonProperty("spec")
     public void setSpec(ChannelSpec spec) {
         this.spec = spec;
     }
 
+    /**
+     * Channel represents a generic Channel. It is normally used when we want a Channel, but do not need a specific Channel implementation.
+     */
     @JsonProperty("status")
     public ChannelStatus getStatus() {
         return status;
     }
 
+    /**
+     * Channel represents a generic Channel. It is normally used when we want a Channel, but do not need a specific Channel implementation.
+     */
     @JsonProperty("status")
     public void setStatus(ChannelStatus status) {
         this.status = status;

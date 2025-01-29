@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NodeAddress contains information for the node's address.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -53,21 +56,33 @@ public class NodeAddress implements Editable<NodeAddressBuilder>, KubernetesReso
         this.type = type;
     }
 
+    /**
+     * The node address.
+     */
     @JsonProperty("address")
     public String getAddress() {
         return address;
     }
 
+    /**
+     * The node address.
+     */
     @JsonProperty("address")
     public void setAddress(String address) {
         this.address = address;
     }
 
+    /**
+     * Node address type, one of Hostname, ExternalIP or InternalIP.
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * Node address type, one of Hostname, ExternalIP or InternalIP.
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

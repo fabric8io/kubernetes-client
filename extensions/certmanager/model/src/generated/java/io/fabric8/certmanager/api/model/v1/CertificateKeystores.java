@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * CertificateKeystores configures additional keystore output formats to be created in the Certificate's output Secret.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class CertificateKeystores implements Editable<CertificateKeystoresBuilde
         this.pkcs12 = pkcs12;
     }
 
+    /**
+     * CertificateKeystores configures additional keystore output formats to be created in the Certificate's output Secret.
+     */
     @JsonProperty("jks")
     public JKSKeystore getJks() {
         return jks;
     }
 
+    /**
+     * CertificateKeystores configures additional keystore output formats to be created in the Certificate's output Secret.
+     */
     @JsonProperty("jks")
     public void setJks(JKSKeystore jks) {
         this.jks = jks;
     }
 
+    /**
+     * CertificateKeystores configures additional keystore output formats to be created in the Certificate's output Secret.
+     */
     @JsonProperty("pkcs12")
     public PKCS12Keystore getPkcs12() {
         return pkcs12;
     }
 
+    /**
+     * CertificateKeystores configures additional keystore output formats to be created in the Certificate's output Secret.
+     */
     @JsonProperty("pkcs12")
     public void setPkcs12(PKCS12Keystore pkcs12) {
         this.pkcs12 = pkcs12;

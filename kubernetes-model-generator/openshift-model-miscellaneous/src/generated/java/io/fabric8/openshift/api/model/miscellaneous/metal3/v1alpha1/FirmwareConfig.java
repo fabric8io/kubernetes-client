@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * FirmwareConfig contains the configuration that you want to configure BIOS settings in Bare metal server.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class FirmwareConfig implements Editable<FirmwareConfigBuilder>, Kubernet
         this.virtualizationEnabled = virtualizationEnabled;
     }
 
+    /**
+     * Allows a single physical processor core to appear as several logical processors.
+     */
     @JsonProperty("simultaneousMultithreadingEnabled")
     public Boolean getSimultaneousMultithreadingEnabled() {
         return simultaneousMultithreadingEnabled;
     }
 
+    /**
+     * Allows a single physical processor core to appear as several logical processors.
+     */
     @JsonProperty("simultaneousMultithreadingEnabled")
     public void setSimultaneousMultithreadingEnabled(Boolean simultaneousMultithreadingEnabled) {
         this.simultaneousMultithreadingEnabled = simultaneousMultithreadingEnabled;
     }
 
+    /**
+     * SR-IOV support enables a hypervisor to create virtual instances of a PCI-express device, potentially increasing performance.
+     */
     @JsonProperty("sriovEnabled")
     public Boolean getSriovEnabled() {
         return sriovEnabled;
     }
 
+    /**
+     * SR-IOV support enables a hypervisor to create virtual instances of a PCI-express device, potentially increasing performance.
+     */
     @JsonProperty("sriovEnabled")
     public void setSriovEnabled(Boolean sriovEnabled) {
         this.sriovEnabled = sriovEnabled;
     }
 
+    /**
+     * Supports the virtualization of platform hardware.
+     */
     @JsonProperty("virtualizationEnabled")
     public Boolean getVirtualizationEnabled() {
         return virtualizationEnabled;
     }
 
+    /**
+     * Supports the virtualization of platform hardware.
+     */
     @JsonProperty("virtualizationEnabled")
     public void setVirtualizationEnabled(Boolean virtualizationEnabled) {
         this.virtualizationEnabled = virtualizationEnabled;

@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Filter represents a filter of IOChaos action, which will define the scope of an IOChaosAction
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -89,32 +92,50 @@ public class Filter implements Editable<FilterBuilder>, KubernetesResource
         this.percent = percent;
     }
 
+    /**
+     * Methods represents the method that the action will inject in
+     */
     @JsonProperty("methods")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getMethods() {
         return methods;
     }
 
+    /**
+     * Methods represents the method that the action will inject in
+     */
     @JsonProperty("methods")
     public void setMethods(List<String> methods) {
         this.methods = methods;
     }
 
+    /**
+     * Path represents a glob of injecting path
+     */
     @JsonProperty("path")
     public String getPath() {
         return path;
     }
 
+    /**
+     * Path represents a glob of injecting path
+     */
     @JsonProperty("path")
     public void setPath(String path) {
         this.path = path;
     }
 
+    /**
+     * Percent represents the percent probability of injecting this action
+     */
     @JsonProperty("percent")
     public Integer getPercent() {
         return percent;
     }
 
+    /**
+     * Percent represents the percent probability of injecting this action
+     */
     @JsonProperty("percent")
     public void setPercent(Integer percent) {
         this.percent = percent;

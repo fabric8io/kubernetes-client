@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DeviceAttribute must have exactly one field set.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class DeviceAttribute implements Editable<DeviceAttributeBuilder>, Kubern
         this.version = version;
     }
 
+    /**
+     * BoolValue is a true/false value.
+     */
     @JsonProperty("bool")
     public Boolean getBool() {
         return bool;
     }
 
+    /**
+     * BoolValue is a true/false value.
+     */
     @JsonProperty("bool")
     public void setBool(Boolean bool) {
         this.bool = bool;
     }
 
+    /**
+     * IntValue is a number.
+     */
     @JsonProperty("int")
     public Long getInt() {
         return _int;
     }
 
+    /**
+     * IntValue is a number.
+     */
     @JsonProperty("int")
     public void setInt(Long _int) {
         this._int = _int;
     }
 
+    /**
+     * StringValue is a string. Must not be longer than 64 characters.
+     */
     @JsonProperty("string")
     public String getString() {
         return string;
     }
 
+    /**
+     * StringValue is a string. Must not be longer than 64 characters.
+     */
     @JsonProperty("string")
     public void setString(String string) {
         this.string = string;
     }
 
+    /**
+     * VersionValue is a semantic version according to semver.org spec 2.0.0. Must not be longer than 64 characters.
+     */
     @JsonProperty("version")
     public String getVersion() {
         return version;
     }
 
+    /**
+     * VersionValue is a semantic version according to semver.org spec 2.0.0. Must not be longer than 64 characters.
+     */
     @JsonProperty("version")
     public void setVersion(String version) {
         this.version = version;

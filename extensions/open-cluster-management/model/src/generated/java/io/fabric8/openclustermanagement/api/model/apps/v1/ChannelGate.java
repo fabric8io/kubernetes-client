@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ChannelGate defines a criteria for promoting a Deployable from the sourceNamespaces to Channel.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -87,32 +90,50 @@ public class ChannelGate implements Editable<ChannelGateBuilder>, KubernetesReso
         this.name = name;
     }
 
+    /**
+     * The annotations for selecting the Deployables to be eligible for promotion.
+     */
     @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAnnotations() {
         return annotations;
     }
 
+    /**
+     * The annotations for selecting the Deployables to be eligible for promotion.
+     */
     @JsonProperty("annotations")
     public void setAnnotations(Map<String, String> annotations) {
         this.annotations = annotations;
     }
 
+    /**
+     * ChannelGate defines a criteria for promoting a Deployable from the sourceNamespaces to Channel.
+     */
     @JsonProperty("labelSelector")
     public LabelSelector getLabelSelector() {
         return labelSelector;
     }
 
+    /**
+     * ChannelGate defines a criteria for promoting a Deployable from the sourceNamespaces to Channel.
+     */
     @JsonProperty("labelSelector")
     public void setLabelSelector(LabelSelector labelSelector) {
         this.labelSelector = labelSelector;
     }
 
+    /**
+     * ChannelGate defines a criteria for promoting a Deployable from the sourceNamespaces to Channel.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * ChannelGate defines a criteria for promoting a Deployable from the sourceNamespaces to Channel.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * MachinePool stores the configuration for a machine pool installed on GCP.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -114,93 +117,147 @@ public class MachinePool implements Editable<MachinePoolBuilder>, KubernetesReso
         this.zones = zones;
     }
 
+    /**
+     * ConfidentialCompute Defines whether the instance should have confidential compute enabled. If enabled OnHostMaintenance is required to be set to "Terminate". If omitted, the platform chooses a default, which is subject to change over time, currently that default is false.
+     */
     @JsonProperty("confidentialCompute")
     public String getConfidentialCompute() {
         return confidentialCompute;
     }
 
+    /**
+     * ConfidentialCompute Defines whether the instance should have confidential compute enabled. If enabled OnHostMaintenance is required to be set to "Terminate". If omitted, the platform chooses a default, which is subject to change over time, currently that default is false.
+     */
     @JsonProperty("confidentialCompute")
     public void setConfidentialCompute(String confidentialCompute) {
         this.confidentialCompute = confidentialCompute;
     }
 
+    /**
+     * OnHostMaintenance determines the behavior when a maintenance event occurs that might cause the instance to reboot. Allowed values are "Migrate" and "Terminate". If omitted, the platform chooses a default, which is subject to change over time, currently that default is "Migrate".
+     */
     @JsonProperty("onHostMaintenance")
     public String getOnHostMaintenance() {
         return onHostMaintenance;
     }
 
+    /**
+     * OnHostMaintenance determines the behavior when a maintenance event occurs that might cause the instance to reboot. Allowed values are "Migrate" and "Terminate". If omitted, the platform chooses a default, which is subject to change over time, currently that default is "Migrate".
+     */
     @JsonProperty("onHostMaintenance")
     public void setOnHostMaintenance(String onHostMaintenance) {
         this.onHostMaintenance = onHostMaintenance;
     }
 
+    /**
+     * MachinePool stores the configuration for a machine pool installed on GCP.
+     */
     @JsonProperty("osDisk")
     public OSDisk getOsDisk() {
         return osDisk;
     }
 
+    /**
+     * MachinePool stores the configuration for a machine pool installed on GCP.
+     */
     @JsonProperty("osDisk")
     public void setOsDisk(OSDisk osDisk) {
         this.osDisk = osDisk;
     }
 
+    /**
+     * MachinePool stores the configuration for a machine pool installed on GCP.
+     */
     @JsonProperty("osImage")
     public OSImage getOsImage() {
         return osImage;
     }
 
+    /**
+     * MachinePool stores the configuration for a machine pool installed on GCP.
+     */
     @JsonProperty("osImage")
     public void setOsImage(OSImage osImage) {
         this.osImage = osImage;
     }
 
+    /**
+     * SecureBoot Defines whether the instance should have secure boot enabled. secure boot Verify the digital signature of all boot components, and halt the boot process if signature verification fails. If omitted, the platform chooses a default, which is subject to change over time, currently that default is false.
+     */
     @JsonProperty("secureBoot")
     public String getSecureBoot() {
         return secureBoot;
     }
 
+    /**
+     * SecureBoot Defines whether the instance should have secure boot enabled. secure boot Verify the digital signature of all boot components, and halt the boot process if signature verification fails. If omitted, the platform chooses a default, which is subject to change over time, currently that default is false.
+     */
     @JsonProperty("secureBoot")
     public void setSecureBoot(String secureBoot) {
         this.secureBoot = secureBoot;
     }
 
+    /**
+     * ServiceAccount is the email of a gcp service account to be used during installations. The provided service account can be attached to both control-plane nodes and worker nodes in order to provide the permissions required by the cloud provider.
+     */
     @JsonProperty("serviceAccount")
     public String getServiceAccount() {
         return serviceAccount;
     }
 
+    /**
+     * ServiceAccount is the email of a gcp service account to be used during installations. The provided service account can be attached to both control-plane nodes and worker nodes in order to provide the permissions required by the cloud provider.
+     */
     @JsonProperty("serviceAccount")
     public void setServiceAccount(String serviceAccount) {
         this.serviceAccount = serviceAccount;
     }
 
+    /**
+     * Tags defines a set of network tags which will be added to instances in the machineset
+     */
     @JsonProperty("tags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getTags() {
         return tags;
     }
 
+    /**
+     * Tags defines a set of network tags which will be added to instances in the machineset
+     */
     @JsonProperty("tags")
     public void setTags(List<String> tags) {
         this.tags = tags;
     }
 
+    /**
+     * InstanceType defines the GCP instance type. eg. n1-standard-4
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * InstanceType defines the GCP instance type. eg. n1-standard-4
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;
     }
 
+    /**
+     * Zones is list of availability zones that can be used.
+     */
     @JsonProperty("zones")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getZones() {
         return zones;
     }
 
+    /**
+     * Zones is list of availability zones that can be used.
+     */
     @JsonProperty("zones")
     public void setZones(List<String> zones) {
         this.zones = zones;

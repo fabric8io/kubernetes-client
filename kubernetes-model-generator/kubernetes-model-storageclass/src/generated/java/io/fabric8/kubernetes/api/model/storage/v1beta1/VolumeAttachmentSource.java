@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * VolumeAttachmentSource represents a volume that should be attached. Right now only PersistenVolumes can be attached via external attacher, in future we may allow also inline volumes in pods. Exactly one member can be set.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -83,21 +86,33 @@ public class VolumeAttachmentSource implements Editable<VolumeAttachmentSourceBu
         this.persistentVolumeName = persistentVolumeName;
     }
 
+    /**
+     * VolumeAttachmentSource represents a volume that should be attached. Right now only PersistenVolumes can be attached via external attacher, in future we may allow also inline volumes in pods. Exactly one member can be set.
+     */
     @JsonProperty("inlineVolumeSpec")
     public PersistentVolumeSpec getInlineVolumeSpec() {
         return inlineVolumeSpec;
     }
 
+    /**
+     * VolumeAttachmentSource represents a volume that should be attached. Right now only PersistenVolumes can be attached via external attacher, in future we may allow also inline volumes in pods. Exactly one member can be set.
+     */
     @JsonProperty("inlineVolumeSpec")
     public void setInlineVolumeSpec(PersistentVolumeSpec inlineVolumeSpec) {
         this.inlineVolumeSpec = inlineVolumeSpec;
     }
 
+    /**
+     * Name of the persistent volume to attach.
+     */
     @JsonProperty("persistentVolumeName")
     public String getPersistentVolumeName() {
         return persistentVolumeName;
     }
 
+    /**
+     * Name of the persistent volume to attach.
+     */
     @JsonProperty("persistentVolumeName")
     public void setPersistentVolumeName(String persistentVolumeName) {
         this.persistentVolumeName = persistentVolumeName;

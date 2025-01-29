@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * EnvFromSource represents the source of a set of ConfigMaps
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -57,31 +60,49 @@ public class EnvFromSource implements Editable<EnvFromSourceBuilder>, Kubernetes
         this.secretRef = secretRef;
     }
 
+    /**
+     * EnvFromSource represents the source of a set of ConfigMaps
+     */
     @JsonProperty("configMapRef")
     public ConfigMapEnvSource getConfigMapRef() {
         return configMapRef;
     }
 
+    /**
+     * EnvFromSource represents the source of a set of ConfigMaps
+     */
     @JsonProperty("configMapRef")
     public void setConfigMapRef(ConfigMapEnvSource configMapRef) {
         this.configMapRef = configMapRef;
     }
 
+    /**
+     * An optional identifier to prepend to each key in the ConfigMap. Must be a C_IDENTIFIER.
+     */
     @JsonProperty("prefix")
     public String getPrefix() {
         return prefix;
     }
 
+    /**
+     * An optional identifier to prepend to each key in the ConfigMap. Must be a C_IDENTIFIER.
+     */
     @JsonProperty("prefix")
     public void setPrefix(String prefix) {
         this.prefix = prefix;
     }
 
+    /**
+     * EnvFromSource represents the source of a set of ConfigMaps
+     */
     @JsonProperty("secretRef")
     public SecretEnvSource getSecretRef() {
         return secretRef;
     }
 
+    /**
+     * EnvFromSource represents the source of a set of ConfigMaps
+     */
     @JsonProperty("secretRef")
     public void setSecretRef(SecretEnvSource secretRef) {
         this.secretRef = secretRef;

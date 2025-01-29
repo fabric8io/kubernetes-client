@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ConsoleConfigRoute holds information on external route access to console. DEPRECATED
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -83,21 +86,33 @@ public class ConsoleConfigRoute implements Editable<ConsoleConfigRouteBuilder>, 
         this.secret = secret;
     }
 
+    /**
+     * hostname is the desired custom domain under which console will be available.
+     */
     @JsonProperty("hostname")
     public String getHostname() {
         return hostname;
     }
 
+    /**
+     * hostname is the desired custom domain under which console will be available.
+     */
     @JsonProperty("hostname")
     public void setHostname(String hostname) {
         this.hostname = hostname;
     }
 
+    /**
+     * ConsoleConfigRoute holds information on external route access to console. DEPRECATED
+     */
     @JsonProperty("secret")
     public SecretNameReference getSecret() {
         return secret;
     }
 
+    /**
+     * ConsoleConfigRoute holds information on external route access to console. DEPRECATED
+     */
     @JsonProperty("secret")
     public void setSecret(SecretNameReference secret) {
         this.secret = secret;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PrismElement holds the uuid, endpoint of the Prism Element (cluster)
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class PrismElement implements Editable<PrismElementBuilder>, KubernetesRe
         this.uuid = uuid;
     }
 
+    /**
+     * PrismElement holds the uuid, endpoint of the Prism Element (cluster)
+     */
     @JsonProperty("endpoint")
     public PrismEndpoint getEndpoint() {
         return endpoint;
     }
 
+    /**
+     * PrismElement holds the uuid, endpoint of the Prism Element (cluster)
+     */
     @JsonProperty("endpoint")
     public void setEndpoint(PrismEndpoint endpoint) {
         this.endpoint = endpoint;
     }
 
+    /**
+     * Name is prism endpoint Name
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name is prism endpoint Name
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * UUID is the UUID of the Prism Element (cluster)
+     */
     @JsonProperty("uuid")
     public String getUuid() {
         return uuid;
     }
 
+    /**
+     * UUID is the UUID of the Prism Element (cluster)
+     */
     @JsonProperty("uuid")
     public void setUuid(String uuid) {
         this.uuid = uuid;

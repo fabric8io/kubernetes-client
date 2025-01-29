@@ -82,21 +82,33 @@ public class HTTPHeader implements Editable<HTTPHeaderBuilder>, KubernetesResour
         this.value = value;
     }
 
+    /**
+     * The header field name
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * The header field name
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * The header field value
+     */
     @JsonProperty("value")
     public String getValue() {
         return value;
     }
 
+    /**
+     * The header field value
+     */
     @JsonProperty("value")
     public void setValue(String value) {
         this.value = value;

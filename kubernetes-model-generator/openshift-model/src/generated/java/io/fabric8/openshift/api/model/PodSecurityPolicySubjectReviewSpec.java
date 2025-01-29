@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PodSecurityPolicySubjectReviewSpec defines specification for PodSecurityPolicySubjectReview
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -89,32 +92,50 @@ public class PodSecurityPolicySubjectReviewSpec implements Editable<PodSecurityP
         this.user = user;
     }
 
+    /**
+     * groups is the groups you're testing for.
+     */
     @JsonProperty("groups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getGroups() {
         return groups;
     }
 
+    /**
+     * groups is the groups you're testing for.
+     */
     @JsonProperty("groups")
     public void setGroups(List<String> groups) {
         this.groups = groups;
     }
 
+    /**
+     * PodSecurityPolicySubjectReviewSpec defines specification for PodSecurityPolicySubjectReview
+     */
     @JsonProperty("template")
     public PodTemplateSpec getTemplate() {
         return template;
     }
 
+    /**
+     * PodSecurityPolicySubjectReviewSpec defines specification for PodSecurityPolicySubjectReview
+     */
     @JsonProperty("template")
     public void setTemplate(PodTemplateSpec template) {
         this.template = template;
     }
 
+    /**
+     * user is the user you're testing for. If you specify "user" but not "group", then is it interpreted as "What if user were not a member of any groups. If user and groups are empty, then the check is performed using &#42;only&#42; the serviceAccountName in the template.
+     */
     @JsonProperty("user")
     public String getUser() {
         return user;
     }
 
+    /**
+     * user is the user you're testing for. If you specify "user" but not "group", then is it interpreted as "What if user were not a member of any groups. If user and groups are empty, then the check is performed using &#42;only&#42; the serviceAccountName in the template.
+     */
     @JsonProperty("user")
     public void setUser(String user) {
         this.user = user;

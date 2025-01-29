@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ProjectSpec holds the project creation configuration.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class ProjectSpec implements Editable<ProjectSpecBuilder>, KubernetesReso
         this.projectRequestTemplate = projectRequestTemplate;
     }
 
+    /**
+     * projectRequestMessage is the string presented to a user if they are unable to request a project via the projectrequest api endpoint
+     */
     @JsonProperty("projectRequestMessage")
     public String getProjectRequestMessage() {
         return projectRequestMessage;
     }
 
+    /**
+     * projectRequestMessage is the string presented to a user if they are unable to request a project via the projectrequest api endpoint
+     */
     @JsonProperty("projectRequestMessage")
     public void setProjectRequestMessage(String projectRequestMessage) {
         this.projectRequestMessage = projectRequestMessage;
     }
 
+    /**
+     * ProjectSpec holds the project creation configuration.
+     */
     @JsonProperty("projectRequestTemplate")
     public TemplateReference getProjectRequestTemplate() {
         return projectRequestTemplate;
     }
 
+    /**
+     * ProjectSpec holds the project creation configuration.
+     */
     @JsonProperty("projectRequestTemplate")
     public void setProjectRequestTemplate(TemplateReference projectRequestTemplate) {
         this.projectRequestTemplate = projectRequestTemplate;

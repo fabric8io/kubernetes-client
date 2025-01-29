@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DiscoveredClusterStatus defines the observed state of DiscoveredCluster
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -81,12 +84,18 @@ public class DiscoveredClusterStatus implements Editable<DiscoveredClusterStatus
         this.conditions = conditions;
     }
 
+    /**
+     * INSERT ADDITIONAL STATUS FIELD - define observed state of cluster Important: Run "make" to regenerate code after modifying this file
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<DiscoveredClusterCondition> getConditions() {
         return conditions;
     }
 
+    /**
+     * INSERT ADDITIONAL STATUS FIELD - define observed state of cluster Important: Run "make" to regenerate code after modifying this file
+     */
     @JsonProperty("conditions")
     public void setConditions(List<DiscoveredClusterCondition> conditions) {
         this.conditions = conditions;

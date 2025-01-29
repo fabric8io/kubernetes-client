@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Traffic policies to apply for a specific destination, across all destination ports. See DestinationRule for examples.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -105,72 +108,114 @@ public class TrafficPolicy implements Editable<TrafficPolicyBuilder>, Kubernetes
         this.tunnel = tunnel;
     }
 
+    /**
+     * Traffic policies to apply for a specific destination, across all destination ports. See DestinationRule for examples.
+     */
     @JsonProperty("connectionPool")
     public ConnectionPoolSettings getConnectionPool() {
         return connectionPool;
     }
 
+    /**
+     * Traffic policies to apply for a specific destination, across all destination ports. See DestinationRule for examples.
+     */
     @JsonProperty("connectionPool")
     public void setConnectionPool(ConnectionPoolSettings connectionPool) {
         this.connectionPool = connectionPool;
     }
 
+    /**
+     * Traffic policies to apply for a specific destination, across all destination ports. See DestinationRule for examples.
+     */
     @JsonProperty("loadBalancer")
     public LoadBalancerSettings getLoadBalancer() {
         return loadBalancer;
     }
 
+    /**
+     * Traffic policies to apply for a specific destination, across all destination ports. See DestinationRule for examples.
+     */
     @JsonProperty("loadBalancer")
     public void setLoadBalancer(LoadBalancerSettings loadBalancer) {
         this.loadBalancer = loadBalancer;
     }
 
+    /**
+     * Traffic policies to apply for a specific destination, across all destination ports. See DestinationRule for examples.
+     */
     @JsonProperty("outlierDetection")
     public OutlierDetection getOutlierDetection() {
         return outlierDetection;
     }
 
+    /**
+     * Traffic policies to apply for a specific destination, across all destination ports. See DestinationRule for examples.
+     */
     @JsonProperty("outlierDetection")
     public void setOutlierDetection(OutlierDetection outlierDetection) {
         this.outlierDetection = outlierDetection;
     }
 
+    /**
+     * Traffic policies specific to individual ports. Note that port level settings will override the destination-level settings. Traffic settings specified at the destination-level will not be inherited when overridden by port-level settings, i.e. default values will be applied to fields omitted in port-level traffic policies.
+     */
     @JsonProperty("portLevelSettings")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TrafficPolicyPortTrafficPolicy> getPortLevelSettings() {
         return portLevelSettings;
     }
 
+    /**
+     * Traffic policies specific to individual ports. Note that port level settings will override the destination-level settings. Traffic settings specified at the destination-level will not be inherited when overridden by port-level settings, i.e. default values will be applied to fields omitted in port-level traffic policies.
+     */
     @JsonProperty("portLevelSettings")
     public void setPortLevelSettings(List<TrafficPolicyPortTrafficPolicy> portLevelSettings) {
         this.portLevelSettings = portLevelSettings;
     }
 
+    /**
+     * Traffic policies to apply for a specific destination, across all destination ports. See DestinationRule for examples.
+     */
     @JsonProperty("proxyProtocol")
     public TrafficPolicyProxyProtocol getProxyProtocol() {
         return proxyProtocol;
     }
 
+    /**
+     * Traffic policies to apply for a specific destination, across all destination ports. See DestinationRule for examples.
+     */
     @JsonProperty("proxyProtocol")
     public void setProxyProtocol(TrafficPolicyProxyProtocol proxyProtocol) {
         this.proxyProtocol = proxyProtocol;
     }
 
+    /**
+     * Traffic policies to apply for a specific destination, across all destination ports. See DestinationRule for examples.
+     */
     @JsonProperty("tls")
     public ClientTLSSettings getTls() {
         return tls;
     }
 
+    /**
+     * Traffic policies to apply for a specific destination, across all destination ports. See DestinationRule for examples.
+     */
     @JsonProperty("tls")
     public void setTls(ClientTLSSettings tls) {
         this.tls = tls;
     }
 
+    /**
+     * Traffic policies to apply for a specific destination, across all destination ports. See DestinationRule for examples.
+     */
     @JsonProperty("tunnel")
     public TrafficPolicyTunnelSettings getTunnel() {
         return tunnel;
     }
 
+    /**
+     * Traffic policies to apply for a specific destination, across all destination ports. See DestinationRule for examples.
+     */
     @JsonProperty("tunnel")
     public void setTunnel(TrafficPolicyTunnelSettings tunnel) {
         this.tunnel = tunnel;

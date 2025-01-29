@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Destination represents a target of an invocation over HTTP.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class Destination implements Editable<DestinationBuilder>, KubernetesReso
         this.uri = uri;
     }
 
+    /**
+     * CACerts are Certification Authority (CA) certificates in PEM format according to https://www.rfc-editor.org/rfc/rfc7468. If set, these CAs are appended to the set of CAs provided by the Addressable target, if any.
+     */
     @JsonProperty("CACerts")
     public String getCACerts() {
         return cACerts;
     }
 
+    /**
+     * CACerts are Certification Authority (CA) certificates in PEM format according to https://www.rfc-editor.org/rfc/rfc7468. If set, these CAs are appended to the set of CAs provided by the Addressable target, if any.
+     */
     @JsonProperty("CACerts")
     public void setCACerts(String cACerts) {
         this.cACerts = cACerts;
     }
 
+    /**
+     * Audience is the OIDC audience. This need only be set, if the target is not an Addressable and thus the Audience can't be received from the Addressable itself. In case the Addressable specifies an Audience too, the Destinations Audience takes preference.
+     */
     @JsonProperty("audience")
     public String getAudience() {
         return audience;
     }
 
+    /**
+     * Audience is the OIDC audience. This need only be set, if the target is not an Addressable and thus the Audience can't be received from the Addressable itself. In case the Addressable specifies an Audience too, the Destinations Audience takes preference.
+     */
     @JsonProperty("audience")
     public void setAudience(String audience) {
         this.audience = audience;
     }
 
+    /**
+     * Destination represents a target of an invocation over HTTP.
+     */
     @JsonProperty("ref")
     public KReference getRef() {
         return ref;
     }
 
+    /**
+     * Destination represents a target of an invocation over HTTP.
+     */
     @JsonProperty("ref")
     public void setRef(KReference ref) {
         this.ref = ref;
     }
 
+    /**
+     * Destination represents a target of an invocation over HTTP.
+     */
     @JsonProperty("uri")
     public String getUri() {
         return uri;
     }
 
+    /**
+     * Destination represents a target of an invocation over HTTP.
+     */
     @JsonProperty("uri")
     public void setUri(String uri) {
         this.uri = uri;

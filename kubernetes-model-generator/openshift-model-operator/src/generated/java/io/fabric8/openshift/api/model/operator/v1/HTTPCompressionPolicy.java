@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * httpCompressionPolicy turns on compression for the specified MIME types.<br><p> <br><p> This field is optional, and its absence implies that compression should not be enabled globally in HAProxy.<br><p> <br><p> If httpCompressionPolicy exists, compression should be enabled only for the specified MIME types.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -81,12 +84,18 @@ public class HTTPCompressionPolicy implements Editable<HTTPCompressionPolicyBuil
         this.mimeTypes = mimeTypes;
     }
 
+    /**
+     * mimeTypes is a list of MIME types that should have compression applied. This list can be empty, in which case the ingress controller does not apply compression.<br><p> <br><p> Note: Not all MIME types benefit from compression, but HAProxy will still use resources to try to compress if instructed to.  Generally speaking, text (html, css, js, etc.) formats benefit from compression, but formats that are already compressed (image, audio, video, etc.) benefit little in exchange for the time and cpu spent on compressing again. See https://joehonton.medium.com/the-gzip-penalty-d31bd697f1a2
+     */
     @JsonProperty("mimeTypes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getMimeTypes() {
         return mimeTypes;
     }
 
+    /**
+     * mimeTypes is a list of MIME types that should have compression applied. This list can be empty, in which case the ingress controller does not apply compression.<br><p> <br><p> Note: Not all MIME types benefit from compression, but HAProxy will still use resources to try to compress if instructed to.  Generally speaking, text (html, css, js, etc.) formats benefit from compression, but formats that are already compressed (image, audio, video, etc.) benefit little in exchange for the time and cpu spent on compressing again. See https://joehonton.medium.com/the-gzip-penalty-d31bd697f1a2
+     */
     @JsonProperty("mimeTypes")
     public void setMimeTypes(List<String> mimeTypes) {
         this.mimeTypes = mimeTypes;

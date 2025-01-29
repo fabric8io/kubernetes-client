@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * HTTPFaultInjection can be used to specify one or more faults to inject while forwarding HTTP requests to the destination specified in a route. Fault specification is part of a VirtualService rule. Faults include aborting the Http request from downstream service, and/or delaying proxying of requests. A fault rule MUST HAVE delay or abort or both.<br><p> <br><p> &#42;Note:&#42; Delay and abort faults are independent of one another, even if both are specified simultaneously.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class HTTPFaultInjection implements Editable<HTTPFaultInjectionBuilder>, 
         this.delay = delay;
     }
 
+    /**
+     * HTTPFaultInjection can be used to specify one or more faults to inject while forwarding HTTP requests to the destination specified in a route. Fault specification is part of a VirtualService rule. Faults include aborting the Http request from downstream service, and/or delaying proxying of requests. A fault rule MUST HAVE delay or abort or both.<br><p> <br><p> &#42;Note:&#42; Delay and abort faults are independent of one another, even if both are specified simultaneously.
+     */
     @JsonProperty("abort")
     public HTTPFaultInjectionAbort getAbort() {
         return abort;
     }
 
+    /**
+     * HTTPFaultInjection can be used to specify one or more faults to inject while forwarding HTTP requests to the destination specified in a route. Fault specification is part of a VirtualService rule. Faults include aborting the Http request from downstream service, and/or delaying proxying of requests. A fault rule MUST HAVE delay or abort or both.<br><p> <br><p> &#42;Note:&#42; Delay and abort faults are independent of one another, even if both are specified simultaneously.
+     */
     @JsonProperty("abort")
     public void setAbort(HTTPFaultInjectionAbort abort) {
         this.abort = abort;
     }
 
+    /**
+     * HTTPFaultInjection can be used to specify one or more faults to inject while forwarding HTTP requests to the destination specified in a route. Fault specification is part of a VirtualService rule. Faults include aborting the Http request from downstream service, and/or delaying proxying of requests. A fault rule MUST HAVE delay or abort or both.<br><p> <br><p> &#42;Note:&#42; Delay and abort faults are independent of one another, even if both are specified simultaneously.
+     */
     @JsonProperty("delay")
     public HTTPFaultInjectionDelay getDelay() {
         return delay;
     }
 
+    /**
+     * HTTPFaultInjection can be used to specify one or more faults to inject while forwarding HTTP requests to the destination specified in a route. Fault specification is part of a VirtualService rule. Faults include aborting the Http request from downstream service, and/or delaying proxying of requests. A fault rule MUST HAVE delay or abort or both.<br><p> <br><p> &#42;Note:&#42; Delay and abort faults are independent of one another, even if both are specified simultaneously.
+     */
     @JsonProperty("delay")
     public void setDelay(HTTPFaultInjectionDelay delay) {
         this.delay = delay;

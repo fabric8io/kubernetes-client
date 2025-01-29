@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * LifecycleHook defines a specific deployment lifecycle action. Only one type of action may be specified at any time.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -89,32 +92,50 @@ public class LifecycleHook implements Editable<LifecycleHookBuilder>, Kubernetes
         this.tagImages = tagImages;
     }
 
+    /**
+     * LifecycleHook defines a specific deployment lifecycle action. Only one type of action may be specified at any time.
+     */
     @JsonProperty("execNewPod")
     public ExecNewPodHook getExecNewPod() {
         return execNewPod;
     }
 
+    /**
+     * LifecycleHook defines a specific deployment lifecycle action. Only one type of action may be specified at any time.
+     */
     @JsonProperty("execNewPod")
     public void setExecNewPod(ExecNewPodHook execNewPod) {
         this.execNewPod = execNewPod;
     }
 
+    /**
+     * FailurePolicy specifies what action to take if the hook fails.
+     */
     @JsonProperty("failurePolicy")
     public String getFailurePolicy() {
         return failurePolicy;
     }
 
+    /**
+     * FailurePolicy specifies what action to take if the hook fails.
+     */
     @JsonProperty("failurePolicy")
     public void setFailurePolicy(String failurePolicy) {
         this.failurePolicy = failurePolicy;
     }
 
+    /**
+     * TagImages instructs the deployer to tag the current image referenced under a container onto an image stream tag.
+     */
     @JsonProperty("tagImages")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TagImageHook> getTagImages() {
         return tagImages;
     }
 
+    /**
+     * TagImages instructs the deployer to tag the current image referenced under a container onto an image stream tag.
+     */
     @JsonProperty("tagImages")
     public void setTagImages(List<TagImageHook> tagImages) {
         this.tagImages = tagImages;

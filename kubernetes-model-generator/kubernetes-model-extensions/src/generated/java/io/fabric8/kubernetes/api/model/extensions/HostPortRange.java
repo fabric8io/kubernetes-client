@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * HostPortRange defines a range of host ports that will be enabled by a policy for pods to use.  It requires both the start and end to be defined. Deprecated: use HostPortRange from policy API Group instead.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class HostPortRange implements Editable<HostPortRangeBuilder>, Kubernetes
         this.min = min;
     }
 
+    /**
+     * max is the end of the range, inclusive.
+     */
     @JsonProperty("max")
     public Integer getMax() {
         return max;
     }
 
+    /**
+     * max is the end of the range, inclusive.
+     */
     @JsonProperty("max")
     public void setMax(Integer max) {
         this.max = max;
     }
 
+    /**
+     * min is the start of the range, inclusive.
+     */
     @JsonProperty("min")
     public Integer getMin() {
         return min;
     }
 
+    /**
+     * min is the start of the range, inclusive.
+     */
     @JsonProperty("min")
     public void setMin(Integer min) {
         this.min = min;

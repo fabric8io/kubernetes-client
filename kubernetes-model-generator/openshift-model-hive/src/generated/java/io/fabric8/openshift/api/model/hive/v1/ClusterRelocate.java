@@ -36,6 +36,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ClusterRelocate is the Schema for the ClusterRelocates API
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -75,14 +78,8 @@ import lombok.experimental.Accessors;
 public class ClusterRelocate implements Editable<ClusterRelocateBuilder>, HasMetadata
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "hive.openshift.io/v1";
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "ClusterRelocate";
     @JsonProperty("metadata")
@@ -110,7 +107,7 @@ public class ClusterRelocate implements Editable<ClusterRelocateBuilder>, HasMet
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -118,7 +115,7 @@ public class ClusterRelocate implements Editable<ClusterRelocateBuilder>, HasMet
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -126,7 +123,7 @@ public class ClusterRelocate implements Editable<ClusterRelocateBuilder>, HasMet
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -134,38 +131,56 @@ public class ClusterRelocate implements Editable<ClusterRelocateBuilder>, HasMet
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * ClusterRelocate is the Schema for the ClusterRelocates API
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * ClusterRelocate is the Schema for the ClusterRelocates API
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * ClusterRelocate is the Schema for the ClusterRelocates API
+     */
     @JsonProperty("spec")
     public ClusterRelocateSpec getSpec() {
         return spec;
     }
 
+    /**
+     * ClusterRelocate is the Schema for the ClusterRelocates API
+     */
     @JsonProperty("spec")
     public void setSpec(ClusterRelocateSpec spec) {
         this.spec = spec;
     }
 
+    /**
+     * ClusterRelocate is the Schema for the ClusterRelocates API
+     */
     @JsonProperty("status")
     public ClusterRelocateStatus getStatus() {
         return status;
     }
 
+    /**
+     * ClusterRelocate is the Schema for the ClusterRelocates API
+     */
     @JsonProperty("status")
     public void setStatus(ClusterRelocateStatus status) {
         this.status = status;

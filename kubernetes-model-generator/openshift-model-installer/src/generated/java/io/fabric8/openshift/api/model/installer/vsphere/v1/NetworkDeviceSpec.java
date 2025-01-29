@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NetworkDeviceSpec defines network config for static IP assignment.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,33 +93,51 @@ public class NetworkDeviceSpec implements Editable<NetworkDeviceSpecBuilder>, Ku
         this.nameservers = nameservers;
     }
 
+    /**
+     * gateway is an IPv4 or IPv6 address which represents the subnet gateway, for example, 192.168.1.1.
+     */
     @JsonProperty("gateway")
     public String getGateway() {
         return gateway;
     }
 
+    /**
+     * gateway is an IPv4 or IPv6 address which represents the subnet gateway, for example, 192.168.1.1.
+     */
     @JsonProperty("gateway")
     public void setGateway(String gateway) {
         this.gateway = gateway;
     }
 
+    /**
+     * ipAddrs is a list of one or more IPv4 and/or IPv6 addresses and CIDR to assign to this device, for example, 192.168.1.100/24. IP addresses provided via ipAddrs are intended to allow explicit assignment of a machine's IP address.
+     */
     @JsonProperty("ipAddrs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getIpAddrs() {
         return ipAddrs;
     }
 
+    /**
+     * ipAddrs is a list of one or more IPv4 and/or IPv6 addresses and CIDR to assign to this device, for example, 192.168.1.100/24. IP addresses provided via ipAddrs are intended to allow explicit assignment of a machine's IP address.
+     */
     @JsonProperty("ipAddrs")
     public void setIpAddrs(List<String> ipAddrs) {
         this.ipAddrs = ipAddrs;
     }
 
+    /**
+     * nameservers is a list of IPv4 and/or IPv6 addresses used as DNS nameservers, for example, 8.8.8.8. a nameserver is not provided by a fulfilled IPAddressClaim. If DHCP is not the source of IP addresses for this network device, nameservers should include a valid nameserver.
+     */
     @JsonProperty("nameservers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getNameservers() {
         return nameservers;
     }
 
+    /**
+     * nameservers is a list of IPv4 and/or IPv6 addresses used as DNS nameservers, for example, 8.8.8.8. a nameserver is not provided by a fulfilled IPAddressClaim. If DHCP is not the source of IP addresses for this network device, nameservers should include a valid nameserver.
+     */
     @JsonProperty("nameservers")
     public void setNameservers(List<String> nameservers) {
         this.nameservers = nameservers;

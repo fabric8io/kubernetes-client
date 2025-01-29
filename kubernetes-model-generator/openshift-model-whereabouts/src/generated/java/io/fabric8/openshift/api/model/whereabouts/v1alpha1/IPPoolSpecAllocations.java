@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * IPAllocation represents metadata about the pod/container owner of a specific IP
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class IPPoolSpecAllocations implements Editable<IPPoolSpecAllocationsBuil
         this.podref = podref;
     }
 
+    /**
+     * IPAllocation represents metadata about the pod/container owner of a specific IP
+     */
     @JsonProperty("id")
     public String getId() {
         return id;
     }
 
+    /**
+     * IPAllocation represents metadata about the pod/container owner of a specific IP
+     */
     @JsonProperty("id")
     public void setId(String id) {
         this.id = id;
     }
 
+    /**
+     * IPAllocation represents metadata about the pod/container owner of a specific IP
+     */
     @JsonProperty("ifname")
     public String getIfname() {
         return ifname;
     }
 
+    /**
+     * IPAllocation represents metadata about the pod/container owner of a specific IP
+     */
     @JsonProperty("ifname")
     public void setIfname(String ifname) {
         this.ifname = ifname;
     }
 
+    /**
+     * IPAllocation represents metadata about the pod/container owner of a specific IP
+     */
     @JsonProperty("podref")
     public String getPodref() {
         return podref;
     }
 
+    /**
+     * IPAllocation represents metadata about the pod/container owner of a specific IP
+     */
     @JsonProperty("podref")
     public void setPodref(String podref) {
         this.podref = podref;

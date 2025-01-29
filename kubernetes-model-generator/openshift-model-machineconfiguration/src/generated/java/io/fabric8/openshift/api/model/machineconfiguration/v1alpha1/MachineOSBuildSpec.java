@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * MachineOSBuildSpec describes information about a build process primarily populated from a MachineOSConfig object.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,51 +97,81 @@ public class MachineOSBuildSpec implements Editable<MachineOSBuildSpecBuilder>, 
         this.version = version;
     }
 
+    /**
+     * configGeneration tracks which version of MachineOSConfig this build is based off of
+     */
     @JsonProperty("configGeneration")
     public Long getConfigGeneration() {
         return configGeneration;
     }
 
+    /**
+     * configGeneration tracks which version of MachineOSConfig this build is based off of
+     */
     @JsonProperty("configGeneration")
     public void setConfigGeneration(Long configGeneration) {
         this.configGeneration = configGeneration;
     }
 
+    /**
+     * MachineOSBuildSpec describes information about a build process primarily populated from a MachineOSConfig object.
+     */
     @JsonProperty("desiredConfig")
     public RenderedMachineConfigReference getDesiredConfig() {
         return desiredConfig;
     }
 
+    /**
+     * MachineOSBuildSpec describes information about a build process primarily populated from a MachineOSConfig object.
+     */
     @JsonProperty("desiredConfig")
     public void setDesiredConfig(RenderedMachineConfigReference desiredConfig) {
         this.desiredConfig = desiredConfig;
     }
 
+    /**
+     * MachineOSBuildSpec describes information about a build process primarily populated from a MachineOSConfig object.
+     */
     @JsonProperty("machineOSConfig")
     public MachineOSConfigReference getMachineOSConfig() {
         return machineOSConfig;
     }
 
+    /**
+     * MachineOSBuildSpec describes information about a build process primarily populated from a MachineOSConfig object.
+     */
     @JsonProperty("machineOSConfig")
     public void setMachineOSConfig(MachineOSConfigReference machineOSConfig) {
         this.machineOSConfig = machineOSConfig;
     }
 
+    /**
+     * renderedImagePushspec is set from the MachineOSConfig The format of the image pullspec is: host[:port][/namespace]/name:&lt;tag&gt; or svc_name.namespace.svc[:port]/repository/name:&lt;tag&gt;
+     */
     @JsonProperty("renderedImagePushspec")
     public String getRenderedImagePushspec() {
         return renderedImagePushspec;
     }
 
+    /**
+     * renderedImagePushspec is set from the MachineOSConfig The format of the image pullspec is: host[:port][/namespace]/name:&lt;tag&gt; or svc_name.namespace.svc[:port]/repository/name:&lt;tag&gt;
+     */
     @JsonProperty("renderedImagePushspec")
     public void setRenderedImagePushspec(String renderedImagePushspec) {
         this.renderedImagePushspec = renderedImagePushspec;
     }
 
+    /**
+     * version tracks the newest MachineOSBuild for each MachineOSConfig
+     */
     @JsonProperty("version")
     public Long getVersion() {
         return version;
     }
 
+    /**
+     * version tracks the newest MachineOSBuild for each MachineOSConfig
+     */
     @JsonProperty("version")
     public void setVersion(Long version) {
         this.version = version;

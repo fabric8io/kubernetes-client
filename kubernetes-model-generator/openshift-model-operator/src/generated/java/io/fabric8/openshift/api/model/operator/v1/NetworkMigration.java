@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NetworkMigration represents the cluster network migration configuration.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class NetworkMigration implements Editable<NetworkMigrationBuilder>, Kube
         this.networkType = networkType;
     }
 
+    /**
+     * NetworkMigration represents the cluster network migration configuration.
+     */
     @JsonProperty("features")
     public FeaturesMigration getFeatures() {
         return features;
     }
 
+    /**
+     * NetworkMigration represents the cluster network migration configuration.
+     */
     @JsonProperty("features")
     public void setFeatures(FeaturesMigration features) {
         this.features = features;
     }
 
+    /**
+     * mode indicates the mode of network type migration. DEPRECATED: network type migration is no longer supported, and setting this to a non-empty value will result in the network operator rejecting the configuration.
+     */
     @JsonProperty("mode")
     public String getMode() {
         return mode;
     }
 
+    /**
+     * mode indicates the mode of network type migration. DEPRECATED: network type migration is no longer supported, and setting this to a non-empty value will result in the network operator rejecting the configuration.
+     */
     @JsonProperty("mode")
     public void setMode(String mode) {
         this.mode = mode;
     }
 
+    /**
+     * NetworkMigration represents the cluster network migration configuration.
+     */
     @JsonProperty("mtu")
     public MTUMigration getMtu() {
         return mtu;
     }
 
+    /**
+     * NetworkMigration represents the cluster network migration configuration.
+     */
     @JsonProperty("mtu")
     public void setMtu(MTUMigration mtu) {
         this.mtu = mtu;
     }
 
+    /**
+     * networkType was previously used when changing the default network type. DEPRECATED: network type migration is no longer supported, and setting this to a non-empty value will result in the network operator rejecting the configuration.
+     */
     @JsonProperty("networkType")
     public String getNetworkType() {
         return networkType;
     }
 
+    /**
+     * networkType was previously used when changing the default network type. DEPRECATED: network type migration is no longer supported, and setting this to a non-empty value will result in the network operator rejecting the configuration.
+     */
     @JsonProperty("networkType")
     public void setNetworkType(String networkType) {
         this.networkType = networkType;

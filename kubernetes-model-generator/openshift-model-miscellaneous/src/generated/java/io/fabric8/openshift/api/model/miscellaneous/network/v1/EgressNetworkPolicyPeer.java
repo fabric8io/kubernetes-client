@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * EgressNetworkPolicyPeer specifies a target to apply egress network policy to
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class EgressNetworkPolicyPeer implements Editable<EgressNetworkPolicyPeer
         this.dnsName = dnsName;
     }
 
+    /**
+     * CIDRSelector is the CIDR range to allow/deny traffic to. If this is set, dnsName must be unset Ideally we would have liked to use the cidr openapi format for this property. But openshift-sdn only supports v4 while specifying the cidr format allows both v4 and v6 cidrs We are therefore using a regex pattern to validate instead.
+     */
     @JsonProperty("cidrSelector")
     public String getCidrSelector() {
         return cidrSelector;
     }
 
+    /**
+     * CIDRSelector is the CIDR range to allow/deny traffic to. If this is set, dnsName must be unset Ideally we would have liked to use the cidr openapi format for this property. But openshift-sdn only supports v4 while specifying the cidr format allows both v4 and v6 cidrs We are therefore using a regex pattern to validate instead.
+     */
     @JsonProperty("cidrSelector")
     public void setCidrSelector(String cidrSelector) {
         this.cidrSelector = cidrSelector;
     }
 
+    /**
+     * DNSName is the domain name to allow/deny traffic to. If this is set, cidrSelector must be unset
+     */
     @JsonProperty("dnsName")
     public String getDnsName() {
         return dnsName;
     }
 
+    /**
+     * DNSName is the domain name to allow/deny traffic to. If this is set, cidrSelector must be unset
+     */
     @JsonProperty("dnsName")
     public void setDnsName(String dnsName) {
         this.dnsName = dnsName;

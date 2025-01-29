@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * BlockChaosSpec is the content of the specification for a BlockChaos
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -113,92 +116,146 @@ public class BlockChaosSpec implements Editable<BlockChaosSpecBuilder>, Kubernet
         this.volumeName = volumeName;
     }
 
+    /**
+     * Action defines the specific block chaos action. Supported action: delay
+     */
     @JsonProperty("action")
     public String getAction() {
         return action;
     }
 
+    /**
+     * Action defines the specific block chaos action. Supported action: delay
+     */
     @JsonProperty("action")
     public void setAction(String action) {
         this.action = action;
     }
 
+    /**
+     * ContainerNames indicates list of the name of affected container. If not set, the first container will be injected
+     */
     @JsonProperty("containerNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getContainerNames() {
         return containerNames;
     }
 
+    /**
+     * ContainerNames indicates list of the name of affected container. If not set, the first container will be injected
+     */
     @JsonProperty("containerNames")
     public void setContainerNames(List<String> containerNames) {
         this.containerNames = containerNames;
     }
 
+    /**
+     * BlockChaosSpec is the content of the specification for a BlockChaos
+     */
     @JsonProperty("delay")
     public BlockDelaySpec getDelay() {
         return delay;
     }
 
+    /**
+     * BlockChaosSpec is the content of the specification for a BlockChaos
+     */
     @JsonProperty("delay")
     public void setDelay(BlockDelaySpec delay) {
         this.delay = delay;
     }
 
+    /**
+     * Duration represents the duration of the chaos action.
+     */
     @JsonProperty("duration")
     public String getDuration() {
         return duration;
     }
 
+    /**
+     * Duration represents the duration of the chaos action.
+     */
     @JsonProperty("duration")
     public void setDuration(String duration) {
         this.duration = duration;
     }
 
+    /**
+     * Mode defines the mode to run chaos action. Supported mode: one / all / fixed / fixed-percent / random-max-percent
+     */
     @JsonProperty("mode")
     public String getMode() {
         return mode;
     }
 
+    /**
+     * Mode defines the mode to run chaos action. Supported mode: one / all / fixed / fixed-percent / random-max-percent
+     */
     @JsonProperty("mode")
     public void setMode(String mode) {
         this.mode = mode;
     }
 
+    /**
+     * RemoteCluster represents the remote cluster where the chaos will be deployed
+     */
     @JsonProperty("remoteCluster")
     public String getRemoteCluster() {
         return remoteCluster;
     }
 
+    /**
+     * RemoteCluster represents the remote cluster where the chaos will be deployed
+     */
     @JsonProperty("remoteCluster")
     public void setRemoteCluster(String remoteCluster) {
         this.remoteCluster = remoteCluster;
     }
 
+    /**
+     * BlockChaosSpec is the content of the specification for a BlockChaos
+     */
     @JsonProperty("selector")
     public PodSelectorSpec getSelector() {
         return selector;
     }
 
+    /**
+     * BlockChaosSpec is the content of the specification for a BlockChaos
+     */
     @JsonProperty("selector")
     public void setSelector(PodSelectorSpec selector) {
         this.selector = selector;
     }
 
+    /**
+     * Value is required when the mode is set to `FixedMode` / `FixedPercentMode` / `RandomMaxPercentMode`. If `FixedMode`, provide an integer of pods to do chaos action. If `FixedPercentMode`, provide a number from 0-100 to specify the percent of pods the server can do chaos action. IF `RandomMaxPercentMode`,  provide a number from 0-100 to specify the max percent of pods to do chaos action
+     */
     @JsonProperty("value")
     public String getValue() {
         return value;
     }
 
+    /**
+     * Value is required when the mode is set to `FixedMode` / `FixedPercentMode` / `RandomMaxPercentMode`. If `FixedMode`, provide an integer of pods to do chaos action. If `FixedPercentMode`, provide a number from 0-100 to specify the percent of pods the server can do chaos action. IF `RandomMaxPercentMode`,  provide a number from 0-100 to specify the max percent of pods to do chaos action
+     */
     @JsonProperty("value")
     public void setValue(String value) {
         this.value = value;
     }
 
+    /**
+     * BlockChaosSpec is the content of the specification for a BlockChaos
+     */
     @JsonProperty("volumeName")
     public String getVolumeName() {
         return volumeName;
     }
 
+    /**
+     * BlockChaosSpec is the content of the specification for a BlockChaos
+     */
     @JsonProperty("volumeName")
     public void setVolumeName(String volumeName) {
         this.volumeName = volumeName;

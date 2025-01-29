@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ClusterConditionFilter defines filter to filter cluster condition
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class ClusterConditionFilter implements Editable<ClusterConditionFilterBu
         this.type = type;
     }
 
+    /**
+     * ClusterConditionFilter defines filter to filter cluster condition
+     */
     @JsonProperty("status")
     public String getStatus() {
         return status;
     }
 
+    /**
+     * ClusterConditionFilter defines filter to filter cluster condition
+     */
     @JsonProperty("status")
     public void setStatus(String status) {
         this.status = status;
     }
 
+    /**
+     * ClusterConditionFilter defines filter to filter cluster condition
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * ClusterConditionFilter defines filter to filter cluster condition
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

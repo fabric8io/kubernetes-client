@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ImageRegistryConfigStorageIBMCOS holds the information to configure the registry to use IBM Cloud Object Storage for backend storage.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,51 +97,81 @@ public class ImageRegistryConfigStorageIBMCOS implements Editable<ImageRegistryC
         this.serviceInstanceCRN = serviceInstanceCRN;
     }
 
+    /**
+     * bucket is the bucket name in which you want to store the registry's data. Optional, will be generated if not provided.
+     */
     @JsonProperty("bucket")
     public String getBucket() {
         return bucket;
     }
 
+    /**
+     * bucket is the bucket name in which you want to store the registry's data. Optional, will be generated if not provided.
+     */
     @JsonProperty("bucket")
     public void setBucket(String bucket) {
         this.bucket = bucket;
     }
 
+    /**
+     * location is the IBM Cloud location in which your bucket exists. Optional, will be set based on the installed IBM Cloud location.
+     */
     @JsonProperty("location")
     public String getLocation() {
         return location;
     }
 
+    /**
+     * location is the IBM Cloud location in which your bucket exists. Optional, will be set based on the installed IBM Cloud location.
+     */
     @JsonProperty("location")
     public void setLocation(String location) {
         this.location = location;
     }
 
+    /**
+     * resourceGroupName is the name of the IBM Cloud resource group that this bucket and its service instance is associated with. Optional, will be set based on the installed IBM Cloud resource group.
+     */
     @JsonProperty("resourceGroupName")
     public String getResourceGroupName() {
         return resourceGroupName;
     }
 
+    /**
+     * resourceGroupName is the name of the IBM Cloud resource group that this bucket and its service instance is associated with. Optional, will be set based on the installed IBM Cloud resource group.
+     */
     @JsonProperty("resourceGroupName")
     public void setResourceGroupName(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
     }
 
+    /**
+     * resourceKeyCRN is the CRN of the IBM Cloud resource key that is created for the service instance. Commonly referred as a service credential and must contain HMAC type credentials. Optional, will be computed if not provided.
+     */
     @JsonProperty("resourceKeyCRN")
     public String getResourceKeyCRN() {
         return resourceKeyCRN;
     }
 
+    /**
+     * resourceKeyCRN is the CRN of the IBM Cloud resource key that is created for the service instance. Commonly referred as a service credential and must contain HMAC type credentials. Optional, will be computed if not provided.
+     */
     @JsonProperty("resourceKeyCRN")
     public void setResourceKeyCRN(String resourceKeyCRN) {
         this.resourceKeyCRN = resourceKeyCRN;
     }
 
+    /**
+     * serviceInstanceCRN is the CRN of the IBM Cloud Object Storage service instance that this bucket is associated with. Optional, will be computed if not provided.
+     */
     @JsonProperty("serviceInstanceCRN")
     public String getServiceInstanceCRN() {
         return serviceInstanceCRN;
     }
 
+    /**
+     * serviceInstanceCRN is the CRN of the IBM Cloud Object Storage service instance that this bucket is associated with. Optional, will be computed if not provided.
+     */
     @JsonProperty("serviceInstanceCRN")
     public void setServiceInstanceCRN(String serviceInstanceCRN) {
         this.serviceInstanceCRN = serviceInstanceCRN;

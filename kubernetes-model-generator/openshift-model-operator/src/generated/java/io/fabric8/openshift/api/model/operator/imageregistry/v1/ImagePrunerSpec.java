@@ -36,6 +36,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ImagePrunerSpec defines the specs for the running image pruner.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -132,133 +135,211 @@ public class ImagePrunerSpec implements Editable<ImagePrunerSpecBuilder>, Kubern
         this.tolerations = tolerations;
     }
 
+    /**
+     * ImagePrunerSpec defines the specs for the running image pruner.
+     */
     @JsonProperty("affinity")
     public Affinity getAffinity() {
         return affinity;
     }
 
+    /**
+     * ImagePrunerSpec defines the specs for the running image pruner.
+     */
     @JsonProperty("affinity")
     public void setAffinity(Affinity affinity) {
         this.affinity = affinity;
     }
 
+    /**
+     * failedJobsHistoryLimit specifies how many failed image pruner jobs to retain. Defaults to 3 if not set.
+     */
     @JsonProperty("failedJobsHistoryLimit")
     public Integer getFailedJobsHistoryLimit() {
         return failedJobsHistoryLimit;
     }
 
+    /**
+     * failedJobsHistoryLimit specifies how many failed image pruner jobs to retain. Defaults to 3 if not set.
+     */
     @JsonProperty("failedJobsHistoryLimit")
     public void setFailedJobsHistoryLimit(Integer failedJobsHistoryLimit) {
         this.failedJobsHistoryLimit = failedJobsHistoryLimit;
     }
 
+    /**
+     * ignoreInvalidImageReferences indicates whether the pruner can ignore errors while parsing image references.
+     */
     @JsonProperty("ignoreInvalidImageReferences")
     public Boolean getIgnoreInvalidImageReferences() {
         return ignoreInvalidImageReferences;
     }
 
+    /**
+     * ignoreInvalidImageReferences indicates whether the pruner can ignore errors while parsing image references.
+     */
     @JsonProperty("ignoreInvalidImageReferences")
     public void setIgnoreInvalidImageReferences(Boolean ignoreInvalidImageReferences) {
         this.ignoreInvalidImageReferences = ignoreInvalidImageReferences;
     }
 
+    /**
+     * keepTagRevisions specifies the number of image revisions for a tag in an image stream that will be preserved. Defaults to 3.
+     */
     @JsonProperty("keepTagRevisions")
     public Integer getKeepTagRevisions() {
         return keepTagRevisions;
     }
 
+    /**
+     * keepTagRevisions specifies the number of image revisions for a tag in an image stream that will be preserved. Defaults to 3.
+     */
     @JsonProperty("keepTagRevisions")
     public void setKeepTagRevisions(Integer keepTagRevisions) {
         this.keepTagRevisions = keepTagRevisions;
     }
 
+    /**
+     * keepYoungerThan specifies the minimum age in nanoseconds of an image and its referrers for it to be considered a candidate for pruning. DEPRECATED: This field is deprecated in favor of keepYoungerThanDuration. If both are set, this field is ignored and keepYoungerThanDuration takes precedence.
+     */
     @JsonProperty("keepYoungerThan")
     public Long getKeepYoungerThan() {
         return keepYoungerThan;
     }
 
+    /**
+     * keepYoungerThan specifies the minimum age in nanoseconds of an image and its referrers for it to be considered a candidate for pruning. DEPRECATED: This field is deprecated in favor of keepYoungerThanDuration. If both are set, this field is ignored and keepYoungerThanDuration takes precedence.
+     */
     @JsonProperty("keepYoungerThan")
     public void setKeepYoungerThan(Long keepYoungerThan) {
         this.keepYoungerThan = keepYoungerThan;
     }
 
+    /**
+     * ImagePrunerSpec defines the specs for the running image pruner.
+     */
     @JsonProperty("keepYoungerThanDuration")
     public String getKeepYoungerThanDuration() {
         return keepYoungerThanDuration;
     }
 
+    /**
+     * ImagePrunerSpec defines the specs for the running image pruner.
+     */
     @JsonProperty("keepYoungerThanDuration")
     public void setKeepYoungerThanDuration(String keepYoungerThanDuration) {
         this.keepYoungerThanDuration = keepYoungerThanDuration;
     }
 
+    /**
+     * logLevel sets the level of log output for the pruner job.<br><p> <br><p> Valid values are: "Normal", "Debug", "Trace", "TraceAll". Defaults to "Normal".
+     */
     @JsonProperty("logLevel")
     public String getLogLevel() {
         return logLevel;
     }
 
+    /**
+     * logLevel sets the level of log output for the pruner job.<br><p> <br><p> Valid values are: "Normal", "Debug", "Trace", "TraceAll". Defaults to "Normal".
+     */
     @JsonProperty("logLevel")
     public void setLogLevel(String logLevel) {
         this.logLevel = logLevel;
     }
 
+    /**
+     * nodeSelector defines the node selection constraints for the image pruner pod.
+     */
     @JsonProperty("nodeSelector")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getNodeSelector() {
         return nodeSelector;
     }
 
+    /**
+     * nodeSelector defines the node selection constraints for the image pruner pod.
+     */
     @JsonProperty("nodeSelector")
     public void setNodeSelector(Map<String, String> nodeSelector) {
         this.nodeSelector = nodeSelector;
     }
 
+    /**
+     * ImagePrunerSpec defines the specs for the running image pruner.
+     */
     @JsonProperty("resources")
     public ResourceRequirements getResources() {
         return resources;
     }
 
+    /**
+     * ImagePrunerSpec defines the specs for the running image pruner.
+     */
     @JsonProperty("resources")
     public void setResources(ResourceRequirements resources) {
         this.resources = resources;
     }
 
+    /**
+     * schedule specifies when to execute the job using standard cronjob syntax: https://wikipedia.org/wiki/Cron. Defaults to `0 0 &#42; &#42; &#42;`.
+     */
     @JsonProperty("schedule")
     public String getSchedule() {
         return schedule;
     }
 
+    /**
+     * schedule specifies when to execute the job using standard cronjob syntax: https://wikipedia.org/wiki/Cron. Defaults to `0 0 &#42; &#42; &#42;`.
+     */
     @JsonProperty("schedule")
     public void setSchedule(String schedule) {
         this.schedule = schedule;
     }
 
+    /**
+     * successfulJobsHistoryLimit specifies how many successful image pruner jobs to retain. Defaults to 3 if not set.
+     */
     @JsonProperty("successfulJobsHistoryLimit")
     public Integer getSuccessfulJobsHistoryLimit() {
         return successfulJobsHistoryLimit;
     }
 
+    /**
+     * successfulJobsHistoryLimit specifies how many successful image pruner jobs to retain. Defaults to 3 if not set.
+     */
     @JsonProperty("successfulJobsHistoryLimit")
     public void setSuccessfulJobsHistoryLimit(Integer successfulJobsHistoryLimit) {
         this.successfulJobsHistoryLimit = successfulJobsHistoryLimit;
     }
 
+    /**
+     * suspend specifies whether or not to suspend subsequent executions of this cronjob. Defaults to false.
+     */
     @JsonProperty("suspend")
     public Boolean getSuspend() {
         return suspend;
     }
 
+    /**
+     * suspend specifies whether or not to suspend subsequent executions of this cronjob. Defaults to false.
+     */
     @JsonProperty("suspend")
     public void setSuspend(Boolean suspend) {
         this.suspend = suspend;
     }
 
+    /**
+     * tolerations defines the node tolerations for the image pruner pod.
+     */
     @JsonProperty("tolerations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Toleration> getTolerations() {
         return tolerations;
     }
 
+    /**
+     * tolerations defines the node tolerations for the image pruner pod.
+     */
     @JsonProperty("tolerations")
     public void setTolerations(List<Toleration> tolerations) {
         this.tolerations = tolerations;

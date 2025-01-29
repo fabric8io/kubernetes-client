@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ProjectAccess contains options for project access roles
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -81,12 +84,18 @@ public class ProjectAccess implements Editable<ProjectAccessBuilder>, Kubernetes
         this.availableClusterRoles = availableClusterRoles;
     }
 
+    /**
+     * availableClusterRoles is the list of ClusterRole names that are assignable to users through the project access tab.
+     */
     @JsonProperty("availableClusterRoles")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getAvailableClusterRoles() {
         return availableClusterRoles;
     }
 
+    /**
+     * availableClusterRoles is the list of ClusterRole names that are assignable to users through the project access tab.
+     */
     @JsonProperty("availableClusterRoles")
     public void setAvailableClusterRoles(List<String> availableClusterRoles) {
         this.availableClusterRoles = availableClusterRoles;

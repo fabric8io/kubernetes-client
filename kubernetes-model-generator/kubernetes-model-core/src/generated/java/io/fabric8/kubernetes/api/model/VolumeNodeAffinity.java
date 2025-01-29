@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * VolumeNodeAffinity defines constraints that limit what nodes this volume can be accessed from.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -49,11 +52,17 @@ public class VolumeNodeAffinity implements Editable<VolumeNodeAffinityBuilder>, 
         this.required = required;
     }
 
+    /**
+     * VolumeNodeAffinity defines constraints that limit what nodes this volume can be accessed from.
+     */
     @JsonProperty("required")
     public NodeSelector getRequired() {
         return required;
     }
 
+    /**
+     * VolumeNodeAffinity defines constraints that limit what nodes this volume can be accessed from.
+     */
     @JsonProperty("required")
     public void setRequired(NodeSelector required) {
         this.required = required;

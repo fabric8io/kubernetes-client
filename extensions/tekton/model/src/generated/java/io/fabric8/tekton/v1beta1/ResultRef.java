@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ResultRef is a type that represents a reference to a task run result
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class ResultRef implements Editable<ResultRefBuilder>, KubernetesResource
         this.resultsIndex = resultsIndex;
     }
 
+    /**
+     * ResultRef is a type that represents a reference to a task run result
+     */
     @JsonProperty("pipelineTask")
     public String getPipelineTask() {
         return pipelineTask;
     }
 
+    /**
+     * ResultRef is a type that represents a reference to a task run result
+     */
     @JsonProperty("pipelineTask")
     public void setPipelineTask(String pipelineTask) {
         this.pipelineTask = pipelineTask;
     }
 
+    /**
+     * ResultRef is a type that represents a reference to a task run result
+     */
     @JsonProperty("property")
     public String getProperty() {
         return property;
     }
 
+    /**
+     * ResultRef is a type that represents a reference to a task run result
+     */
     @JsonProperty("property")
     public void setProperty(String property) {
         this.property = property;
     }
 
+    /**
+     * ResultRef is a type that represents a reference to a task run result
+     */
     @JsonProperty("result")
     public String getResult() {
         return result;
     }
 
+    /**
+     * ResultRef is a type that represents a reference to a task run result
+     */
     @JsonProperty("result")
     public void setResult(String result) {
         this.result = result;
     }
 
+    /**
+     * ResultRef is a type that represents a reference to a task run result
+     */
     @JsonProperty("resultsIndex")
     public Integer getResultsIndex() {
         return resultsIndex;
     }
 
+    /**
+     * ResultRef is a type that represents a reference to a task run result
+     */
     @JsonProperty("resultsIndex")
     public void setResultsIndex(Integer resultsIndex) {
         this.resultsIndex = resultsIndex;

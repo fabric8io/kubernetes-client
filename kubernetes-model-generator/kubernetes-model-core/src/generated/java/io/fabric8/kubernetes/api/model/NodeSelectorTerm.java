@@ -19,6 +19,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * A null or empty node selector term matches no objects. The requirements of them are ANDed. The TopologySelectorTerm type implements a subset of the NodeSelectorTerm.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -57,23 +60,35 @@ public class NodeSelectorTerm implements Editable<NodeSelectorTermBuilder>, Kube
         this.matchFields = matchFields;
     }
 
+    /**
+     * A list of node selector requirements by node's labels.
+     */
     @JsonProperty("matchExpressions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NodeSelectorRequirement> getMatchExpressions() {
         return matchExpressions;
     }
 
+    /**
+     * A list of node selector requirements by node's labels.
+     */
     @JsonProperty("matchExpressions")
     public void setMatchExpressions(List<NodeSelectorRequirement> matchExpressions) {
         this.matchExpressions = matchExpressions;
     }
 
+    /**
+     * A list of node selector requirements by node's fields.
+     */
     @JsonProperty("matchFields")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NodeSelectorRequirement> getMatchFields() {
         return matchFields;
     }
 
+    /**
+     * A list of node selector requirements by node's fields.
+     */
     @JsonProperty("matchFields")
     public void setMatchFields(List<NodeSelectorRequirement> matchFields) {
         this.matchFields = matchFields;

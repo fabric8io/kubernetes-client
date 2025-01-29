@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ResolutionRequestSpec are all the fields in the spec of the ResolutionRequest CRD.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,22 +89,34 @@ public class ResolutionRequestSpec implements Editable<ResolutionRequestSpecBuil
         this.url = url;
     }
 
+    /**
+     * Parameters are the runtime attributes passed to the resolver to help it figure out how to resolve the resource being requested. For example: repo URL, commit SHA, path to file, the kind of authentication to leverage, etc.
+     */
     @JsonProperty("params")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Param> getParams() {
         return params;
     }
 
+    /**
+     * Parameters are the runtime attributes passed to the resolver to help it figure out how to resolve the resource being requested. For example: repo URL, commit SHA, path to file, the kind of authentication to leverage, etc.
+     */
     @JsonProperty("params")
     public void setParams(List<Param> params) {
         this.params = params;
     }
 
+    /**
+     * URL is the runtime url passed to the resolver to help it figure out how to resolver the resource being requested. This is currently at an ALPHA stability level and subject to alpha API compatibility policies.
+     */
     @JsonProperty("url")
     public String getUrl() {
         return url;
     }
 
+    /**
+     * URL is the runtime url passed to the resolver to help it figure out how to resolver the resource being requested. This is currently at an ALPHA stability level and subject to alpha API compatibility policies.
+     */
     @JsonProperty("url")
     public void setUrl(String url) {
         this.url = url;

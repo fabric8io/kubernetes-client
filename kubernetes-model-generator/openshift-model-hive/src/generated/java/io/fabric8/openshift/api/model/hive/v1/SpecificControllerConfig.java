@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SpecificControllerConfig contains the configuration for a specific controller
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class SpecificControllerConfig implements Editable<SpecificControllerConf
         this.name = name;
     }
 
+    /**
+     * SpecificControllerConfig contains the configuration for a specific controller
+     */
     @JsonProperty("config")
     public ControllerConfig getConfig() {
         return config;
     }
 
+    /**
+     * SpecificControllerConfig contains the configuration for a specific controller
+     */
     @JsonProperty("config")
     public void setConfig(ControllerConfig config) {
         this.config = config;
     }
 
+    /**
+     * Name specifies the name of the controller
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name specifies the name of the controller
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

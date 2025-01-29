@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * HTTPURLRewriteFilter defines a filter that modifies a request during forwarding. At most one of these filters may be used on a Route rule. This MUST NOT be used on the same Route rule as a HTTPRequestRedirect filter.<br><p> <br><p> Support: Extended<br><p> <br><p> &lt;gateway:experimental&gt;
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class HTTPURLRewriteFilter implements Editable<HTTPURLRewriteFilterBuilde
         this.path = path;
     }
 
+    /**
+     * Hostname is the value to be used to replace the Host header value during forwarding.<br><p> <br><p> Support: Extended
+     */
     @JsonProperty("hostname")
     public String getHostname() {
         return hostname;
     }
 
+    /**
+     * Hostname is the value to be used to replace the Host header value during forwarding.<br><p> <br><p> Support: Extended
+     */
     @JsonProperty("hostname")
     public void setHostname(String hostname) {
         this.hostname = hostname;
     }
 
+    /**
+     * HTTPURLRewriteFilter defines a filter that modifies a request during forwarding. At most one of these filters may be used on a Route rule. This MUST NOT be used on the same Route rule as a HTTPRequestRedirect filter.<br><p> <br><p> Support: Extended<br><p> <br><p> &lt;gateway:experimental&gt;
+     */
     @JsonProperty("path")
     public HTTPPathModifier getPath() {
         return path;
     }
 
+    /**
+     * HTTPURLRewriteFilter defines a filter that modifies a request during forwarding. At most one of these filters may be used on a Route rule. This MUST NOT be used on the same Route rule as a HTTPRequestRedirect filter.<br><p> <br><p> Support: Extended<br><p> <br><p> &lt;gateway:experimental&gt;
+     */
     @JsonProperty("path")
     public void setPath(HTTPPathModifier path) {
         this.path = path;

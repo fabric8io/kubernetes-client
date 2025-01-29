@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AzureChaosStatus represents the status of an AzureChaos
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class AzureChaosStatus implements Editable<AzureChaosStatusBuilder>, Kube
         this.experiment = experiment;
     }
 
+    /**
+     * Conditions represents the current global condition of the chaos
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ChaosCondition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Conditions represents the current global condition of the chaos
+     */
     @JsonProperty("conditions")
     public void setConditions(List<ChaosCondition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * AzureChaosStatus represents the status of an AzureChaos
+     */
     @JsonProperty("experiment")
     public ExperimentStatus getExperiment() {
         return experiment;
     }
 
+    /**
+     * AzureChaosStatus represents the status of an AzureChaos
+     */
     @JsonProperty("experiment")
     public void setExperiment(ExperimentStatus experiment) {
         this.experiment = experiment;

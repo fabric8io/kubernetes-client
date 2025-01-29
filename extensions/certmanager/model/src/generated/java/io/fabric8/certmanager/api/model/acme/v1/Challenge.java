@@ -37,6 +37,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Challenge is a type to represent a Challenge request with an ACME server
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -76,14 +79,8 @@ import lombok.experimental.Accessors;
 public class Challenge implements Editable<ChallengeBuilder>, HasMetadata, Namespaced
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "acme.cert-manager.io/v1";
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "Challenge";
     @JsonProperty("metadata")
@@ -111,7 +108,7 @@ public class Challenge implements Editable<ChallengeBuilder>, HasMetadata, Names
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -119,7 +116,7 @@ public class Challenge implements Editable<ChallengeBuilder>, HasMetadata, Names
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -127,7 +124,7 @@ public class Challenge implements Editable<ChallengeBuilder>, HasMetadata, Names
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -135,38 +132,56 @@ public class Challenge implements Editable<ChallengeBuilder>, HasMetadata, Names
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * Challenge is a type to represent a Challenge request with an ACME server
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * Challenge is a type to represent a Challenge request with an ACME server
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * Challenge is a type to represent a Challenge request with an ACME server
+     */
     @JsonProperty("spec")
     public ChallengeSpec getSpec() {
         return spec;
     }
 
+    /**
+     * Challenge is a type to represent a Challenge request with an ACME server
+     */
     @JsonProperty("spec")
     public void setSpec(ChallengeSpec spec) {
         this.spec = spec;
     }
 
+    /**
+     * Challenge is a type to represent a Challenge request with an ACME server
+     */
     @JsonProperty("status")
     public ChallengeStatus getStatus() {
         return status;
     }
 
+    /**
+     * Challenge is a type to represent a Challenge request with an ACME server
+     */
     @JsonProperty("status")
     public void setStatus(ChallengeStatus status) {
         this.status = status;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * StepResult used to describe the Results of a Step.<br><p> <br><p> This is field is at an BETA stability level and gated by "enable-step-actions" feature flag.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -91,42 +94,66 @@ public class StepResult implements Editable<StepResultBuilder>, KubernetesResour
         this.type = type;
     }
 
+    /**
+     * Description is a human-readable description of the result
+     */
     @JsonProperty("description")
     public String getDescription() {
         return description;
     }
 
+    /**
+     * Description is a human-readable description of the result
+     */
     @JsonProperty("description")
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * Name the given name
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name the given name
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Properties is the JSON Schema properties to support key-value pairs results.
+     */
     @JsonProperty("properties")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, PropertySpec> getProperties() {
         return properties;
     }
 
+    /**
+     * Properties is the JSON Schema properties to support key-value pairs results.
+     */
     @JsonProperty("properties")
     public void setProperties(Map<String, PropertySpec> properties) {
         this.properties = properties;
     }
 
+    /**
+     * The possible types are 'string', 'array', and 'object', with 'string' as the default.
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * The possible types are 'string', 'array', and 'object', with 'string' as the default.
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * EgressRouterAddress contains a pair of IP CIDR and gateway to be configured on the router's interface
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class EgressRouterAddress implements Editable<EgressRouterAddressBuilder>
         this.ip = ip;
     }
 
+    /**
+     * IP address of the next-hop gateway, if it cannot be automatically determined. Can be IPv4 or IPv6.
+     */
     @JsonProperty("gateway")
     public String getGateway() {
         return gateway;
     }
 
+    /**
+     * IP address of the next-hop gateway, if it cannot be automatically determined. Can be IPv4 or IPv6.
+     */
     @JsonProperty("gateway")
     public void setGateway(String gateway) {
         this.gateway = gateway;
     }
 
+    /**
+     * IP is the address to configure on the router's interface. Can be IPv4 or IPv6.
+     */
     @JsonProperty("ip")
     public String getIp() {
         return ip;
     }
 
+    /**
+     * IP is the address to configure on the router's interface. Can be IPv4 or IPv6.
+     */
     @JsonProperty("ip")
     public void setIp(String ip) {
         this.ip = ip;

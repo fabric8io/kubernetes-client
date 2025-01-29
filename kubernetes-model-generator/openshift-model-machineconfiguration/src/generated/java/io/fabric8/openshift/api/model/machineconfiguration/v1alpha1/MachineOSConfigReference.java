@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * MachineOSConfigReference refers to the MachineOSConfig this build is based off of
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class MachineOSConfigReference implements Editable<MachineOSConfigReferen
         this.name = name;
     }
 
+    /**
+     * name of the MachineOSConfig
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * name of the MachineOSConfig
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

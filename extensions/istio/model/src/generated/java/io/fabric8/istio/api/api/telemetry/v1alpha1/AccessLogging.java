@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Access logging defines the workload-level overrides for access log generation. It can be used to select provider or enable/disable access log generation for a workload.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -93,42 +96,66 @@ public class AccessLogging implements Editable<AccessLoggingBuilder>, Kubernetes
         this.providers = providers;
     }
 
+    /**
+     * Access logging defines the workload-level overrides for access log generation. It can be used to select provider or enable/disable access log generation for a workload.
+     */
     @JsonProperty("disabled")
     public Boolean getDisabled() {
         return disabled;
     }
 
+    /**
+     * Access logging defines the workload-level overrides for access log generation. It can be used to select provider or enable/disable access log generation for a workload.
+     */
     @JsonProperty("disabled")
     public void setDisabled(Boolean disabled) {
         this.disabled = disabled;
     }
 
+    /**
+     * Access logging defines the workload-level overrides for access log generation. It can be used to select provider or enable/disable access log generation for a workload.
+     */
     @JsonProperty("filter")
     public AccessLoggingFilter getFilter() {
         return filter;
     }
 
+    /**
+     * Access logging defines the workload-level overrides for access log generation. It can be used to select provider or enable/disable access log generation for a workload.
+     */
     @JsonProperty("filter")
     public void setFilter(AccessLoggingFilter filter) {
         this.filter = filter;
     }
 
+    /**
+     * Access logging defines the workload-level overrides for access log generation. It can be used to select provider or enable/disable access log generation for a workload.
+     */
     @JsonProperty("match")
     public AccessLoggingLogSelector getMatch() {
         return match;
     }
 
+    /**
+     * Access logging defines the workload-level overrides for access log generation. It can be used to select provider or enable/disable access log generation for a workload.
+     */
     @JsonProperty("match")
     public void setMatch(AccessLoggingLogSelector match) {
         this.match = match;
     }
 
+    /**
+     * Optional. Name of providers to which this configuration should apply. If a provider is not specified, the [default logging provider](https://istio.io/docs/reference/config/istio.mesh.v1alpha1/#MeshConfig-DefaultProviders) will be used.
+     */
     @JsonProperty("providers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ProviderRef> getProviders() {
         return providers;
     }
 
+    /**
+     * Optional. Name of providers to which this configuration should apply. If a provider is not specified, the [default logging provider](https://istio.io/docs/reference/config/istio.mesh.v1alpha1/#MeshConfig-DefaultProviders) will be used.
+     */
     @JsonProperty("providers")
     public void setProviders(List<ProviderRef> providers) {
         this.providers = providers;

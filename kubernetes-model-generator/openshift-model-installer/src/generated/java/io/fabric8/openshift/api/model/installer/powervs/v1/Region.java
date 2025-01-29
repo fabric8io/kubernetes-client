@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Region describes resources associated with a region in Power VS. We're using a few items from the IBM Cloud VPC offering. The region names for VPC are different so another function of this is to correlate those.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -103,64 +106,100 @@ public class Region implements Editable<RegionBuilder>, KubernetesResource
         this.zones = zones;
     }
 
+    /**
+     * Region describes resources associated with a region in Power VS. We're using a few items from the IBM Cloud VPC offering. The region names for VPC are different so another function of this is to correlate those.
+     */
     @JsonProperty("COSRegion")
     public String getCOSRegion() {
         return cOSRegion;
     }
 
+    /**
+     * Region describes resources associated with a region in Power VS. We're using a few items from the IBM Cloud VPC offering. The region names for VPC are different so another function of this is to correlate those.
+     */
     @JsonProperty("COSRegion")
     public void setCOSRegion(String cOSRegion) {
         this.cOSRegion = cOSRegion;
     }
 
+    /**
+     * Region describes resources associated with a region in Power VS. We're using a few items from the IBM Cloud VPC offering. The region names for VPC are different so another function of this is to correlate those.
+     */
     @JsonProperty("Description")
     public String getDescription() {
         return description;
     }
 
+    /**
+     * Region describes resources associated with a region in Power VS. We're using a few items from the IBM Cloud VPC offering. The region names for VPC are different so another function of this is to correlate those.
+     */
     @JsonProperty("Description")
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * Region describes resources associated with a region in Power VS. We're using a few items from the IBM Cloud VPC offering. The region names for VPC are different so another function of this is to correlate those.
+     */
     @JsonProperty("SysTypes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getSysTypes() {
         return sysTypes;
     }
 
+    /**
+     * Region describes resources associated with a region in Power VS. We're using a few items from the IBM Cloud VPC offering. The region names for VPC are different so another function of this is to correlate those.
+     */
     @JsonProperty("SysTypes")
     public void setSysTypes(List<String> sysTypes) {
         this.sysTypes = sysTypes;
     }
 
+    /**
+     * Region describes resources associated with a region in Power VS. We're using a few items from the IBM Cloud VPC offering. The region names for VPC are different so another function of this is to correlate those.
+     */
     @JsonProperty("VPCRegion")
     public String getVPCRegion() {
         return vPCRegion;
     }
 
+    /**
+     * Region describes resources associated with a region in Power VS. We're using a few items from the IBM Cloud VPC offering. The region names for VPC are different so another function of this is to correlate those.
+     */
     @JsonProperty("VPCRegion")
     public void setVPCRegion(String vPCRegion) {
         this.vPCRegion = vPCRegion;
     }
 
+    /**
+     * Region describes resources associated with a region in Power VS. We're using a few items from the IBM Cloud VPC offering. The region names for VPC are different so another function of this is to correlate those.
+     */
     @JsonProperty("VPCZones")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getVPCZones() {
         return vPCZones;
     }
 
+    /**
+     * Region describes resources associated with a region in Power VS. We're using a few items from the IBM Cloud VPC offering. The region names for VPC are different so another function of this is to correlate those.
+     */
     @JsonProperty("VPCZones")
     public void setVPCZones(List<String> vPCZones) {
         this.vPCZones = vPCZones;
     }
 
+    /**
+     * Region describes resources associated with a region in Power VS. We're using a few items from the IBM Cloud VPC offering. The region names for VPC are different so another function of this is to correlate those.
+     */
     @JsonProperty("Zones")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getZones() {
         return zones;
     }
 
+    /**
+     * Region describes resources associated with a region in Power VS. We're using a few items from the IBM Cloud VPC offering. The region names for VPC are different so another function of this is to correlate those.
+     */
     @JsonProperty("Zones")
     public void setZones(List<String> zones) {
         this.zones = zones;

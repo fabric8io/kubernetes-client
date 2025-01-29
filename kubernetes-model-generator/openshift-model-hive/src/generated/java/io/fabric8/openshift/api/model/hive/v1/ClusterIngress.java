@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ClusterIngress contains the configurable pieces for any ClusterIngress objects that should exist on the cluster.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -99,61 +102,97 @@ public class ClusterIngress implements Editable<ClusterIngressBuilder>, Kubernet
         this.servingCertificate = servingCertificate;
     }
 
+    /**
+     * Domain (sometimes referred to as shard) is the full DNS suffix that the resulting IngressController object will service (eg abcd.mycluster.mydomain.com).
+     */
     @JsonProperty("domain")
     public String getDomain() {
         return domain;
     }
 
+    /**
+     * Domain (sometimes referred to as shard) is the full DNS suffix that the resulting IngressController object will service (eg abcd.mycluster.mydomain.com).
+     */
     @JsonProperty("domain")
     public void setDomain(String domain) {
         this.domain = domain;
     }
 
+    /**
+     * ClusterIngress contains the configurable pieces for any ClusterIngress objects that should exist on the cluster.
+     */
     @JsonProperty("httpErrorCodePages")
     public ConfigMapNameReference getHttpErrorCodePages() {
         return httpErrorCodePages;
     }
 
+    /**
+     * ClusterIngress contains the configurable pieces for any ClusterIngress objects that should exist on the cluster.
+     */
     @JsonProperty("httpErrorCodePages")
     public void setHttpErrorCodePages(ConfigMapNameReference httpErrorCodePages) {
         this.httpErrorCodePages = httpErrorCodePages;
     }
 
+    /**
+     * Name of the ClusterIngress object to create.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name of the ClusterIngress object to create.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * ClusterIngress contains the configurable pieces for any ClusterIngress objects that should exist on the cluster.
+     */
     @JsonProperty("namespaceSelector")
     public LabelSelector getNamespaceSelector() {
         return namespaceSelector;
     }
 
+    /**
+     * ClusterIngress contains the configurable pieces for any ClusterIngress objects that should exist on the cluster.
+     */
     @JsonProperty("namespaceSelector")
     public void setNamespaceSelector(LabelSelector namespaceSelector) {
         this.namespaceSelector = namespaceSelector;
     }
 
+    /**
+     * ClusterIngress contains the configurable pieces for any ClusterIngress objects that should exist on the cluster.
+     */
     @JsonProperty("routeSelector")
     public LabelSelector getRouteSelector() {
         return routeSelector;
     }
 
+    /**
+     * ClusterIngress contains the configurable pieces for any ClusterIngress objects that should exist on the cluster.
+     */
     @JsonProperty("routeSelector")
     public void setRouteSelector(LabelSelector routeSelector) {
         this.routeSelector = routeSelector;
     }
 
+    /**
+     * ServingCertificate references a CertificateBundle in the ClusterDeployment.Spec that should be used for this Ingress
+     */
     @JsonProperty("servingCertificate")
     public String getServingCertificate() {
         return servingCertificate;
     }
 
+    /**
+     * ServingCertificate references a CertificateBundle in the ClusterDeployment.Spec that should be used for this Ingress
+     */
     @JsonProperty("servingCertificate")
     public void setServingCertificate(String servingCertificate) {
         this.servingCertificate = servingCertificate;

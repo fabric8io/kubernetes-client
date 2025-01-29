@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * OpenShiftMachineV1Beta1MachineTemplate is a template for the ControlPlaneMachineSet to create Machines from the v1beta1.machine.openshift.io API group.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -87,31 +90,49 @@ public class OpenShiftMachineV1Beta1MachineTemplate implements Editable<OpenShif
         this.spec = spec;
     }
 
+    /**
+     * OpenShiftMachineV1Beta1MachineTemplate is a template for the ControlPlaneMachineSet to create Machines from the v1beta1.machine.openshift.io API group.
+     */
     @JsonProperty("failureDomains")
     public FailureDomains getFailureDomains() {
         return failureDomains;
     }
 
+    /**
+     * OpenShiftMachineV1Beta1MachineTemplate is a template for the ControlPlaneMachineSet to create Machines from the v1beta1.machine.openshift.io API group.
+     */
     @JsonProperty("failureDomains")
     public void setFailureDomains(FailureDomains failureDomains) {
         this.failureDomains = failureDomains;
     }
 
+    /**
+     * OpenShiftMachineV1Beta1MachineTemplate is a template for the ControlPlaneMachineSet to create Machines from the v1beta1.machine.openshift.io API group.
+     */
     @JsonProperty("metadata")
     public ControlPlaneMachineSetTemplateObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * OpenShiftMachineV1Beta1MachineTemplate is a template for the ControlPlaneMachineSet to create Machines from the v1beta1.machine.openshift.io API group.
+     */
     @JsonProperty("metadata")
     public void setMetadata(ControlPlaneMachineSetTemplateObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * OpenShiftMachineV1Beta1MachineTemplate is a template for the ControlPlaneMachineSet to create Machines from the v1beta1.machine.openshift.io API group.
+     */
     @JsonProperty("spec")
     public MachineSpec getSpec() {
         return spec;
     }
 
+    /**
+     * OpenShiftMachineV1Beta1MachineTemplate is a template for the ControlPlaneMachineSet to create Machines from the v1beta1.machine.openshift.io API group.
+     */
     @JsonProperty("spec")
     public void setSpec(MachineSpec spec) {
         this.spec = spec;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ResourceAttribute is an attribute associated with a resource.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class ResourceAttribute implements Editable<ResourceAttributeBuilder>, Ku
         this.value = value;
     }
 
+    /**
+     * Name is the name of an attribute.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name is the name of an attribute.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Operator is the operator of an attribute.
+     */
     @JsonProperty("operator")
     public String getOperator() {
         return operator;
     }
 
+    /**
+     * Operator is the operator of an attribute.
+     */
     @JsonProperty("operator")
     public void setOperator(String operator) {
         this.operator = operator;
     }
 
+    /**
+     * Value is the value of an attribute.
+     */
     @JsonProperty("value")
     public String getValue() {
         return value;
     }
 
+    /**
+     * Value is the value of an attribute.
+     */
     @JsonProperty("value")
     public void setValue(String value) {
         this.value = value;

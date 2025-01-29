@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ObjectFieldSelector selects an APIVersioned field of an object.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -53,21 +56,33 @@ public class ObjectFieldSelector implements Editable<ObjectFieldSelectorBuilder>
         this.fieldPath = fieldPath;
     }
 
+    /**
+     * Version of the schema the FieldPath is written in terms of, defaults to "v1".
+     */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
         return apiVersion;
     }
 
+    /**
+     * Version of the schema the FieldPath is written in terms of, defaults to "v1".
+     */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
+    /**
+     * Path of the field to select in the specified API version.
+     */
     @JsonProperty("fieldPath")
     public String getFieldPath() {
         return fieldPath;
     }
 
+    /**
+     * Path of the field to select in the specified API version.
+     */
     @JsonProperty("fieldPath")
     public void setFieldPath(String fieldPath) {
         this.fieldPath = fieldPath;

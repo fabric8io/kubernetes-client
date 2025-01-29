@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NodeStatus provides information about the current state of a particular node managed by this operator.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -113,92 +116,146 @@ public class NodeStatus implements Editable<NodeStatusBuilder>, KubernetesResour
         this.targetRevision = targetRevision;
     }
 
+    /**
+     * currentRevision is the generation of the most recently successful deployment
+     */
     @JsonProperty("currentRevision")
     public Integer getCurrentRevision() {
         return currentRevision;
     }
 
+    /**
+     * currentRevision is the generation of the most recently successful deployment
+     */
     @JsonProperty("currentRevision")
     public void setCurrentRevision(Integer currentRevision) {
         this.currentRevision = currentRevision;
     }
 
+    /**
+     * lastFailedCount is how often the installer pod of the last failed revision failed.
+     */
     @JsonProperty("lastFailedCount")
     public Integer getLastFailedCount() {
         return lastFailedCount;
     }
 
+    /**
+     * lastFailedCount is how often the installer pod of the last failed revision failed.
+     */
     @JsonProperty("lastFailedCount")
     public void setLastFailedCount(Integer lastFailedCount) {
         this.lastFailedCount = lastFailedCount;
     }
 
+    /**
+     * lastFailedReason is a machine readable failure reason string.
+     */
     @JsonProperty("lastFailedReason")
     public String getLastFailedReason() {
         return lastFailedReason;
     }
 
+    /**
+     * lastFailedReason is a machine readable failure reason string.
+     */
     @JsonProperty("lastFailedReason")
     public void setLastFailedReason(String lastFailedReason) {
         this.lastFailedReason = lastFailedReason;
     }
 
+    /**
+     * lastFailedRevision is the generation of the deployment we tried and failed to deploy.
+     */
     @JsonProperty("lastFailedRevision")
     public Integer getLastFailedRevision() {
         return lastFailedRevision;
     }
 
+    /**
+     * lastFailedRevision is the generation of the deployment we tried and failed to deploy.
+     */
     @JsonProperty("lastFailedRevision")
     public void setLastFailedRevision(Integer lastFailedRevision) {
         this.lastFailedRevision = lastFailedRevision;
     }
 
+    /**
+     * lastFailedRevisionErrors is a list of human readable errors during the failed deployment referenced in lastFailedRevision.
+     */
     @JsonProperty("lastFailedRevisionErrors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getLastFailedRevisionErrors() {
         return lastFailedRevisionErrors;
     }
 
+    /**
+     * lastFailedRevisionErrors is a list of human readable errors during the failed deployment referenced in lastFailedRevision.
+     */
     @JsonProperty("lastFailedRevisionErrors")
     public void setLastFailedRevisionErrors(List<String> lastFailedRevisionErrors) {
         this.lastFailedRevisionErrors = lastFailedRevisionErrors;
     }
 
+    /**
+     * NodeStatus provides information about the current state of a particular node managed by this operator.
+     */
     @JsonProperty("lastFailedTime")
     public String getLastFailedTime() {
         return lastFailedTime;
     }
 
+    /**
+     * NodeStatus provides information about the current state of a particular node managed by this operator.
+     */
     @JsonProperty("lastFailedTime")
     public void setLastFailedTime(String lastFailedTime) {
         this.lastFailedTime = lastFailedTime;
     }
 
+    /**
+     * lastFallbackCount is how often a fallback to a previous revision happened.
+     */
     @JsonProperty("lastFallbackCount")
     public Integer getLastFallbackCount() {
         return lastFallbackCount;
     }
 
+    /**
+     * lastFallbackCount is how often a fallback to a previous revision happened.
+     */
     @JsonProperty("lastFallbackCount")
     public void setLastFallbackCount(Integer lastFallbackCount) {
         this.lastFallbackCount = lastFallbackCount;
     }
 
+    /**
+     * nodeName is the name of the node
+     */
     @JsonProperty("nodeName")
     public String getNodeName() {
         return nodeName;
     }
 
+    /**
+     * nodeName is the name of the node
+     */
     @JsonProperty("nodeName")
     public void setNodeName(String nodeName) {
         this.nodeName = nodeName;
     }
 
+    /**
+     * targetRevision is the generation of the deployment we're trying to apply
+     */
     @JsonProperty("targetRevision")
     public Integer getTargetRevision() {
         return targetRevision;
     }
 
+    /**
+     * targetRevision is the generation of the deployment we're trying to apply
+     */
     @JsonProperty("targetRevision")
     public void setTargetRevision(Integer targetRevision) {
         this.targetRevision = targetRevision;

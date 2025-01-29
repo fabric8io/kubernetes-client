@@ -118,43 +118,67 @@ public class SubscriptionStatus implements Editable<SubscriptionStatusBuilder>, 
         this.state = state;
     }
 
+    /**
+     * CatalogHealth contains the Subscription's view of its relevant CatalogSources' status. It is used to determine SubscriptionStatusConditions related to CatalogSources.
+     */
     @JsonProperty("catalogHealth")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<SubscriptionCatalogHealth> getCatalogHealth() {
         return catalogHealth;
     }
 
+    /**
+     * CatalogHealth contains the Subscription's view of its relevant CatalogSources' status. It is used to determine SubscriptionStatusConditions related to CatalogSources.
+     */
     @JsonProperty("catalogHealth")
     public void setCatalogHealth(List<SubscriptionCatalogHealth> catalogHealth) {
         this.catalogHealth = catalogHealth;
     }
 
+    /**
+     * Conditions is a list of the latest available observations about a Subscription's current state.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<SubscriptionCondition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Conditions is a list of the latest available observations about a Subscription's current state.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<SubscriptionCondition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * CurrentCSV is the CSV the Subscription is progressing to.
+     */
     @JsonProperty("currentCSV")
     public String getCurrentCSV() {
         return currentCSV;
     }
 
+    /**
+     * CurrentCSV is the CSV the Subscription is progressing to.
+     */
     @JsonProperty("currentCSV")
     public void setCurrentCSV(String currentCSV) {
         this.currentCSV = currentCSV;
     }
 
+    /**
+     * InstallPlanGeneration is the current generation of the installplan
+     */
     @JsonProperty("installPlanGeneration")
     public Integer getInstallPlanGeneration() {
         return installPlanGeneration;
     }
 
+    /**
+     * InstallPlanGeneration is the current generation of the installplan
+     */
     @JsonProperty("installPlanGeneration")
     public void setInstallPlanGeneration(Integer installPlanGeneration) {
         this.installPlanGeneration = installPlanGeneration;
@@ -170,11 +194,17 @@ public class SubscriptionStatus implements Editable<SubscriptionStatusBuilder>, 
         this.installPlanRef = installPlanRef;
     }
 
+    /**
+     * InstalledCSV is the CSV currently installed by the Subscription.
+     */
     @JsonProperty("installedCSV")
     public String getInstalledCSV() {
         return installedCSV;
     }
 
+    /**
+     * InstalledCSV is the CSV currently installed by the Subscription.
+     */
     @JsonProperty("installedCSV")
     public void setInstalledCSV(String installedCSV) {
         this.installedCSV = installedCSV;
@@ -200,21 +230,33 @@ public class SubscriptionStatus implements Editable<SubscriptionStatusBuilder>, 
         this.lastUpdated = lastUpdated;
     }
 
+    /**
+     * Reason is the reason the Subscription was transitioned to its current state.
+     */
     @JsonProperty("reason")
     public String getReason() {
         return reason;
     }
 
+    /**
+     * Reason is the reason the Subscription was transitioned to its current state.
+     */
     @JsonProperty("reason")
     public void setReason(String reason) {
         this.reason = reason;
     }
 
+    /**
+     * State represents the current state of the Subscription
+     */
     @JsonProperty("state")
     public String getState() {
         return state;
     }
 
+    /**
+     * State represents the current state of the Subscription
+     */
     @JsonProperty("state")
     public void setState(String state) {
         this.state = state;

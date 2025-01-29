@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * MutatingAdmissionPolicyBindingSpec is the specification of the MutatingAdmissionPolicyBinding.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class MutatingAdmissionPolicyBindingSpec implements Editable<MutatingAdmi
         this.policyName = policyName;
     }
 
+    /**
+     * MutatingAdmissionPolicyBindingSpec is the specification of the MutatingAdmissionPolicyBinding.
+     */
     @JsonProperty("matchResources")
     public MatchResources getMatchResources() {
         return matchResources;
     }
 
+    /**
+     * MutatingAdmissionPolicyBindingSpec is the specification of the MutatingAdmissionPolicyBinding.
+     */
     @JsonProperty("matchResources")
     public void setMatchResources(MatchResources matchResources) {
         this.matchResources = matchResources;
     }
 
+    /**
+     * MutatingAdmissionPolicyBindingSpec is the specification of the MutatingAdmissionPolicyBinding.
+     */
     @JsonProperty("paramRef")
     public ParamRef getParamRef() {
         return paramRef;
     }
 
+    /**
+     * MutatingAdmissionPolicyBindingSpec is the specification of the MutatingAdmissionPolicyBinding.
+     */
     @JsonProperty("paramRef")
     public void setParamRef(ParamRef paramRef) {
         this.paramRef = paramRef;
     }
 
+    /**
+     * policyName references a MutatingAdmissionPolicy name which the MutatingAdmissionPolicyBinding binds to. If the referenced resource does not exist, this binding is considered invalid and will be ignored Required.
+     */
     @JsonProperty("policyName")
     public String getPolicyName() {
         return policyName;
     }
 
+    /**
+     * policyName references a MutatingAdmissionPolicy name which the MutatingAdmissionPolicyBinding binds to. If the referenced resource does not exist, this binding is considered invalid and will be ignored Required.
+     */
     @JsonProperty("policyName")
     public void setPolicyName(String policyName) {
         this.policyName = policyName;

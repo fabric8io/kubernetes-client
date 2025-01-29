@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * StatefulSetUpdateStrategy indicates the strategy that the StatefulSet controller will use to perform updates. It includes any additional parameters necessary to perform the update for the indicated strategy.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class StatefulSetUpdateStrategy implements Editable<StatefulSetUpdateStra
         this.type = type;
     }
 
+    /**
+     * StatefulSetUpdateStrategy indicates the strategy that the StatefulSet controller will use to perform updates. It includes any additional parameters necessary to perform the update for the indicated strategy.
+     */
     @JsonProperty("rollingUpdate")
     public RollingUpdateStatefulSetStrategy getRollingUpdate() {
         return rollingUpdate;
     }
 
+    /**
+     * StatefulSetUpdateStrategy indicates the strategy that the StatefulSet controller will use to perform updates. It includes any additional parameters necessary to perform the update for the indicated strategy.
+     */
     @JsonProperty("rollingUpdate")
     public void setRollingUpdate(RollingUpdateStatefulSetStrategy rollingUpdate) {
         this.rollingUpdate = rollingUpdate;
     }
 
+    /**
+     * Type indicates the type of the StatefulSetUpdateStrategy. Default is RollingUpdate.
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * Type indicates the type of the StatefulSetUpdateStrategy. Default is RollingUpdate.
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

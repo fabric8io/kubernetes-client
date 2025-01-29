@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Describes how to match a given string in HTTP headers. `exact` and `prefix` matching is case-sensitive. `regex` matching supports case-insensitive matches.
+ */
 @JsonDeserialize(using = io.fabric8.kubernetes.model.jackson.JsonUnwrappedDeserializer.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -80,12 +83,18 @@ public class StringMatch implements Editable<StringMatchBuilder>, KubernetesReso
         this.matchType = matchType;
     }
 
+    /**
+     * Describes how to match a given string in HTTP headers. `exact` and `prefix` matching is case-sensitive. `regex` matching supports case-insensitive matches.
+     */
     @JsonProperty("MatchType")
     @JsonUnwrapped
     public IsStringMatchMatchType getMatchType() {
         return matchType;
     }
 
+    /**
+     * Describes how to match a given string in HTTP headers. `exact` and `prefix` matching is case-sensitive. `regex` matching supports case-insensitive matches.
+     */
     @JsonProperty("MatchType")
     public void setMatchType(IsStringMatchMatchType matchType) {
         this.matchType = matchType;

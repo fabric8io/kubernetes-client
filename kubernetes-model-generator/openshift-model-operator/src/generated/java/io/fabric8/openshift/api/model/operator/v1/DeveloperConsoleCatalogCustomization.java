@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DeveloperConsoleCatalogCustomization allow cluster admin to configure developer catalog.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class DeveloperConsoleCatalogCustomization implements Editable<DeveloperC
         this.types = types;
     }
 
+    /**
+     * categories which are shown in the developer catalog.
+     */
     @JsonProperty("categories")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<DeveloperConsoleCatalogCategory> getCategories() {
         return categories;
     }
 
+    /**
+     * categories which are shown in the developer catalog.
+     */
     @JsonProperty("categories")
     public void setCategories(List<DeveloperConsoleCatalogCategory> categories) {
         this.categories = categories;
     }
 
+    /**
+     * DeveloperConsoleCatalogCustomization allow cluster admin to configure developer catalog.
+     */
     @JsonProperty("types")
     public DeveloperConsoleCatalogTypes getTypes() {
         return types;
     }
 
+    /**
+     * DeveloperConsoleCatalogCustomization allow cluster admin to configure developer catalog.
+     */
     @JsonProperty("types")
     public void setTypes(DeveloperConsoleCatalogTypes types) {
         this.types = types;

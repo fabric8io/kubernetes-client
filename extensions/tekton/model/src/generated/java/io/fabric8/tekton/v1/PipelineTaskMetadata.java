@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PipelineTaskMetadata contains the labels or annotations for an EmbeddedTask
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -84,23 +87,35 @@ public class PipelineTaskMetadata implements Editable<PipelineTaskMetadataBuilde
         this.labels = labels;
     }
 
+    /**
+     * PipelineTaskMetadata contains the labels or annotations for an EmbeddedTask
+     */
     @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAnnotations() {
         return annotations;
     }
 
+    /**
+     * PipelineTaskMetadata contains the labels or annotations for an EmbeddedTask
+     */
     @JsonProperty("annotations")
     public void setAnnotations(Map<String, String> annotations) {
         this.annotations = annotations;
     }
 
+    /**
+     * PipelineTaskMetadata contains the labels or annotations for an EmbeddedTask
+     */
     @JsonProperty("labels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getLabels() {
         return labels;
     }
 
+    /**
+     * PipelineTaskMetadata contains the labels or annotations for an EmbeddedTask
+     */
     @JsonProperty("labels")
     public void setLabels(Map<String, String> labels) {
         this.labels = labels;

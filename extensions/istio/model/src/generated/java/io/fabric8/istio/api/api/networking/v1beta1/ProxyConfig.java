@@ -38,6 +38,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * `ProxyConfig` exposes proxy level configuration options.<br><p> <br><p> &lt;!-- crd generation tags --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -102,42 +105,66 @@ public class ProxyConfig implements Editable<ProxyConfigBuilder>, KubernetesReso
         this.selector = selector;
     }
 
+    /**
+     * `ProxyConfig` exposes proxy level configuration options.<br><p> <br><p> &lt;!-- crd generation tags --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+     */
     @JsonProperty("concurrency")
     public Integer getConcurrency() {
         return concurrency;
     }
 
+    /**
+     * `ProxyConfig` exposes proxy level configuration options.<br><p> <br><p> &lt;!-- crd generation tags --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+     */
     @JsonProperty("concurrency")
     public void setConcurrency(Integer concurrency) {
         this.concurrency = concurrency;
     }
 
+    /**
+     * Additional environment variables for the proxy. Names starting with `ISTIO_META_` will be included in the generated bootstrap configuration and sent to the XDS server.
+     */
     @JsonProperty("environmentVariables")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getEnvironmentVariables() {
         return environmentVariables;
     }
 
+    /**
+     * Additional environment variables for the proxy. Names starting with `ISTIO_META_` will be included in the generated bootstrap configuration and sent to the XDS server.
+     */
     @JsonProperty("environmentVariables")
     public void setEnvironmentVariables(Map<String, String> environmentVariables) {
         this.environmentVariables = environmentVariables;
     }
 
+    /**
+     * `ProxyConfig` exposes proxy level configuration options.<br><p> <br><p> &lt;!-- crd generation tags --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+     */
     @JsonProperty("image")
     public ProxyImage getImage() {
         return image;
     }
 
+    /**
+     * `ProxyConfig` exposes proxy level configuration options.<br><p> <br><p> &lt;!-- crd generation tags --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+     */
     @JsonProperty("image")
     public void setImage(ProxyImage image) {
         this.image = image;
     }
 
+    /**
+     * `ProxyConfig` exposes proxy level configuration options.<br><p> <br><p> &lt;!-- crd generation tags --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+     */
     @JsonProperty("selector")
     public WorkloadSelector getSelector() {
         return selector;
     }
 
+    /**
+     * `ProxyConfig` exposes proxy level configuration options.<br><p> <br><p> &lt;!-- crd generation tags --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+     */
     @JsonProperty("selector")
     public void setSelector(WorkloadSelector selector) {
         this.selector = selector;

@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Desired state of ClusterAutoscaler resource
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -122,113 +125,179 @@ public class ClusterAutoscalerSpec implements Editable<ClusterAutoscalerSpecBuil
         this.skipNodesWithLocalStorage = skipNodesWithLocalStorage;
     }
 
+    /**
+     * BalanceSimilarNodeGroups enables/disables the `--balance-similar-node-groups` cluster-autoscaler feature. This feature will automatically identify node groups with the same instance type and the same set of labels and try to keep the respective sizes of those node groups balanced.
+     */
     @JsonProperty("balanceSimilarNodeGroups")
     public Boolean getBalanceSimilarNodeGroups() {
         return balanceSimilarNodeGroups;
     }
 
+    /**
+     * BalanceSimilarNodeGroups enables/disables the `--balance-similar-node-groups` cluster-autoscaler feature. This feature will automatically identify node groups with the same instance type and the same set of labels and try to keep the respective sizes of those node groups balanced.
+     */
     @JsonProperty("balanceSimilarNodeGroups")
     public void setBalanceSimilarNodeGroups(Boolean balanceSimilarNodeGroups) {
         this.balanceSimilarNodeGroups = balanceSimilarNodeGroups;
     }
 
+    /**
+     * BalancingIgnoredLabels sets "--balancing-ignore-label &lt;label name&gt;" flag on cluster-autoscaler for each listed label. This option specifies labels that cluster autoscaler should ignore when considering node group similarity. For example, if you have nodes with "topology.ebs.csi.aws.com/zone" label, you can add name of this label here to prevent cluster autoscaler from spliting nodes into different node groups based on its value.
+     */
     @JsonProperty("balancingIgnoredLabels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getBalancingIgnoredLabels() {
         return balancingIgnoredLabels;
     }
 
+    /**
+     * BalancingIgnoredLabels sets "--balancing-ignore-label &lt;label name&gt;" flag on cluster-autoscaler for each listed label. This option specifies labels that cluster autoscaler should ignore when considering node group similarity. For example, if you have nodes with "topology.ebs.csi.aws.com/zone" label, you can add name of this label here to prevent cluster autoscaler from spliting nodes into different node groups based on its value.
+     */
     @JsonProperty("balancingIgnoredLabels")
     public void setBalancingIgnoredLabels(List<String> balancingIgnoredLabels) {
         this.balancingIgnoredLabels = balancingIgnoredLabels;
     }
 
+    /**
+     * Sets the type and order of expanders to be used during scale out operations. This option specifies an ordered list, highest priority first, of expanders that will be used by the cluster autoscaler to select node groups for expansion when scaling out. Expanders instruct the autoscaler on how to choose node groups when scaling out the cluster. They can be specified in order so that the result from the first expander is used as the input to the second, and so forth. For example, if set to `[LeastWaste, Random]` the autoscaler will first evaluate node groups to determine which will have the least resource waste, if multiple groups are selected the autoscaler will then randomly choose between those groups to determine the group for scaling. The following expanders are available: &#42; LeastWaste - selects the node group that will have the least idle CPU (if tied, unused memory) after scale-up. &#42; Priority - selects the node group that has the highest priority assigned by the user. For details, please see https://github.com/openshift/kubernetes-autoscaler/blob/master/cluster-autoscaler/expander/priority/readme.md &#42; Random - selects the node group randomly. If not specified, the default value is `Random`, available options are: `LeastWaste`, `Priority`, `Random`.
+     */
     @JsonProperty("expanders")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getExpanders() {
         return expanders;
     }
 
+    /**
+     * Sets the type and order of expanders to be used during scale out operations. This option specifies an ordered list, highest priority first, of expanders that will be used by the cluster autoscaler to select node groups for expansion when scaling out. Expanders instruct the autoscaler on how to choose node groups when scaling out the cluster. They can be specified in order so that the result from the first expander is used as the input to the second, and so forth. For example, if set to `[LeastWaste, Random]` the autoscaler will first evaluate node groups to determine which will have the least resource waste, if multiple groups are selected the autoscaler will then randomly choose between those groups to determine the group for scaling. The following expanders are available: &#42; LeastWaste - selects the node group that will have the least idle CPU (if tied, unused memory) after scale-up. &#42; Priority - selects the node group that has the highest priority assigned by the user. For details, please see https://github.com/openshift/kubernetes-autoscaler/blob/master/cluster-autoscaler/expander/priority/readme.md &#42; Random - selects the node group randomly. If not specified, the default value is `Random`, available options are: `LeastWaste`, `Priority`, `Random`.
+     */
     @JsonProperty("expanders")
     public void setExpanders(List<String> expanders) {
         this.expanders = expanders;
     }
 
+    /**
+     * Enables/Disables `--ignore-daemonsets-utilization` CA feature flag. Should CA ignore DaemonSet pods when calculating resource utilization for scaling down. false by default
+     */
     @JsonProperty("ignoreDaemonsetsUtilization")
     public Boolean getIgnoreDaemonsetsUtilization() {
         return ignoreDaemonsetsUtilization;
     }
 
+    /**
+     * Enables/Disables `--ignore-daemonsets-utilization` CA feature flag. Should CA ignore DaemonSet pods when calculating resource utilization for scaling down. false by default
+     */
     @JsonProperty("ignoreDaemonsetsUtilization")
     public void setIgnoreDaemonsetsUtilization(Boolean ignoreDaemonsetsUtilization) {
         this.ignoreDaemonsetsUtilization = ignoreDaemonsetsUtilization;
     }
 
+    /**
+     * Sets the autoscaler log level. Default value is 1, level 4 is recommended for DEBUGGING and level 6 will enable almost everything. <br><p>  This option has priority over log level set by the `CLUSTER_AUTOSCALER_VERBOSITY` environment variable.
+     */
     @JsonProperty("logVerbosity")
     public Integer getLogVerbosity() {
         return logVerbosity;
     }
 
+    /**
+     * Sets the autoscaler log level. Default value is 1, level 4 is recommended for DEBUGGING and level 6 will enable almost everything. <br><p>  This option has priority over log level set by the `CLUSTER_AUTOSCALER_VERBOSITY` environment variable.
+     */
     @JsonProperty("logVerbosity")
     public void setLogVerbosity(Integer logVerbosity) {
         this.logVerbosity = logVerbosity;
     }
 
+    /**
+     * Maximum time CA waits for node to be provisioned
+     */
     @JsonProperty("maxNodeProvisionTime")
     public String getMaxNodeProvisionTime() {
         return maxNodeProvisionTime;
     }
 
+    /**
+     * Maximum time CA waits for node to be provisioned
+     */
     @JsonProperty("maxNodeProvisionTime")
     public void setMaxNodeProvisionTime(String maxNodeProvisionTime) {
         this.maxNodeProvisionTime = maxNodeProvisionTime;
     }
 
+    /**
+     * Gives pods graceful termination time before scaling down
+     */
     @JsonProperty("maxPodGracePeriod")
     public Integer getMaxPodGracePeriod() {
         return maxPodGracePeriod;
     }
 
+    /**
+     * Gives pods graceful termination time before scaling down
+     */
     @JsonProperty("maxPodGracePeriod")
     public void setMaxPodGracePeriod(Integer maxPodGracePeriod) {
         this.maxPodGracePeriod = maxPodGracePeriod;
     }
 
+    /**
+     * To allow users to schedule "best-effort" pods, which shouldn't trigger Cluster Autoscaler actions, but only run when there are spare resources available, More info: https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/FAQ.md#how-does-cluster-autoscaler-work-with-pod-priority-and-preemption
+     */
     @JsonProperty("podPriorityThreshold")
     public Integer getPodPriorityThreshold() {
         return podPriorityThreshold;
     }
 
+    /**
+     * To allow users to schedule "best-effort" pods, which shouldn't trigger Cluster Autoscaler actions, but only run when there are spare resources available, More info: https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/FAQ.md#how-does-cluster-autoscaler-work-with-pod-priority-and-preemption
+     */
     @JsonProperty("podPriorityThreshold")
     public void setPodPriorityThreshold(Integer podPriorityThreshold) {
         this.podPriorityThreshold = podPriorityThreshold;
     }
 
+    /**
+     * Desired state of ClusterAutoscaler resource
+     */
     @JsonProperty("resourceLimits")
     public ClusterAutoscalerSpecResourceLimits getResourceLimits() {
         return resourceLimits;
     }
 
+    /**
+     * Desired state of ClusterAutoscaler resource
+     */
     @JsonProperty("resourceLimits")
     public void setResourceLimits(ClusterAutoscalerSpecResourceLimits resourceLimits) {
         this.resourceLimits = resourceLimits;
     }
 
+    /**
+     * Desired state of ClusterAutoscaler resource
+     */
     @JsonProperty("scaleDown")
     public ClusterAutoscalerSpecScaleDown getScaleDown() {
         return scaleDown;
     }
 
+    /**
+     * Desired state of ClusterAutoscaler resource
+     */
     @JsonProperty("scaleDown")
     public void setScaleDown(ClusterAutoscalerSpecScaleDown scaleDown) {
         this.scaleDown = scaleDown;
     }
 
+    /**
+     * Enables/Disables `--skip-nodes-with-local-storage` CA feature flag. If true cluster autoscaler will never delete nodes with pods with local storage, e.g. EmptyDir or HostPath. true by default at autoscaler
+     */
     @JsonProperty("skipNodesWithLocalStorage")
     public Boolean getSkipNodesWithLocalStorage() {
         return skipNodesWithLocalStorage;
     }
 
+    /**
+     * Enables/Disables `--skip-nodes-with-local-storage` CA feature flag. If true cluster autoscaler will never delete nodes with pods with local storage, e.g. EmptyDir or HostPath. true by default at autoscaler
+     */
     @JsonProperty("skipNodesWithLocalStorage")
     public void setSkipNodesWithLocalStorage(Boolean skipNodesWithLocalStorage) {
         this.skipNodesWithLocalStorage = skipNodesWithLocalStorage;

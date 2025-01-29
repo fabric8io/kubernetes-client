@@ -82,21 +82,33 @@ public class TCPHealthCheckConfig implements Editable<TCPHealthCheckConfigBuilde
         this.port = port;
     }
 
+    /**
+     * Host to connect to, defaults to localhost
+     */
     @JsonProperty("host")
     public String getHost() {
         return host;
     }
 
+    /**
+     * Host to connect to, defaults to localhost
+     */
     @JsonProperty("host")
     public void setHost(String host) {
         this.host = host;
     }
 
+    /**
+     * Port of host
+     */
     @JsonProperty("port")
     public Long getPort() {
         return port;
     }
 
+    /**
+     * Port of host
+     */
     @JsonProperty("port")
     public void setPort(Long port) {
         this.port = port;

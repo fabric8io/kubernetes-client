@@ -82,21 +82,33 @@ public class SchemaReference implements Editable<SchemaReferenceBuilder>, Kubern
         this.namespace = namespace;
     }
 
+    /**
+     * `name` is the reference to the schema.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * `name` is the reference to the schema.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * `namespace` is the namespace of the where the schema is stored.
+     */
     @JsonProperty("namespace")
     public String getNamespace() {
         return namespace;
     }
 
+    /**
+     * `namespace` is the namespace of the where the schema is stored.
+     */
     @JsonProperty("namespace")
     public void setNamespace(String namespace) {
         this.namespace = namespace;

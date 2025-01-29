@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Status of the storage state.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -89,32 +92,50 @@ public class StorageStateStatus implements Editable<StorageStateStatusBuilder>, 
         this.persistedStorageVersionHashes = persistedStorageVersionHashes;
     }
 
+    /**
+     * The hash value of the current storage version, as shown in the discovery document served by the API server. Storage Version is the version to which objects are converted to before persisted.
+     */
     @JsonProperty("currentStorageVersionHash")
     public String getCurrentStorageVersionHash() {
         return currentStorageVersionHash;
     }
 
+    /**
+     * The hash value of the current storage version, as shown in the discovery document served by the API server. Storage Version is the version to which objects are converted to before persisted.
+     */
     @JsonProperty("currentStorageVersionHash")
     public void setCurrentStorageVersionHash(String currentStorageVersionHash) {
         this.currentStorageVersionHash = currentStorageVersionHash;
     }
 
+    /**
+     * LastHeartbeatTime is the last time the storage migration triggering controller checks the storage version hash of this resource in the discovery document and updates this field.
+     */
     @JsonProperty("lastHeartbeatTime")
     public String getLastHeartbeatTime() {
         return lastHeartbeatTime;
     }
 
+    /**
+     * LastHeartbeatTime is the last time the storage migration triggering controller checks the storage version hash of this resource in the discovery document and updates this field.
+     */
     @JsonProperty("lastHeartbeatTime")
     public void setLastHeartbeatTime(String lastHeartbeatTime) {
         this.lastHeartbeatTime = lastHeartbeatTime;
     }
 
+    /**
+     * The hash values of storage versions that persisted instances of spec.resource might still be encoded in. "Unknown" is a valid value in the list, and is the default value. It is not safe to upgrade or downgrade to an apiserver binary that does not support all versions listed in this field, or if "Unknown" is listed. Once the storage version migration for this resource has completed, the value of this field is refined to only contain the currentStorageVersionHash. Once the apiserver has changed the storage version, the new storage version is appended to the list.
+     */
     @JsonProperty("persistedStorageVersionHashes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getPersistedStorageVersionHashes() {
         return persistedStorageVersionHashes;
     }
 
+    /**
+     * The hash values of storage versions that persisted instances of spec.resource might still be encoded in. "Unknown" is a valid value in the list, and is the default value. It is not safe to upgrade or downgrade to an apiserver binary that does not support all versions listed in this field, or if "Unknown" is listed. Once the storage version migration for this resource has completed, the value of this field is refined to only contain the currentStorageVersionHash. Once the apiserver has changed the storage version, the new storage version is appended to the list.
+     */
     @JsonProperty("persistedStorageVersionHashes")
     public void setPersistedStorageVersionHashes(List<String> persistedStorageVersionHashes) {
         this.persistedStorageVersionHashes = persistedStorageVersionHashes;

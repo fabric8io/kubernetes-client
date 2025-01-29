@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AWSPrivateLinkSubnet defines a subnet in the an AWS VPC.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class AWSPrivateLinkSubnet implements Editable<AWSPrivateLinkSubnetBuilde
         this.subnetID = subnetID;
     }
 
+    /**
+     * AWSPrivateLinkSubnet defines a subnet in the an AWS VPC.
+     */
     @JsonProperty("availabilityZone")
     public String getAvailabilityZone() {
         return availabilityZone;
     }
 
+    /**
+     * AWSPrivateLinkSubnet defines a subnet in the an AWS VPC.
+     */
     @JsonProperty("availabilityZone")
     public void setAvailabilityZone(String availabilityZone) {
         this.availabilityZone = availabilityZone;
     }
 
+    /**
+     * AWSPrivateLinkSubnet defines a subnet in the an AWS VPC.
+     */
     @JsonProperty("subnetID")
     public String getSubnetID() {
         return subnetID;
     }
 
+    /**
+     * AWSPrivateLinkSubnet defines a subnet in the an AWS VPC.
+     */
     @JsonProperty("subnetID")
     public void setSubnetID(String subnetID) {
         this.subnetID = subnetID;

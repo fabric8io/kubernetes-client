@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * RevisionStatus communicates the observed state of the Revision (from the controller).
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -113,85 +116,133 @@ public class RevisionStatus implements Editable<RevisionStatusBuilder>, Kubernet
         this.observedGeneration = observedGeneration;
     }
 
+    /**
+     * ActualReplicas reflects the amount of ready pods running this revision.
+     */
     @JsonProperty("actualReplicas")
     public Integer getActualReplicas() {
         return actualReplicas;
     }
 
+    /**
+     * ActualReplicas reflects the amount of ready pods running this revision.
+     */
     @JsonProperty("actualReplicas")
     public void setActualReplicas(Integer actualReplicas) {
         this.actualReplicas = actualReplicas;
     }
 
+    /**
+     * Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.
+     */
     @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAnnotations() {
         return annotations;
     }
 
+    /**
+     * Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.
+     */
     @JsonProperty("annotations")
     public void setAnnotations(Map<String, String> annotations) {
         this.annotations = annotations;
     }
 
+    /**
+     * Conditions the latest available observations of a resource's current state.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Conditions the latest available observations of a resource's current state.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * ContainerStatuses is a slice of images present in .Spec.Container[&#42;].Image to their respective digests and their container name. The digests are resolved during the creation of Revision. ContainerStatuses holds the container name and image digests for both serving and non serving containers. ref: http://bit.ly/image-digests
+     */
     @JsonProperty("containerStatuses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ContainerStatus> getContainerStatuses() {
         return containerStatuses;
     }
 
+    /**
+     * ContainerStatuses is a slice of images present in .Spec.Container[&#42;].Image to their respective digests and their container name. The digests are resolved during the creation of Revision. ContainerStatuses holds the container name and image digests for both serving and non serving containers. ref: http://bit.ly/image-digests
+     */
     @JsonProperty("containerStatuses")
     public void setContainerStatuses(List<ContainerStatus> containerStatuses) {
         this.containerStatuses = containerStatuses;
     }
 
+    /**
+     * DesiredReplicas reflects the desired amount of pods running this revision.
+     */
     @JsonProperty("desiredReplicas")
     public Integer getDesiredReplicas() {
         return desiredReplicas;
     }
 
+    /**
+     * DesiredReplicas reflects the desired amount of pods running this revision.
+     */
     @JsonProperty("desiredReplicas")
     public void setDesiredReplicas(Integer desiredReplicas) {
         this.desiredReplicas = desiredReplicas;
     }
 
+    /**
+     * InitContainerStatuses is a slice of images present in .Spec.InitContainer[&#42;].Image to their respective digests and their container name. The digests are resolved during the creation of Revision. ContainerStatuses holds the container name and image digests for both serving and non serving containers. ref: http://bit.ly/image-digests
+     */
     @JsonProperty("initContainerStatuses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ContainerStatus> getInitContainerStatuses() {
         return initContainerStatuses;
     }
 
+    /**
+     * InitContainerStatuses is a slice of images present in .Spec.InitContainer[&#42;].Image to their respective digests and their container name. The digests are resolved during the creation of Revision. ContainerStatuses holds the container name and image digests for both serving and non serving containers. ref: http://bit.ly/image-digests
+     */
     @JsonProperty("initContainerStatuses")
     public void setInitContainerStatuses(List<ContainerStatus> initContainerStatuses) {
         this.initContainerStatuses = initContainerStatuses;
     }
 
+    /**
+     * LogURL specifies the generated logging url for this particular revision based on the revision url template specified in the controller's config.
+     */
     @JsonProperty("logUrl")
     public String getLogUrl() {
         return logUrl;
     }
 
+    /**
+     * LogURL specifies the generated logging url for this particular revision based on the revision url template specified in the controller's config.
+     */
     @JsonProperty("logUrl")
     public void setLogUrl(String logUrl) {
         this.logUrl = logUrl;
     }
 
+    /**
+     * ObservedGeneration is the 'Generation' of the Service that was last processed by the controller.
+     */
     @JsonProperty("observedGeneration")
     public Long getObservedGeneration() {
         return observedGeneration;
     }
 
+    /**
+     * ObservedGeneration is the 'Generation' of the Service that was last processed by the controller.
+     */
     @JsonProperty("observedGeneration")
     public void setObservedGeneration(Long observedGeneration) {
         this.observedGeneration = observedGeneration;

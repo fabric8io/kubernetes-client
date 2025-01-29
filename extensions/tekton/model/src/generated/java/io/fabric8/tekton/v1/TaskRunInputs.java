@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * TaskRunInputs holds the input values that this task was invoked with.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -81,12 +84,18 @@ public class TaskRunInputs implements Editable<TaskRunInputsBuilder>, Kubernetes
         this.params = params;
     }
 
+    /**
+     * TaskRunInputs holds the input values that this task was invoked with.
+     */
     @JsonProperty("params")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Param> getParams() {
         return params;
     }
 
+    /**
+     * TaskRunInputs holds the input values that this task was invoked with.
+     */
     @JsonProperty("params")
     public void setParams(List<Param> params) {
         this.params = params;

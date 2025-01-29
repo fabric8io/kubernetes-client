@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NodePlacement describes node scheduling configuration for the pods.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -87,23 +90,35 @@ public class NodePlacement implements Editable<NodePlacementBuilder>, Kubernetes
         this.tolerations = tolerations;
     }
 
+    /**
+     * NodeSelector defines which Nodes the Pods are scheduled on. The default is an empty list.
+     */
     @JsonProperty("nodeSelector")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getNodeSelector() {
         return nodeSelector;
     }
 
+    /**
+     * NodeSelector defines which Nodes the Pods are scheduled on. The default is an empty list.
+     */
     @JsonProperty("nodeSelector")
     public void setNodeSelector(Map<String, String> nodeSelector) {
         this.nodeSelector = nodeSelector;
     }
 
+    /**
+     * Tolerations are attached by pods to tolerate any taint that matches the triple &lt;key,value,effect&gt; using the matching operator &lt;operator&gt;. The default is an empty list.
+     */
     @JsonProperty("tolerations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Toleration> getTolerations() {
         return tolerations;
     }
 
+    /**
+     * Tolerations are attached by pods to tolerate any taint that matches the triple &lt;key,value,effect&gt; using the matching operator &lt;operator&gt;. The default is an empty list.
+     */
     @JsonProperty("tolerations")
     public void setTolerations(List<Toleration> tolerations) {
         this.tolerations = tolerations;

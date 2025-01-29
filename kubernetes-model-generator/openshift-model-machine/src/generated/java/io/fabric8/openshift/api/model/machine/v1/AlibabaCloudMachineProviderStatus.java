@@ -40,6 +40,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AlibabaCloudMachineProviderStatus is the Schema for the alibabacloudmachineproviderconfig API Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -80,9 +83,6 @@ import lombok.experimental.Accessors;
 public class AlibabaCloudMachineProviderStatus implements Editable<AlibabaCloudMachineProviderStatusBuilder>, HasMetadata, Namespaced
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "machine.openshift.io/v1";
     @JsonProperty("conditions")
@@ -92,9 +92,6 @@ public class AlibabaCloudMachineProviderStatus implements Editable<AlibabaCloudM
     private String instanceId;
     @JsonProperty("instanceState")
     private String instanceState;
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "AlibabaCloudMachineProviderStatus";
     @JsonProperty("metadata")
@@ -119,7 +116,7 @@ public class AlibabaCloudMachineProviderStatus implements Editable<AlibabaCloudM
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -127,46 +124,64 @@ public class AlibabaCloudMachineProviderStatus implements Editable<AlibabaCloudM
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
+    /**
+     * Conditions is a set of conditions associated with the Machine to indicate errors or other status
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Conditions is a set of conditions associated with the Machine to indicate errors or other status
+     */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * InstanceID is the instance ID of the machine created in alibabacloud
+     */
     @JsonProperty("instanceId")
     public String getInstanceId() {
         return instanceId;
     }
 
+    /**
+     * InstanceID is the instance ID of the machine created in alibabacloud
+     */
     @JsonProperty("instanceId")
     public void setInstanceId(String instanceId) {
         this.instanceId = instanceId;
     }
 
+    /**
+     * InstanceState is the state of the alibabacloud instance for this machine
+     */
     @JsonProperty("instanceState")
     public String getInstanceState() {
         return instanceState;
     }
 
+    /**
+     * InstanceState is the state of the alibabacloud instance for this machine
+     */
     @JsonProperty("instanceState")
     public void setInstanceState(String instanceState) {
         this.instanceState = instanceState;
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -174,18 +189,24 @@ public class AlibabaCloudMachineProviderStatus implements Editable<AlibabaCloudM
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * AlibabaCloudMachineProviderStatus is the Schema for the alibabacloudmachineproviderconfig API Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * AlibabaCloudMachineProviderStatus is the Schema for the alibabacloudmachineproviderconfig API Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;

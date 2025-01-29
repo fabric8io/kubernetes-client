@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NamedResourcesAllocationResult is used in AllocationResultModel.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class NamedResourcesAllocationResult implements Editable<NamedResourcesAl
         this.name = name;
     }
 
+    /**
+     * Name is the name of the selected resource instance.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name is the name of the selected resource instance.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

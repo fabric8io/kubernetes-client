@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ConfigurationStatusFields holds the fields of Configuration's status that are not generally shared.  This is defined separately and inlined so that other types can readily consume these fields via duck typing.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class ConfigurationStatusFields implements Editable<ConfigurationStatusFi
         this.latestReadyRevisionName = latestReadyRevisionName;
     }
 
+    /**
+     * LatestCreatedRevisionName is the last revision that was created from this Configuration. It might not be ready yet, for that use LatestReadyRevisionName.
+     */
     @JsonProperty("latestCreatedRevisionName")
     public String getLatestCreatedRevisionName() {
         return latestCreatedRevisionName;
     }
 
+    /**
+     * LatestCreatedRevisionName is the last revision that was created from this Configuration. It might not be ready yet, for that use LatestReadyRevisionName.
+     */
     @JsonProperty("latestCreatedRevisionName")
     public void setLatestCreatedRevisionName(String latestCreatedRevisionName) {
         this.latestCreatedRevisionName = latestCreatedRevisionName;
     }
 
+    /**
+     * LatestReadyRevisionName holds the name of the latest Revision stamped out from this Configuration that has had its "Ready" condition become "True".
+     */
     @JsonProperty("latestReadyRevisionName")
     public String getLatestReadyRevisionName() {
         return latestReadyRevisionName;
     }
 
+    /**
+     * LatestReadyRevisionName holds the name of the latest Revision stamped out from this Configuration that has had its "Ready" condition become "True".
+     */
     @JsonProperty("latestReadyRevisionName")
     public void setLatestReadyRevisionName(String latestReadyRevisionName) {
         this.latestReadyRevisionName = latestReadyRevisionName;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AWSEFSVolumeMetrics defines the configuration for volume metrics in the EFS CSI Driver.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class AWSEFSVolumeMetrics implements Editable<AWSEFSVolumeMetricsBuilder>
         this.state = state;
     }
 
+    /**
+     * AWSEFSVolumeMetrics defines the configuration for volume metrics in the EFS CSI Driver.
+     */
     @JsonProperty("recursiveWalk")
     public AWSEFSVolumeMetricsRecursiveWalkConfig getRecursiveWalk() {
         return recursiveWalk;
     }
 
+    /**
+     * AWSEFSVolumeMetrics defines the configuration for volume metrics in the EFS CSI Driver.
+     */
     @JsonProperty("recursiveWalk")
     public void setRecursiveWalk(AWSEFSVolumeMetricsRecursiveWalkConfig recursiveWalk) {
         this.recursiveWalk = recursiveWalk;
     }
 
+    /**
+     * state defines the state of metric collection in the AWS EFS CSI Driver. This field is required and must be set to one of the following values: Disabled or RecursiveWalk. Disabled means no metrics collection will be performed. This is the default value. RecursiveWalk means the AWS EFS CSI Driver will recursively scan volumes to collect metrics. This process may result in high CPU and memory usage, depending on the volume size.
+     */
     @JsonProperty("state")
     public String getState() {
         return state;
     }
 
+    /**
+     * state defines the state of metric collection in the AWS EFS CSI Driver. This field is required and must be set to one of the following values: Disabled or RecursiveWalk. Disabled means no metrics collection will be performed. This is the default value. RecursiveWalk means the AWS EFS CSI Driver will recursively scan volumes to collect metrics. This process may result in high CPU and memory usage, depending on the volume size.
+     */
     @JsonProperty("state")
     public void setState(String state) {
         this.state = state;

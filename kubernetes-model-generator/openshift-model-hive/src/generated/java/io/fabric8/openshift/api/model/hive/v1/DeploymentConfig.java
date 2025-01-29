@@ -82,11 +82,17 @@ public class DeploymentConfig implements Editable<DeploymentConfigBuilder>, Kube
         this.resources = resources;
     }
 
+    /**
+     * DeploymentName is the name of one of the Deployments/StatefulSets managed by hive-operator. NOTE: At this time each deployment has only one container. In the future, we may provide a way to specify which container this DeploymentConfig will be applied to.
+     */
     @JsonProperty("deploymentName")
     public String getDeploymentName() {
         return deploymentName;
     }
 
+    /**
+     * DeploymentName is the name of one of the Deployments/StatefulSets managed by hive-operator. NOTE: At this time each deployment has only one container. In the future, we may provide a way to specify which container this DeploymentConfig will be applied to.
+     */
     @JsonProperty("deploymentName")
     public void setDeploymentName(String deploymentName) {
         this.deploymentName = deploymentName;

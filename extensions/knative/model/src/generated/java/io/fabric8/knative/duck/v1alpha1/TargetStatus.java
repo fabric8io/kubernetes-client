@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * TargetStatus shows how we expect folks to embed Targetable in their Status field.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class TargetStatus implements Editable<TargetStatusBuilder>, KubernetesRe
         this.targetable = targetable;
     }
 
+    /**
+     * TargetStatus shows how we expect folks to embed Targetable in their Status field.
+     */
     @JsonProperty("targetable")
     public Targetable getTargetable() {
         return targetable;
     }
 
+    /**
+     * TargetStatus shows how we expect folks to embed Targetable in their Status field.
+     */
     @JsonProperty("targetable")
     public void setTargetable(Targetable targetable) {
         this.targetable = targetable;

@@ -78,17 +78,11 @@ import lombok.experimental.Accessors;
 public class GRPCRouteList implements Editable<GRPCRouteListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GRPCRoute>
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "gateway.networking.k8s.io/v1alpha2";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GRPCRoute> items = new ArrayList<>();
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "GRPCRouteList";
     @JsonProperty("metadata")
@@ -111,7 +105,7 @@ public class GRPCRouteList implements Editable<GRPCRouteListBuilder>, Kubernetes
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -119,7 +113,7 @@ public class GRPCRouteList implements Editable<GRPCRouteListBuilder>, Kubernetes
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -138,7 +132,7 @@ public class GRPCRouteList implements Editable<GRPCRouteListBuilder>, Kubernetes
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -146,7 +140,7 @@ public class GRPCRouteList implements Editable<GRPCRouteListBuilder>, Kubernetes
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

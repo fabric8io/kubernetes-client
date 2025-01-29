@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ImageLayer represents a single layer of the image. Some images may have multiple layers. Some may have none.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class ImageLayer implements Editable<ImageLayerBuilder>, KubernetesResour
         this.size = size;
     }
 
+    /**
+     * MediaType of the referenced object.
+     */
     @JsonProperty("mediaType")
     public String getMediaType() {
         return mediaType;
     }
 
+    /**
+     * MediaType of the referenced object.
+     */
     @JsonProperty("mediaType")
     public void setMediaType(String mediaType) {
         this.mediaType = mediaType;
     }
 
+    /**
+     * Name of the layer as defined by the underlying store.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name of the layer as defined by the underlying store.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Size of the layer in bytes as defined by the underlying store.
+     */
     @JsonProperty("size")
     public Long getSize() {
         return size;
     }
 
+    /**
+     * Size of the layer in bytes as defined by the underlying store.
+     */
     @JsonProperty("size")
     public void setSize(Long size) {
         this.size = size;

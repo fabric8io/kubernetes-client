@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PipelineRunSpec defines the desired state of PipelineRun
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -111,84 +114,132 @@ public class PipelineRunSpec implements Editable<PipelineRunSpecBuilder>, Kubern
         this.workspaces = workspaces;
     }
 
+    /**
+     * Params is a list of parameter names and values.
+     */
     @JsonProperty("params")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Param> getParams() {
         return params;
     }
 
+    /**
+     * Params is a list of parameter names and values.
+     */
     @JsonProperty("params")
     public void setParams(List<Param> params) {
         this.params = params;
     }
 
+    /**
+     * PipelineRunSpec defines the desired state of PipelineRun
+     */
     @JsonProperty("pipelineRef")
     public PipelineRef getPipelineRef() {
         return pipelineRef;
     }
 
+    /**
+     * PipelineRunSpec defines the desired state of PipelineRun
+     */
     @JsonProperty("pipelineRef")
     public void setPipelineRef(PipelineRef pipelineRef) {
         this.pipelineRef = pipelineRef;
     }
 
+    /**
+     * PipelineRunSpec defines the desired state of PipelineRun
+     */
     @JsonProperty("pipelineSpec")
     public PipelineSpec getPipelineSpec() {
         return pipelineSpec;
     }
 
+    /**
+     * PipelineRunSpec defines the desired state of PipelineRun
+     */
     @JsonProperty("pipelineSpec")
     public void setPipelineSpec(PipelineSpec pipelineSpec) {
         this.pipelineSpec = pipelineSpec;
     }
 
+    /**
+     * Used for cancelling a pipelinerun (and maybe more later on)
+     */
     @JsonProperty("status")
     public String getStatus() {
         return status;
     }
 
+    /**
+     * Used for cancelling a pipelinerun (and maybe more later on)
+     */
     @JsonProperty("status")
     public void setStatus(String status) {
         this.status = status;
     }
 
+    /**
+     * TaskRunSpecs holds a set of runtime specs
+     */
     @JsonProperty("taskRunSpecs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PipelineTaskRunSpec> getTaskRunSpecs() {
         return taskRunSpecs;
     }
 
+    /**
+     * TaskRunSpecs holds a set of runtime specs
+     */
     @JsonProperty("taskRunSpecs")
     public void setTaskRunSpecs(List<PipelineTaskRunSpec> taskRunSpecs) {
         this.taskRunSpecs = taskRunSpecs;
     }
 
+    /**
+     * PipelineRunSpec defines the desired state of PipelineRun
+     */
     @JsonProperty("taskRunTemplate")
     public PipelineTaskRunTemplate getTaskRunTemplate() {
         return taskRunTemplate;
     }
 
+    /**
+     * PipelineRunSpec defines the desired state of PipelineRun
+     */
     @JsonProperty("taskRunTemplate")
     public void setTaskRunTemplate(PipelineTaskRunTemplate taskRunTemplate) {
         this.taskRunTemplate = taskRunTemplate;
     }
 
+    /**
+     * PipelineRunSpec defines the desired state of PipelineRun
+     */
     @JsonProperty("timeouts")
     public TimeoutFields getTimeouts() {
         return timeouts;
     }
 
+    /**
+     * PipelineRunSpec defines the desired state of PipelineRun
+     */
     @JsonProperty("timeouts")
     public void setTimeouts(TimeoutFields timeouts) {
         this.timeouts = timeouts;
     }
 
+    /**
+     * Workspaces holds a set of workspace bindings that must match names with those declared in the pipeline.
+     */
     @JsonProperty("workspaces")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<WorkspaceBinding> getWorkspaces() {
         return workspaces;
     }
 
+    /**
+     * Workspaces holds a set of workspace bindings that must match names with those declared in the pipeline.
+     */
     @JsonProperty("workspaces")
     public void setWorkspaces(List<WorkspaceBinding> workspaces) {
         this.workspaces = workspaces;

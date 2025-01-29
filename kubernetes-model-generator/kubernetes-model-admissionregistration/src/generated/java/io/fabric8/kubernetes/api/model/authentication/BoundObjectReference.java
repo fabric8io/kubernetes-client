@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * BoundObjectReference is a reference to an object that a token is bound to.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class BoundObjectReference implements Editable<BoundObjectReferenceBuilde
         this.uid = uid;
     }
 
+    /**
+     * API version of the referent.
+     */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
         return apiVersion;
     }
 
+    /**
+     * API version of the referent.
+     */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
+    /**
+     * Kind of the referent. Valid kinds are 'Pod' and 'Secret'.
+     */
     @JsonProperty("kind")
     public String getKind() {
         return kind;
     }
 
+    /**
+     * Kind of the referent. Valid kinds are 'Pod' and 'Secret'.
+     */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * Name of the referent.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name of the referent.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * UID of the referent.
+     */
     @JsonProperty("uid")
     public String getUid() {
         return uid;
     }
 
+    /**
+     * UID of the referent.
+     */
     @JsonProperty("uid")
     public void setUid(String uid) {
         this.uid = uid;

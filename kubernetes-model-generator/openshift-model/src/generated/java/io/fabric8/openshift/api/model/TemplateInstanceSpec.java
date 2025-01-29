@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * TemplateInstanceSpec describes the desired state of a TemplateInstance.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class TemplateInstanceSpec implements Editable<TemplateInstanceSpecBuilde
         this.template = template;
     }
 
+    /**
+     * TemplateInstanceSpec describes the desired state of a TemplateInstance.
+     */
     @JsonProperty("requester")
     public TemplateInstanceRequester getRequester() {
         return requester;
     }
 
+    /**
+     * TemplateInstanceSpec describes the desired state of a TemplateInstance.
+     */
     @JsonProperty("requester")
     public void setRequester(TemplateInstanceRequester requester) {
         this.requester = requester;
     }
 
+    /**
+     * TemplateInstanceSpec describes the desired state of a TemplateInstance.
+     */
     @JsonProperty("secret")
     public LocalObjectReference getSecret() {
         return secret;
     }
 
+    /**
+     * TemplateInstanceSpec describes the desired state of a TemplateInstance.
+     */
     @JsonProperty("secret")
     public void setSecret(LocalObjectReference secret) {
         this.secret = secret;
     }
 
+    /**
+     * TemplateInstanceSpec describes the desired state of a TemplateInstance.
+     */
     @JsonProperty("template")
     public Template getTemplate() {
         return template;
     }
 
+    /**
+     * TemplateInstanceSpec describes the desired state of a TemplateInstance.
+     */
     @JsonProperty("template")
     public void setTemplate(Template template) {
         this.template = template;

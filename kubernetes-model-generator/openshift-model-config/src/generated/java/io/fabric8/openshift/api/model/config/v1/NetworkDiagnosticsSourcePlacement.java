@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NetworkDiagnosticsSourcePlacement defines node scheduling configuration network diagnostics source components
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -87,23 +90,35 @@ public class NetworkDiagnosticsSourcePlacement implements Editable<NetworkDiagno
         this.tolerations = tolerations;
     }
 
+    /**
+     * nodeSelector is the node selector applied to network diagnostics components<br><p> <br><p> When omitted, this means the user has no opinion and the platform is left to choose reasonable defaults. These defaults are subject to change over time. The current default is `kubernetes.io/os: linux`.
+     */
     @JsonProperty("nodeSelector")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getNodeSelector() {
         return nodeSelector;
     }
 
+    /**
+     * nodeSelector is the node selector applied to network diagnostics components<br><p> <br><p> When omitted, this means the user has no opinion and the platform is left to choose reasonable defaults. These defaults are subject to change over time. The current default is `kubernetes.io/os: linux`.
+     */
     @JsonProperty("nodeSelector")
     public void setNodeSelector(Map<String, String> nodeSelector) {
         this.nodeSelector = nodeSelector;
     }
 
+    /**
+     * tolerations is a list of tolerations applied to network diagnostics components<br><p> <br><p> When omitted, this means the user has no opinion and the platform is left to choose reasonable defaults. These defaults are subject to change over time. The current default is an empty list.
+     */
     @JsonProperty("tolerations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Toleration> getTolerations() {
         return tolerations;
     }
 
+    /**
+     * tolerations is a list of tolerations applied to network diagnostics components<br><p> <br><p> When omitted, this means the user has no opinion and the platform is left to choose reasonable defaults. These defaults are subject to change over time. The current default is an empty list.
+     */
     @JsonProperty("tolerations")
     public void setTolerations(List<Toleration> tolerations) {
         this.tolerations = tolerations;

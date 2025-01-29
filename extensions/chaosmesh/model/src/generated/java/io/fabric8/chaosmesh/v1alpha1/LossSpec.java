@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * LossSpec defines detail of a loss action
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class LossSpec implements Editable<LossSpecBuilder>, KubernetesResource
         this.loss = loss;
     }
 
+    /**
+     * LossSpec defines detail of a loss action
+     */
     @JsonProperty("correlation")
     public String getCorrelation() {
         return correlation;
     }
 
+    /**
+     * LossSpec defines detail of a loss action
+     */
     @JsonProperty("correlation")
     public void setCorrelation(String correlation) {
         this.correlation = correlation;
     }
 
+    /**
+     * LossSpec defines detail of a loss action
+     */
     @JsonProperty("loss")
     public String getLoss() {
         return loss;
     }
 
+    /**
+     * LossSpec defines detail of a loss action
+     */
     @JsonProperty("loss")
     public void setLoss(String loss) {
         this.loss = loss;

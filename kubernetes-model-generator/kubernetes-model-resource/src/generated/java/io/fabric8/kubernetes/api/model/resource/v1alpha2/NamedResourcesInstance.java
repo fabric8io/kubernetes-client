@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NamedResourcesInstance represents one individual hardware instance that can be selected based on its attributes.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class NamedResourcesInstance implements Editable<NamedResourcesInstanceBu
         this.name = name;
     }
 
+    /**
+     * Attributes defines the attributes of this resource instance. The name of each attribute must be unique.
+     */
     @JsonProperty("attributes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NamedResourcesAttribute> getAttributes() {
         return attributes;
     }
 
+    /**
+     * Attributes defines the attributes of this resource instance. The name of each attribute must be unique.
+     */
     @JsonProperty("attributes")
     public void setAttributes(List<NamedResourcesAttribute> attributes) {
         this.attributes = attributes;
     }
 
+    /**
+     * Name is unique identifier among all resource instances managed by the driver on the node. It must be a DNS subdomain.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name is unique identifier among all resource instances managed by the driver on the node. It must be a DNS subdomain.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

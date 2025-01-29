@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SeccompProfile defines a pod/container's seccomp profile settings. Only one profile source may be set.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -53,21 +56,33 @@ public class SeccompProfile implements Editable<SeccompProfileBuilder>, Kubernet
         this.type = type;
     }
 
+    /**
+     * localhostProfile indicates a profile defined in a file on the node should be used. The profile must be preconfigured on the node to work. Must be a descending path, relative to the kubelet's configured seccomp profile location. Must be set if type is "Localhost". Must NOT be set for any other type.
+     */
     @JsonProperty("localhostProfile")
     public String getLocalhostProfile() {
         return localhostProfile;
     }
 
+    /**
+     * localhostProfile indicates a profile defined in a file on the node should be used. The profile must be preconfigured on the node to work. Must be a descending path, relative to the kubelet's configured seccomp profile location. Must be set if type is "Localhost". Must NOT be set for any other type.
+     */
     @JsonProperty("localhostProfile")
     public void setLocalhostProfile(String localhostProfile) {
         this.localhostProfile = localhostProfile;
     }
 
+    /**
+     * type indicates which kind of seccomp profile will be applied. Valid options are:<br><p> <br><p> Localhost - a profile defined in a file on the node should be used. RuntimeDefault - the container runtime default profile should be used. Unconfined - no profile should be applied.
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * type indicates which kind of seccomp profile will be applied. Valid options are:<br><p> <br><p> Localhost - a profile defined in a file on the node should be used. RuntimeDefault - the container runtime default profile should be used. Unconfined - no profile should be applied.
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

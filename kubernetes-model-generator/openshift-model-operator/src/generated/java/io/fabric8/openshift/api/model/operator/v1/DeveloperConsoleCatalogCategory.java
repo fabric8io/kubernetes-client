@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DeveloperConsoleCatalogCategory for the developer console catalog.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,43 +97,67 @@ public class DeveloperConsoleCatalogCategory implements Editable<DeveloperConsol
         this.tags = tags;
     }
 
+    /**
+     * ID is an identifier used in the URL to enable deep linking in console. ID is required and must have 1-32 URL safe (A-Z, a-z, 0-9, - and _) characters.
+     */
     @JsonProperty("id")
     public String getId() {
         return id;
     }
 
+    /**
+     * ID is an identifier used in the URL to enable deep linking in console. ID is required and must have 1-32 URL safe (A-Z, a-z, 0-9, - and _) characters.
+     */
     @JsonProperty("id")
     public void setId(String id) {
         this.id = id;
     }
 
+    /**
+     * label defines a category display label. It is required and must have 1-64 characters.
+     */
     @JsonProperty("label")
     public String getLabel() {
         return label;
     }
 
+    /**
+     * label defines a category display label. It is required and must have 1-64 characters.
+     */
     @JsonProperty("label")
     public void setLabel(String label) {
         this.label = label;
     }
 
+    /**
+     * subcategories defines a list of child categories.
+     */
     @JsonProperty("subcategories")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<DeveloperConsoleCatalogCategoryMeta> getSubcategories() {
         return subcategories;
     }
 
+    /**
+     * subcategories defines a list of child categories.
+     */
     @JsonProperty("subcategories")
     public void setSubcategories(List<DeveloperConsoleCatalogCategoryMeta> subcategories) {
         this.subcategories = subcategories;
     }
 
+    /**
+     * tags is a list of strings that will match the category. A selected category show all items which has at least one overlapping tag between category and item.
+     */
     @JsonProperty("tags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getTags() {
         return tags;
     }
 
+    /**
+     * tags is a list of strings that will match the category. A selected category show all items which has at least one overlapping tag between category and item.
+     */
     @JsonProperty("tags")
     public void setTags(List<String> tags) {
         this.tags = tags;

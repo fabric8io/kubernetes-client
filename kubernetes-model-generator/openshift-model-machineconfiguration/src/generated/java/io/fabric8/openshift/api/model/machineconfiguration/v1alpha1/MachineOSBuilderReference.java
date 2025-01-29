@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * MachineOSBuilderReference describes which ImageBuilder backend to use for this build/
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class MachineOSBuilderReference implements Editable<MachineOSBuilderRefer
         this.imageBuilderType = imageBuilderType;
     }
 
+    /**
+     * MachineOSBuilderReference describes which ImageBuilder backend to use for this build/
+     */
     @JsonProperty("buildPod")
     public ObjectReference getBuildPod() {
         return buildPod;
     }
 
+    /**
+     * MachineOSBuilderReference describes which ImageBuilder backend to use for this build/
+     */
     @JsonProperty("buildPod")
     public void setBuildPod(ObjectReference buildPod) {
         this.buildPod = buildPod;
     }
 
+    /**
+     * ImageBuilderType describes the image builder set in the MachineOSConfig
+     */
     @JsonProperty("imageBuilderType")
     public String getImageBuilderType() {
         return imageBuilderType;
     }
 
+    /**
+     * ImageBuilderType describes the image builder set in the MachineOSConfig
+     */
     @JsonProperty("imageBuilderType")
     public void setImageBuilderType(String imageBuilderType) {
         this.imageBuilderType = imageBuilderType;

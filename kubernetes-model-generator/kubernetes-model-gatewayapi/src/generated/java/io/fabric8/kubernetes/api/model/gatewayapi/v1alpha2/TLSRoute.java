@@ -37,6 +37,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * The TLSRoute resource is similar to TCPRoute, but can be configured to match against TLS-specific metadata. This allows more flexibility in matching streams for a given TLS listener.<br><p> <br><p> If you need to forward traffic to a single target for a TLS listener, you could choose to use a TCPRoute with a TLS listener.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -76,14 +79,8 @@ import lombok.experimental.Accessors;
 public class TLSRoute implements Editable<TLSRouteBuilder>, HasMetadata, Namespaced
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "gateway.networking.k8s.io/v1alpha2";
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "TLSRoute";
     @JsonProperty("metadata")
@@ -111,7 +108,7 @@ public class TLSRoute implements Editable<TLSRouteBuilder>, HasMetadata, Namespa
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -119,7 +116,7 @@ public class TLSRoute implements Editable<TLSRouteBuilder>, HasMetadata, Namespa
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -127,7 +124,7 @@ public class TLSRoute implements Editable<TLSRouteBuilder>, HasMetadata, Namespa
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -135,38 +132,56 @@ public class TLSRoute implements Editable<TLSRouteBuilder>, HasMetadata, Namespa
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * The TLSRoute resource is similar to TCPRoute, but can be configured to match against TLS-specific metadata. This allows more flexibility in matching streams for a given TLS listener.<br><p> <br><p> If you need to forward traffic to a single target for a TLS listener, you could choose to use a TCPRoute with a TLS listener.
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * The TLSRoute resource is similar to TCPRoute, but can be configured to match against TLS-specific metadata. This allows more flexibility in matching streams for a given TLS listener.<br><p> <br><p> If you need to forward traffic to a single target for a TLS listener, you could choose to use a TCPRoute with a TLS listener.
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * The TLSRoute resource is similar to TCPRoute, but can be configured to match against TLS-specific metadata. This allows more flexibility in matching streams for a given TLS listener.<br><p> <br><p> If you need to forward traffic to a single target for a TLS listener, you could choose to use a TCPRoute with a TLS listener.
+     */
     @JsonProperty("spec")
     public TLSRouteSpec getSpec() {
         return spec;
     }
 
+    /**
+     * The TLSRoute resource is similar to TCPRoute, but can be configured to match against TLS-specific metadata. This allows more flexibility in matching streams for a given TLS listener.<br><p> <br><p> If you need to forward traffic to a single target for a TLS listener, you could choose to use a TCPRoute with a TLS listener.
+     */
     @JsonProperty("spec")
     public void setSpec(TLSRouteSpec spec) {
         this.spec = spec;
     }
 
+    /**
+     * The TLSRoute resource is similar to TCPRoute, but can be configured to match against TLS-specific metadata. This allows more flexibility in matching streams for a given TLS listener.<br><p> <br><p> If you need to forward traffic to a single target for a TLS listener, you could choose to use a TCPRoute with a TLS listener.
+     */
     @JsonProperty("status")
     public TLSRouteStatus getStatus() {
         return status;
     }
 
+    /**
+     * The TLSRoute resource is similar to TCPRoute, but can be configured to match against TLS-specific metadata. This allows more flexibility in matching streams for a given TLS listener.<br><p> <br><p> If you need to forward traffic to a single target for a TLS listener, you could choose to use a TCPRoute with a TLS listener.
+     */
     @JsonProperty("status")
     public void setStatus(TLSRouteStatus status) {
         this.status = status;

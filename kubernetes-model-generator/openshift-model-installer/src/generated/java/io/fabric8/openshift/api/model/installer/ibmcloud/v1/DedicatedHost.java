@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DedicatedHost stores the configuration for the machine's dedicated host platform.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class DedicatedHost implements Editable<DedicatedHostBuilder>, Kubernetes
         this.profile = profile;
     }
 
+    /**
+     * Name is the name of the dedicated host to provision the machine on. If specified, machines will be created on pre-existing dedicated host.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name is the name of the dedicated host to provision the machine on. If specified, machines will be created on pre-existing dedicated host.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Profile is the profile ID for the dedicated host. If specified, new dedicated host will be created for machines.
+     */
     @JsonProperty("profile")
     public String getProfile() {
         return profile;
     }
 
+    /**
+     * Profile is the profile ID for the dedicated host. If specified, new dedicated host will be created for machines.
+     */
     @JsonProperty("profile")
     public void setProfile(String profile) {
         this.profile = profile;

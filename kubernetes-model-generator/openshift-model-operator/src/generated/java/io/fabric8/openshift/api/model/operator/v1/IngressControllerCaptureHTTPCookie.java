@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * IngressControllerCaptureHTTPCookie describes an HTTP cookie that should be captured.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class IngressControllerCaptureHTTPCookie implements Editable<IngressContr
         this.namePrefix = namePrefix;
     }
 
+    /**
+     * matchType specifies the type of match to be performed on the cookie name.  Allowed values are "Exact" for an exact string match and "Prefix" for a string prefix match.  If "Exact" is specified, a name must be specified in the name field.  If "Prefix" is provided, a prefix must be specified in the namePrefix field.  For example, specifying matchType "Prefix" and namePrefix "foo" will capture a cookie named "foo" or "foobar" but not one named "bar".  The first matching cookie is captured.
+     */
     @JsonProperty("matchType")
     public String getMatchType() {
         return matchType;
     }
 
+    /**
+     * matchType specifies the type of match to be performed on the cookie name.  Allowed values are "Exact" for an exact string match and "Prefix" for a string prefix match.  If "Exact" is specified, a name must be specified in the name field.  If "Prefix" is provided, a prefix must be specified in the namePrefix field.  For example, specifying matchType "Prefix" and namePrefix "foo" will capture a cookie named "foo" or "foobar" but not one named "bar".  The first matching cookie is captured.
+     */
     @JsonProperty("matchType")
     public void setMatchType(String matchType) {
         this.matchType = matchType;
     }
 
+    /**
+     * maxLength specifies a maximum length of the string that will be logged, which includes the cookie name, cookie value, and one-character delimiter.  If the log entry exceeds this length, the value will be truncated in the log message.  Note that the ingress controller may impose a separate bound on the total length of HTTP headers in a request.
+     */
     @JsonProperty("maxLength")
     public Integer getMaxLength() {
         return maxLength;
     }
 
+    /**
+     * maxLength specifies a maximum length of the string that will be logged, which includes the cookie name, cookie value, and one-character delimiter.  If the log entry exceeds this length, the value will be truncated in the log message.  Note that the ingress controller may impose a separate bound on the total length of HTTP headers in a request.
+     */
     @JsonProperty("maxLength")
     public void setMaxLength(Integer maxLength) {
         this.maxLength = maxLength;
     }
 
+    /**
+     * name specifies a cookie name.  Its value must be a valid HTTP cookie name as defined in RFC 6265 section 4.1.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * name specifies a cookie name.  Its value must be a valid HTTP cookie name as defined in RFC 6265 section 4.1.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * namePrefix specifies a cookie name prefix.  Its value must be a valid HTTP cookie name as defined in RFC 6265 section 4.1.
+     */
     @JsonProperty("namePrefix")
     public String getNamePrefix() {
         return namePrefix;
     }
 
+    /**
+     * namePrefix specifies a cookie name prefix.  Its value must be a valid HTTP cookie name as defined in RFC 6265 section 4.1.
+     */
     @JsonProperty("namePrefix")
     public void setNamePrefix(String namePrefix) {
         this.namePrefix = namePrefix;

@@ -97,22 +97,34 @@ public class RequiredHSTSPolicy implements Editable<RequiredHSTSPolicyBuilder>, 
         this.preloadPolicy = preloadPolicy;
     }
 
+    /**
+     * domainPatterns is a list of domains for which the desired HSTS annotations are required. If domainPatterns is specified and a route is created with a spec.host matching one of the domains, the route must specify the HSTS Policy components described in the matching RequiredHSTSPolicy.<br><p> <br><p> The use of wildcards is allowed like this: &#42;.foo.com matches everything under foo.com. foo.com only matches foo.com, so to cover foo.com and everything under it, you must specify &#42;both&#42;.
+     */
     @JsonProperty("domainPatterns")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getDomainPatterns() {
         return domainPatterns;
     }
 
+    /**
+     * domainPatterns is a list of domains for which the desired HSTS annotations are required. If domainPatterns is specified and a route is created with a spec.host matching one of the domains, the route must specify the HSTS Policy components described in the matching RequiredHSTSPolicy.<br><p> <br><p> The use of wildcards is allowed like this: &#42;.foo.com matches everything under foo.com. foo.com only matches foo.com, so to cover foo.com and everything under it, you must specify &#42;both&#42;.
+     */
     @JsonProperty("domainPatterns")
     public void setDomainPatterns(List<String> domainPatterns) {
         this.domainPatterns = domainPatterns;
     }
 
+    /**
+     * includeSubDomainsPolicy means the HSTS Policy should apply to any subdomains of the host's domain name.  Thus, for the host bar.foo.com, if includeSubDomainsPolicy was set to RequireIncludeSubDomains: - the host app.bar.foo.com would inherit the HSTS Policy of bar.foo.com - the host bar.foo.com would inherit the HSTS Policy of bar.foo.com - the host foo.com would NOT inherit the HSTS Policy of bar.foo.com - the host def.foo.com would NOT inherit the HSTS Policy of bar.foo.com
+     */
     @JsonProperty("includeSubDomainsPolicy")
     public String getIncludeSubDomainsPolicy() {
         return includeSubDomainsPolicy;
     }
 
+    /**
+     * includeSubDomainsPolicy means the HSTS Policy should apply to any subdomains of the host's domain name.  Thus, for the host bar.foo.com, if includeSubDomainsPolicy was set to RequireIncludeSubDomains: - the host app.bar.foo.com would inherit the HSTS Policy of bar.foo.com - the host bar.foo.com would inherit the HSTS Policy of bar.foo.com - the host foo.com would NOT inherit the HSTS Policy of bar.foo.com - the host def.foo.com would NOT inherit the HSTS Policy of bar.foo.com
+     */
     @JsonProperty("includeSubDomainsPolicy")
     public void setIncludeSubDomainsPolicy(String includeSubDomainsPolicy) {
         this.includeSubDomainsPolicy = includeSubDomainsPolicy;
@@ -138,11 +150,17 @@ public class RequiredHSTSPolicy implements Editable<RequiredHSTSPolicyBuilder>, 
         this.namespaceSelector = namespaceSelector;
     }
 
+    /**
+     * preloadPolicy directs the client to include hosts in its host preload list so that it never needs to do an initial load to get the HSTS header (note that this is not defined in RFC 6797 and is therefore client implementation-dependent).
+     */
     @JsonProperty("preloadPolicy")
     public String getPreloadPolicy() {
         return preloadPolicy;
     }
 
+    /**
+     * preloadPolicy directs the client to include hosts in its host preload list so that it never needs to do an initial load to get the HSTS header (note that this is not defined in RFC 6797 and is therefore client implementation-dependent).
+     */
     @JsonProperty("preloadPolicy")
     public void setPreloadPolicy(String preloadPolicy) {
         this.preloadPolicy = preloadPolicy;

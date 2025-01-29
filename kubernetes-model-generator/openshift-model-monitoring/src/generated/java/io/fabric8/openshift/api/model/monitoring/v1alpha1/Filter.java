@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Filter name and value pairs to limit the discovery process to a subset of available resources.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class Filter implements Editable<FilterBuilder>, KubernetesResource
         this.values = values;
     }
 
+    /**
+     * Name of the Filter.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name of the Filter.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Value to filter on.
+     */
     @JsonProperty("values")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getValues() {
         return values;
     }
 
+    /**
+     * Value to filter on.
+     */
     @JsonProperty("values")
     public void setValues(List<String> values) {
         this.values = values;

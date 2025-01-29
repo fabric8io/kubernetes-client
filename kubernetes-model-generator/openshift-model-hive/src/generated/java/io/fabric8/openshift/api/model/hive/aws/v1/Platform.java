@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Platform stores all the global configuration that all machinesets use.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -95,52 +98,82 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
         this.userTags = userTags;
     }
 
+    /**
+     * Platform stores all the global configuration that all machinesets use.
+     */
     @JsonProperty("credentialsAssumeRole")
     public AssumeRole getCredentialsAssumeRole() {
         return credentialsAssumeRole;
     }
 
+    /**
+     * Platform stores all the global configuration that all machinesets use.
+     */
     @JsonProperty("credentialsAssumeRole")
     public void setCredentialsAssumeRole(AssumeRole credentialsAssumeRole) {
         this.credentialsAssumeRole = credentialsAssumeRole;
     }
 
+    /**
+     * Platform stores all the global configuration that all machinesets use.
+     */
     @JsonProperty("credentialsSecretRef")
     public LocalObjectReference getCredentialsSecretRef() {
         return credentialsSecretRef;
     }
 
+    /**
+     * Platform stores all the global configuration that all machinesets use.
+     */
     @JsonProperty("credentialsSecretRef")
     public void setCredentialsSecretRef(LocalObjectReference credentialsSecretRef) {
         this.credentialsSecretRef = credentialsSecretRef;
     }
 
+    /**
+     * Platform stores all the global configuration that all machinesets use.
+     */
     @JsonProperty("privateLink")
     public PrivateLinkAccess getPrivateLink() {
         return privateLink;
     }
 
+    /**
+     * Platform stores all the global configuration that all machinesets use.
+     */
     @JsonProperty("privateLink")
     public void setPrivateLink(PrivateLinkAccess privateLink) {
         this.privateLink = privateLink;
     }
 
+    /**
+     * Region specifies the AWS region where the cluster will be created.
+     */
     @JsonProperty("region")
     public String getRegion() {
         return region;
     }
 
+    /**
+     * Region specifies the AWS region where the cluster will be created.
+     */
     @JsonProperty("region")
     public void setRegion(String region) {
         this.region = region;
     }
 
+    /**
+     * UserTags specifies additional tags for AWS resources created for the cluster.
+     */
     @JsonProperty("userTags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getUserTags() {
         return userTags;
     }
 
+    /**
+     * UserTags specifies additional tags for AWS resources created for the cluster.
+     */
     @JsonProperty("userTags")
     public void setUserTags(Map<String, String> userTags) {
         this.userTags = userTags;

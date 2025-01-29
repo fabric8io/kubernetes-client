@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * TimeoutFields allows granular specification of pipeline, task, and finally timeouts
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -87,31 +90,49 @@ public class TimeoutFields implements Editable<TimeoutFieldsBuilder>, Kubernetes
         this.tasks = tasks;
     }
 
+    /**
+     * TimeoutFields allows granular specification of pipeline, task, and finally timeouts
+     */
     @JsonProperty("finally")
     public Duration getFinally() {
         return _finally;
     }
 
+    /**
+     * TimeoutFields allows granular specification of pipeline, task, and finally timeouts
+     */
     @JsonProperty("finally")
     public void setFinally(Duration _finally) {
         this._finally = _finally;
     }
 
+    /**
+     * TimeoutFields allows granular specification of pipeline, task, and finally timeouts
+     */
     @JsonProperty("pipeline")
     public Duration getPipeline() {
         return pipeline;
     }
 
+    /**
+     * TimeoutFields allows granular specification of pipeline, task, and finally timeouts
+     */
     @JsonProperty("pipeline")
     public void setPipeline(Duration pipeline) {
         this.pipeline = pipeline;
     }
 
+    /**
+     * TimeoutFields allows granular specification of pipeline, task, and finally timeouts
+     */
     @JsonProperty("tasks")
     public Duration getTasks() {
         return tasks;
     }
 
+    /**
+     * TimeoutFields allows granular specification of pipeline, task, and finally timeouts
+     */
     @JsonProperty("tasks")
     public void setTasks(Duration tasks) {
         this.tasks = tasks;

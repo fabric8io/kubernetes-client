@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * FlowSchemaStatus represents the current state of a FlowSchema.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -81,12 +84,18 @@ public class FlowSchemaStatus implements Editable<FlowSchemaStatusBuilder>, Kube
         this.conditions = conditions;
     }
 
+    /**
+     * `conditions` is a list of the current states of FlowSchema.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<FlowSchemaCondition> getConditions() {
         return conditions;
     }
 
+    /**
+     * `conditions` is a list of the current states of FlowSchema.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<FlowSchemaCondition> conditions) {
         this.conditions = conditions;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SpreadConstraintsTerm defines a terminology to spread placement decisions.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class SpreadConstraintsTerm implements Editable<SpreadConstraintsTermBuil
         this.whenUnsatisfiable = whenUnsatisfiable;
     }
 
+    /**
+     * MaxSkew represents the degree to which the workload may be unevenly distributed. Skew is the maximum difference between the number of selected ManagedClusters in a topology and the global minimum. The global minimum is the minimum number of selected ManagedClusters for the topologies within the same TopologyKey. The minimum possible value of MaxSkew is 1, and the default value is 1.
+     */
     @JsonProperty("maxSkew")
     public Integer getMaxSkew() {
         return maxSkew;
     }
 
+    /**
+     * MaxSkew represents the degree to which the workload may be unevenly distributed. Skew is the maximum difference between the number of selected ManagedClusters in a topology and the global minimum. The global minimum is the minimum number of selected ManagedClusters for the topologies within the same TopologyKey. The minimum possible value of MaxSkew is 1, and the default value is 1.
+     */
     @JsonProperty("maxSkew")
     public void setMaxSkew(Integer maxSkew) {
         this.maxSkew = maxSkew;
     }
 
+    /**
+     * TopologyKey is either a label key or a cluster claim name of ManagedClusters.
+     */
     @JsonProperty("topologyKey")
     public String getTopologyKey() {
         return topologyKey;
     }
 
+    /**
+     * TopologyKey is either a label key or a cluster claim name of ManagedClusters.
+     */
     @JsonProperty("topologyKey")
     public void setTopologyKey(String topologyKey) {
         this.topologyKey = topologyKey;
     }
 
+    /**
+     * TopologyKeyType indicates the type of TopologyKey. It could be Label or Claim.
+     */
     @JsonProperty("topologyKeyType")
     public String getTopologyKeyType() {
         return topologyKeyType;
     }
 
+    /**
+     * TopologyKeyType indicates the type of TopologyKey. It could be Label or Claim.
+     */
     @JsonProperty("topologyKeyType")
     public void setTopologyKeyType(String topologyKeyType) {
         this.topologyKeyType = topologyKeyType;
     }
 
+    /**
+     * WhenUnsatisfiable represents the action of the scheduler when MaxSkew cannot be satisfied. It could be DoNotSchedule or ScheduleAnyway. The default value is ScheduleAnyway. DoNotSchedule instructs the scheduler not to schedule more ManagedClusters when MaxSkew is not satisfied. ScheduleAnyway instructs the scheduler to keep scheduling even if MaxSkew is not satisfied.
+     */
     @JsonProperty("whenUnsatisfiable")
     public String getWhenUnsatisfiable() {
         return whenUnsatisfiable;
     }
 
+    /**
+     * WhenUnsatisfiable represents the action of the scheduler when MaxSkew cannot be satisfied. It could be DoNotSchedule or ScheduleAnyway. The default value is ScheduleAnyway. DoNotSchedule instructs the scheduler not to schedule more ManagedClusters when MaxSkew is not satisfied. ScheduleAnyway instructs the scheduler to keep scheduling even if MaxSkew is not satisfied.
+     */
     @JsonProperty("whenUnsatisfiable")
     public void setWhenUnsatisfiable(String whenUnsatisfiable) {
         this.whenUnsatisfiable = whenUnsatisfiable;

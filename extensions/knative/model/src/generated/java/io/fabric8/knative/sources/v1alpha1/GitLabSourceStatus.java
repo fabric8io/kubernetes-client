@@ -37,6 +37,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * GitLabSourceStatus defines the observed state of GitLabSource
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -118,94 +121,148 @@ public class GitLabSourceStatus implements Editable<GitLabSourceStatusBuilder>, 
         this.webhookID = webhookID;
     }
 
+    /**
+     * Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.
+     */
     @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAnnotations() {
         return annotations;
     }
 
+    /**
+     * Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.
+     */
     @JsonProperty("annotations")
     public void setAnnotations(Map<String, String> annotations) {
         this.annotations = annotations;
     }
 
+    /**
+     * GitLabSourceStatus defines the observed state of GitLabSource
+     */
     @JsonProperty("auth")
     public AuthStatus getAuth() {
         return auth;
     }
 
+    /**
+     * GitLabSourceStatus defines the observed state of GitLabSource
+     */
     @JsonProperty("auth")
     public void setAuth(AuthStatus auth) {
         this.auth = auth;
     }
 
+    /**
+     * CloudEventAttributes are the specific attributes that the Source uses as part of its CloudEvents.
+     */
     @JsonProperty("ceAttributes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<CloudEventAttributes> getCeAttributes() {
         return ceAttributes;
     }
 
+    /**
+     * CloudEventAttributes are the specific attributes that the Source uses as part of its CloudEvents.
+     */
     @JsonProperty("ceAttributes")
     public void setCeAttributes(List<CloudEventAttributes> ceAttributes) {
         this.ceAttributes = ceAttributes;
     }
 
+    /**
+     * Conditions the latest available observations of a resource's current state.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Conditions the latest available observations of a resource's current state.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * ObservedGeneration is the 'Generation' of the Service that was last processed by the controller.
+     */
     @JsonProperty("observedGeneration")
     public Long getObservedGeneration() {
         return observedGeneration;
     }
 
+    /**
+     * ObservedGeneration is the 'Generation' of the Service that was last processed by the controller.
+     */
     @JsonProperty("observedGeneration")
     public void setObservedGeneration(Long observedGeneration) {
         this.observedGeneration = observedGeneration;
     }
 
+    /**
+     * SinkAudience is the OIDC audience of the sink.
+     */
     @JsonProperty("sinkAudience")
     public String getSinkAudience() {
         return sinkAudience;
     }
 
+    /**
+     * SinkAudience is the OIDC audience of the sink.
+     */
     @JsonProperty("sinkAudience")
     public void setSinkAudience(String sinkAudience) {
         this.sinkAudience = sinkAudience;
     }
 
+    /**
+     * SinkCACerts are Certification Authority (CA) certificates in PEM format according to https://www.rfc-editor.org/rfc/rfc7468.
+     */
     @JsonProperty("sinkCACerts")
     public String getSinkCACerts() {
         return sinkCACerts;
     }
 
+    /**
+     * SinkCACerts are Certification Authority (CA) certificates in PEM format according to https://www.rfc-editor.org/rfc/rfc7468.
+     */
     @JsonProperty("sinkCACerts")
     public void setSinkCACerts(String sinkCACerts) {
         this.sinkCACerts = sinkCACerts;
     }
 
+    /**
+     * GitLabSourceStatus defines the observed state of GitLabSource
+     */
     @JsonProperty("sinkUri")
     public String getSinkUri() {
         return sinkUri;
     }
 
+    /**
+     * GitLabSourceStatus defines the observed state of GitLabSource
+     */
     @JsonProperty("sinkUri")
     public void setSinkUri(String sinkUri) {
         this.sinkUri = sinkUri;
     }
 
+    /**
+     * WebhookID of the project hook registered with GitLab
+     */
     @JsonProperty("webhookID")
     public Integer getWebhookID() {
         return webhookID;
     }
 
+    /**
+     * WebhookID of the project hook registered with GitLab
+     */
     @JsonProperty("webhookID")
     public void setWebhookID(Integer webhookID) {
         this.webhookID = webhookID;

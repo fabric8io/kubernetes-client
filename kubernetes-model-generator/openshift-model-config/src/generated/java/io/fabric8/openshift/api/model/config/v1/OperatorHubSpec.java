@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * OperatorHubSpec defines the desired state of OperatorHub
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class OperatorHubSpec implements Editable<OperatorHubSpecBuilder>, Kubern
         this.sources = sources;
     }
 
+    /**
+     * disableAllDefaultSources allows you to disable all the default hub sources. If this is true, a specific entry in sources can be used to enable a default source. If this is false, a specific entry in sources can be used to disable or enable a default source.
+     */
     @JsonProperty("disableAllDefaultSources")
     public Boolean getDisableAllDefaultSources() {
         return disableAllDefaultSources;
     }
 
+    /**
+     * disableAllDefaultSources allows you to disable all the default hub sources. If this is true, a specific entry in sources can be used to enable a default source. If this is false, a specific entry in sources can be used to disable or enable a default source.
+     */
     @JsonProperty("disableAllDefaultSources")
     public void setDisableAllDefaultSources(Boolean disableAllDefaultSources) {
         this.disableAllDefaultSources = disableAllDefaultSources;
     }
 
+    /**
+     * sources is the list of default hub sources and their configuration. If the list is empty, it implies that the default hub sources are enabled on the cluster unless disableAllDefaultSources is true. If disableAllDefaultSources is true and sources is not empty, the configuration present in sources will take precedence. The list of default hub sources and their current state will always be reflected in the status block.
+     */
     @JsonProperty("sources")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<HubSource> getSources() {
         return sources;
     }
 
+    /**
+     * sources is the list of default hub sources and their configuration. If the list is empty, it implies that the default hub sources are enabled on the cluster unless disableAllDefaultSources is true. If disableAllDefaultSources is true and sources is not empty, the configuration present in sources will take precedence. The list of default hub sources and their current state will always be reflected in the status block.
+     */
     @JsonProperty("sources")
     public void setSources(List<HubSource> sources) {
         this.sources = sources;

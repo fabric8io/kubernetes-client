@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * APIResourceReference is a reference to a Kubernetes resource type that the referrer utilizes.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class APIResourceReference implements Editable<APIResourceReferenceBuilde
         this.version = version;
     }
 
+    /**
+     * Kind of the referenced resource type.
+     */
     @JsonProperty("kind")
     public String getKind() {
         return kind;
     }
 
+    /**
+     * Kind of the referenced resource type.
+     */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * Plural name of the referenced resource type (CustomResourceDefinition.Spec.Names[].Plural). Empty string if the referenced resource type is not a custom resource.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Plural name of the referenced resource type (CustomResourceDefinition.Spec.Names[].Plural). Empty string if the referenced resource type is not a custom resource.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * API Version of the referenced resource type.
+     */
     @JsonProperty("version")
     public String getVersion() {
         return version;
     }
 
+    /**
+     * API Version of the referenced resource type.
+     */
     @JsonProperty("version")
     public void setVersion(String version) {
         this.version = version;

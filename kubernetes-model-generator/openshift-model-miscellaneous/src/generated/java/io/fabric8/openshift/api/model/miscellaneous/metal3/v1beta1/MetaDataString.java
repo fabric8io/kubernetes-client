@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * MetaDataString contains the information to render the string.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class MetaDataString implements Editable<MetaDataStringBuilder>, Kubernet
         this.value = value;
     }
 
+    /**
+     * Key will be used as the key to set in the metadata map for cloud-init
+     */
     @JsonProperty("key")
     public String getKey() {
         return key;
     }
 
+    /**
+     * Key will be used as the key to set in the metadata map for cloud-init
+     */
     @JsonProperty("key")
     public void setKey(String key) {
         this.key = key;
     }
 
+    /**
+     * Value is the string to render.
+     */
     @JsonProperty("value")
     public String getValue() {
         return value;
     }
 
+    /**
+     * Value is the string to render.
+     */
     @JsonProperty("value")
     public void setValue(String value) {
         this.value = value;

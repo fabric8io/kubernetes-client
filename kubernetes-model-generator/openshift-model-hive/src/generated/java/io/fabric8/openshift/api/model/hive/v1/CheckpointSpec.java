@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * CheckpointSpec defines the metadata around the Hive objects state in the namespace at the time of the last backup.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class CheckpointSpec implements Editable<CheckpointSpecBuilder>, Kubernet
         this.lastBackupTime = lastBackupTime;
     }
 
+    /**
+     * LastBackupChecksum is the checksum of all Hive objects in the namespace at the time of the last backup.
+     */
     @JsonProperty("lastBackupChecksum")
     public String getLastBackupChecksum() {
         return lastBackupChecksum;
     }
 
+    /**
+     * LastBackupChecksum is the checksum of all Hive objects in the namespace at the time of the last backup.
+     */
     @JsonProperty("lastBackupChecksum")
     public void setLastBackupChecksum(String lastBackupChecksum) {
         this.lastBackupChecksum = lastBackupChecksum;
     }
 
+    /**
+     * CheckpointSpec defines the metadata around the Hive objects state in the namespace at the time of the last backup.
+     */
     @JsonProperty("lastBackupRef")
     public BackupReference getLastBackupRef() {
         return lastBackupRef;
     }
 
+    /**
+     * CheckpointSpec defines the metadata around the Hive objects state in the namespace at the time of the last backup.
+     */
     @JsonProperty("lastBackupRef")
     public void setLastBackupRef(BackupReference lastBackupRef) {
         this.lastBackupRef = lastBackupRef;
     }
 
+    /**
+     * CheckpointSpec defines the metadata around the Hive objects state in the namespace at the time of the last backup.
+     */
     @JsonProperty("lastBackupTime")
     public String getLastBackupTime() {
         return lastBackupTime;
     }
 
+    /**
+     * CheckpointSpec defines the metadata around the Hive objects state in the namespace at the time of the last backup.
+     */
     @JsonProperty("lastBackupTime")
     public void setLastBackupTime(String lastBackupTime) {
         this.lastBackupTime = lastBackupTime;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * StringSourceSpec specifies a string value, or external location
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class StringSourceSpec implements Editable<StringSourceSpecBuilder>, Kube
         this.value = value;
     }
 
+    /**
+     * Env specifies an envvar containing the cleartext value, or an encrypted value if the keyFile is specified.
+     */
     @JsonProperty("env")
     public String getEnv() {
         return env;
     }
 
+    /**
+     * Env specifies an envvar containing the cleartext value, or an encrypted value if the keyFile is specified.
+     */
     @JsonProperty("env")
     public void setEnv(String env) {
         this.env = env;
     }
 
+    /**
+     * File references a file containing the cleartext value, or an encrypted value if a keyFile is specified.
+     */
     @JsonProperty("file")
     public String getFile() {
         return file;
     }
 
+    /**
+     * File references a file containing the cleartext value, or an encrypted value if a keyFile is specified.
+     */
     @JsonProperty("file")
     public void setFile(String file) {
         this.file = file;
     }
 
+    /**
+     * KeyFile references a file containing the key to use to decrypt the value.
+     */
     @JsonProperty("keyFile")
     public String getKeyFile() {
         return keyFile;
     }
 
+    /**
+     * KeyFile references a file containing the key to use to decrypt the value.
+     */
     @JsonProperty("keyFile")
     public void setKeyFile(String keyFile) {
         this.keyFile = keyFile;
     }
 
+    /**
+     * Value specifies the cleartext value, or an encrypted value if keyFile is specified.
+     */
     @JsonProperty("value")
     public String getValue() {
         return value;
     }
 
+    /**
+     * Value specifies the cleartext value, or an encrypted value if keyFile is specified.
+     */
     @JsonProperty("value")
     public void setValue(String value) {
         this.value = value;

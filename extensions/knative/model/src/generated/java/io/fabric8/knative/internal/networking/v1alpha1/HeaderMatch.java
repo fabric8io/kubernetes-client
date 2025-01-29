@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * HeaderMatch represents a matching value of Headers in HTTPIngressPath. Currently, only the exact matching is supported.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class HeaderMatch implements Editable<HeaderMatchBuilder>, KubernetesReso
         this.exact = exact;
     }
 
+    /**
+     * HeaderMatch represents a matching value of Headers in HTTPIngressPath. Currently, only the exact matching is supported.
+     */
     @JsonProperty("exact")
     public String getExact() {
         return exact;
     }
 
+    /**
+     * HeaderMatch represents a matching value of Headers in HTTPIngressPath. Currently, only the exact matching is supported.
+     */
     @JsonProperty("exact")
     public void setExact(String exact) {
         this.exact = exact;

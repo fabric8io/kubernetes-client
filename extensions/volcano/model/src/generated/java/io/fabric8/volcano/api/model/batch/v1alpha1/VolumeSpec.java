@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * VolumeSpec defines the specification of Volume, e.g. PVC.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -87,31 +90,49 @@ public class VolumeSpec implements Editable<VolumeSpecBuilder>, KubernetesResour
         this.volumeClaimName = volumeClaimName;
     }
 
+    /**
+     * Path within the container at which the volume should be mounted.  Must not contain ':'.
+     */
     @JsonProperty("mountPath")
     public String getMountPath() {
         return mountPath;
     }
 
+    /**
+     * Path within the container at which the volume should be mounted.  Must not contain ':'.
+     */
     @JsonProperty("mountPath")
     public void setMountPath(String mountPath) {
         this.mountPath = mountPath;
     }
 
+    /**
+     * VolumeSpec defines the specification of Volume, e.g. PVC.
+     */
     @JsonProperty("volumeClaim")
     public PersistentVolumeClaimSpec getVolumeClaim() {
         return volumeClaim;
     }
 
+    /**
+     * VolumeSpec defines the specification of Volume, e.g. PVC.
+     */
     @JsonProperty("volumeClaim")
     public void setVolumeClaim(PersistentVolumeClaimSpec volumeClaim) {
         this.volumeClaim = volumeClaim;
     }
 
+    /**
+     * defined the PVC name
+     */
     @JsonProperty("volumeClaimName")
     public String getVolumeClaimName() {
         return volumeClaimName;
     }
 
+    /**
+     * defined the PVC name
+     */
     @JsonProperty("volumeClaimName")
     public void setVolumeClaimName(String volumeClaimName) {
         this.volumeClaimName = volumeClaimName;

@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * EmbeddedRunSpec allows custom task definitions to be embedded
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -92,41 +95,65 @@ public class EmbeddedRunSpec implements Editable<EmbeddedRunSpecBuilder>, Kubern
         this.spec = spec;
     }
 
+    /**
+     * EmbeddedRunSpec allows custom task definitions to be embedded
+     */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
         return apiVersion;
     }
 
+    /**
+     * EmbeddedRunSpec allows custom task definitions to be embedded
+     */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
+    /**
+     * EmbeddedRunSpec allows custom task definitions to be embedded
+     */
     @JsonProperty("kind")
     public String getKind() {
         return kind;
     }
 
+    /**
+     * EmbeddedRunSpec allows custom task definitions to be embedded
+     */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * EmbeddedRunSpec allows custom task definitions to be embedded
+     */
     @JsonProperty("metadata")
     public PipelineTaskMetadata getMetadata() {
         return metadata;
     }
 
+    /**
+     * EmbeddedRunSpec allows custom task definitions to be embedded
+     */
     @JsonProperty("metadata")
     public void setMetadata(PipelineTaskMetadata metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * EmbeddedRunSpec allows custom task definitions to be embedded
+     */
     @JsonProperty("spec")
     public Object getSpec() {
         return spec;
     }
 
+    /**
+     * EmbeddedRunSpec allows custom task definitions to be embedded
+     */
     @JsonProperty("spec")
     @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
     public void setSpec(Object spec) {

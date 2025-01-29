@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * InhibitRule defines an inhibition rule that allows to mute alerts when other alerts are already firing. See https://prometheus.io/docs/alerting/latest/configuration/#inhibit_rule
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -91,34 +94,52 @@ public class InhibitRule implements Editable<InhibitRuleBuilder>, KubernetesReso
         this.targetMatch = targetMatch;
     }
 
+    /**
+     * Labels that must have an equal value in the source and target alert for the inhibition to take effect.
+     */
     @JsonProperty("equal")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getEqual() {
         return equal;
     }
 
+    /**
+     * Labels that must have an equal value in the source and target alert for the inhibition to take effect.
+     */
     @JsonProperty("equal")
     public void setEqual(List<String> equal) {
         this.equal = equal;
     }
 
+    /**
+     * Matchers for which one or more alerts have to exist for the inhibition to take effect. The operator enforces that the alert matches the resource's namespace.
+     */
     @JsonProperty("sourceMatch")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Matcher> getSourceMatch() {
         return sourceMatch;
     }
 
+    /**
+     * Matchers for which one or more alerts have to exist for the inhibition to take effect. The operator enforces that the alert matches the resource's namespace.
+     */
     @JsonProperty("sourceMatch")
     public void setSourceMatch(List<Matcher> sourceMatch) {
         this.sourceMatch = sourceMatch;
     }
 
+    /**
+     * Matchers that have to be fulfilled in the alerts to be muted. The operator enforces that the alert matches the resource's namespace.
+     */
     @JsonProperty("targetMatch")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Matcher> getTargetMatch() {
         return targetMatch;
     }
 
+    /**
+     * Matchers that have to be fulfilled in the alerts to be muted. The operator enforces that the alert matches the resource's namespace.
+     */
     @JsonProperty("targetMatch")
     public void setTargetMatch(List<Matcher> targetMatch) {
         this.targetMatch = targetMatch;

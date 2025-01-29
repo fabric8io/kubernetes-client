@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DNSRecordSpec contains the details of a DNS record.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -97,52 +100,82 @@ public class DNSRecordSpec implements Editable<DNSRecordSpecBuilder>, Kubernetes
         this.targets = targets;
     }
 
+    /**
+     * dnsManagementPolicy denotes the current policy applied on the DNS record. Records that have policy set as "Unmanaged" are ignored by the ingress operator.  This means that the DNS record on the cloud provider is not managed by the operator, and the "Published" status condition will be updated to "Unknown" status, since it is externally managed. Any existing record on the cloud provider can be deleted at the discretion of the cluster admin.<br><p> <br><p> This field defaults to Managed. Valid values are "Managed" and "Unmanaged".
+     */
     @JsonProperty("dnsManagementPolicy")
     public String getDnsManagementPolicy() {
         return dnsManagementPolicy;
     }
 
+    /**
+     * dnsManagementPolicy denotes the current policy applied on the DNS record. Records that have policy set as "Unmanaged" are ignored by the ingress operator.  This means that the DNS record on the cloud provider is not managed by the operator, and the "Published" status condition will be updated to "Unknown" status, since it is externally managed. Any existing record on the cloud provider can be deleted at the discretion of the cluster admin.<br><p> <br><p> This field defaults to Managed. Valid values are "Managed" and "Unmanaged".
+     */
     @JsonProperty("dnsManagementPolicy")
     public void setDnsManagementPolicy(String dnsManagementPolicy) {
         this.dnsManagementPolicy = dnsManagementPolicy;
     }
 
+    /**
+     * dnsName is the hostname of the DNS record
+     */
     @JsonProperty("dnsName")
     public String getDnsName() {
         return dnsName;
     }
 
+    /**
+     * dnsName is the hostname of the DNS record
+     */
     @JsonProperty("dnsName")
     public void setDnsName(String dnsName) {
         this.dnsName = dnsName;
     }
 
+    /**
+     * recordTTL is the record TTL in seconds. If zero, the default is 30. RecordTTL will not be used in AWS regions Alias targets, but will be used in CNAME targets, per AWS API contract.
+     */
     @JsonProperty("recordTTL")
     public Long getRecordTTL() {
         return recordTTL;
     }
 
+    /**
+     * recordTTL is the record TTL in seconds. If zero, the default is 30. RecordTTL will not be used in AWS regions Alias targets, but will be used in CNAME targets, per AWS API contract.
+     */
     @JsonProperty("recordTTL")
     public void setRecordTTL(Long recordTTL) {
         this.recordTTL = recordTTL;
     }
 
+    /**
+     * recordType is the DNS record type. For example, "A" or "CNAME".
+     */
     @JsonProperty("recordType")
     public String getRecordType() {
         return recordType;
     }
 
+    /**
+     * recordType is the DNS record type. For example, "A" or "CNAME".
+     */
     @JsonProperty("recordType")
     public void setRecordType(String recordType) {
         this.recordType = recordType;
     }
 
+    /**
+     * targets are record targets.
+     */
     @JsonProperty("targets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getTargets() {
         return targets;
     }
 
+    /**
+     * targets are record targets.
+     */
     @JsonProperty("targets")
     public void setTargets(List<String> targets) {
         this.targets = targets;

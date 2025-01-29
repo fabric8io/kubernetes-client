@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * CredentialsStatus contains the reference and version of the last set of BMC credentials the controller was able to validate.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -83,21 +86,33 @@ public class CredentialsStatus implements Editable<CredentialsStatusBuilder>, Ku
         this.credentialsVersion = credentialsVersion;
     }
 
+    /**
+     * CredentialsStatus contains the reference and version of the last set of BMC credentials the controller was able to validate.
+     */
     @JsonProperty("credentials")
     public SecretReference getCredentials() {
         return credentials;
     }
 
+    /**
+     * CredentialsStatus contains the reference and version of the last set of BMC credentials the controller was able to validate.
+     */
     @JsonProperty("credentials")
     public void setCredentials(SecretReference credentials) {
         this.credentials = credentials;
     }
 
+    /**
+     * CredentialsStatus contains the reference and version of the last set of BMC credentials the controller was able to validate.
+     */
     @JsonProperty("credentialsVersion")
     public String getCredentialsVersion() {
         return credentialsVersion;
     }
 
+    /**
+     * CredentialsStatus contains the reference and version of the last set of BMC credentials the controller was able to validate.
+     */
     @JsonProperty("credentialsVersion")
     public void setCredentialsVersion(String credentialsVersion) {
         this.credentialsVersion = credentialsVersion;

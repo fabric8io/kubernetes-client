@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Status of the migration.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -81,12 +84,18 @@ public class StorageVersionMigrationStatus implements Editable<StorageVersionMig
         this.conditions = conditions;
     }
 
+    /**
+     * The latest available observations of the migration's current state.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<StorageVersionMigrationStatusConditions> getConditions() {
         return conditions;
     }
 
+    /**
+     * The latest available observations of the migration's current state.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<StorageVersionMigrationStatusConditions> conditions) {
         this.conditions = conditions;

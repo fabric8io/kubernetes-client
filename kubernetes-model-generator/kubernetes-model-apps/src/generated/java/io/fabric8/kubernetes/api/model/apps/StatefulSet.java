@@ -37,6 +37,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * StatefulSet represents a set of pods with consistent identities. Identities are defined as:<br><p>   - Network: A single stable DNS and hostname.<br><p>   - Storage: As many VolumeClaims as requested.<br><p> <br><p> The StatefulSet guarantees that a given network identity will always map to the same storage identity.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -76,14 +79,8 @@ import lombok.experimental.Accessors;
 public class StatefulSet implements Editable<StatefulSetBuilder>, HasMetadata, Namespaced
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "apps/v1";
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "StatefulSet";
     @JsonProperty("metadata")
@@ -111,7 +108,7 @@ public class StatefulSet implements Editable<StatefulSetBuilder>, HasMetadata, N
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -119,7 +116,7 @@ public class StatefulSet implements Editable<StatefulSetBuilder>, HasMetadata, N
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -127,7 +124,7 @@ public class StatefulSet implements Editable<StatefulSetBuilder>, HasMetadata, N
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -135,38 +132,56 @@ public class StatefulSet implements Editable<StatefulSetBuilder>, HasMetadata, N
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * StatefulSet represents a set of pods with consistent identities. Identities are defined as:<br><p>   - Network: A single stable DNS and hostname.<br><p>   - Storage: As many VolumeClaims as requested.<br><p> <br><p> The StatefulSet guarantees that a given network identity will always map to the same storage identity.
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * StatefulSet represents a set of pods with consistent identities. Identities are defined as:<br><p>   - Network: A single stable DNS and hostname.<br><p>   - Storage: As many VolumeClaims as requested.<br><p> <br><p> The StatefulSet guarantees that a given network identity will always map to the same storage identity.
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * StatefulSet represents a set of pods with consistent identities. Identities are defined as:<br><p>   - Network: A single stable DNS and hostname.<br><p>   - Storage: As many VolumeClaims as requested.<br><p> <br><p> The StatefulSet guarantees that a given network identity will always map to the same storage identity.
+     */
     @JsonProperty("spec")
     public StatefulSetSpec getSpec() {
         return spec;
     }
 
+    /**
+     * StatefulSet represents a set of pods with consistent identities. Identities are defined as:<br><p>   - Network: A single stable DNS and hostname.<br><p>   - Storage: As many VolumeClaims as requested.<br><p> <br><p> The StatefulSet guarantees that a given network identity will always map to the same storage identity.
+     */
     @JsonProperty("spec")
     public void setSpec(StatefulSetSpec spec) {
         this.spec = spec;
     }
 
+    /**
+     * StatefulSet represents a set of pods with consistent identities. Identities are defined as:<br><p>   - Network: A single stable DNS and hostname.<br><p>   - Storage: As many VolumeClaims as requested.<br><p> <br><p> The StatefulSet guarantees that a given network identity will always map to the same storage identity.
+     */
     @JsonProperty("status")
     public StatefulSetStatus getStatus() {
         return status;
     }
 
+    /**
+     * StatefulSet represents a set of pods with consistent identities. Identities are defined as:<br><p>   - Network: A single stable DNS and hostname.<br><p>   - Storage: As many VolumeClaims as requested.<br><p> <br><p> The StatefulSet guarantees that a given network identity will always map to the same storage identity.
+     */
     @JsonProperty("status")
     public void setStatus(StatefulSetStatus status) {
         this.status = status;

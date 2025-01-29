@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * CouchDbSourceSpec defines the desired state of CouchDbSource
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -95,51 +98,81 @@ public class CouchDbSourceSpec implements Editable<CouchDbSourceSpecBuilder>, Ku
         this.sink = sink;
     }
 
+    /**
+     * CouchDbSourceSpec defines the desired state of CouchDbSource
+     */
     @JsonProperty("credentials")
     public ObjectReference getCredentials() {
         return credentials;
     }
 
+    /**
+     * CouchDbSourceSpec defines the desired state of CouchDbSource
+     */
     @JsonProperty("credentials")
     public void setCredentials(ObjectReference credentials) {
         this.credentials = credentials;
     }
 
+    /**
+     * Database is the database to watch for changes
+     */
     @JsonProperty("database")
     public String getDatabase() {
         return database;
     }
 
+    /**
+     * Database is the database to watch for changes
+     */
     @JsonProperty("database")
     public void setDatabase(String database) {
         this.database = database;
     }
 
+    /**
+     * Feed changes how CouchDB sends the response. More information: https://docs.couchdb.org/en/stable/api/database/changes.html#changes-feeds
+     */
     @JsonProperty("feed")
     public String getFeed() {
         return feed;
     }
 
+    /**
+     * Feed changes how CouchDB sends the response. More information: https://docs.couchdb.org/en/stable/api/database/changes.html#changes-feeds
+     */
     @JsonProperty("feed")
     public void setFeed(String feed) {
         this.feed = feed;
     }
 
+    /**
+     * ServiceAccountName holds the name of the Kubernetes service account as which the underlying K8s resources should be run. If unspecified this will default to the "default" service account for the namespace in which the CouchDbSource exists.
+     */
     @JsonProperty("serviceAccountName")
     public String getServiceAccountName() {
         return serviceAccountName;
     }
 
+    /**
+     * ServiceAccountName holds the name of the Kubernetes service account as which the underlying K8s resources should be run. If unspecified this will default to the "default" service account for the namespace in which the CouchDbSource exists.
+     */
     @JsonProperty("serviceAccountName")
     public void setServiceAccountName(String serviceAccountName) {
         this.serviceAccountName = serviceAccountName;
     }
 
+    /**
+     * CouchDbSourceSpec defines the desired state of CouchDbSource
+     */
     @JsonProperty("sink")
     public Destination getSink() {
         return sink;
     }
 
+    /**
+     * CouchDbSourceSpec defines the desired state of CouchDbSource
+     */
     @JsonProperty("sink")
     public void setSink(Destination sink) {
         this.sink = sink;

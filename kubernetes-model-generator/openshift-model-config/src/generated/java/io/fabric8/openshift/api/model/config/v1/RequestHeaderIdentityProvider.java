@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * RequestHeaderIdentityProvider provides identities for users authenticating using request header credentials
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -113,86 +116,134 @@ public class RequestHeaderIdentityProvider implements Editable<RequestHeaderIden
         this.preferredUsernameHeaders = preferredUsernameHeaders;
     }
 
+    /**
+     * RequestHeaderIdentityProvider provides identities for users authenticating using request header credentials
+     */
     @JsonProperty("ca")
     public ConfigMapNameReference getCa() {
         return ca;
     }
 
+    /**
+     * RequestHeaderIdentityProvider provides identities for users authenticating using request header credentials
+     */
     @JsonProperty("ca")
     public void setCa(ConfigMapNameReference ca) {
         this.ca = ca;
     }
 
+    /**
+     * challengeURL is a URL to redirect unauthenticated /authorize requests to Unauthenticated requests from OAuth clients which expect WWW-Authenticate challenges will be redirected here. ${url} is replaced with the current URL, escaped to be safe in a query parameter<br><p>   https://www.example.com/sso-login?then=${url}<br><p> ${query} is replaced with the current query string<br><p>   https://www.example.com/auth-proxy/oauth/authorize?${query}<br><p> Required when challenge is set to true.
+     */
     @JsonProperty("challengeURL")
     public String getChallengeURL() {
         return challengeURL;
     }
 
+    /**
+     * challengeURL is a URL to redirect unauthenticated /authorize requests to Unauthenticated requests from OAuth clients which expect WWW-Authenticate challenges will be redirected here. ${url} is replaced with the current URL, escaped to be safe in a query parameter<br><p>   https://www.example.com/sso-login?then=${url}<br><p> ${query} is replaced with the current query string<br><p>   https://www.example.com/auth-proxy/oauth/authorize?${query}<br><p> Required when challenge is set to true.
+     */
     @JsonProperty("challengeURL")
     public void setChallengeURL(String challengeURL) {
         this.challengeURL = challengeURL;
     }
 
+    /**
+     * clientCommonNames is an optional list of common names to require a match from. If empty, any client certificate validated against the clientCA bundle is considered authoritative.
+     */
     @JsonProperty("clientCommonNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getClientCommonNames() {
         return clientCommonNames;
     }
 
+    /**
+     * clientCommonNames is an optional list of common names to require a match from. If empty, any client certificate validated against the clientCA bundle is considered authoritative.
+     */
     @JsonProperty("clientCommonNames")
     public void setClientCommonNames(List<String> clientCommonNames) {
         this.clientCommonNames = clientCommonNames;
     }
 
+    /**
+     * emailHeaders is the set of headers to check for the email address
+     */
     @JsonProperty("emailHeaders")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getEmailHeaders() {
         return emailHeaders;
     }
 
+    /**
+     * emailHeaders is the set of headers to check for the email address
+     */
     @JsonProperty("emailHeaders")
     public void setEmailHeaders(List<String> emailHeaders) {
         this.emailHeaders = emailHeaders;
     }
 
+    /**
+     * headers is the set of headers to check for identity information
+     */
     @JsonProperty("headers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getHeaders() {
         return headers;
     }
 
+    /**
+     * headers is the set of headers to check for identity information
+     */
     @JsonProperty("headers")
     public void setHeaders(List<String> headers) {
         this.headers = headers;
     }
 
+    /**
+     * loginURL is a URL to redirect unauthenticated /authorize requests to Unauthenticated requests from OAuth clients which expect interactive logins will be redirected here ${url} is replaced with the current URL, escaped to be safe in a query parameter<br><p>   https://www.example.com/sso-login?then=${url}<br><p> ${query} is replaced with the current query string<br><p>   https://www.example.com/auth-proxy/oauth/authorize?${query}<br><p> Required when login is set to true.
+     */
     @JsonProperty("loginURL")
     public String getLoginURL() {
         return loginURL;
     }
 
+    /**
+     * loginURL is a URL to redirect unauthenticated /authorize requests to Unauthenticated requests from OAuth clients which expect interactive logins will be redirected here ${url} is replaced with the current URL, escaped to be safe in a query parameter<br><p>   https://www.example.com/sso-login?then=${url}<br><p> ${query} is replaced with the current query string<br><p>   https://www.example.com/auth-proxy/oauth/authorize?${query}<br><p> Required when login is set to true.
+     */
     @JsonProperty("loginURL")
     public void setLoginURL(String loginURL) {
         this.loginURL = loginURL;
     }
 
+    /**
+     * nameHeaders is the set of headers to check for the display name
+     */
     @JsonProperty("nameHeaders")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getNameHeaders() {
         return nameHeaders;
     }
 
+    /**
+     * nameHeaders is the set of headers to check for the display name
+     */
     @JsonProperty("nameHeaders")
     public void setNameHeaders(List<String> nameHeaders) {
         this.nameHeaders = nameHeaders;
     }
 
+    /**
+     * preferredUsernameHeaders is the set of headers to check for the preferred username
+     */
     @JsonProperty("preferredUsernameHeaders")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getPreferredUsernameHeaders() {
         return preferredUsernameHeaders;
     }
 
+    /**
+     * preferredUsernameHeaders is the set of headers to check for the preferred username
+     */
     @JsonProperty("preferredUsernameHeaders")
     public void setPreferredUsernameHeaders(List<String> preferredUsernameHeaders) {
         this.preferredUsernameHeaders = preferredUsernameHeaders;

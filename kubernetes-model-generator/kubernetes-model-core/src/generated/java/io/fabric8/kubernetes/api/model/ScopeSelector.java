@@ -19,6 +19,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * A scope selector represents the AND of the selectors represented by the scoped-resource selector requirements.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -52,12 +55,18 @@ public class ScopeSelector implements Editable<ScopeSelectorBuilder>, Kubernetes
         this.matchExpressions = matchExpressions;
     }
 
+    /**
+     * A list of scope selector requirements by scope of the resources.
+     */
     @JsonProperty("matchExpressions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ScopedResourceSelectorRequirement> getMatchExpressions() {
         return matchExpressions;
     }
 
+    /**
+     * A list of scope selector requirements by scope of the resources.
+     */
     @JsonProperty("matchExpressions")
     public void setMatchExpressions(List<ScopedResourceSelectorRequirement> matchExpressions) {
         this.matchExpressions = matchExpressions;

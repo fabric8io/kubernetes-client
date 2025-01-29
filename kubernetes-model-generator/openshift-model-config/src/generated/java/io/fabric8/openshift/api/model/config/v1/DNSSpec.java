@@ -90,11 +90,17 @@ public class DNSSpec implements Editable<DNSSpecBuilder>, KubernetesResource
         this.publicZone = publicZone;
     }
 
+    /**
+     * baseDomain is the base domain of the cluster. All managed DNS records will be sub-domains of this base.<br><p> <br><p> For example, given the base domain `openshift.example.com`, an API server DNS record may be created for `cluster-api.openshift.example.com`.<br><p> <br><p> Once set, this field cannot be changed.
+     */
     @JsonProperty("baseDomain")
     public String getBaseDomain() {
         return baseDomain;
     }
 
+    /**
+     * baseDomain is the base domain of the cluster. All managed DNS records will be sub-domains of this base.<br><p> <br><p> For example, given the base domain `openshift.example.com`, an API server DNS record may be created for `cluster-api.openshift.example.com`.<br><p> <br><p> Once set, this field cannot be changed.
+     */
     @JsonProperty("baseDomain")
     public void setBaseDomain(String baseDomain) {
         this.baseDomain = baseDomain;

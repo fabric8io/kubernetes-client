@@ -39,6 +39,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * BuildRequest is the resource used to pass parameters to build generator<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,9 +88,6 @@ import lombok.experimental.Accessors;
 public class BuildRequest implements Editable<BuildRequestBuilder>, HasMetadata, Namespaced
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "build.openshift.io/v1";
     @JsonProperty("binary")
@@ -99,9 +99,6 @@ public class BuildRequest implements Editable<BuildRequestBuilder>, HasMetadata,
     private List<EnvVar> env = new ArrayList<>();
     @JsonProperty("from")
     private ObjectReference from;
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "BuildRequest";
     @JsonProperty("lastVersion")
@@ -143,7 +140,7 @@ public class BuildRequest implements Editable<BuildRequestBuilder>, HasMetadata,
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -151,56 +148,80 @@ public class BuildRequest implements Editable<BuildRequestBuilder>, HasMetadata,
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
+    /**
+     * BuildRequest is the resource used to pass parameters to build generator<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("binary")
     public BinaryBuildSource getBinary() {
         return binary;
     }
 
+    /**
+     * BuildRequest is the resource used to pass parameters to build generator<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("binary")
     public void setBinary(BinaryBuildSource binary) {
         this.binary = binary;
     }
 
+    /**
+     * BuildRequest is the resource used to pass parameters to build generator<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("dockerStrategyOptions")
     public DockerStrategyOptions getDockerStrategyOptions() {
         return dockerStrategyOptions;
     }
 
+    /**
+     * BuildRequest is the resource used to pass parameters to build generator<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("dockerStrategyOptions")
     public void setDockerStrategyOptions(DockerStrategyOptions dockerStrategyOptions) {
         this.dockerStrategyOptions = dockerStrategyOptions;
     }
 
+    /**
+     * env contains additional environment variables you want to pass into a builder container.
+     */
     @JsonProperty("env")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<EnvVar> getEnv() {
         return env;
     }
 
+    /**
+     * env contains additional environment variables you want to pass into a builder container.
+     */
     @JsonProperty("env")
     public void setEnv(List<EnvVar> env) {
         this.env = env;
     }
 
+    /**
+     * BuildRequest is the resource used to pass parameters to build generator<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("from")
     public ObjectReference getFrom() {
         return from;
     }
 
+    /**
+     * BuildRequest is the resource used to pass parameters to build generator<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("from")
     public void setFrom(ObjectReference from) {
         this.from = from;
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -208,69 +229,105 @@ public class BuildRequest implements Editable<BuildRequestBuilder>, HasMetadata,
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * lastVersion (optional) is the LastVersion of the BuildConfig that was used to generate the build. If the BuildConfig in the generator doesn't match, a build will not be generated.
+     */
     @JsonProperty("lastVersion")
     public Long getLastVersion() {
         return lastVersion;
     }
 
+    /**
+     * lastVersion (optional) is the LastVersion of the BuildConfig that was used to generate the build. If the BuildConfig in the generator doesn't match, a build will not be generated.
+     */
     @JsonProperty("lastVersion")
     public void setLastVersion(Long lastVersion) {
         this.lastVersion = lastVersion;
     }
 
+    /**
+     * BuildRequest is the resource used to pass parameters to build generator<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * BuildRequest is the resource used to pass parameters to build generator<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * BuildRequest is the resource used to pass parameters to build generator<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("revision")
     public SourceRevision getRevision() {
         return revision;
     }
 
+    /**
+     * BuildRequest is the resource used to pass parameters to build generator<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("revision")
     public void setRevision(SourceRevision revision) {
         this.revision = revision;
     }
 
+    /**
+     * BuildRequest is the resource used to pass parameters to build generator<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("sourceStrategyOptions")
     public SourceStrategyOptions getSourceStrategyOptions() {
         return sourceStrategyOptions;
     }
 
+    /**
+     * BuildRequest is the resource used to pass parameters to build generator<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("sourceStrategyOptions")
     public void setSourceStrategyOptions(SourceStrategyOptions sourceStrategyOptions) {
         this.sourceStrategyOptions = sourceStrategyOptions;
     }
 
+    /**
+     * triggeredBy describes which triggers started the most recent update to the build configuration and contains information about those triggers.
+     */
     @JsonProperty("triggeredBy")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<BuildTriggerCause> getTriggeredBy() {
         return triggeredBy;
     }
 
+    /**
+     * triggeredBy describes which triggers started the most recent update to the build configuration and contains information about those triggers.
+     */
     @JsonProperty("triggeredBy")
     public void setTriggeredBy(List<BuildTriggerCause> triggeredBy) {
         this.triggeredBy = triggeredBy;
     }
 
+    /**
+     * BuildRequest is the resource used to pass parameters to build generator<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("triggeredByImage")
     public ObjectReference getTriggeredByImage() {
         return triggeredByImage;
     }
 
+    /**
+     * BuildRequest is the resource used to pass parameters to build generator<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("triggeredByImage")
     public void setTriggeredByImage(ObjectReference triggeredByImage) {
         this.triggeredByImage = triggeredByImage;

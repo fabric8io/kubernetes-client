@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NamedTagEventList relates a tag to its image history.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,33 +93,51 @@ public class NamedTagEventList implements Editable<NamedTagEventListBuilder>, Ku
         this.tag = tag;
     }
 
+    /**
+     * Conditions is an array of conditions that apply to the tag event list.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TagEventCondition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Conditions is an array of conditions that apply to the tag event list.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<TagEventCondition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * Standard object's metadata.
+     */
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TagEvent> getItems() {
         return items;
     }
 
+    /**
+     * Standard object's metadata.
+     */
     @JsonProperty("items")
     public void setItems(List<TagEvent> items) {
         this.items = items;
     }
 
+    /**
+     * Tag is the tag for which the history is recorded
+     */
     @JsonProperty("tag")
     public String getTag() {
         return tag;
     }
 
+    /**
+     * Tag is the tag for which the history is recorded
+     */
     @JsonProperty("tag")
     public void setTag(String tag) {
         this.tag = tag;

@@ -92,11 +92,17 @@ public class BootstrapKubeConfigs implements Editable<BootstrapKubeConfigsBuilde
         this.localSecretsConfig = localSecretsConfig;
     }
 
+    /**
+     * Type specifies the type of priority bootstrap kubeconfigs. By default, it is set to None, representing no priority bootstrap kubeconfigs are set.
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * Type specifies the type of priority bootstrap kubeconfigs. By default, it is set to None, representing no priority bootstrap kubeconfigs are set.
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

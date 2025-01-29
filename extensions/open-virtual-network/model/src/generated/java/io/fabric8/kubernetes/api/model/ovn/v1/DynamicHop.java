@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DynamicHop defines the configuration for a dynamic external gateway interface. These interfaces are wrapped around a pod object that resides inside the cluster. The field NetworkAttachmentName captures the name of the multus network name to use when retrieving the gateway IP to use. The PodSelector and the NamespaceSelector are mandatory fields.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class DynamicHop implements Editable<DynamicHopBuilder>, KubernetesResour
         this.podSelector = podSelector;
     }
 
+    /**
+     * BFDEnabled determines if the interface implements the Bidirectional Forward Detection protocol. Defaults to false.
+     */
     @JsonProperty("bfdEnabled")
     public Boolean getBfdEnabled() {
         return bfdEnabled;
     }
 
+    /**
+     * BFDEnabled determines if the interface implements the Bidirectional Forward Detection protocol. Defaults to false.
+     */
     @JsonProperty("bfdEnabled")
     public void setBfdEnabled(Boolean bfdEnabled) {
         this.bfdEnabled = bfdEnabled;
     }
 
+    /**
+     * DynamicHop defines the configuration for a dynamic external gateway interface. These interfaces are wrapped around a pod object that resides inside the cluster. The field NetworkAttachmentName captures the name of the multus network name to use when retrieving the gateway IP to use. The PodSelector and the NamespaceSelector are mandatory fields.
+     */
     @JsonProperty("namespaceSelector")
     public LabelSelector getNamespaceSelector() {
         return namespaceSelector;
     }
 
+    /**
+     * DynamicHop defines the configuration for a dynamic external gateway interface. These interfaces are wrapped around a pod object that resides inside the cluster. The field NetworkAttachmentName captures the name of the multus network name to use when retrieving the gateway IP to use. The PodSelector and the NamespaceSelector are mandatory fields.
+     */
     @JsonProperty("namespaceSelector")
     public void setNamespaceSelector(LabelSelector namespaceSelector) {
         this.namespaceSelector = namespaceSelector;
     }
 
+    /**
+     * NetworkAttachmentName determines the multus network name to use when retrieving the pod IPs that will be used as the gateway IP. When this field is empty, the logic assumes that the pod is configured with HostNetwork and is using the node's IP as gateway.
+     */
     @JsonProperty("networkAttachmentName")
     public String getNetworkAttachmentName() {
         return networkAttachmentName;
     }
 
+    /**
+     * NetworkAttachmentName determines the multus network name to use when retrieving the pod IPs that will be used as the gateway IP. When this field is empty, the logic assumes that the pod is configured with HostNetwork and is using the node's IP as gateway.
+     */
     @JsonProperty("networkAttachmentName")
     public void setNetworkAttachmentName(String networkAttachmentName) {
         this.networkAttachmentName = networkAttachmentName;
     }
 
+    /**
+     * DynamicHop defines the configuration for a dynamic external gateway interface. These interfaces are wrapped around a pod object that resides inside the cluster. The field NetworkAttachmentName captures the name of the multus network name to use when retrieving the gateway IP to use. The PodSelector and the NamespaceSelector are mandatory fields.
+     */
     @JsonProperty("podSelector")
     public LabelSelector getPodSelector() {
         return podSelector;
     }
 
+    /**
+     * DynamicHop defines the configuration for a dynamic external gateway interface. These interfaces are wrapped around a pod object that resides inside the cluster. The field NetworkAttachmentName captures the name of the multus network name to use when retrieving the gateway IP to use. The PodSelector and the NamespaceSelector are mandatory fields.
+     */
     @JsonProperty("podSelector")
     public void setPodSelector(LabelSelector podSelector) {
         this.podSelector = podSelector;

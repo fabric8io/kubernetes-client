@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * StressInstance is an instance generates stresses
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class StressInstance implements Editable<StressInstanceBuilder>, Kubernet
         this.uid = uid;
     }
 
+    /**
+     * StressInstance is an instance generates stresses
+     */
     @JsonProperty("memoryStartTime")
     public String getMemoryStartTime() {
         return memoryStartTime;
     }
 
+    /**
+     * StressInstance is an instance generates stresses
+     */
     @JsonProperty("memoryStartTime")
     public void setMemoryStartTime(String memoryStartTime) {
         this.memoryStartTime = memoryStartTime;
     }
 
+    /**
+     * MemoryUID is the memStress identifier
+     */
     @JsonProperty("memoryUid")
     public String getMemoryUid() {
         return memoryUid;
     }
 
+    /**
+     * MemoryUID is the memStress identifier
+     */
     @JsonProperty("memoryUid")
     public void setMemoryUid(String memoryUid) {
         this.memoryUid = memoryUid;
     }
 
+    /**
+     * StressInstance is an instance generates stresses
+     */
     @JsonProperty("startTime")
     public String getStartTime() {
         return startTime;
     }
 
+    /**
+     * StressInstance is an instance generates stresses
+     */
     @JsonProperty("startTime")
     public void setStartTime(String startTime) {
         this.startTime = startTime;
     }
 
+    /**
+     * UID is the stress-ng identifier
+     */
     @JsonProperty("uid")
     public String getUid() {
         return uid;
     }
 
+    /**
+     * UID is the stress-ng identifier
+     */
     @JsonProperty("uid")
     public void setUid(String uid) {
         this.uid = uid;

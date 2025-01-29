@@ -108,33 +108,51 @@ public class StatusCheckStatus implements Editable<StatusCheckStatusBuilder>, Ku
         this.completionTime = completionTime;
     }
 
+    /**
+     * Conditions represents the latest available observations of a StatusCheck's current state.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<StatusCheckCondition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Conditions represents the latest available observations of a StatusCheck's current state.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<StatusCheckCondition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * Count represents the total number of the status check executed.
+     */
     @JsonProperty("count")
     public Long getCount() {
         return count;
     }
 
+    /**
+     * Count represents the total number of the status check executed.
+     */
     @JsonProperty("count")
     public void setCount(Long count) {
         this.count = count;
     }
 
+    /**
+     * Records contains the history of the execution of StatusCheck.
+     */
     @JsonProperty("records")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<StatusCheckRecord> getRecords() {
         return records;
     }
 
+    /**
+     * Records contains the history of the execution of StatusCheck.
+     */
     @JsonProperty("records")
     public void setRecords(List<StatusCheckRecord> records) {
         this.records = records;

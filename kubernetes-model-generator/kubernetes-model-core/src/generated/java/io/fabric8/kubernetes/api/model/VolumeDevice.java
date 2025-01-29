@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * volumeDevice describes a mapping of a raw block device within a container.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -53,21 +56,33 @@ public class VolumeDevice implements Editable<VolumeDeviceBuilder>, KubernetesRe
         this.name = name;
     }
 
+    /**
+     * devicePath is the path inside of the container that the device will be mapped to.
+     */
     @JsonProperty("devicePath")
     public String getDevicePath() {
         return devicePath;
     }
 
+    /**
+     * devicePath is the path inside of the container that the device will be mapped to.
+     */
     @JsonProperty("devicePath")
     public void setDevicePath(String devicePath) {
         this.devicePath = devicePath;
     }
 
+    /**
+     * name must match the name of a persistentVolumeClaim in the pod
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * name must match the name of a persistentVolumeClaim in the pod
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

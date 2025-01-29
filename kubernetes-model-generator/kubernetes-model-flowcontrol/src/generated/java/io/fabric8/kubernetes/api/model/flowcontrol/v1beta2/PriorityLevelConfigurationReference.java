@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PriorityLevelConfigurationReference contains information that points to the "request-priority" being used.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class PriorityLevelConfigurationReference implements Editable<PriorityLev
         this.name = name;
     }
 
+    /**
+     * `name` is the name of the priority level configuration being referenced Required.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * `name` is the name of the priority level configuration being referenced Required.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

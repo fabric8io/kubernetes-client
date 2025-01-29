@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * BackupJobReference holds a reference to the batch/v1 Job created to run the etcd backup
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class BackupJobReference implements Editable<BackupJobReferenceBuilder>, 
         this.namespace = namespace;
     }
 
+    /**
+     * name is the name of the Job. Required
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * name is the name of the Job. Required
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * namespace is the namespace of the Job. this is always expected to be "openshift-etcd" since the user provided PVC is also required to be in "openshift-etcd" Required
+     */
     @JsonProperty("namespace")
     public String getNamespace() {
         return namespace;
     }
 
+    /**
+     * namespace is the namespace of the Job. this is always expected to be "openshift-etcd" since the user provided PVC is also required to be in "openshift-etcd" Required
+     */
     @JsonProperty("namespace")
     public void setNamespace(String namespace) {
         this.namespace = namespace;

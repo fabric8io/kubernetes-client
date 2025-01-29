@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * CertificateStatus defines the observed state of Certificate
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -109,82 +112,130 @@ public class CertificateStatus implements Editable<CertificateStatusBuilder>, Ku
         this.revision = revision;
     }
 
+    /**
+     * List of status conditions to indicate the status of certificates. Known condition types are `Ready` and `Issuing`.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<CertificateCondition> getConditions() {
         return conditions;
     }
 
+    /**
+     * List of status conditions to indicate the status of certificates. Known condition types are `Ready` and `Issuing`.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<CertificateCondition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * The number of continuous failed issuance attempts up till now. This field gets removed (if set) on a successful issuance and gets set to 1 if unset and an issuance has failed. If an issuance has failed, the delay till the next issuance will be calculated using formula time.Hour &#42; 2 ^ (failedIssuanceAttempts - 1).
+     */
     @JsonProperty("failedIssuanceAttempts")
     public Integer getFailedIssuanceAttempts() {
         return failedIssuanceAttempts;
     }
 
+    /**
+     * The number of continuous failed issuance attempts up till now. This field gets removed (if set) on a successful issuance and gets set to 1 if unset and an issuance has failed. If an issuance has failed, the delay till the next issuance will be calculated using formula time.Hour &#42; 2 ^ (failedIssuanceAttempts - 1).
+     */
     @JsonProperty("failedIssuanceAttempts")
     public void setFailedIssuanceAttempts(Integer failedIssuanceAttempts) {
         this.failedIssuanceAttempts = failedIssuanceAttempts;
     }
 
+    /**
+     * CertificateStatus defines the observed state of Certificate
+     */
     @JsonProperty("lastFailureTime")
     public String getLastFailureTime() {
         return lastFailureTime;
     }
 
+    /**
+     * CertificateStatus defines the observed state of Certificate
+     */
     @JsonProperty("lastFailureTime")
     public void setLastFailureTime(String lastFailureTime) {
         this.lastFailureTime = lastFailureTime;
     }
 
+    /**
+     * The name of the Secret resource containing the private key to be used for the next certificate iteration. The keymanager controller will automatically set this field if the `Issuing` condition is set to `True`. It will automatically unset this field when the Issuing condition is not set or False.
+     */
     @JsonProperty("nextPrivateKeySecretName")
     public String getNextPrivateKeySecretName() {
         return nextPrivateKeySecretName;
     }
 
+    /**
+     * The name of the Secret resource containing the private key to be used for the next certificate iteration. The keymanager controller will automatically set this field if the `Issuing` condition is set to `True`. It will automatically unset this field when the Issuing condition is not set or False.
+     */
     @JsonProperty("nextPrivateKeySecretName")
     public void setNextPrivateKeySecretName(String nextPrivateKeySecretName) {
         this.nextPrivateKeySecretName = nextPrivateKeySecretName;
     }
 
+    /**
+     * CertificateStatus defines the observed state of Certificate
+     */
     @JsonProperty("notAfter")
     public String getNotAfter() {
         return notAfter;
     }
 
+    /**
+     * CertificateStatus defines the observed state of Certificate
+     */
     @JsonProperty("notAfter")
     public void setNotAfter(String notAfter) {
         this.notAfter = notAfter;
     }
 
+    /**
+     * CertificateStatus defines the observed state of Certificate
+     */
     @JsonProperty("notBefore")
     public String getNotBefore() {
         return notBefore;
     }
 
+    /**
+     * CertificateStatus defines the observed state of Certificate
+     */
     @JsonProperty("notBefore")
     public void setNotBefore(String notBefore) {
         this.notBefore = notBefore;
     }
 
+    /**
+     * CertificateStatus defines the observed state of Certificate
+     */
     @JsonProperty("renewalTime")
     public String getRenewalTime() {
         return renewalTime;
     }
 
+    /**
+     * CertificateStatus defines the observed state of Certificate
+     */
     @JsonProperty("renewalTime")
     public void setRenewalTime(String renewalTime) {
         this.renewalTime = renewalTime;
     }
 
+    /**
+     * The current 'revision' of the certificate as issued.<br><p> <br><p> When a CertificateRequest resource is created, it will have the `cert-manager.io/certificate-revision` set to one greater than the current value of this field.<br><p> <br><p> Upon issuance, this field will be set to the value of the annotation on the CertificateRequest resource used to issue the certificate.<br><p> <br><p> Persisting the value on the CertificateRequest resource allows the certificates controller to know whether a request is part of an old issuance or if it is part of the ongoing revision's issuance by checking if the revision value in the annotation is greater than this field.
+     */
     @JsonProperty("revision")
     public Integer getRevision() {
         return revision;
     }
 
+    /**
+     * The current 'revision' of the certificate as issued.<br><p> <br><p> When a CertificateRequest resource is created, it will have the `cert-manager.io/certificate-revision` set to one greater than the current value of this field.<br><p> <br><p> Upon issuance, this field will be set to the value of the annotation on the CertificateRequest resource used to issue the certificate.<br><p> <br><p> Persisting the value on the CertificateRequest resource allows the certificates controller to know whether a request is part of an old issuance or if it is part of the ongoing revision's issuance by checking if the revision value in the annotation is greater than this field.
+     */
     @JsonProperty("revision")
     public void setRevision(Integer revision) {
         this.revision = revision;

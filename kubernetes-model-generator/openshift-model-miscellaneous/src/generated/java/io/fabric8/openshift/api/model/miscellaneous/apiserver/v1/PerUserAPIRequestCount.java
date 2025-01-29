@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PerUserAPIRequestCount contains logs of a user's requests.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -93,42 +96,66 @@ public class PerUserAPIRequestCount implements Editable<PerUserAPIRequestCountBu
         this.username = username;
     }
 
+    /**
+     * byVerb details by verb.
+     */
     @JsonProperty("byVerb")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PerVerbAPIRequestCount> getByVerb() {
         return byVerb;
     }
 
+    /**
+     * byVerb details by verb.
+     */
     @JsonProperty("byVerb")
     public void setByVerb(List<PerVerbAPIRequestCount> byVerb) {
         this.byVerb = byVerb;
     }
 
+    /**
+     * requestCount of requests by the user across all verbs.
+     */
     @JsonProperty("requestCount")
     public Long getRequestCount() {
         return requestCount;
     }
 
+    /**
+     * requestCount of requests by the user across all verbs.
+     */
     @JsonProperty("requestCount")
     public void setRequestCount(Long requestCount) {
         this.requestCount = requestCount;
     }
 
+    /**
+     * userAgent that made the request. The same user often has multiple binaries which connect (pods with many containers).  The different binaries will have different userAgents, but the same user.  In addition, we have userAgents with version information embedded and the userName isn't likely to change.
+     */
     @JsonProperty("userAgent")
     public String getUserAgent() {
         return userAgent;
     }
 
+    /**
+     * userAgent that made the request. The same user often has multiple binaries which connect (pods with many containers).  The different binaries will have different userAgents, but the same user.  In addition, we have userAgents with version information embedded and the userName isn't likely to change.
+     */
     @JsonProperty("userAgent")
     public void setUserAgent(String userAgent) {
         this.userAgent = userAgent;
     }
 
+    /**
+     * userName that made the request.
+     */
     @JsonProperty("username")
     public String getUsername() {
         return username;
     }
 
+    /**
+     * userName that made the request.
+     */
     @JsonProperty("username")
     public void setUsername(String username) {
         this.username = username;

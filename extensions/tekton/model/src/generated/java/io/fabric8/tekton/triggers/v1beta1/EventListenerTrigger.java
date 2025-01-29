@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * EventListenerTrigger represents a connection between TriggerBinding, Params, and TriggerTemplate; TriggerBinding provides extracted values for TriggerTemplate to then create resources from. TriggerRef can also be provided instead of TriggerBinding, Interceptors and TriggerTemplate
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -102,63 +105,99 @@ public class EventListenerTrigger implements Editable<EventListenerTriggerBuilde
         this.triggerRef = triggerRef;
     }
 
+    /**
+     * EventListenerTrigger represents a connection between TriggerBinding, Params, and TriggerTemplate; TriggerBinding provides extracted values for TriggerTemplate to then create resources from. TriggerRef can also be provided instead of TriggerBinding, Interceptors and TriggerTemplate
+     */
     @JsonProperty("bindings")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TriggerSpecBinding> getBindings() {
         return bindings;
     }
 
+    /**
+     * EventListenerTrigger represents a connection between TriggerBinding, Params, and TriggerTemplate; TriggerBinding provides extracted values for TriggerTemplate to then create resources from. TriggerRef can also be provided instead of TriggerBinding, Interceptors and TriggerTemplate
+     */
     @JsonProperty("bindings")
     public void setBindings(List<TriggerSpecBinding> bindings) {
         this.bindings = bindings;
     }
 
+    /**
+     * EventListenerTrigger represents a connection between TriggerBinding, Params, and TriggerTemplate; TriggerBinding provides extracted values for TriggerTemplate to then create resources from. TriggerRef can also be provided instead of TriggerBinding, Interceptors and TriggerTemplate
+     */
     @JsonProperty("interceptors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TriggerInterceptor> getInterceptors() {
         return interceptors;
     }
 
+    /**
+     * EventListenerTrigger represents a connection between TriggerBinding, Params, and TriggerTemplate; TriggerBinding provides extracted values for TriggerTemplate to then create resources from. TriggerRef can also be provided instead of TriggerBinding, Interceptors and TriggerTemplate
+     */
     @JsonProperty("interceptors")
     public void setInterceptors(List<TriggerInterceptor> interceptors) {
         this.interceptors = interceptors;
     }
 
+    /**
+     * EventListenerTrigger represents a connection between TriggerBinding, Params, and TriggerTemplate; TriggerBinding provides extracted values for TriggerTemplate to then create resources from. TriggerRef can also be provided instead of TriggerBinding, Interceptors and TriggerTemplate
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * EventListenerTrigger represents a connection between TriggerBinding, Params, and TriggerTemplate; TriggerBinding provides extracted values for TriggerTemplate to then create resources from. TriggerRef can also be provided instead of TriggerBinding, Interceptors and TriggerTemplate
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * ServiceAccountName optionally associates credentials with each trigger; more granular authorization for who is allowed to utilize the associated pipeline vs. defaulting to whatever permissions are associated with the entire EventListener and associated sink facilitates multi-tenant model based scenarios
+     */
     @JsonProperty("serviceAccountName")
     public String getServiceAccountName() {
         return serviceAccountName;
     }
 
+    /**
+     * ServiceAccountName optionally associates credentials with each trigger; more granular authorization for who is allowed to utilize the associated pipeline vs. defaulting to whatever permissions are associated with the entire EventListener and associated sink facilitates multi-tenant model based scenarios
+     */
     @JsonProperty("serviceAccountName")
     public void setServiceAccountName(String serviceAccountName) {
         this.serviceAccountName = serviceAccountName;
     }
 
+    /**
+     * EventListenerTrigger represents a connection between TriggerBinding, Params, and TriggerTemplate; TriggerBinding provides extracted values for TriggerTemplate to then create resources from. TriggerRef can also be provided instead of TriggerBinding, Interceptors and TriggerTemplate
+     */
     @JsonProperty("template")
     public TriggerSpecTemplate getTemplate() {
         return template;
     }
 
+    /**
+     * EventListenerTrigger represents a connection between TriggerBinding, Params, and TriggerTemplate; TriggerBinding provides extracted values for TriggerTemplate to then create resources from. TriggerRef can also be provided instead of TriggerBinding, Interceptors and TriggerTemplate
+     */
     @JsonProperty("template")
     public void setTemplate(TriggerSpecTemplate template) {
         this.template = template;
     }
 
+    /**
+     * EventListenerTrigger represents a connection between TriggerBinding, Params, and TriggerTemplate; TriggerBinding provides extracted values for TriggerTemplate to then create resources from. TriggerRef can also be provided instead of TriggerBinding, Interceptors and TriggerTemplate
+     */
     @JsonProperty("triggerRef")
     public String getTriggerRef() {
         return triggerRef;
     }
 
+    /**
+     * EventListenerTrigger represents a connection between TriggerBinding, Params, and TriggerTemplate; TriggerBinding provides extracted values for TriggerTemplate to then create resources from. TriggerRef can also be provided instead of TriggerBinding, Interceptors and TriggerTemplate
+     */
     @JsonProperty("triggerRef")
     public void setTriggerRef(String triggerRef) {
         this.triggerRef = triggerRef;

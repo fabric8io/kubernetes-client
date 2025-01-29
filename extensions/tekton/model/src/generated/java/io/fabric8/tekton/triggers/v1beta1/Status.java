@@ -82,21 +82,33 @@ public class Status implements Editable<StatusBuilder>, KubernetesResource
         this.message = message;
     }
 
+    /**
+     * The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
+     */
     @JsonProperty("code")
     public Long getCode() {
         return code;
     }
 
+    /**
+     * The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
+     */
     @JsonProperty("code")
     public void setCode(Long code) {
         this.code = code;
     }
 
+    /**
+     * A developer-facing error message, which should be in English.
+     */
     @JsonProperty("message")
     public String getMessage() {
         return message;
     }
 
+    /**
+     * A developer-facing error message, which should be in English.
+     */
     @JsonProperty("message")
     public void setMessage(String message) {
         this.message = message;

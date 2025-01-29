@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ProjectSpec describes the attributes on a Project
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -81,12 +84,18 @@ public class ProjectSpec implements Editable<ProjectSpecBuilder>, KubernetesReso
         this.finalizers = finalizers;
     }
 
+    /**
+     * Finalizers is an opaque list of values that must be empty to permanently remove object from storage
+     */
     @JsonProperty("finalizers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getFinalizers() {
         return finalizers;
     }
 
+    /**
+     * Finalizers is an opaque list of values that must be empty to permanently remove object from storage
+     */
     @JsonProperty("finalizers")
     public void setFinalizers(List<String> finalizers) {
         this.finalizers = finalizers;

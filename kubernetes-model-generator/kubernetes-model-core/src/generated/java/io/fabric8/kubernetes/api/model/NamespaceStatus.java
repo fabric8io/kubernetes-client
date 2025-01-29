@@ -19,6 +19,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NamespaceStatus is information about the current status of a Namespace.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -56,22 +59,34 @@ public class NamespaceStatus implements Editable<NamespaceStatusBuilder>, Kubern
         this.phase = phase;
     }
 
+    /**
+     * Represents the latest available observations of a namespace's current state.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NamespaceCondition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Represents the latest available observations of a namespace's current state.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<NamespaceCondition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * Phase is the current lifecycle phase of the namespace. More info: https://kubernetes.io/docs/tasks/administer-cluster/namespaces/
+     */
     @JsonProperty("phase")
     public String getPhase() {
         return phase;
     }
 
+    /**
+     * Phase is the current lifecycle phase of the namespace. More info: https://kubernetes.io/docs/tasks/administer-cluster/namespaces/
+     */
     @JsonProperty("phase")
     public void setPhase(String phase) {
         this.phase = phase;

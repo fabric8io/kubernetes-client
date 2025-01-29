@@ -91,12 +91,18 @@ public class ParallelSpec implements Editable<ParallelSpecBuilder>, KubernetesRe
         this.reply = reply;
     }
 
+    /**
+     * Branches is the list of Filter/Subscribers pairs.
+     */
     @JsonProperty("branches")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ParallelBranch> getBranches() {
         return branches;
     }
 
+    /**
+     * Branches is the list of Filter/Subscribers pairs.
+     */
     @JsonProperty("branches")
     public void setBranches(List<ParallelBranch> branches) {
         this.branches = branches;

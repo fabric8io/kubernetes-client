@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ClusterCondition is a union of typed cluster conditions.  The 'type' property determines which of the type-specific properties are relevant. When evaluated on a cluster, the condition may match, not match, or fail to evaluate.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class ClusterCondition implements Editable<ClusterConditionBuilder>, Kube
         this.type = type;
     }
 
+    /**
+     * ClusterCondition is a union of typed cluster conditions.  The 'type' property determines which of the type-specific properties are relevant. When evaluated on a cluster, the condition may match, not match, or fail to evaluate.
+     */
     @JsonProperty("promql")
     public PromQLClusterCondition getPromql() {
         return promql;
     }
 
+    /**
+     * ClusterCondition is a union of typed cluster conditions.  The 'type' property determines which of the type-specific properties are relevant. When evaluated on a cluster, the condition may match, not match, or fail to evaluate.
+     */
     @JsonProperty("promql")
     public void setPromql(PromQLClusterCondition promql) {
         this.promql = promql;
     }
 
+    /**
+     * type represents the cluster-condition type. This defines the members and semantics of any additional properties.
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * type represents the cluster-condition type. This defines the members and semantics of any additional properties.
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

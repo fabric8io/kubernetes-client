@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * WorkspacePipelineTaskBinding describes how a workspace passed into the pipeline should be mapped to a task's declared workspace.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class WorkspacePipelineTaskBinding implements Editable<WorkspacePipelineT
         this.workspace = workspace;
     }
 
+    /**
+     * Name is the name of the workspace as declared by the task
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name is the name of the workspace as declared by the task
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * SubPath is optionally a directory on the volume which should be used for this binding (i.e. the volume will be mounted at this sub directory).
+     */
     @JsonProperty("subPath")
     public String getSubPath() {
         return subPath;
     }
 
+    /**
+     * SubPath is optionally a directory on the volume which should be used for this binding (i.e. the volume will be mounted at this sub directory).
+     */
     @JsonProperty("subPath")
     public void setSubPath(String subPath) {
         this.subPath = subPath;
     }
 
+    /**
+     * Workspace is the name of the workspace declared by the pipeline
+     */
     @JsonProperty("workspace")
     public String getWorkspace() {
         return workspace;
     }
 
+    /**
+     * Workspace is the name of the workspace declared by the pipeline
+     */
     @JsonProperty("workspace")
     public void setWorkspace(String workspace) {
         this.workspace = workspace;

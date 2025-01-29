@@ -90,41 +90,65 @@ public class KafkaIOSpec implements Editable<KafkaIOSpecBuilder>, KubernetesReso
         this.topic = topic;
     }
 
+    /**
+     * The path of server config
+     */
     @JsonProperty("configFile")
     public String getConfigFile() {
         return configFile;
     }
 
+    /**
+     * The path of server config
+     */
     @JsonProperty("configFile")
     public void setConfigFile(String configFile) {
         this.configFile = configFile;
     }
 
+    /**
+     * Make kafka cluster non-readable
+     */
     @JsonProperty("nonReadable")
     public Boolean getNonReadable() {
         return nonReadable;
     }
 
+    /**
+     * Make kafka cluster non-readable
+     */
     @JsonProperty("nonReadable")
     public void setNonReadable(Boolean nonReadable) {
         this.nonReadable = nonReadable;
     }
 
+    /**
+     * Make kafka cluster non-writable
+     */
     @JsonProperty("nonWritable")
     public Boolean getNonWritable() {
         return nonWritable;
     }
 
+    /**
+     * Make kafka cluster non-writable
+     */
     @JsonProperty("nonWritable")
     public void setNonWritable(Boolean nonWritable) {
         this.nonWritable = nonWritable;
     }
 
+    /**
+     * The topic to attack
+     */
     @JsonProperty("topic")
     public String getTopic() {
         return topic;
     }
 
+    /**
+     * The topic to attack
+     */
     @JsonProperty("topic")
     public void setTopic(String topic) {
         this.topic = topic;

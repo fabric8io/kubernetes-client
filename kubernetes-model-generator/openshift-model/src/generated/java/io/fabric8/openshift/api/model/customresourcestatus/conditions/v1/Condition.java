@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Condition represents the state of the operator's reconciliation functionality.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -98,61 +101,97 @@ public class Condition implements Editable<ConditionBuilder>, KubernetesResource
         this.type = type;
     }
 
+    /**
+     * Condition represents the state of the operator's reconciliation functionality.
+     */
     @JsonProperty("lastHeartbeatTime")
     public String getLastHeartbeatTime() {
         return lastHeartbeatTime;
     }
 
+    /**
+     * Condition represents the state of the operator's reconciliation functionality.
+     */
     @JsonProperty("lastHeartbeatTime")
     public void setLastHeartbeatTime(String lastHeartbeatTime) {
         this.lastHeartbeatTime = lastHeartbeatTime;
     }
 
+    /**
+     * Condition represents the state of the operator's reconciliation functionality.
+     */
     @JsonProperty("lastTransitionTime")
     public String getLastTransitionTime() {
         return lastTransitionTime;
     }
 
+    /**
+     * Condition represents the state of the operator's reconciliation functionality.
+     */
     @JsonProperty("lastTransitionTime")
     public void setLastTransitionTime(String lastTransitionTime) {
         this.lastTransitionTime = lastTransitionTime;
     }
 
+    /**
+     * Condition represents the state of the operator's reconciliation functionality.
+     */
     @JsonProperty("message")
     public String getMessage() {
         return message;
     }
 
+    /**
+     * Condition represents the state of the operator's reconciliation functionality.
+     */
     @JsonProperty("message")
     public void setMessage(String message) {
         this.message = message;
     }
 
+    /**
+     * Condition represents the state of the operator's reconciliation functionality.
+     */
     @JsonProperty("reason")
     public String getReason() {
         return reason;
     }
 
+    /**
+     * Condition represents the state of the operator's reconciliation functionality.
+     */
     @JsonProperty("reason")
     public void setReason(String reason) {
         this.reason = reason;
     }
 
+    /**
+     * Condition represents the state of the operator's reconciliation functionality.
+     */
     @JsonProperty("status")
     public String getStatus() {
         return status;
     }
 
+    /**
+     * Condition represents the state of the operator's reconciliation functionality.
+     */
     @JsonProperty("status")
     public void setStatus(String status) {
         this.status = status;
     }
 
+    /**
+     * Condition represents the state of the operator's reconciliation functionality.
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * Condition represents the state of the operator's reconciliation functionality.
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

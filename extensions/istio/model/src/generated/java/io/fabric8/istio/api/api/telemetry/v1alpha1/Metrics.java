@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Metrics defines the workload-level overrides for metrics generation behavior within a mesh. It can be used to enable/disable metrics generation, as well as to customize the dimensions of the generated metrics.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,33 +93,51 @@ public class Metrics implements Editable<MetricsBuilder>, KubernetesResource
         this.reportingInterval = reportingInterval;
     }
 
+    /**
+     * Optional. Ordered list of overrides to metrics generation behavior.<br><p> <br><p> Specified overrides will be applied in order. They will be applied on top of inherited overrides from other resources in the hierarchy in the following order: 1. Mesh-scoped overrides 2. Namespace-scoped overrides 3. Workload-scoped overrides<br><p> <br><p> Because overrides are applied in order, users are advised to order their overrides from least specific to most specific matches. That is, it is a best practice to list any universal overrides first, with tailored overrides following them.
+     */
     @JsonProperty("overrides")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<MetricsOverrides> getOverrides() {
         return overrides;
     }
 
+    /**
+     * Optional. Ordered list of overrides to metrics generation behavior.<br><p> <br><p> Specified overrides will be applied in order. They will be applied on top of inherited overrides from other resources in the hierarchy in the following order: 1. Mesh-scoped overrides 2. Namespace-scoped overrides 3. Workload-scoped overrides<br><p> <br><p> Because overrides are applied in order, users are advised to order their overrides from least specific to most specific matches. That is, it is a best practice to list any universal overrides first, with tailored overrides following them.
+     */
     @JsonProperty("overrides")
     public void setOverrides(List<MetricsOverrides> overrides) {
         this.overrides = overrides;
     }
 
+    /**
+     * Optional. Name of providers to which this configuration should apply. If a provider is not specified, the [default metrics provider](https://istio.io/docs/reference/config/istio.mesh.v1alpha1/#MeshConfig-DefaultProviders) will be used.
+     */
     @JsonProperty("providers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ProviderRef> getProviders() {
         return providers;
     }
 
+    /**
+     * Optional. Name of providers to which this configuration should apply. If a provider is not specified, the [default metrics provider](https://istio.io/docs/reference/config/istio.mesh.v1alpha1/#MeshConfig-DefaultProviders) will be used.
+     */
     @JsonProperty("providers")
     public void setProviders(List<ProviderRef> providers) {
         this.providers = providers;
     }
 
+    /**
+     * Metrics defines the workload-level overrides for metrics generation behavior within a mesh. It can be used to enable/disable metrics generation, as well as to customize the dimensions of the generated metrics.
+     */
     @JsonProperty("reportingInterval")
     public String getReportingInterval() {
         return reportingInterval;
     }
 
+    /**
+     * Metrics defines the workload-level overrides for metrics generation behavior within a mesh. It can be used to enable/disable metrics generation, as well as to customize the dimensions of the generated metrics.
+     */
     @JsonProperty("reportingInterval")
     public void setReportingInterval(String reportingInterval) {
         this.reportingInterval = reportingInterval;

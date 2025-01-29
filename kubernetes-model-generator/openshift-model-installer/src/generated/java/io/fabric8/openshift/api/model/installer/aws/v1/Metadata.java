@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Metadata contains AWS metadata (e.g. for uninstalling the cluster).
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -98,53 +101,83 @@ public class Metadata implements Editable<MetadataBuilder>, KubernetesResource
         this.serviceEndpoints = serviceEndpoints;
     }
 
+    /**
+     * ClusterDomain is the domain for the cluster.
+     */
     @JsonProperty("clusterDomain")
     public String getClusterDomain() {
         return clusterDomain;
     }
 
+    /**
+     * ClusterDomain is the domain for the cluster.
+     */
     @JsonProperty("clusterDomain")
     public void setClusterDomain(String clusterDomain) {
         this.clusterDomain = clusterDomain;
     }
 
+    /**
+     * HostedZoneRole is the role to assume when performing operations on a hosted zone owned by another account.
+     */
     @JsonProperty("hostedZoneRole")
     public String getHostedZoneRole() {
         return hostedZoneRole;
     }
 
+    /**
+     * HostedZoneRole is the role to assume when performing operations on a hosted zone owned by another account.
+     */
     @JsonProperty("hostedZoneRole")
     public void setHostedZoneRole(String hostedZoneRole) {
         this.hostedZoneRole = hostedZoneRole;
     }
 
+    /**
+     * Identifier holds a slice of filter maps.  The maps hold the key/value pairs for the tags we will be matching against.  A resource matches the map if all of the key/value pairs are in its tags.  A resource matches Identifier if it matches any of the maps.
+     */
     @JsonProperty("identifier")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Map<String, String>> getIdentifier() {
         return identifier;
     }
 
+    /**
+     * Identifier holds a slice of filter maps.  The maps hold the key/value pairs for the tags we will be matching against.  A resource matches the map if all of the key/value pairs are in its tags.  A resource matches Identifier if it matches any of the maps.
+     */
     @JsonProperty("identifier")
     public void setIdentifier(List<Map<String, String>> identifier) {
         this.identifier = identifier;
     }
 
+    /**
+     * Metadata contains AWS metadata (e.g. for uninstalling the cluster).
+     */
     @JsonProperty("region")
     public String getRegion() {
         return region;
     }
 
+    /**
+     * Metadata contains AWS metadata (e.g. for uninstalling the cluster).
+     */
     @JsonProperty("region")
     public void setRegion(String region) {
         this.region = region;
     }
 
+    /**
+     * ServiceEndpoints list contains custom endpoints which will override default service endpoint of AWS Services. There must be only one ServiceEndpoint for a service.
+     */
     @JsonProperty("serviceEndpoints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ServiceEndpoint> getServiceEndpoints() {
         return serviceEndpoints;
     }
 
+    /**
+     * ServiceEndpoints list contains custom endpoints which will override default service endpoint of AWS Services. There must be only one ServiceEndpoint for a service.
+     */
     @JsonProperty("serviceEndpoints")
     public void setServiceEndpoints(List<ServiceEndpoint> serviceEndpoints) {
         this.serviceEndpoints = serviceEndpoints;

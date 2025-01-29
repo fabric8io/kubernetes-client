@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SecretOrConfigMap allows to specify data as a Secret or ConfigMap. Fields are mutually exclusive.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -84,21 +87,33 @@ public class SecretOrConfigMap implements Editable<SecretOrConfigMapBuilder>, Ku
         this.secret = secret;
     }
 
+    /**
+     * SecretOrConfigMap allows to specify data as a Secret or ConfigMap. Fields are mutually exclusive.
+     */
     @JsonProperty("configMap")
     public ConfigMapKeySelector getConfigMap() {
         return configMap;
     }
 
+    /**
+     * SecretOrConfigMap allows to specify data as a Secret or ConfigMap. Fields are mutually exclusive.
+     */
     @JsonProperty("configMap")
     public void setConfigMap(ConfigMapKeySelector configMap) {
         this.configMap = configMap;
     }
 
+    /**
+     * SecretOrConfigMap allows to specify data as a Secret or ConfigMap. Fields are mutually exclusive.
+     */
     @JsonProperty("secret")
     public SecretKeySelector getSecret() {
         return secret;
     }
 
+    /**
+     * SecretOrConfigMap allows to specify data as a Secret or ConfigMap. Fields are mutually exclusive.
+     */
     @JsonProperty("secret")
     public void setSecret(SecretKeySelector secret) {
         this.secret = secret;

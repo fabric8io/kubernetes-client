@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ObservabilityAddonSpec is the spec of observability addon.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,51 +97,81 @@ public class ObservabilityAddonSpec implements Editable<ObservabilityAddonSpecBu
         this.workers = workers;
     }
 
+    /**
+     * EnableMetrics indicates the observability addon push metrics to hub server.
+     */
     @JsonProperty("enableMetrics")
     public Boolean getEnableMetrics() {
         return enableMetrics;
     }
 
+    /**
+     * EnableMetrics indicates the observability addon push metrics to hub server.
+     */
     @JsonProperty("enableMetrics")
     public void setEnableMetrics(Boolean enableMetrics) {
         this.enableMetrics = enableMetrics;
     }
 
+    /**
+     * Interval for the observability addon push metrics to hub server.
+     */
     @JsonProperty("interval")
     public Integer getInterval() {
         return interval;
     }
 
+    /**
+     * Interval for the observability addon push metrics to hub server.
+     */
     @JsonProperty("interval")
     public void setInterval(Integer interval) {
         this.interval = interval;
     }
 
+    /**
+     * ObservabilityAddonSpec is the spec of observability addon.
+     */
     @JsonProperty("resources")
     public ResourceRequirements getResources() {
         return resources;
     }
 
+    /**
+     * ObservabilityAddonSpec is the spec of observability addon.
+     */
     @JsonProperty("resources")
     public void setResources(ResourceRequirements resources) {
         this.resources = resources;
     }
 
+    /**
+     * ScrapeSizeLimitBytes is the max size in bytes for a single metrics scrape from in-cluster Prometheus. Default is 1 GiB.
+     */
     @JsonProperty("scrapeSizeLimitBytes")
     public Integer getScrapeSizeLimitBytes() {
         return scrapeSizeLimitBytes;
     }
 
+    /**
+     * ScrapeSizeLimitBytes is the max size in bytes for a single metrics scrape from in-cluster Prometheus. Default is 1 GiB.
+     */
     @JsonProperty("scrapeSizeLimitBytes")
     public void setScrapeSizeLimitBytes(Integer scrapeSizeLimitBytes) {
         this.scrapeSizeLimitBytes = scrapeSizeLimitBytes;
     }
 
+    /**
+     * Workers is the number of workers in metrics-collector that work in parallel to push metrics to hub server. If set to &gt; 1, metrics-collector will shard /federate calls to Prometheus, based on matcher rules provided by allowlist. Ensure that number of matchers exceeds number of workers.
+     */
     @JsonProperty("workers")
     public Integer getWorkers() {
         return workers;
     }
 
+    /**
+     * Workers is the number of workers in metrics-collector that work in parallel to push metrics to hub server. If set to &gt; 1, metrics-collector will shard /federate calls to Prometheus, based on matcher rules provided by allowlist. Ensure that number of matchers exceeds number of workers.
+     */
     @JsonProperty("workers")
     public void setWorkers(Integer workers) {
         this.workers = workers;

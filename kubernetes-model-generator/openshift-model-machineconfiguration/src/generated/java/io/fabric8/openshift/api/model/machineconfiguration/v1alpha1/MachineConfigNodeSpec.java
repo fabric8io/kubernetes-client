@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * MachineConfigNodeSpec describes the MachineConfigNode we are managing.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -93,42 +96,66 @@ public class MachineConfigNodeSpec implements Editable<MachineConfigNodeSpecBuil
         this.pool = pool;
     }
 
+    /**
+     * MachineConfigNodeSpec describes the MachineConfigNode we are managing.
+     */
     @JsonProperty("configVersion")
     public MachineConfigNodeSpecMachineConfigVersion getConfigVersion() {
         return configVersion;
     }
 
+    /**
+     * MachineConfigNodeSpec describes the MachineConfigNode we are managing.
+     */
     @JsonProperty("configVersion")
     public void setConfigVersion(MachineConfigNodeSpecMachineConfigVersion configVersion) {
         this.configVersion = configVersion;
     }
 
+    /**
+     * MachineConfigNodeSpec describes the MachineConfigNode we are managing.
+     */
     @JsonProperty("node")
     public MCOObjectReference getNode() {
         return node;
     }
 
+    /**
+     * MachineConfigNodeSpec describes the MachineConfigNode we are managing.
+     */
     @JsonProperty("node")
     public void setNode(MCOObjectReference node) {
         this.node = node;
     }
 
+    /**
+     * pinnedImageSets holds the desired pinned image sets that this node should pin and pull.
+     */
     @JsonProperty("pinnedImageSets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<MachineConfigNodeSpecPinnedImageSet> getPinnedImageSets() {
         return pinnedImageSets;
     }
 
+    /**
+     * pinnedImageSets holds the desired pinned image sets that this node should pin and pull.
+     */
     @JsonProperty("pinnedImageSets")
     public void setPinnedImageSets(List<MachineConfigNodeSpecPinnedImageSet> pinnedImageSets) {
         this.pinnedImageSets = pinnedImageSets;
     }
 
+    /**
+     * MachineConfigNodeSpec describes the MachineConfigNode we are managing.
+     */
     @JsonProperty("pool")
     public MCOObjectReference getPool() {
         return pool;
     }
 
+    /**
+     * MachineConfigNodeSpec describes the MachineConfigNode we are managing.
+     */
     @JsonProperty("pool")
     public void setPool(MCOObjectReference pool) {
         this.pool = pool;

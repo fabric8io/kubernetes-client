@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SecretRef contains the information required to reference a single secret string This is needed because the other secretRef types are not cross-namespace and do not actually contain the "SecretName" field, which allows us to access a single secret value.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class SecretRef implements Editable<SecretRefBuilder>, KubernetesResource
         this.secretName = secretName;
     }
 
+    /**
+     * SecretRef contains the information required to reference a single secret string This is needed because the other secretRef types are not cross-namespace and do not actually contain the "SecretName" field, which allows us to access a single secret value.
+     */
     @JsonProperty("secretKey")
     public String getSecretKey() {
         return secretKey;
     }
 
+    /**
+     * SecretRef contains the information required to reference a single secret string This is needed because the other secretRef types are not cross-namespace and do not actually contain the "SecretName" field, which allows us to access a single secret value.
+     */
     @JsonProperty("secretKey")
     public void setSecretKey(String secretKey) {
         this.secretKey = secretKey;
     }
 
+    /**
+     * SecretRef contains the information required to reference a single secret string This is needed because the other secretRef types are not cross-namespace and do not actually contain the "SecretName" field, which allows us to access a single secret value.
+     */
     @JsonProperty("secretName")
     public String getSecretName() {
         return secretName;
     }
 
+    /**
+     * SecretRef contains the information required to reference a single secret string This is needed because the other secretRef types are not cross-namespace and do not actually contain the "SecretName" field, which allows us to access a single secret value.
+     */
     @JsonProperty("secretName")
     public void setSecretName(String secretName) {
         this.secretName = secretName;

@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ControllerConfigStatus is the status for ControllerConfig
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,33 +93,51 @@ public class ControllerConfigStatus implements Editable<ControllerConfigStatusBu
         this.observedGeneration = observedGeneration;
     }
 
+    /**
+     * conditions represents the latest available observations of current state.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ControllerConfigStatusCondition> getConditions() {
         return conditions;
     }
 
+    /**
+     * conditions represents the latest available observations of current state.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<ControllerConfigStatusCondition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * controllerCertificates represents the latest available observations of the automatically rotating certificates in the MCO.
+     */
     @JsonProperty("controllerCertificates")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ControllerCertificate> getControllerCertificates() {
         return controllerCertificates;
     }
 
+    /**
+     * controllerCertificates represents the latest available observations of the automatically rotating certificates in the MCO.
+     */
     @JsonProperty("controllerCertificates")
     public void setControllerCertificates(List<ControllerCertificate> controllerCertificates) {
         this.controllerCertificates = controllerCertificates;
     }
 
+    /**
+     * observedGeneration represents the generation observed by the controller.
+     */
     @JsonProperty("observedGeneration")
     public Long getObservedGeneration() {
         return observedGeneration;
     }
 
+    /**
+     * observedGeneration represents the generation observed by the controller.
+     */
     @JsonProperty("observedGeneration")
     public void setObservedGeneration(Long observedGeneration) {
         this.observedGeneration = observedGeneration;

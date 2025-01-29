@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * RecommendedPodResources is the recommendation of resources computed by autoscaler. It contains a recommendation for each container in the pod (except for those with `ContainerScalingMode` set to 'Off').
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -81,12 +84,18 @@ public class RecommendedPodResources implements Editable<RecommendedPodResources
         this.containerRecommendations = containerRecommendations;
     }
 
+    /**
+     * Resources recommended by the autoscaler for each container.
+     */
     @JsonProperty("containerRecommendations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<RecommendedContainerResources> getContainerRecommendations() {
         return containerRecommendations;
     }
 
+    /**
+     * Resources recommended by the autoscaler for each container.
+     */
     @JsonProperty("containerRecommendations")
     public void setContainerRecommendations(List<RecommendedContainerResources> containerRecommendations) {
         this.containerRecommendations = containerRecommendations;

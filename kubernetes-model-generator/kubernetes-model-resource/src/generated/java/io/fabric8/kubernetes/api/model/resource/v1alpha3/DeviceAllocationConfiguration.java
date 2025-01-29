@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DeviceAllocationConfiguration gets embedded in an AllocationResult.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -89,32 +92,50 @@ public class DeviceAllocationConfiguration implements Editable<DeviceAllocationC
         this.source = source;
     }
 
+    /**
+     * DeviceAllocationConfiguration gets embedded in an AllocationResult.
+     */
     @JsonProperty("opaque")
     public OpaqueDeviceConfiguration getOpaque() {
         return opaque;
     }
 
+    /**
+     * DeviceAllocationConfiguration gets embedded in an AllocationResult.
+     */
     @JsonProperty("opaque")
     public void setOpaque(OpaqueDeviceConfiguration opaque) {
         this.opaque = opaque;
     }
 
+    /**
+     * Requests lists the names of requests where the configuration applies. If empty, its applies to all requests.
+     */
     @JsonProperty("requests")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getRequests() {
         return requests;
     }
 
+    /**
+     * Requests lists the names of requests where the configuration applies. If empty, its applies to all requests.
+     */
     @JsonProperty("requests")
     public void setRequests(List<String> requests) {
         this.requests = requests;
     }
 
+    /**
+     * Source records whether the configuration comes from a class and thus is not something that a normal user would have been able to set or from a claim.
+     */
     @JsonProperty("source")
     public String getSource() {
         return source;
     }
 
+    /**
+     * Source records whether the configuration comes from a class and thus is not something that a normal user would have been able to set or from a claim.
+     */
     @JsonProperty("source")
     public void setSource(String source) {
         this.source = source;

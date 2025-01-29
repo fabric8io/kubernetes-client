@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SignatureGenericEntity holds a generic information about a person or entity who is an issuer or a subject of signing certificate or key.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class SignatureGenericEntity implements Editable<SignatureGenericEntityBu
         this.organization = organization;
     }
 
+    /**
+     * Common name (e.g. openshift-signing-service).
+     */
     @JsonProperty("commonName")
     public String getCommonName() {
         return commonName;
     }
 
+    /**
+     * Common name (e.g. openshift-signing-service).
+     */
     @JsonProperty("commonName")
     public void setCommonName(String commonName) {
         this.commonName = commonName;
     }
 
+    /**
+     * Organization name.
+     */
     @JsonProperty("organization")
     public String getOrganization() {
         return organization;
     }
 
+    /**
+     * Organization name.
+     */
     @JsonProperty("organization")
     public void setOrganization(String organization) {
         this.organization = organization;

@@ -36,6 +36,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * InMemoryChannelSpec defines which subscribers have expressed interest in receiving events from this InMemoryChannel. arguments for a Channel.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -87,22 +90,34 @@ public class InMemoryChannelSpec implements Editable<InMemoryChannelSpecBuilder>
         this.subscribers = subscribers;
     }
 
+    /**
+     * InMemoryChannelSpec defines which subscribers have expressed interest in receiving events from this InMemoryChannel. arguments for a Channel.
+     */
     @JsonProperty("delivery")
     public DeliverySpec getDelivery() {
         return delivery;
     }
 
+    /**
+     * InMemoryChannelSpec defines which subscribers have expressed interest in receiving events from this InMemoryChannel. arguments for a Channel.
+     */
     @JsonProperty("delivery")
     public void setDelivery(DeliverySpec delivery) {
         this.delivery = delivery;
     }
 
+    /**
+     * This is the list of subscriptions for this subscribable.
+     */
     @JsonProperty("subscribers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<SubscriberSpec> getSubscribers() {
         return subscribers;
     }
 
+    /**
+     * This is the list of subscriptions for this subscribable.
+     */
     @JsonProperty("subscribers")
     public void setSubscribers(List<SubscriberSpec> subscribers) {
         this.subscribers = subscribers;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * MetricSpec contains all values a metric collector needs to operate.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class MetricSpec implements Editable<MetricSpecBuilder>, KubernetesResour
         this.stableWindow = stableWindow;
     }
 
+    /**
+     * PanicWindow is the aggregation window for metrics where quick reactions are needed.
+     */
     @JsonProperty("panicWindow")
     public Long getPanicWindow() {
         return panicWindow;
     }
 
+    /**
+     * PanicWindow is the aggregation window for metrics where quick reactions are needed.
+     */
     @JsonProperty("panicWindow")
     public void setPanicWindow(Long panicWindow) {
         this.panicWindow = panicWindow;
     }
 
+    /**
+     * ScrapeTarget is the K8s service that publishes the metric endpoint.
+     */
     @JsonProperty("scrapeTarget")
     public String getScrapeTarget() {
         return scrapeTarget;
     }
 
+    /**
+     * ScrapeTarget is the K8s service that publishes the metric endpoint.
+     */
     @JsonProperty("scrapeTarget")
     public void setScrapeTarget(String scrapeTarget) {
         this.scrapeTarget = scrapeTarget;
     }
 
+    /**
+     * StableWindow is the aggregation window for metrics in a stable state.
+     */
     @JsonProperty("stableWindow")
     public Long getStableWindow() {
         return stableWindow;
     }
 
+    /**
+     * StableWindow is the aggregation window for metrics in a stable state.
+     */
     @JsonProperty("stableWindow")
     public void setStableWindow(Long stableWindow) {
         this.stableWindow = stableWindow;

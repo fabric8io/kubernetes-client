@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * VolumeSnapshotError describes an error encountered during snapshot creation.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class VolumeSnapshotError implements Editable<VolumeSnapshotErrorBuilder>
         this.time = time;
     }
 
+    /**
+     * message is a string detailing the encountered error during snapshot creation if specified. NOTE: message may be logged, and it should not contain sensitive information.
+     */
     @JsonProperty("message")
     public String getMessage() {
         return message;
     }
 
+    /**
+     * message is a string detailing the encountered error during snapshot creation if specified. NOTE: message may be logged, and it should not contain sensitive information.
+     */
     @JsonProperty("message")
     public void setMessage(String message) {
         this.message = message;
     }
 
+    /**
+     * VolumeSnapshotError describes an error encountered during snapshot creation.
+     */
     @JsonProperty("time")
     public String getTime() {
         return time;
     }
 
+    /**
+     * VolumeSnapshotError describes an error encountered during snapshot creation.
+     */
     @JsonProperty("time")
     public void setTime(String time) {
         this.time = time;

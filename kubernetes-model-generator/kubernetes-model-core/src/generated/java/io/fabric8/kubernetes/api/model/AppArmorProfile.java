@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AppArmorProfile defines a pod or container's AppArmor settings.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -53,21 +56,33 @@ public class AppArmorProfile implements Editable<AppArmorProfileBuilder>, Kubern
         this.type = type;
     }
 
+    /**
+     * localhostProfile indicates a profile loaded on the node that should be used. The profile must be preconfigured on the node to work. Must match the loaded name of the profile. Must be set if and only if type is "Localhost".
+     */
     @JsonProperty("localhostProfile")
     public String getLocalhostProfile() {
         return localhostProfile;
     }
 
+    /**
+     * localhostProfile indicates a profile loaded on the node that should be used. The profile must be preconfigured on the node to work. Must match the loaded name of the profile. Must be set if and only if type is "Localhost".
+     */
     @JsonProperty("localhostProfile")
     public void setLocalhostProfile(String localhostProfile) {
         this.localhostProfile = localhostProfile;
     }
 
+    /**
+     * type indicates which kind of AppArmor profile will be applied. Valid options are:<br><p>   Localhost - a profile pre-loaded on the node.<br><p>   RuntimeDefault - the container runtime's default profile.<br><p>   Unconfined - no AppArmor enforcement.
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * type indicates which kind of AppArmor profile will be applied. Valid options are:<br><p>   Localhost - a profile pre-loaded on the node.<br><p>   RuntimeDefault - the container runtime's default profile.<br><p>   Unconfined - no AppArmor enforcement.
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

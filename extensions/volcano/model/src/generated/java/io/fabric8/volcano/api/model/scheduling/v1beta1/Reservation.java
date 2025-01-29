@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Reservation represents current condition about resource reservation
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -87,23 +90,35 @@ public class Reservation implements Editable<ReservationBuilder>, KubernetesReso
         this.resource = resource;
     }
 
+    /**
+     * Nodes are Locked nodes for queue
+     */
     @JsonProperty("nodes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getNodes() {
         return nodes;
     }
 
+    /**
+     * Nodes are Locked nodes for queue
+     */
     @JsonProperty("nodes")
     public void setNodes(List<String> nodes) {
         this.nodes = nodes;
     }
 
+    /**
+     * Resource is a list of total idle resource in locked nodes.
+     */
     @JsonProperty("resource")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Quantity> getResource() {
         return resource;
     }
 
+    /**
+     * Resource is a list of total idle resource in locked nodes.
+     */
     @JsonProperty("resource")
     public void setResource(Map<String, Quantity> resource) {
         this.resource = resource;

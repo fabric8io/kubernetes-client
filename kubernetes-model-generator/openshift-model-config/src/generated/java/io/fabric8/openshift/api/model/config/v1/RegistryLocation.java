@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * RegistryLocation contains a location of the registry specified by the registry domain name. The domain name might include wildcards, like '&#42;' or '??'.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class RegistryLocation implements Editable<RegistryLocationBuilder>, Kube
         this.insecure = insecure;
     }
 
+    /**
+     * domainName specifies a domain name for the registry In case the registry use non-standard (80 or 443) port, the port should be included in the domain name as well.
+     */
     @JsonProperty("domainName")
     public String getDomainName() {
         return domainName;
     }
 
+    /**
+     * domainName specifies a domain name for the registry In case the registry use non-standard (80 or 443) port, the port should be included in the domain name as well.
+     */
     @JsonProperty("domainName")
     public void setDomainName(String domainName) {
         this.domainName = domainName;
     }
 
+    /**
+     * insecure indicates whether the registry is secure (https) or insecure (http) By default (if not specified) the registry is assumed as secure.
+     */
     @JsonProperty("insecure")
     public Boolean getInsecure() {
         return insecure;
     }
 
+    /**
+     * insecure indicates whether the registry is secure (https) or insecure (http) By default (if not specified) the registry is assumed as secure.
+     */
     @JsonProperty("insecure")
     public void setInsecure(Boolean insecure) {
         this.insecure = insecure;

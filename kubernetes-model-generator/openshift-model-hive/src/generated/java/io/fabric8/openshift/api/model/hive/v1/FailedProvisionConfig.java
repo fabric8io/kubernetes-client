@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * FailedProvisionConfig contains settings to control behavior undertaken by Hive when an installation attempt fails.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -89,32 +92,50 @@ public class FailedProvisionConfig implements Editable<FailedProvisionConfigBuil
         this.skipGatherLogs = skipGatherLogs;
     }
 
+    /**
+     * FailedProvisionConfig contains settings to control behavior undertaken by Hive when an installation attempt fails.
+     */
     @JsonProperty("aws")
     public FailedProvisionAWSConfig getAws() {
         return aws;
     }
 
+    /**
+     * FailedProvisionConfig contains settings to control behavior undertaken by Hive when an installation attempt fails.
+     */
     @JsonProperty("aws")
     public void setAws(FailedProvisionAWSConfig aws) {
         this.aws = aws;
     }
 
+    /**
+     * RetryReasons is a list of installFailingReason strings from the [additional-]install-log-regexes ConfigMaps. If specified, Hive will only retry a failed installation if it results in one of the listed reasons. If omitted (not the same thing as empty!), Hive will retry regardless of the failure reason. (The total number of install attempts is still constrained by ClusterDeployment.Spec.InstallAttemptsLimit.)
+     */
     @JsonProperty("retryReasons")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getRetryReasons() {
         return retryReasons;
     }
 
+    /**
+     * RetryReasons is a list of installFailingReason strings from the [additional-]install-log-regexes ConfigMaps. If specified, Hive will only retry a failed installation if it results in one of the listed reasons. If omitted (not the same thing as empty!), Hive will retry regardless of the failure reason. (The total number of install attempts is still constrained by ClusterDeployment.Spec.InstallAttemptsLimit.)
+     */
     @JsonProperty("retryReasons")
     public void setRetryReasons(List<String> retryReasons) {
         this.retryReasons = retryReasons;
     }
 
+    /**
+     * DEPRECATED: This flag is no longer respected and will be removed in the future.
+     */
     @JsonProperty("skipGatherLogs")
     public Boolean getSkipGatherLogs() {
         return skipGatherLogs;
     }
 
+    /**
+     * DEPRECATED: This flag is no longer respected and will be removed in the future.
+     */
     @JsonProperty("skipGatherLogs")
     public void setSkipGatherLogs(Boolean skipGatherLogs) {
         this.skipGatherLogs = skipGatherLogs;

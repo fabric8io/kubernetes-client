@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * BuildVolume describes a volume that is made available to build pods, such that it can be mounted into buildah's runtime environment. Only a subset of Kubernetes Volume sources are supported.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -89,32 +92,50 @@ public class BuildVolume implements Editable<BuildVolumeBuilder>, KubernetesReso
         this.source = source;
     }
 
+    /**
+     * mounts represents the location of the volume in the image build container
+     */
     @JsonProperty("mounts")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<BuildVolumeMount> getMounts() {
         return mounts;
     }
 
+    /**
+     * mounts represents the location of the volume in the image build container
+     */
     @JsonProperty("mounts")
     public void setMounts(List<BuildVolumeMount> mounts) {
         this.mounts = mounts;
     }
 
+    /**
+     * name is a unique identifier for this BuildVolume. It must conform to the Kubernetes DNS label standard and be unique within the pod. Names that collide with those added by the build controller will result in a failed build with an error message detailing which name caused the error. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * name is a unique identifier for this BuildVolume. It must conform to the Kubernetes DNS label standard and be unique within the pod. Names that collide with those added by the build controller will result in a failed build with an error message detailing which name caused the error. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * BuildVolume describes a volume that is made available to build pods, such that it can be mounted into buildah's runtime environment. Only a subset of Kubernetes Volume sources are supported.
+     */
     @JsonProperty("source")
     public BuildVolumeSource getSource() {
         return source;
     }
 
+    /**
+     * BuildVolume describes a volume that is made available to build pods, such that it can be mounted into buildah's runtime environment. Only a subset of Kubernetes Volume sources are supported.
+     */
     @JsonProperty("source")
     public void setSource(BuildVolumeSource source) {
         this.source = source;

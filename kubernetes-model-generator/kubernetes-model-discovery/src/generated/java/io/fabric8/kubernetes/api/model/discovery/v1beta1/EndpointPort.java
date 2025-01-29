@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * EndpointPort represents a Port used by an EndpointSlice
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class EndpointPort implements Editable<EndpointPortBuilder>, KubernetesRe
         this.protocol = protocol;
     }
 
+    /**
+     * The application protocol for this port. This field follows standard Kubernetes label syntax. Un-prefixed names are reserved for IANA standard service names (as per RFC-6335 and http://www.iana.org/assignments/service-names). Non-standard protocols should use prefixed names such as mycompany.com/my-custom-protocol.
+     */
     @JsonProperty("appProtocol")
     public String getAppProtocol() {
         return appProtocol;
     }
 
+    /**
+     * The application protocol for this port. This field follows standard Kubernetes label syntax. Un-prefixed names are reserved for IANA standard service names (as per RFC-6335 and http://www.iana.org/assignments/service-names). Non-standard protocols should use prefixed names such as mycompany.com/my-custom-protocol.
+     */
     @JsonProperty("appProtocol")
     public void setAppProtocol(String appProtocol) {
         this.appProtocol = appProtocol;
     }
 
+    /**
+     * The name of this port. All ports in an EndpointSlice must have a unique name. If the EndpointSlice is dervied from a Kubernetes service, this corresponds to the Service.ports[].name. Name must either be an empty string or pass DNS_LABEL validation: &#42; must be no more than 63 characters long. &#42; must consist of lower case alphanumeric characters or '-'. &#42; must start and end with an alphanumeric character. Default is empty string.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * The name of this port. All ports in an EndpointSlice must have a unique name. If the EndpointSlice is dervied from a Kubernetes service, this corresponds to the Service.ports[].name. Name must either be an empty string or pass DNS_LABEL validation: &#42; must be no more than 63 characters long. &#42; must consist of lower case alphanumeric characters or '-'. &#42; must start and end with an alphanumeric character. Default is empty string.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * The port number of the endpoint. If this is not specified, ports are not restricted and must be interpreted in the context of the specific consumer.
+     */
     @JsonProperty("port")
     public Integer getPort() {
         return port;
     }
 
+    /**
+     * The port number of the endpoint. If this is not specified, ports are not restricted and must be interpreted in the context of the specific consumer.
+     */
     @JsonProperty("port")
     public void setPort(Integer port) {
         this.port = port;
     }
 
+    /**
+     * The IP protocol for this port. Must be UDP, TCP, or SCTP. Default is TCP.
+     */
     @JsonProperty("protocol")
     public String getProtocol() {
         return protocol;
     }
 
+    /**
+     * The IP protocol for this port. Must be UDP, TCP, or SCTP. Default is TCP.
+     */
     @JsonProperty("protocol")
     public void setProtocol(String protocol) {
         this.protocol = protocol;

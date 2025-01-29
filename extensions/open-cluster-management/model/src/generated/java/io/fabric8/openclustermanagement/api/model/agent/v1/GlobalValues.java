@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * GlobalValues defines the global values
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -97,54 +100,84 @@ public class GlobalValues implements Editable<GlobalValuesBuilder>, KubernetesRe
         this.proxyConfig = proxyConfig;
     }
 
+    /**
+     * GlobalValues defines the global values
+     */
     @JsonProperty("imageOverrides")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getImageOverrides() {
         return imageOverrides;
     }
 
+    /**
+     * GlobalValues defines the global values
+     */
     @JsonProperty("imageOverrides")
     public void setImageOverrides(Map<String, String> imageOverrides) {
         this.imageOverrides = imageOverrides;
     }
 
+    /**
+     * GlobalValues defines the global values
+     */
     @JsonProperty("imagePullPolicy")
     public String getImagePullPolicy() {
         return imagePullPolicy;
     }
 
+    /**
+     * GlobalValues defines the global values
+     */
     @JsonProperty("imagePullPolicy")
     public void setImagePullPolicy(String imagePullPolicy) {
         this.imagePullPolicy = imagePullPolicy;
     }
 
+    /**
+     * GlobalValues defines the global values
+     */
     @JsonProperty("imagePullSecret")
     public String getImagePullSecret() {
         return imagePullSecret;
     }
 
+    /**
+     * GlobalValues defines the global values
+     */
     @JsonProperty("imagePullSecret")
     public void setImagePullSecret(String imagePullSecret) {
         this.imagePullSecret = imagePullSecret;
     }
 
+    /**
+     * GlobalValues defines the global values
+     */
     @JsonProperty("nodeSelector")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getNodeSelector() {
         return nodeSelector;
     }
 
+    /**
+     * GlobalValues defines the global values
+     */
     @JsonProperty("nodeSelector")
     public void setNodeSelector(Map<String, String> nodeSelector) {
         this.nodeSelector = nodeSelector;
     }
 
+    /**
+     * GlobalValues defines the global values
+     */
     @JsonProperty("proxyConfig")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getProxyConfig() {
         return proxyConfig;
     }
 
+    /**
+     * GlobalValues defines the global values
+     */
     @JsonProperty("proxyConfig")
     public void setProxyConfig(Map<String, String> proxyConfig) {
         this.proxyConfig = proxyConfig;

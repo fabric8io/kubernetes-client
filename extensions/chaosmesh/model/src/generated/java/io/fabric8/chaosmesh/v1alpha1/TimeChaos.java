@@ -37,6 +37,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * TimeChaos is the Schema for the timechaos API
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -76,14 +79,8 @@ import lombok.experimental.Accessors;
 public class TimeChaos implements Editable<TimeChaosBuilder>, HasMetadata, Namespaced
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "chaos-mesh.org/v1alpha1";
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "TimeChaos";
     @JsonProperty("metadata")
@@ -111,7 +108,7 @@ public class TimeChaos implements Editable<TimeChaosBuilder>, HasMetadata, Names
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -119,7 +116,7 @@ public class TimeChaos implements Editable<TimeChaosBuilder>, HasMetadata, Names
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -127,7 +124,7 @@ public class TimeChaos implements Editable<TimeChaosBuilder>, HasMetadata, Names
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -135,38 +132,56 @@ public class TimeChaos implements Editable<TimeChaosBuilder>, HasMetadata, Names
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * TimeChaos is the Schema for the timechaos API
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * TimeChaos is the Schema for the timechaos API
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * TimeChaos is the Schema for the timechaos API
+     */
     @JsonProperty("spec")
     public TimeChaosSpec getSpec() {
         return spec;
     }
 
+    /**
+     * TimeChaos is the Schema for the timechaos API
+     */
     @JsonProperty("spec")
     public void setSpec(TimeChaosSpec spec) {
         this.spec = spec;
     }
 
+    /**
+     * TimeChaos is the Schema for the timechaos API
+     */
     @JsonProperty("status")
     public TimeChaosStatus getStatus() {
         return status;
     }
 
+    /**
+     * TimeChaos is the Schema for the timechaos API
+     */
     @JsonProperty("status")
     public void setStatus(TimeChaosStatus status) {
         this.status = status;

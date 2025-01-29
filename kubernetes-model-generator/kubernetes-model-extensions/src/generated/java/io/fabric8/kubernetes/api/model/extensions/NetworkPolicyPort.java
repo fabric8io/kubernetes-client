@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DEPRECATED 1.9 - This group version of NetworkPolicyPort is deprecated by networking/v1/NetworkPolicyPort.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class NetworkPolicyPort implements Editable<NetworkPolicyPortBuilder>, Ku
         this.protocol = protocol;
     }
 
+    /**
+     * DEPRECATED 1.9 - This group version of NetworkPolicyPort is deprecated by networking/v1/NetworkPolicyPort.
+     */
     @JsonProperty("port")
     public IntOrString getPort() {
         return port;
     }
 
+    /**
+     * DEPRECATED 1.9 - This group version of NetworkPolicyPort is deprecated by networking/v1/NetworkPolicyPort.
+     */
     @JsonProperty("port")
     public void setPort(IntOrString port) {
         this.port = port;
     }
 
+    /**
+     * Optional.  The protocol (TCP, UDP, or SCTP) which traffic must match. If not specified, this field defaults to TCP.
+     */
     @JsonProperty("protocol")
     public String getProtocol() {
         return protocol;
     }
 
+    /**
+     * Optional.  The protocol (TCP, UDP, or SCTP) which traffic must match. If not specified, this field defaults to TCP.
+     */
     @JsonProperty("protocol")
     public void setProtocol(String protocol) {
         this.protocol = protocol;

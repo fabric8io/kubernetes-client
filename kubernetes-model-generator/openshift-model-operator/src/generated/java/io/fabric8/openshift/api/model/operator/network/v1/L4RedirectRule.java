@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * L4RedirectRule defines a DNAT redirection from a given port to a destination IP and port.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class L4RedirectRule implements Editable<L4RedirectRuleBuilder>, Kubernet
         this.targetPort = targetPort;
     }
 
+    /**
+     * IP specifies the remote destination's IP address. Can be IPv4 or IPv6.
+     */
     @JsonProperty("destinationIP")
     public String getDestinationIP() {
         return destinationIP;
     }
 
+    /**
+     * IP specifies the remote destination's IP address. Can be IPv4 or IPv6.
+     */
     @JsonProperty("destinationIP")
     public void setDestinationIP(String destinationIP) {
         this.destinationIP = destinationIP;
     }
 
+    /**
+     * Port is the port number to which clients should send traffic to be redirected.
+     */
     @JsonProperty("port")
     public Integer getPort() {
         return port;
     }
 
+    /**
+     * Port is the port number to which clients should send traffic to be redirected.
+     */
     @JsonProperty("port")
     public void setPort(Integer port) {
         this.port = port;
     }
 
+    /**
+     * Protocol can be TCP, SCTP or UDP.
+     */
     @JsonProperty("protocol")
     public String getProtocol() {
         return protocol;
     }
 
+    /**
+     * Protocol can be TCP, SCTP or UDP.
+     */
     @JsonProperty("protocol")
     public void setProtocol(String protocol) {
         this.protocol = protocol;
     }
 
+    /**
+     * TargetPort allows specifying the port number on the remote destination to which the traffic gets redirected to. If unspecified, the value from "Port" is used.
+     */
     @JsonProperty("targetPort")
     public Integer getTargetPort() {
         return targetPort;
     }
 
+    /**
+     * TargetPort allows specifying the port number on the remote destination to which the traffic gets redirected to. If unspecified, the value from "Port" is used.
+     */
     @JsonProperty("targetPort")
     public void setTargetPort(Integer targetPort) {
         this.targetPort = targetPort;

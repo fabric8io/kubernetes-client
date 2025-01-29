@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ResourceParam declares a string value to use for the parameter called Name, and is used in the specific context of PipelineResources.<br><p> <br><p> Deprecated: Unused, preserved only for backwards compatibility
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class ResourceParam implements Editable<ResourceParamBuilder>, Kubernetes
         this.value = value;
     }
 
+    /**
+     * ResourceParam declares a string value to use for the parameter called Name, and is used in the specific context of PipelineResources.<br><p> <br><p> Deprecated: Unused, preserved only for backwards compatibility
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * ResourceParam declares a string value to use for the parameter called Name, and is used in the specific context of PipelineResources.<br><p> <br><p> Deprecated: Unused, preserved only for backwards compatibility
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * ResourceParam declares a string value to use for the parameter called Name, and is used in the specific context of PipelineResources.<br><p> <br><p> Deprecated: Unused, preserved only for backwards compatibility
+     */
     @JsonProperty("value")
     public String getValue() {
         return value;
     }
 
+    /**
+     * ResourceParam declares a string value to use for the parameter called Name, and is used in the specific context of PipelineResources.<br><p> <br><p> Deprecated: Unused, preserved only for backwards compatibility
+     */
     @JsonProperty("value")
     public void setValue(String value) {
         this.value = value;

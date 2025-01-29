@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Do not generate DeepCopy(). See #827
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -100,55 +103,85 @@ public class InterceptorRequest implements Editable<InterceptorRequestBuilder>, 
         this.interceptorParams = interceptorParams;
     }
 
+    /**
+     * Body is the incoming HTTP event body. We use a "string" representation of the JSON body in order to preserve the body exactly as it was sent (including spaces etc.). This is necessary for some interceptors e.g. GitHub for validating the body with a signature. While []byte can also store an exact representation of the body, `json.Marshal` will compact []byte to a base64 encoded string which means that we will lose the spaces any time we marshal this struct.
+     */
     @JsonProperty("body")
     public String getBody() {
         return body;
     }
 
+    /**
+     * Body is the incoming HTTP event body. We use a "string" representation of the JSON body in order to preserve the body exactly as it was sent (including spaces etc.). This is necessary for some interceptors e.g. GitHub for validating the body with a signature. While []byte can also store an exact representation of the body, `json.Marshal` will compact []byte to a base64 encoded string which means that we will lose the spaces any time we marshal this struct.
+     */
     @JsonProperty("body")
     public void setBody(String body) {
         this.body = body;
     }
 
+    /**
+     * Do not generate DeepCopy(). See #827
+     */
     @JsonProperty("context")
     public TriggerContext getContext() {
         return context;
     }
 
+    /**
+     * Do not generate DeepCopy(). See #827
+     */
     @JsonProperty("context")
     public void setContext(TriggerContext context) {
         this.context = context;
     }
 
+    /**
+     * Extensions are extra values that are added by previous interceptors in a chain
+     */
     @JsonProperty("extensions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Object> getExtensions() {
         return extensions;
     }
 
+    /**
+     * Extensions are extra values that are added by previous interceptors in a chain
+     */
     @JsonProperty("extensions")
     @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializerForMap.class)
     public void setExtensions(Map<String, Object> extensions) {
         this.extensions = extensions;
     }
 
+    /**
+     * Header are the headers for the incoming HTTP event
+     */
     @JsonProperty("header")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, List<String>> getHeader() {
         return header;
     }
 
+    /**
+     * Header are the headers for the incoming HTTP event
+     */
     @JsonProperty("header")
     public void setHeader(Map<String, List<String>> header) {
         this.header = header;
     }
 
+    /**
+     * InterceptorParams are the user specified params for interceptor in the Trigger
+     */
     @JsonProperty("interceptor_params")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Object> getInterceptorParams() {
         return interceptorParams;
     }
 
+    /**
+     * InterceptorParams are the user specified params for interceptor in the Trigger
+     */
     @JsonProperty("interceptor_params")
     @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializerForMap.class)
     public void setInterceptorParams(Map<String, Object> interceptorParams) {

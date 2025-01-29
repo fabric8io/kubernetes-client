@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ManagedClusterSpec provides the information to securely connect to a remote server and verify its identity.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,43 +97,67 @@ public class ManagedClusterSpec implements Editable<ManagedClusterSpecBuilder>, 
         this.taints = taints;
     }
 
+    /**
+     * hubAcceptsClient represents that hub accepts the joining of Klusterlet agent on the managed cluster with the hub. The default value is false, and can only be set true when the user on hub has an RBAC rule to UPDATE on the virtual subresource of managedclusters/accept. When the value is set true, a namespace whose name is the same as the name of ManagedCluster is created on the hub. This namespace represents the managed cluster, also role/rolebinding is created on the namespace to grant the permision of access from the agent on the managed cluster. When the value is set to false, the namespace representing the managed cluster is deleted.
+     */
     @JsonProperty("hubAcceptsClient")
     public Boolean getHubAcceptsClient() {
         return hubAcceptsClient;
     }
 
+    /**
+     * hubAcceptsClient represents that hub accepts the joining of Klusterlet agent on the managed cluster with the hub. The default value is false, and can only be set true when the user on hub has an RBAC rule to UPDATE on the virtual subresource of managedclusters/accept. When the value is set true, a namespace whose name is the same as the name of ManagedCluster is created on the hub. This namespace represents the managed cluster, also role/rolebinding is created on the namespace to grant the permision of access from the agent on the managed cluster. When the value is set to false, the namespace representing the managed cluster is deleted.
+     */
     @JsonProperty("hubAcceptsClient")
     public void setHubAcceptsClient(Boolean hubAcceptsClient) {
         this.hubAcceptsClient = hubAcceptsClient;
     }
 
+    /**
+     * LeaseDurationSeconds is used to coordinate the lease update time of Klusterlet agents on the managed cluster. If its value is zero, the Klusterlet agent will update its lease every 60 seconds by default
+     */
     @JsonProperty("leaseDurationSeconds")
     public Integer getLeaseDurationSeconds() {
         return leaseDurationSeconds;
     }
 
+    /**
+     * LeaseDurationSeconds is used to coordinate the lease update time of Klusterlet agents on the managed cluster. If its value is zero, the Klusterlet agent will update its lease every 60 seconds by default
+     */
     @JsonProperty("leaseDurationSeconds")
     public void setLeaseDurationSeconds(Integer leaseDurationSeconds) {
         this.leaseDurationSeconds = leaseDurationSeconds;
     }
 
+    /**
+     * ManagedClusterClientConfigs represents a list of the apiserver address of the managed cluster. If it is empty, the managed cluster has no accessible address for the hub to connect with it.
+     */
     @JsonProperty("managedClusterClientConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ClientConfig> getManagedClusterClientConfigs() {
         return managedClusterClientConfigs;
     }
 
+    /**
+     * ManagedClusterClientConfigs represents a list of the apiserver address of the managed cluster. If it is empty, the managed cluster has no accessible address for the hub to connect with it.
+     */
     @JsonProperty("managedClusterClientConfigs")
     public void setManagedClusterClientConfigs(List<ClientConfig> managedClusterClientConfigs) {
         this.managedClusterClientConfigs = managedClusterClientConfigs;
     }
 
+    /**
+     * Taints is a property of managed cluster that allow the cluster to be repelled when scheduling. Taints, including 'ManagedClusterUnavailable' and 'ManagedClusterUnreachable', can not be added/removed by agent running on the managed cluster; while it's fine to add/remove other taints from either hub cluser or managed cluster.
+     */
     @JsonProperty("taints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Taint> getTaints() {
         return taints;
     }
 
+    /**
+     * Taints is a property of managed cluster that allow the cluster to be repelled when scheduling. Taints, including 'ManagedClusterUnavailable' and 'ManagedClusterUnreachable', can not be added/removed by agent running on the managed cluster; while it's fine to add/remove other taints from either hub cluser or managed cluster.
+     */
     @JsonProperty("taints")
     public void setTaints(List<Taint> taints) {
         this.taints = taints;

@@ -82,21 +82,33 @@ public class ConditionalBranch implements Editable<ConditionalBranchBuilder>, Ku
         this.target = target;
     }
 
+    /**
+     * Expression is the expression for this conditional branch, expected type of result is boolean. If expression is empty, this branch will always be selected/the template will be spawned.
+     */
     @JsonProperty("expression")
     public String getExpression() {
         return expression;
     }
 
+    /**
+     * Expression is the expression for this conditional branch, expected type of result is boolean. If expression is empty, this branch will always be selected/the template will be spawned.
+     */
     @JsonProperty("expression")
     public void setExpression(String expression) {
         this.expression = expression;
     }
 
+    /**
+     * Target is the name of other template, if expression is evaluated as true, this template will be spawned.
+     */
     @JsonProperty("target")
     public String getTarget() {
         return target;
     }
 
+    /**
+     * Target is the name of other template, if expression is evaluated as true, this template will be spawned.
+     */
     @JsonProperty("target")
     public void setTarget(String target) {
         this.target = target;

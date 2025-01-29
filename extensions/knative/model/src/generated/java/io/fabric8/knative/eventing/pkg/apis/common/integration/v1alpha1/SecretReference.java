@@ -78,11 +78,17 @@ public class SecretReference implements Editable<SecretReferenceBuilder>, Kubern
         this.name = name;
     }
 
+    /**
+     * Secret name.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Secret name.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

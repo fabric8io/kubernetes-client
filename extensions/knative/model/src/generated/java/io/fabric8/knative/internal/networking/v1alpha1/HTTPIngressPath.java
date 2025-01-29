@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * HTTPIngressPath associates a path regex with a backend. Incoming URLs matching the path are forwarded to the backend.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -99,54 +102,84 @@ public class HTTPIngressPath implements Editable<HTTPIngressPathBuilder>, Kubern
         this.splits = splits;
     }
 
+    /**
+     * AppendHeaders allow specifying additional HTTP headers to add before forwarding a request to the destination service.<br><p> <br><p> NOTE: This differs from K8s Ingress which doesn't allow header appending.
+     */
     @JsonProperty("appendHeaders")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAppendHeaders() {
         return appendHeaders;
     }
 
+    /**
+     * AppendHeaders allow specifying additional HTTP headers to add before forwarding a request to the destination service.<br><p> <br><p> NOTE: This differs from K8s Ingress which doesn't allow header appending.
+     */
     @JsonProperty("appendHeaders")
     public void setAppendHeaders(Map<String, String> appendHeaders) {
         this.appendHeaders = appendHeaders;
     }
 
+    /**
+     * Headers defines header matching rules which is a map from a header name to HeaderMatch which specify a matching condition. When a request matched with all the header matching rules, the request is routed by the corresponding ingress rule. If it is empty, the headers are not used for matching
+     */
     @JsonProperty("headers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, HeaderMatch> getHeaders() {
         return headers;
     }
 
+    /**
+     * Headers defines header matching rules which is a map from a header name to HeaderMatch which specify a matching condition. When a request matched with all the header matching rules, the request is routed by the corresponding ingress rule. If it is empty, the headers are not used for matching
+     */
     @JsonProperty("headers")
     public void setHeaders(Map<String, HeaderMatch> headers) {
         this.headers = headers;
     }
 
+    /**
+     * Path represents a literal prefix to which this rule should apply. Currently it can contain characters disallowed from the conventional "path" part of a URL as defined by RFC 3986. Paths must begin with a '/'. If unspecified, the path defaults to a catch all sending traffic to the backend.
+     */
     @JsonProperty("path")
     public String getPath() {
         return path;
     }
 
+    /**
+     * Path represents a literal prefix to which this rule should apply. Currently it can contain characters disallowed from the conventional "path" part of a URL as defined by RFC 3986. Paths must begin with a '/'. If unspecified, the path defaults to a catch all sending traffic to the backend.
+     */
     @JsonProperty("path")
     public void setPath(String path) {
         this.path = path;
     }
 
+    /**
+     * RewriteHost rewrites the incoming request's host header.<br><p> <br><p> This field is currently experimental and not supported by all Ingress implementations.
+     */
     @JsonProperty("rewriteHost")
     public String getRewriteHost() {
         return rewriteHost;
     }
 
+    /**
+     * RewriteHost rewrites the incoming request's host header.<br><p> <br><p> This field is currently experimental and not supported by all Ingress implementations.
+     */
     @JsonProperty("rewriteHost")
     public void setRewriteHost(String rewriteHost) {
         this.rewriteHost = rewriteHost;
     }
 
+    /**
+     * Splits defines the referenced service endpoints to which the traffic will be forwarded to.
+     */
     @JsonProperty("splits")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<IngressBackendSplit> getSplits() {
         return splits;
     }
 
+    /**
+     * Splits defines the referenced service endpoints to which the traffic will be forwarded to.
+     */
     @JsonProperty("splits")
     public void setSplits(List<IngressBackendSplit> splits) {
         this.splits = splits;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NamedClusterRole relates a name with a cluster role
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class NamedClusterRole implements Editable<NamedClusterRoleBuilder>, Kube
         this.role = role;
     }
 
+    /**
+     * Name is the name of the cluster role
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name is the name of the cluster role
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * NamedClusterRole relates a name with a cluster role
+     */
     @JsonProperty("role")
     public ClusterRole getRole() {
         return role;
     }
 
+    /**
+     * NamedClusterRole relates a name with a cluster role
+     */
     @JsonProperty("role")
     public void setRole(ClusterRole role) {
         this.role = role;

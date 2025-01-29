@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * CertificateAdditionalOutputFormat defines an additional output format of a Certificate resource. These contain supplementary data formats of the signed certificate chain and paired private key.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class CertificateAdditionalOutputFormat implements Editable<CertificateAd
         this.type = type;
     }
 
+    /**
+     * Type is the name of the format type that should be written to the Certificate's target Secret.
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * Type is the name of the format type that should be written to the Certificate's target Secret.
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

@@ -19,6 +19,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Describe a container image
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -56,22 +59,34 @@ public class ContainerImage implements Editable<ContainerImageBuilder>, Kubernet
         this.sizeBytes = sizeBytes;
     }
 
+    /**
+     * Names by which this image is known. e.g. ["kubernetes.example/hyperkube:v1.0.7", "cloud-vendor.registry.example/cloud-vendor/hyperkube:v1.0.7"]
+     */
     @JsonProperty("names")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getNames() {
         return names;
     }
 
+    /**
+     * Names by which this image is known. e.g. ["kubernetes.example/hyperkube:v1.0.7", "cloud-vendor.registry.example/cloud-vendor/hyperkube:v1.0.7"]
+     */
     @JsonProperty("names")
     public void setNames(List<String> names) {
         this.names = names;
     }
 
+    /**
+     * The size of the image in bytes.
+     */
     @JsonProperty("sizeBytes")
     public Long getSizeBytes() {
         return sizeBytes;
     }
 
+    /**
+     * The size of the image in bytes.
+     */
     @JsonProperty("sizeBytes")
     public void setSizeBytes(Long sizeBytes) {
         this.sizeBytes = sizeBytes;

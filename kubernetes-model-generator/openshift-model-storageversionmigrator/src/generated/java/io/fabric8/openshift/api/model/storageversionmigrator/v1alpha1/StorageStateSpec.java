@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Specification of the storage state.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class StorageStateSpec implements Editable<StorageStateSpecBuilder>, Kube
         this.resource = resource;
     }
 
+    /**
+     * Specification of the storage state.
+     */
     @JsonProperty("resource")
     public StorageStateSpecResource getResource() {
         return resource;
     }
 
+    /**
+     * Specification of the storage state.
+     */
     @JsonProperty("resource")
     public void setResource(StorageStateSpecResource resource) {
         this.resource = resource;

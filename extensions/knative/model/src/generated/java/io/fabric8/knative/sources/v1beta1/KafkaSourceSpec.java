@@ -38,6 +38,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * KafkaSourceSpec defines the desired state of the KafkaSource.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -122,103 +125,163 @@ public class KafkaSourceSpec implements Editable<KafkaSourceSpecBuilder>, Kubern
         this.topics = topics;
     }
 
+    /**
+     * Bootstrap servers are the Kafka servers the consumer will connect to.
+     */
     @JsonProperty("bootstrapServers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getBootstrapServers() {
         return bootstrapServers;
     }
 
+    /**
+     * Bootstrap servers are the Kafka servers the consumer will connect to.
+     */
     @JsonProperty("bootstrapServers")
     public void setBootstrapServers(List<String> bootstrapServers) {
         this.bootstrapServers = bootstrapServers;
     }
 
+    /**
+     * KafkaSourceSpec defines the desired state of the KafkaSource.
+     */
     @JsonProperty("ceOverrides")
     public CloudEventOverrides getCeOverrides() {
         return ceOverrides;
     }
 
+    /**
+     * KafkaSourceSpec defines the desired state of the KafkaSource.
+     */
     @JsonProperty("ceOverrides")
     public void setCeOverrides(CloudEventOverrides ceOverrides) {
         this.ceOverrides = ceOverrides;
     }
 
+    /**
+     * ConsumerGroupID is the consumer group ID.
+     */
     @JsonProperty("consumerGroup")
     public String getConsumerGroup() {
         return consumerGroup;
     }
 
+    /**
+     * ConsumerGroupID is the consumer group ID.
+     */
     @JsonProperty("consumerGroup")
     public void setConsumerGroup(String consumerGroup) {
         this.consumerGroup = consumerGroup;
     }
 
+    /**
+     * Number of desired consumers running in the consumer group. Defaults to 1.<br><p> <br><p> This is a pointer to distinguish between explicit zero and not specified.
+     */
     @JsonProperty("consumers")
     public Integer getConsumers() {
         return consumers;
     }
 
+    /**
+     * Number of desired consumers running in the consumer group. Defaults to 1.<br><p> <br><p> This is a pointer to distinguish between explicit zero and not specified.
+     */
     @JsonProperty("consumers")
     public void setConsumers(Integer consumers) {
         this.consumers = consumers;
     }
 
+    /**
+     * KafkaSourceSpec defines the desired state of the KafkaSource.
+     */
     @JsonProperty("delivery")
     public DeliverySpec getDelivery() {
         return delivery;
     }
 
+    /**
+     * KafkaSourceSpec defines the desired state of the KafkaSource.
+     */
     @JsonProperty("delivery")
     public void setDelivery(DeliverySpec delivery) {
         this.delivery = delivery;
     }
 
+    /**
+     * InitialOffset is the Initial Offset for the consumer group. should be earliest or latest
+     */
     @JsonProperty("initialOffset")
     public String getInitialOffset() {
         return initialOffset;
     }
 
+    /**
+     * InitialOffset is the Initial Offset for the consumer group. should be earliest or latest
+     */
     @JsonProperty("initialOffset")
     public void setInitialOffset(String initialOffset) {
         this.initialOffset = initialOffset;
     }
 
+    /**
+     * KafkaSourceSpec defines the desired state of the KafkaSource.
+     */
     @JsonProperty("net")
     public KafkaNetSpec getNet() {
         return net;
     }
 
+    /**
+     * KafkaSourceSpec defines the desired state of the KafkaSource.
+     */
     @JsonProperty("net")
     public void setNet(KafkaNetSpec net) {
         this.net = net;
     }
 
+    /**
+     * Ordering is the type of the consumer verticle. Should be ordered or unordered. By default, it is ordered.
+     */
     @JsonProperty("ordering")
     public String getOrdering() {
         return ordering;
     }
 
+    /**
+     * Ordering is the type of the consumer verticle. Should be ordered or unordered. By default, it is ordered.
+     */
     @JsonProperty("ordering")
     public void setOrdering(String ordering) {
         this.ordering = ordering;
     }
 
+    /**
+     * KafkaSourceSpec defines the desired state of the KafkaSource.
+     */
     @JsonProperty("sink")
     public Destination getSink() {
         return sink;
     }
 
+    /**
+     * KafkaSourceSpec defines the desired state of the KafkaSource.
+     */
     @JsonProperty("sink")
     public void setSink(Destination sink) {
         this.sink = sink;
     }
 
+    /**
+     * Topic topics to consume messages from
+     */
     @JsonProperty("topics")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getTopics() {
         return topics;
     }
 
+    /**
+     * Topic topics to consume messages from
+     */
     @JsonProperty("topics")
     public void setTopics(List<String> topics) {
         this.topics = topics;

@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ConditionalUpdate represents an update which is recommended to some clusters on the version the current cluster is reconciling, but which may not be recommended for the current cluster.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -91,33 +94,51 @@ public class ConditionalUpdate implements Editable<ConditionalUpdateBuilder>, Ku
         this.risks = risks;
     }
 
+    /**
+     * conditions represents the observations of the conditional update's current status. Known types are: &#42; Recommended, for whether the update is recommended for the current cluster.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
 
+    /**
+     * conditions represents the observations of the conditional update's current status. Known types are: &#42; Recommended, for whether the update is recommended for the current cluster.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * ConditionalUpdate represents an update which is recommended to some clusters on the version the current cluster is reconciling, but which may not be recommended for the current cluster.
+     */
     @JsonProperty("release")
     public Release getRelease() {
         return release;
     }
 
+    /**
+     * ConditionalUpdate represents an update which is recommended to some clusters on the version the current cluster is reconciling, but which may not be recommended for the current cluster.
+     */
     @JsonProperty("release")
     public void setRelease(Release release) {
         this.release = release;
     }
 
+    /**
+     * risks represents the range of issues associated with updating to the target release. The cluster-version operator will evaluate all entries, and only recommend the update if there is at least one entry and all entries recommend the update.
+     */
     @JsonProperty("risks")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ConditionalUpdateRisk> getRisks() {
         return risks;
     }
 
+    /**
+     * risks represents the range of issues associated with updating to the target release. The cluster-version operator will evaluate all entries, and only recommend the update if there is at least one entry and all entries recommend the update.
+     */
     @JsonProperty("risks")
     public void setRisks(List<ConditionalUpdateRisk> risks) {
         this.risks = risks;

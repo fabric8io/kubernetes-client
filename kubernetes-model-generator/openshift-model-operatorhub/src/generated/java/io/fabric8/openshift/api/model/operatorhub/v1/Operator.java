@@ -36,6 +36,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Operator represents a cluster operator.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -75,14 +78,8 @@ import lombok.experimental.Accessors;
 public class Operator implements Editable<OperatorBuilder>, HasMetadata
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "operators.coreos.com/v1";
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "Operator";
     @JsonProperty("metadata")
@@ -110,7 +107,7 @@ public class Operator implements Editable<OperatorBuilder>, HasMetadata
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -118,7 +115,7 @@ public class Operator implements Editable<OperatorBuilder>, HasMetadata
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -126,7 +123,7 @@ public class Operator implements Editable<OperatorBuilder>, HasMetadata
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -134,38 +131,56 @@ public class Operator implements Editable<OperatorBuilder>, HasMetadata
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * Operator represents a cluster operator.
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * Operator represents a cluster operator.
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * Operator represents a cluster operator.
+     */
     @JsonProperty("spec")
     public OperatorSpec getSpec() {
         return spec;
     }
 
+    /**
+     * Operator represents a cluster operator.
+     */
     @JsonProperty("spec")
     public void setSpec(OperatorSpec spec) {
         this.spec = spec;
     }
 
+    /**
+     * Operator represents a cluster operator.
+     */
     @JsonProperty("status")
     public OperatorStatus getStatus() {
         return status;
     }
 
+    /**
+     * Operator represents a cluster operator.
+     */
     @JsonProperty("status")
     public void setStatus(OperatorStatus status) {
         this.status = status;

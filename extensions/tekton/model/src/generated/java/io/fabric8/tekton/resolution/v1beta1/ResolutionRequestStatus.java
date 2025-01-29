@@ -36,6 +36,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ResolutionRequestStatus are all the fields in a ResolutionRequest's status subresource.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -104,63 +107,99 @@ public class ResolutionRequestStatus implements Editable<ResolutionRequestStatus
         this.source = source;
     }
 
+    /**
+     * Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.
+     */
     @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAnnotations() {
         return annotations;
     }
 
+    /**
+     * Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.
+     */
     @JsonProperty("annotations")
     public void setAnnotations(Map<String, String> annotations) {
         this.annotations = annotations;
     }
 
+    /**
+     * Conditions the latest available observations of a resource's current state.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Conditions the latest available observations of a resource's current state.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * Data is a string representation of the resolved content of the requested resource in-lined into the ResolutionRequest object.
+     */
     @JsonProperty("data")
     public String getData() {
         return data;
     }
 
+    /**
+     * Data is a string representation of the resolved content of the requested resource in-lined into the ResolutionRequest object.
+     */
     @JsonProperty("data")
     public void setData(String data) {
         this.data = data;
     }
 
+    /**
+     * ObservedGeneration is the 'Generation' of the Service that was last processed by the controller.
+     */
     @JsonProperty("observedGeneration")
     public Long getObservedGeneration() {
         return observedGeneration;
     }
 
+    /**
+     * ObservedGeneration is the 'Generation' of the Service that was last processed by the controller.
+     */
     @JsonProperty("observedGeneration")
     public void setObservedGeneration(Long observedGeneration) {
         this.observedGeneration = observedGeneration;
     }
 
+    /**
+     * ResolutionRequestStatus are all the fields in a ResolutionRequest's status subresource.
+     */
     @JsonProperty("refSource")
     public RefSource getRefSource() {
         return refSource;
     }
 
+    /**
+     * ResolutionRequestStatus are all the fields in a ResolutionRequest's status subresource.
+     */
     @JsonProperty("refSource")
     public void setRefSource(RefSource refSource) {
         this.refSource = refSource;
     }
 
+    /**
+     * ResolutionRequestStatus are all the fields in a ResolutionRequest's status subresource.
+     */
     @JsonProperty("source")
     public RefSource getSource() {
         return source;
     }
 
+    /**
+     * ResolutionRequestStatus are all the fields in a ResolutionRequest's status subresource.
+     */
     @JsonProperty("source")
     public void setSource(RefSource source) {
         this.source = source;

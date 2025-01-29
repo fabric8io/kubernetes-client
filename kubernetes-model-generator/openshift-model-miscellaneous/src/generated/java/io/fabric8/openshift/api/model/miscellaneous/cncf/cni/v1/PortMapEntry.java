@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PortMapEntry for CNI PortMapEntry
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class PortMapEntry implements Editable<PortMapEntryBuilder>, KubernetesRe
         this.protocol = protocol;
     }
 
+    /**
+     * PortMapEntry for CNI PortMapEntry
+     */
     @JsonProperty("containerPort")
     public Integer getContainerPort() {
         return containerPort;
     }
 
+    /**
+     * PortMapEntry for CNI PortMapEntry
+     */
     @JsonProperty("containerPort")
     public void setContainerPort(Integer containerPort) {
         this.containerPort = containerPort;
     }
 
+    /**
+     * PortMapEntry for CNI PortMapEntry
+     */
     @JsonProperty("hostIP")
     public String getHostIP() {
         return hostIP;
     }
 
+    /**
+     * PortMapEntry for CNI PortMapEntry
+     */
     @JsonProperty("hostIP")
     public void setHostIP(String hostIP) {
         this.hostIP = hostIP;
     }
 
+    /**
+     * PortMapEntry for CNI PortMapEntry
+     */
     @JsonProperty("hostPort")
     public Integer getHostPort() {
         return hostPort;
     }
 
+    /**
+     * PortMapEntry for CNI PortMapEntry
+     */
     @JsonProperty("hostPort")
     public void setHostPort(Integer hostPort) {
         this.hostPort = hostPort;
     }
 
+    /**
+     * PortMapEntry for CNI PortMapEntry
+     */
     @JsonProperty("protocol")
     public String getProtocol() {
         return protocol;
     }
 
+    /**
+     * PortMapEntry for CNI PortMapEntry
+     */
     @JsonProperty("protocol")
     public void setProtocol(String protocol) {
         this.protocol = protocol;

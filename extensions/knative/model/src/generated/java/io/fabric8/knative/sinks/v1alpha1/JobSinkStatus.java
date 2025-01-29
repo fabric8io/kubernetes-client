@@ -37,6 +37,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * JobSinkStatus defines the observed state of JobSink.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -111,75 +114,117 @@ public class JobSinkStatus implements Editable<JobSinkStatusBuilder>, Kubernetes
         this.policies = policies;
     }
 
+    /**
+     * JobSinkStatus defines the observed state of JobSink.
+     */
     @JsonProperty("address")
     public Addressable getAddress() {
         return address;
     }
 
+    /**
+     * JobSinkStatus defines the observed state of JobSink.
+     */
     @JsonProperty("address")
     public void setAddress(Addressable address) {
         this.address = address;
     }
 
+    /**
+     * Addresses is a list of addresses for different protocols (HTTP and HTTPS) If Addresses is present, Address must be ignored by clients.
+     */
     @JsonProperty("addresses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Addressable> getAddresses() {
         return addresses;
     }
 
+    /**
+     * Addresses is a list of addresses for different protocols (HTTP and HTTPS) If Addresses is present, Address must be ignored by clients.
+     */
     @JsonProperty("addresses")
     public void setAddresses(List<Addressable> addresses) {
         this.addresses = addresses;
     }
 
+    /**
+     * Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.
+     */
     @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAnnotations() {
         return annotations;
     }
 
+    /**
+     * Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.
+     */
     @JsonProperty("annotations")
     public void setAnnotations(Map<String, String> annotations) {
         this.annotations = annotations;
     }
 
+    /**
+     * Conditions the latest available observations of a resource's current state.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Conditions the latest available observations of a resource's current state.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * JobSinkStatus defines the observed state of JobSink.
+     */
     @JsonProperty("job")
     public JobStatus getJob() {
         return job;
     }
 
+    /**
+     * JobSinkStatus defines the observed state of JobSink.
+     */
     @JsonProperty("job")
     public void setJob(JobStatus job) {
         this.job = job;
     }
 
+    /**
+     * ObservedGeneration is the 'Generation' of the Service that was last processed by the controller.
+     */
     @JsonProperty("observedGeneration")
     public Long getObservedGeneration() {
         return observedGeneration;
     }
 
+    /**
+     * ObservedGeneration is the 'Generation' of the Service that was last processed by the controller.
+     */
     @JsonProperty("observedGeneration")
     public void setObservedGeneration(Long observedGeneration) {
         this.observedGeneration = observedGeneration;
     }
 
+    /**
+     * Policies holds the list of applied EventPolicies
+     */
     @JsonProperty("policies")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<AppliedEventPolicyRef> getPolicies() {
         return policies;
     }
 
+    /**
+     * Policies holds the list of applied EventPolicies
+     */
     @JsonProperty("policies")
     public void setPolicies(List<AppliedEventPolicyRef> policies) {
         this.policies = policies;

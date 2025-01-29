@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * RateSpec defines details of rate limit.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class RateSpec implements Editable<RateSpecBuilder>, KubernetesResource
         this.rate = rate;
     }
 
+    /**
+     * Rate is the speed knob. Allows bit, kbit, mbit, gbit, tbit, bps, kbps, mbps, gbps, tbps unit. bps means bytes per second.
+     */
     @JsonProperty("rate")
     public String getRate() {
         return rate;
     }
 
+    /**
+     * Rate is the speed knob. Allows bit, kbit, mbit, gbit, tbit, bps, kbps, mbps, gbps, tbps unit. bps means bytes per second.
+     */
     @JsonProperty("rate")
     public void setRate(String rate) {
         this.rate = rate;

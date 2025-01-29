@@ -116,53 +116,83 @@ public class RegistrationConfiguration implements Editable<RegistrationConfigura
         this.bootstrapKubeConfigs = bootstrapKubeConfigs;
     }
 
+    /**
+     * clientCertExpirationSeconds represents the seconds of a client certificate to expire. If it is not set or 0, the default duration seconds will be set by the hub cluster. If the value is larger than the max signing duration seconds set on the hub cluster, the max signing duration seconds will be set.
+     */
     @JsonProperty("clientCertExpirationSeconds")
     public Integer getClientCertExpirationSeconds() {
         return clientCertExpirationSeconds;
     }
 
+    /**
+     * clientCertExpirationSeconds represents the seconds of a client certificate to expire. If it is not set or 0, the default duration seconds will be set by the hub cluster. If the value is larger than the max signing duration seconds set on the hub cluster, the max signing duration seconds will be set.
+     */
     @JsonProperty("clientCertExpirationSeconds")
     public void setClientCertExpirationSeconds(Integer clientCertExpirationSeconds) {
         this.clientCertExpirationSeconds = clientCertExpirationSeconds;
     }
 
+    /**
+     * ClusterAnnotations is annotations with the reserve prefix "agent.open-cluster-management.io" set on ManagedCluster when creating only, other actors can update it afterwards.
+     */
     @JsonProperty("clusterAnnotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getClusterAnnotations() {
         return clusterAnnotations;
     }
 
+    /**
+     * ClusterAnnotations is annotations with the reserve prefix "agent.open-cluster-management.io" set on ManagedCluster when creating only, other actors can update it afterwards.
+     */
     @JsonProperty("clusterAnnotations")
     public void setClusterAnnotations(Map<String, String> clusterAnnotations) {
         this.clusterAnnotations = clusterAnnotations;
     }
 
+    /**
+     * FeatureGates represents the list of feature gates for registration If it is set empty, default feature gates will be used. If it is set, featuregate/Foo is an example of one item in FeatureGates:<br><p>   1. If featuregate/Foo does not exist, registration-operator will discard it<br><p>   2. If featuregate/Foo exists and is false by default. It is now possible to set featuregate/Foo=[false|true]<br><p>   3. If featuregate/Foo exists and is true by default. If a cluster-admin upgrading from 1 to 2 wants to continue having featuregate/Foo=false,<br><p>  	he can set featuregate/Foo=false before upgrading. Let's say the cluster-admin wants featuregate/Foo=false.
+     */
     @JsonProperty("featureGates")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<FeatureGate> getFeatureGates() {
         return featureGates;
     }
 
+    /**
+     * FeatureGates represents the list of feature gates for registration If it is set empty, default feature gates will be used. If it is set, featuregate/Foo is an example of one item in FeatureGates:<br><p>   1. If featuregate/Foo does not exist, registration-operator will discard it<br><p>   2. If featuregate/Foo exists and is false by default. It is now possible to set featuregate/Foo=[false|true]<br><p>   3. If featuregate/Foo exists and is true by default. If a cluster-admin upgrading from 1 to 2 wants to continue having featuregate/Foo=false,<br><p>  	he can set featuregate/Foo=false before upgrading. Let's say the cluster-admin wants featuregate/Foo=false.
+     */
     @JsonProperty("featureGates")
     public void setFeatureGates(List<FeatureGate> featureGates) {
         this.featureGates = featureGates;
     }
 
+    /**
+     * KubeAPIBurst indicates the maximum burst of the throttle while talking with apiserver of hub cluster from the spoke cluster. If it is set empty, use the default value: 100
+     */
     @JsonProperty("kubeAPIBurst")
     public Integer getKubeAPIBurst() {
         return kubeAPIBurst;
     }
 
+    /**
+     * KubeAPIBurst indicates the maximum burst of the throttle while talking with apiserver of hub cluster from the spoke cluster. If it is set empty, use the default value: 100
+     */
     @JsonProperty("kubeAPIBurst")
     public void setKubeAPIBurst(Integer kubeAPIBurst) {
         this.kubeAPIBurst = kubeAPIBurst;
     }
 
+    /**
+     * KubeAPIQPS indicates the maximum QPS while talking with apiserver of hub cluster from the spoke cluster. If it is set empty, use the default value: 50
+     */
     @JsonProperty("kubeAPIQPS")
     public Integer getKubeAPIQPS() {
         return kubeAPIQPS;
     }
 
+    /**
+     * KubeAPIQPS indicates the maximum QPS while talking with apiserver of hub cluster from the spoke cluster. If it is set empty, use the default value: 50
+     */
     @JsonProperty("kubeAPIQPS")
     public void setKubeAPIQPS(Integer kubeAPIQPS) {
         this.kubeAPIQPS = kubeAPIQPS;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * CloudEventAttributes specifies the attributes that a Source uses as part of its CloudEvents.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class CloudEventAttributes implements Editable<CloudEventAttributesBuilde
         this.type = type;
     }
 
+    /**
+     * Source is the CloudEvents source attribute.
+     */
     @JsonProperty("source")
     public String getSource() {
         return source;
     }
 
+    /**
+     * Source is the CloudEvents source attribute.
+     */
     @JsonProperty("source")
     public void setSource(String source) {
         this.source = source;
     }
 
+    /**
+     * Type refers to the CloudEvent type attribute.
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * Type refers to the CloudEvent type attribute.
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

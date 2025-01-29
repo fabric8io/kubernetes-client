@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ExternalMetricStatus indicates the current value of a global metric not associated with any Kubernetes object.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class ExternalMetricStatus implements Editable<ExternalMetricStatusBuilde
         this.metric = metric;
     }
 
+    /**
+     * ExternalMetricStatus indicates the current value of a global metric not associated with any Kubernetes object.
+     */
     @JsonProperty("current")
     public MetricValueStatus getCurrent() {
         return current;
     }
 
+    /**
+     * ExternalMetricStatus indicates the current value of a global metric not associated with any Kubernetes object.
+     */
     @JsonProperty("current")
     public void setCurrent(MetricValueStatus current) {
         this.current = current;
     }
 
+    /**
+     * ExternalMetricStatus indicates the current value of a global metric not associated with any Kubernetes object.
+     */
     @JsonProperty("metric")
     public MetricIdentifier getMetric() {
         return metric;
     }
 
+    /**
+     * ExternalMetricStatus indicates the current value of a global metric not associated with any Kubernetes object.
+     */
     @JsonProperty("metric")
     public void setMetric(MetricIdentifier metric) {
         this.metric = metric;

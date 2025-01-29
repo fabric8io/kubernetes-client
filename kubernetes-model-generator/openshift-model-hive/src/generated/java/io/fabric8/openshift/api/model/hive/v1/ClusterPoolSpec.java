@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ClusterPoolSpec defines the desired state of the ClusterPool.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -152,185 +155,293 @@ public class ClusterPoolSpec implements Editable<ClusterPoolSpecBuilder>, Kubern
         this.skipMachinePools = skipMachinePools;
     }
 
+    /**
+     * Annotations to be applied to new ClusterDeployments created for the pool. ClusterDeployments that have already been claimed will not be affected when this value is modified.
+     */
     @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAnnotations() {
         return annotations;
     }
 
+    /**
+     * Annotations to be applied to new ClusterDeployments created for the pool. ClusterDeployments that have already been claimed will not be affected when this value is modified.
+     */
     @JsonProperty("annotations")
     public void setAnnotations(Map<String, String> annotations) {
         this.annotations = annotations;
     }
 
+    /**
+     * BaseDomain is the base domain to use for all clusters created in this pool.
+     */
     @JsonProperty("baseDomain")
     public String getBaseDomain() {
         return baseDomain;
     }
 
+    /**
+     * BaseDomain is the base domain to use for all clusters created in this pool.
+     */
     @JsonProperty("baseDomain")
     public void setBaseDomain(String baseDomain) {
         this.baseDomain = baseDomain;
     }
 
+    /**
+     * ClusterPoolSpec defines the desired state of the ClusterPool.
+     */
     @JsonProperty("claimLifetime")
     public ClusterPoolClaimLifetime getClaimLifetime() {
         return claimLifetime;
     }
 
+    /**
+     * ClusterPoolSpec defines the desired state of the ClusterPool.
+     */
     @JsonProperty("claimLifetime")
     public void setClaimLifetime(ClusterPoolClaimLifetime claimLifetime) {
         this.claimLifetime = claimLifetime;
     }
 
+    /**
+     * ClusterPoolSpec defines the desired state of the ClusterPool.
+     */
     @JsonProperty("hibernateAfter")
     public String getHibernateAfter() {
         return hibernateAfter;
     }
 
+    /**
+     * ClusterPoolSpec defines the desired state of the ClusterPool.
+     */
     @JsonProperty("hibernateAfter")
     public void setHibernateAfter(String hibernateAfter) {
         this.hibernateAfter = hibernateAfter;
     }
 
+    /**
+     * ClusterPoolSpec defines the desired state of the ClusterPool.
+     */
     @JsonProperty("hibernationConfig")
     public HibernationConfig getHibernationConfig() {
         return hibernationConfig;
     }
 
+    /**
+     * ClusterPoolSpec defines the desired state of the ClusterPool.
+     */
     @JsonProperty("hibernationConfig")
     public void setHibernationConfig(HibernationConfig hibernationConfig) {
         this.hibernationConfig = hibernationConfig;
     }
 
+    /**
+     * ClusterPoolSpec defines the desired state of the ClusterPool.
+     */
     @JsonProperty("imageSetRef")
     public ClusterImageSetReference getImageSetRef() {
         return imageSetRef;
     }
 
+    /**
+     * ClusterPoolSpec defines the desired state of the ClusterPool.
+     */
     @JsonProperty("imageSetRef")
     public void setImageSetRef(ClusterImageSetReference imageSetRef) {
         this.imageSetRef = imageSetRef;
     }
 
+    /**
+     * InstallAttemptsLimit is the maximum number of times Hive will attempt to install the cluster.
+     */
     @JsonProperty("installAttemptsLimit")
     public Integer getInstallAttemptsLimit() {
         return installAttemptsLimit;
     }
 
+    /**
+     * InstallAttemptsLimit is the maximum number of times Hive will attempt to install the cluster.
+     */
     @JsonProperty("installAttemptsLimit")
     public void setInstallAttemptsLimit(Integer installAttemptsLimit) {
         this.installAttemptsLimit = installAttemptsLimit;
     }
 
+    /**
+     * ClusterPoolSpec defines the desired state of the ClusterPool.
+     */
     @JsonProperty("installConfigSecretTemplateRef")
     public LocalObjectReference getInstallConfigSecretTemplateRef() {
         return installConfigSecretTemplateRef;
     }
 
+    /**
+     * ClusterPoolSpec defines the desired state of the ClusterPool.
+     */
     @JsonProperty("installConfigSecretTemplateRef")
     public void setInstallConfigSecretTemplateRef(LocalObjectReference installConfigSecretTemplateRef) {
         this.installConfigSecretTemplateRef = installConfigSecretTemplateRef;
     }
 
+    /**
+     * InstallerEnv are extra environment variables to pass through to the installer. This may be used to enable additional features of the installer.
+     */
     @JsonProperty("installerEnv")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<EnvVar> getInstallerEnv() {
         return installerEnv;
     }
 
+    /**
+     * InstallerEnv are extra environment variables to pass through to the installer. This may be used to enable additional features of the installer.
+     */
     @JsonProperty("installerEnv")
     public void setInstallerEnv(List<EnvVar> installerEnv) {
         this.installerEnv = installerEnv;
     }
 
+    /**
+     * Inventory maintains a list of entries consumed by the ClusterPool to customize the default ClusterDeployment.
+     */
     @JsonProperty("inventory")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<InventoryEntry> getInventory() {
         return inventory;
     }
 
+    /**
+     * Inventory maintains a list of entries consumed by the ClusterPool to customize the default ClusterDeployment.
+     */
     @JsonProperty("inventory")
     public void setInventory(List<InventoryEntry> inventory) {
         this.inventory = inventory;
     }
 
+    /**
+     * Labels to be applied to new ClusterDeployments created for the pool. ClusterDeployments that have already been claimed will not be affected when this value is modified.
+     */
     @JsonProperty("labels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getLabels() {
         return labels;
     }
 
+    /**
+     * Labels to be applied to new ClusterDeployments created for the pool. ClusterDeployments that have already been claimed will not be affected when this value is modified.
+     */
     @JsonProperty("labels")
     public void setLabels(Map<String, String> labels) {
         this.labels = labels;
     }
 
+    /**
+     * MaxConcurrent is the maximum number of clusters that will be provisioned or deprovisioned at an time. This includes the claimed clusters being deprovisioned. By default there is no limit.
+     */
     @JsonProperty("maxConcurrent")
     public Integer getMaxConcurrent() {
         return maxConcurrent;
     }
 
+    /**
+     * MaxConcurrent is the maximum number of clusters that will be provisioned or deprovisioned at an time. This includes the claimed clusters being deprovisioned. By default there is no limit.
+     */
     @JsonProperty("maxConcurrent")
     public void setMaxConcurrent(Integer maxConcurrent) {
         this.maxConcurrent = maxConcurrent;
     }
 
+    /**
+     * MaxSize is the maximum number of clusters that will be provisioned including clusters that have been claimed and ones waiting to be used. By default there is no limit.
+     */
     @JsonProperty("maxSize")
     public Integer getMaxSize() {
         return maxSize;
     }
 
+    /**
+     * MaxSize is the maximum number of clusters that will be provisioned including clusters that have been claimed and ones waiting to be used. By default there is no limit.
+     */
     @JsonProperty("maxSize")
     public void setMaxSize(Integer maxSize) {
         this.maxSize = maxSize;
     }
 
+    /**
+     * ClusterPoolSpec defines the desired state of the ClusterPool.
+     */
     @JsonProperty("platform")
     public Platform getPlatform() {
         return platform;
     }
 
+    /**
+     * ClusterPoolSpec defines the desired state of the ClusterPool.
+     */
     @JsonProperty("platform")
     public void setPlatform(Platform platform) {
         this.platform = platform;
     }
 
+    /**
+     * ClusterPoolSpec defines the desired state of the ClusterPool.
+     */
     @JsonProperty("pullSecretRef")
     public LocalObjectReference getPullSecretRef() {
         return pullSecretRef;
     }
 
+    /**
+     * ClusterPoolSpec defines the desired state of the ClusterPool.
+     */
     @JsonProperty("pullSecretRef")
     public void setPullSecretRef(LocalObjectReference pullSecretRef) {
         this.pullSecretRef = pullSecretRef;
     }
 
+    /**
+     * RunningCount is the number of clusters we should keep running. The remainder will be kept hibernated until claimed. By default no clusters will be kept running (all will be hibernated).
+     */
     @JsonProperty("runningCount")
     public Integer getRunningCount() {
         return runningCount;
     }
 
+    /**
+     * RunningCount is the number of clusters we should keep running. The remainder will be kept hibernated until claimed. By default no clusters will be kept running (all will be hibernated).
+     */
     @JsonProperty("runningCount")
     public void setRunningCount(Integer runningCount) {
         this.runningCount = runningCount;
     }
 
+    /**
+     * Size is the default number of clusters that we should keep provisioned and waiting for use.
+     */
     @JsonProperty("size")
     public Integer getSize() {
         return size;
     }
 
+    /**
+     * Size is the default number of clusters that we should keep provisioned and waiting for use.
+     */
     @JsonProperty("size")
     public void setSize(Integer size) {
         this.size = size;
     }
 
+    /**
+     * SkipMachinePools allows creating clusterpools where the machinepools are not managed by hive after cluster creation
+     */
     @JsonProperty("skipMachinePools")
     public Boolean getSkipMachinePools() {
         return skipMachinePools;
     }
 
+    /**
+     * SkipMachinePools allows creating clusterpools where the machinepools are not managed by hive after cluster creation
+     */
     @JsonProperty("skipMachinePools")
     public void setSkipMachinePools(Boolean skipMachinePools) {
         this.skipMachinePools = skipMachinePools;

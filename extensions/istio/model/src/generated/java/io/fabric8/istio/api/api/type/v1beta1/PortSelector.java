@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PortSelector is the criteria for specifying if a policy can be applied to a listener having a specific port.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class PortSelector implements Editable<PortSelectorBuilder>, KubernetesRe
         this.number = number;
     }
 
+    /**
+     * Port number
+     */
     @JsonProperty("number")
     public Long getNumber() {
         return number;
     }
 
+    /**
+     * Port number
+     */
     @JsonProperty("number")
     public void setNumber(Long number) {
         this.number = number;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AuditCustomRule describes a custom rule for an audit profile that takes precedence over the top-level profile.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class AuditCustomRule implements Editable<AuditCustomRuleBuilder>, Kubern
         this.profile = profile;
     }
 
+    /**
+     * group is a name of group a request user must be member of in order to this profile to apply.
+     */
     @JsonProperty("group")
     public String getGroup() {
         return group;
     }
 
+    /**
+     * group is a name of group a request user must be member of in order to this profile to apply.
+     */
     @JsonProperty("group")
     public void setGroup(String group) {
         this.group = group;
     }
 
+    /**
+     * profile specifies the name of the desired audit policy configuration to be deployed to all OpenShift-provided API servers in the cluster.<br><p> <br><p> The following profiles are provided: - Default: the existing default policy. - WriteRequestBodies: like 'Default', but logs request and response HTTP payloads for write requests (create, update, patch). - AllRequestBodies: like 'WriteRequestBodies', but also logs request and response HTTP payloads for read requests (get, list). - None: no requests are logged at all, not even oauthaccesstokens and oauthauthorizetokens.<br><p> <br><p> If unset, the 'Default' profile is used as the default.
+     */
     @JsonProperty("profile")
     public String getProfile() {
         return profile;
     }
 
+    /**
+     * profile specifies the name of the desired audit policy configuration to be deployed to all OpenShift-provided API servers in the cluster.<br><p> <br><p> The following profiles are provided: - Default: the existing default policy. - WriteRequestBodies: like 'Default', but logs request and response HTTP payloads for write requests (create, update, patch). - AllRequestBodies: like 'WriteRequestBodies', but also logs request and response HTTP payloads for read requests (get, list). - None: no requests are logged at all, not even oauthaccesstokens and oauthauthorizetokens.<br><p> <br><p> If unset, the 'Default' profile is used as the default.
+     */
     @JsonProperty("profile")
     public void setProfile(String profile) {
         this.profile = profile;

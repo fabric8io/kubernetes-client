@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * TrafficSelector provides a mechanism to select a specific traffic flow for which this Wasm Plugin will be enabled. When all the sub conditions in the TrafficSelector are satisfied, the traffic will be selected.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,22 +89,34 @@ public class WasmPluginTrafficSelector implements Editable<WasmPluginTrafficSele
         this.ports = ports;
     }
 
+    /**
+     * Criteria for selecting traffic by their direction. Note that `CLIENT` and `SERVER` are analogous to OUTBOUND and INBOUND, respectively. For the gateway, the field should be `CLIENT` or `CLIENT_AND_SERVER`. If not specified, the default value is `CLIENT_AND_SERVER`.
+     */
     @JsonProperty("mode")
     public Integer getMode() {
         return mode;
     }
 
+    /**
+     * Criteria for selecting traffic by their direction. Note that `CLIENT` and `SERVER` are analogous to OUTBOUND and INBOUND, respectively. For the gateway, the field should be `CLIENT` or `CLIENT_AND_SERVER`. If not specified, the default value is `CLIENT_AND_SERVER`.
+     */
     @JsonProperty("mode")
     public void setMode(Integer mode) {
         this.mode = mode;
     }
 
+    /**
+     * Criteria for selecting traffic by their destination port. More specifically, for the outbound traffic, the destination port would be the port of the target service. On the other hand, for the inbound traffic, the destination port is the port bound by the server process in the same Pod.<br><p> <br><p> If one of the given `ports` is matched, this condition is evaluated to true. If not specified, this condition is evaluated to true for any port.
+     */
     @JsonProperty("ports")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PortSelector> getPorts() {
         return ports;
     }
 
+    /**
+     * Criteria for selecting traffic by their destination port. More specifically, for the outbound traffic, the destination port would be the port of the target service. On the other hand, for the inbound traffic, the destination port is the port bound by the server process in the same Pod.<br><p> <br><p> If one of the given `ports` is matched, this condition is evaluated to true. If not specified, this condition is evaluated to true for any port.
+     */
     @JsonProperty("ports")
     public void setPorts(List<PortSelector> ports) {
         this.ports = ports;

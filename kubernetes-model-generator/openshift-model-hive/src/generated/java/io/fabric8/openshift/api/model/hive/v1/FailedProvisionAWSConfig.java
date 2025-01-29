@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * FailedProvisionAWSConfig contains AWS-specific info to upload log files.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class FailedProvisionAWSConfig implements Editable<FailedProvisionAWSConf
         this.serviceEndpoint = serviceEndpoint;
     }
 
+    /**
+     * Bucket is the S3 bucket to store the logs in.
+     */
     @JsonProperty("bucket")
     public String getBucket() {
         return bucket;
     }
 
+    /**
+     * Bucket is the S3 bucket to store the logs in.
+     */
     @JsonProperty("bucket")
     public void setBucket(String bucket) {
         this.bucket = bucket;
     }
 
+    /**
+     * FailedProvisionAWSConfig contains AWS-specific info to upload log files.
+     */
     @JsonProperty("credentialsSecretRef")
     public LocalObjectReference getCredentialsSecretRef() {
         return credentialsSecretRef;
     }
 
+    /**
+     * FailedProvisionAWSConfig contains AWS-specific info to upload log files.
+     */
     @JsonProperty("credentialsSecretRef")
     public void setCredentialsSecretRef(LocalObjectReference credentialsSecretRef) {
         this.credentialsSecretRef = credentialsSecretRef;
     }
 
+    /**
+     * Region is the AWS region to use for S3 operations. This defaults to us-east-1. For AWS China, use cn-northwest-1.
+     */
     @JsonProperty("region")
     public String getRegion() {
         return region;
     }
 
+    /**
+     * Region is the AWS region to use for S3 operations. This defaults to us-east-1. For AWS China, use cn-northwest-1.
+     */
     @JsonProperty("region")
     public void setRegion(String region) {
         this.region = region;
     }
 
+    /**
+     * ServiceEndpoint is the url to connect to an S3 compatible provider.
+     */
     @JsonProperty("serviceEndpoint")
     public String getServiceEndpoint() {
         return serviceEndpoint;
     }
 
+    /**
+     * ServiceEndpoint is the url to connect to an S3 compatible provider.
+     */
     @JsonProperty("serviceEndpoint")
     public void setServiceEndpoint(String serviceEndpoint) {
         this.serviceEndpoint = serviceEndpoint;

@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ServiceCIDRStatus describes the current state of the ServiceCIDR.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,12 +85,18 @@ public class ServiceCIDRStatus implements Editable<ServiceCIDRStatusBuilder>, Ku
         this.conditions = conditions;
     }
 
+    /**
+     * conditions holds an array of metav1.Condition that describe the state of the ServiceCIDR. Current service state
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
 
+    /**
+     * conditions holds an array of metav1.Condition that describe the state of the ServiceCIDR. Current service state
+     */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;

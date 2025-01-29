@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * RouteHTTPHeaderActionUnion specifies an action to take on an HTTP header.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class RouteHTTPHeaderActionUnion implements Editable<RouteHTTPHeaderActio
         this.type = type;
     }
 
+    /**
+     * RouteHTTPHeaderActionUnion specifies an action to take on an HTTP header.
+     */
     @JsonProperty("set")
     public RouteSetHTTPHeader getSet() {
         return set;
     }
 
+    /**
+     * RouteHTTPHeaderActionUnion specifies an action to take on an HTTP header.
+     */
     @JsonProperty("set")
     public void setSet(RouteSetHTTPHeader set) {
         this.set = set;
     }
 
+    /**
+     * type defines the type of the action to be applied on the header. Possible values are Set or Delete. Set allows you to set HTTP request and response headers. Delete allows you to delete HTTP request and response headers.
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * type defines the type of the action to be applied on the header. Possible values are Set or Delete. Set allows you to set HTTP request and response headers. Delete allows you to delete HTTP request and response headers.
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

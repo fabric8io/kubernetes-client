@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * VSpherePermission captures the details of the privileges being requested for the list of entities.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -81,12 +84,18 @@ public class VSpherePermission implements Editable<VSpherePermissionBuilder>, Ku
         this.privileges = privileges;
     }
 
+    /**
+     * Privileges is the list of access being requested.
+     */
     @JsonProperty("privileges")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getPrivileges() {
         return privileges;
     }
 
+    /**
+     * Privileges is the list of access being requested.
+     */
     @JsonProperty("privileges")
     public void setPrivileges(List<String> privileges) {
         this.privileges = privileges;

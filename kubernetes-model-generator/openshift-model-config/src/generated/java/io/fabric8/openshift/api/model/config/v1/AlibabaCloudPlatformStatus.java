@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AlibabaCloudPlatformStatus holds the current status of the Alibaba Cloud infrastructure provider.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -89,32 +92,50 @@ public class AlibabaCloudPlatformStatus implements Editable<AlibabaCloudPlatform
         this.resourceTags = resourceTags;
     }
 
+    /**
+     * region specifies the region for Alibaba Cloud resources created for the cluster.
+     */
     @JsonProperty("region")
     public String getRegion() {
         return region;
     }
 
+    /**
+     * region specifies the region for Alibaba Cloud resources created for the cluster.
+     */
     @JsonProperty("region")
     public void setRegion(String region) {
         this.region = region;
     }
 
+    /**
+     * resourceGroupID is the ID of the resource group for the cluster.
+     */
     @JsonProperty("resourceGroupID")
     public String getResourceGroupID() {
         return resourceGroupID;
     }
 
+    /**
+     * resourceGroupID is the ID of the resource group for the cluster.
+     */
     @JsonProperty("resourceGroupID")
     public void setResourceGroupID(String resourceGroupID) {
         this.resourceGroupID = resourceGroupID;
     }
 
+    /**
+     * resourceTags is a list of additional tags to apply to Alibaba Cloud resources created for the cluster.
+     */
     @JsonProperty("resourceTags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<AlibabaCloudResourceTag> getResourceTags() {
         return resourceTags;
     }
 
+    /**
+     * resourceTags is a list of additional tags to apply to Alibaba Cloud resources created for the cluster.
+     */
     @JsonProperty("resourceTags")
     public void setResourceTags(List<AlibabaCloudResourceTag> resourceTags) {
         this.resourceTags = resourceTags;

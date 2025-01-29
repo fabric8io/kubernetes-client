@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PingSourceSpec defines the desired state of the PingSource.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -104,71 +107,113 @@ public class PingSourceSpec implements Editable<PingSourceSpecBuilder>, Kubernet
         this.timezone = timezone;
     }
 
+    /**
+     * PingSourceSpec defines the desired state of the PingSource.
+     */
     @JsonProperty("ceOverrides")
     public CloudEventOverrides getCeOverrides() {
         return ceOverrides;
     }
 
+    /**
+     * PingSourceSpec defines the desired state of the PingSource.
+     */
     @JsonProperty("ceOverrides")
     public void setCeOverrides(CloudEventOverrides ceOverrides) {
         this.ceOverrides = ceOverrides;
     }
 
+    /**
+     * ContentType is the media type of Data or DataBase64. Default is empty.
+     */
     @JsonProperty("contentType")
     public String getContentType() {
         return contentType;
     }
 
+    /**
+     * ContentType is the media type of Data or DataBase64. Default is empty.
+     */
     @JsonProperty("contentType")
     public void setContentType(String contentType) {
         this.contentType = contentType;
     }
 
+    /**
+     * Data is data used as the body of the event posted to the sink. Default is empty. Mutually exclusive with DataBase64.
+     */
     @JsonProperty("data")
     public String getData() {
         return data;
     }
 
+    /**
+     * Data is data used as the body of the event posted to the sink. Default is empty. Mutually exclusive with DataBase64.
+     */
     @JsonProperty("data")
     public void setData(String data) {
         this.data = data;
     }
 
+    /**
+     * DataBase64 is the base64-encoded string of the actual event's body posted to the sink. Default is empty. Mutually exclusive with Data.
+     */
     @JsonProperty("dataBase64")
     public String getDataBase64() {
         return dataBase64;
     }
 
+    /**
+     * DataBase64 is the base64-encoded string of the actual event's body posted to the sink. Default is empty. Mutually exclusive with Data.
+     */
     @JsonProperty("dataBase64")
     public void setDataBase64(String dataBase64) {
         this.dataBase64 = dataBase64;
     }
 
+    /**
+     * Schedule is the cron schedule. Defaults to `&#42; &#42; &#42; &#42; &#42;`.
+     */
     @JsonProperty("schedule")
     public String getSchedule() {
         return schedule;
     }
 
+    /**
+     * Schedule is the cron schedule. Defaults to `&#42; &#42; &#42; &#42; &#42;`.
+     */
     @JsonProperty("schedule")
     public void setSchedule(String schedule) {
         this.schedule = schedule;
     }
 
+    /**
+     * PingSourceSpec defines the desired state of the PingSource.
+     */
     @JsonProperty("sink")
     public Destination getSink() {
         return sink;
     }
 
+    /**
+     * PingSourceSpec defines the desired state of the PingSource.
+     */
     @JsonProperty("sink")
     public void setSink(Destination sink) {
         this.sink = sink;
     }
 
+    /**
+     * Timezone modifies the actual time relative to the specified timezone. Defaults to the system time zone. More general information about time zones: https://www.iana.org/time-zones List of valid timezone values: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+     */
     @JsonProperty("timezone")
     public String getTimezone() {
         return timezone;
     }
 
+    /**
+     * Timezone modifies the actual time relative to the specified timezone. Defaults to the system time zone. More general information about time zones: https://www.iana.org/time-zones List of valid timezone values: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+     */
     @JsonProperty("timezone")
     public void setTimezone(String timezone) {
         this.timezone = timezone;

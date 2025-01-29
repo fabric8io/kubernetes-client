@@ -36,6 +36,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ManagedClusterStatus represents the current status of joined managed cluster.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -102,55 +105,85 @@ public class ManagedClusterStatus implements Editable<ManagedClusterStatusBuilde
         this.version = version;
     }
 
+    /**
+     * Allocatable represents the total allocatable resources on the managed cluster.
+     */
     @JsonProperty("allocatable")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Quantity> getAllocatable() {
         return allocatable;
     }
 
+    /**
+     * Allocatable represents the total allocatable resources on the managed cluster.
+     */
     @JsonProperty("allocatable")
     public void setAllocatable(Map<String, Quantity> allocatable) {
         this.allocatable = allocatable;
     }
 
+    /**
+     * Capacity represents the total resource capacity from all nodeStatuses on the managed cluster.
+     */
     @JsonProperty("capacity")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Quantity> getCapacity() {
         return capacity;
     }
 
+    /**
+     * Capacity represents the total resource capacity from all nodeStatuses on the managed cluster.
+     */
     @JsonProperty("capacity")
     public void setCapacity(Map<String, Quantity> capacity) {
         this.capacity = capacity;
     }
 
+    /**
+     * ClusterClaims represents cluster information that a managed cluster claims, for example a unique cluster identifier (id.k8s.io) and kubernetes version (kubeversion.open-cluster-management.io). They are written from the managed cluster. The set of claims is not uniform across a fleet, some claims can be vendor or version specific and may not be included from all managed clusters.
+     */
     @JsonProperty("clusterClaims")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ManagedClusterClaim> getClusterClaims() {
         return clusterClaims;
     }
 
+    /**
+     * ClusterClaims represents cluster information that a managed cluster claims, for example a unique cluster identifier (id.k8s.io) and kubernetes version (kubeversion.open-cluster-management.io). They are written from the managed cluster. The set of claims is not uniform across a fleet, some claims can be vendor or version specific and may not be included from all managed clusters.
+     */
     @JsonProperty("clusterClaims")
     public void setClusterClaims(List<ManagedClusterClaim> clusterClaims) {
         this.clusterClaims = clusterClaims;
     }
 
+    /**
+     * Conditions contains the different condition statuses for this managed cluster.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Conditions contains the different condition statuses for this managed cluster.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * ManagedClusterStatus represents the current status of joined managed cluster.
+     */
     @JsonProperty("version")
     public ManagedClusterVersion getVersion() {
         return version;
     }
 
+    /**
+     * ManagedClusterStatus represents the current status of joined managed cluster.
+     */
     @JsonProperty("version")
     public void setVersion(ManagedClusterVersion version) {
         this.version = version;

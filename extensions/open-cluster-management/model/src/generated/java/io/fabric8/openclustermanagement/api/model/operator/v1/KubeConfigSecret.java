@@ -78,11 +78,17 @@ public class KubeConfigSecret implements Editable<KubeConfigSecretBuilder>, Kube
         this.name = name;
     }
 
+    /**
+     * Name is the name of the secret.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name is the name of the secret.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

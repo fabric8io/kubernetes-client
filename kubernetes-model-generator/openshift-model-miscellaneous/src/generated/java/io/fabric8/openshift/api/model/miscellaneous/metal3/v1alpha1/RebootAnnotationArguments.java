@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * RebootAnnotationArguments defines the arguments of the RebootAnnotation type.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class RebootAnnotationArguments implements Editable<RebootAnnotationArgum
         this.mode = mode;
     }
 
+    /**
+     * RebootAnnotationArguments defines the arguments of the RebootAnnotation type.
+     */
     @JsonProperty("force")
     public Boolean getForce() {
         return force;
     }
 
+    /**
+     * RebootAnnotationArguments defines the arguments of the RebootAnnotation type.
+     */
     @JsonProperty("force")
     public void setForce(Boolean force) {
         this.force = force;
     }
 
+    /**
+     * RebootAnnotationArguments defines the arguments of the RebootAnnotation type.
+     */
     @JsonProperty("mode")
     public String getMode() {
         return mode;
     }
 
+    /**
+     * RebootAnnotationArguments defines the arguments of the RebootAnnotation type.
+     */
     @JsonProperty("mode")
     public void setMode(String mode) {
         this.mode = mode;

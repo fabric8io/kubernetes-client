@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * HTTPRetry is DEPRECATED. Retry is not used in KIngress.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -83,21 +86,33 @@ public class HTTPRetry implements Editable<HTTPRetryBuilder>, KubernetesResource
         this.perTryTimeout = perTryTimeout;
     }
 
+    /**
+     * Number of retries for a given request.
+     */
     @JsonProperty("attempts")
     public Integer getAttempts() {
         return attempts;
     }
 
+    /**
+     * Number of retries for a given request.
+     */
     @JsonProperty("attempts")
     public void setAttempts(Integer attempts) {
         this.attempts = attempts;
     }
 
+    /**
+     * HTTPRetry is DEPRECATED. Retry is not used in KIngress.
+     */
     @JsonProperty("perTryTimeout")
     public Duration getPerTryTimeout() {
         return perTryTimeout;
     }
 
+    /**
+     * HTTPRetry is DEPRECATED. Retry is not used in KIngress.
+     */
     @JsonProperty("perTryTimeout")
     public void setPerTryTimeout(Duration perTryTimeout) {
         this.perTryTimeout = perTryTimeout;

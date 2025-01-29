@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * HTTP status code to use to abort the Http request.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class HTTPFaultInjectionAbortHttpStatus implements IsHTTPFaultInjectionAb
         this.httpStatus = httpStatus;
     }
 
+    /**
+     * HTTP status code to use to abort the Http request.
+     */
     @JsonProperty("httpStatus")
     public Integer getHttpStatus() {
         return httpStatus;
     }
 
+    /**
+     * HTTP status code to use to abort the Http request.
+     */
     @JsonProperty("httpStatus")
     public void setHttpStatus(Integer httpStatus) {
         this.httpStatus = httpStatus;

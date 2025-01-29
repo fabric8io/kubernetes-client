@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ModifyVolumeStatus represents the status object of ControllerModifyVolume operation
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -53,21 +56,33 @@ public class ModifyVolumeStatus implements Editable<ModifyVolumeStatusBuilder>, 
         this.targetVolumeAttributesClassName = targetVolumeAttributesClassName;
     }
 
+    /**
+     * status is the status of the ControllerModifyVolume operation. It can be in any of following states:<br><p>  - Pending<br><p>    Pending indicates that the PersistentVolumeClaim cannot be modified due to unmet requirements, such as<br><p>    the specified VolumeAttributesClass not existing.<br><p>  - InProgress<br><p>    InProgress indicates that the volume is being modified.<br><p>  - Infeasible<br><p>   Infeasible indicates that the request has been rejected as invalid by the CSI driver. To<br><p> 	  resolve the error, a valid VolumeAttributesClass needs to be specified.<br><p> Note: New statuses can be added in the future. Consumers should check for unknown statuses and fail appropriately.
+     */
     @JsonProperty("status")
     public String getStatus() {
         return status;
     }
 
+    /**
+     * status is the status of the ControllerModifyVolume operation. It can be in any of following states:<br><p>  - Pending<br><p>    Pending indicates that the PersistentVolumeClaim cannot be modified due to unmet requirements, such as<br><p>    the specified VolumeAttributesClass not existing.<br><p>  - InProgress<br><p>    InProgress indicates that the volume is being modified.<br><p>  - Infeasible<br><p>   Infeasible indicates that the request has been rejected as invalid by the CSI driver. To<br><p> 	  resolve the error, a valid VolumeAttributesClass needs to be specified.<br><p> Note: New statuses can be added in the future. Consumers should check for unknown statuses and fail appropriately.
+     */
     @JsonProperty("status")
     public void setStatus(String status) {
         this.status = status;
     }
 
+    /**
+     * targetVolumeAttributesClassName is the name of the VolumeAttributesClass the PVC currently being reconciled
+     */
     @JsonProperty("targetVolumeAttributesClassName")
     public String getTargetVolumeAttributesClassName() {
         return targetVolumeAttributesClassName;
     }
 
+    /**
+     * targetVolumeAttributesClassName is the name of the VolumeAttributesClass the PVC currently being reconciled
+     */
     @JsonProperty("targetVolumeAttributesClassName")
     public void setTargetVolumeAttributesClassName(String targetVolumeAttributesClassName) {
         this.targetVolumeAttributesClassName = targetVolumeAttributesClassName;

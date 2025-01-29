@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Describes how traffic originating in the 'from' zone or sub-zone is distributed over a set of 'to' zones. Syntax for specifying a zone is {region}/{zone}/{sub-zone} and terminal wildcards are allowed on any segment of the specification. Examples:<br><p> <br><p> `&#42;` - matches all localities<br><p> <br><p> `us-west/&#42;` - all zones and sub-zones within the us-west region<br><p> <br><p> `us-west/zone-1/&#42;` - all sub-zones within us-west/zone-1
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -83,22 +86,34 @@ public class LocalityLoadBalancerSettingDistribute implements Editable<LocalityL
         this.to = to;
     }
 
+    /**
+     * Originating locality, '/' separated, e.g. 'region/zone/sub_zone'.
+     */
     @JsonProperty("from")
     public String getFrom() {
         return from;
     }
 
+    /**
+     * Originating locality, '/' separated, e.g. 'region/zone/sub_zone'.
+     */
     @JsonProperty("from")
     public void setFrom(String from) {
         this.from = from;
     }
 
+    /**
+     * Map of upstream localities to traffic distribution weights. The sum of all weights should be 100. Any locality not present will receive no traffic.
+     */
     @JsonProperty("to")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Long> getTo() {
         return to;
     }
 
+    /**
+     * Map of upstream localities to traffic distribution weights. The sum of all weights should be 100. Any locality not present will receive no traffic.
+     */
     @JsonProperty("to")
     public void setTo(Map<String, Long> to) {
         this.to = to;

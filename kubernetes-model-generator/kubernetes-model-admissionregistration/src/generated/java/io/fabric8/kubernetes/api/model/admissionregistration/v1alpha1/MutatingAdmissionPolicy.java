@@ -36,6 +36,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * MutatingAdmissionPolicy describes the definition of an admission mutation policy that mutates the object coming into admission chain.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -74,14 +77,8 @@ import lombok.experimental.Accessors;
 public class MutatingAdmissionPolicy implements Editable<MutatingAdmissionPolicyBuilder>, HasMetadata
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "admissionregistration.k8s.io/v1alpha1";
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "MutatingAdmissionPolicy";
     @JsonProperty("metadata")
@@ -106,7 +103,7 @@ public class MutatingAdmissionPolicy implements Editable<MutatingAdmissionPolicy
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -114,7 +111,7 @@ public class MutatingAdmissionPolicy implements Editable<MutatingAdmissionPolicy
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -122,7 +119,7 @@ public class MutatingAdmissionPolicy implements Editable<MutatingAdmissionPolicy
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -130,28 +127,40 @@ public class MutatingAdmissionPolicy implements Editable<MutatingAdmissionPolicy
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * MutatingAdmissionPolicy describes the definition of an admission mutation policy that mutates the object coming into admission chain.
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * MutatingAdmissionPolicy describes the definition of an admission mutation policy that mutates the object coming into admission chain.
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * MutatingAdmissionPolicy describes the definition of an admission mutation policy that mutates the object coming into admission chain.
+     */
     @JsonProperty("spec")
     public MutatingAdmissionPolicySpec getSpec() {
         return spec;
     }
 
+    /**
+     * MutatingAdmissionPolicy describes the definition of an admission mutation policy that mutates the object coming into admission chain.
+     */
     @JsonProperty("spec")
     public void setSpec(MutatingAdmissionPolicySpec spec) {
         this.spec = spec;

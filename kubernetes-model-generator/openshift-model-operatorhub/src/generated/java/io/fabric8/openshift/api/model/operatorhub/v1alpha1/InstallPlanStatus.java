@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * InstallPlanStatus represents the information about the status of steps required to complete installation.<br><p> <br><p> Status may trail the actual state of a system.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -112,85 +115,133 @@ public class InstallPlanStatus implements Editable<InstallPlanStatusBuilder>, Ku
         this.startTime = startTime;
     }
 
+    /**
+     * InstallPlanStatus represents the information about the status of steps required to complete installation.<br><p> <br><p> Status may trail the actual state of a system.
+     */
     @JsonProperty("attenuatedServiceAccountRef")
     public ObjectReference getAttenuatedServiceAccountRef() {
         return attenuatedServiceAccountRef;
     }
 
+    /**
+     * InstallPlanStatus represents the information about the status of steps required to complete installation.<br><p> <br><p> Status may trail the actual state of a system.
+     */
     @JsonProperty("attenuatedServiceAccountRef")
     public void setAttenuatedServiceAccountRef(ObjectReference attenuatedServiceAccountRef) {
         this.attenuatedServiceAccountRef = attenuatedServiceAccountRef;
     }
 
+    /**
+     * BundleLookups is the set of in-progress requests to pull and unpackage bundle content to the cluster.
+     */
     @JsonProperty("bundleLookups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<BundleLookup> getBundleLookups() {
         return bundleLookups;
     }
 
+    /**
+     * BundleLookups is the set of in-progress requests to pull and unpackage bundle content to the cluster.
+     */
     @JsonProperty("bundleLookups")
     public void setBundleLookups(List<BundleLookup> bundleLookups) {
         this.bundleLookups = bundleLookups;
     }
 
+    /**
+     * InstallPlanStatus represents the information about the status of steps required to complete installation.<br><p> <br><p> Status may trail the actual state of a system.
+     */
     @JsonProperty("catalogSources")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getCatalogSources() {
         return catalogSources;
     }
 
+    /**
+     * InstallPlanStatus represents the information about the status of steps required to complete installation.<br><p> <br><p> Status may trail the actual state of a system.
+     */
     @JsonProperty("catalogSources")
     public void setCatalogSources(List<String> catalogSources) {
         this.catalogSources = catalogSources;
     }
 
+    /**
+     * InstallPlanStatus represents the information about the status of steps required to complete installation.<br><p> <br><p> Status may trail the actual state of a system.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<InstallPlanCondition> getConditions() {
         return conditions;
     }
 
+    /**
+     * InstallPlanStatus represents the information about the status of steps required to complete installation.<br><p> <br><p> Status may trail the actual state of a system.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<InstallPlanCondition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * Message is a human-readable message containing detailed information that may be important to understanding why the plan has its current status.
+     */
     @JsonProperty("message")
     public String getMessage() {
         return message;
     }
 
+    /**
+     * Message is a human-readable message containing detailed information that may be important to understanding why the plan has its current status.
+     */
     @JsonProperty("message")
     public void setMessage(String message) {
         this.message = message;
     }
 
+    /**
+     * InstallPlanStatus represents the information about the status of steps required to complete installation.<br><p> <br><p> Status may trail the actual state of a system.
+     */
     @JsonProperty("phase")
     public String getPhase() {
         return phase;
     }
 
+    /**
+     * InstallPlanStatus represents the information about the status of steps required to complete installation.<br><p> <br><p> Status may trail the actual state of a system.
+     */
     @JsonProperty("phase")
     public void setPhase(String phase) {
         this.phase = phase;
     }
 
+    /**
+     * InstallPlanStatus represents the information about the status of steps required to complete installation.<br><p> <br><p> Status may trail the actual state of a system.
+     */
     @JsonProperty("plan")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Step> getPlan() {
         return plan;
     }
 
+    /**
+     * InstallPlanStatus represents the information about the status of steps required to complete installation.<br><p> <br><p> Status may trail the actual state of a system.
+     */
     @JsonProperty("plan")
     public void setPlan(List<Step> plan) {
         this.plan = plan;
     }
 
+    /**
+     * InstallPlanStatus represents the information about the status of steps required to complete installation.<br><p> <br><p> Status may trail the actual state of a system.
+     */
     @JsonProperty("startTime")
     public String getStartTime() {
         return startTime;
     }
 
+    /**
+     * InstallPlanStatus represents the information about the status of steps required to complete installation.<br><p> <br><p> Status may trail the actual state of a system.
+     */
     @JsonProperty("startTime")
     public void setStartTime(String startTime) {
         this.startTime = startTime;

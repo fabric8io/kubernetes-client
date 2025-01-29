@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * KeyVault defines an Azure Key Vault.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class KeyVault implements Editable<KeyVaultBuilder>, KubernetesResource
         this.resourceGroup = resourceGroup;
     }
 
+    /**
+     * KeyName is the name of the key vault key.
+     */
     @JsonProperty("keyName")
     public String getKeyName() {
         return keyName;
     }
 
+    /**
+     * KeyName is the name of the key vault key.
+     */
     @JsonProperty("keyName")
     public void setKeyName(String keyName) {
         this.keyName = keyName;
     }
 
+    /**
+     * Name is the name of the key vault.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name is the name of the key vault.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * ResourceGroup defines the Azure resource group used by the key vault.
+     */
     @JsonProperty("resourceGroup")
     public String getResourceGroup() {
         return resourceGroup;
     }
 
+    /**
+     * ResourceGroup defines the Azure resource group used by the key vault.
+     */
     @JsonProperty("resourceGroup")
     public void setResourceGroup(String resourceGroup) {
         this.resourceGroup = resourceGroup;

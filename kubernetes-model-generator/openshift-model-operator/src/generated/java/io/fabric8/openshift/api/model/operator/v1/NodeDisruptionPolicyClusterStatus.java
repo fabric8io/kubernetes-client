@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NodeDisruptionPolicyClusterStatus is the type for the status object, rendered by the controller as a merge of cluster defaults and user provided policies
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,33 +93,51 @@ public class NodeDisruptionPolicyClusterStatus implements Editable<NodeDisruptio
         this.units = units;
     }
 
+    /**
+     * files is a list of MachineConfig file definitions and actions to take to changes on those paths
+     */
     @JsonProperty("files")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NodeDisruptionPolicyStatusFile> getFiles() {
         return files;
     }
 
+    /**
+     * files is a list of MachineConfig file definitions and actions to take to changes on those paths
+     */
     @JsonProperty("files")
     public void setFiles(List<NodeDisruptionPolicyStatusFile> files) {
         this.files = files;
     }
 
+    /**
+     * NodeDisruptionPolicyClusterStatus is the type for the status object, rendered by the controller as a merge of cluster defaults and user provided policies
+     */
     @JsonProperty("sshkey")
     public NodeDisruptionPolicyStatusSSHKey getSshkey() {
         return sshkey;
     }
 
+    /**
+     * NodeDisruptionPolicyClusterStatus is the type for the status object, rendered by the controller as a merge of cluster defaults and user provided policies
+     */
     @JsonProperty("sshkey")
     public void setSshkey(NodeDisruptionPolicyStatusSSHKey sshkey) {
         this.sshkey = sshkey;
     }
 
+    /**
+     * units is a list MachineConfig unit definitions and actions to take on changes to those services
+     */
     @JsonProperty("units")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NodeDisruptionPolicyStatusUnit> getUnits() {
         return units;
     }
 
+    /**
+     * units is a list MachineConfig unit definitions and actions to take on changes to those services
+     */
     @JsonProperty("units")
     public void setUnits(List<NodeDisruptionPolicyStatusUnit> units) {
         this.units = units;

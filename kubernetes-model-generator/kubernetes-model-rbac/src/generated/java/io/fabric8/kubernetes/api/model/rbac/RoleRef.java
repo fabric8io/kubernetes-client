@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * RoleRef contains information that points to the role being used
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class RoleRef implements Editable<RoleRefBuilder>, KubernetesResource
         this.name = name;
     }
 
+    /**
+     * APIGroup is the group for the resource being referenced
+     */
     @JsonProperty("apiGroup")
     public String getApiGroup() {
         return apiGroup;
     }
 
+    /**
+     * APIGroup is the group for the resource being referenced
+     */
     @JsonProperty("apiGroup")
     public void setApiGroup(String apiGroup) {
         this.apiGroup = apiGroup;
     }
 
+    /**
+     * Kind is the type of resource being referenced
+     */
     @JsonProperty("kind")
     public String getKind() {
         return kind;
     }
 
+    /**
+     * Kind is the type of resource being referenced
+     */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * Name is the name of resource being referenced
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name is the name of resource being referenced
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

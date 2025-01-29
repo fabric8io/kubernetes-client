@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * FailureDomain configures failure domain information for the Nutanix platform.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -99,54 +102,84 @@ public class FailureDomain implements Editable<FailureDomainBuilder>, Kubernetes
         this.subnetUUIDs = subnetUUIDs;
     }
 
+    /**
+     * DataSourceImages identifies the datasource images in the Prism Element.
+     */
     @JsonProperty("dataSourceImages")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<StorageResourceReference> getDataSourceImages() {
         return dataSourceImages;
     }
 
+    /**
+     * DataSourceImages identifies the datasource images in the Prism Element.
+     */
     @JsonProperty("dataSourceImages")
     public void setDataSourceImages(List<StorageResourceReference> dataSourceImages) {
         this.dataSourceImages = dataSourceImages;
     }
 
+    /**
+     * Name defines the unique name of a failure domain.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name defines the unique name of a failure domain.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * FailureDomain configures failure domain information for the Nutanix platform.
+     */
     @JsonProperty("prismElement")
     public PrismElement getPrismElement() {
         return prismElement;
     }
 
+    /**
+     * FailureDomain configures failure domain information for the Nutanix platform.
+     */
     @JsonProperty("prismElement")
     public void setPrismElement(PrismElement prismElement) {
         this.prismElement = prismElement;
     }
 
+    /**
+     * StorageContainers identifies the storage containers in the Prism Element.
+     */
     @JsonProperty("storageContainers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<StorageResourceReference> getStorageContainers() {
         return storageContainers;
     }
 
+    /**
+     * StorageContainers identifies the storage containers in the Prism Element.
+     */
     @JsonProperty("storageContainers")
     public void setStorageContainers(List<StorageResourceReference> storageContainers) {
         this.storageContainers = storageContainers;
     }
 
+    /**
+     * SubnetUUIDs identifies the network subnets of the Prism Element. Currently we only support one subnet for a failure domain.
+     */
     @JsonProperty("subnetUUIDs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getSubnetUUIDs() {
         return subnetUUIDs;
     }
 
+    /**
+     * SubnetUUIDs identifies the network subnets of the Prism Element. Currently we only support one subnet for a failure domain.
+     */
     @JsonProperty("subnetUUIDs")
     public void setSubnetUUIDs(List<String> subnetUUIDs) {
         this.subnetUUIDs = subnetUUIDs;

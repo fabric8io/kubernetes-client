@@ -39,6 +39,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PlacementBinding is the schema for the placementbindings API. A PlacementBinding resource binds a managed cluster placement resource to a policy or policy set, along with configurable overrides.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -81,16 +84,10 @@ import lombok.experimental.Accessors;
 public class PlacementBinding implements Editable<PlacementBindingBuilder>, HasMetadata, Namespaced
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "policy.open-cluster-management.io/v1";
     @JsonProperty("bindingOverrides")
     private BindingOverrides bindingOverrides;
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "PlacementBinding";
     @JsonProperty("metadata")
@@ -126,7 +123,7 @@ public class PlacementBinding implements Editable<PlacementBindingBuilder>, HasM
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -134,25 +131,31 @@ public class PlacementBinding implements Editable<PlacementBindingBuilder>, HasM
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
+    /**
+     * PlacementBinding is the schema for the placementbindings API. A PlacementBinding resource binds a managed cluster placement resource to a policy or policy set, along with configurable overrides.
+     */
     @JsonProperty("bindingOverrides")
     public BindingOverrides getBindingOverrides() {
         return bindingOverrides;
     }
 
+    /**
+     * PlacementBinding is the schema for the placementbindings API. A PlacementBinding resource binds a managed cluster placement resource to a policy or policy set, along with configurable overrides.
+     */
     @JsonProperty("bindingOverrides")
     public void setBindingOverrides(BindingOverrides bindingOverrides) {
         this.bindingOverrides = bindingOverrides;
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -160,59 +163,89 @@ public class PlacementBinding implements Editable<PlacementBindingBuilder>, HasM
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * PlacementBinding is the schema for the placementbindings API. A PlacementBinding resource binds a managed cluster placement resource to a policy or policy set, along with configurable overrides.
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * PlacementBinding is the schema for the placementbindings API. A PlacementBinding resource binds a managed cluster placement resource to a policy or policy set, along with configurable overrides.
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * PlacementBinding is the schema for the placementbindings API. A PlacementBinding resource binds a managed cluster placement resource to a policy or policy set, along with configurable overrides.
+     */
     @JsonProperty("placementRef")
     public PlacementSubject getPlacementRef() {
         return placementRef;
     }
 
+    /**
+     * PlacementBinding is the schema for the placementbindings API. A PlacementBinding resource binds a managed cluster placement resource to a policy or policy set, along with configurable overrides.
+     */
     @JsonProperty("placementRef")
     public void setPlacementRef(PlacementSubject placementRef) {
         this.placementRef = placementRef;
     }
 
+    /**
+     * PlacementBinding is the schema for the placementbindings API. A PlacementBinding resource binds a managed cluster placement resource to a policy or policy set, along with configurable overrides.
+     */
     @JsonProperty("status")
     public PlacementBindingStatus getStatus() {
         return status;
     }
 
+    /**
+     * PlacementBinding is the schema for the placementbindings API. A PlacementBinding resource binds a managed cluster placement resource to a policy or policy set, along with configurable overrides.
+     */
     @JsonProperty("status")
     public void setStatus(PlacementBindingStatus status) {
         this.status = status;
     }
 
+    /**
+     * PlacementBinding is the schema for the placementbindings API. A PlacementBinding resource binds a managed cluster placement resource to a policy or policy set, along with configurable overrides.
+     */
     @JsonProperty("subFilter")
     public String getSubFilter() {
         return subFilter;
     }
 
+    /**
+     * PlacementBinding is the schema for the placementbindings API. A PlacementBinding resource binds a managed cluster placement resource to a policy or policy set, along with configurable overrides.
+     */
     @JsonProperty("subFilter")
     public void setSubFilter(String subFilter) {
         this.subFilter = subFilter;
     }
 
+    /**
+     * PlacementBinding is the schema for the placementbindings API. A PlacementBinding resource binds a managed cluster placement resource to a policy or policy set, along with configurable overrides.
+     */
     @JsonProperty("subjects")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Subject> getSubjects() {
         return subjects;
     }
 
+    /**
+     * PlacementBinding is the schema for the placementbindings API. A PlacementBinding resource binds a managed cluster placement resource to a policy or policy set, along with configurable overrides.
+     */
     @JsonProperty("subjects")
     public void setSubjects(List<Subject> subjects) {
         this.subjects = subjects;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Image is a mirror of azure sdk compute.ImageReference
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -98,61 +101,97 @@ public class Image implements Editable<ImageBuilder>, KubernetesResource
         this.version = version;
     }
 
+    /**
+     * Offer specifies the name of a group of related images created by the publisher. For example, UbuntuServer, WindowsServer
+     */
     @JsonProperty("offer")
     public String getOffer() {
         return offer;
     }
 
+    /**
+     * Offer specifies the name of a group of related images created by the publisher. For example, UbuntuServer, WindowsServer
+     */
     @JsonProperty("offer")
     public void setOffer(String offer) {
         this.offer = offer;
     }
 
+    /**
+     * Publisher is the name of the organization that created the image
+     */
     @JsonProperty("publisher")
     public String getPublisher() {
         return publisher;
     }
 
+    /**
+     * Publisher is the name of the organization that created the image
+     */
     @JsonProperty("publisher")
     public void setPublisher(String publisher) {
         this.publisher = publisher;
     }
 
+    /**
+     * ResourceID specifies an image to use by ID
+     */
     @JsonProperty("resourceID")
     public String getResourceID() {
         return resourceID;
     }
 
+    /**
+     * ResourceID specifies an image to use by ID
+     */
     @JsonProperty("resourceID")
     public void setResourceID(String resourceID) {
         this.resourceID = resourceID;
     }
 
+    /**
+     * SKU specifies an instance of an offer, such as a major release of a distribution. For example, 18.04-LTS, 2019-Datacenter
+     */
     @JsonProperty("sku")
     public String getSku() {
         return sku;
     }
 
+    /**
+     * SKU specifies an instance of an offer, such as a major release of a distribution. For example, 18.04-LTS, 2019-Datacenter
+     */
     @JsonProperty("sku")
     public void setSku(String sku) {
         this.sku = sku;
     }
 
+    /**
+     * Type identifies the source of the image and related information, such as purchase plans. Valid values are "ID", "MarketplaceWithPlan", "MarketplaceNoPlan", and omitted, which means no opinion and the platform chooses a good default which may change over time. Currently that default is "MarketplaceNoPlan" if publisher data is supplied, or "ID" if not. For more information about purchase plans, see: https://docs.microsoft.com/en-us/azure/virtual-machines/linux/cli-ps-findimage#check-the-purchase-plan-information
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * Type identifies the source of the image and related information, such as purchase plans. Valid values are "ID", "MarketplaceWithPlan", "MarketplaceNoPlan", and omitted, which means no opinion and the platform chooses a good default which may change over time. Currently that default is "MarketplaceNoPlan" if publisher data is supplied, or "ID" if not. For more information about purchase plans, see: https://docs.microsoft.com/en-us/azure/virtual-machines/linux/cli-ps-findimage#check-the-purchase-plan-information
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;
     }
 
+    /**
+     * Version specifies the version of an image sku. The allowed formats are Major.Minor.Build or 'latest'. Major, Minor, and Build are decimal numbers. Specify 'latest' to use the latest version of an image available at deploy time. Even if you use 'latest', the VM image will not automatically update after deploy time even if a new version becomes available.
+     */
     @JsonProperty("version")
     public String getVersion() {
         return version;
     }
 
+    /**
+     * Version specifies the version of an image sku. The allowed formats are Major.Minor.Build or 'latest'. Major, Minor, and Build are decimal numbers. Specify 'latest' to use the latest version of an image available at deploy time. Even if you use 'latest', the VM image will not automatically update after deploy time even if a new version becomes available.
+     */
     @JsonProperty("version")
     public void setVersion(String version) {
         this.version = version;

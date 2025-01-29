@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ReferenceGrantFrom describes trusted namespaces and kinds.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class ReferenceGrantFrom implements Editable<ReferenceGrantFromBuilder>, 
         this.namespace = namespace;
     }
 
+    /**
+     * Group is the group of the referent. When empty, the Kubernetes core API group is inferred.<br><p> <br><p> Support: Core
+     */
     @JsonProperty("group")
     public String getGroup() {
         return group;
     }
 
+    /**
+     * Group is the group of the referent. When empty, the Kubernetes core API group is inferred.<br><p> <br><p> Support: Core
+     */
     @JsonProperty("group")
     public void setGroup(String group) {
         this.group = group;
     }
 
+    /**
+     * Kind is the kind of the referent. Although implementations may support additional resources, the following types are part of the "Core" support level for this field.<br><p> <br><p> When used to permit a SecretObjectReference:<br><p> <br><p> &#42; Gateway<br><p> <br><p> When used to permit a BackendObjectReference:<br><p> <br><p> &#42; GRPCRoute &#42; HTTPRoute &#42; TCPRoute &#42; TLSRoute &#42; UDPRoute
+     */
     @JsonProperty("kind")
     public String getKind() {
         return kind;
     }
 
+    /**
+     * Kind is the kind of the referent. Although implementations may support additional resources, the following types are part of the "Core" support level for this field.<br><p> <br><p> When used to permit a SecretObjectReference:<br><p> <br><p> &#42; Gateway<br><p> <br><p> When used to permit a BackendObjectReference:<br><p> <br><p> &#42; GRPCRoute &#42; HTTPRoute &#42; TCPRoute &#42; TLSRoute &#42; UDPRoute
+     */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * Namespace is the namespace of the referent.<br><p> <br><p> Support: Core
+     */
     @JsonProperty("namespace")
     public String getNamespace() {
         return namespace;
     }
 
+    /**
+     * Namespace is the namespace of the referent.<br><p> <br><p> Support: Core
+     */
     @JsonProperty("namespace")
     public void setNamespace(String namespace) {
         this.namespace = namespace;

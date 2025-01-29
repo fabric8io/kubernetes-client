@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * UserRestriction matches a user either by a string match on the user name, a string match on the name of a group to which the user belongs, or a label selector applied to the user labels.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -91,34 +94,52 @@ public class UserRestriction implements Editable<UserRestrictionBuilder>, Kubern
         this.users = users;
     }
 
+    /**
+     * Groups specifies a list of literal group names.
+     */
     @JsonProperty("groups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getGroups() {
         return groups;
     }
 
+    /**
+     * Groups specifies a list of literal group names.
+     */
     @JsonProperty("groups")
     public void setGroups(List<String> groups) {
         this.groups = groups;
     }
 
+    /**
+     * Selectors specifies a list of label selectors over user labels.
+     */
     @JsonProperty("labels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<LabelSelector> getLabels() {
         return labels;
     }
 
+    /**
+     * Selectors specifies a list of label selectors over user labels.
+     */
     @JsonProperty("labels")
     public void setLabels(List<LabelSelector> labels) {
         this.labels = labels;
     }
 
+    /**
+     * Users specifies a list of literal user names.
+     */
     @JsonProperty("users")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getUsers() {
         return users;
     }
 
+    /**
+     * Users specifies a list of literal user names.
+     */
     @JsonProperty("users")
     public void setUsers(List<String> users) {
         this.users = users;

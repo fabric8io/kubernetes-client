@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * IngressRule represents the rules mapping the paths under a specified host to the related backend services. Incoming requests are first evaluated for a host match, then routed to the backend associated with the matching IngressRuleValue.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -89,32 +92,50 @@ public class IngressRule implements Editable<IngressRuleBuilder>, KubernetesReso
         this.visibility = visibility;
     }
 
+    /**
+     * Host is the fully qualified domain name of a network host, as defined by RFC 3986. Note the following deviations from the "host" part of the URI as defined in the RFC: 1. IPs are not allowed. Currently a rule value can only apply to the<br><p> 	  IP in the Spec of the parent .<br><p> 2. The `:` delimiter is not respected because ports are not allowed.<br><p> 	  Currently the port of an Ingress is implicitly :80 for http and<br><p> 	  :443 for https.<br><p> Both these may change in the future. If the host is unspecified, the Ingress routes all traffic based on the specified IngressRuleValue. If multiple matching Hosts were provided, the first rule will take precedent.
+     */
     @JsonProperty("hosts")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getHosts() {
         return hosts;
     }
 
+    /**
+     * Host is the fully qualified domain name of a network host, as defined by RFC 3986. Note the following deviations from the "host" part of the URI as defined in the RFC: 1. IPs are not allowed. Currently a rule value can only apply to the<br><p> 	  IP in the Spec of the parent .<br><p> 2. The `:` delimiter is not respected because ports are not allowed.<br><p> 	  Currently the port of an Ingress is implicitly :80 for http and<br><p> 	  :443 for https.<br><p> Both these may change in the future. If the host is unspecified, the Ingress routes all traffic based on the specified IngressRuleValue. If multiple matching Hosts were provided, the first rule will take precedent.
+     */
     @JsonProperty("hosts")
     public void setHosts(List<String> hosts) {
         this.hosts = hosts;
     }
 
+    /**
+     * IngressRule represents the rules mapping the paths under a specified host to the related backend services. Incoming requests are first evaluated for a host match, then routed to the backend associated with the matching IngressRuleValue.
+     */
     @JsonProperty("http")
     public HTTPIngressRuleValue getHttp() {
         return http;
     }
 
+    /**
+     * IngressRule represents the rules mapping the paths under a specified host to the related backend services. Incoming requests are first evaluated for a host match, then routed to the backend associated with the matching IngressRuleValue.
+     */
     @JsonProperty("http")
     public void setHttp(HTTPIngressRuleValue http) {
         this.http = http;
     }
 
+    /**
+     * Visibility signifies whether this rule should `ClusterLocal`. If it's not specified then it defaults to `ExternalIP`.
+     */
     @JsonProperty("visibility")
     public String getVisibility() {
         return visibility;
     }
 
+    /**
+     * Visibility signifies whether this rule should `ClusterLocal`. If it's not specified then it defaults to `ExternalIP`.
+     */
     @JsonProperty("visibility")
     public void setVisibility(String visibility) {
         this.visibility = visibility;

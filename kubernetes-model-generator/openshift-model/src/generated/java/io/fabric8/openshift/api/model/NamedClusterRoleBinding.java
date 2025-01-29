@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NamedClusterRoleBinding relates a name with a cluster role binding
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class NamedClusterRoleBinding implements Editable<NamedClusterRoleBinding
         this.roleBinding = roleBinding;
     }
 
+    /**
+     * Name is the name of the cluster role binding
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name is the name of the cluster role binding
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * NamedClusterRoleBinding relates a name with a cluster role binding
+     */
     @JsonProperty("roleBinding")
     public ClusterRoleBinding getRoleBinding() {
         return roleBinding;
     }
 
+    /**
+     * NamedClusterRoleBinding relates a name with a cluster role binding
+     */
     @JsonProperty("roleBinding")
     public void setRoleBinding(ClusterRoleBinding roleBinding) {
         this.roleBinding = roleBinding;

@@ -95,12 +95,18 @@ public class ProfileSpec implements Editable<ProfileSpecBuilder>, KubernetesReso
         this.config = config;
     }
 
+    /**
+     * Tuned profiles.
+     */
     @JsonProperty("profile")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TunedProfile> getProfile() {
         return profile;
     }
 
+    /**
+     * Tuned profiles.
+     */
     @JsonProperty("profile")
     public void setProfile(List<TunedProfile> profile) {
         this.profile = profile;

@@ -36,6 +36,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ManagedClusterSet defines a group of ManagedClusters that you can run workloads on. You can define a workload to be deployed on a ManagedClusterSet. See the following options  for the workload: - The workload can run on any ManagedCluster in the ManagedClusterSet - The workload cannot run on any ManagedCluster outside the ManagedClusterSet - The service exposed by the workload can be shared in any ManagedCluster in the ManagedClusterSet<br><p> <br><p> To assign a ManagedCluster to a certain ManagedClusterSet, add a label with the name cluster.open-cluster-management.io/clusterset on the ManagedCluster to refer to the ManagedClusterSet. You are not allowed to add or remove this label on a ManagedCluster unless you have an RBAC rule to CREATE on a virtual subresource of managedclustersets/join. To update this label, you must have the permission on both the old and new ManagedClusterSet.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -75,14 +78,8 @@ import lombok.experimental.Accessors;
 public class ManagedClusterSet implements Editable<ManagedClusterSetBuilder>, HasMetadata
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "cluster.open-cluster-management.io/v1beta2";
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "ManagedClusterSet";
     @JsonProperty("metadata")
@@ -110,7 +107,7 @@ public class ManagedClusterSet implements Editable<ManagedClusterSetBuilder>, Ha
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -118,7 +115,7 @@ public class ManagedClusterSet implements Editable<ManagedClusterSetBuilder>, Ha
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -126,7 +123,7 @@ public class ManagedClusterSet implements Editable<ManagedClusterSetBuilder>, Ha
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -134,38 +131,56 @@ public class ManagedClusterSet implements Editable<ManagedClusterSetBuilder>, Ha
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * ManagedClusterSet defines a group of ManagedClusters that you can run workloads on. You can define a workload to be deployed on a ManagedClusterSet. See the following options  for the workload: - The workload can run on any ManagedCluster in the ManagedClusterSet - The workload cannot run on any ManagedCluster outside the ManagedClusterSet - The service exposed by the workload can be shared in any ManagedCluster in the ManagedClusterSet<br><p> <br><p> To assign a ManagedCluster to a certain ManagedClusterSet, add a label with the name cluster.open-cluster-management.io/clusterset on the ManagedCluster to refer to the ManagedClusterSet. You are not allowed to add or remove this label on a ManagedCluster unless you have an RBAC rule to CREATE on a virtual subresource of managedclustersets/join. To update this label, you must have the permission on both the old and new ManagedClusterSet.
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * ManagedClusterSet defines a group of ManagedClusters that you can run workloads on. You can define a workload to be deployed on a ManagedClusterSet. See the following options  for the workload: - The workload can run on any ManagedCluster in the ManagedClusterSet - The workload cannot run on any ManagedCluster outside the ManagedClusterSet - The service exposed by the workload can be shared in any ManagedCluster in the ManagedClusterSet<br><p> <br><p> To assign a ManagedCluster to a certain ManagedClusterSet, add a label with the name cluster.open-cluster-management.io/clusterset on the ManagedCluster to refer to the ManagedClusterSet. You are not allowed to add or remove this label on a ManagedCluster unless you have an RBAC rule to CREATE on a virtual subresource of managedclustersets/join. To update this label, you must have the permission on both the old and new ManagedClusterSet.
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * ManagedClusterSet defines a group of ManagedClusters that you can run workloads on. You can define a workload to be deployed on a ManagedClusterSet. See the following options  for the workload: - The workload can run on any ManagedCluster in the ManagedClusterSet - The workload cannot run on any ManagedCluster outside the ManagedClusterSet - The service exposed by the workload can be shared in any ManagedCluster in the ManagedClusterSet<br><p> <br><p> To assign a ManagedCluster to a certain ManagedClusterSet, add a label with the name cluster.open-cluster-management.io/clusterset on the ManagedCluster to refer to the ManagedClusterSet. You are not allowed to add or remove this label on a ManagedCluster unless you have an RBAC rule to CREATE on a virtual subresource of managedclustersets/join. To update this label, you must have the permission on both the old and new ManagedClusterSet.
+     */
     @JsonProperty("spec")
     public ManagedClusterSetSpec getSpec() {
         return spec;
     }
 
+    /**
+     * ManagedClusterSet defines a group of ManagedClusters that you can run workloads on. You can define a workload to be deployed on a ManagedClusterSet. See the following options  for the workload: - The workload can run on any ManagedCluster in the ManagedClusterSet - The workload cannot run on any ManagedCluster outside the ManagedClusterSet - The service exposed by the workload can be shared in any ManagedCluster in the ManagedClusterSet<br><p> <br><p> To assign a ManagedCluster to a certain ManagedClusterSet, add a label with the name cluster.open-cluster-management.io/clusterset on the ManagedCluster to refer to the ManagedClusterSet. You are not allowed to add or remove this label on a ManagedCluster unless you have an RBAC rule to CREATE on a virtual subresource of managedclustersets/join. To update this label, you must have the permission on both the old and new ManagedClusterSet.
+     */
     @JsonProperty("spec")
     public void setSpec(ManagedClusterSetSpec spec) {
         this.spec = spec;
     }
 
+    /**
+     * ManagedClusterSet defines a group of ManagedClusters that you can run workloads on. You can define a workload to be deployed on a ManagedClusterSet. See the following options  for the workload: - The workload can run on any ManagedCluster in the ManagedClusterSet - The workload cannot run on any ManagedCluster outside the ManagedClusterSet - The service exposed by the workload can be shared in any ManagedCluster in the ManagedClusterSet<br><p> <br><p> To assign a ManagedCluster to a certain ManagedClusterSet, add a label with the name cluster.open-cluster-management.io/clusterset on the ManagedCluster to refer to the ManagedClusterSet. You are not allowed to add or remove this label on a ManagedCluster unless you have an RBAC rule to CREATE on a virtual subresource of managedclustersets/join. To update this label, you must have the permission on both the old and new ManagedClusterSet.
+     */
     @JsonProperty("status")
     public ManagedClusterSetStatus getStatus() {
         return status;
     }
 
+    /**
+     * ManagedClusterSet defines a group of ManagedClusters that you can run workloads on. You can define a workload to be deployed on a ManagedClusterSet. See the following options  for the workload: - The workload can run on any ManagedCluster in the ManagedClusterSet - The workload cannot run on any ManagedCluster outside the ManagedClusterSet - The service exposed by the workload can be shared in any ManagedCluster in the ManagedClusterSet<br><p> <br><p> To assign a ManagedCluster to a certain ManagedClusterSet, add a label with the name cluster.open-cluster-management.io/clusterset on the ManagedCluster to refer to the ManagedClusterSet. You are not allowed to add or remove this label on a ManagedCluster unless you have an RBAC rule to CREATE on a virtual subresource of managedclustersets/join. To update this label, you must have the permission on both the old and new ManagedClusterSet.
+     */
     @JsonProperty("status")
     public void setStatus(ManagedClusterSetStatus status) {
         this.status = status;

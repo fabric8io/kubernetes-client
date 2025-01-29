@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * BlockChaosStatus represents the status of a BlockChaos
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,33 +93,51 @@ public class BlockChaosStatus implements Editable<BlockChaosStatusBuilder>, Kube
         this.ids = ids;
     }
 
+    /**
+     * Conditions represents the current global condition of the chaos
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ChaosCondition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Conditions represents the current global condition of the chaos
+     */
     @JsonProperty("conditions")
     public void setConditions(List<ChaosCondition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * BlockChaosStatus represents the status of a BlockChaos
+     */
     @JsonProperty("experiment")
     public ExperimentStatus getExperiment() {
         return experiment;
     }
 
+    /**
+     * BlockChaosStatus represents the status of a BlockChaos
+     */
     @JsonProperty("experiment")
     public void setExperiment(ExperimentStatus experiment) {
         this.experiment = experiment;
     }
 
+    /**
+     * InjectionIds always specifies the number of injected chaos action
+     */
     @JsonProperty("ids")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Integer> getIds() {
         return ids;
     }
 
+    /**
+     * InjectionIds always specifies the number of injected chaos action
+     */
     @JsonProperty("ids")
     public void setIds(Map<String, Integer> ids) {
         this.ids = ids;

@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * VersionAvailability gives information about the synchronization and operational status of a particular version of the component DEPRECATED: Use fields in v1.OperatorStatus instead
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -98,53 +101,83 @@ public class VersionAvailability implements Editable<VersionAvailabilityBuilder>
         this.version = version;
     }
 
+    /**
+     * errors indicates what failures are associated with the operator trying to manage this version
+     */
     @JsonProperty("errors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getErrors() {
         return errors;
     }
 
+    /**
+     * errors indicates what failures are associated with the operator trying to manage this version
+     */
     @JsonProperty("errors")
     public void setErrors(List<String> errors) {
         this.errors = errors;
     }
 
+    /**
+     * generations allows an operator to track what the generation of "important" resources was the last time we updated them
+     */
     @JsonProperty("generations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<GenerationHistory> getGenerations() {
         return generations;
     }
 
+    /**
+     * generations allows an operator to track what the generation of "important" resources was the last time we updated them
+     */
     @JsonProperty("generations")
     public void setGenerations(List<GenerationHistory> generations) {
         this.generations = generations;
     }
 
+    /**
+     * readyReplicas indicates how many replicas are ready and at the desired state
+     */
     @JsonProperty("readyReplicas")
     public Integer getReadyReplicas() {
         return readyReplicas;
     }
 
+    /**
+     * readyReplicas indicates how many replicas are ready and at the desired state
+     */
     @JsonProperty("readyReplicas")
     public void setReadyReplicas(Integer readyReplicas) {
         this.readyReplicas = readyReplicas;
     }
 
+    /**
+     * updatedReplicas indicates how many replicas are at the desired state
+     */
     @JsonProperty("updatedReplicas")
     public Integer getUpdatedReplicas() {
         return updatedReplicas;
     }
 
+    /**
+     * updatedReplicas indicates how many replicas are at the desired state
+     */
     @JsonProperty("updatedReplicas")
     public void setUpdatedReplicas(Integer updatedReplicas) {
         this.updatedReplicas = updatedReplicas;
     }
 
+    /**
+     * version is the level this availability applies to
+     */
     @JsonProperty("version")
     public String getVersion() {
         return version;
     }
 
+    /**
+     * version is the level this availability applies to
+     */
     @JsonProperty("version")
     public void setVersion(String version) {
         this.version = version;

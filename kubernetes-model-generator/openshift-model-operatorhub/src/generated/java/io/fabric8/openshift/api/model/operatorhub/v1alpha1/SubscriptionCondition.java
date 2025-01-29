@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SubscriptionCondition represents the latest available observations of a Subscription's state.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -98,61 +101,97 @@ public class SubscriptionCondition implements Editable<SubscriptionConditionBuil
         this.type = type;
     }
 
+    /**
+     * SubscriptionCondition represents the latest available observations of a Subscription's state.
+     */
     @JsonProperty("lastHeartbeatTime")
     public String getLastHeartbeatTime() {
         return lastHeartbeatTime;
     }
 
+    /**
+     * SubscriptionCondition represents the latest available observations of a Subscription's state.
+     */
     @JsonProperty("lastHeartbeatTime")
     public void setLastHeartbeatTime(String lastHeartbeatTime) {
         this.lastHeartbeatTime = lastHeartbeatTime;
     }
 
+    /**
+     * SubscriptionCondition represents the latest available observations of a Subscription's state.
+     */
     @JsonProperty("lastTransitionTime")
     public String getLastTransitionTime() {
         return lastTransitionTime;
     }
 
+    /**
+     * SubscriptionCondition represents the latest available observations of a Subscription's state.
+     */
     @JsonProperty("lastTransitionTime")
     public void setLastTransitionTime(String lastTransitionTime) {
         this.lastTransitionTime = lastTransitionTime;
     }
 
+    /**
+     * Message is a human-readable message indicating details about last transition.
+     */
     @JsonProperty("message")
     public String getMessage() {
         return message;
     }
 
+    /**
+     * Message is a human-readable message indicating details about last transition.
+     */
     @JsonProperty("message")
     public void setMessage(String message) {
         this.message = message;
     }
 
+    /**
+     * Reason is a one-word CamelCase reason for the condition's last transition.
+     */
     @JsonProperty("reason")
     public String getReason() {
         return reason;
     }
 
+    /**
+     * Reason is a one-word CamelCase reason for the condition's last transition.
+     */
     @JsonProperty("reason")
     public void setReason(String reason) {
         this.reason = reason;
     }
 
+    /**
+     * Status is the status of the condition, one of True, False, Unknown.
+     */
     @JsonProperty("status")
     public String getStatus() {
         return status;
     }
 
+    /**
+     * Status is the status of the condition, one of True, False, Unknown.
+     */
     @JsonProperty("status")
     public void setStatus(String status) {
         this.status = status;
     }
 
+    /**
+     * Type is the type of Subscription condition.
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * Type is the type of Subscription condition.
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

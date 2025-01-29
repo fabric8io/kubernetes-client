@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Platform stores all the global configuration that all machinesets use.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -127,123 +130,195 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
         this.zone = zone;
     }
 
+    /**
+     * ClusterOSImage is a pre-created Power VS boot image that overrides the default image for cluster nodes.
+     */
     @JsonProperty("clusterOSImage")
     public String getClusterOSImage() {
         return clusterOSImage;
     }
 
+    /**
+     * ClusterOSImage is a pre-created Power VS boot image that overrides the default image for cluster nodes.
+     */
     @JsonProperty("clusterOSImage")
     public void setClusterOSImage(String clusterOSImage) {
         this.clusterOSImage = clusterOSImage;
     }
 
+    /**
+     * Platform stores all the global configuration that all machinesets use.
+     */
     @JsonProperty("defaultMachinePlatform")
     public MachinePool getDefaultMachinePlatform() {
         return defaultMachinePlatform;
     }
 
+    /**
+     * Platform stores all the global configuration that all machinesets use.
+     */
     @JsonProperty("defaultMachinePlatform")
     public void setDefaultMachinePlatform(MachinePool defaultMachinePlatform) {
         this.defaultMachinePlatform = defaultMachinePlatform;
     }
 
+    /**
+     * PowerVSResourceGroup is the resource group in which Power VS resources will be created.
+     */
     @JsonProperty("powervsResourceGroup")
     public String getPowervsResourceGroup() {
         return powervsResourceGroup;
     }
 
+    /**
+     * PowerVSResourceGroup is the resource group in which Power VS resources will be created.
+     */
     @JsonProperty("powervsResourceGroup")
     public void setPowervsResourceGroup(String powervsResourceGroup) {
         this.powervsResourceGroup = powervsResourceGroup;
     }
 
+    /**
+     * Region specifies the IBM Cloud colo region where the cluster will be created.
+     */
     @JsonProperty("region")
     public String getRegion() {
         return region;
     }
 
+    /**
+     * Region specifies the IBM Cloud colo region where the cluster will be created.
+     */
     @JsonProperty("region")
     public void setRegion(String region) {
         this.region = region;
     }
 
+    /**
+     * ServiceEndpoints is a list which contains custom endpoints to override default service endpoints of IBM Cloud Services. There must only be one ServiceEndpoint for a service (no duplicates).
+     */
     @JsonProperty("serviceEndpoints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PowerVSServiceEndpoint> getServiceEndpoints() {
         return serviceEndpoints;
     }
 
+    /**
+     * ServiceEndpoints is a list which contains custom endpoints to override default service endpoints of IBM Cloud Services. There must only be one ServiceEndpoint for a service (no duplicates).
+     */
     @JsonProperty("serviceEndpoints")
     public void setServiceEndpoints(List<PowerVSServiceEndpoint> serviceEndpoints) {
         this.serviceEndpoints = serviceEndpoints;
     }
 
+    /**
+     * ServiceInstanceGUID is the GUID of the Power IAAS instance created from the IBM Cloud Catalog before the cluster is completed.  Leave unset to allow the installer to create a service instance during cluster creation.
+     */
     @JsonProperty("serviceInstanceGUID")
     public String getServiceInstanceGUID() {
         return serviceInstanceGUID;
     }
 
+    /**
+     * ServiceInstanceGUID is the GUID of the Power IAAS instance created from the IBM Cloud Catalog before the cluster is completed.  Leave unset to allow the installer to create a service instance during cluster creation.
+     */
     @JsonProperty("serviceInstanceGUID")
     public void setServiceInstanceGUID(String serviceInstanceGUID) {
         this.serviceInstanceGUID = serviceInstanceGUID;
     }
 
+    /**
+     * TGName is the name of a pre-created TransitGateway inside IBM Cloud.
+     */
     @JsonProperty("tgName")
     public String getTgName() {
         return tgName;
     }
 
+    /**
+     * TGName is the name of a pre-created TransitGateway inside IBM Cloud.
+     */
     @JsonProperty("tgName")
     public void setTgName(String tgName) {
         this.tgName = tgName;
     }
 
+    /**
+     * UserID is the login for the user's IBM Cloud account.
+     */
     @JsonProperty("userID")
     public String getUserID() {
         return userID;
     }
 
+    /**
+     * UserID is the login for the user's IBM Cloud account.
+     */
     @JsonProperty("userID")
     public void setUserID(String userID) {
         this.userID = userID;
     }
 
+    /**
+     * VPCName is the name of a pre-created VPC inside IBM Cloud.
+     */
     @JsonProperty("vpcName")
     public String getVpcName() {
         return vpcName;
     }
 
+    /**
+     * VPCName is the name of a pre-created VPC inside IBM Cloud.
+     */
     @JsonProperty("vpcName")
     public void setVpcName(String vpcName) {
         this.vpcName = vpcName;
     }
 
+    /**
+     * VPCRegion specifies the IBM Cloud region in which to create VPC resources. Leave unset to allow installer to select the closest VPC region.
+     */
     @JsonProperty("vpcRegion")
     public String getVpcRegion() {
         return vpcRegion;
     }
 
+    /**
+     * VPCRegion specifies the IBM Cloud region in which to create VPC resources. Leave unset to allow installer to select the closest VPC region.
+     */
     @JsonProperty("vpcRegion")
     public void setVpcRegion(String vpcRegion) {
         this.vpcRegion = vpcRegion;
     }
 
+    /**
+     * VPCSubnets specifies existing subnets (by ID) where cluster resources will be created.  Leave unset to have the installer create subnets in a new VPC on your behalf.
+     */
     @JsonProperty("vpcSubnets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getVpcSubnets() {
         return vpcSubnets;
     }
 
+    /**
+     * VPCSubnets specifies existing subnets (by ID) where cluster resources will be created.  Leave unset to have the installer create subnets in a new VPC on your behalf.
+     */
     @JsonProperty("vpcSubnets")
     public void setVpcSubnets(List<String> vpcSubnets) {
         this.vpcSubnets = vpcSubnets;
     }
 
+    /**
+     * Zone specifies the IBM Cloud colo region where the cluster will be created. At this time, only single-zone clusters are supported.
+     */
     @JsonProperty("zone")
     public String getZone() {
         return zone;
     }
 
+    /**
+     * Zone specifies the IBM Cloud colo region where the cluster will be created. At this time, only single-zone clusters are supported.
+     */
     @JsonProperty("zone")
     public void setZone(String zone) {
         this.zone = zone;

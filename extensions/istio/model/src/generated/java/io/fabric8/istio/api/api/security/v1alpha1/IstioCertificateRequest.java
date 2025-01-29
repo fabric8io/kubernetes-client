@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Certificate request message. The authentication should be based on: 1. Bearer tokens carried in the side channel; 2. Client-side certificate via Mutual TLS handshake. Note: the service implementation is REQUIRED to verify the authenticated caller is authorize to all SANs in the CSR. The server side may overwrite any requested certificate field based on its policies.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -87,32 +90,50 @@ public class IstioCertificateRequest implements Editable<IstioCertificateRequest
         this.validityDuration = validityDuration;
     }
 
+    /**
+     * PEM-encoded certificate request. The public key in the CSR is used to generate the certificate, and other fields in the generated certificate may be overwritten by the CA.
+     */
     @JsonProperty("csr")
     public String getCsr() {
         return csr;
     }
 
+    /**
+     * PEM-encoded certificate request. The public key in the CSR is used to generate the certificate, and other fields in the generated certificate may be overwritten by the CA.
+     */
     @JsonProperty("csr")
     public void setCsr(String csr) {
         this.csr = csr;
     }
 
+    /**
+     * Certificate request message. The authentication should be based on: 1. Bearer tokens carried in the side channel; 2. Client-side certificate via Mutual TLS handshake. Note: the service implementation is REQUIRED to verify the authenticated caller is authorize to all SANs in the CSR. The server side may overwrite any requested certificate field based on its policies.
+     */
     @JsonProperty("metadata")
     public Object getMetadata() {
         return metadata;
     }
 
+    /**
+     * Certificate request message. The authentication should be based on: 1. Bearer tokens carried in the side channel; 2. Client-side certificate via Mutual TLS handshake. Note: the service implementation is REQUIRED to verify the authenticated caller is authorize to all SANs in the CSR. The server side may overwrite any requested certificate field based on its policies.
+     */
     @JsonProperty("metadata")
     @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
     public void setMetadata(Object metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * Optional: requested certificate validity period, in seconds.
+     */
     @JsonProperty("validityDuration")
     public Long getValidityDuration() {
         return validityDuration;
     }
 
+    /**
+     * Optional: requested certificate validity period, in seconds.
+     */
     @JsonProperty("validityDuration")
     public void setValidityDuration(Long validityDuration) {
         this.validityDuration = validityDuration;

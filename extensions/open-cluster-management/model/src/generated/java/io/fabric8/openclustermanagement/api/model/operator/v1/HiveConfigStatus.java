@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * HiveConfigStatus defines the observed state of Hive
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class HiveConfigStatus implements Editable<HiveConfigStatusBuilder>, Kube
         this.aggregatorClientCAHash = aggregatorClientCAHash;
     }
 
+    /**
+     * (Deprecated) AggregatorClientCAHash keeps an md5 hash of the aggregator client CA configmap data from the openshift-config-managed namespace. When the configmap changes, admission is redeployed.
+     */
     @JsonProperty("aggregatorClientCAHash")
     public String getAggregatorClientCAHash() {
         return aggregatorClientCAHash;
     }
 
+    /**
+     * (Deprecated) AggregatorClientCAHash keeps an md5 hash of the aggregator client CA configmap data from the openshift-config-managed namespace. When the configmap changes, admission is redeployed.
+     */
     @JsonProperty("aggregatorClientCAHash")
     public void setAggregatorClientCAHash(String aggregatorClientCAHash) {
         this.aggregatorClientCAHash = aggregatorClientCAHash;

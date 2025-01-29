@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PodTemplateSpec describes the data a pod should have when created from a template
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -53,21 +56,33 @@ public class PodTemplateSpec implements Editable<PodTemplateSpecBuilder>, Kubern
         this.spec = spec;
     }
 
+    /**
+     * PodTemplateSpec describes the data a pod should have when created from a template
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * PodTemplateSpec describes the data a pod should have when created from a template
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * PodTemplateSpec describes the data a pod should have when created from a template
+     */
     @JsonProperty("spec")
     public PodSpec getSpec() {
         return spec;
     }
 
+    /**
+     * PodTemplateSpec describes the data a pod should have when created from a template
+     */
     @JsonProperty("spec")
     public void setSpec(PodSpec spec) {
         this.spec = spec;

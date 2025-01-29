@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SlackConfirmationField protect users from destructive actions or particularly distinguished decisions by asking them to confirm their button click one more time. See https://api.slack.com/docs/interactive-message-field-guide#confirmation_fields for more information.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class SlackConfirmationField implements Editable<SlackConfirmationFieldBu
         this.title = title;
     }
 
+    /**
+     * SlackConfirmationField protect users from destructive actions or particularly distinguished decisions by asking them to confirm their button click one more time. See https://api.slack.com/docs/interactive-message-field-guide#confirmation_fields for more information.
+     */
     @JsonProperty("dismissText")
     public String getDismissText() {
         return dismissText;
     }
 
+    /**
+     * SlackConfirmationField protect users from destructive actions or particularly distinguished decisions by asking them to confirm their button click one more time. See https://api.slack.com/docs/interactive-message-field-guide#confirmation_fields for more information.
+     */
     @JsonProperty("dismissText")
     public void setDismissText(String dismissText) {
         this.dismissText = dismissText;
     }
 
+    /**
+     * SlackConfirmationField protect users from destructive actions or particularly distinguished decisions by asking them to confirm their button click one more time. See https://api.slack.com/docs/interactive-message-field-guide#confirmation_fields for more information.
+     */
     @JsonProperty("okText")
     public String getOkText() {
         return okText;
     }
 
+    /**
+     * SlackConfirmationField protect users from destructive actions or particularly distinguished decisions by asking them to confirm their button click one more time. See https://api.slack.com/docs/interactive-message-field-guide#confirmation_fields for more information.
+     */
     @JsonProperty("okText")
     public void setOkText(String okText) {
         this.okText = okText;
     }
 
+    /**
+     * SlackConfirmationField protect users from destructive actions or particularly distinguished decisions by asking them to confirm their button click one more time. See https://api.slack.com/docs/interactive-message-field-guide#confirmation_fields for more information.
+     */
     @JsonProperty("text")
     public String getText() {
         return text;
     }
 
+    /**
+     * SlackConfirmationField protect users from destructive actions or particularly distinguished decisions by asking them to confirm their button click one more time. See https://api.slack.com/docs/interactive-message-field-guide#confirmation_fields for more information.
+     */
     @JsonProperty("text")
     public void setText(String text) {
         this.text = text;
     }
 
+    /**
+     * SlackConfirmationField protect users from destructive actions or particularly distinguished decisions by asking them to confirm their button click one more time. See https://api.slack.com/docs/interactive-message-field-guide#confirmation_fields for more information.
+     */
     @JsonProperty("title")
     public String getTitle() {
         return title;
     }
 
+    /**
+     * SlackConfirmationField protect users from destructive actions or particularly distinguished decisions by asking them to confirm their button click one more time. See https://api.slack.com/docs/interactive-message-field-guide#confirmation_fields for more information.
+     */
     @JsonProperty("title")
     public void setTitle(String title) {
         this.title = title;

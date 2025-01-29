@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Hash based on a specific HTTP query parameter.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class LoadBalancerSettingsConsistentHashLBHttpQueryParameterName implemen
         this.httpQueryParameterName = httpQueryParameterName;
     }
 
+    /**
+     * Hash based on a specific HTTP query parameter.
+     */
     @JsonProperty("httpQueryParameterName")
     public String getHttpQueryParameterName() {
         return httpQueryParameterName;
     }
 
+    /**
+     * Hash based on a specific HTTP query parameter.
+     */
     @JsonProperty("httpQueryParameterName")
     public void setHttpQueryParameterName(String httpQueryParameterName) {
         this.httpQueryParameterName = httpQueryParameterName;

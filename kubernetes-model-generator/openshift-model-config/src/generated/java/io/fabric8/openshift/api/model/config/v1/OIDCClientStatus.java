@@ -100,54 +100,84 @@ public class OIDCClientStatus implements Editable<OIDCClientStatusBuilder>, Kube
         this.currentOIDCClients = currentOIDCClients;
     }
 
+    /**
+     * ComponentName is the name of the component that will consume a client configuration.
+     */
     @JsonProperty("componentName")
     public String getComponentName() {
         return componentName;
     }
 
+    /**
+     * ComponentName is the name of the component that will consume a client configuration.
+     */
     @JsonProperty("componentName")
     public void setComponentName(String componentName) {
         this.componentName = componentName;
     }
 
+    /**
+     * ComponentNamespace is the namespace of the component that will consume a client configuration.
+     */
     @JsonProperty("componentNamespace")
     public String getComponentNamespace() {
         return componentNamespace;
     }
 
+    /**
+     * ComponentNamespace is the namespace of the component that will consume a client configuration.
+     */
     @JsonProperty("componentNamespace")
     public void setComponentNamespace(String componentNamespace) {
         this.componentNamespace = componentNamespace;
     }
 
+    /**
+     * Conditions are used to communicate the state of the `oidcClients` entry.<br><p> <br><p> Supported conditions include Available, Degraded and Progressing.<br><p> <br><p> If Available is true, the component is successfully using the configured client. If Degraded is true, that means something has gone wrong trying to handle the client configuration. If Progressing is true, that means the component is taking some action related to the `oidcClients` entry.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Conditions are used to communicate the state of the `oidcClients` entry.<br><p> <br><p> Supported conditions include Available, Degraded and Progressing.<br><p> <br><p> If Available is true, the component is successfully using the configured client. If Degraded is true, that means something has gone wrong trying to handle the client configuration. If Progressing is true, that means the component is taking some action related to the `oidcClients` entry.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * ConsumingUsers is a slice of ServiceAccounts that need to have read permission on the `clientSecret` secret.
+     */
     @JsonProperty("consumingUsers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getConsumingUsers() {
         return consumingUsers;
     }
 
+    /**
+     * ConsumingUsers is a slice of ServiceAccounts that need to have read permission on the `clientSecret` secret.
+     */
     @JsonProperty("consumingUsers")
     public void setConsumingUsers(List<String> consumingUsers) {
         this.consumingUsers = consumingUsers;
     }
 
+    /**
+     * CurrentOIDCClients is a list of clients that the component is currently using.
+     */
     @JsonProperty("currentOIDCClients")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<OIDCClientReference> getCurrentOIDCClients() {
         return currentOIDCClients;
     }
 
+    /**
+     * CurrentOIDCClients is a list of clients that the component is currently using.
+     */
     @JsonProperty("currentOIDCClients")
     public void setCurrentOIDCClients(List<OIDCClientReference> currentOIDCClients) {
         this.currentOIDCClients = currentOIDCClients;

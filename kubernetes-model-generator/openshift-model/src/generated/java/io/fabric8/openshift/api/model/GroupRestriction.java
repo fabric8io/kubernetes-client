@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * GroupRestriction matches a group either by a string match on the group name or a label selector applied to group labels.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,23 +89,35 @@ public class GroupRestriction implements Editable<GroupRestrictionBuilder>, Kube
         this.labels = labels;
     }
 
+    /**
+     * Groups is a list of groups used to match against an individual user's groups. If the user is a member of one of the whitelisted groups, the user is allowed to be bound to a role.
+     */
     @JsonProperty("groups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getGroups() {
         return groups;
     }
 
+    /**
+     * Groups is a list of groups used to match against an individual user's groups. If the user is a member of one of the whitelisted groups, the user is allowed to be bound to a role.
+     */
     @JsonProperty("groups")
     public void setGroups(List<String> groups) {
         this.groups = groups;
     }
 
+    /**
+     * Selectors specifies a list of label selectors over group labels.
+     */
     @JsonProperty("labels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<LabelSelector> getLabels() {
         return labels;
     }
 
+    /**
+     * Selectors specifies a list of label selectors over group labels.
+     */
     @JsonProperty("labels")
     public void setLabels(List<LabelSelector> labels) {
         this.labels = labels;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Spec to control the desired behavior of rolling update.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class RollingUpdateDeployment implements Editable<RollingUpdateDeployment
         this.maxUnavailable = maxUnavailable;
     }
 
+    /**
+     * Spec to control the desired behavior of rolling update.
+     */
     @JsonProperty("maxSurge")
     public IntOrString getMaxSurge() {
         return maxSurge;
     }
 
+    /**
+     * Spec to control the desired behavior of rolling update.
+     */
     @JsonProperty("maxSurge")
     public void setMaxSurge(IntOrString maxSurge) {
         this.maxSurge = maxSurge;
     }
 
+    /**
+     * Spec to control the desired behavior of rolling update.
+     */
     @JsonProperty("maxUnavailable")
     public IntOrString getMaxUnavailable() {
         return maxUnavailable;
     }
 
+    /**
+     * Spec to control the desired behavior of rolling update.
+     */
     @JsonProperty("maxUnavailable")
     public void setMaxUnavailable(IntOrString maxUnavailable) {
         this.maxUnavailable = maxUnavailable;

@@ -95,44 +95,68 @@ public class CAIssuer implements Editable<CAIssuerBuilder>, KubernetesResource
         this.secretName = secretName;
     }
 
+    /**
+     * The CRL distribution points is an X.509 v3 certificate extension which identifies the location of the CRL from which the revocation of this certificate can be checked. If not set, certificates will be issued without distribution points set.
+     */
     @JsonProperty("crlDistributionPoints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getCrlDistributionPoints() {
         return crlDistributionPoints;
     }
 
+    /**
+     * The CRL distribution points is an X.509 v3 certificate extension which identifies the location of the CRL from which the revocation of this certificate can be checked. If not set, certificates will be issued without distribution points set.
+     */
     @JsonProperty("crlDistributionPoints")
     public void setCrlDistributionPoints(List<String> crlDistributionPoints) {
         this.crlDistributionPoints = crlDistributionPoints;
     }
 
+    /**
+     * IssuingCertificateURLs is a list of URLs which this issuer should embed into certificates it creates. See https://www.rfc-editor.org/rfc/rfc5280#section-4.2.2.1 for more details. As an example, such a URL might be "http://ca.domain.com/ca.crt".
+     */
     @JsonProperty("issuingCertificateURLs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getIssuingCertificateURLs() {
         return issuingCertificateURLs;
     }
 
+    /**
+     * IssuingCertificateURLs is a list of URLs which this issuer should embed into certificates it creates. See https://www.rfc-editor.org/rfc/rfc5280#section-4.2.2.1 for more details. As an example, such a URL might be "http://ca.domain.com/ca.crt".
+     */
     @JsonProperty("issuingCertificateURLs")
     public void setIssuingCertificateURLs(List<String> issuingCertificateURLs) {
         this.issuingCertificateURLs = issuingCertificateURLs;
     }
 
+    /**
+     * The OCSP server list is an X.509 v3 extension that defines a list of URLs of OCSP responders. The OCSP responders can be queried for the revocation status of an issued certificate. If not set, the certificate will be issued with no OCSP servers set. For example, an OCSP server URL could be "http://ocsp.int-x3.letsencrypt.org".
+     */
     @JsonProperty("ocspServers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getOcspServers() {
         return ocspServers;
     }
 
+    /**
+     * The OCSP server list is an X.509 v3 extension that defines a list of URLs of OCSP responders. The OCSP responders can be queried for the revocation status of an issued certificate. If not set, the certificate will be issued with no OCSP servers set. For example, an OCSP server URL could be "http://ocsp.int-x3.letsencrypt.org".
+     */
     @JsonProperty("ocspServers")
     public void setOcspServers(List<String> ocspServers) {
         this.ocspServers = ocspServers;
     }
 
+    /**
+     * SecretName is the name of the secret used to sign Certificates issued by this Issuer.
+     */
     @JsonProperty("secretName")
     public String getSecretName() {
         return secretName;
     }
 
+    /**
+     * SecretName is the name of the secret used to sign Certificates issued by this Issuer.
+     */
     @JsonProperty("secretName")
     public void setSecretName(String secretName) {
         this.secretName = secretName;

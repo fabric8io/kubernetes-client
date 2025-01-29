@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ForZone provides information about which zones should consume this endpoint.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class ForZone implements Editable<ForZoneBuilder>, KubernetesResource
         this.name = name;
     }
 
+    /**
+     * name represents the name of the zone.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * name represents the name of the zone.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

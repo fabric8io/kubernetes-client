@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Platform stores all the global configuration that all machinesets use.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
         this.region = region;
     }
 
+    /**
+     * Platform stores all the global configuration that all machinesets use.
+     */
     @JsonProperty("credentialsSecretRef")
     public LocalObjectReference getCredentialsSecretRef() {
         return credentialsSecretRef;
     }
 
+    /**
+     * Platform stores all the global configuration that all machinesets use.
+     */
     @JsonProperty("credentialsSecretRef")
     public void setCredentialsSecretRef(LocalObjectReference credentialsSecretRef) {
         this.credentialsSecretRef = credentialsSecretRef;
     }
 
+    /**
+     * Platform stores all the global configuration that all machinesets use.
+     */
     @JsonProperty("privateServiceConnect")
     public PrivateServiceConnect getPrivateServiceConnect() {
         return privateServiceConnect;
     }
 
+    /**
+     * Platform stores all the global configuration that all machinesets use.
+     */
     @JsonProperty("privateServiceConnect")
     public void setPrivateServiceConnect(PrivateServiceConnect privateServiceConnect) {
         this.privateServiceConnect = privateServiceConnect;
     }
 
+    /**
+     * Region specifies the GCP region where the cluster will be created.
+     */
     @JsonProperty("region")
     public String getRegion() {
         return region;
     }
 
+    /**
+     * Region specifies the GCP region where the cluster will be created.
+     */
     @JsonProperty("region")
     public void setRegion(String region) {
         this.region = region;

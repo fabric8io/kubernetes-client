@@ -86,11 +86,17 @@ public class OperandConfig implements Editable<OperandConfigBuilder>, Kubernetes
         this.verbosity = verbosity;
     }
 
+    /**
+     * turn debugging on/off for the TuneD daemon: true/false (default is false)
+     */
     @JsonProperty("debug")
     public Boolean getDebug() {
         return debug;
     }
 
+    /**
+     * turn debugging on/off for the TuneD daemon: true/false (default is false)
+     */
     @JsonProperty("debug")
     public void setDebug(Boolean debug) {
         this.debug = debug;
@@ -106,11 +112,17 @@ public class OperandConfig implements Editable<OperandConfigBuilder>, Kubernetes
         this.tunedConfig = tunedConfig;
     }
 
+    /**
+     * klog logging verbosity
+     */
     @JsonProperty("verbosity")
     public Integer getVerbosity() {
         return verbosity;
     }
 
+    /**
+     * klog logging verbosity
+     */
     @JsonProperty("verbosity")
     public void setVerbosity(Integer verbosity) {
         this.verbosity = verbosity;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SubscriptionPerClusterStatus defines status of each subscription in a cluster, key is package name
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -79,12 +82,18 @@ public class SubscriptionPerClusterStatus implements Editable<SubscriptionPerClu
         this.packages = packages;
     }
 
+    /**
+     * SubscriptionPerClusterStatus defines status of each subscription in a cluster, key is package name
+     */
     @JsonProperty("packages")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, SubscriptionUnitStatus> getPackages() {
         return packages;
     }
 
+    /**
+     * SubscriptionPerClusterStatus defines status of each subscription in a cluster, key is package name
+     */
     @JsonProperty("packages")
     public void setPackages(Map<String, SubscriptionUnitStatus> packages) {
         this.packages = packages;

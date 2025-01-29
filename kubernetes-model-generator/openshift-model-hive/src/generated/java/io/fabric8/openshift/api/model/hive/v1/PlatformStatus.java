@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PlatformStatus contains the observed state for the specific platform upon which to perform the installation
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class PlatformStatus implements Editable<PlatformStatusBuilder>, Kubernet
         this.gcp = gcp;
     }
 
+    /**
+     * PlatformStatus contains the observed state for the specific platform upon which to perform the installation
+     */
     @JsonProperty("aws")
     public io.fabric8.openshift.api.model.hive.aws.v1.PlatformStatus getAws() {
         return aws;
     }
 
+    /**
+     * PlatformStatus contains the observed state for the specific platform upon which to perform the installation
+     */
     @JsonProperty("aws")
     public void setAws(io.fabric8.openshift.api.model.hive.aws.v1.PlatformStatus aws) {
         this.aws = aws;
     }
 
+    /**
+     * PlatformStatus contains the observed state for the specific platform upon which to perform the installation
+     */
     @JsonProperty("gcp")
     public io.fabric8.openshift.api.model.hive.gcp.v1.PlatformStatus getGcp() {
         return gcp;
     }
 
+    /**
+     * PlatformStatus contains the observed state for the specific platform upon which to perform the installation
+     */
     @JsonProperty("gcp")
     public void setGcp(io.fabric8.openshift.api.model.hive.gcp.v1.PlatformStatus gcp) {
         this.gcp = gcp;

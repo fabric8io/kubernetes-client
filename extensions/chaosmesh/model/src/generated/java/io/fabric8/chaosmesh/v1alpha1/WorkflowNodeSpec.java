@@ -178,11 +178,17 @@ public class WorkflowNodeSpec implements Editable<WorkflowNodeSpecBuilder>, Kube
         this.workflowName = workflowName;
     }
 
+    /**
+     * AbortWithStatusCheck describe whether to abort the workflow when the failure threshold of StatusCheck is exceeded. Only used when Type is TypeStatusCheck.
+     */
     @JsonProperty("abortWithStatusCheck")
     public Boolean getAbortWithStatusCheck() {
         return abortWithStatusCheck;
     }
 
+    /**
+     * AbortWithStatusCheck describe whether to abort the workflow when the failure threshold of StatusCheck is exceeded. Only used when Type is TypeStatusCheck.
+     */
     @JsonProperty("abortWithStatusCheck")
     public void setAbortWithStatusCheck(Boolean abortWithStatusCheck) {
         this.abortWithStatusCheck = abortWithStatusCheck;

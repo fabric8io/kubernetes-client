@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NutanixDataDisk specifies the VM data disk configuration parameters.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -91,41 +94,65 @@ public class NutanixVMDisk implements Editable<NutanixVMDiskBuilder>, Kubernetes
         this.storageConfig = storageConfig;
     }
 
+    /**
+     * NutanixDataDisk specifies the VM data disk configuration parameters.
+     */
     @JsonProperty("dataSource")
     public NutanixResourceIdentifier getDataSource() {
         return dataSource;
     }
 
+    /**
+     * NutanixDataDisk specifies the VM data disk configuration parameters.
+     */
     @JsonProperty("dataSource")
     public void setDataSource(NutanixResourceIdentifier dataSource) {
         this.dataSource = dataSource;
     }
 
+    /**
+     * NutanixDataDisk specifies the VM data disk configuration parameters.
+     */
     @JsonProperty("deviceProperties")
     public NutanixVMDiskDeviceProperties getDeviceProperties() {
         return deviceProperties;
     }
 
+    /**
+     * NutanixDataDisk specifies the VM data disk configuration parameters.
+     */
     @JsonProperty("deviceProperties")
     public void setDeviceProperties(NutanixVMDiskDeviceProperties deviceProperties) {
         this.deviceProperties = deviceProperties;
     }
 
+    /**
+     * NutanixDataDisk specifies the VM data disk configuration parameters.
+     */
     @JsonProperty("diskSize")
     public Quantity getDiskSize() {
         return diskSize;
     }
 
+    /**
+     * NutanixDataDisk specifies the VM data disk configuration parameters.
+     */
     @JsonProperty("diskSize")
     public void setDiskSize(Quantity diskSize) {
         this.diskSize = diskSize;
     }
 
+    /**
+     * NutanixDataDisk specifies the VM data disk configuration parameters.
+     */
     @JsonProperty("storageConfig")
     public NutanixVMStorageConfig getStorageConfig() {
         return storageConfig;
     }
 
+    /**
+     * NutanixDataDisk specifies the VM data disk configuration parameters.
+     */
     @JsonProperty("storageConfig")
     public void setStorageConfig(NutanixVMStorageConfig storageConfig) {
         this.storageConfig = storageConfig;

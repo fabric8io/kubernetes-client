@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Configures an issuer to sign certificates using a HashiCorp Vault PKI backend.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -107,81 +110,129 @@ public class VaultIssuer implements Editable<VaultIssuerBuilder>, KubernetesReso
         this.server = server;
     }
 
+    /**
+     * Configures an issuer to sign certificates using a HashiCorp Vault PKI backend.
+     */
     @JsonProperty("auth")
     public VaultAuth getAuth() {
         return auth;
     }
 
+    /**
+     * Configures an issuer to sign certificates using a HashiCorp Vault PKI backend.
+     */
     @JsonProperty("auth")
     public void setAuth(VaultAuth auth) {
         this.auth = auth;
     }
 
+    /**
+     * Base64-encoded bundle of PEM CAs which will be used to validate the certificate chain presented by Vault. Only used if using HTTPS to connect to Vault and ignored for HTTP connections. Mutually exclusive with CABundleSecretRef. If neither CABundle nor CABundleSecretRef are defined, the certificate bundle in the cert-manager controller container is used to validate the TLS connection.
+     */
     @JsonProperty("caBundle")
     public String getCaBundle() {
         return caBundle;
     }
 
+    /**
+     * Base64-encoded bundle of PEM CAs which will be used to validate the certificate chain presented by Vault. Only used if using HTTPS to connect to Vault and ignored for HTTP connections. Mutually exclusive with CABundleSecretRef. If neither CABundle nor CABundleSecretRef are defined, the certificate bundle in the cert-manager controller container is used to validate the TLS connection.
+     */
     @JsonProperty("caBundle")
     public void setCaBundle(String caBundle) {
         this.caBundle = caBundle;
     }
 
+    /**
+     * Configures an issuer to sign certificates using a HashiCorp Vault PKI backend.
+     */
     @JsonProperty("caBundleSecretRef")
     public SecretKeySelector getCaBundleSecretRef() {
         return caBundleSecretRef;
     }
 
+    /**
+     * Configures an issuer to sign certificates using a HashiCorp Vault PKI backend.
+     */
     @JsonProperty("caBundleSecretRef")
     public void setCaBundleSecretRef(SecretKeySelector caBundleSecretRef) {
         this.caBundleSecretRef = caBundleSecretRef;
     }
 
+    /**
+     * Configures an issuer to sign certificates using a HashiCorp Vault PKI backend.
+     */
     @JsonProperty("clientCertSecretRef")
     public SecretKeySelector getClientCertSecretRef() {
         return clientCertSecretRef;
     }
 
+    /**
+     * Configures an issuer to sign certificates using a HashiCorp Vault PKI backend.
+     */
     @JsonProperty("clientCertSecretRef")
     public void setClientCertSecretRef(SecretKeySelector clientCertSecretRef) {
         this.clientCertSecretRef = clientCertSecretRef;
     }
 
+    /**
+     * Configures an issuer to sign certificates using a HashiCorp Vault PKI backend.
+     */
     @JsonProperty("clientKeySecretRef")
     public SecretKeySelector getClientKeySecretRef() {
         return clientKeySecretRef;
     }
 
+    /**
+     * Configures an issuer to sign certificates using a HashiCorp Vault PKI backend.
+     */
     @JsonProperty("clientKeySecretRef")
     public void setClientKeySecretRef(SecretKeySelector clientKeySecretRef) {
         this.clientKeySecretRef = clientKeySecretRef;
     }
 
+    /**
+     * Name of the vault namespace. Namespaces is a set of features within Vault Enterprise that allows Vault environments to support Secure Multi-tenancy. e.g: "ns1" More about namespaces can be found here https://www.vaultproject.io/docs/enterprise/namespaces
+     */
     @JsonProperty("namespace")
     public String getNamespace() {
         return namespace;
     }
 
+    /**
+     * Name of the vault namespace. Namespaces is a set of features within Vault Enterprise that allows Vault environments to support Secure Multi-tenancy. e.g: "ns1" More about namespaces can be found here https://www.vaultproject.io/docs/enterprise/namespaces
+     */
     @JsonProperty("namespace")
     public void setNamespace(String namespace) {
         this.namespace = namespace;
     }
 
+    /**
+     * Path is the mount path of the Vault PKI backend's `sign` endpoint, e.g: "my_pki_mount/sign/my-role-name".
+     */
     @JsonProperty("path")
     public String getPath() {
         return path;
     }
 
+    /**
+     * Path is the mount path of the Vault PKI backend's `sign` endpoint, e.g: "my_pki_mount/sign/my-role-name".
+     */
     @JsonProperty("path")
     public void setPath(String path) {
         this.path = path;
     }
 
+    /**
+     * Server is the connection address for the Vault server, e.g: "https://vault.example.com:8200".
+     */
     @JsonProperty("server")
     public String getServer() {
         return server;
     }
 
+    /**
+     * Server is the connection address for the Vault server, e.g: "https://vault.example.com:8200".
+     */
     @JsonProperty("server")
     public void setServer(String server) {
         this.server = server;

@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SyncIdentityProviderSpec defines the SyncIdentityProviderCommonSpec identity providers to sync along with ClusterDeploymentRefs indicating which clusters the SyncIdentityProvider applies to in the SyncIdentityProvider's namespace.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -87,23 +90,35 @@ public class SyncIdentityProviderSpec implements Editable<SyncIdentityProviderSp
         this.identityProviders = identityProviders;
     }
 
+    /**
+     * ClusterDeploymentRefs is the list of LocalObjectReference indicating which clusters the SyncSet applies to in the SyncSet's namespace.
+     */
     @JsonProperty("clusterDeploymentRefs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<LocalObjectReference> getClusterDeploymentRefs() {
         return clusterDeploymentRefs;
     }
 
+    /**
+     * ClusterDeploymentRefs is the list of LocalObjectReference indicating which clusters the SyncSet applies to in the SyncSet's namespace.
+     */
     @JsonProperty("clusterDeploymentRefs")
     public void setClusterDeploymentRefs(List<LocalObjectReference> clusterDeploymentRefs) {
         this.clusterDeploymentRefs = clusterDeploymentRefs;
     }
 
+    /**
+     * IdentityProviders is an ordered list of ways for a user to identify themselves
+     */
     @JsonProperty("identityProviders")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<IdentityProvider> getIdentityProviders() {
         return identityProviders;
     }
 
+    /**
+     * IdentityProviders is an ordered list of ways for a user to identify themselves
+     */
     @JsonProperty("identityProviders")
     public void setIdentityProviders(List<IdentityProvider> identityProviders) {
         this.identityProviders = identityProviders;

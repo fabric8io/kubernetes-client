@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * VeleroBackupConfig contains settings for the Velero backup integration.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class VeleroBackupConfig implements Editable<VeleroBackupConfigBuilder>, 
         this.namespace = namespace;
     }
 
+    /**
+     * Enabled dictates if Velero backup integration is enabled. If not specified, the default is disabled.
+     */
     @JsonProperty("enabled")
     public Boolean getEnabled() {
         return enabled;
     }
 
+    /**
+     * Enabled dictates if Velero backup integration is enabled. If not specified, the default is disabled.
+     */
     @JsonProperty("enabled")
     public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
     }
 
+    /**
+     * Namespace specifies in which namespace velero backup objects should be created. If not specified, the default is a namespace named "velero".
+     */
     @JsonProperty("namespace")
     public String getNamespace() {
         return namespace;
     }
 
+    /**
+     * Namespace specifies in which namespace velero backup objects should be created. If not specified, the default is a namespace named "velero".
+     */
     @JsonProperty("namespace")
     public void setNamespace(String namespace) {
         this.namespace = namespace;

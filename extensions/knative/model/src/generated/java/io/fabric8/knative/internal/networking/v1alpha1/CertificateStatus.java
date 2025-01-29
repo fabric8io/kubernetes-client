@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * CertificateStatus defines the observed state of a `Certificate`.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -100,54 +103,84 @@ public class CertificateStatus implements Editable<CertificateStatusBuilder>, Ku
         this.observedGeneration = observedGeneration;
     }
 
+    /**
+     * Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.
+     */
     @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAnnotations() {
         return annotations;
     }
 
+    /**
+     * Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.
+     */
     @JsonProperty("annotations")
     public void setAnnotations(Map<String, String> annotations) {
         this.annotations = annotations;
     }
 
+    /**
+     * Conditions the latest available observations of a resource's current state.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Conditions the latest available observations of a resource's current state.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * HTTP01Challenges is a list of HTTP01 challenges that need to be fulfilled in order to get the TLS certificate..
+     */
     @JsonProperty("http01Challenges")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<HTTP01Challenge> getHttp01Challenges() {
         return http01Challenges;
     }
 
+    /**
+     * HTTP01Challenges is a list of HTTP01 challenges that need to be fulfilled in order to get the TLS certificate..
+     */
     @JsonProperty("http01Challenges")
     public void setHttp01Challenges(List<HTTP01Challenge> http01Challenges) {
         this.http01Challenges = http01Challenges;
     }
 
+    /**
+     * CertificateStatus defines the observed state of a `Certificate`.
+     */
     @JsonProperty("notAfter")
     public String getNotAfter() {
         return notAfter;
     }
 
+    /**
+     * CertificateStatus defines the observed state of a `Certificate`.
+     */
     @JsonProperty("notAfter")
     public void setNotAfter(String notAfter) {
         this.notAfter = notAfter;
     }
 
+    /**
+     * ObservedGeneration is the 'Generation' of the Service that was last processed by the controller.
+     */
     @JsonProperty("observedGeneration")
     public Long getObservedGeneration() {
         return observedGeneration;
     }
 
+    /**
+     * ObservedGeneration is the 'Generation' of the Service that was last processed by the controller.
+     */
     @JsonProperty("observedGeneration")
     public void setObservedGeneration(Long observedGeneration) {
         this.observedGeneration = observedGeneration;

@@ -82,21 +82,33 @@ public class CLIDownloadLink implements Editable<CLIDownloadLinkBuilder>, Kubern
         this.text = text;
     }
 
+    /**
+     * href is the absolute secure URL for the link (must use https)
+     */
     @JsonProperty("href")
     public String getHref() {
         return href;
     }
 
+    /**
+     * href is the absolute secure URL for the link (must use https)
+     */
     @JsonProperty("href")
     public void setHref(String href) {
         this.href = href;
     }
 
+    /**
+     * text is the display text for the link
+     */
     @JsonProperty("text")
     public String getText() {
         return text;
     }
 
+    /**
+     * text is the display text for the link
+     */
     @JsonProperty("text")
     public void setText(String text) {
         this.text = text;

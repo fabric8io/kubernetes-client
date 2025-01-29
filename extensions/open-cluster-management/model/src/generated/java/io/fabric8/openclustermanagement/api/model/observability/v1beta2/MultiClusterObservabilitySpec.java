@@ -36,6 +36,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * MultiClusterObservabilitySpec defines the desired state of MultiClusterObservability.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -120,103 +123,163 @@ public class MultiClusterObservabilitySpec implements Editable<MultiClusterObser
         this.tolerations = tolerations;
     }
 
+    /**
+     * MultiClusterObservabilitySpec defines the desired state of MultiClusterObservability.
+     */
     @JsonProperty("advanced")
     public AdvancedConfig getAdvanced() {
         return advanced;
     }
 
+    /**
+     * MultiClusterObservabilitySpec defines the desired state of MultiClusterObservability.
+     */
     @JsonProperty("advanced")
     public void setAdvanced(AdvancedConfig advanced) {
         this.advanced = advanced;
     }
 
+    /**
+     * MultiClusterObservabilitySpec defines the desired state of MultiClusterObservability.
+     */
     @JsonProperty("capabilities")
     public CapabilitiesSpec getCapabilities() {
         return capabilities;
     }
 
+    /**
+     * MultiClusterObservabilitySpec defines the desired state of MultiClusterObservability.
+     */
     @JsonProperty("capabilities")
     public void setCapabilities(CapabilitiesSpec capabilities) {
         this.capabilities = capabilities;
     }
 
+    /**
+     * Enable or disable the downsample.
+     */
     @JsonProperty("enableDownsampling")
     public Boolean getEnableDownsampling() {
         return enableDownsampling;
     }
 
+    /**
+     * Enable or disable the downsample.
+     */
     @JsonProperty("enableDownsampling")
     public void setEnableDownsampling(Boolean enableDownsampling) {
         this.enableDownsampling = enableDownsampling;
     }
 
+    /**
+     * Pull policy of the MultiClusterObservability images
+     */
     @JsonProperty("imagePullPolicy")
     public String getImagePullPolicy() {
         return imagePullPolicy;
     }
 
+    /**
+     * Pull policy of the MultiClusterObservability images
+     */
     @JsonProperty("imagePullPolicy")
     public void setImagePullPolicy(String imagePullPolicy) {
         this.imagePullPolicy = imagePullPolicy;
     }
 
+    /**
+     * Pull secret of the MultiClusterObservability images
+     */
     @JsonProperty("imagePullSecret")
     public String getImagePullSecret() {
         return imagePullSecret;
     }
 
+    /**
+     * Pull secret of the MultiClusterObservability images
+     */
     @JsonProperty("imagePullSecret")
     public void setImagePullSecret(String imagePullSecret) {
         this.imagePullSecret = imagePullSecret;
     }
 
+    /**
+     * Size read and write paths of your Observability instance
+     */
     @JsonProperty("instanceSize")
     public String getInstanceSize() {
         return instanceSize;
     }
 
+    /**
+     * Size read and write paths of your Observability instance
+     */
     @JsonProperty("instanceSize")
     public void setInstanceSize(String instanceSize) {
         this.instanceSize = instanceSize;
     }
 
+    /**
+     * Spec of NodeSelector
+     */
     @JsonProperty("nodeSelector")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getNodeSelector() {
         return nodeSelector;
     }
 
+    /**
+     * Spec of NodeSelector
+     */
     @JsonProperty("nodeSelector")
     public void setNodeSelector(Map<String, String> nodeSelector) {
         this.nodeSelector = nodeSelector;
     }
 
+    /**
+     * MultiClusterObservabilitySpec defines the desired state of MultiClusterObservability.
+     */
     @JsonProperty("observabilityAddonSpec")
     public ObservabilityAddonSpec getObservabilityAddonSpec() {
         return observabilityAddonSpec;
     }
 
+    /**
+     * MultiClusterObservabilitySpec defines the desired state of MultiClusterObservability.
+     */
     @JsonProperty("observabilityAddonSpec")
     public void setObservabilityAddonSpec(ObservabilityAddonSpec observabilityAddonSpec) {
         this.observabilityAddonSpec = observabilityAddonSpec;
     }
 
+    /**
+     * MultiClusterObservabilitySpec defines the desired state of MultiClusterObservability.
+     */
     @JsonProperty("storageConfig")
     public StorageConfig getStorageConfig() {
         return storageConfig;
     }
 
+    /**
+     * MultiClusterObservabilitySpec defines the desired state of MultiClusterObservability.
+     */
     @JsonProperty("storageConfig")
     public void setStorageConfig(StorageConfig storageConfig) {
         this.storageConfig = storageConfig;
     }
 
+    /**
+     * Tolerations causes all components to tolerate any taints.
+     */
     @JsonProperty("tolerations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Toleration> getTolerations() {
         return tolerations;
     }
 
+    /**
+     * Tolerations causes all components to tolerate any taints.
+     */
     @JsonProperty("tolerations")
     public void setTolerations(List<Toleration> tolerations) {
         this.tolerations = tolerations;

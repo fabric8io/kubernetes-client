@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PipelineTask defines a task in a Pipeline, passing inputs from both Params and from the output of previous tasks.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -141,155 +144,245 @@ public class PipelineTask implements Editable<PipelineTaskBuilder>, KubernetesRe
         this.workspaces = workspaces;
     }
 
+    /**
+     * Description is the description of this task within the context of a Pipeline. This description may be used to populate a UI.
+     */
     @JsonProperty("description")
     public String getDescription() {
         return description;
     }
 
+    /**
+     * Description is the description of this task within the context of a Pipeline. This description may be used to populate a UI.
+     */
     @JsonProperty("description")
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * DisplayName is the display name of this task within the context of a Pipeline. This display name may be used to populate a UI.
+     */
     @JsonProperty("displayName")
     public String getDisplayName() {
         return displayName;
     }
 
+    /**
+     * DisplayName is the display name of this task within the context of a Pipeline. This display name may be used to populate a UI.
+     */
     @JsonProperty("displayName")
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
     }
 
+    /**
+     * PipelineTask defines a task in a Pipeline, passing inputs from both Params and from the output of previous tasks.
+     */
     @JsonProperty("matrix")
     public Matrix getMatrix() {
         return matrix;
     }
 
+    /**
+     * PipelineTask defines a task in a Pipeline, passing inputs from both Params and from the output of previous tasks.
+     */
     @JsonProperty("matrix")
     public void setMatrix(Matrix matrix) {
         this.matrix = matrix;
     }
 
+    /**
+     * Name is the name of this task within the context of a Pipeline. Name is used as a coordinate with the `from` and `runAfter` fields to establish the execution order of tasks relative to one another.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name is the name of this task within the context of a Pipeline. Name is used as a coordinate with the `from` and `runAfter` fields to establish the execution order of tasks relative to one another.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * OnError defines the exiting behavior of a PipelineRun on error can be set to [ continue | stopAndFail ]
+     */
     @JsonProperty("onError")
     public String getOnError() {
         return onError;
     }
 
+    /**
+     * OnError defines the exiting behavior of a PipelineRun on error can be set to [ continue | stopAndFail ]
+     */
     @JsonProperty("onError")
     public void setOnError(String onError) {
         this.onError = onError;
     }
 
+    /**
+     * Parameters declares parameters passed to this task.
+     */
     @JsonProperty("params")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Param> getParams() {
         return params;
     }
 
+    /**
+     * Parameters declares parameters passed to this task.
+     */
     @JsonProperty("params")
     public void setParams(List<Param> params) {
         this.params = params;
     }
 
+    /**
+     * PipelineTask defines a task in a Pipeline, passing inputs from both Params and from the output of previous tasks.
+     */
     @JsonProperty("pipelineRef")
     public PipelineRef getPipelineRef() {
         return pipelineRef;
     }
 
+    /**
+     * PipelineTask defines a task in a Pipeline, passing inputs from both Params and from the output of previous tasks.
+     */
     @JsonProperty("pipelineRef")
     public void setPipelineRef(PipelineRef pipelineRef) {
         this.pipelineRef = pipelineRef;
     }
 
+    /**
+     * PipelineTask defines a task in a Pipeline, passing inputs from both Params and from the output of previous tasks.
+     */
     @JsonProperty("pipelineSpec")
     public PipelineSpec getPipelineSpec() {
         return pipelineSpec;
     }
 
+    /**
+     * PipelineTask defines a task in a Pipeline, passing inputs from both Params and from the output of previous tasks.
+     */
     @JsonProperty("pipelineSpec")
     public void setPipelineSpec(PipelineSpec pipelineSpec) {
         this.pipelineSpec = pipelineSpec;
     }
 
+    /**
+     * Retries represents how many times this task should be retried in case of task failure: ConditionSucceeded set to False
+     */
     @JsonProperty("retries")
     public Integer getRetries() {
         return retries;
     }
 
+    /**
+     * Retries represents how many times this task should be retried in case of task failure: ConditionSucceeded set to False
+     */
     @JsonProperty("retries")
     public void setRetries(Integer retries) {
         this.retries = retries;
     }
 
+    /**
+     * RunAfter is the list of PipelineTask names that should be executed before this Task executes. (Used to force a specific ordering in graph execution.)
+     */
     @JsonProperty("runAfter")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getRunAfter() {
         return runAfter;
     }
 
+    /**
+     * RunAfter is the list of PipelineTask names that should be executed before this Task executes. (Used to force a specific ordering in graph execution.)
+     */
     @JsonProperty("runAfter")
     public void setRunAfter(List<String> runAfter) {
         this.runAfter = runAfter;
     }
 
+    /**
+     * PipelineTask defines a task in a Pipeline, passing inputs from both Params and from the output of previous tasks.
+     */
     @JsonProperty("taskRef")
     public TaskRef getTaskRef() {
         return taskRef;
     }
 
+    /**
+     * PipelineTask defines a task in a Pipeline, passing inputs from both Params and from the output of previous tasks.
+     */
     @JsonProperty("taskRef")
     public void setTaskRef(TaskRef taskRef) {
         this.taskRef = taskRef;
     }
 
+    /**
+     * PipelineTask defines a task in a Pipeline, passing inputs from both Params and from the output of previous tasks.
+     */
     @JsonProperty("taskSpec")
     public EmbeddedTask getTaskSpec() {
         return taskSpec;
     }
 
+    /**
+     * PipelineTask defines a task in a Pipeline, passing inputs from both Params and from the output of previous tasks.
+     */
     @JsonProperty("taskSpec")
     public void setTaskSpec(EmbeddedTask taskSpec) {
         this.taskSpec = taskSpec;
     }
 
+    /**
+     * PipelineTask defines a task in a Pipeline, passing inputs from both Params and from the output of previous tasks.
+     */
     @JsonProperty("timeout")
     public Duration getTimeout() {
         return timeout;
     }
 
+    /**
+     * PipelineTask defines a task in a Pipeline, passing inputs from both Params and from the output of previous tasks.
+     */
     @JsonProperty("timeout")
     public void setTimeout(Duration timeout) {
         this.timeout = timeout;
     }
 
+    /**
+     * When is a list of when expressions that need to be true for the task to run
+     */
     @JsonProperty("when")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<WhenExpression> getWhen() {
         return when;
     }
 
+    /**
+     * When is a list of when expressions that need to be true for the task to run
+     */
     @JsonProperty("when")
     public void setWhen(List<WhenExpression> when) {
         this.when = when;
     }
 
+    /**
+     * Workspaces maps workspaces from the pipeline spec to the workspaces declared in the Task.
+     */
     @JsonProperty("workspaces")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<WorkspacePipelineTaskBinding> getWorkspaces() {
         return workspaces;
     }
 
+    /**
+     * Workspaces maps workspaces from the pipeline spec to the workspaces declared in the Task.
+     */
     @JsonProperty("workspaces")
     public void setWorkspaces(List<WorkspacePipelineTaskBinding> workspaces) {
         this.workspaces = workspaces;

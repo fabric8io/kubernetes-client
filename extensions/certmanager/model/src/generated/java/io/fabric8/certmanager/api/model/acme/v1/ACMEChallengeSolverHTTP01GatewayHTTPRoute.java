@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * The ACMEChallengeSolverHTTP01GatewayHTTPRoute solver will create HTTPRoute objects for a Gateway class routing to an ACME challenge solver pod.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -95,43 +98,67 @@ public class ACMEChallengeSolverHTTP01GatewayHTTPRoute implements Editable<ACMEC
         this.serviceType = serviceType;
     }
 
+    /**
+     * Custom labels that will be applied to HTTPRoutes created by cert-manager while solving HTTP-01 challenges.
+     */
     @JsonProperty("labels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getLabels() {
         return labels;
     }
 
+    /**
+     * Custom labels that will be applied to HTTPRoutes created by cert-manager while solving HTTP-01 challenges.
+     */
     @JsonProperty("labels")
     public void setLabels(Map<String, String> labels) {
         this.labels = labels;
     }
 
+    /**
+     * When solving an HTTP-01 challenge, cert-manager creates an HTTPRoute. cert-manager needs to know which parentRefs should be used when creating the HTTPRoute. Usually, the parentRef references a Gateway. See: https://gateway-api.sigs.k8s.io/api-types/httproute/#attaching-to-gateways
+     */
     @JsonProperty("parentRefs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ParentReference> getParentRefs() {
         return parentRefs;
     }
 
+    /**
+     * When solving an HTTP-01 challenge, cert-manager creates an HTTPRoute. cert-manager needs to know which parentRefs should be used when creating the HTTPRoute. Usually, the parentRef references a Gateway. See: https://gateway-api.sigs.k8s.io/api-types/httproute/#attaching-to-gateways
+     */
     @JsonProperty("parentRefs")
     public void setParentRefs(List<ParentReference> parentRefs) {
         this.parentRefs = parentRefs;
     }
 
+    /**
+     * The ACMEChallengeSolverHTTP01GatewayHTTPRoute solver will create HTTPRoute objects for a Gateway class routing to an ACME challenge solver pod.
+     */
     @JsonProperty("podTemplate")
     public ACMEChallengeSolverHTTP01IngressPodTemplate getPodTemplate() {
         return podTemplate;
     }
 
+    /**
+     * The ACMEChallengeSolverHTTP01GatewayHTTPRoute solver will create HTTPRoute objects for a Gateway class routing to an ACME challenge solver pod.
+     */
     @JsonProperty("podTemplate")
     public void setPodTemplate(ACMEChallengeSolverHTTP01IngressPodTemplate podTemplate) {
         this.podTemplate = podTemplate;
     }
 
+    /**
+     * Optional service type for Kubernetes solver service. Supported values are NodePort or ClusterIP. If unset, defaults to NodePort.
+     */
     @JsonProperty("serviceType")
     public String getServiceType() {
         return serviceType;
     }
 
+    /**
+     * Optional service type for Kubernetes solver service. Supported values are NodePort or ClusterIP. If unset, defaults to NodePort.
+     */
     @JsonProperty("serviceType")
     public void setServiceType(String serviceType) {
         this.serviceType = serviceType;

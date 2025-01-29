@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ContainerRuntimeConfiguration defines the tuneables of the container runtime
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -95,51 +98,81 @@ public class ContainerRuntimeConfiguration implements Editable<ContainerRuntimeC
         this.pidsLimit = pidsLimit;
     }
 
+    /**
+     * defaultRuntime is the name of the OCI runtime to be used as the default.
+     */
     @JsonProperty("defaultRuntime")
     public String getDefaultRuntime() {
         return defaultRuntime;
     }
 
+    /**
+     * defaultRuntime is the name of the OCI runtime to be used as the default.
+     */
     @JsonProperty("defaultRuntime")
     public void setDefaultRuntime(String defaultRuntime) {
         this.defaultRuntime = defaultRuntime;
     }
 
+    /**
+     * logLevel specifies the verbosity of the logs based on the level it is set to. Options are fatal, panic, error, warn, info, and debug.
+     */
     @JsonProperty("logLevel")
     public String getLogLevel() {
         return logLevel;
     }
 
+    /**
+     * logLevel specifies the verbosity of the logs based on the level it is set to. Options are fatal, panic, error, warn, info, and debug.
+     */
     @JsonProperty("logLevel")
     public void setLogLevel(String logLevel) {
         this.logLevel = logLevel;
     }
 
+    /**
+     * ContainerRuntimeConfiguration defines the tuneables of the container runtime
+     */
     @JsonProperty("logSizeMax")
     public Quantity getLogSizeMax() {
         return logSizeMax;
     }
 
+    /**
+     * ContainerRuntimeConfiguration defines the tuneables of the container runtime
+     */
     @JsonProperty("logSizeMax")
     public void setLogSizeMax(Quantity logSizeMax) {
         this.logSizeMax = logSizeMax;
     }
 
+    /**
+     * ContainerRuntimeConfiguration defines the tuneables of the container runtime
+     */
     @JsonProperty("overlaySize")
     public Quantity getOverlaySize() {
         return overlaySize;
     }
 
+    /**
+     * ContainerRuntimeConfiguration defines the tuneables of the container runtime
+     */
     @JsonProperty("overlaySize")
     public void setOverlaySize(Quantity overlaySize) {
         this.overlaySize = overlaySize;
     }
 
+    /**
+     * pidsLimit specifies the maximum number of processes allowed in a container
+     */
     @JsonProperty("pidsLimit")
     public Long getPidsLimit() {
         return pidsLimit;
     }
 
+    /**
+     * pidsLimit specifies the maximum number of processes allowed in a container
+     */
     @JsonProperty("pidsLimit")
     public void setPidsLimit(Long pidsLimit) {
         this.pidsLimit = pidsLimit;

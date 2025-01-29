@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * GitInfo is the aggregated git information for a generic webhook post
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -117,102 +120,162 @@ public class GitInfo implements Editable<GitInfoBuilder>, KubernetesResource
         this.uri = uri;
     }
 
+    /**
+     * GitInfo is the aggregated git information for a generic webhook post
+     */
     @JsonProperty("author")
     public SourceControlUser getAuthor() {
         return author;
     }
 
+    /**
+     * GitInfo is the aggregated git information for a generic webhook post
+     */
     @JsonProperty("author")
     public void setAuthor(SourceControlUser author) {
         this.author = author;
     }
 
+    /**
+     * commit is the commit hash identifying a specific commit
+     */
     @JsonProperty("commit")
     public String getCommit() {
         return commit;
     }
 
+    /**
+     * commit is the commit hash identifying a specific commit
+     */
     @JsonProperty("commit")
     public void setCommit(String commit) {
         this.commit = commit;
     }
 
+    /**
+     * GitInfo is the aggregated git information for a generic webhook post
+     */
     @JsonProperty("committer")
     public SourceControlUser getCommitter() {
         return committer;
     }
 
+    /**
+     * GitInfo is the aggregated git information for a generic webhook post
+     */
     @JsonProperty("committer")
     public void setCommitter(SourceControlUser committer) {
         this.committer = committer;
     }
 
+    /**
+     * httpProxy is a proxy used to reach the git repository over http
+     */
     @JsonProperty("httpProxy")
     public String getHttpProxy() {
         return httpProxy;
     }
 
+    /**
+     * httpProxy is a proxy used to reach the git repository over http
+     */
     @JsonProperty("httpProxy")
     public void setHttpProxy(String httpProxy) {
         this.httpProxy = httpProxy;
     }
 
+    /**
+     * httpsProxy is a proxy used to reach the git repository over https
+     */
     @JsonProperty("httpsProxy")
     public String getHttpsProxy() {
         return httpsProxy;
     }
 
+    /**
+     * httpsProxy is a proxy used to reach the git repository over https
+     */
     @JsonProperty("httpsProxy")
     public void setHttpsProxy(String httpsProxy) {
         this.httpsProxy = httpsProxy;
     }
 
+    /**
+     * message is the description of a specific commit
+     */
     @JsonProperty("message")
     public String getMessage() {
         return message;
     }
 
+    /**
+     * message is the description of a specific commit
+     */
     @JsonProperty("message")
     public void setMessage(String message) {
         this.message = message;
     }
 
+    /**
+     * noProxy is the list of domains for which the proxy should not be used
+     */
     @JsonProperty("noProxy")
     public String getNoProxy() {
         return noProxy;
     }
 
+    /**
+     * noProxy is the list of domains for which the proxy should not be used
+     */
     @JsonProperty("noProxy")
     public void setNoProxy(String noProxy) {
         this.noProxy = noProxy;
     }
 
+    /**
+     * ref is the branch/tag/ref to build.
+     */
     @JsonProperty("ref")
     public String getRef() {
         return ref;
     }
 
+    /**
+     * ref is the branch/tag/ref to build.
+     */
     @JsonProperty("ref")
     public void setRef(String ref) {
         this.ref = ref;
     }
 
+    /**
+     * Refs is a list of GitRefs for the provided repo - generally sent when used from a post-receive hook. This field is optional and is used when sending multiple refs
+     */
     @JsonProperty("refs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<GitRefInfo> getRefs() {
         return refs;
     }
 
+    /**
+     * Refs is a list of GitRefs for the provided repo - generally sent when used from a post-receive hook. This field is optional and is used when sending multiple refs
+     */
     @JsonProperty("refs")
     public void setRefs(List<GitRefInfo> refs) {
         this.refs = refs;
     }
 
+    /**
+     * uri points to the source that will be built. The structure of the source will depend on the type of build to run
+     */
     @JsonProperty("uri")
     public String getUri() {
         return uri;
     }
 
+    /**
+     * uri points to the source that will be built. The structure of the source will depend on the type of build to run
+     */
     @JsonProperty("uri")
     public void setUri(String uri) {
         this.uri = uri;

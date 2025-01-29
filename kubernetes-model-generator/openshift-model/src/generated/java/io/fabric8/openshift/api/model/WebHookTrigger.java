@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * WebHookTrigger is a trigger that gets invoked using a webhook type of post
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class WebHookTrigger implements Editable<WebHookTriggerBuilder>, Kubernet
         this.secretReference = secretReference;
     }
 
+    /**
+     * allowEnv determines whether the webhook can set environment variables; can only be set to true for GenericWebHook.
+     */
     @JsonProperty("allowEnv")
     public Boolean getAllowEnv() {
         return allowEnv;
     }
 
+    /**
+     * allowEnv determines whether the webhook can set environment variables; can only be set to true for GenericWebHook.
+     */
     @JsonProperty("allowEnv")
     public void setAllowEnv(Boolean allowEnv) {
         this.allowEnv = allowEnv;
     }
 
+    /**
+     * secret used to validate requests. Deprecated: use SecretReference instead.
+     */
     @JsonProperty("secret")
     public String getSecret() {
         return secret;
     }
 
+    /**
+     * secret used to validate requests. Deprecated: use SecretReference instead.
+     */
     @JsonProperty("secret")
     public void setSecret(String secret) {
         this.secret = secret;
     }
 
+    /**
+     * WebHookTrigger is a trigger that gets invoked using a webhook type of post
+     */
     @JsonProperty("secretReference")
     public SecretLocalReference getSecretReference() {
         return secretReference;
     }
 
+    /**
+     * WebHookTrigger is a trigger that gets invoked using a webhook type of post
+     */
     @JsonProperty("secretReference")
     public void setSecretReference(SecretLocalReference secretReference) {
         this.secretReference = secretReference;

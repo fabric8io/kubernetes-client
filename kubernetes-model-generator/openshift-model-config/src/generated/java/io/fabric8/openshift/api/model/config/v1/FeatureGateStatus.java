@@ -87,23 +87,35 @@ public class FeatureGateStatus implements Editable<FeatureGateStatusBuilder>, Ku
         this.featureGates = featureGates;
     }
 
+    /**
+     * conditions represent the observations of the current state. Known .status.conditions.type are: "DeterminationDegraded"
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
 
+    /**
+     * conditions represent the observations of the current state. Known .status.conditions.type are: "DeterminationDegraded"
+     */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * featureGates contains a list of enabled and disabled featureGates that are keyed by payloadVersion. Operators other than the CVO and cluster-config-operator, must read the .status.featureGates, locate the version they are managing, find the enabled/disabled featuregates and make the operand and operator match. The enabled/disabled values for a particular version may change during the life of the cluster as various .spec.featureSet values are selected. Operators may choose to restart their processes to pick up these changes, but remembering past enable/disable lists is beyond the scope of this API and is the responsibility of individual operators. Only featureGates with .version in the ClusterVersion.status will be present in this list.
+     */
     @JsonProperty("featureGates")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<FeatureGateDetails> getFeatureGates() {
         return featureGates;
     }
 
+    /**
+     * featureGates contains a list of enabled and disabled featureGates that are keyed by payloadVersion. Operators other than the CVO and cluster-config-operator, must read the .status.featureGates, locate the version they are managing, find the enabled/disabled featuregates and make the operand and operator match. The enabled/disabled values for a particular version may change during the life of the cluster as various .spec.featureSet values are selected. Operators may choose to restart their processes to pick up these changes, but remembering past enable/disable lists is beyond the scope of this API and is the responsibility of individual operators. Only featureGates with .version in the ClusterVersion.status will be present in this list.
+     */
     @JsonProperty("featureGates")
     public void setFeatureGates(List<FeatureGateDetails> featureGates) {
         this.featureGates = featureGates;

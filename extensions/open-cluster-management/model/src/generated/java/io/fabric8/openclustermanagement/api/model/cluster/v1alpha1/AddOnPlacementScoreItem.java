@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AddOnPlacementScoreItem represents the score name and value.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class AddOnPlacementScoreItem implements Editable<AddOnPlacementScoreItem
         this.value = value;
     }
 
+    /**
+     * Name is the name of the score
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name is the name of the score
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Value is the value of the score. The score range is from -100 to 100.
+     */
     @JsonProperty("value")
     public Integer getValue() {
         return value;
     }
 
+    /**
+     * Value is the value of the score. The score range is from -100 to 100.
+     */
     @JsonProperty("value")
     public void setValue(Integer value) {
         this.value = value;

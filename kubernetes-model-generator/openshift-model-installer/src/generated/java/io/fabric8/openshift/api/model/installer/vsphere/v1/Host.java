@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Host defines host VMs to generate as part of the installation.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class Host implements Editable<HostBuilder>, KubernetesResource
         this.role = role;
     }
 
+    /**
+     * FailureDomain refers to the name of a FailureDomain as described in https://github.com/openshift/enhancements/blob/master/enhancements/installer/vsphere-ipi-zonal.md
+     */
     @JsonProperty("failureDomain")
     public String getFailureDomain() {
         return failureDomain;
     }
 
+    /**
+     * FailureDomain refers to the name of a FailureDomain as described in https://github.com/openshift/enhancements/blob/master/enhancements/installer/vsphere-ipi-zonal.md
+     */
     @JsonProperty("failureDomain")
     public void setFailureDomain(String failureDomain) {
         this.failureDomain = failureDomain;
     }
 
+    /**
+     * Host defines host VMs to generate as part of the installation.
+     */
     @JsonProperty("networkDevice")
     public NetworkDeviceSpec getNetworkDevice() {
         return networkDevice;
     }
 
+    /**
+     * Host defines host VMs to generate as part of the installation.
+     */
     @JsonProperty("networkDevice")
     public void setNetworkDevice(NetworkDeviceSpec networkDevice) {
         this.networkDevice = networkDevice;
     }
 
+    /**
+     * Role defines the role of the node
+     */
     @JsonProperty("role")
     public String getRole() {
         return role;
     }
 
+    /**
+     * Role defines the role of the node
+     */
     @JsonProperty("role")
     public void setRole(String role) {
         this.role = role;

@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DNSNodePlacement describes the node scheduling configuration for DNS pods.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -87,23 +90,35 @@ public class DNSNodePlacement implements Editable<DNSNodePlacementBuilder>, Kube
         this.tolerations = tolerations;
     }
 
+    /**
+     * nodeSelector is the node selector applied to DNS pods.<br><p> <br><p> If empty, the default is used, which is currently the following:<br><p> <br><p>   kubernetes.io/os: linux<br><p> <br><p> This default is subject to change.<br><p> <br><p> If set, the specified selector is used and replaces the default.
+     */
     @JsonProperty("nodeSelector")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getNodeSelector() {
         return nodeSelector;
     }
 
+    /**
+     * nodeSelector is the node selector applied to DNS pods.<br><p> <br><p> If empty, the default is used, which is currently the following:<br><p> <br><p>   kubernetes.io/os: linux<br><p> <br><p> This default is subject to change.<br><p> <br><p> If set, the specified selector is used and replaces the default.
+     */
     @JsonProperty("nodeSelector")
     public void setNodeSelector(Map<String, String> nodeSelector) {
         this.nodeSelector = nodeSelector;
     }
 
+    /**
+     * tolerations is a list of tolerations applied to DNS pods.<br><p> <br><p> If empty, the DNS operator sets a toleration for the "node-role.kubernetes.io/master" taint.  This default is subject to change.  Specifying tolerations without including a toleration for the "node-role.kubernetes.io/master" taint may be risky as it could lead to an outage if all worker nodes become unavailable.<br><p> <br><p> Note that the daemon controller adds some tolerations as well.  See https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/
+     */
     @JsonProperty("tolerations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Toleration> getTolerations() {
         return tolerations;
     }
 
+    /**
+     * tolerations is a list of tolerations applied to DNS pods.<br><p> <br><p> If empty, the DNS operator sets a toleration for the "node-role.kubernetes.io/master" taint.  This default is subject to change.  Specifying tolerations without including a toleration for the "node-role.kubernetes.io/master" taint may be risky as it could lead to an outage if all worker nodes become unavailable.<br><p> <br><p> Note that the daemon controller adds some tolerations as well.  See https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/
+     */
     @JsonProperty("tolerations")
     public void setTolerations(List<Toleration> tolerations) {
         this.tolerations = tolerations;

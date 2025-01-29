@@ -92,11 +92,17 @@ public class FeatureGateSelection implements Editable<FeatureGateSelectionBuilde
         this.customNoUpgrade = customNoUpgrade;
     }
 
+    /**
+     * featureSet changes the list of features in the cluster.  The default is empty.  Be very careful adjusting this setting. Turning on or off features may cause irreversible changes in your cluster which cannot be undone.
+     */
     @JsonProperty("featureSet")
     public String getFeatureSet() {
         return featureSet;
     }
 
+    /**
+     * featureSet changes the list of features in the cluster.  The default is empty.  Be very careful adjusting this setting. Turning on or off features may cause irreversible changes in your cluster which cannot be undone.
+     */
     @JsonProperty("featureSet")
     public void setFeatureSet(String featureSet) {
         this.featureSet = featureSet;

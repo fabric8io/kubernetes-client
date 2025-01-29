@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ClusterRelocateSpec defines the relocation of clusters from one Hive instance to another.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class ClusterRelocateSpec implements Editable<ClusterRelocateSpecBuilder>
         this.kubeconfigSecretRef = kubeconfigSecretRef;
     }
 
+    /**
+     * ClusterRelocateSpec defines the relocation of clusters from one Hive instance to another.
+     */
     @JsonProperty("clusterDeploymentSelector")
     public LabelSelector getClusterDeploymentSelector() {
         return clusterDeploymentSelector;
     }
 
+    /**
+     * ClusterRelocateSpec defines the relocation of clusters from one Hive instance to another.
+     */
     @JsonProperty("clusterDeploymentSelector")
     public void setClusterDeploymentSelector(LabelSelector clusterDeploymentSelector) {
         this.clusterDeploymentSelector = clusterDeploymentSelector;
     }
 
+    /**
+     * ClusterRelocateSpec defines the relocation of clusters from one Hive instance to another.
+     */
     @JsonProperty("kubeconfigSecretRef")
     public KubeconfigSecretReference getKubeconfigSecretRef() {
         return kubeconfigSecretRef;
     }
 
+    /**
+     * ClusterRelocateSpec defines the relocation of clusters from one Hive instance to another.
+     */
     @JsonProperty("kubeconfigSecretRef")
     public void setKubeconfigSecretRef(KubeconfigSecretReference kubeconfigSecretRef) {
         this.kubeconfigSecretRef = kubeconfigSecretRef;

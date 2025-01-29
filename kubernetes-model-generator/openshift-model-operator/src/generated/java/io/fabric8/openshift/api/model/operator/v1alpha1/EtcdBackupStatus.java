@@ -96,12 +96,18 @@ public class EtcdBackupStatus implements Editable<EtcdBackupStatusBuilder>, Kube
         this.backupJob = backupJob;
     }
 
+    /**
+     * conditions provide details on the status of the etcd backup job.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
 
+    /**
+     * conditions provide details on the status of the etcd backup job.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;

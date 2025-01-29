@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ClusterImageSetReference is a reference to a ClusterImageSet
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class ClusterImageSetReference implements Editable<ClusterImageSetReferen
         this.name = name;
     }
 
+    /**
+     * Name is the name of the ClusterImageSet that this refers to
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name is the name of the ClusterImageSet that this refers to
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

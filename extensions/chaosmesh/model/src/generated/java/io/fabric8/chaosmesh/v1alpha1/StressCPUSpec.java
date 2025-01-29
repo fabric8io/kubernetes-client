@@ -89,32 +89,50 @@ public class StressCPUSpec implements Editable<StressCPUSpecBuilder>, Kubernetes
         this.workers = workers;
     }
 
+    /**
+     * specifies P percent loading per CPU worker. 0 is effectively a sleep (no load) and 100 is full loading.
+     */
     @JsonProperty("load")
     public Integer getLoad() {
         return load;
     }
 
+    /**
+     * specifies P percent loading per CPU worker. 0 is effectively a sleep (no load) and 100 is full loading.
+     */
     @JsonProperty("load")
     public void setLoad(Integer load) {
         this.load = load;
     }
 
+    /**
+     * extend stress-ng options
+     */
     @JsonProperty("options")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getOptions() {
         return options;
     }
 
+    /**
+     * extend stress-ng options
+     */
     @JsonProperty("options")
     public void setOptions(List<String> options) {
         this.options = options;
     }
 
+    /**
+     * specifies N workers to apply the stressor.
+     */
     @JsonProperty("workers")
     public Integer getWorkers() {
         return workers;
     }
 
+    /**
+     * specifies N workers to apply the stressor.
+     */
     @JsonProperty("workers")
     public void setWorkers(Integer workers) {
         this.workers = workers;

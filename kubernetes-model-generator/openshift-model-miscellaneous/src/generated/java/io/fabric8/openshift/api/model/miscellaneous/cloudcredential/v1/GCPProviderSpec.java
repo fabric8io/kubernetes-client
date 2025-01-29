@@ -39,6 +39,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * GCPProviderSpec contains the required information to create a service account with policy bindings in GCP.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -80,16 +83,10 @@ import lombok.experimental.Accessors;
 public class GCPProviderSpec implements Editable<GCPProviderSpecBuilder>, KubernetesResource, Namespaced
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "cloudcredential.openshift.io/v1";
     @JsonProperty("audience")
     private String audience;
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "GCPProviderSpec";
     @JsonProperty("permissions")
@@ -123,7 +120,7 @@ public class GCPProviderSpec implements Editable<GCPProviderSpecBuilder>, Kubern
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -131,25 +128,31 @@ public class GCPProviderSpec implements Editable<GCPProviderSpecBuilder>, Kubern
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
+    /**
+     * Audience that will be used with Workload Identity Federation. It should be formatted as follows: "//iam.googleapis.com/projects/&lt;PROJECT_NUMBER&gt;/locations/global/workloadIdentityPools/&lt;POOL_ID&gt;/providers/&lt;PROVIDER_ID&gt;" For more information see https://cloud.google.com/iam/docs/workload-identity-federation-with-other-providers#create-credential-config
+     */
     @JsonProperty("audience")
     public String getAudience() {
         return audience;
     }
 
+    /**
+     * Audience that will be used with Workload Identity Federation. It should be formatted as follows: "//iam.googleapis.com/projects/&lt;PROJECT_NUMBER&gt;/locations/global/workloadIdentityPools/&lt;POOL_ID&gt;/providers/&lt;PROVIDER_ID&gt;" For more information see https://cloud.google.com/iam/docs/workload-identity-federation-with-other-providers#create-credential-config
+     */
     @JsonProperty("audience")
     public void setAudience(String audience) {
         this.audience = audience;
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -157,50 +160,74 @@ public class GCPProviderSpec implements Editable<GCPProviderSpecBuilder>, Kubern
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * Permissions is the list of GCP permissions required to create a more fine-grained custom role to satisfy the CredentialsRequest. The Permissions field may be provided in addition to PredefinedRoles. When both fields are specified, the service account will have union of permissions defined from both Permissions and PredefinedRoles.
+     */
     @JsonProperty("permissions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getPermissions() {
         return permissions;
     }
 
+    /**
+     * Permissions is the list of GCP permissions required to create a more fine-grained custom role to satisfy the CredentialsRequest. The Permissions field may be provided in addition to PredefinedRoles. When both fields are specified, the service account will have union of permissions defined from both Permissions and PredefinedRoles.
+     */
     @JsonProperty("permissions")
     public void setPermissions(List<String> permissions) {
         this.permissions = permissions;
     }
 
+    /**
+     * PredefinedRoles is the list of GCP pre-defined roles that the CredentialsRequest requires.
+     */
     @JsonProperty("predefinedRoles")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getPredefinedRoles() {
         return predefinedRoles;
     }
 
+    /**
+     * PredefinedRoles is the list of GCP pre-defined roles that the CredentialsRequest requires.
+     */
     @JsonProperty("predefinedRoles")
     public void setPredefinedRoles(List<String> predefinedRoles) {
         this.predefinedRoles = predefinedRoles;
     }
 
+    /**
+     * ServiceAccountEmail that will be impersonated during Workload Identity Federation.
+     */
     @JsonProperty("serviceAccountEmail")
     public String getServiceAccountEmail() {
         return serviceAccountEmail;
     }
 
+    /**
+     * ServiceAccountEmail that will be impersonated during Workload Identity Federation.
+     */
     @JsonProperty("serviceAccountEmail")
     public void setServiceAccountEmail(String serviceAccountEmail) {
         this.serviceAccountEmail = serviceAccountEmail;
     }
 
+    /**
+     * SkipServiceCheck can be set to true to skip the check whether the requested roles or permissions have the necessary services enabled
+     */
     @JsonProperty("skipServiceCheck")
     public Boolean getSkipServiceCheck() {
         return skipServiceCheck;
     }
 
+    /**
+     * SkipServiceCheck can be set to true to skip the check whether the requested roles or permissions have the necessary services enabled
+     */
     @JsonProperty("skipServiceCheck")
     public void setSkipServiceCheck(Boolean skipServiceCheck) {
         this.skipServiceCheck = skipServiceCheck;

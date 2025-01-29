@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * EgressQoSStatus defines the observed state of EgressQoS
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,22 +89,34 @@ public class EgressQoSStatus implements Editable<EgressQoSStatusBuilder>, Kubern
         this.status = status;
     }
 
+    /**
+     * An array of condition objects indicating details about status of EgressQoS object.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
 
+    /**
+     * An array of condition objects indicating details about status of EgressQoS object.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * A concise indication of whether the EgressQoS resource is applied with success.
+     */
     @JsonProperty("status")
     public String getStatus() {
         return status;
     }
 
+    /**
+     * A concise indication of whether the EgressQoS resource is applied with success.
+     */
     @JsonProperty("status")
     public void setStatus(String status) {
         this.status = status;

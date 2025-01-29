@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * KubeletConfigSpec defines the desired state of KubeletConfig
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -96,52 +99,82 @@ public class KubeletConfigSpec implements Editable<KubeletConfigSpecBuilder>, Ku
         this.tlsSecurityProfile = tlsSecurityProfile;
     }
 
+    /**
+     * KubeletConfigSpec defines the desired state of KubeletConfig
+     */
     @JsonProperty("autoSizingReserved")
     public Boolean getAutoSizingReserved() {
         return autoSizingReserved;
     }
 
+    /**
+     * KubeletConfigSpec defines the desired state of KubeletConfig
+     */
     @JsonProperty("autoSizingReserved")
     public void setAutoSizingReserved(Boolean autoSizingReserved) {
         this.autoSizingReserved = autoSizingReserved;
     }
 
+    /**
+     * KubeletConfigSpec defines the desired state of KubeletConfig
+     */
     @JsonProperty("kubeletConfig")
     public Object getKubeletConfig() {
         return kubeletConfig;
     }
 
+    /**
+     * KubeletConfigSpec defines the desired state of KubeletConfig
+     */
     @JsonProperty("kubeletConfig")
     @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
     public void setKubeletConfig(Object kubeletConfig) {
         this.kubeletConfig = kubeletConfig;
     }
 
+    /**
+     * KubeletConfigSpec defines the desired state of KubeletConfig
+     */
     @JsonProperty("logLevel")
     public Integer getLogLevel() {
         return logLevel;
     }
 
+    /**
+     * KubeletConfigSpec defines the desired state of KubeletConfig
+     */
     @JsonProperty("logLevel")
     public void setLogLevel(Integer logLevel) {
         this.logLevel = logLevel;
     }
 
+    /**
+     * KubeletConfigSpec defines the desired state of KubeletConfig
+     */
     @JsonProperty("machineConfigPoolSelector")
     public LabelSelector getMachineConfigPoolSelector() {
         return machineConfigPoolSelector;
     }
 
+    /**
+     * KubeletConfigSpec defines the desired state of KubeletConfig
+     */
     @JsonProperty("machineConfigPoolSelector")
     public void setMachineConfigPoolSelector(LabelSelector machineConfigPoolSelector) {
         this.machineConfigPoolSelector = machineConfigPoolSelector;
     }
 
+    /**
+     * KubeletConfigSpec defines the desired state of KubeletConfig
+     */
     @JsonProperty("tlsSecurityProfile")
     public TLSSecurityProfile getTlsSecurityProfile() {
         return tlsSecurityProfile;
     }
 
+    /**
+     * KubeletConfigSpec defines the desired state of KubeletConfig
+     */
     @JsonProperty("tlsSecurityProfile")
     public void setTlsSecurityProfile(TLSSecurityProfile tlsSecurityProfile) {
         this.tlsSecurityProfile = tlsSecurityProfile;

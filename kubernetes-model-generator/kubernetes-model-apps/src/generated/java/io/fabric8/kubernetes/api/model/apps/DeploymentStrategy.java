@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DeploymentStrategy describes how to replace existing pods with new ones.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class DeploymentStrategy implements Editable<DeploymentStrategyBuilder>, 
         this.type = type;
     }
 
+    /**
+     * DeploymentStrategy describes how to replace existing pods with new ones.
+     */
     @JsonProperty("rollingUpdate")
     public RollingUpdateDeployment getRollingUpdate() {
         return rollingUpdate;
     }
 
+    /**
+     * DeploymentStrategy describes how to replace existing pods with new ones.
+     */
     @JsonProperty("rollingUpdate")
     public void setRollingUpdate(RollingUpdateDeployment rollingUpdate) {
         this.rollingUpdate = rollingUpdate;
     }
 
+    /**
+     * Type of deployment. Can be "Recreate" or "RollingUpdate". Default is RollingUpdate.
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * Type of deployment. Can be "Recreate" or "RollingUpdate". Default is RollingUpdate.
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

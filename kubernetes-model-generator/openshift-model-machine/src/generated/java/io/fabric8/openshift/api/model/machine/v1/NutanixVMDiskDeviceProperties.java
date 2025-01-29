@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NutanixVMDiskDeviceProperties specifies the disk device properties.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class NutanixVMDiskDeviceProperties implements Editable<NutanixVMDiskDevi
         this.deviceType = deviceType;
     }
 
+    /**
+     * adapterType is the adapter type of the disk address. If the deviceType is "Disk", the valid adapterType can be "SCSI", "IDE", "PCI", "SATA" or "SPAPR". If the deviceType is "CDRom", the valid adapterType can be "IDE" or "SATA".
+     */
     @JsonProperty("adapterType")
     public String getAdapterType() {
         return adapterType;
     }
 
+    /**
+     * adapterType is the adapter type of the disk address. If the deviceType is "Disk", the valid adapterType can be "SCSI", "IDE", "PCI", "SATA" or "SPAPR". If the deviceType is "CDRom", the valid adapterType can be "IDE" or "SATA".
+     */
     @JsonProperty("adapterType")
     public void setAdapterType(String adapterType) {
         this.adapterType = adapterType;
     }
 
+    /**
+     * deviceIndex is the index of the disk address. The valid values are non-negative integers, with the default value 0. For a Machine VM, the deviceIndex for the disks with the same deviceType.adapterType combination should start from 0 and increase consecutively afterwards. Note that for each Machine VM, the Disk.SCSI.0 and CDRom.IDE.0 are reserved to be used by the VM's system. So for dataDisks of Disk.SCSI and CDRom.IDE, the deviceIndex should start from 1.
+     */
     @JsonProperty("deviceIndex")
     public Integer getDeviceIndex() {
         return deviceIndex;
     }
 
+    /**
+     * deviceIndex is the index of the disk address. The valid values are non-negative integers, with the default value 0. For a Machine VM, the deviceIndex for the disks with the same deviceType.adapterType combination should start from 0 and increase consecutively afterwards. Note that for each Machine VM, the Disk.SCSI.0 and CDRom.IDE.0 are reserved to be used by the VM's system. So for dataDisks of Disk.SCSI and CDRom.IDE, the deviceIndex should start from 1.
+     */
     @JsonProperty("deviceIndex")
     public void setDeviceIndex(Integer deviceIndex) {
         this.deviceIndex = deviceIndex;
     }
 
+    /**
+     * deviceType specifies the disk device type. The valid values are "Disk" and "CDRom", and the default is "Disk".
+     */
     @JsonProperty("deviceType")
     public String getDeviceType() {
         return deviceType;
     }
 
+    /**
+     * deviceType specifies the disk device type. The valid values are "Disk" and "CDRom", and the default is "Disk".
+     */
     @JsonProperty("deviceType")
     public void setDeviceType(String deviceType) {
         this.deviceType = deviceType;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ImageRegistryConfigStorageSwift holds the information to configure the registry to use the OpenStack Swift service for backend storage https://docs.docker.com/registry/storage-drivers/swift/
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -106,81 +109,129 @@ public class ImageRegistryConfigStorageSwift implements Editable<ImageRegistryCo
         this.tenantID = tenantID;
     }
 
+    /**
+     * authURL defines the URL for obtaining an authentication token.
+     */
     @JsonProperty("authURL")
     public String getAuthURL() {
         return authURL;
     }
 
+    /**
+     * authURL defines the URL for obtaining an authentication token.
+     */
     @JsonProperty("authURL")
     public void setAuthURL(String authURL) {
         this.authURL = authURL;
     }
 
+    /**
+     * authVersion specifies the OpenStack Auth's version.
+     */
     @JsonProperty("authVersion")
     public String getAuthVersion() {
         return authVersion;
     }
 
+    /**
+     * authVersion specifies the OpenStack Auth's version.
+     */
     @JsonProperty("authVersion")
     public void setAuthVersion(String authVersion) {
         this.authVersion = authVersion;
     }
 
+    /**
+     * container defines the name of Swift container where to store the registry's data.
+     */
     @JsonProperty("container")
     public String getContainer() {
         return container;
     }
 
+    /**
+     * container defines the name of Swift container where to store the registry's data.
+     */
     @JsonProperty("container")
     public void setContainer(String container) {
         this.container = container;
     }
 
+    /**
+     * domain specifies Openstack's domain name for Identity v3 API.
+     */
     @JsonProperty("domain")
     public String getDomain() {
         return domain;
     }
 
+    /**
+     * domain specifies Openstack's domain name for Identity v3 API.
+     */
     @JsonProperty("domain")
     public void setDomain(String domain) {
         this.domain = domain;
     }
 
+    /**
+     * domainID specifies Openstack's domain id for Identity v3 API.
+     */
     @JsonProperty("domainID")
     public String getDomainID() {
         return domainID;
     }
 
+    /**
+     * domainID specifies Openstack's domain id for Identity v3 API.
+     */
     @JsonProperty("domainID")
     public void setDomainID(String domainID) {
         this.domainID = domainID;
     }
 
+    /**
+     * regionName defines Openstack's region in which container exists.
+     */
     @JsonProperty("regionName")
     public String getRegionName() {
         return regionName;
     }
 
+    /**
+     * regionName defines Openstack's region in which container exists.
+     */
     @JsonProperty("regionName")
     public void setRegionName(String regionName) {
         this.regionName = regionName;
     }
 
+    /**
+     * tenant defines Openstack tenant name to be used by registry.
+     */
     @JsonProperty("tenant")
     public String getTenant() {
         return tenant;
     }
 
+    /**
+     * tenant defines Openstack tenant name to be used by registry.
+     */
     @JsonProperty("tenant")
     public void setTenant(String tenant) {
         this.tenant = tenant;
     }
 
+    /**
+     * tenant defines Openstack tenant id to be used by registry.
+     */
     @JsonProperty("tenantID")
     public String getTenantID() {
         return tenantID;
     }
 
+    /**
+     * tenant defines Openstack tenant id to be used by registry.
+     */
     @JsonProperty("tenantID")
     public void setTenantID(String tenantID) {
         this.tenantID = tenantID;

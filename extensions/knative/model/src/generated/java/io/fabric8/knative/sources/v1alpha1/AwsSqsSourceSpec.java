@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AwsSqsSourceSpec defines the desired state of the source.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -96,52 +99,82 @@ public class AwsSqsSourceSpec implements Editable<AwsSqsSourceSpecBuilder>, Kube
         this.sink = sink;
     }
 
+    /**
+     * Annotations to add to the pod, mostly used for Kube2IAM role
+     */
     @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAnnotations() {
         return annotations;
     }
 
+    /**
+     * Annotations to add to the pod, mostly used for Kube2IAM role
+     */
     @JsonProperty("annotations")
     public void setAnnotations(Map<String, String> annotations) {
         this.annotations = annotations;
     }
 
+    /**
+     * AwsSqsSourceSpec defines the desired state of the source.
+     */
     @JsonProperty("awsCredsSecret")
     public SecretKeySelector getAwsCredsSecret() {
         return awsCredsSecret;
     }
 
+    /**
+     * AwsSqsSourceSpec defines the desired state of the source.
+     */
     @JsonProperty("awsCredsSecret")
     public void setAwsCredsSecret(SecretKeySelector awsCredsSecret) {
         this.awsCredsSecret = awsCredsSecret;
     }
 
+    /**
+     * QueueURL of the SQS queue that we will poll from.
+     */
     @JsonProperty("queueUrl")
     public String getQueueUrl() {
         return queueUrl;
     }
 
+    /**
+     * QueueURL of the SQS queue that we will poll from.
+     */
     @JsonProperty("queueUrl")
     public void setQueueUrl(String queueUrl) {
         this.queueUrl = queueUrl;
     }
 
+    /**
+     * ServiceAccoutName is the name of the ServiceAccount that will be used to run the Receive Adapter Deployment.
+     */
     @JsonProperty("serviceAccountName")
     public String getServiceAccountName() {
         return serviceAccountName;
     }
 
+    /**
+     * ServiceAccoutName is the name of the ServiceAccount that will be used to run the Receive Adapter Deployment.
+     */
     @JsonProperty("serviceAccountName")
     public void setServiceAccountName(String serviceAccountName) {
         this.serviceAccountName = serviceAccountName;
     }
 
+    /**
+     * AwsSqsSourceSpec defines the desired state of the source.
+     */
     @JsonProperty("sink")
     public ObjectReference getSink() {
         return sink;
     }
 
+    /**
+     * AwsSqsSourceSpec defines the desired state of the source.
+     */
     @JsonProperty("sink")
     public void setSink(ObjectReference sink) {
         this.sink = sink;

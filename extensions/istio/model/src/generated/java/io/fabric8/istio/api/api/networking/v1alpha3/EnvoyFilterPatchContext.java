@@ -4,6 +4,9 @@ package io.fabric8.istio.api.api.networking.v1alpha3;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
+/**
+ * PatchContext selects a class of configurations based on the traffic flow direction and workload type.
+ */
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public enum EnvoyFilterPatchContext 
 {

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * A Tuned profile.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class TunedProfile implements Editable<TunedProfileBuilder>, KubernetesRe
         this.name = name;
     }
 
+    /**
+     * Specification of the Tuned profile to be consumed by the Tuned daemon.
+     */
     @JsonProperty("data")
     public String getData() {
         return data;
     }
 
+    /**
+     * Specification of the Tuned profile to be consumed by the Tuned daemon.
+     */
     @JsonProperty("data")
     public void setData(String data) {
         this.data = data;
     }
 
+    /**
+     * Name of the Tuned profile to be used in the recommend section.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name of the Tuned profile to be used in the recommend section.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ClusterManagerDeployOption describes the deployment options for cluster-manager
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class ClusterManagerDeployOption implements Editable<ClusterManagerDeploy
         this.mode = mode;
     }
 
+    /**
+     * ClusterManagerDeployOption describes the deployment options for cluster-manager
+     */
     @JsonProperty("hosted")
     public HostedClusterManagerConfiguration getHosted() {
         return hosted;
     }
 
+    /**
+     * ClusterManagerDeployOption describes the deployment options for cluster-manager
+     */
     @JsonProperty("hosted")
     public void setHosted(HostedClusterManagerConfiguration hosted) {
         this.hosted = hosted;
     }
 
+    /**
+     * Mode can be Default or Hosted. In Default mode, the Hub is installed as a whole and all parts of Hub are deployed in the same cluster. In Hosted mode, only crd and configurations are installed on one cluster(defined as hub-cluster). Controllers run in another cluster (defined as management-cluster) and connect to the hub with the kubeconfig in secret of "external-hub-kubeconfig"(a kubeconfig of hub-cluster with cluster-admin permission). Note: Do not modify the Mode field once it's applied.
+     */
     @JsonProperty("mode")
     public String getMode() {
         return mode;
     }
 
+    /**
+     * Mode can be Default or Hosted. In Default mode, the Hub is installed as a whole and all parts of Hub are deployed in the same cluster. In Hosted mode, only crd and configurations are installed on one cluster(defined as hub-cluster). Controllers run in another cluster (defined as management-cluster) and connect to the hub with the kubeconfig in secret of "external-hub-kubeconfig"(a kubeconfig of hub-cluster with cluster-admin permission). Note: Do not modify the Mode field once it's applied.
+     */
     @JsonProperty("mode")
     public void setMode(String mode) {
         this.mode = mode;

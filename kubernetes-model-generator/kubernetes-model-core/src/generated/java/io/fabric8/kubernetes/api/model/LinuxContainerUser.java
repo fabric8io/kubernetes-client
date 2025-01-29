@@ -19,6 +19,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * LinuxContainerUser represents user identity information in Linux containers
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -60,32 +63,50 @@ public class LinuxContainerUser implements Editable<LinuxContainerUserBuilder>, 
         this.uid = uid;
     }
 
+    /**
+     * GID is the primary gid initially attached to the first process in the container
+     */
     @JsonProperty("gid")
     public Long getGid() {
         return gid;
     }
 
+    /**
+     * GID is the primary gid initially attached to the first process in the container
+     */
     @JsonProperty("gid")
     public void setGid(Long gid) {
         this.gid = gid;
     }
 
+    /**
+     * SupplementalGroups are the supplemental groups initially attached to the first process in the container
+     */
     @JsonProperty("supplementalGroups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Long> getSupplementalGroups() {
         return supplementalGroups;
     }
 
+    /**
+     * SupplementalGroups are the supplemental groups initially attached to the first process in the container
+     */
     @JsonProperty("supplementalGroups")
     public void setSupplementalGroups(List<Long> supplementalGroups) {
         this.supplementalGroups = supplementalGroups;
     }
 
+    /**
+     * UID is the primary uid initially attached to the first process in the container
+     */
     @JsonProperty("uid")
     public Long getUid() {
         return uid;
     }
 
+    /**
+     * UID is the primary uid initially attached to the first process in the container
+     */
     @JsonProperty("uid")
     public void setUid(Long uid) {
         this.uid = uid;

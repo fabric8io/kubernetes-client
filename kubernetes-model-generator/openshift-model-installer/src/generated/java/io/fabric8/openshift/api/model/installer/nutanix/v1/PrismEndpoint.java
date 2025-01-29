@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PrismEndpoint holds the endpoint address and port to access the Nutanix Prism Central or Element (cluster)
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class PrismEndpoint implements Editable<PrismEndpointBuilder>, Kubernetes
         this.port = port;
     }
 
+    /**
+     * address is the endpoint address (DNS name or IP address) of the Nutanix Prism Central or Element (cluster)
+     */
     @JsonProperty("address")
     public String getAddress() {
         return address;
     }
 
+    /**
+     * address is the endpoint address (DNS name or IP address) of the Nutanix Prism Central or Element (cluster)
+     */
     @JsonProperty("address")
     public void setAddress(String address) {
         this.address = address;
     }
 
+    /**
+     * port is the port number to access the Nutanix Prism Central or Element (cluster)
+     */
     @JsonProperty("port")
     public Integer getPort() {
         return port;
     }
 
+    /**
+     * port is the port number to access the Nutanix Prism Central or Element (cluster)
+     */
     @JsonProperty("port")
     public void setPort(Integer port) {
         this.port = port;

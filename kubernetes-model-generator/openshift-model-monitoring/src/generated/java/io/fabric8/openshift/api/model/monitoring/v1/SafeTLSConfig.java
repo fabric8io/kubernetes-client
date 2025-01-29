@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SafeTLSConfig specifies safe TLS configuration parameters.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -103,71 +106,113 @@ public class SafeTLSConfig implements Editable<SafeTLSConfigBuilder>, Kubernetes
         this.serverName = serverName;
     }
 
+    /**
+     * SafeTLSConfig specifies safe TLS configuration parameters.
+     */
     @JsonProperty("ca")
     public SecretOrConfigMap getCa() {
         return ca;
     }
 
+    /**
+     * SafeTLSConfig specifies safe TLS configuration parameters.
+     */
     @JsonProperty("ca")
     public void setCa(SecretOrConfigMap ca) {
         this.ca = ca;
     }
 
+    /**
+     * SafeTLSConfig specifies safe TLS configuration parameters.
+     */
     @JsonProperty("cert")
     public SecretOrConfigMap getCert() {
         return cert;
     }
 
+    /**
+     * SafeTLSConfig specifies safe TLS configuration parameters.
+     */
     @JsonProperty("cert")
     public void setCert(SecretOrConfigMap cert) {
         this.cert = cert;
     }
 
+    /**
+     * Disable target certificate validation.
+     */
     @JsonProperty("insecureSkipVerify")
     public Boolean getInsecureSkipVerify() {
         return insecureSkipVerify;
     }
 
+    /**
+     * Disable target certificate validation.
+     */
     @JsonProperty("insecureSkipVerify")
     public void setInsecureSkipVerify(Boolean insecureSkipVerify) {
         this.insecureSkipVerify = insecureSkipVerify;
     }
 
+    /**
+     * SafeTLSConfig specifies safe TLS configuration parameters.
+     */
     @JsonProperty("keySecret")
     public SecretKeySelector getKeySecret() {
         return keySecret;
     }
 
+    /**
+     * SafeTLSConfig specifies safe TLS configuration parameters.
+     */
     @JsonProperty("keySecret")
     public void setKeySecret(SecretKeySelector keySecret) {
         this.keySecret = keySecret;
     }
 
+    /**
+     * Maximum acceptable TLS version.<br><p> <br><p> It requires Prometheus &gt;= v2.41.0.
+     */
     @JsonProperty("maxVersion")
     public String getMaxVersion() {
         return maxVersion;
     }
 
+    /**
+     * Maximum acceptable TLS version.<br><p> <br><p> It requires Prometheus &gt;= v2.41.0.
+     */
     @JsonProperty("maxVersion")
     public void setMaxVersion(String maxVersion) {
         this.maxVersion = maxVersion;
     }
 
+    /**
+     * Minimum acceptable TLS version.<br><p> <br><p> It requires Prometheus &gt;= v2.35.0.
+     */
     @JsonProperty("minVersion")
     public String getMinVersion() {
         return minVersion;
     }
 
+    /**
+     * Minimum acceptable TLS version.<br><p> <br><p> It requires Prometheus &gt;= v2.35.0.
+     */
     @JsonProperty("minVersion")
     public void setMinVersion(String minVersion) {
         this.minVersion = minVersion;
     }
 
+    /**
+     * Used to verify the hostname for the targets.
+     */
     @JsonProperty("serverName")
     public String getServerName() {
         return serverName;
     }
 
+    /**
+     * Used to verify the hostname for the targets.
+     */
     @JsonProperty("serverName")
     public void setServerName(String serverName) {
         this.serverName = serverName;

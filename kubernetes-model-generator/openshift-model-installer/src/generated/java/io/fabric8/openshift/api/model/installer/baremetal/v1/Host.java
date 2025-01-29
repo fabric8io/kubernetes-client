@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Host stores all the configuration data for a baremetal host.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -107,81 +110,129 @@ public class Host implements Editable<HostBuilder>, KubernetesResource
         this.rootDeviceHints = rootDeviceHints;
     }
 
+    /**
+     * Host stores all the configuration data for a baremetal host.
+     */
     @JsonProperty("bmc")
     public BMC getBmc() {
         return bmc;
     }
 
+    /**
+     * Host stores all the configuration data for a baremetal host.
+     */
     @JsonProperty("bmc")
     public void setBmc(BMC bmc) {
         this.bmc = bmc;
     }
 
+    /**
+     * Host stores all the configuration data for a baremetal host.
+     */
     @JsonProperty("bootMACAddress")
     public String getBootMACAddress() {
         return bootMACAddress;
     }
 
+    /**
+     * Host stores all the configuration data for a baremetal host.
+     */
     @JsonProperty("bootMACAddress")
     public void setBootMACAddress(String bootMACAddress) {
         this.bootMACAddress = bootMACAddress;
     }
 
+    /**
+     * Host stores all the configuration data for a baremetal host.
+     */
     @JsonProperty("bootMode")
     public String getBootMode() {
         return bootMode;
     }
 
+    /**
+     * Host stores all the configuration data for a baremetal host.
+     */
     @JsonProperty("bootMode")
     public void setBootMode(String bootMode) {
         this.bootMode = bootMode;
     }
 
+    /**
+     * Host stores all the configuration data for a baremetal host.
+     */
     @JsonProperty("hardwareProfile")
     public String getHardwareProfile() {
         return hardwareProfile;
     }
 
+    /**
+     * Host stores all the configuration data for a baremetal host.
+     */
     @JsonProperty("hardwareProfile")
     public void setHardwareProfile(String hardwareProfile) {
         this.hardwareProfile = hardwareProfile;
     }
 
+    /**
+     * Host stores all the configuration data for a baremetal host.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Host stores all the configuration data for a baremetal host.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Host stores all the configuration data for a baremetal host.
+     */
     @JsonProperty("networkConfig")
     public JsonNode getNetworkConfig() {
         return networkConfig;
     }
 
+    /**
+     * Host stores all the configuration data for a baremetal host.
+     */
     @JsonProperty("networkConfig")
     public void setNetworkConfig(JsonNode networkConfig) {
         this.networkConfig = networkConfig;
     }
 
+    /**
+     * Host stores all the configuration data for a baremetal host.
+     */
     @JsonProperty("role")
     public String getRole() {
         return role;
     }
 
+    /**
+     * Host stores all the configuration data for a baremetal host.
+     */
     @JsonProperty("role")
     public void setRole(String role) {
         this.role = role;
     }
 
+    /**
+     * Host stores all the configuration data for a baremetal host.
+     */
     @JsonProperty("rootDeviceHints")
     public RootDeviceHints getRootDeviceHints() {
         return rootDeviceHints;
     }
 
+    /**
+     * Host stores all the configuration data for a baremetal host.
+     */
     @JsonProperty("rootDeviceHints")
     public void setRootDeviceHints(RootDeviceHints rootDeviceHints) {
         this.rootDeviceHints = rootDeviceHints;

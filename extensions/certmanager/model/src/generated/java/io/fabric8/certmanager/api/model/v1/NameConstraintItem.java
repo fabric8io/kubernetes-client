@@ -96,45 +96,69 @@ public class NameConstraintItem implements Editable<NameConstraintItemBuilder>, 
         this.uriDomains = uriDomains;
     }
 
+    /**
+     * DNSDomains is a list of DNS domains that are permitted or excluded.
+     */
     @JsonProperty("dnsDomains")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getDnsDomains() {
         return dnsDomains;
     }
 
+    /**
+     * DNSDomains is a list of DNS domains that are permitted or excluded.
+     */
     @JsonProperty("dnsDomains")
     public void setDnsDomains(List<String> dnsDomains) {
         this.dnsDomains = dnsDomains;
     }
 
+    /**
+     * EmailAddresses is a list of Email Addresses that are permitted or excluded.
+     */
     @JsonProperty("emailAddresses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getEmailAddresses() {
         return emailAddresses;
     }
 
+    /**
+     * EmailAddresses is a list of Email Addresses that are permitted or excluded.
+     */
     @JsonProperty("emailAddresses")
     public void setEmailAddresses(List<String> emailAddresses) {
         this.emailAddresses = emailAddresses;
     }
 
+    /**
+     * IPRanges is a list of IP Ranges that are permitted or excluded. This should be a valid CIDR notation.
+     */
     @JsonProperty("ipRanges")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getIpRanges() {
         return ipRanges;
     }
 
+    /**
+     * IPRanges is a list of IP Ranges that are permitted or excluded. This should be a valid CIDR notation.
+     */
     @JsonProperty("ipRanges")
     public void setIpRanges(List<String> ipRanges) {
         this.ipRanges = ipRanges;
     }
 
+    /**
+     * URIDomains is a list of URI domains that are permitted or excluded.
+     */
     @JsonProperty("uriDomains")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getUriDomains() {
         return uriDomains;
     }
 
+    /**
+     * URIDomains is a list of URI domains that are permitted or excluded.
+     */
     @JsonProperty("uriDomains")
     public void setUriDomains(List<String> uriDomains) {
         this.uriDomains = uriDomains;

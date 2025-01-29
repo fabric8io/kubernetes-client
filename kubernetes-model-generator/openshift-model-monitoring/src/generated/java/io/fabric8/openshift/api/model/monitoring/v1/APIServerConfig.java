@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * APIServerConfig defines how the Prometheus server connects to the Kubernetes API server.<br><p> <br><p> More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#kubernetes_sd_config
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -98,61 +101,97 @@ public class APIServerConfig implements Editable<APIServerConfigBuilder>, Kubern
         this.tlsConfig = tlsConfig;
     }
 
+    /**
+     * APIServerConfig defines how the Prometheus server connects to the Kubernetes API server.<br><p> <br><p> More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#kubernetes_sd_config
+     */
     @JsonProperty("authorization")
     public Authorization getAuthorization() {
         return authorization;
     }
 
+    /**
+     * APIServerConfig defines how the Prometheus server connects to the Kubernetes API server.<br><p> <br><p> More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#kubernetes_sd_config
+     */
     @JsonProperty("authorization")
     public void setAuthorization(Authorization authorization) {
         this.authorization = authorization;
     }
 
+    /**
+     * APIServerConfig defines how the Prometheus server connects to the Kubernetes API server.<br><p> <br><p> More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#kubernetes_sd_config
+     */
     @JsonProperty("basicAuth")
     public BasicAuth getBasicAuth() {
         return basicAuth;
     }
 
+    /**
+     * APIServerConfig defines how the Prometheus server connects to the Kubernetes API server.<br><p> <br><p> More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#kubernetes_sd_config
+     */
     @JsonProperty("basicAuth")
     public void setBasicAuth(BasicAuth basicAuth) {
         this.basicAuth = basicAuth;
     }
 
+    /**
+     * &#42;Warning: this field shouldn't be used because the token value appears in clear-text. Prefer using `authorization`.&#42;<br><p> <br><p> Deprecated: this will be removed in a future release.
+     */
     @JsonProperty("bearerToken")
     public String getBearerToken() {
         return bearerToken;
     }
 
+    /**
+     * &#42;Warning: this field shouldn't be used because the token value appears in clear-text. Prefer using `authorization`.&#42;<br><p> <br><p> Deprecated: this will be removed in a future release.
+     */
     @JsonProperty("bearerToken")
     public void setBearerToken(String bearerToken) {
         this.bearerToken = bearerToken;
     }
 
+    /**
+     * File to read bearer token for accessing apiserver.<br><p> <br><p> Cannot be set at the same time as `basicAuth`, `authorization`, or `bearerToken`.<br><p> <br><p> Deprecated: this will be removed in a future release. Prefer using `authorization`.
+     */
     @JsonProperty("bearerTokenFile")
     public String getBearerTokenFile() {
         return bearerTokenFile;
     }
 
+    /**
+     * File to read bearer token for accessing apiserver.<br><p> <br><p> Cannot be set at the same time as `basicAuth`, `authorization`, or `bearerToken`.<br><p> <br><p> Deprecated: this will be removed in a future release. Prefer using `authorization`.
+     */
     @JsonProperty("bearerTokenFile")
     public void setBearerTokenFile(String bearerTokenFile) {
         this.bearerTokenFile = bearerTokenFile;
     }
 
+    /**
+     * Kubernetes API address consisting of a hostname or IP address followed by an optional port number.
+     */
     @JsonProperty("host")
     public String getHost() {
         return host;
     }
 
+    /**
+     * Kubernetes API address consisting of a hostname or IP address followed by an optional port number.
+     */
     @JsonProperty("host")
     public void setHost(String host) {
         this.host = host;
     }
 
+    /**
+     * APIServerConfig defines how the Prometheus server connects to the Kubernetes API server.<br><p> <br><p> More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#kubernetes_sd_config
+     */
     @JsonProperty("tlsConfig")
     public TLSConfig getTlsConfig() {
         return tlsConfig;
     }
 
+    /**
+     * APIServerConfig defines how the Prometheus server connects to the Kubernetes API server.<br><p> <br><p> More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#kubernetes_sd_config
+     */
     @JsonProperty("tlsConfig")
     public void setTlsConfig(TLSConfig tlsConfig) {
         this.tlsConfig = tlsConfig;

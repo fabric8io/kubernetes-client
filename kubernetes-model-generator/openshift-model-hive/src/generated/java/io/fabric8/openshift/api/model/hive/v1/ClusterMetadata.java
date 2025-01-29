@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ClusterMetadata contains metadata information about the installed cluster.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,51 +97,81 @@ public class ClusterMetadata implements Editable<ClusterMetadataBuilder>, Kubern
         this.platform = platform;
     }
 
+    /**
+     * ClusterMetadata contains metadata information about the installed cluster.
+     */
     @JsonProperty("adminKubeconfigSecretRef")
     public LocalObjectReference getAdminKubeconfigSecretRef() {
         return adminKubeconfigSecretRef;
     }
 
+    /**
+     * ClusterMetadata contains metadata information about the installed cluster.
+     */
     @JsonProperty("adminKubeconfigSecretRef")
     public void setAdminKubeconfigSecretRef(LocalObjectReference adminKubeconfigSecretRef) {
         this.adminKubeconfigSecretRef = adminKubeconfigSecretRef;
     }
 
+    /**
+     * ClusterMetadata contains metadata information about the installed cluster.
+     */
     @JsonProperty("adminPasswordSecretRef")
     public LocalObjectReference getAdminPasswordSecretRef() {
         return adminPasswordSecretRef;
     }
 
+    /**
+     * ClusterMetadata contains metadata information about the installed cluster.
+     */
     @JsonProperty("adminPasswordSecretRef")
     public void setAdminPasswordSecretRef(LocalObjectReference adminPasswordSecretRef) {
         this.adminPasswordSecretRef = adminPasswordSecretRef;
     }
 
+    /**
+     * ClusterID is a globally unique identifier for this cluster generated during installation. Used for reporting metrics among other places.
+     */
     @JsonProperty("clusterID")
     public String getClusterID() {
         return clusterID;
     }
 
+    /**
+     * ClusterID is a globally unique identifier for this cluster generated during installation. Used for reporting metrics among other places.
+     */
     @JsonProperty("clusterID")
     public void setClusterID(String clusterID) {
         this.clusterID = clusterID;
     }
 
+    /**
+     * InfraID is an identifier for this cluster generated during installation and used for tagging/naming resources in cloud providers.
+     */
     @JsonProperty("infraID")
     public String getInfraID() {
         return infraID;
     }
 
+    /**
+     * InfraID is an identifier for this cluster generated during installation and used for tagging/naming resources in cloud providers.
+     */
     @JsonProperty("infraID")
     public void setInfraID(String infraID) {
         this.infraID = infraID;
     }
 
+    /**
+     * ClusterMetadata contains metadata information about the installed cluster.
+     */
     @JsonProperty("platform")
     public ClusterPlatformMetadata getPlatform() {
         return platform;
     }
 
+    /**
+     * ClusterMetadata contains metadata information about the installed cluster.
+     */
     @JsonProperty("platform")
     public void setPlatform(ClusterPlatformMetadata platform) {
         this.platform = platform;

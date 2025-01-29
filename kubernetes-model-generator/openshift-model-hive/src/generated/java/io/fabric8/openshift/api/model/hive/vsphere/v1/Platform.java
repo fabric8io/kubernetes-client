@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Platform stores any global configuration used for vSphere platforms.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -106,81 +109,129 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
         this.vCenter = vCenter;
     }
 
+    /**
+     * Platform stores any global configuration used for vSphere platforms.
+     */
     @JsonProperty("certificatesSecretRef")
     public LocalObjectReference getCertificatesSecretRef() {
         return certificatesSecretRef;
     }
 
+    /**
+     * Platform stores any global configuration used for vSphere platforms.
+     */
     @JsonProperty("certificatesSecretRef")
     public void setCertificatesSecretRef(LocalObjectReference certificatesSecretRef) {
         this.certificatesSecretRef = certificatesSecretRef;
     }
 
+    /**
+     * Cluster is the name of the cluster virtual machines will be cloned into.
+     */
     @JsonProperty("cluster")
     public String getCluster() {
         return cluster;
     }
 
+    /**
+     * Cluster is the name of the cluster virtual machines will be cloned into.
+     */
     @JsonProperty("cluster")
     public void setCluster(String cluster) {
         this.cluster = cluster;
     }
 
+    /**
+     * Platform stores any global configuration used for vSphere platforms.
+     */
     @JsonProperty("credentialsSecretRef")
     public LocalObjectReference getCredentialsSecretRef() {
         return credentialsSecretRef;
     }
 
+    /**
+     * Platform stores any global configuration used for vSphere platforms.
+     */
     @JsonProperty("credentialsSecretRef")
     public void setCredentialsSecretRef(LocalObjectReference credentialsSecretRef) {
         this.credentialsSecretRef = credentialsSecretRef;
     }
 
+    /**
+     * Datacenter is the name of the datacenter to use in the vCenter.
+     */
     @JsonProperty("datacenter")
     public String getDatacenter() {
         return datacenter;
     }
 
+    /**
+     * Datacenter is the name of the datacenter to use in the vCenter.
+     */
     @JsonProperty("datacenter")
     public void setDatacenter(String datacenter) {
         this.datacenter = datacenter;
     }
 
+    /**
+     * DefaultDatastore is the default datastore to use for provisioning volumes.
+     */
     @JsonProperty("defaultDatastore")
     public String getDefaultDatastore() {
         return defaultDatastore;
     }
 
+    /**
+     * DefaultDatastore is the default datastore to use for provisioning volumes.
+     */
     @JsonProperty("defaultDatastore")
     public void setDefaultDatastore(String defaultDatastore) {
         this.defaultDatastore = defaultDatastore;
     }
 
+    /**
+     * Folder is the name of the folder that will be used and/or created for virtual machines.
+     */
     @JsonProperty("folder")
     public String getFolder() {
         return folder;
     }
 
+    /**
+     * Folder is the name of the folder that will be used and/or created for virtual machines.
+     */
     @JsonProperty("folder")
     public void setFolder(String folder) {
         this.folder = folder;
     }
 
+    /**
+     * Network specifies the name of the network to be used by the cluster.
+     */
     @JsonProperty("network")
     public String getNetwork() {
         return network;
     }
 
+    /**
+     * Network specifies the name of the network to be used by the cluster.
+     */
     @JsonProperty("network")
     public void setNetwork(String network) {
         this.network = network;
     }
 
+    /**
+     * VCenter is the domain name or IP address of the vCenter.
+     */
     @JsonProperty("vCenter")
     public String getVCenter() {
         return vCenter;
     }
 
+    /**
+     * VCenter is the domain name or IP address of the vCenter.
+     */
     @JsonProperty("vCenter")
     public void setVCenter(String vCenter) {
         this.vCenter = vCenter;

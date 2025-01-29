@@ -49,18 +49,12 @@ import lombok.experimental.Accessors;
 public class Status implements Editable<StatusBuilder>, KubernetesResource
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "v1";
     @JsonProperty("code")
     private Integer code;
     @JsonProperty("details")
     private StatusDetails details;
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "Status";
     @JsonProperty("message")
@@ -92,17 +86,11 @@ public class Status implements Editable<StatusBuilder>, KubernetesResource
         this.status = status;
     }
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
         return apiVersion;
     }
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
@@ -128,17 +116,11 @@ public class Status implements Editable<StatusBuilder>, KubernetesResource
         this.details = details;
     }
 
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     public String getKind() {
         return kind;
     }
 
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;

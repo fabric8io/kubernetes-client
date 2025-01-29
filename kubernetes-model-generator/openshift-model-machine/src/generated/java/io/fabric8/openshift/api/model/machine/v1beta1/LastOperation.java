@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * LastOperation represents the detail of the last performed operation on the MachineObject.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class LastOperation implements Editable<LastOperationBuilder>, Kubernetes
         this.type = type;
     }
 
+    /**
+     * Description is the human-readable description of the last operation.
+     */
     @JsonProperty("description")
     public String getDescription() {
         return description;
     }
 
+    /**
+     * Description is the human-readable description of the last operation.
+     */
     @JsonProperty("description")
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * LastOperation represents the detail of the last performed operation on the MachineObject.
+     */
     @JsonProperty("lastUpdated")
     public String getLastUpdated() {
         return lastUpdated;
     }
 
+    /**
+     * LastOperation represents the detail of the last performed operation on the MachineObject.
+     */
     @JsonProperty("lastUpdated")
     public void setLastUpdated(String lastUpdated) {
         this.lastUpdated = lastUpdated;
     }
 
+    /**
+     * State is the current status of the last performed operation. E.g. Processing, Failed, Successful etc
+     */
     @JsonProperty("state")
     public String getState() {
         return state;
     }
 
+    /**
+     * State is the current status of the last performed operation. E.g. Processing, Failed, Successful etc
+     */
     @JsonProperty("state")
     public void setState(String state) {
         this.state = state;
     }
 
+    /**
+     * Type is the type of operation which was last performed. E.g. Create, Delete, Update etc
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * Type is the type of operation which was last performed. E.g. Create, Delete, Update etc
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

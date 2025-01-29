@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * GCPShieldedInstanceConfig describes the shielded VM configuration of the instance on GCP. Shielded VM configuration allow users to enable and disable Secure Boot, vTPM, and Integrity Monitoring.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class GCPShieldedInstanceConfig implements Editable<GCPShieldedInstanceCo
         this.virtualizedTrustedPlatformModule = virtualizedTrustedPlatformModule;
     }
 
+    /**
+     * IntegrityMonitoring determines whether the instance should have integrity monitoring that verify the runtime boot integrity. Compares the most recent boot measurements to the integrity policy baseline and return a pair of pass/fail results depending on whether they match or not. If omitted, the platform chooses a default, which is subject to change over time, currently that default is Enabled.
+     */
     @JsonProperty("integrityMonitoring")
     public String getIntegrityMonitoring() {
         return integrityMonitoring;
     }
 
+    /**
+     * IntegrityMonitoring determines whether the instance should have integrity monitoring that verify the runtime boot integrity. Compares the most recent boot measurements to the integrity policy baseline and return a pair of pass/fail results depending on whether they match or not. If omitted, the platform chooses a default, which is subject to change over time, currently that default is Enabled.
+     */
     @JsonProperty("integrityMonitoring")
     public void setIntegrityMonitoring(String integrityMonitoring) {
         this.integrityMonitoring = integrityMonitoring;
     }
 
+    /**
+     * SecureBoot Defines whether the instance should have secure boot enabled. Secure Boot verify the digital signature of all boot components, and halting the boot process if signature verification fails. If omitted, the platform chooses a default, which is subject to change over time, currently that default is Disabled.
+     */
     @JsonProperty("secureBoot")
     public String getSecureBoot() {
         return secureBoot;
     }
 
+    /**
+     * SecureBoot Defines whether the instance should have secure boot enabled. Secure Boot verify the digital signature of all boot components, and halting the boot process if signature verification fails. If omitted, the platform chooses a default, which is subject to change over time, currently that default is Disabled.
+     */
     @JsonProperty("secureBoot")
     public void setSecureBoot(String secureBoot) {
         this.secureBoot = secureBoot;
     }
 
+    /**
+     * VirtualizedTrustedPlatformModule enable virtualized trusted platform module measurements to create a known good boot integrity policy baseline. The integrity policy baseline is used for comparison with measurements from subsequent VM boots to determine if anything has changed. This is required to be set to "Enabled" if IntegrityMonitoring is enabled. If omitted, the platform chooses a default, which is subject to change over time, currently that default is Enabled.
+     */
     @JsonProperty("virtualizedTrustedPlatformModule")
     public String getVirtualizedTrustedPlatformModule() {
         return virtualizedTrustedPlatformModule;
     }
 
+    /**
+     * VirtualizedTrustedPlatformModule enable virtualized trusted platform module measurements to create a known good boot integrity policy baseline. The integrity policy baseline is used for comparison with measurements from subsequent VM boots to determine if anything has changed. This is required to be set to "Enabled" if IntegrityMonitoring is enabled. If omitted, the platform chooses a default, which is subject to change over time, currently that default is Enabled.
+     */
     @JsonProperty("virtualizedTrustedPlatformModule")
     public void setVirtualizedTrustedPlatformModule(String virtualizedTrustedPlatformModule) {
         this.virtualizedTrustedPlatformModule = virtualizedTrustedPlatformModule;

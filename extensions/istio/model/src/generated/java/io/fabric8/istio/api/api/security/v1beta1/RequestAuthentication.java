@@ -41,6 +41,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * RequestAuthentication defines what request authentication methods are supported by a workload. It will reject a request if the request contains invalid authentication information, based on the configured authentication rules. A request that does not contain any authentication credentials will be accepted but will not have any authenticated identity. To restrict access to authenticated requests only, this should be accompanied by an authorization rule. Examples:<br><p> <br><p> - Require JWT for all request for workloads that have label `app:httpbin`<br><p> <br><p> ```yaml apiVersion: security.istio.io/v1 kind: RequestAuthentication metadata:<br><p> <br><p> 	name: httpbin<br><p> 	namespace: foo<br><p> <br><p> spec:<br><p> <br><p> 	selector:<br><p> 	  matchLabels:<br><p> 	    app: httpbin<br><p> 	jwtRules:<br><p> 	- issuer: "issuer-foo"<br><p> 	  jwksUri: https://example.com/.well-known/jwks.json
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -106,43 +109,67 @@ public class RequestAuthentication implements Editable<RequestAuthenticationBuil
         this.targetRefs = targetRefs;
     }
 
+    /**
+     * Define the list of JWTs that can be validated at the selected workloads' proxy. A valid token will be used to extract the authenticated identity. Each rule will be activated only when a token is presented at the location recognized by the rule. The token will be validated based on the JWT rule config. If validation fails, the request will be rejected. Note: Requests with multiple tokens (at different locations) are not supported, the output principal of such requests is undefined.
+     */
     @JsonProperty("jwtRules")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<JWTRule> getJwtRules() {
         return jwtRules;
     }
 
+    /**
+     * Define the list of JWTs that can be validated at the selected workloads' proxy. A valid token will be used to extract the authenticated identity. Each rule will be activated only when a token is presented at the location recognized by the rule. The token will be validated based on the JWT rule config. If validation fails, the request will be rejected. Note: Requests with multiple tokens (at different locations) are not supported, the output principal of such requests is undefined.
+     */
     @JsonProperty("jwtRules")
     public void setJwtRules(List<JWTRule> jwtRules) {
         this.jwtRules = jwtRules;
     }
 
+    /**
+     * RequestAuthentication defines what request authentication methods are supported by a workload. It will reject a request if the request contains invalid authentication information, based on the configured authentication rules. A request that does not contain any authentication credentials will be accepted but will not have any authenticated identity. To restrict access to authenticated requests only, this should be accompanied by an authorization rule. Examples:<br><p> <br><p> - Require JWT for all request for workloads that have label `app:httpbin`<br><p> <br><p> ```yaml apiVersion: security.istio.io/v1 kind: RequestAuthentication metadata:<br><p> <br><p> 	name: httpbin<br><p> 	namespace: foo<br><p> <br><p> spec:<br><p> <br><p> 	selector:<br><p> 	  matchLabels:<br><p> 	    app: httpbin<br><p> 	jwtRules:<br><p> 	- issuer: "issuer-foo"<br><p> 	  jwksUri: https://example.com/.well-known/jwks.json
+     */
     @JsonProperty("selector")
     public WorkloadSelector getSelector() {
         return selector;
     }
 
+    /**
+     * RequestAuthentication defines what request authentication methods are supported by a workload. It will reject a request if the request contains invalid authentication information, based on the configured authentication rules. A request that does not contain any authentication credentials will be accepted but will not have any authenticated identity. To restrict access to authenticated requests only, this should be accompanied by an authorization rule. Examples:<br><p> <br><p> - Require JWT for all request for workloads that have label `app:httpbin`<br><p> <br><p> ```yaml apiVersion: security.istio.io/v1 kind: RequestAuthentication metadata:<br><p> <br><p> 	name: httpbin<br><p> 	namespace: foo<br><p> <br><p> spec:<br><p> <br><p> 	selector:<br><p> 	  matchLabels:<br><p> 	    app: httpbin<br><p> 	jwtRules:<br><p> 	- issuer: "issuer-foo"<br><p> 	  jwksUri: https://example.com/.well-known/jwks.json
+     */
     @JsonProperty("selector")
     public void setSelector(WorkloadSelector selector) {
         this.selector = selector;
     }
 
+    /**
+     * RequestAuthentication defines what request authentication methods are supported by a workload. It will reject a request if the request contains invalid authentication information, based on the configured authentication rules. A request that does not contain any authentication credentials will be accepted but will not have any authenticated identity. To restrict access to authenticated requests only, this should be accompanied by an authorization rule. Examples:<br><p> <br><p> - Require JWT for all request for workloads that have label `app:httpbin`<br><p> <br><p> ```yaml apiVersion: security.istio.io/v1 kind: RequestAuthentication metadata:<br><p> <br><p> 	name: httpbin<br><p> 	namespace: foo<br><p> <br><p> spec:<br><p> <br><p> 	selector:<br><p> 	  matchLabels:<br><p> 	    app: httpbin<br><p> 	jwtRules:<br><p> 	- issuer: "issuer-foo"<br><p> 	  jwksUri: https://example.com/.well-known/jwks.json
+     */
     @JsonProperty("targetRef")
     public PolicyTargetReference getTargetRef() {
         return targetRef;
     }
 
+    /**
+     * RequestAuthentication defines what request authentication methods are supported by a workload. It will reject a request if the request contains invalid authentication information, based on the configured authentication rules. A request that does not contain any authentication credentials will be accepted but will not have any authenticated identity. To restrict access to authenticated requests only, this should be accompanied by an authorization rule. Examples:<br><p> <br><p> - Require JWT for all request for workloads that have label `app:httpbin`<br><p> <br><p> ```yaml apiVersion: security.istio.io/v1 kind: RequestAuthentication metadata:<br><p> <br><p> 	name: httpbin<br><p> 	namespace: foo<br><p> <br><p> spec:<br><p> <br><p> 	selector:<br><p> 	  matchLabels:<br><p> 	    app: httpbin<br><p> 	jwtRules:<br><p> 	- issuer: "issuer-foo"<br><p> 	  jwksUri: https://example.com/.well-known/jwks.json
+     */
     @JsonProperty("targetRef")
     public void setTargetRef(PolicyTargetReference targetRef) {
         this.targetRef = targetRef;
     }
 
+    /**
+     * Optional. The targetRefs specifies a list of resources the policy should be applied to. The targeted resources specified will determine which workloads the policy applies to.<br><p> <br><p> Currently, the following resource attachment types are supported: &#42; `kind: Gateway` with `group: gateway.networking.k8s.io` in the same namespace. &#42; `kind: Service` with `group: ""` or `group: "core"` in the same namespace. This type is only supported for waypoints.<br><p> <br><p> If not set, the policy is applied as defined by the selector. At most one of the selector and targetRefs can be set.<br><p> <br><p> NOTE: If you are using the `targetRefs` field in a multi-revision environment with Istio versions prior to 1.22, it is highly recommended that you pin the policy to a revision running 1.22+ via the `istio.io/rev` label. This is to prevent proxies connected to older control planes (that don't know about the `targetRefs` field) from misinterpreting the policy as namespace-wide during the upgrade process.<br><p> <br><p> NOTE: Waypoint proxies are required to use this field for policies to apply; `selector` policies will be ignored.
+     */
     @JsonProperty("targetRefs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PolicyTargetReference> getTargetRefs() {
         return targetRefs;
     }
 
+    /**
+     * Optional. The targetRefs specifies a list of resources the policy should be applied to. The targeted resources specified will determine which workloads the policy applies to.<br><p> <br><p> Currently, the following resource attachment types are supported: &#42; `kind: Gateway` with `group: gateway.networking.k8s.io` in the same namespace. &#42; `kind: Service` with `group: ""` or `group: "core"` in the same namespace. This type is only supported for waypoints.<br><p> <br><p> If not set, the policy is applied as defined by the selector. At most one of the selector and targetRefs can be set.<br><p> <br><p> NOTE: If you are using the `targetRefs` field in a multi-revision environment with Istio versions prior to 1.22, it is highly recommended that you pin the policy to a revision running 1.22+ via the `istio.io/rev` label. This is to prevent proxies connected to older control planes (that don't know about the `targetRefs` field) from misinterpreting the policy as namespace-wide during the upgrade process.<br><p> <br><p> NOTE: Waypoint proxies are required to use this field for policies to apply; `selector` policies will be ignored.
+     */
     @JsonProperty("targetRefs")
     public void setTargetRefs(List<PolicyTargetReference> targetRefs) {
         this.targetRefs = targetRefs;

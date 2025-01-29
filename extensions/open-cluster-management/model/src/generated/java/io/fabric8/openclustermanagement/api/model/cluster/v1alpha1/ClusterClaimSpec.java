@@ -78,11 +78,17 @@ public class ClusterClaimSpec implements Editable<ClusterClaimSpecBuilder>, Kube
         this.value = value;
     }
 
+    /**
+     * Value is a claim-dependent string
+     */
     @JsonProperty("value")
     public String getValue() {
         return value;
     }
 
+    /**
+     * Value is a claim-dependent string
+     */
     @JsonProperty("value")
     public void setValue(String value) {
         this.value = value;

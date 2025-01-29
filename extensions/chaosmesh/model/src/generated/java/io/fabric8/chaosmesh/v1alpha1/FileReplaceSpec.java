@@ -90,41 +90,65 @@ public class FileReplaceSpec implements Editable<FileReplaceSpecBuilder>, Kubern
         this.originString = originString;
     }
 
+    /**
+     * DestStr is the destination string of the file.
+     */
     @JsonProperty("dest-string")
     public String getDestString() {
         return destString;
     }
 
+    /**
+     * DestStr is the destination string of the file.
+     */
     @JsonProperty("dest-string")
     public void setDestString(String destString) {
         this.destString = destString;
     }
 
+    /**
+     * FileName is the name of the file to be created, modified, deleted, renamed, or appended.
+     */
     @JsonProperty("file-name")
     public String getFileName() {
         return fileName;
     }
 
+    /**
+     * FileName is the name of the file to be created, modified, deleted, renamed, or appended.
+     */
     @JsonProperty("file-name")
     public void setFileName(String fileName) {
         this.fileName = fileName;
     }
 
+    /**
+     * Line is the line number of the file to be replaced.
+     */
     @JsonProperty("line")
     public Integer getLine() {
         return line;
     }
 
+    /**
+     * Line is the line number of the file to be replaced.
+     */
     @JsonProperty("line")
     public void setLine(Integer line) {
         this.line = line;
     }
 
+    /**
+     * OriginStr is the origin string of the file.
+     */
     @JsonProperty("origin-string")
     public String getOriginString() {
         return originString;
     }
 
+    /**
+     * OriginStr is the origin string of the file.
+     */
     @JsonProperty("origin-string")
     public void setOriginString(String originString) {
         this.originString = originString;

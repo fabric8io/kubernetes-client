@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ClusterManagerSpec represents a desired deployment configuration of controllers that govern registration and work distribution for attached Klusterlets.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -114,101 +117,161 @@ public class ClusterManagerSpec implements Editable<ClusterManagerSpecBuilder>, 
         this.workImagePullSpec = workImagePullSpec;
     }
 
+    /**
+     * ClusterManagerSpec represents a desired deployment configuration of controllers that govern registration and work distribution for attached Klusterlets.
+     */
     @JsonProperty("addOnManagerConfiguration")
     public AddOnManagerConfiguration getAddOnManagerConfiguration() {
         return addOnManagerConfiguration;
     }
 
+    /**
+     * ClusterManagerSpec represents a desired deployment configuration of controllers that govern registration and work distribution for attached Klusterlets.
+     */
     @JsonProperty("addOnManagerConfiguration")
     public void setAddOnManagerConfiguration(AddOnManagerConfiguration addOnManagerConfiguration) {
         this.addOnManagerConfiguration = addOnManagerConfiguration;
     }
 
+    /**
+     * AddOnManagerImagePullSpec represents the desired image configuration of addon manager controller/webhook installed on hub.
+     */
     @JsonProperty("addOnManagerImagePullSpec")
     public String getAddOnManagerImagePullSpec() {
         return addOnManagerImagePullSpec;
     }
 
+    /**
+     * AddOnManagerImagePullSpec represents the desired image configuration of addon manager controller/webhook installed on hub.
+     */
     @JsonProperty("addOnManagerImagePullSpec")
     public void setAddOnManagerImagePullSpec(String addOnManagerImagePullSpec) {
         this.addOnManagerImagePullSpec = addOnManagerImagePullSpec;
     }
 
+    /**
+     * ClusterManagerSpec represents a desired deployment configuration of controllers that govern registration and work distribution for attached Klusterlets.
+     */
     @JsonProperty("deployOption")
     public ClusterManagerDeployOption getDeployOption() {
         return deployOption;
     }
 
+    /**
+     * ClusterManagerSpec represents a desired deployment configuration of controllers that govern registration and work distribution for attached Klusterlets.
+     */
     @JsonProperty("deployOption")
     public void setDeployOption(ClusterManagerDeployOption deployOption) {
         this.deployOption = deployOption;
     }
 
+    /**
+     * ClusterManagerSpec represents a desired deployment configuration of controllers that govern registration and work distribution for attached Klusterlets.
+     */
     @JsonProperty("nodePlacement")
     public NodePlacement getNodePlacement() {
         return nodePlacement;
     }
 
+    /**
+     * ClusterManagerSpec represents a desired deployment configuration of controllers that govern registration and work distribution for attached Klusterlets.
+     */
     @JsonProperty("nodePlacement")
     public void setNodePlacement(NodePlacement nodePlacement) {
         this.nodePlacement = nodePlacement;
     }
 
+    /**
+     * PlacementImagePullSpec represents the desired image configuration of placement controller/webhook installed on hub.
+     */
     @JsonProperty("placementImagePullSpec")
     public String getPlacementImagePullSpec() {
         return placementImagePullSpec;
     }
 
+    /**
+     * PlacementImagePullSpec represents the desired image configuration of placement controller/webhook installed on hub.
+     */
     @JsonProperty("placementImagePullSpec")
     public void setPlacementImagePullSpec(String placementImagePullSpec) {
         this.placementImagePullSpec = placementImagePullSpec;
     }
 
+    /**
+     * ClusterManagerSpec represents a desired deployment configuration of controllers that govern registration and work distribution for attached Klusterlets.
+     */
     @JsonProperty("registrationConfiguration")
     public RegistrationHubConfiguration getRegistrationConfiguration() {
         return registrationConfiguration;
     }
 
+    /**
+     * ClusterManagerSpec represents a desired deployment configuration of controllers that govern registration and work distribution for attached Klusterlets.
+     */
     @JsonProperty("registrationConfiguration")
     public void setRegistrationConfiguration(RegistrationHubConfiguration registrationConfiguration) {
         this.registrationConfiguration = registrationConfiguration;
     }
 
+    /**
+     * RegistrationImagePullSpec represents the desired image of registration controller/webhook installed on hub.
+     */
     @JsonProperty("registrationImagePullSpec")
     public String getRegistrationImagePullSpec() {
         return registrationImagePullSpec;
     }
 
+    /**
+     * RegistrationImagePullSpec represents the desired image of registration controller/webhook installed on hub.
+     */
     @JsonProperty("registrationImagePullSpec")
     public void setRegistrationImagePullSpec(String registrationImagePullSpec) {
         this.registrationImagePullSpec = registrationImagePullSpec;
     }
 
+    /**
+     * ClusterManagerSpec represents a desired deployment configuration of controllers that govern registration and work distribution for attached Klusterlets.
+     */
     @JsonProperty("resourceRequirement")
     public ResourceRequirement getResourceRequirement() {
         return resourceRequirement;
     }
 
+    /**
+     * ClusterManagerSpec represents a desired deployment configuration of controllers that govern registration and work distribution for attached Klusterlets.
+     */
     @JsonProperty("resourceRequirement")
     public void setResourceRequirement(ResourceRequirement resourceRequirement) {
         this.resourceRequirement = resourceRequirement;
     }
 
+    /**
+     * ClusterManagerSpec represents a desired deployment configuration of controllers that govern registration and work distribution for attached Klusterlets.
+     */
     @JsonProperty("workConfiguration")
     public WorkConfiguration getWorkConfiguration() {
         return workConfiguration;
     }
 
+    /**
+     * ClusterManagerSpec represents a desired deployment configuration of controllers that govern registration and work distribution for attached Klusterlets.
+     */
     @JsonProperty("workConfiguration")
     public void setWorkConfiguration(WorkConfiguration workConfiguration) {
         this.workConfiguration = workConfiguration;
     }
 
+    /**
+     * WorkImagePullSpec represents the desired image configuration of work controller/webhook installed on hub.
+     */
     @JsonProperty("workImagePullSpec")
     public String getWorkImagePullSpec() {
         return workImagePullSpec;
     }
 
+    /**
+     * WorkImagePullSpec represents the desired image configuration of work controller/webhook installed on hub.
+     */
     @JsonProperty("workImagePullSpec")
     public void setWorkImagePullSpec(String workImagePullSpec) {
         this.workImagePullSpec = workImagePullSpec;

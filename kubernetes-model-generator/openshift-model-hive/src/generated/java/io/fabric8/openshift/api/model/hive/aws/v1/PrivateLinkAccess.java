@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PrivateLinkAccess configures access to the cluster API using AWS PrivateLink
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class PrivateLinkAccess implements Editable<PrivateLinkAccessBuilder>, Ku
         this.enabled = enabled;
     }
 
+    /**
+     * AdditionalAllowedPrincipals is a list of additional allowed principal ARNs to be configured for the Private Link cluster's VPC Endpoint Service. ARNs provided as AdditionalAllowedPrincipals will be configured for the cluster's VPC Endpoint Service in addition to the IAM entity used by Hive.
+     */
     @JsonProperty("additionalAllowedPrincipals")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getAdditionalAllowedPrincipals() {
         return additionalAllowedPrincipals;
     }
 
+    /**
+     * AdditionalAllowedPrincipals is a list of additional allowed principal ARNs to be configured for the Private Link cluster's VPC Endpoint Service. ARNs provided as AdditionalAllowedPrincipals will be configured for the cluster's VPC Endpoint Service in addition to the IAM entity used by Hive.
+     */
     @JsonProperty("additionalAllowedPrincipals")
     public void setAdditionalAllowedPrincipals(List<String> additionalAllowedPrincipals) {
         this.additionalAllowedPrincipals = additionalAllowedPrincipals;
     }
 
+    /**
+     * PrivateLinkAccess configures access to the cluster API using AWS PrivateLink
+     */
     @JsonProperty("enabled")
     public Boolean getEnabled() {
         return enabled;
     }
 
+    /**
+     * PrivateLinkAccess configures access to the cluster API using AWS PrivateLink
+     */
     @JsonProperty("enabled")
     public void setEnabled(Boolean enabled) {
         this.enabled = enabled;

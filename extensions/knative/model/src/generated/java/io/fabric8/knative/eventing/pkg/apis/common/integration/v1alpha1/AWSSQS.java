@@ -130,141 +130,225 @@ public class AWSSQS implements Editable<AWSSQSBuilder>, KubernetesResource
         this.waitTimeSeconds = waitTimeSeconds;
     }
 
+    /**
+     * Embeds AWSCommon to inherit its fields in JSON
+     */
     @JsonProperty("arn")
     public String getArn() {
         return arn;
     }
 
+    /**
+     * Embeds AWSCommon to inherit its fields in JSON
+     */
     @JsonProperty("arn")
     public void setArn(String arn) {
         this.arn = arn;
     }
 
+    /**
+     * Auto-delete messages after reading
+     */
     @JsonProperty("autoCreateQueue")
     public Boolean getAutoCreateQueue() {
         return autoCreateQueue;
     }
 
+    /**
+     * Auto-delete messages after reading
+     */
     @JsonProperty("autoCreateQueue")
     public void setAutoCreateQueue(Boolean autoCreateQueue) {
         this.autoCreateQueue = autoCreateQueue;
     }
 
+    /**
+     * Greedy scheduler
+     */
     @JsonProperty("delay")
     public Integer getDelay() {
         return delay;
     }
 
+    /**
+     * Greedy scheduler
+     */
     @JsonProperty("delay")
     public void setDelay(Integer delay) {
         this.delay = delay;
     }
 
+    /**
+     * SQS ARN
+     */
     @JsonProperty("deleteAfterRead")
     public Boolean getDeleteAfterRead() {
         return deleteAfterRead;
     }
 
+    /**
+     * SQS ARN
+     */
     @JsonProperty("deleteAfterRead")
     public void setDeleteAfterRead(Boolean deleteAfterRead) {
         this.deleteAfterRead = deleteAfterRead;
     }
 
+    /**
+     * Full SQS queue URL
+     */
     @JsonProperty("greedy")
     public Boolean getGreedy() {
         return greedy;
     }
 
+    /**
+     * Full SQS queue URL
+     */
     @JsonProperty("greedy")
     public void setGreedy(Boolean greedy) {
         this.greedy = greedy;
     }
 
+    /**
+     * Auto-create SQS queue
+     */
     @JsonProperty("host")
     public String getHost() {
         return host;
     }
 
+    /**
+     * Auto-create SQS queue
+     */
     @JsonProperty("host")
     public void setHost(String host) {
         this.host = host;
     }
 
+    /**
+     * Delay between polls in milliseconds
+     */
     @JsonProperty("maxMessagesPerPoll")
     public Integer getMaxMessagesPerPoll() {
         return maxMessagesPerPoll;
     }
 
+    /**
+     * Delay between polls in milliseconds
+     */
     @JsonProperty("maxMessagesPerPoll")
     public void setMaxMessagesPerPoll(Integer maxMessagesPerPoll) {
         this.maxMessagesPerPoll = maxMessagesPerPoll;
     }
 
+    /**
+     * Override endpoint URI
+     */
     @JsonProperty("overrideEndpoint")
     public Boolean getOverrideEndpoint() {
         return overrideEndpoint;
     }
 
+    /**
+     * Override endpoint URI
+     */
     @JsonProperty("overrideEndpoint")
     public void setOverrideEndpoint(Boolean overrideEndpoint) {
         this.overrideEndpoint = overrideEndpoint;
     }
 
+    /**
+     * AWS host
+     */
     @JsonProperty("protocol")
     public String getProtocol() {
         return protocol;
     }
 
+    /**
+     * AWS host
+     */
     @JsonProperty("protocol")
     public void setProtocol(String protocol) {
         this.protocol = protocol;
     }
 
+    /**
+     * Communication protocol (http/https)
+     */
     @JsonProperty("queueURL")
     public String getQueueURL() {
         return queueURL;
     }
 
+    /**
+     * Communication protocol (http/https)
+     */
     @JsonProperty("queueURL")
     public void setQueueURL(String queueURL) {
         this.queueURL = queueURL;
     }
 
+    /**
+     * Auth is the S3 authentication (accessKey/secretKey) configuration.
+     */
     @JsonProperty("region")
     public String getRegion() {
         return region;
     }
 
+    /**
+     * Auth is the S3 authentication (accessKey/secretKey) configuration.
+     */
     @JsonProperty("region")
     public void setRegion(String region) {
         this.region = region;
     }
 
+    /**
+     * AWS region
+     */
     @JsonProperty("uriEndpointOverride")
     public String getUriEndpointOverride() {
         return uriEndpointOverride;
     }
 
+    /**
+     * AWS region
+     */
     @JsonProperty("uriEndpointOverride")
     public void setUriEndpointOverride(String uriEndpointOverride) {
         this.uriEndpointOverride = uriEndpointOverride;
     }
 
+    /**
+     * Wait time for messages
+     */
     @JsonProperty("visibilityTimeout")
     public Integer getVisibilityTimeout() {
         return visibilityTimeout;
     }
 
+    /**
+     * Wait time for messages
+     */
     @JsonProperty("visibilityTimeout")
     public void setVisibilityTimeout(Integer visibilityTimeout) {
         this.visibilityTimeout = visibilityTimeout;
     }
 
+    /**
+     * Max messages to return (1-10)
+     */
     @JsonProperty("waitTimeSeconds")
     public Integer getWaitTimeSeconds() {
         return waitTimeSeconds;
     }
 
+    /**
+     * Max messages to return (1-10)
+     */
     @JsonProperty("waitTimeSeconds")
     public void setWaitTimeSeconds(Integer waitTimeSeconds) {
         this.waitTimeSeconds = waitTimeSeconds;

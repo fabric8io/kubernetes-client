@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * OperatorConditionStatus allows an operator to convey information its state to OLM. The status may trail the actual state of a system.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,12 +85,18 @@ public class OperatorConditionStatus implements Editable<OperatorConditionStatus
         this.conditions = conditions;
     }
 
+    /**
+     * OperatorConditionStatus allows an operator to convey information its state to OLM. The status may trail the actual state of a system.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
 
+    /**
+     * OperatorConditionStatus allows an operator to convey information its state to OLM. The status may trail the actual state of a system.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;

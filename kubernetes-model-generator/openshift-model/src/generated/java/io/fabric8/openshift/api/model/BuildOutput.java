@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * BuildOutput is input to a build strategy and describes the container image that the strategy should produce.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -89,32 +92,50 @@ public class BuildOutput implements Editable<BuildOutputBuilder>, KubernetesReso
         this.to = to;
     }
 
+    /**
+     * imageLabels define a list of labels that are applied to the resulting image. If there are multiple labels with the same name then the last one in the list is used.
+     */
     @JsonProperty("imageLabels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ImageLabel> getImageLabels() {
         return imageLabels;
     }
 
+    /**
+     * imageLabels define a list of labels that are applied to the resulting image. If there are multiple labels with the same name then the last one in the list is used.
+     */
     @JsonProperty("imageLabels")
     public void setImageLabels(List<ImageLabel> imageLabels) {
         this.imageLabels = imageLabels;
     }
 
+    /**
+     * BuildOutput is input to a build strategy and describes the container image that the strategy should produce.
+     */
     @JsonProperty("pushSecret")
     public LocalObjectReference getPushSecret() {
         return pushSecret;
     }
 
+    /**
+     * BuildOutput is input to a build strategy and describes the container image that the strategy should produce.
+     */
     @JsonProperty("pushSecret")
     public void setPushSecret(LocalObjectReference pushSecret) {
         this.pushSecret = pushSecret;
     }
 
+    /**
+     * BuildOutput is input to a build strategy and describes the container image that the strategy should produce.
+     */
     @JsonProperty("to")
     public ObjectReference getTo() {
         return to;
     }
 
+    /**
+     * BuildOutput is input to a build strategy and describes the container image that the strategy should produce.
+     */
     @JsonProperty("to")
     public void setTo(ObjectReference to) {
         this.to = to;

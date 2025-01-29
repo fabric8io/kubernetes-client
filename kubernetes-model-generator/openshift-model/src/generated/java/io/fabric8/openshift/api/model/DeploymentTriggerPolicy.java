@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DeploymentTriggerPolicy describes a policy for a single trigger that results in a new deployment.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class DeploymentTriggerPolicy implements Editable<DeploymentTriggerPolicy
         this.type = type;
     }
 
+    /**
+     * DeploymentTriggerPolicy describes a policy for a single trigger that results in a new deployment.
+     */
     @JsonProperty("imageChangeParams")
     public DeploymentTriggerImageChangeParams getImageChangeParams() {
         return imageChangeParams;
     }
 
+    /**
+     * DeploymentTriggerPolicy describes a policy for a single trigger that results in a new deployment.
+     */
     @JsonProperty("imageChangeParams")
     public void setImageChangeParams(DeploymentTriggerImageChangeParams imageChangeParams) {
         this.imageChangeParams = imageChangeParams;
     }
 
+    /**
+     * Type of the trigger
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * Type of the trigger
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

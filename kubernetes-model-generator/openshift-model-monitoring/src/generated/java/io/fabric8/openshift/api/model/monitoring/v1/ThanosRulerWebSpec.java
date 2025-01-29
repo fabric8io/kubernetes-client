@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ThanosRulerWebSpec defines the configuration of the ThanosRuler web server.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class ThanosRulerWebSpec implements Editable<ThanosRulerWebSpecBuilder>, 
         this.tlsConfig = tlsConfig;
     }
 
+    /**
+     * ThanosRulerWebSpec defines the configuration of the ThanosRuler web server.
+     */
     @JsonProperty("httpConfig")
     public WebHTTPConfig getHttpConfig() {
         return httpConfig;
     }
 
+    /**
+     * ThanosRulerWebSpec defines the configuration of the ThanosRuler web server.
+     */
     @JsonProperty("httpConfig")
     public void setHttpConfig(WebHTTPConfig httpConfig) {
         this.httpConfig = httpConfig;
     }
 
+    /**
+     * ThanosRulerWebSpec defines the configuration of the ThanosRuler web server.
+     */
     @JsonProperty("tlsConfig")
     public WebTLSConfig getTlsConfig() {
         return tlsConfig;
     }
 
+    /**
+     * ThanosRulerWebSpec defines the configuration of the ThanosRuler web server.
+     */
     @JsonProperty("tlsConfig")
     public void setTlsConfig(WebTLSConfig tlsConfig) {
         this.tlsConfig = tlsConfig;

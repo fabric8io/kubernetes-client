@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DeploymentConfigRollbackSpec represents the options for rollback generation.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -98,61 +101,97 @@ public class DeploymentConfigRollbackSpec implements Editable<DeploymentConfigRo
         this.revision = revision;
     }
 
+    /**
+     * DeploymentConfigRollbackSpec represents the options for rollback generation.
+     */
     @JsonProperty("from")
     public ObjectReference getFrom() {
         return from;
     }
 
+    /**
+     * DeploymentConfigRollbackSpec represents the options for rollback generation.
+     */
     @JsonProperty("from")
     public void setFrom(ObjectReference from) {
         this.from = from;
     }
 
+    /**
+     * IncludeReplicationMeta specifies whether to include the replica count and selector.
+     */
     @JsonProperty("includeReplicationMeta")
     public Boolean getIncludeReplicationMeta() {
         return includeReplicationMeta;
     }
 
+    /**
+     * IncludeReplicationMeta specifies whether to include the replica count and selector.
+     */
     @JsonProperty("includeReplicationMeta")
     public void setIncludeReplicationMeta(Boolean includeReplicationMeta) {
         this.includeReplicationMeta = includeReplicationMeta;
     }
 
+    /**
+     * IncludeStrategy specifies whether to include the deployment Strategy.
+     */
     @JsonProperty("includeStrategy")
     public Boolean getIncludeStrategy() {
         return includeStrategy;
     }
 
+    /**
+     * IncludeStrategy specifies whether to include the deployment Strategy.
+     */
     @JsonProperty("includeStrategy")
     public void setIncludeStrategy(Boolean includeStrategy) {
         this.includeStrategy = includeStrategy;
     }
 
+    /**
+     * IncludeTemplate specifies whether to include the PodTemplateSpec.
+     */
     @JsonProperty("includeTemplate")
     public Boolean getIncludeTemplate() {
         return includeTemplate;
     }
 
+    /**
+     * IncludeTemplate specifies whether to include the PodTemplateSpec.
+     */
     @JsonProperty("includeTemplate")
     public void setIncludeTemplate(Boolean includeTemplate) {
         this.includeTemplate = includeTemplate;
     }
 
+    /**
+     * IncludeTriggers specifies whether to include config Triggers.
+     */
     @JsonProperty("includeTriggers")
     public Boolean getIncludeTriggers() {
         return includeTriggers;
     }
 
+    /**
+     * IncludeTriggers specifies whether to include config Triggers.
+     */
     @JsonProperty("includeTriggers")
     public void setIncludeTriggers(Boolean includeTriggers) {
         this.includeTriggers = includeTriggers;
     }
 
+    /**
+     * Revision to rollback to. If set to 0, rollback to the last revision.
+     */
     @JsonProperty("revision")
     public Long getRevision() {
         return revision;
     }
 
+    /**
+     * Revision to rollback to. If set to 0, rollback to the last revision.
+     */
     @JsonProperty("revision")
     public void setRevision(Long revision) {
         this.revision = revision;

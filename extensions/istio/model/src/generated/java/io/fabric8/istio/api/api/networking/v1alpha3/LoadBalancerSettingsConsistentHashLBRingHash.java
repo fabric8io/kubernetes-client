@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * The ring/modulo hash load balancer implements consistent hashing to backend hosts.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class LoadBalancerSettingsConsistentHashLBRingHash implements IsLoadBalan
         this.ringHash = ringHash;
     }
 
+    /**
+     * The ring/modulo hash load balancer implements consistent hashing to backend hosts.
+     */
     @JsonProperty("ringHash")
     public io.fabric8.istio.api.api.networking.v1alpha3.LoadBalancerSettingsConsistentHashLBRingHash getRingHash() {
         return ringHash;
     }
 
+    /**
+     * The ring/modulo hash load balancer implements consistent hashing to backend hosts.
+     */
     @JsonProperty("ringHash")
     public void setRingHash(io.fabric8.istio.api.api.networking.v1alpha3.LoadBalancerSettingsConsistentHashLBRingHash ringHash) {
         this.ringHash = ringHash;

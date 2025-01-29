@@ -86,31 +86,49 @@ public class FileAppendSpec implements Editable<FileAppendSpecBuilder>, Kubernet
         this.fileName = fileName;
     }
 
+    /**
+     * Count is the number of times to append the data.
+     */
     @JsonProperty("count")
     public Integer getCount() {
         return count;
     }
 
+    /**
+     * Count is the number of times to append the data.
+     */
     @JsonProperty("count")
     public void setCount(Integer count) {
         this.count = count;
     }
 
+    /**
+     * Data is the data for append.
+     */
     @JsonProperty("data")
     public String getData() {
         return data;
     }
 
+    /**
+     * Data is the data for append.
+     */
     @JsonProperty("data")
     public void setData(String data) {
         this.data = data;
     }
 
+    /**
+     * FileName is the name of the file to be created, modified, deleted, renamed, or appended.
+     */
     @JsonProperty("file-name")
     public String getFileName() {
         return fileName;
     }
 
+    /**
+     * FileName is the name of the file to be created, modified, deleted, renamed, or appended.
+     */
     @JsonProperty("file-name")
     public void setFileName(String fileName) {
         this.fileName = fileName;

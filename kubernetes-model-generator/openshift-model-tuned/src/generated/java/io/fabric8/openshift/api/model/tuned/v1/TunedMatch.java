@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Rules governing application of a Tuned profile.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -93,42 +96,66 @@ public class TunedMatch implements Editable<TunedMatchBuilder>, KubernetesResour
         this.value = value;
     }
 
+    /**
+     * Node or Pod label name.
+     */
     @JsonProperty("label")
     public String getLabel() {
         return label;
     }
 
+    /**
+     * Node or Pod label name.
+     */
     @JsonProperty("label")
     public void setLabel(String label) {
         this.label = label;
     }
 
+    /**
+     * Additional rules governing application of the tuned profile connected by logical AND operator.
+     */
     @JsonProperty("match")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.openshift.api.model.tuned.v1.TunedMatch> getMatch() {
         return match;
     }
 
+    /**
+     * Additional rules governing application of the tuned profile connected by logical AND operator.
+     */
     @JsonProperty("match")
     public void setMatch(List<io.fabric8.openshift.api.model.tuned.v1.TunedMatch> match) {
         this.match = match;
     }
 
+    /**
+     * Match type: [node/pod]. If omitted, "node" is assumed.
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * Match type: [node/pod]. If omitted, "node" is assumed.
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;
     }
 
+    /**
+     * Node or Pod label value. If omitted, the presence of label name is enough to match.
+     */
     @JsonProperty("value")
     public String getValue() {
         return value;
     }
 
+    /**
+     * Node or Pod label value. If omitted, the presence of label name is enough to match.
+     */
     @JsonProperty("value")
     public void setValue(String value) {
         this.value = value;

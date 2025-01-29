@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * StaticPodOperatorSpec is spec for controllers that manage static pods.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -108,82 +111,130 @@ public class StaticPodOperatorSpec implements Editable<StaticPodOperatorSpecBuil
         this.unsupportedConfigOverrides = unsupportedConfigOverrides;
     }
 
+    /**
+     * failedRevisionLimit is the number of failed static pod installer revisions to keep on disk and in the api -1 = unlimited, 0 or unset = 5 (default)
+     */
     @JsonProperty("failedRevisionLimit")
     public Integer getFailedRevisionLimit() {
         return failedRevisionLimit;
     }
 
+    /**
+     * failedRevisionLimit is the number of failed static pod installer revisions to keep on disk and in the api -1 = unlimited, 0 or unset = 5 (default)
+     */
     @JsonProperty("failedRevisionLimit")
     public void setFailedRevisionLimit(Integer failedRevisionLimit) {
         this.failedRevisionLimit = failedRevisionLimit;
     }
 
+    /**
+     * forceRedeploymentReason can be used to force the redeployment of the operand by providing a unique string. This provides a mechanism to kick a previously failed deployment and provide a reason why you think it will work this time instead of failing again on the same config.
+     */
     @JsonProperty("forceRedeploymentReason")
     public String getForceRedeploymentReason() {
         return forceRedeploymentReason;
     }
 
+    /**
+     * forceRedeploymentReason can be used to force the redeployment of the operand by providing a unique string. This provides a mechanism to kick a previously failed deployment and provide a reason why you think it will work this time instead of failing again on the same config.
+     */
     @JsonProperty("forceRedeploymentReason")
     public void setForceRedeploymentReason(String forceRedeploymentReason) {
         this.forceRedeploymentReason = forceRedeploymentReason;
     }
 
+    /**
+     * logLevel is an intent based logging for an overall component.  It does not give fine grained control, but it is a simple way to manage coarse grained logging choices that operators have to interpret for their operands.<br><p> <br><p> Valid values are: "Normal", "Debug", "Trace", "TraceAll". Defaults to "Normal".
+     */
     @JsonProperty("logLevel")
     public String getLogLevel() {
         return logLevel;
     }
 
+    /**
+     * logLevel is an intent based logging for an overall component.  It does not give fine grained control, but it is a simple way to manage coarse grained logging choices that operators have to interpret for their operands.<br><p> <br><p> Valid values are: "Normal", "Debug", "Trace", "TraceAll". Defaults to "Normal".
+     */
     @JsonProperty("logLevel")
     public void setLogLevel(String logLevel) {
         this.logLevel = logLevel;
     }
 
+    /**
+     * managementState indicates whether and how the operator should manage the component
+     */
     @JsonProperty("managementState")
     public String getManagementState() {
         return managementState;
     }
 
+    /**
+     * managementState indicates whether and how the operator should manage the component
+     */
     @JsonProperty("managementState")
     public void setManagementState(String managementState) {
         this.managementState = managementState;
     }
 
+    /**
+     * StaticPodOperatorSpec is spec for controllers that manage static pods.
+     */
     @JsonProperty("observedConfig")
     public Object getObservedConfig() {
         return observedConfig;
     }
 
+    /**
+     * StaticPodOperatorSpec is spec for controllers that manage static pods.
+     */
     @JsonProperty("observedConfig")
     @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
     public void setObservedConfig(Object observedConfig) {
         this.observedConfig = observedConfig;
     }
 
+    /**
+     * operatorLogLevel is an intent based logging for the operator itself.  It does not give fine grained control, but it is a simple way to manage coarse grained logging choices that operators have to interpret for themselves.<br><p> <br><p> Valid values are: "Normal", "Debug", "Trace", "TraceAll". Defaults to "Normal".
+     */
     @JsonProperty("operatorLogLevel")
     public String getOperatorLogLevel() {
         return operatorLogLevel;
     }
 
+    /**
+     * operatorLogLevel is an intent based logging for the operator itself.  It does not give fine grained control, but it is a simple way to manage coarse grained logging choices that operators have to interpret for themselves.<br><p> <br><p> Valid values are: "Normal", "Debug", "Trace", "TraceAll". Defaults to "Normal".
+     */
     @JsonProperty("operatorLogLevel")
     public void setOperatorLogLevel(String operatorLogLevel) {
         this.operatorLogLevel = operatorLogLevel;
     }
 
+    /**
+     * succeededRevisionLimit is the number of successful static pod installer revisions to keep on disk and in the api -1 = unlimited, 0 or unset = 5 (default)
+     */
     @JsonProperty("succeededRevisionLimit")
     public Integer getSucceededRevisionLimit() {
         return succeededRevisionLimit;
     }
 
+    /**
+     * succeededRevisionLimit is the number of successful static pod installer revisions to keep on disk and in the api -1 = unlimited, 0 or unset = 5 (default)
+     */
     @JsonProperty("succeededRevisionLimit")
     public void setSucceededRevisionLimit(Integer succeededRevisionLimit) {
         this.succeededRevisionLimit = succeededRevisionLimit;
     }
 
+    /**
+     * StaticPodOperatorSpec is spec for controllers that manage static pods.
+     */
     @JsonProperty("unsupportedConfigOverrides")
     public Object getUnsupportedConfigOverrides() {
         return unsupportedConfigOverrides;
     }
 
+    /**
+     * StaticPodOperatorSpec is spec for controllers that manage static pods.
+     */
     @JsonProperty("unsupportedConfigOverrides")
     @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
     public void setUnsupportedConfigOverrides(Object unsupportedConfigOverrides) {

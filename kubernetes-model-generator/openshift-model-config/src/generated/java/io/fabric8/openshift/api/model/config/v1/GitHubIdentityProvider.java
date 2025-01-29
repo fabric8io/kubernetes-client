@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * GitHubIdentityProvider provides identities for users authenticating using GitHub credentials
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -102,63 +105,99 @@ public class GitHubIdentityProvider implements Editable<GitHubIdentityProviderBu
         this.teams = teams;
     }
 
+    /**
+     * GitHubIdentityProvider provides identities for users authenticating using GitHub credentials
+     */
     @JsonProperty("ca")
     public ConfigMapNameReference getCa() {
         return ca;
     }
 
+    /**
+     * GitHubIdentityProvider provides identities for users authenticating using GitHub credentials
+     */
     @JsonProperty("ca")
     public void setCa(ConfigMapNameReference ca) {
         this.ca = ca;
     }
 
+    /**
+     * clientID is the oauth client ID
+     */
     @JsonProperty("clientID")
     public String getClientID() {
         return clientID;
     }
 
+    /**
+     * clientID is the oauth client ID
+     */
     @JsonProperty("clientID")
     public void setClientID(String clientID) {
         this.clientID = clientID;
     }
 
+    /**
+     * GitHubIdentityProvider provides identities for users authenticating using GitHub credentials
+     */
     @JsonProperty("clientSecret")
     public SecretNameReference getClientSecret() {
         return clientSecret;
     }
 
+    /**
+     * GitHubIdentityProvider provides identities for users authenticating using GitHub credentials
+     */
     @JsonProperty("clientSecret")
     public void setClientSecret(SecretNameReference clientSecret) {
         this.clientSecret = clientSecret;
     }
 
+    /**
+     * hostname is the optional domain (e.g. "mycompany.com") for use with a hosted instance of GitHub Enterprise. It must match the GitHub Enterprise settings value configured at /setup/settings#hostname.
+     */
     @JsonProperty("hostname")
     public String getHostname() {
         return hostname;
     }
 
+    /**
+     * hostname is the optional domain (e.g. "mycompany.com") for use with a hosted instance of GitHub Enterprise. It must match the GitHub Enterprise settings value configured at /setup/settings#hostname.
+     */
     @JsonProperty("hostname")
     public void setHostname(String hostname) {
         this.hostname = hostname;
     }
 
+    /**
+     * organizations optionally restricts which organizations are allowed to log in
+     */
     @JsonProperty("organizations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getOrganizations() {
         return organizations;
     }
 
+    /**
+     * organizations optionally restricts which organizations are allowed to log in
+     */
     @JsonProperty("organizations")
     public void setOrganizations(List<String> organizations) {
         this.organizations = organizations;
     }
 
+    /**
+     * teams optionally restricts which teams are allowed to log in. Format is &lt;org&gt;/&lt;team&gt;.
+     */
     @JsonProperty("teams")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getTeams() {
         return teams;
     }
 
+    /**
+     * teams optionally restricts which teams are allowed to log in. Format is &lt;org&gt;/&lt;team&gt;.
+     */
     @JsonProperty("teams")
     public void setTeams(List<String> teams) {
         this.teams = teams;

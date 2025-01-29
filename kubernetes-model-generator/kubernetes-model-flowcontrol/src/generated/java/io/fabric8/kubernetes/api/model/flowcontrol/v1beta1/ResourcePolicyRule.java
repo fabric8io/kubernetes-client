@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ResourcePolicyRule is a predicate that matches some resource requests, testing the request's verb and the target resource. A ResourcePolicyRule matches a resource request if and only if: (a) at least one member of verbs matches the request, (b) at least one member of apiGroups matches the request, (c) at least one member of resources matches the request, and (d) least one member of namespaces matches the request.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -100,55 +103,85 @@ public class ResourcePolicyRule implements Editable<ResourcePolicyRuleBuilder>, 
         this.verbs = verbs;
     }
 
+    /**
+     * `apiGroups` is a list of matching API groups and may not be empty. "&#42;" matches all API groups and, if present, must be the only entry. Required.
+     */
     @JsonProperty("apiGroups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getApiGroups() {
         return apiGroups;
     }
 
+    /**
+     * `apiGroups` is a list of matching API groups and may not be empty. "&#42;" matches all API groups and, if present, must be the only entry. Required.
+     */
     @JsonProperty("apiGroups")
     public void setApiGroups(List<String> apiGroups) {
         this.apiGroups = apiGroups;
     }
 
+    /**
+     * `clusterScope` indicates whether to match requests that do not specify a namespace (which happens either because the resource is not namespaced or the request targets all namespaces). If this field is omitted or false then the `namespaces` field must contain a non-empty list.
+     */
     @JsonProperty("clusterScope")
     public Boolean getClusterScope() {
         return clusterScope;
     }
 
+    /**
+     * `clusterScope` indicates whether to match requests that do not specify a namespace (which happens either because the resource is not namespaced or the request targets all namespaces). If this field is omitted or false then the `namespaces` field must contain a non-empty list.
+     */
     @JsonProperty("clusterScope")
     public void setClusterScope(Boolean clusterScope) {
         this.clusterScope = clusterScope;
     }
 
+    /**
+     * `namespaces` is a list of target namespaces that restricts matches.  A request that specifies a target namespace matches only if either (a) this list contains that target namespace or (b) this list contains "&#42;".  Note that "&#42;" matches any specified namespace but does not match a request that _does not specify_ a namespace (see the `clusterScope` field for that). This list may be empty, but only if `clusterScope` is true.
+     */
     @JsonProperty("namespaces")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getNamespaces() {
         return namespaces;
     }
 
+    /**
+     * `namespaces` is a list of target namespaces that restricts matches.  A request that specifies a target namespace matches only if either (a) this list contains that target namespace or (b) this list contains "&#42;".  Note that "&#42;" matches any specified namespace but does not match a request that _does not specify_ a namespace (see the `clusterScope` field for that). This list may be empty, but only if `clusterScope` is true.
+     */
     @JsonProperty("namespaces")
     public void setNamespaces(List<String> namespaces) {
         this.namespaces = namespaces;
     }
 
+    /**
+     * `resources` is a list of matching resources (i.e., lowercase and plural) with, if desired, subresource.  For example, [ "services", "nodes/status" ].  This list may not be empty. "&#42;" matches all resources and, if present, must be the only entry. Required.
+     */
     @JsonProperty("resources")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getResources() {
         return resources;
     }
 
+    /**
+     * `resources` is a list of matching resources (i.e., lowercase and plural) with, if desired, subresource.  For example, [ "services", "nodes/status" ].  This list may not be empty. "&#42;" matches all resources and, if present, must be the only entry. Required.
+     */
     @JsonProperty("resources")
     public void setResources(List<String> resources) {
         this.resources = resources;
     }
 
+    /**
+     * `verbs` is a list of matching verbs and may not be empty. "&#42;" matches all verbs and, if present, must be the only entry. Required.
+     */
     @JsonProperty("verbs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getVerbs() {
         return verbs;
     }
 
+    /**
+     * `verbs` is a list of matching verbs and may not be empty. "&#42;" matches all verbs and, if present, must be the only entry. Required.
+     */
     @JsonProperty("verbs")
     public void setVerbs(List<String> verbs) {
         this.verbs = verbs;

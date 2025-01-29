@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * MachinePool stores the configuration for a machine pool installed on AWS.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -110,83 +113,131 @@ public class MachinePool implements Editable<MachinePoolBuilder>, KubernetesReso
         this.zones = zones;
     }
 
+    /**
+     * AdditionalSecurityGroupIDs contains IDs of additional security groups for machines, where each ID is presented in the format sg-xxxx.
+     */
     @JsonProperty("additionalSecurityGroupIDs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getAdditionalSecurityGroupIDs() {
         return additionalSecurityGroupIDs;
     }
 
+    /**
+     * AdditionalSecurityGroupIDs contains IDs of additional security groups for machines, where each ID is presented in the format sg-xxxx.
+     */
     @JsonProperty("additionalSecurityGroupIDs")
     public void setAdditionalSecurityGroupIDs(List<String> additionalSecurityGroupIDs) {
         this.additionalSecurityGroupIDs = additionalSecurityGroupIDs;
     }
 
+    /**
+     * AMIID is the AMI that should be used to boot the ec2 instance. If set, the AMI should belong to the same region as the cluster.
+     */
     @JsonProperty("amiID")
     public String getAmiID() {
         return amiID;
     }
 
+    /**
+     * AMIID is the AMI that should be used to boot the ec2 instance. If set, the AMI should belong to the same region as the cluster.
+     */
     @JsonProperty("amiID")
     public void setAmiID(String amiID) {
         this.amiID = amiID;
     }
 
+    /**
+     * IAMProfile is the name of the IAM instance profile to use for the machine. Leave unset to have the installer create the IAM Profile on your behalf. Cannot be specified together with iamRole.
+     */
     @JsonProperty("iamProfile")
     public String getIamProfile() {
         return iamProfile;
     }
 
+    /**
+     * IAMProfile is the name of the IAM instance profile to use for the machine. Leave unset to have the installer create the IAM Profile on your behalf. Cannot be specified together with iamRole.
+     */
     @JsonProperty("iamProfile")
     public void setIamProfile(String iamProfile) {
         this.iamProfile = iamProfile;
     }
 
+    /**
+     * IAMRole is the name of the IAM Role to use for the instance profile of the machine. Leave unset to have the installer create the IAM Role on your behalf. Cannot be specified together with iamProfile.
+     */
     @JsonProperty("iamRole")
     public String getIamRole() {
         return iamRole;
     }
 
+    /**
+     * IAMRole is the name of the IAM Role to use for the instance profile of the machine. Leave unset to have the installer create the IAM Role on your behalf. Cannot be specified together with iamProfile.
+     */
     @JsonProperty("iamRole")
     public void setIamRole(String iamRole) {
         this.iamRole = iamRole;
     }
 
+    /**
+     * MachinePool stores the configuration for a machine pool installed on AWS.
+     */
     @JsonProperty("metadataService")
     public EC2Metadata getMetadataService() {
         return metadataService;
     }
 
+    /**
+     * MachinePool stores the configuration for a machine pool installed on AWS.
+     */
     @JsonProperty("metadataService")
     public void setMetadataService(EC2Metadata metadataService) {
         this.metadataService = metadataService;
     }
 
+    /**
+     * MachinePool stores the configuration for a machine pool installed on AWS.
+     */
     @JsonProperty("rootVolume")
     public EC2RootVolume getRootVolume() {
         return rootVolume;
     }
 
+    /**
+     * MachinePool stores the configuration for a machine pool installed on AWS.
+     */
     @JsonProperty("rootVolume")
     public void setRootVolume(EC2RootVolume rootVolume) {
         this.rootVolume = rootVolume;
     }
 
+    /**
+     * InstanceType defines the ec2 instance type. eg. m4-large
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * InstanceType defines the ec2 instance type. eg. m4-large
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;
     }
 
+    /**
+     * Zones is list of availability zones that can be used.
+     */
     @JsonProperty("zones")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getZones() {
         return zones;
     }
 
+    /**
+     * Zones is list of availability zones that can be used.
+     */
     @JsonProperty("zones")
     public void setZones(List<String> zones) {
         this.zones = zones;

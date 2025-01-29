@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PlacementDecision is the cluster name returned by the placement resource.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class PlacementDecision implements Editable<PlacementDecisionBuilder>, Ku
         this.clusterNamespace = clusterNamespace;
     }
 
+    /**
+     * PlacementDecision is the cluster name returned by the placement resource.
+     */
     @JsonProperty("clusterName")
     public String getClusterName() {
         return clusterName;
     }
 
+    /**
+     * PlacementDecision is the cluster name returned by the placement resource.
+     */
     @JsonProperty("clusterName")
     public void setClusterName(String clusterName) {
         this.clusterName = clusterName;
     }
 
+    /**
+     * PlacementDecision is the cluster name returned by the placement resource.
+     */
     @JsonProperty("clusterNamespace")
     public String getClusterNamespace() {
         return clusterNamespace;
     }
 
+    /**
+     * PlacementDecision is the cluster name returned by the placement resource.
+     */
     @JsonProperty("clusterNamespace")
     public void setClusterNamespace(String clusterNamespace) {
         this.clusterNamespace = clusterNamespace;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * MetaDataHostInterface contains the information to render the object name.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class MetaDataHostInterface implements Editable<MetaDataHostInterfaceBuil
         this.key = key;
     }
 
+    /**
+     * Interface is the name of the interface in the BareMetalHost Status Hardware Details list of interfaces from which to fetch the MAC address.
+     */
     @JsonProperty("interface")
     public String getInterface() {
         return _interface;
     }
 
+    /**
+     * Interface is the name of the interface in the BareMetalHost Status Hardware Details list of interfaces from which to fetch the MAC address.
+     */
     @JsonProperty("interface")
     public void setInterface(String _interface) {
         this._interface = _interface;
     }
 
+    /**
+     * Key will be used as the key to set in the metadata map for cloud-init
+     */
     @JsonProperty("key")
     public String getKey() {
         return key;
     }
 
+    /**
+     * Key will be used as the key to set in the metadata map for cloud-init
+     */
     @JsonProperty("key")
     public void setKey(String key) {
         this.key = key;

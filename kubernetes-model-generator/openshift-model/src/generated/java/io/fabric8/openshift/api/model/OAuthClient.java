@@ -38,6 +38,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * OAuthClient describes an OAuth client<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,16 +93,10 @@ public class OAuthClient implements Editable<OAuthClientBuilder>, HasMetadata
     @JsonProperty("additionalSecrets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> additionalSecrets = new ArrayList<>();
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "oauth.openshift.io/v1";
     @JsonProperty("grantMethod")
     private String grantMethod;
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "OAuthClient";
     @JsonProperty("metadata")
@@ -138,39 +135,57 @@ public class OAuthClient implements Editable<OAuthClientBuilder>, HasMetadata
         this.secret = secret;
     }
 
+    /**
+     * AccessTokenInactivityTimeoutSeconds overrides the default token inactivity timeout for tokens granted to this client. The value represents the maximum amount of time that can occur between consecutive uses of the token. Tokens become invalid if they are not used within this temporal window. The user will need to acquire a new token to regain access once a token times out. This value needs to be set only if the default set in configuration is not appropriate for this client. Valid values are: - 0: Tokens for this client never time out - X: Tokens time out if there is no activity for X seconds The current minimum allowed value for X is 300 (5 minutes)<br><p> <br><p> WARNING: existing tokens' timeout will not be affected (lowered) by changing this value
+     */
     @JsonProperty("accessTokenInactivityTimeoutSeconds")
     public Integer getAccessTokenInactivityTimeoutSeconds() {
         return accessTokenInactivityTimeoutSeconds;
     }
 
+    /**
+     * AccessTokenInactivityTimeoutSeconds overrides the default token inactivity timeout for tokens granted to this client. The value represents the maximum amount of time that can occur between consecutive uses of the token. Tokens become invalid if they are not used within this temporal window. The user will need to acquire a new token to regain access once a token times out. This value needs to be set only if the default set in configuration is not appropriate for this client. Valid values are: - 0: Tokens for this client never time out - X: Tokens time out if there is no activity for X seconds The current minimum allowed value for X is 300 (5 minutes)<br><p> <br><p> WARNING: existing tokens' timeout will not be affected (lowered) by changing this value
+     */
     @JsonProperty("accessTokenInactivityTimeoutSeconds")
     public void setAccessTokenInactivityTimeoutSeconds(Integer accessTokenInactivityTimeoutSeconds) {
         this.accessTokenInactivityTimeoutSeconds = accessTokenInactivityTimeoutSeconds;
     }
 
+    /**
+     * AccessTokenMaxAgeSeconds overrides the default access token max age for tokens granted to this client. 0 means no expiration.
+     */
     @JsonProperty("accessTokenMaxAgeSeconds")
     public Integer getAccessTokenMaxAgeSeconds() {
         return accessTokenMaxAgeSeconds;
     }
 
+    /**
+     * AccessTokenMaxAgeSeconds overrides the default access token max age for tokens granted to this client. 0 means no expiration.
+     */
     @JsonProperty("accessTokenMaxAgeSeconds")
     public void setAccessTokenMaxAgeSeconds(Integer accessTokenMaxAgeSeconds) {
         this.accessTokenMaxAgeSeconds = accessTokenMaxAgeSeconds;
     }
 
+    /**
+     * AdditionalSecrets holds other secrets that may be used to identify the client.  This is useful for rotation and for service account token validation
+     */
     @JsonProperty("additionalSecrets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getAdditionalSecrets() {
         return additionalSecrets;
     }
 
+    /**
+     * AdditionalSecrets holds other secrets that may be used to identify the client.  This is useful for rotation and for service account token validation
+     */
     @JsonProperty("additionalSecrets")
     public void setAdditionalSecrets(List<String> additionalSecrets) {
         this.additionalSecrets = additionalSecrets;
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -178,25 +193,31 @@ public class OAuthClient implements Editable<OAuthClientBuilder>, HasMetadata
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
+    /**
+     * GrantMethod is a required field which determines how to handle grants for this client. Valid grant handling methods are:<br><p>  - auto:   always approves grant requests, useful for trusted clients<br><p>  - prompt: prompts the end user for approval of grant requests, useful for third-party clients
+     */
     @JsonProperty("grantMethod")
     public String getGrantMethod() {
         return grantMethod;
     }
 
+    /**
+     * GrantMethod is a required field which determines how to handle grants for this client. Valid grant handling methods are:<br><p>  - auto:   always approves grant requests, useful for trusted clients<br><p>  - prompt: prompts the end user for approval of grant requests, useful for third-party clients
+     */
     @JsonProperty("grantMethod")
     public void setGrantMethod(String grantMethod) {
         this.grantMethod = grantMethod;
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -204,60 +225,90 @@ public class OAuthClient implements Editable<OAuthClientBuilder>, HasMetadata
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * OAuthClient describes an OAuth client<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * OAuthClient describes an OAuth client<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * RedirectURIs is the valid redirection URIs associated with a client
+     */
     @JsonProperty("redirectURIs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getRedirectURIs() {
         return redirectURIs;
     }
 
+    /**
+     * RedirectURIs is the valid redirection URIs associated with a client
+     */
     @JsonProperty("redirectURIs")
     public void setRedirectURIs(List<String> redirectURIs) {
         this.redirectURIs = redirectURIs;
     }
 
+    /**
+     * RespondWithChallenges indicates whether the client wants authentication needed responses made in the form of challenges instead of redirects
+     */
     @JsonProperty("respondWithChallenges")
     public Boolean getRespondWithChallenges() {
         return respondWithChallenges;
     }
 
+    /**
+     * RespondWithChallenges indicates whether the client wants authentication needed responses made in the form of challenges instead of redirects
+     */
     @JsonProperty("respondWithChallenges")
     public void setRespondWithChallenges(Boolean respondWithChallenges) {
         this.respondWithChallenges = respondWithChallenges;
     }
 
+    /**
+     * ScopeRestrictions describes which scopes this client can request.  Each requested scope is checked against each restriction.  If any restriction matches, then the scope is allowed. If no restriction matches, then the scope is denied.
+     */
     @JsonProperty("scopeRestrictions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ScopeRestriction> getScopeRestrictions() {
         return scopeRestrictions;
     }
 
+    /**
+     * ScopeRestrictions describes which scopes this client can request.  Each requested scope is checked against each restriction.  If any restriction matches, then the scope is allowed. If no restriction matches, then the scope is denied.
+     */
     @JsonProperty("scopeRestrictions")
     public void setScopeRestrictions(List<ScopeRestriction> scopeRestrictions) {
         this.scopeRestrictions = scopeRestrictions;
     }
 
+    /**
+     * Secret is the unique secret associated with a client
+     */
     @JsonProperty("secret")
     public String getSecret() {
         return secret;
     }
 
+    /**
+     * Secret is the unique secret associated with a client
+     */
     @JsonProperty("secret")
     public void setSecret(String secret) {
         this.secret = secret;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * GenericControllerConfig provides information to configure a controller
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class GenericControllerConfig implements Editable<GenericControllerConfig
         this.servingInfo = servingInfo;
     }
 
+    /**
+     * GenericControllerConfig provides information to configure a controller
+     */
     @JsonProperty("authentication")
     public DelegatedAuthentication getAuthentication() {
         return authentication;
     }
 
+    /**
+     * GenericControllerConfig provides information to configure a controller
+     */
     @JsonProperty("authentication")
     public void setAuthentication(DelegatedAuthentication authentication) {
         this.authentication = authentication;
     }
 
+    /**
+     * GenericControllerConfig provides information to configure a controller
+     */
     @JsonProperty("authorization")
     public DelegatedAuthorization getAuthorization() {
         return authorization;
     }
 
+    /**
+     * GenericControllerConfig provides information to configure a controller
+     */
     @JsonProperty("authorization")
     public void setAuthorization(DelegatedAuthorization authorization) {
         this.authorization = authorization;
     }
 
+    /**
+     * GenericControllerConfig provides information to configure a controller
+     */
     @JsonProperty("leaderElection")
     public LeaderElection getLeaderElection() {
         return leaderElection;
     }
 
+    /**
+     * GenericControllerConfig provides information to configure a controller
+     */
     @JsonProperty("leaderElection")
     public void setLeaderElection(LeaderElection leaderElection) {
         this.leaderElection = leaderElection;
     }
 
+    /**
+     * GenericControllerConfig provides information to configure a controller
+     */
     @JsonProperty("servingInfo")
     public HTTPServingInfo getServingInfo() {
         return servingInfo;
     }
 
+    /**
+     * GenericControllerConfig provides information to configure a controller
+     */
     @JsonProperty("servingInfo")
     public void setServingInfo(HTTPServingInfo servingInfo) {
         this.servingInfo = servingInfo;

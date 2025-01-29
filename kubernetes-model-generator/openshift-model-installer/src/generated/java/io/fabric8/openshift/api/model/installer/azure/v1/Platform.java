@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Platform stores all the global configuration that all machinesets use.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -131,142 +134,226 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
         this.virtualNetwork = virtualNetwork;
     }
 
+    /**
+     * ARMEndpoint is the endpoint for the Azure API when installing on Azure Stack.
+     */
     @JsonProperty("armEndpoint")
     public String getArmEndpoint() {
         return armEndpoint;
     }
 
+    /**
+     * ARMEndpoint is the endpoint for the Azure API when installing on Azure Stack.
+     */
     @JsonProperty("armEndpoint")
     public void setArmEndpoint(String armEndpoint) {
         this.armEndpoint = armEndpoint;
     }
 
+    /**
+     * BaseDomainResourceGroupName specifies the resource group where the Azure DNS zone for the base domain is found. This field is optional when creating a private cluster, otherwise required.
+     */
     @JsonProperty("baseDomainResourceGroupName")
     public String getBaseDomainResourceGroupName() {
         return baseDomainResourceGroupName;
     }
 
+    /**
+     * BaseDomainResourceGroupName specifies the resource group where the Azure DNS zone for the base domain is found. This field is optional when creating a private cluster, otherwise required.
+     */
     @JsonProperty("baseDomainResourceGroupName")
     public void setBaseDomainResourceGroupName(String baseDomainResourceGroupName) {
         this.baseDomainResourceGroupName = baseDomainResourceGroupName;
     }
 
+    /**
+     * cloudName is the name of the Azure cloud environment which can be used to configure the Azure SDK with the appropriate Azure API endpoints. If empty, the value is equal to "AzurePublicCloud".
+     */
     @JsonProperty("cloudName")
     public String getCloudName() {
         return cloudName;
     }
 
+    /**
+     * cloudName is the name of the Azure cloud environment which can be used to configure the Azure SDK with the appropriate Azure API endpoints. If empty, the value is equal to "AzurePublicCloud".
+     */
     @JsonProperty("cloudName")
     public void setCloudName(String cloudName) {
         this.cloudName = cloudName;
     }
 
+    /**
+     * ClusterOSImage is the url of a storage blob in the Azure Stack environment containing an RHCOS VHD. This field is required for Azure Stack and not applicable to Azure.
+     */
     @JsonProperty("clusterOSImage")
     public String getClusterOSImage() {
         return clusterOSImage;
     }
 
+    /**
+     * ClusterOSImage is the url of a storage blob in the Azure Stack environment containing an RHCOS VHD. This field is required for Azure Stack and not applicable to Azure.
+     */
     @JsonProperty("clusterOSImage")
     public void setClusterOSImage(String clusterOSImage) {
         this.clusterOSImage = clusterOSImage;
     }
 
+    /**
+     * ComputeSubnet specifies an existing subnet for use by compute nodes
+     */
     @JsonProperty("computeSubnet")
     public String getComputeSubnet() {
         return computeSubnet;
     }
 
+    /**
+     * ComputeSubnet specifies an existing subnet for use by compute nodes
+     */
     @JsonProperty("computeSubnet")
     public void setComputeSubnet(String computeSubnet) {
         this.computeSubnet = computeSubnet;
     }
 
+    /**
+     * ControlPlaneSubnet specifies an existing subnet for use by the control plane nodes
+     */
     @JsonProperty("controlPlaneSubnet")
     public String getControlPlaneSubnet() {
         return controlPlaneSubnet;
     }
 
+    /**
+     * ControlPlaneSubnet specifies an existing subnet for use by the control plane nodes
+     */
     @JsonProperty("controlPlaneSubnet")
     public void setControlPlaneSubnet(String controlPlaneSubnet) {
         this.controlPlaneSubnet = controlPlaneSubnet;
     }
 
+    /**
+     * Platform stores all the global configuration that all machinesets use.
+     */
     @JsonProperty("customerManagedKey")
     public CustomerManagedKey getCustomerManagedKey() {
         return customerManagedKey;
     }
 
+    /**
+     * Platform stores all the global configuration that all machinesets use.
+     */
     @JsonProperty("customerManagedKey")
     public void setCustomerManagedKey(CustomerManagedKey customerManagedKey) {
         this.customerManagedKey = customerManagedKey;
     }
 
+    /**
+     * Platform stores all the global configuration that all machinesets use.
+     */
     @JsonProperty("defaultMachinePlatform")
     public MachinePool getDefaultMachinePlatform() {
         return defaultMachinePlatform;
     }
 
+    /**
+     * Platform stores all the global configuration that all machinesets use.
+     */
     @JsonProperty("defaultMachinePlatform")
     public void setDefaultMachinePlatform(MachinePool defaultMachinePlatform) {
         this.defaultMachinePlatform = defaultMachinePlatform;
     }
 
+    /**
+     * NetworkResourceGroupName specifies the network resource group that contains an existing VNet
+     */
     @JsonProperty("networkResourceGroupName")
     public String getNetworkResourceGroupName() {
         return networkResourceGroupName;
     }
 
+    /**
+     * NetworkResourceGroupName specifies the network resource group that contains an existing VNet
+     */
     @JsonProperty("networkResourceGroupName")
     public void setNetworkResourceGroupName(String networkResourceGroupName) {
         this.networkResourceGroupName = networkResourceGroupName;
     }
 
+    /**
+     * OutboundType is a strategy for how egress from cluster is achieved. When not specified default is "Loadbalancer". "NatGateway" is only available in TechPreview.
+     */
     @JsonProperty("outboundType")
     public String getOutboundType() {
         return outboundType;
     }
 
+    /**
+     * OutboundType is a strategy for how egress from cluster is achieved. When not specified default is "Loadbalancer". "NatGateway" is only available in TechPreview.
+     */
     @JsonProperty("outboundType")
     public void setOutboundType(String outboundType) {
         this.outboundType = outboundType;
     }
 
+    /**
+     * Region specifies the Azure region where the cluster will be created.
+     */
     @JsonProperty("region")
     public String getRegion() {
         return region;
     }
 
+    /**
+     * Region specifies the Azure region where the cluster will be created.
+     */
     @JsonProperty("region")
     public void setRegion(String region) {
         this.region = region;
     }
 
+    /**
+     * ResourceGroupName is the name of an already existing resource group where the cluster should be installed. This resource group should only be used for this specific cluster and the cluster components will assume ownership of all resources in the resource group. Destroying the cluster using installer will delete this resource group. This resource group must be empty with no other resources when trying to use it for creating a cluster. If empty, a new resource group will created for the cluster.
+     */
     @JsonProperty("resourceGroupName")
     public String getResourceGroupName() {
         return resourceGroupName;
     }
 
+    /**
+     * ResourceGroupName is the name of an already existing resource group where the cluster should be installed. This resource group should only be used for this specific cluster and the cluster components will assume ownership of all resources in the resource group. Destroying the cluster using installer will delete this resource group. This resource group must be empty with no other resources when trying to use it for creating a cluster. If empty, a new resource group will created for the cluster.
+     */
     @JsonProperty("resourceGroupName")
     public void setResourceGroupName(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
     }
 
+    /**
+     * UserTags has additional keys and values that the installer will add as tags to all resources that it creates on AzurePublicCloud alone. Resources created by the cluster itself may not include these tags.
+     */
     @JsonProperty("userTags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getUserTags() {
         return userTags;
     }
 
+    /**
+     * UserTags has additional keys and values that the installer will add as tags to all resources that it creates on AzurePublicCloud alone. Resources created by the cluster itself may not include these tags.
+     */
     @JsonProperty("userTags")
     public void setUserTags(Map<String, String> userTags) {
         this.userTags = userTags;
     }
 
+    /**
+     * VirtualNetwork specifies the name of an existing VNet for the installer to use
+     */
     @JsonProperty("virtualNetwork")
     public String getVirtualNetwork() {
         return virtualNetwork;
     }
 
+    /**
+     * VirtualNetwork specifies the name of an existing VNet for the installer to use
+     */
     @JsonProperty("virtualNetwork")
     public void setVirtualNetwork(String virtualNetwork) {
         this.virtualNetwork = virtualNetwork;

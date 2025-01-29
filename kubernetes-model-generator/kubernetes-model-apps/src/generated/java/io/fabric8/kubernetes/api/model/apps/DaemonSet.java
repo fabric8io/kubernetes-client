@@ -37,6 +37,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DaemonSet represents the configuration of a daemon set.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -76,14 +79,8 @@ import lombok.experimental.Accessors;
 public class DaemonSet implements Editable<DaemonSetBuilder>, HasMetadata, Namespaced
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "apps/v1";
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "DaemonSet";
     @JsonProperty("metadata")
@@ -111,7 +108,7 @@ public class DaemonSet implements Editable<DaemonSetBuilder>, HasMetadata, Names
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -119,7 +116,7 @@ public class DaemonSet implements Editable<DaemonSetBuilder>, HasMetadata, Names
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -127,7 +124,7 @@ public class DaemonSet implements Editable<DaemonSetBuilder>, HasMetadata, Names
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -135,38 +132,56 @@ public class DaemonSet implements Editable<DaemonSetBuilder>, HasMetadata, Names
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * DaemonSet represents the configuration of a daemon set.
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * DaemonSet represents the configuration of a daemon set.
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * DaemonSet represents the configuration of a daemon set.
+     */
     @JsonProperty("spec")
     public DaemonSetSpec getSpec() {
         return spec;
     }
 
+    /**
+     * DaemonSet represents the configuration of a daemon set.
+     */
     @JsonProperty("spec")
     public void setSpec(DaemonSetSpec spec) {
         this.spec = spec;
     }
 
+    /**
+     * DaemonSet represents the configuration of a daemon set.
+     */
     @JsonProperty("status")
     public DaemonSetStatus getStatus() {
         return status;
     }
 
+    /**
+     * DaemonSet represents the configuration of a daemon set.
+     */
     @JsonProperty("status")
     public void setStatus(DaemonSetStatus status) {
         this.status = status;

@@ -85,22 +85,34 @@ public class CertificateSigningRequestStatus implements Editable<CertificateSign
         this.conditions = conditions;
     }
 
+    /**
+     * If request was approved, the controller will place the issued certificate here.
+     */
     @JsonProperty("certificate")
     public String getCertificate() {
         return certificate;
     }
 
+    /**
+     * If request was approved, the controller will place the issued certificate here.
+     */
     @JsonProperty("certificate")
     public void setCertificate(String certificate) {
         this.certificate = certificate;
     }
 
+    /**
+     * Conditions applied to the request, such as approval or denial.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<CertificateSigningRequestCondition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Conditions applied to the request, such as approval or denial.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<CertificateSigningRequestCondition> conditions) {
         this.conditions = conditions;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * APIEndpoint represents a reachable Kubernetes API endpoint.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class APIEndpoint implements Editable<APIEndpointBuilder>, KubernetesReso
         this.port = port;
     }
 
+    /**
+     * Host is the hostname on which the API server is serving.
+     */
     @JsonProperty("host")
     public String getHost() {
         return host;
     }
 
+    /**
+     * Host is the hostname on which the API server is serving.
+     */
     @JsonProperty("host")
     public void setHost(String host) {
         this.host = host;
     }
 
+    /**
+     * Port is the port on which the API server is serving.
+     */
     @JsonProperty("port")
     public Integer getPort() {
         return port;
     }
 
+    /**
+     * Port is the port on which the API server is serving.
+     */
     @JsonProperty("port")
     public void setPort(Integer port) {
         this.port = port;

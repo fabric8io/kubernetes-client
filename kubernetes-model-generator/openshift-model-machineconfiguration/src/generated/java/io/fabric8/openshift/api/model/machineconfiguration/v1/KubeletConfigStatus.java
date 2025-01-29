@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * KubeletConfigStatus defines the observed state of a KubeletConfig
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class KubeletConfigStatus implements Editable<KubeletConfigStatusBuilder>
         this.observedGeneration = observedGeneration;
     }
 
+    /**
+     * conditions represents the latest available observations of current state.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<KubeletConfigCondition> getConditions() {
         return conditions;
     }
 
+    /**
+     * conditions represents the latest available observations of current state.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<KubeletConfigCondition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * observedGeneration represents the generation observed by the controller.
+     */
     @JsonProperty("observedGeneration")
     public Long getObservedGeneration() {
         return observedGeneration;
     }
 
+    /**
+     * observedGeneration represents the generation observed by the controller.
+     */
     @JsonProperty("observedGeneration")
     public void setObservedGeneration(Long observedGeneration) {
         this.observedGeneration = observedGeneration;

@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ResourceTagReference is a reference to a specific AlibabaCloud resource by ID, or tags. Only one of ID or Tags may be specified. Specifying more than one will result in a validation error.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -93,42 +96,66 @@ public class AlibabaResourceReference implements Editable<AlibabaResourceReferen
         this.type = type;
     }
 
+    /**
+     * ID of resource
+     */
     @JsonProperty("id")
     public String getId() {
         return id;
     }
 
+    /**
+     * ID of resource
+     */
     @JsonProperty("id")
     public void setId(String id) {
         this.id = id;
     }
 
+    /**
+     * Name of the resource
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name of the resource
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Tags is a set of metadata based upon ECS object tags used to identify a resource. For details about usage when multiple resources are found, please see the owning parent field documentation.
+     */
     @JsonProperty("tags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Tag> getTags() {
         return tags;
     }
 
+    /**
+     * Tags is a set of metadata based upon ECS object tags used to identify a resource. For details about usage when multiple resources are found, please see the owning parent field documentation.
+     */
     @JsonProperty("tags")
     public void setTags(List<Tag> tags) {
         this.tags = tags;
     }
 
+    /**
+     * type identifies the resource reference type for this entry.
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * type identifies the resource reference type for this entry.
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

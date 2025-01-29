@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * WindowsSecurityContextOptions contain Windows-specific options and credentials.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -61,41 +64,65 @@ public class WindowsSecurityContextOptions implements Editable<WindowsSecurityCo
         this.runAsUserName = runAsUserName;
     }
 
+    /**
+     * GMSACredentialSpec is where the GMSA admission webhook (https://github.com/kubernetes-sigs/windows-gmsa) inlines the contents of the GMSA credential spec named by the GMSACredentialSpecName field.
+     */
     @JsonProperty("gmsaCredentialSpec")
     public String getGmsaCredentialSpec() {
         return gmsaCredentialSpec;
     }
 
+    /**
+     * GMSACredentialSpec is where the GMSA admission webhook (https://github.com/kubernetes-sigs/windows-gmsa) inlines the contents of the GMSA credential spec named by the GMSACredentialSpecName field.
+     */
     @JsonProperty("gmsaCredentialSpec")
     public void setGmsaCredentialSpec(String gmsaCredentialSpec) {
         this.gmsaCredentialSpec = gmsaCredentialSpec;
     }
 
+    /**
+     * GMSACredentialSpecName is the name of the GMSA credential spec to use.
+     */
     @JsonProperty("gmsaCredentialSpecName")
     public String getGmsaCredentialSpecName() {
         return gmsaCredentialSpecName;
     }
 
+    /**
+     * GMSACredentialSpecName is the name of the GMSA credential spec to use.
+     */
     @JsonProperty("gmsaCredentialSpecName")
     public void setGmsaCredentialSpecName(String gmsaCredentialSpecName) {
         this.gmsaCredentialSpecName = gmsaCredentialSpecName;
     }
 
+    /**
+     * HostProcess determines if a container should be run as a 'Host Process' container. All of a Pod's containers must have the same effective HostProcess value (it is not allowed to have a mix of HostProcess containers and non-HostProcess containers). In addition, if HostProcess is true then HostNetwork must also be set to true.
+     */
     @JsonProperty("hostProcess")
     public Boolean getHostProcess() {
         return hostProcess;
     }
 
+    /**
+     * HostProcess determines if a container should be run as a 'Host Process' container. All of a Pod's containers must have the same effective HostProcess value (it is not allowed to have a mix of HostProcess containers and non-HostProcess containers). In addition, if HostProcess is true then HostNetwork must also be set to true.
+     */
     @JsonProperty("hostProcess")
     public void setHostProcess(Boolean hostProcess) {
         this.hostProcess = hostProcess;
     }
 
+    /**
+     * The UserName in Windows to run the entrypoint of the container process. Defaults to the user specified in image metadata if unspecified. May also be set in PodSecurityContext. If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence.
+     */
     @JsonProperty("runAsUserName")
     public String getRunAsUserName() {
         return runAsUserName;
     }
 
+    /**
+     * The UserName in Windows to run the entrypoint of the container process. Defaults to the user specified in image metadata if unspecified. May also be set in PodSecurityContext. If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence.
+     */
     @JsonProperty("runAsUserName")
     public void setRunAsUserName(String runAsUserName) {
         this.runAsUserName = runAsUserName;

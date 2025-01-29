@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * GCPGPUConfig describes type and count of GPUs attached to the instance on GCP.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class GCPGPUConfig implements Editable<GCPGPUConfigBuilder>, KubernetesRe
         this.type = type;
     }
 
+    /**
+     * Count is the number of GPUs to be attached to an instance.
+     */
     @JsonProperty("count")
     public Integer getCount() {
         return count;
     }
 
+    /**
+     * Count is the number of GPUs to be attached to an instance.
+     */
     @JsonProperty("count")
     public void setCount(Integer count) {
         this.count = count;
     }
 
+    /**
+     * Type is the type of GPU to be attached to an instance. Supported GPU types are: nvidia-tesla-k80, nvidia-tesla-p100, nvidia-tesla-v100, nvidia-tesla-p4, nvidia-tesla-t4
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * Type is the type of GPU to be attached to an instance. Supported GPU types are: nvidia-tesla-k80, nvidia-tesla-p100, nvidia-tesla-v100, nvidia-tesla-p4, nvidia-tesla-t4
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

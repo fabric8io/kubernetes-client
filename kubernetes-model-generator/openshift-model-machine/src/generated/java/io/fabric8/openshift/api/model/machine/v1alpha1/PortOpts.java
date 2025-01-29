@@ -145,166 +145,262 @@ public class PortOpts implements Editable<PortOptsBuilder>, KubernetesResource
         this.vnicType = vnicType;
     }
 
+    /**
+     * adminStateUp sets the administrative state of the created port to up (true), or down (false).
+     */
     @JsonProperty("adminStateUp")
     public Boolean getAdminStateUp() {
         return adminStateUp;
     }
 
+    /**
+     * adminStateUp sets the administrative state of the created port to up (true), or down (false).
+     */
     @JsonProperty("adminStateUp")
     public void setAdminStateUp(Boolean adminStateUp) {
         this.adminStateUp = adminStateUp;
     }
 
+    /**
+     * allowedAddressPairs specifies a set of allowed address pairs to add to the port.
+     */
     @JsonProperty("allowedAddressPairs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<AddressPair> getAllowedAddressPairs() {
         return allowedAddressPairs;
     }
 
+    /**
+     * allowedAddressPairs specifies a set of allowed address pairs to add to the port.
+     */
     @JsonProperty("allowedAddressPairs")
     public void setAllowedAddressPairs(List<AddressPair> allowedAddressPairs) {
         this.allowedAddressPairs = allowedAddressPairs;
     }
 
+    /**
+     * description specifies the description of the created port.
+     */
     @JsonProperty("description")
     public String getDescription() {
         return description;
     }
 
+    /**
+     * description specifies the description of the created port.
+     */
     @JsonProperty("description")
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * fixedIPs specifies a set of fixed IPs to assign to the port. They must all be valid for the port's network.
+     */
     @JsonProperty("fixedIPs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<FixedIPs> getFixedIPs() {
         return fixedIPs;
     }
 
+    /**
+     * fixedIPs specifies a set of fixed IPs to assign to the port. They must all be valid for the port's network.
+     */
     @JsonProperty("fixedIPs")
     public void setFixedIPs(List<FixedIPs> fixedIPs) {
         this.fixedIPs = fixedIPs;
     }
 
+    /**
+     * The ID of the host where the port is allocated. Do not use this field: it cannot be used correctly. Deprecated: hostID is silently ignored. It will be removed with no replacement.
+     */
     @JsonProperty("hostID")
     public String getHostID() {
         return hostID;
     }
 
+    /**
+     * The ID of the host where the port is allocated. Do not use this field: it cannot be used correctly. Deprecated: hostID is silently ignored. It will be removed with no replacement.
+     */
     @JsonProperty("hostID")
     public void setHostID(String hostID) {
         this.hostID = hostID;
     }
 
+    /**
+     * macAddress specifies the MAC address of the created port.
+     */
     @JsonProperty("macAddress")
     public String getMacAddress() {
         return macAddress;
     }
 
+    /**
+     * macAddress specifies the MAC address of the created port.
+     */
     @JsonProperty("macAddress")
     public void setMacAddress(String macAddress) {
         this.macAddress = macAddress;
     }
 
+    /**
+     * If nameSuffix is specified the created port will be named &lt;machine name&gt;-&lt;nameSuffix&gt;. If not specified the port will be named &lt;machine-name&gt;-&lt;index of this port&gt;.
+     */
     @JsonProperty("nameSuffix")
     public String getNameSuffix() {
         return nameSuffix;
     }
 
+    /**
+     * If nameSuffix is specified the created port will be named &lt;machine name&gt;-&lt;nameSuffix&gt;. If not specified the port will be named &lt;machine-name&gt;-&lt;index of this port&gt;.
+     */
     @JsonProperty("nameSuffix")
     public void setNameSuffix(String nameSuffix) {
         this.nameSuffix = nameSuffix;
     }
 
+    /**
+     * networkID is the ID of the network the port will be created in. It is required.
+     */
     @JsonProperty("networkID")
     public String getNetworkID() {
         return networkID;
     }
 
+    /**
+     * networkID is the ID of the network the port will be created in. It is required.
+     */
     @JsonProperty("networkID")
     public void setNetworkID(String networkID) {
         this.networkID = networkID;
     }
 
+    /**
+     * enable or disable security on a given port incompatible with securityGroups and allowedAddressPairs
+     */
     @JsonProperty("portSecurity")
     public Boolean getPortSecurity() {
         return portSecurity;
     }
 
+    /**
+     * enable or disable security on a given port incompatible with securityGroups and allowedAddressPairs
+     */
     @JsonProperty("portSecurity")
     public void setPortSecurity(Boolean portSecurity) {
         this.portSecurity = portSecurity;
     }
 
+    /**
+     * A dictionary that enables the application running on the specified host to pass and receive virtual network interface (VIF) port-specific information to the plug-in.
+     */
     @JsonProperty("profile")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getProfile() {
         return profile;
     }
 
+    /**
+     * A dictionary that enables the application running on the specified host to pass and receive virtual network interface (VIF) port-specific information to the plug-in.
+     */
     @JsonProperty("profile")
     public void setProfile(Map<String, String> profile) {
         this.profile = profile;
     }
 
+    /**
+     * projectID specifies the project ID of the created port. Note that this requires OpenShift to have administrative permissions, which is typically not the case. Use of this field is not recommended.
+     */
     @JsonProperty("projectID")
     public String getProjectID() {
         return projectID;
     }
 
+    /**
+     * projectID specifies the project ID of the created port. Note that this requires OpenShift to have administrative permissions, which is typically not the case. Use of this field is not recommended.
+     */
     @JsonProperty("projectID")
     public void setProjectID(String projectID) {
         this.projectID = projectID;
     }
 
+    /**
+     * securityGroups specifies a set of security group UUIDs to use instead of the machine's default security groups. The default security groups will be used if this is left empty or not specified.
+     */
     @JsonProperty("securityGroups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getSecurityGroups() {
         return securityGroups;
     }
 
+    /**
+     * securityGroups specifies a set of security group UUIDs to use instead of the machine's default security groups. The default security groups will be used if this is left empty or not specified.
+     */
     @JsonProperty("securityGroups")
     public void setSecurityGroups(List<String> securityGroups) {
         this.securityGroups = securityGroups;
     }
 
+    /**
+     * tags species a set of tags to add to the port.
+     */
     @JsonProperty("tags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getTags() {
         return tags;
     }
 
+    /**
+     * tags species a set of tags to add to the port.
+     */
     @JsonProperty("tags")
     public void setTags(List<String> tags) {
         this.tags = tags;
     }
 
+    /**
+     * tenantID specifies the tenant ID of the created port. Note that this requires OpenShift to have administrative permissions, which is typically not the case. Use of this field is not recommended. Deprecated: use projectID instead. It will be ignored if projectID is set.
+     */
     @JsonProperty("tenantID")
     public String getTenantID() {
         return tenantID;
     }
 
+    /**
+     * tenantID specifies the tenant ID of the created port. Note that this requires OpenShift to have administrative permissions, which is typically not the case. Use of this field is not recommended. Deprecated: use projectID instead. It will be ignored if projectID is set.
+     */
     @JsonProperty("tenantID")
     public void setTenantID(String tenantID) {
         this.tenantID = tenantID;
     }
 
+    /**
+     * Enables and disables trunk at port level. If not provided, openStackMachine.Spec.Trunk is inherited.
+     */
     @JsonProperty("trunk")
     public Boolean getTrunk() {
         return trunk;
     }
 
+    /**
+     * Enables and disables trunk at port level. If not provided, openStackMachine.Spec.Trunk is inherited.
+     */
     @JsonProperty("trunk")
     public void setTrunk(Boolean trunk) {
         this.trunk = trunk;
     }
 
+    /**
+     * The virtual network interface card (vNIC) type that is bound to the neutron port.
+     */
     @JsonProperty("vnicType")
     public String getVnicType() {
         return vnicType;
     }
 
+    /**
+     * The virtual network interface card (vNIC) type that is bound to the neutron port.
+     */
     @JsonProperty("vnicType")
     public void setVnicType(String vnicType) {
         this.vnicType = vnicType;

@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ProxyConfig defines the configuration knobs for kubeproxy All of these are optional and have sensible defaults
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -88,32 +91,50 @@ public class ProxyConfig implements Editable<ProxyConfigBuilder>, KubernetesReso
         this.proxyArguments = proxyArguments;
     }
 
+    /**
+     * The address to "bind" on Defaults to 0.0.0.0
+     */
     @JsonProperty("bindAddress")
     public String getBindAddress() {
         return bindAddress;
     }
 
+    /**
+     * The address to "bind" on Defaults to 0.0.0.0
+     */
     @JsonProperty("bindAddress")
     public void setBindAddress(String bindAddress) {
         this.bindAddress = bindAddress;
     }
 
+    /**
+     * An internal kube-proxy parameter. In older releases of OCP, this sometimes needed to be adjusted in large clusters for performance reasons, but this is no longer necessary, and there is no reason to change this from the default value. Default: 30s
+     */
     @JsonProperty("iptablesSyncPeriod")
     public String getIptablesSyncPeriod() {
         return iptablesSyncPeriod;
     }
 
+    /**
+     * An internal kube-proxy parameter. In older releases of OCP, this sometimes needed to be adjusted in large clusters for performance reasons, but this is no longer necessary, and there is no reason to change this from the default value. Default: 30s
+     */
     @JsonProperty("iptablesSyncPeriod")
     public void setIptablesSyncPeriod(String iptablesSyncPeriod) {
         this.iptablesSyncPeriod = iptablesSyncPeriod;
     }
 
+    /**
+     * Any additional arguments to pass to the kubeproxy process
+     */
     @JsonProperty("proxyArguments")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, List<String>> getProxyArguments() {
         return proxyArguments;
     }
 
+    /**
+     * Any additional arguments to pass to the kubeproxy process
+     */
     @JsonProperty("proxyArguments")
     public void setProxyArguments(Map<String, List<String>> proxyArguments) {
         this.proxyArguments = proxyArguments;

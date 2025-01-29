@@ -37,6 +37,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ApiServerSource is the Schema for the apiserversources API
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -76,14 +79,8 @@ import lombok.experimental.Accessors;
 public class ApiServerSource implements Editable<ApiServerSourceBuilder>, HasMetadata, Namespaced
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "sources.knative.dev/v1";
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "ApiServerSource";
     @JsonProperty("metadata")
@@ -111,7 +108,7 @@ public class ApiServerSource implements Editable<ApiServerSourceBuilder>, HasMet
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -119,7 +116,7 @@ public class ApiServerSource implements Editable<ApiServerSourceBuilder>, HasMet
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -127,7 +124,7 @@ public class ApiServerSource implements Editable<ApiServerSourceBuilder>, HasMet
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -135,38 +132,56 @@ public class ApiServerSource implements Editable<ApiServerSourceBuilder>, HasMet
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * ApiServerSource is the Schema for the apiserversources API
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * ApiServerSource is the Schema for the apiserversources API
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * ApiServerSource is the Schema for the apiserversources API
+     */
     @JsonProperty("spec")
     public ApiServerSourceSpec getSpec() {
         return spec;
     }
 
+    /**
+     * ApiServerSource is the Schema for the apiserversources API
+     */
     @JsonProperty("spec")
     public void setSpec(ApiServerSourceSpec spec) {
         this.spec = spec;
     }
 
+    /**
+     * ApiServerSource is the Schema for the apiserversources API
+     */
     @JsonProperty("status")
     public ApiServerSourceStatus getStatus() {
         return status;
     }
 
+    /**
+     * ApiServerSource is the Schema for the apiserversources API
+     */
     @JsonProperty("status")
     public void setStatus(ApiServerSourceStatus status) {
         this.status = status;

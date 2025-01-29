@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Destination represents a target of an invocation over HTTP.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -102,71 +105,113 @@ public class Destination implements Editable<DestinationBuilder>, KubernetesReso
         this.uri = uri;
     }
 
+    /**
+     * CACerts are Certification Authority (CA) certificates in PEM format according to https://www.rfc-editor.org/rfc/rfc7468. If set, these CAs are appended to the set of CAs provided by the Addressable target, if any.
+     */
     @JsonProperty("CACerts")
     public String getCACerts() {
         return cACerts;
     }
 
+    /**
+     * CACerts are Certification Authority (CA) certificates in PEM format according to https://www.rfc-editor.org/rfc/rfc7468. If set, these CAs are appended to the set of CAs provided by the Addressable target, if any.
+     */
     @JsonProperty("CACerts")
     public void setCACerts(String cACerts) {
         this.cACerts = cACerts;
     }
 
+    /**
+     * Destination represents a target of an invocation over HTTP.
+     */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
         return apiVersion;
     }
 
+    /**
+     * Destination represents a target of an invocation over HTTP.
+     */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
+    /**
+     * Destination represents a target of an invocation over HTTP.
+     */
     @JsonProperty("kind")
     public String getKind() {
         return kind;
     }
 
+    /**
+     * Destination represents a target of an invocation over HTTP.
+     */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * Destination represents a target of an invocation over HTTP.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Destination represents a target of an invocation over HTTP.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Destination represents a target of an invocation over HTTP.
+     */
     @JsonProperty("namespace")
     public String getNamespace() {
         return namespace;
     }
 
+    /**
+     * Destination represents a target of an invocation over HTTP.
+     */
     @JsonProperty("namespace")
     public void setNamespace(String namespace) {
         this.namespace = namespace;
     }
 
+    /**
+     * Destination represents a target of an invocation over HTTP.
+     */
     @JsonProperty("ref")
     public ObjectReference getRef() {
         return ref;
     }
 
+    /**
+     * Destination represents a target of an invocation over HTTP.
+     */
     @JsonProperty("ref")
     public void setRef(ObjectReference ref) {
         this.ref = ref;
     }
 
+    /**
+     * Destination represents a target of an invocation over HTTP.
+     */
     @JsonProperty("uri")
     public String getUri() {
         return uri;
     }
 
+    /**
+     * Destination represents a target of an invocation over HTTP.
+     */
     @JsonProperty("uri")
     public void setUri(String uri) {
         this.uri = uri;

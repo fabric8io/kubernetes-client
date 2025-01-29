@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * BuildStatusOutput contains the status of the built image.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class BuildStatusOutput implements Editable<BuildStatusOutputBuilder>, Ku
         this.to = to;
     }
 
+    /**
+     * BuildStatusOutput contains the status of the built image.
+     */
     @JsonProperty("to")
     public BuildStatusOutputTo getTo() {
         return to;
     }
 
+    /**
+     * BuildStatusOutput contains the status of the built image.
+     */
     @JsonProperty("to")
     public void setTo(BuildStatusOutputTo to) {
         this.to = to;

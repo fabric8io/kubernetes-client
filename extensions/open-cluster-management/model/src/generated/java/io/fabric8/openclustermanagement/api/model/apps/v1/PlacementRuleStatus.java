@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PlacementRuleStatus defines the observed state of PlacementRule
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -81,12 +84,18 @@ public class PlacementRuleStatus implements Editable<PlacementRuleStatusBuilder>
         this.decisions = decisions;
     }
 
+    /**
+     * INSERT ADDITIONAL STATUS FIELD - define observed state of cluster Important: Run "make" to regenerate code after modifying this file
+     */
     @JsonProperty("decisions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PlacementDecision> getDecisions() {
         return decisions;
     }
 
+    /**
+     * INSERT ADDITIONAL STATUS FIELD - define observed state of cluster Important: Run "make" to regenerate code after modifying this file
+     */
     @JsonProperty("decisions")
     public void setDecisions(List<PlacementDecision> decisions) {
         this.decisions = decisions;

@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * BuildConfigStatus contains current state of the build config object.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class BuildConfigStatus implements Editable<BuildConfigStatusBuilder>, Ku
         this.lastVersion = lastVersion;
     }
 
+    /**
+     * ImageChangeTriggers captures the runtime state of any ImageChangeTrigger specified in the BuildConfigSpec, including the value reconciled by the OpenShift APIServer for the lastTriggeredImageID. There is a single entry in this array for each image change trigger in spec. Each trigger status references the ImageStreamTag that acts as the source of the trigger.
+     */
     @JsonProperty("imageChangeTriggers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ImageChangeTriggerStatus> getImageChangeTriggers() {
         return imageChangeTriggers;
     }
 
+    /**
+     * ImageChangeTriggers captures the runtime state of any ImageChangeTrigger specified in the BuildConfigSpec, including the value reconciled by the OpenShift APIServer for the lastTriggeredImageID. There is a single entry in this array for each image change trigger in spec. Each trigger status references the ImageStreamTag that acts as the source of the trigger.
+     */
     @JsonProperty("imageChangeTriggers")
     public void setImageChangeTriggers(List<ImageChangeTriggerStatus> imageChangeTriggers) {
         this.imageChangeTriggers = imageChangeTriggers;
     }
 
+    /**
+     * lastVersion is used to inform about number of last triggered build.
+     */
     @JsonProperty("lastVersion")
     public Long getLastVersion() {
         return lastVersion;
     }
 
+    /**
+     * lastVersion is used to inform about number of last triggered build.
+     */
     @JsonProperty("lastVersion")
     public void setLastVersion(Long lastVersion) {
         this.lastVersion = lastVersion;

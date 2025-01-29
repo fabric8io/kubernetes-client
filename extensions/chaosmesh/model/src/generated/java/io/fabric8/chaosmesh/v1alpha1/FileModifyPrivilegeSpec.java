@@ -82,21 +82,33 @@ public class FileModifyPrivilegeSpec implements Editable<FileModifyPrivilegeSpec
         this.privilege = privilege;
     }
 
+    /**
+     * FileName is the name of the file to be created, modified, deleted, renamed, or appended.
+     */
     @JsonProperty("file-name")
     public String getFileName() {
         return fileName;
     }
 
+    /**
+     * FileName is the name of the file to be created, modified, deleted, renamed, or appended.
+     */
     @JsonProperty("file-name")
     public void setFileName(String fileName) {
         this.fileName = fileName;
     }
 
+    /**
+     * Privilege is the file privilege to be set.
+     */
     @JsonProperty("privilege")
     public Long getPrivilege() {
         return privilege;
     }
 
+    /**
+     * Privilege is the file privilege to be set.
+     */
     @JsonProperty("privilege")
     public void setPrivilege(Long privilege) {
         this.privilege = privilege;

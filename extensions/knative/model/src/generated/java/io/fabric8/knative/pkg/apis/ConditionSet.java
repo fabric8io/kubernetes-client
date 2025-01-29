@@ -31,6 +31,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ConditionSet is an abstract collection of the possible ConditionType values that a particular resource might expose.  It also holds the "happy condition" for that resource, which we define to be one of Ready or Succeeded depending on whether it is a Living or Batch process respectively.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({

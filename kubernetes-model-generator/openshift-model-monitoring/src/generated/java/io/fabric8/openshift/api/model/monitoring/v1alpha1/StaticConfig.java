@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * StaticConfig defines a Prometheus static configuration. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#scrape_config
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,23 +89,35 @@ public class StaticConfig implements Editable<StaticConfigBuilder>, KubernetesRe
         this.targets = targets;
     }
 
+    /**
+     * Labels assigned to all metrics scraped from the targets.
+     */
     @JsonProperty("labels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getLabels() {
         return labels;
     }
 
+    /**
+     * Labels assigned to all metrics scraped from the targets.
+     */
     @JsonProperty("labels")
     public void setLabels(Map<String, String> labels) {
         this.labels = labels;
     }
 
+    /**
+     * List of targets for this static configuration.
+     */
     @JsonProperty("targets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getTargets() {
         return targets;
     }
 
+    /**
+     * List of targets for this static configuration.
+     */
     @JsonProperty("targets")
     public void setTargets(List<String> targets) {
         this.targets = targets;

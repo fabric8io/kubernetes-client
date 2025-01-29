@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * EmbeddedCustomRunSpec allows custom task definitions to be embedded
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -91,41 +94,65 @@ public class EmbeddedCustomRunSpec implements Editable<EmbeddedCustomRunSpecBuil
         this.spec = spec;
     }
 
+    /**
+     * EmbeddedCustomRunSpec allows custom task definitions to be embedded
+     */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
         return apiVersion;
     }
 
+    /**
+     * EmbeddedCustomRunSpec allows custom task definitions to be embedded
+     */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
+    /**
+     * EmbeddedCustomRunSpec allows custom task definitions to be embedded
+     */
     @JsonProperty("kind")
     public String getKind() {
         return kind;
     }
 
+    /**
+     * EmbeddedCustomRunSpec allows custom task definitions to be embedded
+     */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * EmbeddedCustomRunSpec allows custom task definitions to be embedded
+     */
     @JsonProperty("metadata")
     public PipelineTaskMetadata getMetadata() {
         return metadata;
     }
 
+    /**
+     * EmbeddedCustomRunSpec allows custom task definitions to be embedded
+     */
     @JsonProperty("metadata")
     public void setMetadata(PipelineTaskMetadata metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * EmbeddedCustomRunSpec allows custom task definitions to be embedded
+     */
     @JsonProperty("spec")
     public Object getSpec() {
         return spec;
     }
 
+    /**
+     * EmbeddedCustomRunSpec allows custom task definitions to be embedded
+     */
     @JsonProperty("spec")
     @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
     public void setSpec(Object spec) {

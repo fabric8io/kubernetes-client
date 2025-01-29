@@ -97,44 +97,68 @@ public class ServiceEntryStatus implements Editable<ServiceEntryStatusBuilder>, 
         this.validationMessages = validationMessages;
     }
 
+    /**
+     * List of addresses which were assigned to this ServiceEntry.
+     */
     @JsonProperty("addresses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ServiceEntryAddress> getAddresses() {
         return addresses;
     }
 
+    /**
+     * List of addresses which were assigned to this ServiceEntry.
+     */
     @JsonProperty("addresses")
     public void setAddresses(List<ServiceEntryAddress> addresses) {
         this.addresses = addresses;
     }
 
+    /**
+     * Current service state of ServiceEntry. More info: https://istio.io/docs/reference/config/config-status/
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<IstioCondition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Current service state of ServiceEntry. More info: https://istio.io/docs/reference/config/config-status/
+     */
     @JsonProperty("conditions")
     public void setConditions(List<IstioCondition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * Resource Generation to which the Reconciled Condition refers. When this value is not equal to the object's metadata generation, reconciled condition  calculation for the current generation is still in progress.  See https://istio.io/latest/docs/reference/config/config-status/ for more info.
+     */
     @JsonProperty("observedGeneration")
     public Long getObservedGeneration() {
         return observedGeneration;
     }
 
+    /**
+     * Resource Generation to which the Reconciled Condition refers. When this value is not equal to the object's metadata generation, reconciled condition  calculation for the current generation is still in progress.  See https://istio.io/latest/docs/reference/config/config-status/ for more info.
+     */
     @JsonProperty("observedGeneration")
     public void setObservedGeneration(Long observedGeneration) {
         this.observedGeneration = observedGeneration;
     }
 
+    /**
+     * Includes any errors or warnings detected by Istio's analyzers.
+     */
     @JsonProperty("validationMessages")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<AnalysisMessageBase> getValidationMessages() {
         return validationMessages;
     }
 
+    /**
+     * Includes any errors or warnings detected by Istio's analyzers.
+     */
     @JsonProperty("validationMessages")
     public void setValidationMessages(List<AnalysisMessageBase> validationMessages) {
         this.validationMessages = validationMessages;

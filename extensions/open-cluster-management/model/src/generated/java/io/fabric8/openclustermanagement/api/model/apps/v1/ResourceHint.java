@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ResourceHint is used to sort the output
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class ResourceHint implements Editable<ResourceHintBuilder>, KubernetesRe
         this.type = type;
     }
 
+    /**
+     * ResourceHint is used to sort the output
+     */
     @JsonProperty("order")
     public String getOrder() {
         return order;
     }
 
+    /**
+     * ResourceHint is used to sort the output
+     */
     @JsonProperty("order")
     public void setOrder(String order) {
         this.order = order;
     }
 
+    /**
+     * ResourceHint is used to sort the output
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * ResourceHint is used to sort the output
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

@@ -125,21 +125,33 @@ public class CatalogSourceSpec implements Editable<CatalogSourceSpecBuilder>, Ku
         this.updateStrategy = updateStrategy;
     }
 
+    /**
+     * Address is a host that OLM can use to connect to a pre-existing registry. Format: &lt;registry-host or ip&gt;:&lt;port&gt; Only used when SourceType = SourceTypeGrpc. Ignored when the Image field is set.
+     */
     @JsonProperty("address")
     public String getAddress() {
         return address;
     }
 
+    /**
+     * Address is a host that OLM can use to connect to a pre-existing registry. Format: &lt;registry-host or ip&gt;:&lt;port&gt; Only used when SourceType = SourceTypeGrpc. Ignored when the Image field is set.
+     */
     @JsonProperty("address")
     public void setAddress(String address) {
         this.address = address;
     }
 
+    /**
+     * ConfigMap is the name of the ConfigMap to be used to back a configmap-server registry. Only used when SourceType = SourceTypeConfigmap or SourceTypeInternal.
+     */
     @JsonProperty("configMap")
     public String getConfigMap() {
         return configMap;
     }
 
+    /**
+     * ConfigMap is the name of the ConfigMap to be used to back a configmap-server registry. Only used when SourceType = SourceTypeConfigmap or SourceTypeInternal.
+     */
     @JsonProperty("configMap")
     public void setConfigMap(String configMap) {
         this.configMap = configMap;
@@ -155,11 +167,17 @@ public class CatalogSourceSpec implements Editable<CatalogSourceSpecBuilder>, Ku
         this.description = description;
     }
 
+    /**
+     * Metadata
+     */
     @JsonProperty("displayName")
     public String getDisplayName() {
         return displayName;
     }
 
+    /**
+     * Metadata
+     */
     @JsonProperty("displayName")
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
@@ -185,21 +203,33 @@ public class CatalogSourceSpec implements Editable<CatalogSourceSpecBuilder>, Ku
         this.icon = icon;
     }
 
+    /**
+     * Image is an operator-registry container image to instantiate a registry-server with. Only used when SourceType = SourceTypeGrpc. If present, the address field is ignored.
+     */
     @JsonProperty("image")
     public String getImage() {
         return image;
     }
 
+    /**
+     * Image is an operator-registry container image to instantiate a registry-server with. Only used when SourceType = SourceTypeGrpc. If present, the address field is ignored.
+     */
     @JsonProperty("image")
     public void setImage(String image) {
         this.image = image;
     }
 
+    /**
+     * Priority field assigns a weight to the catalog source to prioritize them so that it can be consumed by the dependency resolver. Usage: Higher weight indicates that this catalog source is preferred over lower weighted catalog sources during dependency resolution. The range of the priority value can go from positive to negative in the range of int32. The default value to a catalog source with unassigned priority would be 0. The catalog source with the same priority values will be ranked lexicographically based on its name.
+     */
     @JsonProperty("priority")
     public Integer getPriority() {
         return priority;
     }
 
+    /**
+     * Priority field assigns a weight to the catalog source to prioritize them so that it can be consumed by the dependency resolver. Usage: Higher weight indicates that this catalog source is preferred over lower weighted catalog sources during dependency resolution. The range of the priority value can go from positive to negative in the range of int32. The default value to a catalog source with unassigned priority would be 0. The catalog source with the same priority values will be ranked lexicographically based on its name.
+     */
     @JsonProperty("priority")
     public void setPriority(Integer priority) {
         this.priority = priority;
@@ -215,22 +245,34 @@ public class CatalogSourceSpec implements Editable<CatalogSourceSpecBuilder>, Ku
         this.publisher = publisher;
     }
 
+    /**
+     * Secrets represent set of secrets that can be used to access the contents of the catalog. It is best to keep this list small, since each will need to be tried for every catalog entry.
+     */
     @JsonProperty("secrets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getSecrets() {
         return secrets;
     }
 
+    /**
+     * Secrets represent set of secrets that can be used to access the contents of the catalog. It is best to keep this list small, since each will need to be tried for every catalog entry.
+     */
     @JsonProperty("secrets")
     public void setSecrets(List<String> secrets) {
         this.secrets = secrets;
     }
 
+    /**
+     * SourceType is the type of source
+     */
     @JsonProperty("sourceType")
     public String getSourceType() {
         return sourceType;
     }
 
+    /**
+     * SourceType is the type of source
+     */
     @JsonProperty("sourceType")
     public void setSourceType(String sourceType) {
         this.sourceType = sourceType;

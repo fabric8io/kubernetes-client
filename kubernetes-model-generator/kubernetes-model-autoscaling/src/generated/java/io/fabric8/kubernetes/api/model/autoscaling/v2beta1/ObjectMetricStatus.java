@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ObjectMetricStatus indicates the current value of a metric describing a kubernetes object (for example, hits-per-second on an Ingress object).
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -95,51 +98,81 @@ public class ObjectMetricStatus implements Editable<ObjectMetricStatusBuilder>, 
         this.target = target;
     }
 
+    /**
+     * ObjectMetricStatus indicates the current value of a metric describing a kubernetes object (for example, hits-per-second on an Ingress object).
+     */
     @JsonProperty("averageValue")
     public Quantity getAverageValue() {
         return averageValue;
     }
 
+    /**
+     * ObjectMetricStatus indicates the current value of a metric describing a kubernetes object (for example, hits-per-second on an Ingress object).
+     */
     @JsonProperty("averageValue")
     public void setAverageValue(Quantity averageValue) {
         this.averageValue = averageValue;
     }
 
+    /**
+     * ObjectMetricStatus indicates the current value of a metric describing a kubernetes object (for example, hits-per-second on an Ingress object).
+     */
     @JsonProperty("currentValue")
     public Quantity getCurrentValue() {
         return currentValue;
     }
 
+    /**
+     * ObjectMetricStatus indicates the current value of a metric describing a kubernetes object (for example, hits-per-second on an Ingress object).
+     */
     @JsonProperty("currentValue")
     public void setCurrentValue(Quantity currentValue) {
         this.currentValue = currentValue;
     }
 
+    /**
+     * metricName is the name of the metric in question.
+     */
     @JsonProperty("metricName")
     public String getMetricName() {
         return metricName;
     }
 
+    /**
+     * metricName is the name of the metric in question.
+     */
     @JsonProperty("metricName")
     public void setMetricName(String metricName) {
         this.metricName = metricName;
     }
 
+    /**
+     * ObjectMetricStatus indicates the current value of a metric describing a kubernetes object (for example, hits-per-second on an Ingress object).
+     */
     @JsonProperty("selector")
     public LabelSelector getSelector() {
         return selector;
     }
 
+    /**
+     * ObjectMetricStatus indicates the current value of a metric describing a kubernetes object (for example, hits-per-second on an Ingress object).
+     */
     @JsonProperty("selector")
     public void setSelector(LabelSelector selector) {
         this.selector = selector;
     }
 
+    /**
+     * ObjectMetricStatus indicates the current value of a metric describing a kubernetes object (for example, hits-per-second on an Ingress object).
+     */
     @JsonProperty("target")
     public CrossVersionObjectReference getTarget() {
         return target;
     }
 
+    /**
+     * ObjectMetricStatus indicates the current value of a metric describing a kubernetes object (for example, hits-per-second on an Ingress object).
+     */
     @JsonProperty("target")
     public void setTarget(CrossVersionObjectReference target) {
         this.target = target;

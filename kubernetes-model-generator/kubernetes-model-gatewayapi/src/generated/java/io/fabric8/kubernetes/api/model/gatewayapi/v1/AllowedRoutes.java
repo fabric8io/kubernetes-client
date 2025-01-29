@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AllowedRoutes defines which Routes may be attached to this Listener.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class AllowedRoutes implements Editable<AllowedRoutesBuilder>, Kubernetes
         this.namespaces = namespaces;
     }
 
+    /**
+     * Kinds specifies the groups and kinds of Routes that are allowed to bind to this Gateway Listener. When unspecified or empty, the kinds of Routes selected are determined using the Listener protocol.<br><p> <br><p> A RouteGroupKind MUST correspond to kinds of Routes that are compatible with the application protocol specified in the Listener's Protocol field. If an implementation does not support or recognize this resource type, it MUST set the "ResolvedRefs" condition to False for this Listener with the "InvalidRouteKinds" reason.<br><p> <br><p> Support: Core
+     */
     @JsonProperty("kinds")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<RouteGroupKind> getKinds() {
         return kinds;
     }
 
+    /**
+     * Kinds specifies the groups and kinds of Routes that are allowed to bind to this Gateway Listener. When unspecified or empty, the kinds of Routes selected are determined using the Listener protocol.<br><p> <br><p> A RouteGroupKind MUST correspond to kinds of Routes that are compatible with the application protocol specified in the Listener's Protocol field. If an implementation does not support or recognize this resource type, it MUST set the "ResolvedRefs" condition to False for this Listener with the "InvalidRouteKinds" reason.<br><p> <br><p> Support: Core
+     */
     @JsonProperty("kinds")
     public void setKinds(List<RouteGroupKind> kinds) {
         this.kinds = kinds;
     }
 
+    /**
+     * AllowedRoutes defines which Routes may be attached to this Listener.
+     */
     @JsonProperty("namespaces")
     public RouteNamespaces getNamespaces() {
         return namespaces;
     }
 
+    /**
+     * AllowedRoutes defines which Routes may be attached to this Listener.
+     */
     @JsonProperty("namespaces")
     public void setNamespaces(RouteNamespaces namespaces) {
         this.namespaces = namespaces;

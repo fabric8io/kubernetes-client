@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * MachineConfigSpec is the spec for MachineConfig
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -107,74 +110,116 @@ public class MachineConfigSpec implements Editable<MachineConfigSpecBuilder>, Ku
         this.osImageURL = osImageURL;
     }
 
+    /**
+     * BaseOSExtensionsContainerImage specifies the remote location that will be used to fetch the extensions container matching a new-format OS image
+     */
     @JsonProperty("baseOSExtensionsContainerImage")
     public String getBaseOSExtensionsContainerImage() {
         return baseOSExtensionsContainerImage;
     }
 
+    /**
+     * BaseOSExtensionsContainerImage specifies the remote location that will be used to fetch the extensions container matching a new-format OS image
+     */
     @JsonProperty("baseOSExtensionsContainerImage")
     public void setBaseOSExtensionsContainerImage(String baseOSExtensionsContainerImage) {
         this.baseOSExtensionsContainerImage = baseOSExtensionsContainerImage;
     }
 
+    /**
+     * MachineConfigSpec is the spec for MachineConfig
+     */
     @JsonProperty("config")
     public Object getConfig() {
         return config;
     }
 
+    /**
+     * MachineConfigSpec is the spec for MachineConfig
+     */
     @JsonProperty("config")
     @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
     public void setConfig(Object config) {
         this.config = config;
     }
 
+    /**
+     * extensions contains a list of additional features that can be enabled on host
+     */
     @JsonProperty("extensions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getExtensions() {
         return extensions;
     }
 
+    /**
+     * extensions contains a list of additional features that can be enabled on host
+     */
     @JsonProperty("extensions")
     public void setExtensions(List<String> extensions) {
         this.extensions = extensions;
     }
 
+    /**
+     * fips controls FIPS mode
+     */
     @JsonProperty("fips")
     public Boolean getFips() {
         return fips;
     }
 
+    /**
+     * fips controls FIPS mode
+     */
     @JsonProperty("fips")
     public void setFips(Boolean fips) {
         this.fips = fips;
     }
 
+    /**
+     * kernelArguments contains a list of kernel arguments to be added
+     */
     @JsonProperty("kernelArguments")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getKernelArguments() {
         return kernelArguments;
     }
 
+    /**
+     * kernelArguments contains a list of kernel arguments to be added
+     */
     @JsonProperty("kernelArguments")
     public void setKernelArguments(List<String> kernelArguments) {
         this.kernelArguments = kernelArguments;
     }
 
+    /**
+     * kernelType contains which kernel we want to be running like default (traditional), realtime, 64k-pages (aarch64 only).
+     */
     @JsonProperty("kernelType")
     public String getKernelType() {
         return kernelType;
     }
 
+    /**
+     * kernelType contains which kernel we want to be running like default (traditional), realtime, 64k-pages (aarch64 only).
+     */
     @JsonProperty("kernelType")
     public void setKernelType(String kernelType) {
         this.kernelType = kernelType;
     }
 
+    /**
+     * OSImageURL specifies the remote location that will be used to fetch the OS.
+     */
     @JsonProperty("osImageURL")
     public String getOsImageURL() {
         return osImageURL;
     }
 
+    /**
+     * OSImageURL specifies the remote location that will be used to fetch the OS.
+     */
     @JsonProperty("osImageURL")
     public void setOsImageURL(String osImageURL) {
         this.osImageURL = osImageURL;

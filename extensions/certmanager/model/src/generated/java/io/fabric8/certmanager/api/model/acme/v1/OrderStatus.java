@@ -105,22 +105,34 @@ public class OrderStatus implements Editable<OrderStatusBuilder>, KubernetesReso
         this.url = url;
     }
 
+    /**
+     * Authorizations contains data returned from the ACME server on what authorizations must be completed in order to validate the DNS names specified on the Order.
+     */
     @JsonProperty("authorizations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ACMEAuthorization> getAuthorizations() {
         return authorizations;
     }
 
+    /**
+     * Authorizations contains data returned from the ACME server on what authorizations must be completed in order to validate the DNS names specified on the Order.
+     */
     @JsonProperty("authorizations")
     public void setAuthorizations(List<ACMEAuthorization> authorizations) {
         this.authorizations = authorizations;
     }
 
+    /**
+     * Certificate is a copy of the PEM encoded certificate for this Order. This field will be populated after the order has been successfully finalized with the ACME server, and the order has transitioned to the 'valid' state.
+     */
     @JsonProperty("certificate")
     public String getCertificate() {
         return certificate;
     }
 
+    /**
+     * Certificate is a copy of the PEM encoded certificate for this Order. This field will be populated after the order has been successfully finalized with the ACME server, and the order has transitioned to the 'valid' state.
+     */
     @JsonProperty("certificate")
     public void setCertificate(String certificate) {
         this.certificate = certificate;
@@ -136,41 +148,65 @@ public class OrderStatus implements Editable<OrderStatusBuilder>, KubernetesReso
         this.failureTime = failureTime;
     }
 
+    /**
+     * FinalizeURL of the Order. This is used to obtain certificates for this order once it has been completed.
+     */
     @JsonProperty("finalizeURL")
     public String getFinalizeURL() {
         return finalizeURL;
     }
 
+    /**
+     * FinalizeURL of the Order. This is used to obtain certificates for this order once it has been completed.
+     */
     @JsonProperty("finalizeURL")
     public void setFinalizeURL(String finalizeURL) {
         this.finalizeURL = finalizeURL;
     }
 
+    /**
+     * Reason optionally provides more information about a why the order is in the current state.
+     */
     @JsonProperty("reason")
     public String getReason() {
         return reason;
     }
 
+    /**
+     * Reason optionally provides more information about a why the order is in the current state.
+     */
     @JsonProperty("reason")
     public void setReason(String reason) {
         this.reason = reason;
     }
 
+    /**
+     * State contains the current state of this Order resource. States 'success' and 'expired' are 'final'
+     */
     @JsonProperty("state")
     public String getState() {
         return state;
     }
 
+    /**
+     * State contains the current state of this Order resource. States 'success' and 'expired' are 'final'
+     */
     @JsonProperty("state")
     public void setState(String state) {
         this.state = state;
     }
 
+    /**
+     * URL of the Order. This will initially be empty when the resource is first created. The Order controller will populate this field when the Order is first processed. This field will be immutable after it is initially set.
+     */
     @JsonProperty("url")
     public String getUrl() {
         return url;
     }
 
+    /**
+     * URL of the Order. This will initially be empty when the resource is first created. The Order controller will populate this field when the Order is first processed. This field will be immutable after it is initially set.
+     */
     @JsonProperty("url")
     public void setUrl(String url) {
         this.url = url;

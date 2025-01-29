@@ -86,31 +86,49 @@ public class RulesAlert implements Editable<RulesAlertBuilder>, KubernetesResour
         this.resendDelay = resendDelay;
     }
 
+    /**
+     * Minimum duration between alert and restored 'for' state.<br><p> <br><p> This is maintained only for alerts with a configured 'for' time greater than the grace period.
+     */
     @JsonProperty("forGracePeriod")
     public String getForGracePeriod() {
         return forGracePeriod;
     }
 
+    /**
+     * Minimum duration between alert and restored 'for' state.<br><p> <br><p> This is maintained only for alerts with a configured 'for' time greater than the grace period.
+     */
     @JsonProperty("forGracePeriod")
     public void setForGracePeriod(String forGracePeriod) {
         this.forGracePeriod = forGracePeriod;
     }
 
+    /**
+     * Max time to tolerate prometheus outage for restoring 'for' state of alert.
+     */
     @JsonProperty("forOutageTolerance")
     public String getForOutageTolerance() {
         return forOutageTolerance;
     }
 
+    /**
+     * Max time to tolerate prometheus outage for restoring 'for' state of alert.
+     */
     @JsonProperty("forOutageTolerance")
     public void setForOutageTolerance(String forOutageTolerance) {
         this.forOutageTolerance = forOutageTolerance;
     }
 
+    /**
+     * Minimum amount of time to wait before resending an alert to Alertmanager.
+     */
     @JsonProperty("resendDelay")
     public String getResendDelay() {
         return resendDelay;
     }
 
+    /**
+     * Minimum amount of time to wait before resending an alert to Alertmanager.
+     */
     @JsonProperty("resendDelay")
     public void setResendDelay(String resendDelay) {
         this.resendDelay = resendDelay;

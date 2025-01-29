@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AWSPrivateLinkConfig defines the configuration for the aws-private-link controller.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,43 +97,67 @@ public class AWSPrivateLinkConfig implements Editable<AWSPrivateLinkConfigBuilde
         this.endpointVPCInventory = endpointVPCInventory;
     }
 
+    /**
+     * AssociatedVPCs is the list of VPCs that should be able to resolve the DNS addresses setup for Private Link. This allows clients in VPC to resolve the AWS PrivateLink address using AWS's default DNS resolver for Private Route53 Hosted Zones.<br><p> <br><p> This list should at minimum include the VPC where the current Hive controller is running.
+     */
     @JsonProperty("associatedVPCs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<AWSAssociatedVPC> getAssociatedVPCs() {
         return associatedVPCs;
     }
 
+    /**
+     * AssociatedVPCs is the list of VPCs that should be able to resolve the DNS addresses setup for Private Link. This allows clients in VPC to resolve the AWS PrivateLink address using AWS's default DNS resolver for Private Route53 Hosted Zones.<br><p> <br><p> This list should at minimum include the VPC where the current Hive controller is running.
+     */
     @JsonProperty("associatedVPCs")
     public void setAssociatedVPCs(List<AWSAssociatedVPC> associatedVPCs) {
         this.associatedVPCs = associatedVPCs;
     }
 
+    /**
+     * AWSPrivateLinkConfig defines the configuration for the aws-private-link controller.
+     */
     @JsonProperty("credentialsSecretRef")
     public LocalObjectReference getCredentialsSecretRef() {
         return credentialsSecretRef;
     }
 
+    /**
+     * AWSPrivateLinkConfig defines the configuration for the aws-private-link controller.
+     */
     @JsonProperty("credentialsSecretRef")
     public void setCredentialsSecretRef(LocalObjectReference credentialsSecretRef) {
         this.credentialsSecretRef = credentialsSecretRef;
     }
 
+    /**
+     * DNSRecordType defines what type of DNS record should be created in Private Hosted Zone for the customer cluster's API endpoint (which is the VPC Endpoint's regional DNS name).
+     */
     @JsonProperty("dnsRecordType")
     public String getDnsRecordType() {
         return dnsRecordType;
     }
 
+    /**
+     * DNSRecordType defines what type of DNS record should be created in Private Hosted Zone for the customer cluster's API endpoint (which is the VPC Endpoint's regional DNS name).
+     */
     @JsonProperty("dnsRecordType")
     public void setDnsRecordType(String dnsRecordType) {
         this.dnsRecordType = dnsRecordType;
     }
 
+    /**
+     * EndpointVPCInventory is a list of VPCs and the corresponding subnets in various AWS regions. The controller uses this list to choose a VPC for creating AWS VPC Endpoints. Since the VPC Endpoints must be in the same region as the ClusterDeployment, we must have VPCs in that region to be able to setup Private Link.
+     */
     @JsonProperty("endpointVPCInventory")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<AWSPrivateLinkInventory> getEndpointVPCInventory() {
         return endpointVPCInventory;
     }
 
+    /**
+     * EndpointVPCInventory is a list of VPCs and the corresponding subnets in various AWS regions. The controller uses this list to choose a VPC for creating AWS VPC Endpoints. Since the VPC Endpoints must be in the same region as the ClusterDeployment, we must have VPCs in that region to be able to setup Private Link.
+     */
     @JsonProperty("endpointVPCInventory")
     public void setEndpointVPCInventory(List<AWSPrivateLinkInventory> endpointVPCInventory) {
         this.endpointVPCInventory = endpointVPCInventory;

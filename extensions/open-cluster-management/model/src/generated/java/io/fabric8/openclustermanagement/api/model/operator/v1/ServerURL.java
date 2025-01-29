@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ServerURL represents the apiserver url and ca bundle that is accessible externally
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class ServerURL implements Editable<ServerURLBuilder>, KubernetesResource
         this.url = url;
     }
 
+    /**
+     * CABundle is the ca bundle to connect to apiserver of the managed cluster. System certs are used if it is not set.
+     */
     @JsonProperty("caBundle")
     public String getCaBundle() {
         return caBundle;
     }
 
+    /**
+     * CABundle is the ca bundle to connect to apiserver of the managed cluster. System certs are used if it is not set.
+     */
     @JsonProperty("caBundle")
     public void setCaBundle(String caBundle) {
         this.caBundle = caBundle;
     }
 
+    /**
+     * URL is the url of apiserver endpoint of the managed cluster.
+     */
     @JsonProperty("url")
     public String getUrl() {
         return url;
     }
 
+    /**
+     * URL is the url of apiserver endpoint of the managed cluster.
+     */
     @JsonProperty("url")
     public void setUrl(String url) {
         this.url = url;

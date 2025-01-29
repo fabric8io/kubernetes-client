@@ -19,6 +19,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PersistentVolumeClaimSpec describes the common attributes of storage devices and allows a Source for provider-specific attributes
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -84,92 +87,146 @@ public class PersistentVolumeClaimSpec implements Editable<PersistentVolumeClaim
         this.volumeName = volumeName;
     }
 
+    /**
+     * accessModes contains the desired access modes the volume should have. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#access-modes-1
+     */
     @JsonProperty("accessModes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getAccessModes() {
         return accessModes;
     }
 
+    /**
+     * accessModes contains the desired access modes the volume should have. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#access-modes-1
+     */
     @JsonProperty("accessModes")
     public void setAccessModes(List<String> accessModes) {
         this.accessModes = accessModes;
     }
 
+    /**
+     * PersistentVolumeClaimSpec describes the common attributes of storage devices and allows a Source for provider-specific attributes
+     */
     @JsonProperty("dataSource")
     public TypedLocalObjectReference getDataSource() {
         return dataSource;
     }
 
+    /**
+     * PersistentVolumeClaimSpec describes the common attributes of storage devices and allows a Source for provider-specific attributes
+     */
     @JsonProperty("dataSource")
     public void setDataSource(TypedLocalObjectReference dataSource) {
         this.dataSource = dataSource;
     }
 
+    /**
+     * PersistentVolumeClaimSpec describes the common attributes of storage devices and allows a Source for provider-specific attributes
+     */
     @JsonProperty("dataSourceRef")
     public TypedObjectReference getDataSourceRef() {
         return dataSourceRef;
     }
 
+    /**
+     * PersistentVolumeClaimSpec describes the common attributes of storage devices and allows a Source for provider-specific attributes
+     */
     @JsonProperty("dataSourceRef")
     public void setDataSourceRef(TypedObjectReference dataSourceRef) {
         this.dataSourceRef = dataSourceRef;
     }
 
+    /**
+     * PersistentVolumeClaimSpec describes the common attributes of storage devices and allows a Source for provider-specific attributes
+     */
     @JsonProperty("resources")
     public VolumeResourceRequirements getResources() {
         return resources;
     }
 
+    /**
+     * PersistentVolumeClaimSpec describes the common attributes of storage devices and allows a Source for provider-specific attributes
+     */
     @JsonProperty("resources")
     public void setResources(VolumeResourceRequirements resources) {
         this.resources = resources;
     }
 
+    /**
+     * PersistentVolumeClaimSpec describes the common attributes of storage devices and allows a Source for provider-specific attributes
+     */
     @JsonProperty("selector")
     public LabelSelector getSelector() {
         return selector;
     }
 
+    /**
+     * PersistentVolumeClaimSpec describes the common attributes of storage devices and allows a Source for provider-specific attributes
+     */
     @JsonProperty("selector")
     public void setSelector(LabelSelector selector) {
         this.selector = selector;
     }
 
+    /**
+     * storageClassName is the name of the StorageClass required by the claim. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#class-1
+     */
     @JsonProperty("storageClassName")
     public String getStorageClassName() {
         return storageClassName;
     }
 
+    /**
+     * storageClassName is the name of the StorageClass required by the claim. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#class-1
+     */
     @JsonProperty("storageClassName")
     public void setStorageClassName(String storageClassName) {
         this.storageClassName = storageClassName;
     }
 
+    /**
+     * volumeAttributesClassName may be used to set the VolumeAttributesClass used by this claim. If specified, the CSI driver will create or update the volume with the attributes defined in the corresponding VolumeAttributesClass. This has a different purpose than storageClassName, it can be changed after the claim is created. An empty string value means that no VolumeAttributesClass will be applied to the claim but it's not allowed to reset this field to empty string once it is set. If unspecified and the PersistentVolumeClaim is unbound, the default VolumeAttributesClass will be set by the persistentvolume controller if it exists. If the resource referred to by volumeAttributesClass does not exist, this PersistentVolumeClaim will be set to a Pending state, as reflected by the modifyVolumeStatus field, until such as a resource exists. More info: https://kubernetes.io/docs/concepts/storage/volume-attributes-classes/ (Beta) Using this field requires the VolumeAttributesClass feature gate to be enabled (off by default).
+     */
     @JsonProperty("volumeAttributesClassName")
     public String getVolumeAttributesClassName() {
         return volumeAttributesClassName;
     }
 
+    /**
+     * volumeAttributesClassName may be used to set the VolumeAttributesClass used by this claim. If specified, the CSI driver will create or update the volume with the attributes defined in the corresponding VolumeAttributesClass. This has a different purpose than storageClassName, it can be changed after the claim is created. An empty string value means that no VolumeAttributesClass will be applied to the claim but it's not allowed to reset this field to empty string once it is set. If unspecified and the PersistentVolumeClaim is unbound, the default VolumeAttributesClass will be set by the persistentvolume controller if it exists. If the resource referred to by volumeAttributesClass does not exist, this PersistentVolumeClaim will be set to a Pending state, as reflected by the modifyVolumeStatus field, until such as a resource exists. More info: https://kubernetes.io/docs/concepts/storage/volume-attributes-classes/ (Beta) Using this field requires the VolumeAttributesClass feature gate to be enabled (off by default).
+     */
     @JsonProperty("volumeAttributesClassName")
     public void setVolumeAttributesClassName(String volumeAttributesClassName) {
         this.volumeAttributesClassName = volumeAttributesClassName;
     }
 
+    /**
+     * volumeMode defines what type of volume is required by the claim. Value of Filesystem is implied when not included in claim spec.
+     */
     @JsonProperty("volumeMode")
     public String getVolumeMode() {
         return volumeMode;
     }
 
+    /**
+     * volumeMode defines what type of volume is required by the claim. Value of Filesystem is implied when not included in claim spec.
+     */
     @JsonProperty("volumeMode")
     public void setVolumeMode(String volumeMode) {
         this.volumeMode = volumeMode;
     }
 
+    /**
+     * volumeName is the binding reference to the PersistentVolume backing this claim.
+     */
     @JsonProperty("volumeName")
     public String getVolumeName() {
         return volumeName;
     }
 
+    /**
+     * volumeName is the binding reference to the PersistentVolume backing this claim.
+     */
     @JsonProperty("volumeName")
     public void setVolumeName(String volumeName) {
         this.volumeName = volumeName;

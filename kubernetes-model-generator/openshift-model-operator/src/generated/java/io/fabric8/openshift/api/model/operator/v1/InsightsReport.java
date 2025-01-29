@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * insightsReport provides Insights health check report based on the most recently sent Insights data.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class InsightsReport implements Editable<InsightsReportBuilder>, Kubernet
         this.healthChecks = healthChecks;
     }
 
+    /**
+     * insightsReport provides Insights health check report based on the most recently sent Insights data.
+     */
     @JsonProperty("downloadedAt")
     public String getDownloadedAt() {
         return downloadedAt;
     }
 
+    /**
+     * insightsReport provides Insights health check report based on the most recently sent Insights data.
+     */
     @JsonProperty("downloadedAt")
     public void setDownloadedAt(String downloadedAt) {
         this.downloadedAt = downloadedAt;
     }
 
+    /**
+     * healthChecks provides basic information about active Insights health checks in a cluster.
+     */
     @JsonProperty("healthChecks")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<HealthCheck> getHealthChecks() {
         return healthChecks;
     }
 
+    /**
+     * healthChecks provides basic information about active Insights health checks in a cluster.
+     */
     @JsonProperty("healthChecks")
     public void setHealthChecks(List<HealthCheck> healthChecks) {
         this.healthChecks = healthChecks;

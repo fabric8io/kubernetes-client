@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AdminPolicyBasedExternalRouteSpec defines the desired state of AdminPolicyBasedExternalRoute
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class AdminPolicyBasedExternalRouteSpec implements Editable<AdminPolicyBa
         this.nextHops = nextHops;
     }
 
+    /**
+     * AdminPolicyBasedExternalRouteSpec defines the desired state of AdminPolicyBasedExternalRoute
+     */
     @JsonProperty("from")
     public ExternalNetworkSource getFrom() {
         return from;
     }
 
+    /**
+     * AdminPolicyBasedExternalRouteSpec defines the desired state of AdminPolicyBasedExternalRoute
+     */
     @JsonProperty("from")
     public void setFrom(ExternalNetworkSource from) {
         this.from = from;
     }
 
+    /**
+     * AdminPolicyBasedExternalRouteSpec defines the desired state of AdminPolicyBasedExternalRoute
+     */
     @JsonProperty("nextHops")
     public ExternalNextHops getNextHops() {
         return nextHops;
     }
 
+    /**
+     * AdminPolicyBasedExternalRouteSpec defines the desired state of AdminPolicyBasedExternalRoute
+     */
     @JsonProperty("nextHops")
     public void setNextHops(ExternalNextHops nextHops) {
         this.nextHops = nextHops;

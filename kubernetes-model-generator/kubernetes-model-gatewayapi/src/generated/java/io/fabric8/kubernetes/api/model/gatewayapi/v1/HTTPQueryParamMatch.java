@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * HTTPQueryParamMatch describes how to select a HTTP route by matching HTTP query parameters.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class HTTPQueryParamMatch implements Editable<HTTPQueryParamMatchBuilder>
         this.value = value;
     }
 
+    /**
+     * Name is the name of the HTTP query param to be matched. This must be an exact string match. (See https://tools.ietf.org/html/rfc7230#section-2.7.3).<br><p> <br><p> If multiple entries specify equivalent query param names, only the first entry with an equivalent name MUST be considered for a match. Subsequent entries with an equivalent query param name MUST be ignored.<br><p> <br><p> If a query param is repeated in an HTTP request, the behavior is purposely left undefined, since different data planes have different capabilities. However, it is &#42;recommended&#42; that implementations should match against the first value of the param if the data plane supports it, as this behavior is expected in other load balancing contexts outside of the Gateway API.<br><p> <br><p> Users SHOULD NOT route traffic based on repeated query params to guard themselves against potential differences in the implementations.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name is the name of the HTTP query param to be matched. This must be an exact string match. (See https://tools.ietf.org/html/rfc7230#section-2.7.3).<br><p> <br><p> If multiple entries specify equivalent query param names, only the first entry with an equivalent name MUST be considered for a match. Subsequent entries with an equivalent query param name MUST be ignored.<br><p> <br><p> If a query param is repeated in an HTTP request, the behavior is purposely left undefined, since different data planes have different capabilities. However, it is &#42;recommended&#42; that implementations should match against the first value of the param if the data plane supports it, as this behavior is expected in other load balancing contexts outside of the Gateway API.<br><p> <br><p> Users SHOULD NOT route traffic based on repeated query params to guard themselves against potential differences in the implementations.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Type specifies how to match against the value of the query parameter.<br><p> <br><p> Support: Extended (Exact)<br><p> <br><p> Support: Implementation-specific (RegularExpression)<br><p> <br><p> Since RegularExpression QueryParamMatchType has Implementation-specific conformance, implementations can support POSIX, PCRE or any other dialects of regular expressions. Please read the implementation's documentation to determine the supported dialect.
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * Type specifies how to match against the value of the query parameter.<br><p> <br><p> Support: Extended (Exact)<br><p> <br><p> Support: Implementation-specific (RegularExpression)<br><p> <br><p> Since RegularExpression QueryParamMatchType has Implementation-specific conformance, implementations can support POSIX, PCRE or any other dialects of regular expressions. Please read the implementation's documentation to determine the supported dialect.
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;
     }
 
+    /**
+     * Value is the value of HTTP query param to be matched.
+     */
     @JsonProperty("value")
     public String getValue() {
         return value;
     }
 
+    /**
+     * Value is the value of HTTP query param to be matched.
+     */
     @JsonProperty("value")
     public void setValue(String value) {
         this.value = value;

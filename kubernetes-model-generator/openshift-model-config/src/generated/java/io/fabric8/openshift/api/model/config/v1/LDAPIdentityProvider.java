@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * LDAPPasswordIdentityProvider provides identities for users authenticating using LDAP credentials
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -98,61 +101,97 @@ public class LDAPIdentityProvider implements Editable<LDAPIdentityProviderBuilde
         this.url = url;
     }
 
+    /**
+     * LDAPPasswordIdentityProvider provides identities for users authenticating using LDAP credentials
+     */
     @JsonProperty("attributes")
     public LDAPAttributeMapping getAttributes() {
         return attributes;
     }
 
+    /**
+     * LDAPPasswordIdentityProvider provides identities for users authenticating using LDAP credentials
+     */
     @JsonProperty("attributes")
     public void setAttributes(LDAPAttributeMapping attributes) {
         this.attributes = attributes;
     }
 
+    /**
+     * bindDN is an optional DN to bind with during the search phase.
+     */
     @JsonProperty("bindDN")
     public String getBindDN() {
         return bindDN;
     }
 
+    /**
+     * bindDN is an optional DN to bind with during the search phase.
+     */
     @JsonProperty("bindDN")
     public void setBindDN(String bindDN) {
         this.bindDN = bindDN;
     }
 
+    /**
+     * LDAPPasswordIdentityProvider provides identities for users authenticating using LDAP credentials
+     */
     @JsonProperty("bindPassword")
     public SecretNameReference getBindPassword() {
         return bindPassword;
     }
 
+    /**
+     * LDAPPasswordIdentityProvider provides identities for users authenticating using LDAP credentials
+     */
     @JsonProperty("bindPassword")
     public void setBindPassword(SecretNameReference bindPassword) {
         this.bindPassword = bindPassword;
     }
 
+    /**
+     * LDAPPasswordIdentityProvider provides identities for users authenticating using LDAP credentials
+     */
     @JsonProperty("ca")
     public ConfigMapNameReference getCa() {
         return ca;
     }
 
+    /**
+     * LDAPPasswordIdentityProvider provides identities for users authenticating using LDAP credentials
+     */
     @JsonProperty("ca")
     public void setCa(ConfigMapNameReference ca) {
         this.ca = ca;
     }
 
+    /**
+     * insecure, if true, indicates the connection should not use TLS WARNING: Should not be set to `true` with the URL scheme "ldaps://" as "ldaps://" URLs always<br><p>          attempt to connect using TLS, even when `insecure` is set to `true`<br><p> When `true`, "ldap://" URLS connect insecurely. When `false`, "ldap://" URLs are upgraded to a TLS connection using StartTLS as specified in https://tools.ietf.org/html/rfc2830.
+     */
     @JsonProperty("insecure")
     public Boolean getInsecure() {
         return insecure;
     }
 
+    /**
+     * insecure, if true, indicates the connection should not use TLS WARNING: Should not be set to `true` with the URL scheme "ldaps://" as "ldaps://" URLs always<br><p>          attempt to connect using TLS, even when `insecure` is set to `true`<br><p> When `true`, "ldap://" URLS connect insecurely. When `false`, "ldap://" URLs are upgraded to a TLS connection using StartTLS as specified in https://tools.ietf.org/html/rfc2830.
+     */
     @JsonProperty("insecure")
     public void setInsecure(Boolean insecure) {
         this.insecure = insecure;
     }
 
+    /**
+     * url is an RFC 2255 URL which specifies the LDAP search parameters to use. The syntax of the URL is: ldap://host:port/basedn?attribute?scope?filter
+     */
     @JsonProperty("url")
     public String getUrl() {
         return url;
     }
 
+    /**
+     * url is an RFC 2255 URL which specifies the LDAP search parameters to use. The syntax of the URL is: ldap://host:port/basedn?attribute?scope?filter
+     */
     @JsonProperty("url")
     public void setUrl(String url) {
         this.url = url;

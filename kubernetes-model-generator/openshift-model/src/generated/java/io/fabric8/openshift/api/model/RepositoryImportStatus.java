@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * RepositoryImportStatus describes the result of an image repository import
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -91,33 +94,51 @@ public class RepositoryImportStatus implements Editable<RepositoryImportStatusBu
         this.status = status;
     }
 
+    /**
+     * AdditionalTags are tags that exist in the repository but were not imported because a maximum limit of automatic imports was applied.
+     */
     @JsonProperty("additionalTags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getAdditionalTags() {
         return additionalTags;
     }
 
+    /**
+     * AdditionalTags are tags that exist in the repository but were not imported because a maximum limit of automatic imports was applied.
+     */
     @JsonProperty("additionalTags")
     public void setAdditionalTags(List<String> additionalTags) {
         this.additionalTags = additionalTags;
     }
 
+    /**
+     * Images is a list of images successfully retrieved by the import of the repository.
+     */
     @JsonProperty("images")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ImageImportStatus> getImages() {
         return images;
     }
 
+    /**
+     * Images is a list of images successfully retrieved by the import of the repository.
+     */
     @JsonProperty("images")
     public void setImages(List<ImageImportStatus> images) {
         this.images = images;
     }
 
+    /**
+     * RepositoryImportStatus describes the result of an image repository import
+     */
     @JsonProperty("status")
     public Status getStatus() {
         return status;
     }
 
+    /**
+     * RepositoryImportStatus describes the result of an image repository import
+     */
     @JsonProperty("status")
     public void setStatus(Status status) {
         this.status = status;

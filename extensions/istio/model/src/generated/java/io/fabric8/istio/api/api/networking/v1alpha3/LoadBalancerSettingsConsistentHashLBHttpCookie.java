@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Hash based on HTTP cookie.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class LoadBalancerSettingsConsistentHashLBHttpCookie implements IsLoadBal
         this.httpCookie = httpCookie;
     }
 
+    /**
+     * Hash based on HTTP cookie.
+     */
     @JsonProperty("httpCookie")
     public LoadBalancerSettingsConsistentHashLBHTTPCookie_ getHttpCookie() {
         return httpCookie;
     }
 
+    /**
+     * Hash based on HTTP cookie.
+     */
     @JsonProperty("httpCookie")
     public void setHttpCookie(LoadBalancerSettingsConsistentHashLBHTTPCookie_ httpCookie) {
         this.httpCookie = httpCookie;

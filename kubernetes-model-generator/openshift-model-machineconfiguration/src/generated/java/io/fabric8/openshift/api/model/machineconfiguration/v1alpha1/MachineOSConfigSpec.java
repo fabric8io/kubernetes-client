@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * MachineOSConfigSpec describes user-configurable options as well as information about a build process.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class MachineOSConfigSpec implements Editable<MachineOSConfigSpecBuilder>
         this.machineConfigPool = machineConfigPool;
     }
 
+    /**
+     * MachineOSConfigSpec describes user-configurable options as well as information about a build process.
+     */
     @JsonProperty("buildInputs")
     public BuildInputs getBuildInputs() {
         return buildInputs;
     }
 
+    /**
+     * MachineOSConfigSpec describes user-configurable options as well as information about a build process.
+     */
     @JsonProperty("buildInputs")
     public void setBuildInputs(BuildInputs buildInputs) {
         this.buildInputs = buildInputs;
     }
 
+    /**
+     * MachineOSConfigSpec describes user-configurable options as well as information about a build process.
+     */
     @JsonProperty("buildOutputs")
     public BuildOutputs getBuildOutputs() {
         return buildOutputs;
     }
 
+    /**
+     * MachineOSConfigSpec describes user-configurable options as well as information about a build process.
+     */
     @JsonProperty("buildOutputs")
     public void setBuildOutputs(BuildOutputs buildOutputs) {
         this.buildOutputs = buildOutputs;
     }
 
+    /**
+     * MachineOSConfigSpec describes user-configurable options as well as information about a build process.
+     */
     @JsonProperty("machineConfigPool")
     public MachineConfigPoolReference getMachineConfigPool() {
         return machineConfigPool;
     }
 
+    /**
+     * MachineOSConfigSpec describes user-configurable options as well as information about a build process.
+     */
     @JsonProperty("machineConfigPool")
     public void setMachineConfigPool(MachineConfigPoolReference machineConfigPool) {
         this.machineConfigPool = machineConfigPool;

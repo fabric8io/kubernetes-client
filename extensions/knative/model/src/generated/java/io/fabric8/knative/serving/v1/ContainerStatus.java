@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ContainerStatus holds the information of container name and image digest value
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class ContainerStatus implements Editable<ContainerStatusBuilder>, Kubern
         this.name = name;
     }
 
+    /**
+     * ContainerStatus holds the information of container name and image digest value
+     */
     @JsonProperty("imageDigest")
     public String getImageDigest() {
         return imageDigest;
     }
 
+    /**
+     * ContainerStatus holds the information of container name and image digest value
+     */
     @JsonProperty("imageDigest")
     public void setImageDigest(String imageDigest) {
         this.imageDigest = imageDigest;
     }
 
+    /**
+     * ContainerStatus holds the information of container name and image digest value
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * ContainerStatus holds the information of container name and image digest value
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ClusterDeploymentSpec defines the desired state of ClusterDeployment
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -150,183 +153,291 @@ public class ClusterDeploymentSpec implements Editable<ClusterDeploymentSpecBuil
         this.pullSecretRef = pullSecretRef;
     }
 
+    /**
+     * BaseDomain is the base domain to which the cluster should belong.
+     */
     @JsonProperty("baseDomain")
     public String getBaseDomain() {
         return baseDomain;
     }
 
+    /**
+     * BaseDomain is the base domain to which the cluster should belong.
+     */
     @JsonProperty("baseDomain")
     public void setBaseDomain(String baseDomain) {
         this.baseDomain = baseDomain;
     }
 
+    /**
+     * ClusterDeploymentSpec defines the desired state of ClusterDeployment
+     */
     @JsonProperty("boundServiceAccountSigningKeySecretRef")
     public LocalObjectReference getBoundServiceAccountSigningKeySecretRef() {
         return boundServiceAccountSigningKeySecretRef;
     }
 
+    /**
+     * ClusterDeploymentSpec defines the desired state of ClusterDeployment
+     */
     @JsonProperty("boundServiceAccountSigningKeySecretRef")
     public void setBoundServiceAccountSigningKeySecretRef(LocalObjectReference boundServiceAccountSigningKeySecretRef) {
         this.boundServiceAccountSigningKeySecretRef = boundServiceAccountSigningKeySecretRef;
     }
 
+    /**
+     * CertificateBundles is a list of certificate bundles associated with this cluster
+     */
     @JsonProperty("certificateBundles")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<CertificateBundleSpec> getCertificateBundles() {
         return certificateBundles;
     }
 
+    /**
+     * CertificateBundles is a list of certificate bundles associated with this cluster
+     */
     @JsonProperty("certificateBundles")
     public void setCertificateBundles(List<CertificateBundleSpec> certificateBundles) {
         this.certificateBundles = certificateBundles;
     }
 
+    /**
+     * ClusterDeploymentSpec defines the desired state of ClusterDeployment
+     */
     @JsonProperty("clusterInstallRef")
     public ClusterInstallLocalReference getClusterInstallRef() {
         return clusterInstallRef;
     }
 
+    /**
+     * ClusterDeploymentSpec defines the desired state of ClusterDeployment
+     */
     @JsonProperty("clusterInstallRef")
     public void setClusterInstallRef(ClusterInstallLocalReference clusterInstallRef) {
         this.clusterInstallRef = clusterInstallRef;
     }
 
+    /**
+     * ClusterDeploymentSpec defines the desired state of ClusterDeployment
+     */
     @JsonProperty("clusterMetadata")
     public ClusterMetadata getClusterMetadata() {
         return clusterMetadata;
     }
 
+    /**
+     * ClusterDeploymentSpec defines the desired state of ClusterDeployment
+     */
     @JsonProperty("clusterMetadata")
     public void setClusterMetadata(ClusterMetadata clusterMetadata) {
         this.clusterMetadata = clusterMetadata;
     }
 
+    /**
+     * ClusterName is the friendly name of the cluster. It is used for subdomains, some resource tagging, and other instances where a friendly name for the cluster is useful.
+     */
     @JsonProperty("clusterName")
     public String getClusterName() {
         return clusterName;
     }
 
+    /**
+     * ClusterName is the friendly name of the cluster. It is used for subdomains, some resource tagging, and other instances where a friendly name for the cluster is useful.
+     */
     @JsonProperty("clusterName")
     public void setClusterName(String clusterName) {
         this.clusterName = clusterName;
     }
 
+    /**
+     * ClusterDeploymentSpec defines the desired state of ClusterDeployment
+     */
     @JsonProperty("clusterPoolRef")
     public ClusterPoolReference getClusterPoolRef() {
         return clusterPoolRef;
     }
 
+    /**
+     * ClusterDeploymentSpec defines the desired state of ClusterDeployment
+     */
     @JsonProperty("clusterPoolRef")
     public void setClusterPoolRef(ClusterPoolReference clusterPoolRef) {
         this.clusterPoolRef = clusterPoolRef;
     }
 
+    /**
+     * ClusterDeploymentSpec defines the desired state of ClusterDeployment
+     */
     @JsonProperty("controlPlaneConfig")
     public ControlPlaneConfigSpec getControlPlaneConfig() {
         return controlPlaneConfig;
     }
 
+    /**
+     * ClusterDeploymentSpec defines the desired state of ClusterDeployment
+     */
     @JsonProperty("controlPlaneConfig")
     public void setControlPlaneConfig(ControlPlaneConfigSpec controlPlaneConfig) {
         this.controlPlaneConfig = controlPlaneConfig;
     }
 
+    /**
+     * ClusterDeploymentSpec defines the desired state of ClusterDeployment
+     */
     @JsonProperty("hibernateAfter")
     public String getHibernateAfter() {
         return hibernateAfter;
     }
 
+    /**
+     * ClusterDeploymentSpec defines the desired state of ClusterDeployment
+     */
     @JsonProperty("hibernateAfter")
     public void setHibernateAfter(String hibernateAfter) {
         this.hibernateAfter = hibernateAfter;
     }
 
+    /**
+     * Ingress allows defining desired clusteringress/shards to be configured on the cluster.
+     */
     @JsonProperty("ingress")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ClusterIngress> getIngress() {
         return ingress;
     }
 
+    /**
+     * Ingress allows defining desired clusteringress/shards to be configured on the cluster.
+     */
     @JsonProperty("ingress")
     public void setIngress(List<ClusterIngress> ingress) {
         this.ingress = ingress;
     }
 
+    /**
+     * InstallAttemptsLimit is the maximum number of times Hive will attempt to install the cluster.
+     */
     @JsonProperty("installAttemptsLimit")
     public Integer getInstallAttemptsLimit() {
         return installAttemptsLimit;
     }
 
+    /**
+     * InstallAttemptsLimit is the maximum number of times Hive will attempt to install the cluster.
+     */
     @JsonProperty("installAttemptsLimit")
     public void setInstallAttemptsLimit(Integer installAttemptsLimit) {
         this.installAttemptsLimit = installAttemptsLimit;
     }
 
+    /**
+     * Installed is true if the cluster has been installed
+     */
     @JsonProperty("installed")
     public Boolean getInstalled() {
         return installed;
     }
 
+    /**
+     * Installed is true if the cluster has been installed
+     */
     @JsonProperty("installed")
     public void setInstalled(Boolean installed) {
         this.installed = installed;
     }
 
+    /**
+     * ManageDNS specifies whether a DNSZone should be created and managed automatically for this ClusterDeployment
+     */
     @JsonProperty("manageDNS")
     public Boolean getManageDNS() {
         return manageDNS;
     }
 
+    /**
+     * ManageDNS specifies whether a DNSZone should be created and managed automatically for this ClusterDeployment
+     */
     @JsonProperty("manageDNS")
     public void setManageDNS(Boolean manageDNS) {
         this.manageDNS = manageDNS;
     }
 
+    /**
+     * ClusterDeploymentSpec defines the desired state of ClusterDeployment
+     */
     @JsonProperty("platform")
     public Platform getPlatform() {
         return platform;
     }
 
+    /**
+     * ClusterDeploymentSpec defines the desired state of ClusterDeployment
+     */
     @JsonProperty("platform")
     public void setPlatform(Platform platform) {
         this.platform = platform;
     }
 
+    /**
+     * PowerState indicates whether a cluster should be running or hibernating. When omitted, PowerState defaults to the Running state.
+     */
     @JsonProperty("powerState")
     public String getPowerState() {
         return powerState;
     }
 
+    /**
+     * PowerState indicates whether a cluster should be running or hibernating. When omitted, PowerState defaults to the Running state.
+     */
     @JsonProperty("powerState")
     public void setPowerState(String powerState) {
         this.powerState = powerState;
     }
 
+    /**
+     * PreserveOnDelete allows the user to disconnect a cluster from Hive without deprovisioning it. This can also be used to abandon ongoing cluster deprovision.
+     */
     @JsonProperty("preserveOnDelete")
     public Boolean getPreserveOnDelete() {
         return preserveOnDelete;
     }
 
+    /**
+     * PreserveOnDelete allows the user to disconnect a cluster from Hive without deprovisioning it. This can also be used to abandon ongoing cluster deprovision.
+     */
     @JsonProperty("preserveOnDelete")
     public void setPreserveOnDelete(Boolean preserveOnDelete) {
         this.preserveOnDelete = preserveOnDelete;
     }
 
+    /**
+     * ClusterDeploymentSpec defines the desired state of ClusterDeployment
+     */
     @JsonProperty("provisioning")
     public Provisioning getProvisioning() {
         return provisioning;
     }
 
+    /**
+     * ClusterDeploymentSpec defines the desired state of ClusterDeployment
+     */
     @JsonProperty("provisioning")
     public void setProvisioning(Provisioning provisioning) {
         this.provisioning = provisioning;
     }
 
+    /**
+     * ClusterDeploymentSpec defines the desired state of ClusterDeployment
+     */
     @JsonProperty("pullSecretRef")
     public LocalObjectReference getPullSecretRef() {
         return pullSecretRef;
     }
 
+    /**
+     * ClusterDeploymentSpec defines the desired state of ClusterDeployment
+     */
     @JsonProperty("pullSecretRef")
     public void setPullSecretRef(LocalObjectReference pullSecretRef) {
         this.pullSecretRef = pullSecretRef;

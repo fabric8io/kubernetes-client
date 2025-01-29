@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * MachinePool stores the configuration for a machine pool installed on OpenStack.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class MachinePool implements Editable<MachinePoolBuilder>, KubernetesReso
         this.rootVolume = rootVolume;
     }
 
+    /**
+     * Flavor defines the OpenStack Nova flavor. eg. m1.large The json key here differs from the installer which uses both "computeFlavor" and type "type" depending on which type you're looking at, and the resulting field on the MachineSet is "flavor". We are opting to stay consistent with the end result.
+     */
     @JsonProperty("flavor")
     public String getFlavor() {
         return flavor;
     }
 
+    /**
+     * Flavor defines the OpenStack Nova flavor. eg. m1.large The json key here differs from the installer which uses both "computeFlavor" and type "type" depending on which type you're looking at, and the resulting field on the MachineSet is "flavor". We are opting to stay consistent with the end result.
+     */
     @JsonProperty("flavor")
     public void setFlavor(String flavor) {
         this.flavor = flavor;
     }
 
+    /**
+     * MachinePool stores the configuration for a machine pool installed on OpenStack.
+     */
     @JsonProperty("rootVolume")
     public RootVolume getRootVolume() {
         return rootVolume;
     }
 
+    /**
+     * MachinePool stores the configuration for a machine pool installed on OpenStack.
+     */
     @JsonProperty("rootVolume")
     public void setRootVolume(RootVolume rootVolume) {
         this.rootVolume = rootVolume;

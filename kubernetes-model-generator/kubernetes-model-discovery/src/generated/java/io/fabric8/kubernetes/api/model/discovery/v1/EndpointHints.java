@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * EndpointHints provides hints describing how an endpoint should be consumed.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -81,12 +84,18 @@ public class EndpointHints implements Editable<EndpointHintsBuilder>, Kubernetes
         this.forZones = forZones;
     }
 
+    /**
+     * forZones indicates the zone(s) this endpoint should be consumed by to enable topology aware routing.
+     */
     @JsonProperty("forZones")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ForZone> getForZones() {
         return forZones;
     }
 
+    /**
+     * forZones indicates the zone(s) this endpoint should be consumed by to enable topology aware routing.
+     */
     @JsonProperty("forZones")
     public void setForZones(List<ForZone> forZones) {
         this.forZones = forZones;

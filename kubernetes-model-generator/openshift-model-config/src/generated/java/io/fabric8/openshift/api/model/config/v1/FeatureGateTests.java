@@ -85,22 +85,34 @@ public class FeatureGateTests implements Editable<FeatureGateTestsBuilder>, Kube
         this.tests = tests;
     }
 
+    /**
+     * FeatureGate is the name of the FeatureGate as it appears in The FeatureGate CR instance.
+     */
     @JsonProperty("featureGate")
     public String getFeatureGate() {
         return featureGate;
     }
 
+    /**
+     * FeatureGate is the name of the FeatureGate as it appears in The FeatureGate CR instance.
+     */
     @JsonProperty("featureGate")
     public void setFeatureGate(String featureGate) {
         this.featureGate = featureGate;
     }
 
+    /**
+     * Tests contains an item for every TestName
+     */
     @JsonProperty("tests")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TestDetails> getTests() {
         return tests;
     }
 
+    /**
+     * Tests contains an item for every TestName
+     */
     @JsonProperty("tests")
     public void setTests(List<TestDetails> tests) {
         this.tests = tests;

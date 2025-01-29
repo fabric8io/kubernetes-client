@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * UserWorkloadTracesSpec defines the spec for the addon to collect, forward and store traces from user workloads hosted on fleet managed clusters.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class UserWorkloadTracesSpec implements Editable<UserWorkloadTracesSpecBu
         this.collection = collection;
     }
 
+    /**
+     * UserWorkloadTracesSpec defines the spec for the addon to collect, forward and store traces from user workloads hosted on fleet managed clusters.
+     */
     @JsonProperty("collection")
     public OpenTelemetryCollectionSpec getCollection() {
         return collection;
     }
 
+    /**
+     * UserWorkloadTracesSpec defines the spec for the addon to collect, forward and store traces from user workloads hosted on fleet managed clusters.
+     */
     @JsonProperty("collection")
     public void setCollection(OpenTelemetryCollectionSpec collection) {
         this.collection = collection;

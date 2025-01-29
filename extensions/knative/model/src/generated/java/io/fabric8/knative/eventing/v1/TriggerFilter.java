@@ -79,12 +79,18 @@ public class TriggerFilter implements Editable<TriggerFilterBuilder>, Kubernetes
         this.attributes = attributes;
     }
 
+    /**
+     * Attributes filters events by exact match on event context attributes. Each key in the map is compared with the equivalent key in the event context. An event passes the filter if all values are equal to the specified values. Nested context attributes are not supported as keys. Only string values are supported.
+     */
     @JsonProperty("attributes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAttributes() {
         return attributes;
     }
 
+    /**
+     * Attributes filters events by exact match on event context attributes. Each key in the map is compared with the equivalent key in the event context. An event passes the filter if all values are equal to the specified values. Nested context attributes are not supported as keys. Only string values are supported.
+     */
     @JsonProperty("attributes")
     public void setAttributes(Map<String, String> attributes) {
         this.attributes = attributes;

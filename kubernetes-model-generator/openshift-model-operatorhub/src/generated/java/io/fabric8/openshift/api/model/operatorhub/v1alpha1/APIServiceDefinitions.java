@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * APIServiceDefinitions declares all of the extension apis managed or required by an operator being ran by ClusterServiceVersion.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,23 +89,35 @@ public class APIServiceDefinitions implements Editable<APIServiceDefinitionsBuil
         this.required = required;
     }
 
+    /**
+     * APIServiceDefinitions declares all of the extension apis managed or required by an operator being ran by ClusterServiceVersion.
+     */
     @JsonProperty("owned")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<APIServiceDescription> getOwned() {
         return owned;
     }
 
+    /**
+     * APIServiceDefinitions declares all of the extension apis managed or required by an operator being ran by ClusterServiceVersion.
+     */
     @JsonProperty("owned")
     public void setOwned(List<APIServiceDescription> owned) {
         this.owned = owned;
     }
 
+    /**
+     * APIServiceDefinitions declares all of the extension apis managed or required by an operator being ran by ClusterServiceVersion.
+     */
     @JsonProperty("required")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<APIServiceDescription> getRequired() {
         return required;
     }
 
+    /**
+     * APIServiceDefinitions declares all of the extension apis managed or required by an operator being ran by ClusterServiceVersion.
+     */
     @JsonProperty("required")
     public void setRequired(List<APIServiceDescription> required) {
         this.required = required;

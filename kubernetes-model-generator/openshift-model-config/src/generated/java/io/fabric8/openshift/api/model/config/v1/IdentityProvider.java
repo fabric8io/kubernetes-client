@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * IdentityProvider provides identities for users authenticating using credentials
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -122,121 +125,193 @@ public class IdentityProvider implements Editable<IdentityProviderBuilder>, Kube
         this.type = type;
     }
 
+    /**
+     * IdentityProvider provides identities for users authenticating using credentials
+     */
     @JsonProperty("basicAuth")
     public BasicAuthIdentityProvider getBasicAuth() {
         return basicAuth;
     }
 
+    /**
+     * IdentityProvider provides identities for users authenticating using credentials
+     */
     @JsonProperty("basicAuth")
     public void setBasicAuth(BasicAuthIdentityProvider basicAuth) {
         this.basicAuth = basicAuth;
     }
 
+    /**
+     * IdentityProvider provides identities for users authenticating using credentials
+     */
     @JsonProperty("github")
     public GitHubIdentityProvider getGithub() {
         return github;
     }
 
+    /**
+     * IdentityProvider provides identities for users authenticating using credentials
+     */
     @JsonProperty("github")
     public void setGithub(GitHubIdentityProvider github) {
         this.github = github;
     }
 
+    /**
+     * IdentityProvider provides identities for users authenticating using credentials
+     */
     @JsonProperty("gitlab")
     public GitLabIdentityProvider getGitlab() {
         return gitlab;
     }
 
+    /**
+     * IdentityProvider provides identities for users authenticating using credentials
+     */
     @JsonProperty("gitlab")
     public void setGitlab(GitLabIdentityProvider gitlab) {
         this.gitlab = gitlab;
     }
 
+    /**
+     * IdentityProvider provides identities for users authenticating using credentials
+     */
     @JsonProperty("google")
     public GoogleIdentityProvider getGoogle() {
         return google;
     }
 
+    /**
+     * IdentityProvider provides identities for users authenticating using credentials
+     */
     @JsonProperty("google")
     public void setGoogle(GoogleIdentityProvider google) {
         this.google = google;
     }
 
+    /**
+     * IdentityProvider provides identities for users authenticating using credentials
+     */
     @JsonProperty("htpasswd")
     public HTPasswdIdentityProvider getHtpasswd() {
         return htpasswd;
     }
 
+    /**
+     * IdentityProvider provides identities for users authenticating using credentials
+     */
     @JsonProperty("htpasswd")
     public void setHtpasswd(HTPasswdIdentityProvider htpasswd) {
         this.htpasswd = htpasswd;
     }
 
+    /**
+     * IdentityProvider provides identities for users authenticating using credentials
+     */
     @JsonProperty("keystone")
     public KeystoneIdentityProvider getKeystone() {
         return keystone;
     }
 
+    /**
+     * IdentityProvider provides identities for users authenticating using credentials
+     */
     @JsonProperty("keystone")
     public void setKeystone(KeystoneIdentityProvider keystone) {
         this.keystone = keystone;
     }
 
+    /**
+     * IdentityProvider provides identities for users authenticating using credentials
+     */
     @JsonProperty("ldap")
     public LDAPIdentityProvider getLdap() {
         return ldap;
     }
 
+    /**
+     * IdentityProvider provides identities for users authenticating using credentials
+     */
     @JsonProperty("ldap")
     public void setLdap(LDAPIdentityProvider ldap) {
         this.ldap = ldap;
     }
 
+    /**
+     * mappingMethod determines how identities from this provider are mapped to users Defaults to "claim"
+     */
     @JsonProperty("mappingMethod")
     public String getMappingMethod() {
         return mappingMethod;
     }
 
+    /**
+     * mappingMethod determines how identities from this provider are mapped to users Defaults to "claim"
+     */
     @JsonProperty("mappingMethod")
     public void setMappingMethod(String mappingMethod) {
         this.mappingMethod = mappingMethod;
     }
 
+    /**
+     * name is used to qualify the identities returned by this provider. - It MUST be unique and not shared by any other identity provider used - It MUST be a valid path segment: name cannot equal "." or ".." or contain "/" or "%" or ":"<br><p>   Ref: https://godoc.org/github.com/openshift/origin/pkg/user/apis/user/validation#ValidateIdentityProviderName
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * name is used to qualify the identities returned by this provider. - It MUST be unique and not shared by any other identity provider used - It MUST be a valid path segment: name cannot equal "." or ".." or contain "/" or "%" or ":"<br><p>   Ref: https://godoc.org/github.com/openshift/origin/pkg/user/apis/user/validation#ValidateIdentityProviderName
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * IdentityProvider provides identities for users authenticating using credentials
+     */
     @JsonProperty("openID")
     public OpenIDIdentityProvider getOpenID() {
         return openID;
     }
 
+    /**
+     * IdentityProvider provides identities for users authenticating using credentials
+     */
     @JsonProperty("openID")
     public void setOpenID(OpenIDIdentityProvider openID) {
         this.openID = openID;
     }
 
+    /**
+     * IdentityProvider provides identities for users authenticating using credentials
+     */
     @JsonProperty("requestHeader")
     public RequestHeaderIdentityProvider getRequestHeader() {
         return requestHeader;
     }
 
+    /**
+     * IdentityProvider provides identities for users authenticating using credentials
+     */
     @JsonProperty("requestHeader")
     public void setRequestHeader(RequestHeaderIdentityProvider requestHeader) {
         this.requestHeader = requestHeader;
     }
 
+    /**
+     * type identifies the identity provider type for this entry.
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * type identifies the identity provider type for this entry.
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

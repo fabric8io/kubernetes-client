@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AdmissionPluginConfig holds the necessary configuration options for admission plugins
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -83,22 +86,34 @@ public class AdmissionPluginConfig implements Editable<AdmissionPluginConfigBuil
         this.location = location;
     }
 
+    /**
+     * AdmissionPluginConfig holds the necessary configuration options for admission plugins
+     */
     @JsonProperty("configuration")
     public Object getConfiguration() {
         return configuration;
     }
 
+    /**
+     * AdmissionPluginConfig holds the necessary configuration options for admission plugins
+     */
     @JsonProperty("configuration")
     @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
     public void setConfiguration(Object configuration) {
         this.configuration = configuration;
     }
 
+    /**
+     * Location is the path to a configuration file that contains the plugin's configuration
+     */
     @JsonProperty("location")
     public String getLocation() {
         return location;
     }
 
+    /**
+     * Location is the path to a configuration file that contains the plugin's configuration
+     */
     @JsonProperty("location")
     public void setLocation(String location) {
         this.location = location;

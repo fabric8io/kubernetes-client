@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SelectorSyncIdentityProviderSpec defines the SyncIdentityProviderCommonSpec to sync to ClusterDeploymentSelector indicating which clusters the SelectorSyncIdentityProvider applies to in any namespace.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,22 +89,34 @@ public class SelectorSyncIdentityProviderSpec implements Editable<SelectorSyncId
         this.identityProviders = identityProviders;
     }
 
+    /**
+     * SelectorSyncIdentityProviderSpec defines the SyncIdentityProviderCommonSpec to sync to ClusterDeploymentSelector indicating which clusters the SelectorSyncIdentityProvider applies to in any namespace.
+     */
     @JsonProperty("clusterDeploymentSelector")
     public LabelSelector getClusterDeploymentSelector() {
         return clusterDeploymentSelector;
     }
 
+    /**
+     * SelectorSyncIdentityProviderSpec defines the SyncIdentityProviderCommonSpec to sync to ClusterDeploymentSelector indicating which clusters the SelectorSyncIdentityProvider applies to in any namespace.
+     */
     @JsonProperty("clusterDeploymentSelector")
     public void setClusterDeploymentSelector(LabelSelector clusterDeploymentSelector) {
         this.clusterDeploymentSelector = clusterDeploymentSelector;
     }
 
+    /**
+     * IdentityProviders is an ordered list of ways for a user to identify themselves
+     */
     @JsonProperty("identityProviders")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<IdentityProvider> getIdentityProviders() {
         return identityProviders;
     }
 
+    /**
+     * IdentityProviders is an ordered list of ways for a user to identify themselves
+     */
     @JsonProperty("identityProviders")
     public void setIdentityProviders(List<IdentityProvider> identityProviders) {
         this.identityProviders = identityProviders;

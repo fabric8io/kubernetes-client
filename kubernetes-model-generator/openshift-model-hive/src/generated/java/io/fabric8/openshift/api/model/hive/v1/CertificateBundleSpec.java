@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * CertificateBundleSpec specifies a certificate bundle associated with a cluster deployment
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class CertificateBundleSpec implements Editable<CertificateBundleSpecBuil
         this.name = name;
     }
 
+    /**
+     * CertificateBundleSpec specifies a certificate bundle associated with a cluster deployment
+     */
     @JsonProperty("certificateSecretRef")
     public LocalObjectReference getCertificateSecretRef() {
         return certificateSecretRef;
     }
 
+    /**
+     * CertificateBundleSpec specifies a certificate bundle associated with a cluster deployment
+     */
     @JsonProperty("certificateSecretRef")
     public void setCertificateSecretRef(LocalObjectReference certificateSecretRef) {
         this.certificateSecretRef = certificateSecretRef;
     }
 
+    /**
+     * Generate indicates whether this bundle should have real certificates generated for it.
+     */
     @JsonProperty("generate")
     public Boolean getGenerate() {
         return generate;
     }
 
+    /**
+     * Generate indicates whether this bundle should have real certificates generated for it.
+     */
     @JsonProperty("generate")
     public void setGenerate(Boolean generate) {
         this.generate = generate;
     }
 
+    /**
+     * Name is an identifier that must be unique within the bundle and must be referenced by an ingress or by the control plane serving certs
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name is an identifier that must be unique within the bundle and must be referenced by an ingress or by the control plane serving certs
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

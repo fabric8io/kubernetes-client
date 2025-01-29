@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AlertmanagerConfigSpec is a specification of the desired behavior of the Alertmanager configuration. By default, the Alertmanager configuration only applies to alerts for which the `namespace` label is equal to the namespace of the AlertmanagerConfig resource (see the `.spec.alertmanagerConfigMatcherStrategy` field of the Alertmanager CRD).
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -95,44 +98,68 @@ public class AlertmanagerConfigSpec implements Editable<AlertmanagerConfigSpecBu
         this.route = route;
     }
 
+    /**
+     * List of inhibition rules. The rules will only apply to alerts matching the resource's namespace.
+     */
     @JsonProperty("inhibitRules")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<InhibitRule> getInhibitRules() {
         return inhibitRules;
     }
 
+    /**
+     * List of inhibition rules. The rules will only apply to alerts matching the resource's namespace.
+     */
     @JsonProperty("inhibitRules")
     public void setInhibitRules(List<InhibitRule> inhibitRules) {
         this.inhibitRules = inhibitRules;
     }
 
+    /**
+     * List of MuteTimeInterval specifying when the routes should be muted.
+     */
     @JsonProperty("muteTimeIntervals")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<MuteTimeInterval> getMuteTimeIntervals() {
         return muteTimeIntervals;
     }
 
+    /**
+     * List of MuteTimeInterval specifying when the routes should be muted.
+     */
     @JsonProperty("muteTimeIntervals")
     public void setMuteTimeIntervals(List<MuteTimeInterval> muteTimeIntervals) {
         this.muteTimeIntervals = muteTimeIntervals;
     }
 
+    /**
+     * List of receivers.
+     */
     @JsonProperty("receivers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Receiver> getReceivers() {
         return receivers;
     }
 
+    /**
+     * List of receivers.
+     */
     @JsonProperty("receivers")
     public void setReceivers(List<Receiver> receivers) {
         this.receivers = receivers;
     }
 
+    /**
+     * AlertmanagerConfigSpec is a specification of the desired behavior of the Alertmanager configuration. By default, the Alertmanager configuration only applies to alerts for which the `namespace` label is equal to the namespace of the AlertmanagerConfig resource (see the `.spec.alertmanagerConfigMatcherStrategy` field of the Alertmanager CRD).
+     */
     @JsonProperty("route")
     public Route getRoute() {
         return route;
     }
 
+    /**
+     * AlertmanagerConfigSpec is a specification of the desired behavior of the Alertmanager configuration. By default, the Alertmanager configuration only applies to alerts for which the `namespace` label is equal to the namespace of the AlertmanagerConfig resource (see the `.spec.alertmanagerConfigMatcherStrategy` field of the Alertmanager CRD).
+     */
     @JsonProperty("route")
     public void setRoute(Route route) {
         this.route = route;

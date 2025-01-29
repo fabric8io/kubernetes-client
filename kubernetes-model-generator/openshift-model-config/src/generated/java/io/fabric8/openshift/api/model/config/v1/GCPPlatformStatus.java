@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * GCPPlatformStatus holds the current status of the Google Cloud Platform infrastructure provider.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -98,53 +101,83 @@ public class GCPPlatformStatus implements Editable<GCPPlatformStatusBuilder>, Ku
         this.resourceTags = resourceTags;
     }
 
+    /**
+     * GCPPlatformStatus holds the current status of the Google Cloud Platform infrastructure provider.
+     */
     @JsonProperty("cloudLoadBalancerConfig")
     public CloudLoadBalancerConfig getCloudLoadBalancerConfig() {
         return cloudLoadBalancerConfig;
     }
 
+    /**
+     * GCPPlatformStatus holds the current status of the Google Cloud Platform infrastructure provider.
+     */
     @JsonProperty("cloudLoadBalancerConfig")
     public void setCloudLoadBalancerConfig(CloudLoadBalancerConfig cloudLoadBalancerConfig) {
         this.cloudLoadBalancerConfig = cloudLoadBalancerConfig;
     }
 
+    /**
+     * resourceGroupName is the Project ID for new GCP resources created for the cluster.
+     */
     @JsonProperty("projectID")
     public String getProjectID() {
         return projectID;
     }
 
+    /**
+     * resourceGroupName is the Project ID for new GCP resources created for the cluster.
+     */
     @JsonProperty("projectID")
     public void setProjectID(String projectID) {
         this.projectID = projectID;
     }
 
+    /**
+     * region holds the region for new GCP resources created for the cluster.
+     */
     @JsonProperty("region")
     public String getRegion() {
         return region;
     }
 
+    /**
+     * region holds the region for new GCP resources created for the cluster.
+     */
     @JsonProperty("region")
     public void setRegion(String region) {
         this.region = region;
     }
 
+    /**
+     * resourceLabels is a list of additional labels to apply to GCP resources created for the cluster. See https://cloud.google.com/compute/docs/labeling-resources for information on labeling GCP resources. GCP supports a maximum of 64 labels per resource. OpenShift reserves 32 labels for internal use, allowing 32 labels for user configuration.
+     */
     @JsonProperty("resourceLabels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<GCPResourceLabel> getResourceLabels() {
         return resourceLabels;
     }
 
+    /**
+     * resourceLabels is a list of additional labels to apply to GCP resources created for the cluster. See https://cloud.google.com/compute/docs/labeling-resources for information on labeling GCP resources. GCP supports a maximum of 64 labels per resource. OpenShift reserves 32 labels for internal use, allowing 32 labels for user configuration.
+     */
     @JsonProperty("resourceLabels")
     public void setResourceLabels(List<GCPResourceLabel> resourceLabels) {
         this.resourceLabels = resourceLabels;
     }
 
+    /**
+     * resourceTags is a list of additional tags to apply to GCP resources created for the cluster. See https://cloud.google.com/resource-manager/docs/tags/tags-overview for information on tagging GCP resources. GCP supports a maximum of 50 tags per resource.
+     */
     @JsonProperty("resourceTags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<GCPResourceTag> getResourceTags() {
         return resourceTags;
     }
 
+    /**
+     * resourceTags is a list of additional tags to apply to GCP resources created for the cluster. See https://cloud.google.com/resource-manager/docs/tags/tags-overview for information on tagging GCP resources. GCP supports a maximum of 50 tags per resource.
+     */
     @JsonProperty("resourceTags")
     public void setResourceTags(List<GCPResourceTag> resourceTags) {
         this.resourceTags = resourceTags;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PodsMetricSource indicates how to scale on a metric describing each pod in the current scale target (for example, transactions-processed-per-second). The values will be averaged together before being compared to the target value.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class PodsMetricSource implements Editable<PodsMetricSourceBuilder>, Kube
         this.target = target;
     }
 
+    /**
+     * PodsMetricSource indicates how to scale on a metric describing each pod in the current scale target (for example, transactions-processed-per-second). The values will be averaged together before being compared to the target value.
+     */
     @JsonProperty("metric")
     public MetricIdentifier getMetric() {
         return metric;
     }
 
+    /**
+     * PodsMetricSource indicates how to scale on a metric describing each pod in the current scale target (for example, transactions-processed-per-second). The values will be averaged together before being compared to the target value.
+     */
     @JsonProperty("metric")
     public void setMetric(MetricIdentifier metric) {
         this.metric = metric;
     }
 
+    /**
+     * PodsMetricSource indicates how to scale on a metric describing each pod in the current scale target (for example, transactions-processed-per-second). The values will be averaged together before being compared to the target value.
+     */
     @JsonProperty("target")
     public MetricTarget getTarget() {
         return target;
     }
 
+    /**
+     * PodsMetricSource indicates how to scale on a metric describing each pod in the current scale target (for example, transactions-processed-per-second). The values will be averaged together before being compared to the target value.
+     */
     @JsonProperty("target")
     public void setTarget(MetricTarget target) {
         this.target = target;

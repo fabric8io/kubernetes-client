@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * RootVolume defines the storage for an instance.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class RootVolume implements Editable<RootVolumeBuilder>, KubernetesResour
         this.type = type;
     }
 
+    /**
+     * Size defines the size of the volume in gibibytes (GiB). Required
+     */
     @JsonProperty("size")
     public Integer getSize() {
         return size;
     }
 
+    /**
+     * Size defines the size of the volume in gibibytes (GiB). Required
+     */
     @JsonProperty("size")
     public void setSize(Integer size) {
         this.size = size;
     }
 
+    /**
+     * Type defines the type of the volume. Required
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * Type defines the type of the volume. Required
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

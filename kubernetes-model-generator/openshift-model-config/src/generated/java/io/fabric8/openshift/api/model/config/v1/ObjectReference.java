@@ -31,6 +31,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ObjectReference contains enough information to let you inspect or modify the referred object.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -89,41 +92,65 @@ public class ObjectReference implements Editable<ObjectReferenceBuilder>, Kubern
         this.resource = resource;
     }
 
+    /**
+     * group of the referent.
+     */
     @JsonProperty("group")
     public String getGroup() {
         return group;
     }
 
+    /**
+     * group of the referent.
+     */
     @JsonProperty("group")
     public void setGroup(String group) {
         this.group = group;
     }
 
+    /**
+     * name of the referent.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * name of the referent.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * namespace of the referent.
+     */
     @JsonProperty("namespace")
     public String getNamespace() {
         return namespace;
     }
 
+    /**
+     * namespace of the referent.
+     */
     @JsonProperty("namespace")
     public void setNamespace(String namespace) {
         this.namespace = namespace;
     }
 
+    /**
+     * resource of the referent.
+     */
     @JsonProperty("resource")
     public String getResource() {
         return resource;
     }
 
+    /**
+     * resource of the referent.
+     */
     @JsonProperty("resource")
     public void setResource(String resource) {
         this.resource = resource;

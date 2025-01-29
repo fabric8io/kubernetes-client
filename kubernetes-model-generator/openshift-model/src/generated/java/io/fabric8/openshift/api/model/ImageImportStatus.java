@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ImageImportStatus describes the result of an image import.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,42 +97,66 @@ public class ImageImportStatus implements Editable<ImageImportStatusBuilder>, Ku
         this.tag = tag;
     }
 
+    /**
+     * ImageImportStatus describes the result of an image import.
+     */
     @JsonProperty("image")
     public Image getImage() {
         return image;
     }
 
+    /**
+     * ImageImportStatus describes the result of an image import.
+     */
     @JsonProperty("image")
     public void setImage(Image image) {
         this.image = image;
     }
 
+    /**
+     * Manifests holds sub-manifests metadata when importing a manifest list
+     */
     @JsonProperty("manifests")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Image> getManifests() {
         return manifests;
     }
 
+    /**
+     * Manifests holds sub-manifests metadata when importing a manifest list
+     */
     @JsonProperty("manifests")
     public void setManifests(List<Image> manifests) {
         this.manifests = manifests;
     }
 
+    /**
+     * ImageImportStatus describes the result of an image import.
+     */
     @JsonProperty("status")
     public Status getStatus() {
         return status;
     }
 
+    /**
+     * ImageImportStatus describes the result of an image import.
+     */
     @JsonProperty("status")
     public void setStatus(Status status) {
         this.status = status;
     }
 
+    /**
+     * Tag is the tag this image was located under, if any
+     */
     @JsonProperty("tag")
     public String getTag() {
         return tag;
     }
 
+    /**
+     * Tag is the tag this image was located under, if any
+     */
     @JsonProperty("tag")
     public void setTag(String tag) {
         this.tag = tag;

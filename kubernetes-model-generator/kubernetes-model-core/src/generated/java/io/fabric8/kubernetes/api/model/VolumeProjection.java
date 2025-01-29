@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Projection that may be projected along with other supported volume types. Exactly one of these fields must be set.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -65,51 +68,81 @@ public class VolumeProjection implements Editable<VolumeProjectionBuilder>, Kube
         this.serviceAccountToken = serviceAccountToken;
     }
 
+    /**
+     * Projection that may be projected along with other supported volume types. Exactly one of these fields must be set.
+     */
     @JsonProperty("clusterTrustBundle")
     public ClusterTrustBundleProjection getClusterTrustBundle() {
         return clusterTrustBundle;
     }
 
+    /**
+     * Projection that may be projected along with other supported volume types. Exactly one of these fields must be set.
+     */
     @JsonProperty("clusterTrustBundle")
     public void setClusterTrustBundle(ClusterTrustBundleProjection clusterTrustBundle) {
         this.clusterTrustBundle = clusterTrustBundle;
     }
 
+    /**
+     * Projection that may be projected along with other supported volume types. Exactly one of these fields must be set.
+     */
     @JsonProperty("configMap")
     public ConfigMapProjection getConfigMap() {
         return configMap;
     }
 
+    /**
+     * Projection that may be projected along with other supported volume types. Exactly one of these fields must be set.
+     */
     @JsonProperty("configMap")
     public void setConfigMap(ConfigMapProjection configMap) {
         this.configMap = configMap;
     }
 
+    /**
+     * Projection that may be projected along with other supported volume types. Exactly one of these fields must be set.
+     */
     @JsonProperty("downwardAPI")
     public DownwardAPIProjection getDownwardAPI() {
         return downwardAPI;
     }
 
+    /**
+     * Projection that may be projected along with other supported volume types. Exactly one of these fields must be set.
+     */
     @JsonProperty("downwardAPI")
     public void setDownwardAPI(DownwardAPIProjection downwardAPI) {
         this.downwardAPI = downwardAPI;
     }
 
+    /**
+     * Projection that may be projected along with other supported volume types. Exactly one of these fields must be set.
+     */
     @JsonProperty("secret")
     public SecretProjection getSecret() {
         return secret;
     }
 
+    /**
+     * Projection that may be projected along with other supported volume types. Exactly one of these fields must be set.
+     */
     @JsonProperty("secret")
     public void setSecret(SecretProjection secret) {
         this.secret = secret;
     }
 
+    /**
+     * Projection that may be projected along with other supported volume types. Exactly one of these fields must be set.
+     */
     @JsonProperty("serviceAccountToken")
     public ServiceAccountTokenProjection getServiceAccountToken() {
         return serviceAccountToken;
     }
 
+    /**
+     * Projection that may be projected along with other supported volume types. Exactly one of these fields must be set.
+     */
     @JsonProperty("serviceAccountToken")
     public void setServiceAccountToken(ServiceAccountTokenProjection serviceAccountToken) {
         this.serviceAccountToken = serviceAccountToken;

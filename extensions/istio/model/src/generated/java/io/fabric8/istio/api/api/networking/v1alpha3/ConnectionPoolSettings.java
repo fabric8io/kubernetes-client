@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Connection pool settings for an upstream host. The settings apply to each individual host in the upstream service.  See Envoy's [circuit breaker](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/upstream/circuit_breaking) for more details. Connection pool settings can be applied at the TCP level as well as at HTTP level.<br><p> <br><p> For example, the following rule sets a limit of 100 connections to redis service called myredissrv with a connect timeout of 30ms<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: DestinationRule metadata:<br><p> <br><p> 	name: bookinfo-redis<br><p> <br><p> spec:<br><p> <br><p> 	host: myredissrv.prod.svc.cluster.local<br><p> 	trafficPolicy:<br><p> 	  connectionPool:<br><p> 	    tcp:<br><p> 	      maxConnections: 100<br><p> 	      connectTimeout: 30ms<br><p> 	      tcpKeepalive:<br><p> 	        time: 7200s<br><p> 	        interval: 75s<br><p> <br><p> ```
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class ConnectionPoolSettings implements Editable<ConnectionPoolSettingsBu
         this.tcp = tcp;
     }
 
+    /**
+     * Connection pool settings for an upstream host. The settings apply to each individual host in the upstream service.  See Envoy's [circuit breaker](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/upstream/circuit_breaking) for more details. Connection pool settings can be applied at the TCP level as well as at HTTP level.<br><p> <br><p> For example, the following rule sets a limit of 100 connections to redis service called myredissrv with a connect timeout of 30ms<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: DestinationRule metadata:<br><p> <br><p> 	name: bookinfo-redis<br><p> <br><p> spec:<br><p> <br><p> 	host: myredissrv.prod.svc.cluster.local<br><p> 	trafficPolicy:<br><p> 	  connectionPool:<br><p> 	    tcp:<br><p> 	      maxConnections: 100<br><p> 	      connectTimeout: 30ms<br><p> 	      tcpKeepalive:<br><p> 	        time: 7200s<br><p> 	        interval: 75s<br><p> <br><p> ```
+     */
     @JsonProperty("http")
     public ConnectionPoolSettingsHTTPSettings getHttp() {
         return http;
     }
 
+    /**
+     * Connection pool settings for an upstream host. The settings apply to each individual host in the upstream service.  See Envoy's [circuit breaker](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/upstream/circuit_breaking) for more details. Connection pool settings can be applied at the TCP level as well as at HTTP level.<br><p> <br><p> For example, the following rule sets a limit of 100 connections to redis service called myredissrv with a connect timeout of 30ms<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: DestinationRule metadata:<br><p> <br><p> 	name: bookinfo-redis<br><p> <br><p> spec:<br><p> <br><p> 	host: myredissrv.prod.svc.cluster.local<br><p> 	trafficPolicy:<br><p> 	  connectionPool:<br><p> 	    tcp:<br><p> 	      maxConnections: 100<br><p> 	      connectTimeout: 30ms<br><p> 	      tcpKeepalive:<br><p> 	        time: 7200s<br><p> 	        interval: 75s<br><p> <br><p> ```
+     */
     @JsonProperty("http")
     public void setHttp(ConnectionPoolSettingsHTTPSettings http) {
         this.http = http;
     }
 
+    /**
+     * Connection pool settings for an upstream host. The settings apply to each individual host in the upstream service.  See Envoy's [circuit breaker](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/upstream/circuit_breaking) for more details. Connection pool settings can be applied at the TCP level as well as at HTTP level.<br><p> <br><p> For example, the following rule sets a limit of 100 connections to redis service called myredissrv with a connect timeout of 30ms<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: DestinationRule metadata:<br><p> <br><p> 	name: bookinfo-redis<br><p> <br><p> spec:<br><p> <br><p> 	host: myredissrv.prod.svc.cluster.local<br><p> 	trafficPolicy:<br><p> 	  connectionPool:<br><p> 	    tcp:<br><p> 	      maxConnections: 100<br><p> 	      connectTimeout: 30ms<br><p> 	      tcpKeepalive:<br><p> 	        time: 7200s<br><p> 	        interval: 75s<br><p> <br><p> ```
+     */
     @JsonProperty("tcp")
     public ConnectionPoolSettingsTCPSettings getTcp() {
         return tcp;
     }
 
+    /**
+     * Connection pool settings for an upstream host. The settings apply to each individual host in the upstream service.  See Envoy's [circuit breaker](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/upstream/circuit_breaking) for more details. Connection pool settings can be applied at the TCP level as well as at HTTP level.<br><p> <br><p> For example, the following rule sets a limit of 100 connections to redis service called myredissrv with a connect timeout of 30ms<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: DestinationRule metadata:<br><p> <br><p> 	name: bookinfo-redis<br><p> <br><p> spec:<br><p> <br><p> 	host: myredissrv.prod.svc.cluster.local<br><p> 	trafficPolicy:<br><p> 	  connectionPool:<br><p> 	    tcp:<br><p> 	      maxConnections: 100<br><p> 	      connectTimeout: 30ms<br><p> 	      tcpKeepalive:<br><p> 	        time: 7200s<br><p> 	        interval: 75s<br><p> <br><p> ```
+     */
     @JsonProperty("tcp")
     public void setTcp(ConnectionPoolSettingsTCPSettings tcp) {
         this.tcp = tcp;

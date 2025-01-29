@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * WhenExpression allows a PipelineTask to declare expressions to be evaluated before the Task is run to determine whether the Task should be executed or skipped
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -93,42 +96,66 @@ public class WhenExpression implements Editable<WhenExpressionBuilder>, Kubernet
         this.values = values;
     }
 
+    /**
+     * CEL is a string of Common Language Expression, which can be used to conditionally execute the task based on the result of the expression evaluation More info about CEL syntax: https://github.com/google/cel-spec/blob/master/doc/langdef.md
+     */
     @JsonProperty("cel")
     public String getCel() {
         return cel;
     }
 
+    /**
+     * CEL is a string of Common Language Expression, which can be used to conditionally execute the task based on the result of the expression evaluation More info about CEL syntax: https://github.com/google/cel-spec/blob/master/doc/langdef.md
+     */
     @JsonProperty("cel")
     public void setCel(String cel) {
         this.cel = cel;
     }
 
+    /**
+     * Input is the string for guard checking which can be a static input or an output from a parent Task
+     */
     @JsonProperty("input")
     public String getInput() {
         return input;
     }
 
+    /**
+     * Input is the string for guard checking which can be a static input or an output from a parent Task
+     */
     @JsonProperty("input")
     public void setInput(String input) {
         this.input = input;
     }
 
+    /**
+     * Operator that represents an Input's relationship to the values
+     */
     @JsonProperty("operator")
     public String getOperator() {
         return operator;
     }
 
+    /**
+     * Operator that represents an Input's relationship to the values
+     */
     @JsonProperty("operator")
     public void setOperator(String operator) {
         this.operator = operator;
     }
 
+    /**
+     * Values is an array of strings, which is compared against the input, for guard checking It must be non-empty
+     */
     @JsonProperty("values")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getValues() {
         return values;
     }
 
+    /**
+     * Values is an array of strings, which is compared against the input, for guard checking It must be non-empty
+     */
     @JsonProperty("values")
     public void setValues(List<String> values) {
         this.values = values;

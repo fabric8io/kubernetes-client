@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * UncountedTerminatedPods holds UIDs of Pods that have terminated but haven't been accounted in Job status counters.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,23 +89,35 @@ public class UncountedTerminatedPods implements Editable<UncountedTerminatedPods
         this.succeeded = succeeded;
     }
 
+    /**
+     * failed holds UIDs of failed Pods.
+     */
     @JsonProperty("failed")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getFailed() {
         return failed;
     }
 
+    /**
+     * failed holds UIDs of failed Pods.
+     */
     @JsonProperty("failed")
     public void setFailed(List<String> failed) {
         this.failed = failed;
     }
 
+    /**
+     * succeeded holds UIDs of succeeded Pods.
+     */
     @JsonProperty("succeeded")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getSucceeded() {
         return succeeded;
     }
 
+    /**
+     * succeeded holds UIDs of succeeded Pods.
+     */
     @JsonProperty("succeeded")
     public void setSucceeded(List<String> succeeded) {
         this.succeeded = succeeded;

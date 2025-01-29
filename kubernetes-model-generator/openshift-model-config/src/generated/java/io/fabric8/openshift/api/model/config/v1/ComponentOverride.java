@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ComponentOverride allows overriding cluster version operator's behavior for a component.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,51 +97,81 @@ public class ComponentOverride implements Editable<ComponentOverrideBuilder>, Ku
         this.unmanaged = unmanaged;
     }
 
+    /**
+     * group identifies the API group that the kind is in.
+     */
     @JsonProperty("group")
     public String getGroup() {
         return group;
     }
 
+    /**
+     * group identifies the API group that the kind is in.
+     */
     @JsonProperty("group")
     public void setGroup(String group) {
         this.group = group;
     }
 
+    /**
+     * kind indentifies which object to override.
+     */
     @JsonProperty("kind")
     public String getKind() {
         return kind;
     }
 
+    /**
+     * kind indentifies which object to override.
+     */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * name is the component's name.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * name is the component's name.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * namespace is the component's namespace. If the resource is cluster scoped, the namespace should be empty.
+     */
     @JsonProperty("namespace")
     public String getNamespace() {
         return namespace;
     }
 
+    /**
+     * namespace is the component's namespace. If the resource is cluster scoped, the namespace should be empty.
+     */
     @JsonProperty("namespace")
     public void setNamespace(String namespace) {
         this.namespace = namespace;
     }
 
+    /**
+     * unmanaged controls if cluster version operator should stop managing the resources in this cluster. Default: false
+     */
     @JsonProperty("unmanaged")
     public Boolean getUnmanaged() {
         return unmanaged;
     }
 
+    /**
+     * unmanaged controls if cluster version operator should stop managing the resources in this cluster. Default: false
+     */
     @JsonProperty("unmanaged")
     public void setUnmanaged(Boolean unmanaged) {
         this.unmanaged = unmanaged;

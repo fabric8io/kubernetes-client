@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * MachinePoolPlatform is the platform-specific configuration for a machine pool. Only one of the platforms should be set.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -103,71 +106,113 @@ public class MachinePoolPlatform implements Editable<MachinePoolPlatformBuilder>
         this.vsphere = vsphere;
     }
 
+    /**
+     * MachinePoolPlatform is the platform-specific configuration for a machine pool. Only one of the platforms should be set.
+     */
     @JsonProperty("aws")
     public io.fabric8.openshift.api.model.hive.aws.v1.MachinePoolPlatform getAws() {
         return aws;
     }
 
+    /**
+     * MachinePoolPlatform is the platform-specific configuration for a machine pool. Only one of the platforms should be set.
+     */
     @JsonProperty("aws")
     public void setAws(io.fabric8.openshift.api.model.hive.aws.v1.MachinePoolPlatform aws) {
         this.aws = aws;
     }
 
+    /**
+     * MachinePoolPlatform is the platform-specific configuration for a machine pool. Only one of the platforms should be set.
+     */
     @JsonProperty("azure")
     public MachinePool getAzure() {
         return azure;
     }
 
+    /**
+     * MachinePoolPlatform is the platform-specific configuration for a machine pool. Only one of the platforms should be set.
+     */
     @JsonProperty("azure")
     public void setAzure(MachinePool azure) {
         this.azure = azure;
     }
 
+    /**
+     * MachinePoolPlatform is the platform-specific configuration for a machine pool. Only one of the platforms should be set.
+     */
     @JsonProperty("gcp")
     public io.fabric8.openshift.api.model.hive.gcp.v1.MachinePool getGcp() {
         return gcp;
     }
 
+    /**
+     * MachinePoolPlatform is the platform-specific configuration for a machine pool. Only one of the platforms should be set.
+     */
     @JsonProperty("gcp")
     public void setGcp(io.fabric8.openshift.api.model.hive.gcp.v1.MachinePool gcp) {
         this.gcp = gcp;
     }
 
+    /**
+     * MachinePoolPlatform is the platform-specific configuration for a machine pool. Only one of the platforms should be set.
+     */
     @JsonProperty("ibmcloud")
     public io.fabric8.openshift.api.model.hive.ibmcloud.v1.MachinePool getIbmcloud() {
         return ibmcloud;
     }
 
+    /**
+     * MachinePoolPlatform is the platform-specific configuration for a machine pool. Only one of the platforms should be set.
+     */
     @JsonProperty("ibmcloud")
     public void setIbmcloud(io.fabric8.openshift.api.model.hive.ibmcloud.v1.MachinePool ibmcloud) {
         this.ibmcloud = ibmcloud;
     }
 
+    /**
+     * MachinePoolPlatform is the platform-specific configuration for a machine pool. Only one of the platforms should be set.
+     */
     @JsonProperty("openstack")
     public io.fabric8.openshift.api.model.hive.openstack.v1.MachinePool getOpenstack() {
         return openstack;
     }
 
+    /**
+     * MachinePoolPlatform is the platform-specific configuration for a machine pool. Only one of the platforms should be set.
+     */
     @JsonProperty("openstack")
     public void setOpenstack(io.fabric8.openshift.api.model.hive.openstack.v1.MachinePool openstack) {
         this.openstack = openstack;
     }
 
+    /**
+     * MachinePoolPlatform is the platform-specific configuration for a machine pool. Only one of the platforms should be set.
+     */
     @JsonProperty("ovirt")
     public io.fabric8.openshift.api.model.hive.ovirt.v1.MachinePool getOvirt() {
         return ovirt;
     }
 
+    /**
+     * MachinePoolPlatform is the platform-specific configuration for a machine pool. Only one of the platforms should be set.
+     */
     @JsonProperty("ovirt")
     public void setOvirt(io.fabric8.openshift.api.model.hive.ovirt.v1.MachinePool ovirt) {
         this.ovirt = ovirt;
     }
 
+    /**
+     * MachinePoolPlatform is the platform-specific configuration for a machine pool. Only one of the platforms should be set.
+     */
     @JsonProperty("vsphere")
     public io.fabric8.openshift.api.model.hive.vsphere.v1.MachinePool getVsphere() {
         return vsphere;
     }
 
+    /**
+     * MachinePoolPlatform is the platform-specific configuration for a machine pool. Only one of the platforms should be set.
+     */
     @JsonProperty("vsphere")
     public void setVsphere(io.fabric8.openshift.api.model.hive.vsphere.v1.MachinePool vsphere) {
         this.vsphere = vsphere;

@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Consistent Hash-based load balancing can be used to provide soft session affinity based on HTTP headers, cookies or other properties. The affinity to a particular destination host may be lost when one or more hosts are added/removed from the destination service.<br><p> <br><p> Note: consistent hashing is less reliable at maintaining affinity than common "sticky sessions" implementations, which often encode a specific destination in a cookie, ensuring affinity is maintained as long as the backend remains. With consistent hash, the guarantees are weaker; any host addition or removal can break affinity for `1/backends` requests.<br><p> <br><p> Warning: consistent hashing depends on each proxy having a consistent view of endpoints. This is not the case when locality load balancing is enabled. Locality load balancing and consistent hash will only work together when all proxies are in the same locality, or a high level load balancer handles locality affinity.
+ */
 @JsonDeserialize(using = io.fabric8.kubernetes.model.jackson.JsonUnwrappedDeserializer.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -89,33 +92,51 @@ public class LoadBalancerSettingsConsistentHashLB implements Editable<LoadBalanc
         this.minimumRingSize = minimumRingSize;
     }
 
+    /**
+     * Consistent Hash-based load balancing can be used to provide soft session affinity based on HTTP headers, cookies or other properties. The affinity to a particular destination host may be lost when one or more hosts are added/removed from the destination service.<br><p> <br><p> Note: consistent hashing is less reliable at maintaining affinity than common "sticky sessions" implementations, which often encode a specific destination in a cookie, ensuring affinity is maintained as long as the backend remains. With consistent hash, the guarantees are weaker; any host addition or removal can break affinity for `1/backends` requests.<br><p> <br><p> Warning: consistent hashing depends on each proxy having a consistent view of endpoints. This is not the case when locality load balancing is enabled. Locality load balancing and consistent hash will only work together when all proxies are in the same locality, or a high level load balancer handles locality affinity.
+     */
     @JsonProperty("HashAlgorithm")
     @JsonUnwrapped
     public IsLoadBalancerSettingsConsistentHashLBHashAlgorithm getHashAlgorithm() {
         return hashAlgorithm;
     }
 
+    /**
+     * Consistent Hash-based load balancing can be used to provide soft session affinity based on HTTP headers, cookies or other properties. The affinity to a particular destination host may be lost when one or more hosts are added/removed from the destination service.<br><p> <br><p> Note: consistent hashing is less reliable at maintaining affinity than common "sticky sessions" implementations, which often encode a specific destination in a cookie, ensuring affinity is maintained as long as the backend remains. With consistent hash, the guarantees are weaker; any host addition or removal can break affinity for `1/backends` requests.<br><p> <br><p> Warning: consistent hashing depends on each proxy having a consistent view of endpoints. This is not the case when locality load balancing is enabled. Locality load balancing and consistent hash will only work together when all proxies are in the same locality, or a high level load balancer handles locality affinity.
+     */
     @JsonProperty("HashAlgorithm")
     public void setHashAlgorithm(IsLoadBalancerSettingsConsistentHashLBHashAlgorithm hashAlgorithm) {
         this.hashAlgorithm = hashAlgorithm;
     }
 
+    /**
+     * Consistent Hash-based load balancing can be used to provide soft session affinity based on HTTP headers, cookies or other properties. The affinity to a particular destination host may be lost when one or more hosts are added/removed from the destination service.<br><p> <br><p> Note: consistent hashing is less reliable at maintaining affinity than common "sticky sessions" implementations, which often encode a specific destination in a cookie, ensuring affinity is maintained as long as the backend remains. With consistent hash, the guarantees are weaker; any host addition or removal can break affinity for `1/backends` requests.<br><p> <br><p> Warning: consistent hashing depends on each proxy having a consistent view of endpoints. This is not the case when locality load balancing is enabled. Locality load balancing and consistent hash will only work together when all proxies are in the same locality, or a high level load balancer handles locality affinity.
+     */
     @JsonProperty("HashKey")
     @JsonUnwrapped
     public IsLoadBalancerSettingsConsistentHashLBHashKey getHashKey() {
         return hashKey;
     }
 
+    /**
+     * Consistent Hash-based load balancing can be used to provide soft session affinity based on HTTP headers, cookies or other properties. The affinity to a particular destination host may be lost when one or more hosts are added/removed from the destination service.<br><p> <br><p> Note: consistent hashing is less reliable at maintaining affinity than common "sticky sessions" implementations, which often encode a specific destination in a cookie, ensuring affinity is maintained as long as the backend remains. With consistent hash, the guarantees are weaker; any host addition or removal can break affinity for `1/backends` requests.<br><p> <br><p> Warning: consistent hashing depends on each proxy having a consistent view of endpoints. This is not the case when locality load balancing is enabled. Locality load balancing and consistent hash will only work together when all proxies are in the same locality, or a high level load balancer handles locality affinity.
+     */
     @JsonProperty("HashKey")
     public void setHashKey(IsLoadBalancerSettingsConsistentHashLBHashKey hashKey) {
         this.hashKey = hashKey;
     }
 
+    /**
+     * Deprecated. Use RingHash instead.<br><p> <br><p> Deprecated: Marked as deprecated in networking/v1alpha3/destination_rule.proto.
+     */
     @JsonProperty("minimumRingSize")
     public Long getMinimumRingSize() {
         return minimumRingSize;
     }
 
+    /**
+     * Deprecated. Use RingHash instead.<br><p> <br><p> Deprecated: Marked as deprecated in networking/v1alpha3/destination_rule.proto.
+     */
     @JsonProperty("minimumRingSize")
     public void setMinimumRingSize(Long minimumRingSize) {
         this.minimumRingSize = minimumRingSize;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Bandwidth describes the bandwidth strategy for the network of the instance
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class BandwidthProperties implements Editable<BandwidthPropertiesBuilder>
         this.internetMaxBandwidthOut = internetMaxBandwidthOut;
     }
 
+    /**
+     * InternetMaxBandwidthIn is the maximum inbound public bandwidth. Unit: Mbit/s. Valid values: When the purchased outbound public bandwidth is less than or equal to 10 Mbit/s, the valid values of this parameter are 1 to 10. Currently the default is `10` when outbound bandwidth is less than or equal to 10 Mbit/s. When the purchased outbound public bandwidth is greater than 10, the valid values are 1 to the InternetMaxBandwidthOut value. Currently the default is the value used for `InternetMaxBandwidthOut` when outbound public bandwidth is greater than 10.
+     */
     @JsonProperty("internetMaxBandwidthIn")
     public Long getInternetMaxBandwidthIn() {
         return internetMaxBandwidthIn;
     }
 
+    /**
+     * InternetMaxBandwidthIn is the maximum inbound public bandwidth. Unit: Mbit/s. Valid values: When the purchased outbound public bandwidth is less than or equal to 10 Mbit/s, the valid values of this parameter are 1 to 10. Currently the default is `10` when outbound bandwidth is less than or equal to 10 Mbit/s. When the purchased outbound public bandwidth is greater than 10, the valid values are 1 to the InternetMaxBandwidthOut value. Currently the default is the value used for `InternetMaxBandwidthOut` when outbound public bandwidth is greater than 10.
+     */
     @JsonProperty("internetMaxBandwidthIn")
     public void setInternetMaxBandwidthIn(Long internetMaxBandwidthIn) {
         this.internetMaxBandwidthIn = internetMaxBandwidthIn;
     }
 
+    /**
+     * InternetMaxBandwidthOut is the maximum outbound public bandwidth. Unit: Mbit/s. Valid values: 0 to 100. When a value greater than 0 is used then a public IP address is assigned to the instance. Empty value means no opinion and the platform chooses the a default, which is subject to change over time. Currently the default is `0`
+     */
     @JsonProperty("internetMaxBandwidthOut")
     public Long getInternetMaxBandwidthOut() {
         return internetMaxBandwidthOut;
     }
 
+    /**
+     * InternetMaxBandwidthOut is the maximum outbound public bandwidth. Unit: Mbit/s. Valid values: 0 to 100. When a value greater than 0 is used then a public IP address is assigned to the instance. Empty value means no opinion and the platform chooses the a default, which is subject to change over time. Currently the default is `0`
+     */
     @JsonProperty("internetMaxBandwidthOut")
     public void setInternetMaxBandwidthOut(Long internetMaxBandwidthOut) {
         this.internetMaxBandwidthOut = internetMaxBandwidthOut;

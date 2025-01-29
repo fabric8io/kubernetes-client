@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * RouteStatus provides relevant info about the status of a route, including which routers acknowledge it.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -81,12 +84,18 @@ public class RouteStatus implements Editable<RouteStatusBuilder>, KubernetesReso
         this.ingress = ingress;
     }
 
+    /**
+     * ingress describes the places where the route may be exposed. The list of ingress points may contain duplicate Host or RouterName values. Routes are considered live once they are `Ready`
+     */
     @JsonProperty("ingress")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<RouteIngress> getIngress() {
         return ingress;
     }
 
+    /**
+     * ingress describes the places where the route may be exposed. The list of ingress points may contain duplicate Host or RouterName values. Routes are considered live once they are `Ready`
+     */
     @JsonProperty("ingress")
     public void setIngress(List<RouteIngress> ingress) {
         this.ingress = ingress;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SecretMapping defines a source and destination for a secret to be synced by a SyncSet
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class SecretMapping implements Editable<SecretMappingBuilder>, Kubernetes
         this.targetRef = targetRef;
     }
 
+    /**
+     * SecretMapping defines a source and destination for a secret to be synced by a SyncSet
+     */
     @JsonProperty("sourceRef")
     public SecretReference getSourceRef() {
         return sourceRef;
     }
 
+    /**
+     * SecretMapping defines a source and destination for a secret to be synced by a SyncSet
+     */
     @JsonProperty("sourceRef")
     public void setSourceRef(SecretReference sourceRef) {
         this.sourceRef = sourceRef;
     }
 
+    /**
+     * SecretMapping defines a source and destination for a secret to be synced by a SyncSet
+     */
     @JsonProperty("targetRef")
     public SecretReference getTargetRef() {
         return targetRef;
     }
 
+    /**
+     * SecretMapping defines a source and destination for a secret to be synced by a SyncSet
+     */
     @JsonProperty("targetRef")
     public void setTargetRef(SecretReference targetRef) {
         this.targetRef = targetRef;

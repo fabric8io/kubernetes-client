@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PodHttpChaosBaseRule defines the injection rule without source and port.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class PodHttpChaosBaseRule implements Editable<PodHttpChaosBaseRuleBuilde
         this.target = target;
     }
 
+    /**
+     * PodHttpChaosBaseRule defines the injection rule without source and port.
+     */
     @JsonProperty("actions")
     public PodHttpChaosActions getActions() {
         return actions;
     }
 
+    /**
+     * PodHttpChaosBaseRule defines the injection rule without source and port.
+     */
     @JsonProperty("actions")
     public void setActions(PodHttpChaosActions actions) {
         this.actions = actions;
     }
 
+    /**
+     * PodHttpChaosBaseRule defines the injection rule without source and port.
+     */
     @JsonProperty("selector")
     public PodHttpChaosSelector getSelector() {
         return selector;
     }
 
+    /**
+     * PodHttpChaosBaseRule defines the injection rule without source and port.
+     */
     @JsonProperty("selector")
     public void setSelector(PodHttpChaosSelector selector) {
         this.selector = selector;
     }
 
+    /**
+     * Target is the object to be selected and injected, &lt;Request|Response&gt;.
+     */
     @JsonProperty("target")
     public String getTarget() {
         return target;
     }
 
+    /**
+     * Target is the object to be selected and injected, &lt;Request|Response&gt;.
+     */
     @JsonProperty("target")
     public void setTarget(String target) {
         this.target = target;

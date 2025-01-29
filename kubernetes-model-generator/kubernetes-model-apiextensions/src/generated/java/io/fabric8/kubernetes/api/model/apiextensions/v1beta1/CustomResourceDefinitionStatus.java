@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * CustomResourceDefinitionStatus indicates the state of the CustomResourceDefinition
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,33 +93,51 @@ public class CustomResourceDefinitionStatus implements Editable<CustomResourceDe
         this.storedVersions = storedVersions;
     }
 
+    /**
+     * CustomResourceDefinitionStatus indicates the state of the CustomResourceDefinition
+     */
     @JsonProperty("acceptedNames")
     public CustomResourceDefinitionNames getAcceptedNames() {
         return acceptedNames;
     }
 
+    /**
+     * CustomResourceDefinitionStatus indicates the state of the CustomResourceDefinition
+     */
     @JsonProperty("acceptedNames")
     public void setAcceptedNames(CustomResourceDefinitionNames acceptedNames) {
         this.acceptedNames = acceptedNames;
     }
 
+    /**
+     * conditions indicate state for particular aspects of a CustomResourceDefinition
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<CustomResourceDefinitionCondition> getConditions() {
         return conditions;
     }
 
+    /**
+     * conditions indicate state for particular aspects of a CustomResourceDefinition
+     */
     @JsonProperty("conditions")
     public void setConditions(List<CustomResourceDefinitionCondition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * storedVersions lists all versions of CustomResources that were ever persisted. Tracking these versions allows a migration path for stored versions in etcd. The field is mutable so a migration controller can finish a migration to another version (ensuring no old objects are left in storage), and then remove the rest of the versions from this list. Versions may not be removed from `spec.versions` while they exist in this list.
+     */
     @JsonProperty("storedVersions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getStoredVersions() {
         return storedVersions;
     }
 
+    /**
+     * storedVersions lists all versions of CustomResources that were ever persisted. Tracking these versions allows a migration path for stored versions in etcd. The field is mutable so a migration controller can finish a migration to another version (ensuring no old objects are left in storage), and then remove the rest of the versions from this list. Versions may not be removed from `spec.versions` while they exist in this list.
+     */
     @JsonProperty("storedVersions")
     public void setStoredVersions(List<String> storedVersions) {
         this.storedVersions = storedVersions;

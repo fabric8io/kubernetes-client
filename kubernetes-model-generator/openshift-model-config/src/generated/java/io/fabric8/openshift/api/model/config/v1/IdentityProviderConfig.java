@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * IdentityProviderConfig contains configuration for using a specific identity provider
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -114,101 +117,161 @@ public class IdentityProviderConfig implements Editable<IdentityProviderConfigBu
         this.type = type;
     }
 
+    /**
+     * IdentityProviderConfig contains configuration for using a specific identity provider
+     */
     @JsonProperty("basicAuth")
     public BasicAuthIdentityProvider getBasicAuth() {
         return basicAuth;
     }
 
+    /**
+     * IdentityProviderConfig contains configuration for using a specific identity provider
+     */
     @JsonProperty("basicAuth")
     public void setBasicAuth(BasicAuthIdentityProvider basicAuth) {
         this.basicAuth = basicAuth;
     }
 
+    /**
+     * IdentityProviderConfig contains configuration for using a specific identity provider
+     */
     @JsonProperty("github")
     public GitHubIdentityProvider getGithub() {
         return github;
     }
 
+    /**
+     * IdentityProviderConfig contains configuration for using a specific identity provider
+     */
     @JsonProperty("github")
     public void setGithub(GitHubIdentityProvider github) {
         this.github = github;
     }
 
+    /**
+     * IdentityProviderConfig contains configuration for using a specific identity provider
+     */
     @JsonProperty("gitlab")
     public GitLabIdentityProvider getGitlab() {
         return gitlab;
     }
 
+    /**
+     * IdentityProviderConfig contains configuration for using a specific identity provider
+     */
     @JsonProperty("gitlab")
     public void setGitlab(GitLabIdentityProvider gitlab) {
         this.gitlab = gitlab;
     }
 
+    /**
+     * IdentityProviderConfig contains configuration for using a specific identity provider
+     */
     @JsonProperty("google")
     public GoogleIdentityProvider getGoogle() {
         return google;
     }
 
+    /**
+     * IdentityProviderConfig contains configuration for using a specific identity provider
+     */
     @JsonProperty("google")
     public void setGoogle(GoogleIdentityProvider google) {
         this.google = google;
     }
 
+    /**
+     * IdentityProviderConfig contains configuration for using a specific identity provider
+     */
     @JsonProperty("htpasswd")
     public HTPasswdIdentityProvider getHtpasswd() {
         return htpasswd;
     }
 
+    /**
+     * IdentityProviderConfig contains configuration for using a specific identity provider
+     */
     @JsonProperty("htpasswd")
     public void setHtpasswd(HTPasswdIdentityProvider htpasswd) {
         this.htpasswd = htpasswd;
     }
 
+    /**
+     * IdentityProviderConfig contains configuration for using a specific identity provider
+     */
     @JsonProperty("keystone")
     public KeystoneIdentityProvider getKeystone() {
         return keystone;
     }
 
+    /**
+     * IdentityProviderConfig contains configuration for using a specific identity provider
+     */
     @JsonProperty("keystone")
     public void setKeystone(KeystoneIdentityProvider keystone) {
         this.keystone = keystone;
     }
 
+    /**
+     * IdentityProviderConfig contains configuration for using a specific identity provider
+     */
     @JsonProperty("ldap")
     public LDAPIdentityProvider getLdap() {
         return ldap;
     }
 
+    /**
+     * IdentityProviderConfig contains configuration for using a specific identity provider
+     */
     @JsonProperty("ldap")
     public void setLdap(LDAPIdentityProvider ldap) {
         this.ldap = ldap;
     }
 
+    /**
+     * IdentityProviderConfig contains configuration for using a specific identity provider
+     */
     @JsonProperty("openID")
     public OpenIDIdentityProvider getOpenID() {
         return openID;
     }
 
+    /**
+     * IdentityProviderConfig contains configuration for using a specific identity provider
+     */
     @JsonProperty("openID")
     public void setOpenID(OpenIDIdentityProvider openID) {
         this.openID = openID;
     }
 
+    /**
+     * IdentityProviderConfig contains configuration for using a specific identity provider
+     */
     @JsonProperty("requestHeader")
     public RequestHeaderIdentityProvider getRequestHeader() {
         return requestHeader;
     }
 
+    /**
+     * IdentityProviderConfig contains configuration for using a specific identity provider
+     */
     @JsonProperty("requestHeader")
     public void setRequestHeader(RequestHeaderIdentityProvider requestHeader) {
         this.requestHeader = requestHeader;
     }
 
+    /**
+     * type identifies the identity provider type for this entry.
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * type identifies the identity provider type for this entry.
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

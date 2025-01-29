@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * KeyRef defines the reference to a public key
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -91,41 +94,65 @@ public class KeyRef implements Editable<KeyRefBuilder>, KubernetesResource
         this.secretRef = secretRef;
     }
 
+    /**
+     * Data contains the inline public key.
+     */
     @JsonProperty("data")
     public String getData() {
         return data;
     }
 
+    /**
+     * Data contains the inline public key.
+     */
     @JsonProperty("data")
     public void setData(String data) {
         this.data = data;
     }
 
+    /**
+     * HashAlgorithm always defaults to sha256 if the algorithm hasn't been explicitly set
+     */
     @JsonProperty("hashAlgorithm")
     public String getHashAlgorithm() {
         return hashAlgorithm;
     }
 
+    /**
+     * HashAlgorithm always defaults to sha256 if the algorithm hasn't been explicitly set
+     */
     @JsonProperty("hashAlgorithm")
     public void setHashAlgorithm(String hashAlgorithm) {
         this.hashAlgorithm = hashAlgorithm;
     }
 
+    /**
+     * KMS contains the KMS url of the public key Supported formats differ based on the KMS system used. One example of a KMS url could be: gcpkms://projects/[PROJECT]/locations/[LOCATION]&gt;/keyRings/[KEYRING]/cryptoKeys/[KEY]/cryptoKeyVersions/[KEY_VERSION] For more examples please refer https://docs.sigstore.dev/cosign/kms_support. Note that the KMS is not supported yet.
+     */
     @JsonProperty("kms")
     public String getKms() {
         return kms;
     }
 
+    /**
+     * KMS contains the KMS url of the public key Supported formats differ based on the KMS system used. One example of a KMS url could be: gcpkms://projects/[PROJECT]/locations/[LOCATION]&gt;/keyRings/[KEYRING]/cryptoKeys/[KEY]/cryptoKeyVersions/[KEY_VERSION] For more examples please refer https://docs.sigstore.dev/cosign/kms_support. Note that the KMS is not supported yet.
+     */
     @JsonProperty("kms")
     public void setKms(String kms) {
         this.kms = kms;
     }
 
+    /**
+     * KeyRef defines the reference to a public key
+     */
     @JsonProperty("secretRef")
     public SecretReference getSecretRef() {
         return secretRef;
     }
 
+    /**
+     * KeyRef defines the reference to a public key
+     */
     @JsonProperty("secretRef")
     public void setSecretRef(SecretReference secretRef) {
         this.secretRef = secretRef;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ImageRegistryBundle contains information for writing image registry certificates
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class ImageRegistryBundle implements Editable<ImageRegistryBundleBuilder>
         this.file = file;
     }
 
+    /**
+     * data holds the contents of the bundle that will be written to the file location
+     */
     @JsonProperty("data")
     public String getData() {
         return data;
     }
 
+    /**
+     * data holds the contents of the bundle that will be written to the file location
+     */
     @JsonProperty("data")
     public void setData(String data) {
         this.data = data;
     }
 
+    /**
+     * file holds the name of the file where the bundle will be written to disk
+     */
     @JsonProperty("file")
     public String getFile() {
         return file;
     }
 
+    /**
+     * file holds the name of the file where the bundle will be written to disk
+     */
     @JsonProperty("file")
     public void setFile(String file) {
         this.file = file;

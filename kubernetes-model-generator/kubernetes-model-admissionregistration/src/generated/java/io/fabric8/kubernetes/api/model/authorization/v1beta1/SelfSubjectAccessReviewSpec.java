@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SelfSubjectAccessReviewSpec is a description of the access request.  Exactly one of ResourceAuthorizationAttributes and NonResourceAuthorizationAttributes must be set
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class SelfSubjectAccessReviewSpec implements Editable<SelfSubjectAccessRe
         this.resourceAttributes = resourceAttributes;
     }
 
+    /**
+     * SelfSubjectAccessReviewSpec is a description of the access request.  Exactly one of ResourceAuthorizationAttributes and NonResourceAuthorizationAttributes must be set
+     */
     @JsonProperty("nonResourceAttributes")
     public NonResourceAttributes getNonResourceAttributes() {
         return nonResourceAttributes;
     }
 
+    /**
+     * SelfSubjectAccessReviewSpec is a description of the access request.  Exactly one of ResourceAuthorizationAttributes and NonResourceAuthorizationAttributes must be set
+     */
     @JsonProperty("nonResourceAttributes")
     public void setNonResourceAttributes(NonResourceAttributes nonResourceAttributes) {
         this.nonResourceAttributes = nonResourceAttributes;
     }
 
+    /**
+     * SelfSubjectAccessReviewSpec is a description of the access request.  Exactly one of ResourceAuthorizationAttributes and NonResourceAuthorizationAttributes must be set
+     */
     @JsonProperty("resourceAttributes")
     public ResourceAttributes getResourceAttributes() {
         return resourceAttributes;
     }
 
+    /**
+     * SelfSubjectAccessReviewSpec is a description of the access request.  Exactly one of ResourceAuthorizationAttributes and NonResourceAuthorizationAttributes must be set
+     */
     @JsonProperty("resourceAttributes")
     public void setResourceAttributes(ResourceAttributes resourceAttributes) {
         this.resourceAttributes = resourceAttributes;

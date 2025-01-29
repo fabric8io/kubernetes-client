@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * EgressQoSSpec defines the desired state of EgressQoS
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -81,12 +84,18 @@ public class EgressQoSSpec implements Editable<EgressQoSSpecBuilder>, Kubernetes
         this.egress = egress;
     }
 
+    /**
+     * a collection of Egress QoS rule objects
+     */
     @JsonProperty("egress")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<EgressQoSRule> getEgress() {
         return egress;
     }
 
+    /**
+     * a collection of Egress QoS rule objects
+     */
     @JsonProperty("egress")
     public void setEgress(List<EgressQoSRule> egress) {
         this.egress = egress;

@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * IngressControllerCaptureHTTPHeaders specifies which HTTP headers the IngressController captures.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,23 +89,35 @@ public class IngressControllerCaptureHTTPHeaders implements Editable<IngressCont
         this.response = response;
     }
 
+    /**
+     * request specifies which HTTP request headers to capture.<br><p> <br><p> If this field is empty, no request headers are captured.
+     */
     @JsonProperty("request")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<IngressControllerCaptureHTTPHeader> getRequest() {
         return request;
     }
 
+    /**
+     * request specifies which HTTP request headers to capture.<br><p> <br><p> If this field is empty, no request headers are captured.
+     */
     @JsonProperty("request")
     public void setRequest(List<IngressControllerCaptureHTTPHeader> request) {
         this.request = request;
     }
 
+    /**
+     * response specifies which HTTP response headers to capture.<br><p> <br><p> If this field is empty, no response headers are captured.
+     */
     @JsonProperty("response")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<IngressControllerCaptureHTTPHeader> getResponse() {
         return response;
     }
 
+    /**
+     * response specifies which HTTP response headers to capture.<br><p> <br><p> If this field is empty, no response headers are captured.
+     */
     @JsonProperty("response")
     public void setResponse(List<IngressControllerCaptureHTTPHeader> response) {
         this.response = response;

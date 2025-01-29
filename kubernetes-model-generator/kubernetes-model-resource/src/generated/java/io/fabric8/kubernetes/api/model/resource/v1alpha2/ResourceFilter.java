@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ResourceFilter is a filter for resources from one particular driver.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class ResourceFilter implements Editable<ResourceFilterBuilder>, Kubernet
         this.namedResources = namedResources;
     }
 
+    /**
+     * DriverName is the name used by the DRA driver kubelet plugin.
+     */
     @JsonProperty("driverName")
     public String getDriverName() {
         return driverName;
     }
 
+    /**
+     * DriverName is the name used by the DRA driver kubelet plugin.
+     */
     @JsonProperty("driverName")
     public void setDriverName(String driverName) {
         this.driverName = driverName;
     }
 
+    /**
+     * ResourceFilter is a filter for resources from one particular driver.
+     */
     @JsonProperty("namedResources")
     public NamedResourcesFilter getNamedResources() {
         return namedResources;
     }
 
+    /**
+     * ResourceFilter is a filter for resources from one particular driver.
+     */
     @JsonProperty("namedResources")
     public void setNamedResources(NamedResourcesFilter namedResources) {
         this.namedResources = namedResources;

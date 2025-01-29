@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * JVMCommonSpec is the common specification for JVMChaos
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class JVMCommonSpec implements Editable<JVMCommonSpecBuilder>, Kubernetes
         this.port = port;
     }
 
+    /**
+     * the pid of Java process which needs to attach
+     */
     @JsonProperty("pid")
     public Integer getPid() {
         return pid;
     }
 
+    /**
+     * the pid of Java process which needs to attach
+     */
     @JsonProperty("pid")
     public void setPid(Integer pid) {
         this.pid = pid;
     }
 
+    /**
+     * the port of agent server, default 9277
+     */
     @JsonProperty("port")
     public Integer getPort() {
         return port;
     }
 
+    /**
+     * the port of agent server, default 9277
+     */
     @JsonProperty("port")
     public void setPort(Integer port) {
         this.port = port;

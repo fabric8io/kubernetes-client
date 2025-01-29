@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * IPBlock describes a particular CIDR (Ex. "192.168.1.0/24","2001:db8::/64") that is allowed to the pods matched by a NetworkPolicySpec's podSelector. The except entry describes CIDRs that should not be included within this rule.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class IPBlock implements Editable<IPBlockBuilder>, KubernetesResource
         this.except = except;
     }
 
+    /**
+     * cidr is a string representing the IPBlock Valid examples are "192.168.1.0/24" or "2001:db8::/64"
+     */
     @JsonProperty("cidr")
     public String getCidr() {
         return cidr;
     }
 
+    /**
+     * cidr is a string representing the IPBlock Valid examples are "192.168.1.0/24" or "2001:db8::/64"
+     */
     @JsonProperty("cidr")
     public void setCidr(String cidr) {
         this.cidr = cidr;
     }
 
+    /**
+     * except is a slice of CIDRs that should not be included within an IPBlock Valid examples are "192.168.1.0/24" or "2001:db8::/64" Except values will be rejected if they are outside the cidr range
+     */
     @JsonProperty("except")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getExcept() {
         return except;
     }
 
+    /**
+     * except is a slice of CIDRs that should not be included within an IPBlock Valid examples are "192.168.1.0/24" or "2001:db8::/64" Except values will be rejected if they are outside the cidr range
+     */
     @JsonProperty("except")
     public void setExcept(List<String> except) {
         this.except = except;

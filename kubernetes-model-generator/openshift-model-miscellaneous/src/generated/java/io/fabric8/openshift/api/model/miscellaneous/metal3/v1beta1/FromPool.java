@@ -90,41 +90,65 @@ public class FromPool implements Editable<FromPoolBuilder>, KubernetesResource
         this.name = name;
     }
 
+    /**
+     * APIGroup is the api group of the IP pool.
+     */
     @JsonProperty("apiGroup")
     public String getApiGroup() {
         return apiGroup;
     }
 
+    /**
+     * APIGroup is the api group of the IP pool.
+     */
     @JsonProperty("apiGroup")
     public void setApiGroup(String apiGroup) {
         this.apiGroup = apiGroup;
     }
 
+    /**
+     * Key will be used as the key to set in the metadata map for cloud-init
+     */
     @JsonProperty("key")
     public String getKey() {
         return key;
     }
 
+    /**
+     * Key will be used as the key to set in the metadata map for cloud-init
+     */
     @JsonProperty("key")
     public void setKey(String key) {
         this.key = key;
     }
 
+    /**
+     * Kind is the kind of the IP pool
+     */
     @JsonProperty("kind")
     public String getKind() {
         return kind;
     }
 
+    /**
+     * Kind is the kind of the IP pool
+     */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * Name is the name of the IP pool used to fetch the value to set in the metadata map for cloud-init
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name is the name of the IP pool used to fetch the value to set in the metadata map for cloud-init
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

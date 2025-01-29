@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Configures an issuer to sign certificates using a Venafi TPP or Cloud policy zone.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class VenafiIssuer implements Editable<VenafiIssuerBuilder>, KubernetesRe
         this.zone = zone;
     }
 
+    /**
+     * Configures an issuer to sign certificates using a Venafi TPP or Cloud policy zone.
+     */
     @JsonProperty("cloud")
     public VenafiCloud getCloud() {
         return cloud;
     }
 
+    /**
+     * Configures an issuer to sign certificates using a Venafi TPP or Cloud policy zone.
+     */
     @JsonProperty("cloud")
     public void setCloud(VenafiCloud cloud) {
         this.cloud = cloud;
     }
 
+    /**
+     * Configures an issuer to sign certificates using a Venafi TPP or Cloud policy zone.
+     */
     @JsonProperty("tpp")
     public VenafiTPP getTpp() {
         return tpp;
     }
 
+    /**
+     * Configures an issuer to sign certificates using a Venafi TPP or Cloud policy zone.
+     */
     @JsonProperty("tpp")
     public void setTpp(VenafiTPP tpp) {
         this.tpp = tpp;
     }
 
+    /**
+     * Zone is the Venafi Policy Zone to use for this issuer. All requests made to the Venafi platform will be restricted by the named zone policy. This field is required.
+     */
     @JsonProperty("zone")
     public String getZone() {
         return zone;
     }
 
+    /**
+     * Zone is the Venafi Policy Zone to use for this issuer. All requests made to the Venafi platform will be restricted by the named zone policy. This field is required.
+     */
     @JsonProperty("zone")
     public void setZone(String zone) {
         this.zone = zone;

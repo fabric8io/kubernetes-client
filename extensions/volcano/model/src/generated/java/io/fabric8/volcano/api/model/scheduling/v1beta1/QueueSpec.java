@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * QueueSpec represents the template of Queue.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -120,104 +123,164 @@ public class QueueSpec implements Editable<QueueSpecBuilder>, KubernetesResource
         this.weight = weight;
     }
 
+    /**
+     * QueueSpec represents the template of Queue.
+     */
     @JsonProperty("affinity")
     public Affinity getAffinity() {
         return affinity;
     }
 
+    /**
+     * QueueSpec represents the template of Queue.
+     */
     @JsonProperty("affinity")
     public void setAffinity(Affinity affinity) {
         this.affinity = affinity;
     }
 
+    /**
+     * QueueSpec represents the template of Queue.
+     */
     @JsonProperty("capability")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Quantity> getCapability() {
         return capability;
     }
 
+    /**
+     * QueueSpec represents the template of Queue.
+     */
     @JsonProperty("capability")
     public void setCapability(Map<String, Quantity> capability) {
         this.capability = capability;
     }
 
+    /**
+     * The amount of resources configured by the user. This part of resource can be shared with other queues and reclaimed back.
+     */
     @JsonProperty("deserved")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Quantity> getDeserved() {
         return deserved;
     }
 
+    /**
+     * The amount of resources configured by the user. This part of resource can be shared with other queues and reclaimed back.
+     */
     @JsonProperty("deserved")
     public void setDeserved(Map<String, Quantity> deserved) {
         this.deserved = deserved;
     }
 
+    /**
+     * extendCluster indicate the jobs in this Queue will be dispatched to these clusters.
+     */
     @JsonProperty("extendClusters")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Cluster> getExtendClusters() {
         return extendClusters;
     }
 
+    /**
+     * extendCluster indicate the jobs in this Queue will be dispatched to these clusters.
+     */
     @JsonProperty("extendClusters")
     public void setExtendClusters(List<Cluster> extendClusters) {
         this.extendClusters = extendClusters;
     }
 
+    /**
+     * QueueSpec represents the template of Queue.
+     */
     @JsonProperty("guarantee")
     public Guarantee getGuarantee() {
         return guarantee;
     }
 
+    /**
+     * QueueSpec represents the template of Queue.
+     */
     @JsonProperty("guarantee")
     public void setGuarantee(Guarantee guarantee) {
         this.guarantee = guarantee;
     }
 
+    /**
+     * Parent define the parent of queue
+     */
     @JsonProperty("parent")
     public String getParent() {
         return parent;
     }
 
+    /**
+     * Parent define the parent of queue
+     */
     @JsonProperty("parent")
     public void setParent(String parent) {
         this.parent = parent;
     }
 
+    /**
+     * Priority define the priority of queue. Higher values are prioritized for scheduling and considered later during reclamation.
+     */
     @JsonProperty("priority")
     public Integer getPriority() {
         return priority;
     }
 
+    /**
+     * Priority define the priority of queue. Higher values are prioritized for scheduling and considered later during reclamation.
+     */
     @JsonProperty("priority")
     public void setPriority(Integer priority) {
         this.priority = priority;
     }
 
+    /**
+     * Reclaimable indicate whether the queue can be reclaimed by other queue
+     */
     @JsonProperty("reclaimable")
     public Boolean getReclaimable() {
         return reclaimable;
     }
 
+    /**
+     * Reclaimable indicate whether the queue can be reclaimed by other queue
+     */
     @JsonProperty("reclaimable")
     public void setReclaimable(Boolean reclaimable) {
         this.reclaimable = reclaimable;
     }
 
+    /**
+     * Type define the type of queue
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * Type define the type of queue
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;
     }
 
+    /**
+     * QueueSpec represents the template of Queue.
+     */
     @JsonProperty("weight")
     public Integer getWeight() {
         return weight;
     }
 
+    /**
+     * QueueSpec represents the template of Queue.
+     */
     @JsonProperty("weight")
     public void setWeight(Integer weight) {
         this.weight = weight;

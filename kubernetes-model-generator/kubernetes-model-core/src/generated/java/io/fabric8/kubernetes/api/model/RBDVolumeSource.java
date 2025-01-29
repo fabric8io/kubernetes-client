@@ -19,6 +19,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Represents a Rados Block Device mount that lasts the lifetime of a pod. RBD volumes support ownership management and SELinux relabeling.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -80,82 +83,130 @@ public class RBDVolumeSource implements Editable<RBDVolumeSourceBuilder>, Kubern
         this.user = user;
     }
 
+    /**
+     * fsType is the filesystem type of the volume that you want to mount. Tip: Ensure that the filesystem type is supported by the host operating system. Examples: "ext4", "xfs", "ntfs". Implicitly inferred to be "ext4" if unspecified. More info: https://kubernetes.io/docs/concepts/storage/volumes#rbd
+     */
     @JsonProperty("fsType")
     public String getFsType() {
         return fsType;
     }
 
+    /**
+     * fsType is the filesystem type of the volume that you want to mount. Tip: Ensure that the filesystem type is supported by the host operating system. Examples: "ext4", "xfs", "ntfs". Implicitly inferred to be "ext4" if unspecified. More info: https://kubernetes.io/docs/concepts/storage/volumes#rbd
+     */
     @JsonProperty("fsType")
     public void setFsType(String fsType) {
         this.fsType = fsType;
     }
 
+    /**
+     * image is the rados image name. More info: https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
+     */
     @JsonProperty("image")
     public String getImage() {
         return image;
     }
 
+    /**
+     * image is the rados image name. More info: https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
+     */
     @JsonProperty("image")
     public void setImage(String image) {
         this.image = image;
     }
 
+    /**
+     * keyring is the path to key ring for RBDUser. Default is /etc/ceph/keyring. More info: https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
+     */
     @JsonProperty("keyring")
     public String getKeyring() {
         return keyring;
     }
 
+    /**
+     * keyring is the path to key ring for RBDUser. Default is /etc/ceph/keyring. More info: https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
+     */
     @JsonProperty("keyring")
     public void setKeyring(String keyring) {
         this.keyring = keyring;
     }
 
+    /**
+     * monitors is a collection of Ceph monitors. More info: https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
+     */
     @JsonProperty("monitors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getMonitors() {
         return monitors;
     }
 
+    /**
+     * monitors is a collection of Ceph monitors. More info: https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
+     */
     @JsonProperty("monitors")
     public void setMonitors(List<String> monitors) {
         this.monitors = monitors;
     }
 
+    /**
+     * pool is the rados pool name. Default is rbd. More info: https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
+     */
     @JsonProperty("pool")
     public String getPool() {
         return pool;
     }
 
+    /**
+     * pool is the rados pool name. Default is rbd. More info: https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
+     */
     @JsonProperty("pool")
     public void setPool(String pool) {
         this.pool = pool;
     }
 
+    /**
+     * readOnly here will force the ReadOnly setting in VolumeMounts. Defaults to false. More info: https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
+     */
     @JsonProperty("readOnly")
     public Boolean getReadOnly() {
         return readOnly;
     }
 
+    /**
+     * readOnly here will force the ReadOnly setting in VolumeMounts. Defaults to false. More info: https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
+     */
     @JsonProperty("readOnly")
     public void setReadOnly(Boolean readOnly) {
         this.readOnly = readOnly;
     }
 
+    /**
+     * Represents a Rados Block Device mount that lasts the lifetime of a pod. RBD volumes support ownership management and SELinux relabeling.
+     */
     @JsonProperty("secretRef")
     public LocalObjectReference getSecretRef() {
         return secretRef;
     }
 
+    /**
+     * Represents a Rados Block Device mount that lasts the lifetime of a pod. RBD volumes support ownership management and SELinux relabeling.
+     */
     @JsonProperty("secretRef")
     public void setSecretRef(LocalObjectReference secretRef) {
         this.secretRef = secretRef;
     }
 
+    /**
+     * user is the rados user name. Default is admin. More info: https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
+     */
     @JsonProperty("user")
     public String getUser() {
         return user;
     }
 
+    /**
+     * user is the rados user name. Default is admin. More info: https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
+     */
     @JsonProperty("user")
     public void setUser(String user) {
         this.user = user;

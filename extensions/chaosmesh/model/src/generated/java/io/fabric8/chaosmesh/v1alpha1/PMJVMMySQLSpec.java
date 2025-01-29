@@ -106,81 +106,129 @@ public class PMJVMMySQLSpec implements Editable<PMJVMMySQLSpecBuilder>, Kubernet
         this.table = table;
     }
 
+    /**
+     * the match database default value is "", means match all database
+     */
     @JsonProperty("database")
     public String getDatabase() {
         return database;
     }
 
+    /**
+     * the match database default value is "", means match all database
+     */
     @JsonProperty("database")
     public void setDatabase(String database) {
         this.database = database;
     }
 
+    /**
+     * The exception which needs to throw for action `exception` or the exception message needs to throw in action `mysql`
+     */
     @JsonProperty("exception")
     public String getException() {
         return exception;
     }
 
+    /**
+     * The exception which needs to throw for action `exception` or the exception message needs to throw in action `mysql`
+     */
     @JsonProperty("exception")
     public void setException(String exception) {
         this.exception = exception;
     }
 
+    /**
+     * The latency duration for action 'latency' or the latency duration in action `mysql`
+     */
     @JsonProperty("latency")
     public Integer getLatency() {
         return latency;
     }
 
+    /**
+     * The latency duration for action 'latency' or the latency duration in action `mysql`
+     */
     @JsonProperty("latency")
     public void setLatency(Integer latency) {
         this.latency = latency;
     }
 
+    /**
+     * the version of mysql-connector-java, only support 5.X.X(set to "5") and 8.X.X(set to "8") now
+     */
     @JsonProperty("mysqlConnectorVersion")
     public String getMysqlConnectorVersion() {
         return mysqlConnectorVersion;
     }
 
+    /**
+     * the version of mysql-connector-java, only support 5.X.X(set to "5") and 8.X.X(set to "8") now
+     */
     @JsonProperty("mysqlConnectorVersion")
     public void setMysqlConnectorVersion(String mysqlConnectorVersion) {
         this.mysqlConnectorVersion = mysqlConnectorVersion;
     }
 
+    /**
+     * the pid of Java process which needs to attach
+     */
     @JsonProperty("pid")
     public Integer getPid() {
         return pid;
     }
 
+    /**
+     * the pid of Java process which needs to attach
+     */
     @JsonProperty("pid")
     public void setPid(Integer pid) {
         this.pid = pid;
     }
 
+    /**
+     * the port of agent server, default 9277
+     */
     @JsonProperty("port")
     public Integer getPort() {
         return port;
     }
 
+    /**
+     * the port of agent server, default 9277
+     */
     @JsonProperty("port")
     public void setPort(Integer port) {
         this.port = port;
     }
 
+    /**
+     * the match sql type default value is "", means match all SQL type. The value can be 'select', 'insert', 'update', 'delete', 'replace'.
+     */
     @JsonProperty("sqlType")
     public String getSqlType() {
         return sqlType;
     }
 
+    /**
+     * the match sql type default value is "", means match all SQL type. The value can be 'select', 'insert', 'update', 'delete', 'replace'.
+     */
     @JsonProperty("sqlType")
     public void setSqlType(String sqlType) {
         this.sqlType = sqlType;
     }
 
+    /**
+     * the match table default value is "", means match all table
+     */
     @JsonProperty("table")
     public String getTable() {
         return table;
     }
 
+    /**
+     * the match table default value is "", means match all table
+     */
     @JsonProperty("table")
     public void setTable(String table) {
         this.table = table;

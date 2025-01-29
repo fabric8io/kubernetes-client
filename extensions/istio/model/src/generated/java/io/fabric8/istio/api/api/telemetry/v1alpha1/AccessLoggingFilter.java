@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Allows specification of an access log filter.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class AccessLoggingFilter implements Editable<AccessLoggingFilterBuilder>
         this.expression = expression;
     }
 
+    /**
+     * CEL expression for selecting when requests/connections should be logged.<br><p> <br><p> Examples:<br><p> <br><p> - `response.code &gt;= 400` - `connection.mtls &amp;&amp; request.url_path.contains('v1beta3')` - `!has(request.useragent) || !(request.useragent.startsWith("Amazon-Route53-Health-Check-Service"))`
+     */
     @JsonProperty("expression")
     public String getExpression() {
         return expression;
     }
 
+    /**
+     * CEL expression for selecting when requests/connections should be logged.<br><p> <br><p> Examples:<br><p> <br><p> - `response.code &gt;= 400` - `connection.mtls &amp;&amp; request.url_path.contains('v1beta3')` - `!has(request.useragent) || !(request.useragent.startsWith("Amazon-Route53-Health-Check-Service"))`
+     */
     @JsonProperty("expression")
     public void setExpression(String expression) {
         this.expression = expression;

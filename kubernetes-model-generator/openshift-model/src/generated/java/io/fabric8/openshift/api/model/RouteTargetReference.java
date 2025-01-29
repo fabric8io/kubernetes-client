@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * RouteTargetReference specifies the target that resolve into endpoints. Only the 'Service' kind is allowed. Use 'weight' field to emphasize one over others.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class RouteTargetReference implements Editable<RouteTargetReferenceBuilde
         this.weight = weight;
     }
 
+    /**
+     * The kind of target that the route is referring to. Currently, only 'Service' is allowed
+     */
     @JsonProperty("kind")
     public String getKind() {
         return kind;
     }
 
+    /**
+     * The kind of target that the route is referring to. Currently, only 'Service' is allowed
+     */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * name of the service/target that is being referred to. e.g. name of the service
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * name of the service/target that is being referred to. e.g. name of the service
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * weight as an integer between 0 and 256, default 100, that specifies the target's relative weight against other target reference objects. 0 suppresses requests to this backend.
+     */
     @JsonProperty("weight")
     public Integer getWeight() {
         return weight;
     }
 
+    /**
+     * weight as an integer between 0 and 256, default 100, that specifies the target's relative weight against other target reference objects. 0 suppresses requests to this backend.
+     */
     @JsonProperty("weight")
     public void setWeight(Integer weight) {
         this.weight = weight;

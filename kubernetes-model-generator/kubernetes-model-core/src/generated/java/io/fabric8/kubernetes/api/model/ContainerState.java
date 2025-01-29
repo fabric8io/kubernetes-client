@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ContainerState holds a possible state of container. Only one of its members may be specified. If none of them is specified, the default one is ContainerStateWaiting.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -57,31 +60,49 @@ public class ContainerState implements Editable<ContainerStateBuilder>, Kubernet
         this.waiting = waiting;
     }
 
+    /**
+     * ContainerState holds a possible state of container. Only one of its members may be specified. If none of them is specified, the default one is ContainerStateWaiting.
+     */
     @JsonProperty("running")
     public ContainerStateRunning getRunning() {
         return running;
     }
 
+    /**
+     * ContainerState holds a possible state of container. Only one of its members may be specified. If none of them is specified, the default one is ContainerStateWaiting.
+     */
     @JsonProperty("running")
     public void setRunning(ContainerStateRunning running) {
         this.running = running;
     }
 
+    /**
+     * ContainerState holds a possible state of container. Only one of its members may be specified. If none of them is specified, the default one is ContainerStateWaiting.
+     */
     @JsonProperty("terminated")
     public ContainerStateTerminated getTerminated() {
         return terminated;
     }
 
+    /**
+     * ContainerState holds a possible state of container. Only one of its members may be specified. If none of them is specified, the default one is ContainerStateWaiting.
+     */
     @JsonProperty("terminated")
     public void setTerminated(ContainerStateTerminated terminated) {
         this.terminated = terminated;
     }
 
+    /**
+     * ContainerState holds a possible state of container. Only one of its members may be specified. If none of them is specified, the default one is ContainerStateWaiting.
+     */
     @JsonProperty("waiting")
     public ContainerStateWaiting getWaiting() {
         return waiting;
     }
 
+    /**
+     * ContainerState holds a possible state of container. Only one of its members may be specified. If none of them is specified, the default one is ContainerStateWaiting.
+     */
     @JsonProperty("waiting")
     public void setWaiting(ContainerStateWaiting waiting) {
         this.waiting = waiting;

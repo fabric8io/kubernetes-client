@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * RegistrySources holds cluster-wide information about how to handle the registries config.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -96,45 +99,69 @@ public class RegistrySources implements Editable<RegistrySourcesBuilder>, Kubern
         this.insecureRegistries = insecureRegistries;
     }
 
+    /**
+     * allowedRegistries are the only registries permitted for image pull and push actions. All other registries are denied.<br><p> <br><p> Only one of BlockedRegistries or AllowedRegistries may be set.
+     */
     @JsonProperty("allowedRegistries")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getAllowedRegistries() {
         return allowedRegistries;
     }
 
+    /**
+     * allowedRegistries are the only registries permitted for image pull and push actions. All other registries are denied.<br><p> <br><p> Only one of BlockedRegistries or AllowedRegistries may be set.
+     */
     @JsonProperty("allowedRegistries")
     public void setAllowedRegistries(List<String> allowedRegistries) {
         this.allowedRegistries = allowedRegistries;
     }
 
+    /**
+     * blockedRegistries cannot be used for image pull and push actions. All other registries are permitted.<br><p> <br><p> Only one of BlockedRegistries or AllowedRegistries may be set.
+     */
     @JsonProperty("blockedRegistries")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getBlockedRegistries() {
         return blockedRegistries;
     }
 
+    /**
+     * blockedRegistries cannot be used for image pull and push actions. All other registries are permitted.<br><p> <br><p> Only one of BlockedRegistries or AllowedRegistries may be set.
+     */
     @JsonProperty("blockedRegistries")
     public void setBlockedRegistries(List<String> blockedRegistries) {
         this.blockedRegistries = blockedRegistries;
     }
 
+    /**
+     * containerRuntimeSearchRegistries are registries that will be searched when pulling images that do not have fully qualified domains in their pull specs. Registries will be searched in the order provided in the list. Note: this search list only works with the container runtime, i.e CRI-O. Will NOT work with builds or imagestream imports.
+     */
     @JsonProperty("containerRuntimeSearchRegistries")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getContainerRuntimeSearchRegistries() {
         return containerRuntimeSearchRegistries;
     }
 
+    /**
+     * containerRuntimeSearchRegistries are registries that will be searched when pulling images that do not have fully qualified domains in their pull specs. Registries will be searched in the order provided in the list. Note: this search list only works with the container runtime, i.e CRI-O. Will NOT work with builds or imagestream imports.
+     */
     @JsonProperty("containerRuntimeSearchRegistries")
     public void setContainerRuntimeSearchRegistries(List<String> containerRuntimeSearchRegistries) {
         this.containerRuntimeSearchRegistries = containerRuntimeSearchRegistries;
     }
 
+    /**
+     * insecureRegistries are registries which do not have a valid TLS certificates or only support HTTP connections.
+     */
     @JsonProperty("insecureRegistries")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getInsecureRegistries() {
         return insecureRegistries;
     }
 
+    /**
+     * insecureRegistries are registries which do not have a valid TLS certificates or only support HTTP connections.
+     */
     @JsonProperty("insecureRegistries")
     public void setInsecureRegistries(List<String> insecureRegistries) {
         this.insecureRegistries = insecureRegistries;

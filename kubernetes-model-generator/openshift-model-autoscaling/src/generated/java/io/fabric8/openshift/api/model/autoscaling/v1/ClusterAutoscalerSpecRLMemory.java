@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Minimum and maximum number of GiB of memory in cluster, in the format &lt;min&gt;:&lt;max&gt;. Cluster autoscaler will not scale the cluster beyond these numbers.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class ClusterAutoscalerSpecRLMemory implements Editable<ClusterAutoscaler
         this.min = min;
     }
 
+    /**
+     * Minimum and maximum number of GiB of memory in cluster, in the format &lt;min&gt;:&lt;max&gt;. Cluster autoscaler will not scale the cluster beyond these numbers.
+     */
     @JsonProperty("max")
     public Integer getMax() {
         return max;
     }
 
+    /**
+     * Minimum and maximum number of GiB of memory in cluster, in the format &lt;min&gt;:&lt;max&gt;. Cluster autoscaler will not scale the cluster beyond these numbers.
+     */
     @JsonProperty("max")
     public void setMax(Integer max) {
         this.max = max;
     }
 
+    /**
+     * Minimum and maximum number of GiB of memory in cluster, in the format &lt;min&gt;:&lt;max&gt;. Cluster autoscaler will not scale the cluster beyond these numbers.
+     */
     @JsonProperty("min")
     public Integer getMin() {
         return min;
     }
 
+    /**
+     * Minimum and maximum number of GiB of memory in cluster, in the format &lt;min&gt;:&lt;max&gt;. Cluster autoscaler will not scale the cluster beyond these numbers.
+     */
     @JsonProperty("min")
     public void setMin(Integer min) {
         this.min = min;

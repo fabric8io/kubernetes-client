@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * CustomResourceColumnDefinition specifies a column for server side printing.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -98,61 +101,97 @@ public class CustomResourceColumnDefinition implements Editable<CustomResourceCo
         this.type = type;
     }
 
+    /**
+     * JSONPath is a simple JSON path (i.e. with array notation) which is evaluated against each custom resource to produce the value for this column.
+     */
     @JsonProperty("JSONPath")
     public String getJSONPath() {
         return jSONPath;
     }
 
+    /**
+     * JSONPath is a simple JSON path (i.e. with array notation) which is evaluated against each custom resource to produce the value for this column.
+     */
     @JsonProperty("JSONPath")
     public void setJSONPath(String jSONPath) {
         this.jSONPath = jSONPath;
     }
 
+    /**
+     * description is a human readable description of this column.
+     */
     @JsonProperty("description")
     public String getDescription() {
         return description;
     }
 
+    /**
+     * description is a human readable description of this column.
+     */
     @JsonProperty("description")
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * format is an optional OpenAPI type definition for this column. The 'name' format is applied to the primary identifier column to assist in clients identifying column is the resource name. See https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#data-types for details.
+     */
     @JsonProperty("format")
     public String getFormat() {
         return format;
     }
 
+    /**
+     * format is an optional OpenAPI type definition for this column. The 'name' format is applied to the primary identifier column to assist in clients identifying column is the resource name. See https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#data-types for details.
+     */
     @JsonProperty("format")
     public void setFormat(String format) {
         this.format = format;
     }
 
+    /**
+     * name is a human readable name for the column.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * name is a human readable name for the column.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * priority is an integer defining the relative importance of this column compared to others. Lower numbers are considered higher priority. Columns that may be omitted in limited space scenarios should be given a priority greater than 0.
+     */
     @JsonProperty("priority")
     public Integer getPriority() {
         return priority;
     }
 
+    /**
+     * priority is an integer defining the relative importance of this column compared to others. Lower numbers are considered higher priority. Columns that may be omitted in limited space scenarios should be given a priority greater than 0.
+     */
     @JsonProperty("priority")
     public void setPriority(Integer priority) {
         this.priority = priority;
     }
 
+    /**
+     * type is an OpenAPI type definition for this column. See https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#data-types for details.
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * type is an OpenAPI type definition for this column. See https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#data-types for details.
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

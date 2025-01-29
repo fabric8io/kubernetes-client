@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * HubApiServerHostAlias holds the mapping between IP and hostname that will be injected as an entry in the pod's hosts file.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class HubApiServerHostAlias implements Editable<HubApiServerHostAliasBuil
         this.ip = ip;
     }
 
+    /**
+     * Hostname for the above IP address.
+     */
     @JsonProperty("hostname")
     public String getHostname() {
         return hostname;
     }
 
+    /**
+     * Hostname for the above IP address.
+     */
     @JsonProperty("hostname")
     public void setHostname(String hostname) {
         this.hostname = hostname;
     }
 
+    /**
+     * IP address of the host file entry.
+     */
     @JsonProperty("ip")
     public String getIp() {
         return ip;
     }
 
+    /**
+     * IP address of the host file entry.
+     */
     @JsonProperty("ip")
     public void setIp(String ip) {
         this.ip = ip;

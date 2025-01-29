@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * InterceptorParams defines a key-value pair that can be passed on an interceptor
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -83,21 +86,33 @@ public class InterceptorParams implements Editable<InterceptorParamsBuilder>, Ku
         this.value = value;
     }
 
+    /**
+     * InterceptorParams defines a key-value pair that can be passed on an interceptor
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * InterceptorParams defines a key-value pair that can be passed on an interceptor
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * InterceptorParams defines a key-value pair that can be passed on an interceptor
+     */
     @JsonProperty("value")
     public JsonNode getValue() {
         return value;
     }
 
+    /**
+     * InterceptorParams defines a key-value pair that can be passed on an interceptor
+     */
     @JsonProperty("value")
     public void setValue(JsonNode value) {
         this.value = value;

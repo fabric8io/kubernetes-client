@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Configuration for a Wasm VM. more details can be found [here](https://www.envoyproxy.io/docs/envoy/latest/api-v3/extensions/wasm/v3/wasm.proto#extensions-wasm-v3-vmconfig).
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -81,12 +84,18 @@ public class VmConfig implements Editable<VmConfigBuilder>, KubernetesResource
         this.env = env;
     }
 
+    /**
+     * Specifies environment variables to be injected to this VM. Note that if a key does not exist, it will be ignored.
+     */
     @JsonProperty("env")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<EnvVar> getEnv() {
         return env;
     }
 
+    /**
+     * Specifies environment variables to be injected to this VM. Note that if a key does not exist, it will be ignored.
+     */
     @JsonProperty("env")
     public void setEnv(List<EnvVar> env) {
         this.env = env;

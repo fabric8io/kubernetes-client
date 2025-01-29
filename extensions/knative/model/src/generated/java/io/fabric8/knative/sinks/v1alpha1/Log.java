@@ -126,21 +126,33 @@ public class Log implements Editable<LogBuilder>, KubernetesResource
         this.showStreams = showStreams;
     }
 
+    /**
+     * Name of the logging category to use
+     */
     @JsonProperty("level")
     public String getLevel() {
         return level;
     }
 
+    /**
+     * Name of the logging category to use
+     */
     @JsonProperty("level")
     public void setLevel(String level) {
         this.level = level;
     }
 
+    /**
+     * Logging level to use
+     */
     @JsonProperty("logMask")
     public Boolean getLogMask() {
         return logMask;
     }
 
+    /**
+     * Logging level to use
+     */
     @JsonProperty("logMask")
     public void setLogMask(Boolean logMask) {
         this.logMask = logMask;
@@ -156,101 +168,161 @@ public class Log implements Editable<LogBuilder>, KubernetesResource
         this.loggerName = loggerName;
     }
 
+    /**
+     * Mask sensitive information in the log
+     */
     @JsonProperty("marker")
     public String getMarker() {
         return marker;
     }
 
+    /**
+     * Mask sensitive information in the log
+     */
     @JsonProperty("marker")
     public void setMarker(String marker) {
         this.marker = marker;
     }
 
+    /**
+     * An optional Marker name to use
+     */
     @JsonProperty("multiline")
     public Boolean getMultiline() {
         return multiline;
     }
 
+    /**
+     * An optional Marker name to use
+     */
     @JsonProperty("multiline")
     public void setMultiline(Boolean multiline) {
         this.multiline = multiline;
     }
 
+    /**
+     * If enabled, outputs each information on a newline
+     */
     @JsonProperty("showAllProperties")
     public Boolean getShowAllProperties() {
         return showAllProperties;
     }
 
+    /**
+     * If enabled, outputs each information on a newline
+     */
     @JsonProperty("showAllProperties")
     public void setShowAllProperties(Boolean showAllProperties) {
         this.showAllProperties = showAllProperties;
     }
 
+    /**
+     * Show all of the exchange properties (both internal and custom)
+     */
     @JsonProperty("showBody")
     public Boolean getShowBody() {
         return showBody;
     }
 
+    /**
+     * Show all of the exchange properties (both internal and custom)
+     */
     @JsonProperty("showBody")
     public void setShowBody(Boolean showBody) {
         this.showBody = showBody;
     }
 
+    /**
+     * Show the message body
+     */
     @JsonProperty("showBodyType")
     public Boolean getShowBodyType() {
         return showBodyType;
     }
 
+    /**
+     * Show the message body
+     */
     @JsonProperty("showBodyType")
     public void setShowBodyType(Boolean showBodyType) {
         this.showBodyType = showBodyType;
     }
 
+    /**
+     * Show the stream bodies
+     */
     @JsonProperty("showCachedStreams")
     public Boolean getShowCachedStreams() {
         return showCachedStreams;
     }
 
+    /**
+     * Show the stream bodies
+     */
     @JsonProperty("showCachedStreams")
     public void setShowCachedStreams(Boolean showCachedStreams) {
         this.showCachedStreams = showCachedStreams;
     }
 
+    /**
+     * Show the body Java type
+     */
     @JsonProperty("showExchangePattern")
     public Boolean getShowExchangePattern() {
         return showExchangePattern;
     }
 
+    /**
+     * Show the body Java type
+     */
     @JsonProperty("showExchangePattern")
     public void setShowExchangePattern(Boolean showExchangePattern) {
         this.showExchangePattern = showExchangePattern;
     }
 
+    /**
+     * Show the Message Exchange Pattern (MEP)
+     */
     @JsonProperty("showHeaders")
     public Boolean getShowHeaders() {
         return showHeaders;
     }
 
+    /**
+     * Show the Message Exchange Pattern (MEP)
+     */
     @JsonProperty("showHeaders")
     public void setShowHeaders(Boolean showHeaders) {
         this.showHeaders = showHeaders;
     }
 
+    /**
+     * Show the headers received
+     */
     @JsonProperty("showProperties")
     public Boolean getShowProperties() {
         return showProperties;
     }
 
+    /**
+     * Show the headers received
+     */
     @JsonProperty("showProperties")
     public void setShowProperties(Boolean showProperties) {
         this.showProperties = showProperties;
     }
 
+    /**
+     * Show the exchange properties (only custom)
+     */
     @JsonProperty("showStreams")
     public Boolean getShowStreams() {
         return showStreams;
     }
 
+    /**
+     * Show the exchange properties (only custom)
+     */
     @JsonProperty("showStreams")
     public void setShowStreams(Boolean showStreams) {
         this.showStreams = showStreams;

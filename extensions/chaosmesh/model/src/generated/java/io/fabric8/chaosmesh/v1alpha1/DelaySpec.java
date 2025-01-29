@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DelaySpec defines detail of a delay action
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class DelaySpec implements Editable<DelaySpecBuilder>, KubernetesResource
         this.reorder = reorder;
     }
 
+    /**
+     * DelaySpec defines detail of a delay action
+     */
     @JsonProperty("correlation")
     public String getCorrelation() {
         return correlation;
     }
 
+    /**
+     * DelaySpec defines detail of a delay action
+     */
     @JsonProperty("correlation")
     public void setCorrelation(String correlation) {
         this.correlation = correlation;
     }
 
+    /**
+     * DelaySpec defines detail of a delay action
+     */
     @JsonProperty("jitter")
     public String getJitter() {
         return jitter;
     }
 
+    /**
+     * DelaySpec defines detail of a delay action
+     */
     @JsonProperty("jitter")
     public void setJitter(String jitter) {
         this.jitter = jitter;
     }
 
+    /**
+     * DelaySpec defines detail of a delay action
+     */
     @JsonProperty("latency")
     public String getLatency() {
         return latency;
     }
 
+    /**
+     * DelaySpec defines detail of a delay action
+     */
     @JsonProperty("latency")
     public void setLatency(String latency) {
         this.latency = latency;
     }
 
+    /**
+     * DelaySpec defines detail of a delay action
+     */
     @JsonProperty("reorder")
     public ReorderSpec getReorder() {
         return reorder;
     }
 
+    /**
+     * DelaySpec defines detail of a delay action
+     */
     @JsonProperty("reorder")
     public void setReorder(ReorderSpec reorder) {
         this.reorder = reorder;

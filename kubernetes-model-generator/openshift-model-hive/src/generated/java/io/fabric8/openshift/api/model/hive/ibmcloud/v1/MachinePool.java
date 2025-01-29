@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * MachinePool stores the configuration for a machine pool installed on IBM Cloud.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,43 +97,67 @@ public class MachinePool implements Editable<MachinePoolBuilder>, KubernetesReso
         this.zones = zones;
     }
 
+    /**
+     * MachinePool stores the configuration for a machine pool installed on IBM Cloud.
+     */
     @JsonProperty("bootVolume")
     public BootVolume getBootVolume() {
         return bootVolume;
     }
 
+    /**
+     * MachinePool stores the configuration for a machine pool installed on IBM Cloud.
+     */
     @JsonProperty("bootVolume")
     public void setBootVolume(BootVolume bootVolume) {
         this.bootVolume = bootVolume;
     }
 
+    /**
+     * DedicatedHosts is the configuration for the machine's dedicated host and profile.
+     */
     @JsonProperty("dedicatedHosts")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<DedicatedHost> getDedicatedHosts() {
         return dedicatedHosts;
     }
 
+    /**
+     * DedicatedHosts is the configuration for the machine's dedicated host and profile.
+     */
     @JsonProperty("dedicatedHosts")
     public void setDedicatedHosts(List<DedicatedHost> dedicatedHosts) {
         this.dedicatedHosts = dedicatedHosts;
     }
 
+    /**
+     * InstanceType is the VSI machine profile.
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * InstanceType is the VSI machine profile.
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;
     }
 
+    /**
+     * Zones is the list of availability zones used for machines in the pool.
+     */
     @JsonProperty("zones")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getZones() {
         return zones;
     }
 
+    /**
+     * Zones is the list of availability zones used for machines in the pool.
+     */
     @JsonProperty("zones")
     public void setZones(List<String> zones) {
         this.zones = zones;

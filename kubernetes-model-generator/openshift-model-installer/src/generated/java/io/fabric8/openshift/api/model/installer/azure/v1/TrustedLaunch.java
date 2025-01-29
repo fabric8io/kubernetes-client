@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * TrustedLaunch defines the UEFI settings for the virtual machine.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class TrustedLaunch implements Editable<TrustedLaunchBuilder>, Kubernetes
         this.uefiSettings = uefiSettings;
     }
 
+    /**
+     * TrustedLaunch defines the UEFI settings for the virtual machine.
+     */
     @JsonProperty("uefiSettings")
     public UEFISettings getUefiSettings() {
         return uefiSettings;
     }
 
+    /**
+     * TrustedLaunch defines the UEFI settings for the virtual machine.
+     */
     @JsonProperty("uefiSettings")
     public void setUefiSettings(UEFISettings uefiSettings) {
         this.uefiSettings = uefiSettings;

@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * VolumeMount describes a mounting of a Volume within a container.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -73,71 +76,113 @@ public class VolumeMount implements Editable<VolumeMountBuilder>, KubernetesReso
         this.subPathExpr = subPathExpr;
     }
 
+    /**
+     * Path within the container at which the volume should be mounted.  Must not contain ':'.
+     */
     @JsonProperty("mountPath")
     public String getMountPath() {
         return mountPath;
     }
 
+    /**
+     * Path within the container at which the volume should be mounted.  Must not contain ':'.
+     */
     @JsonProperty("mountPath")
     public void setMountPath(String mountPath) {
         this.mountPath = mountPath;
     }
 
+    /**
+     * mountPropagation determines how mounts are propagated from the host to container and the other way around. When not set, MountPropagationNone is used. This field is beta in 1.10. When RecursiveReadOnly is set to IfPossible or to Enabled, MountPropagation must be None or unspecified (which defaults to None).
+     */
     @JsonProperty("mountPropagation")
     public String getMountPropagation() {
         return mountPropagation;
     }
 
+    /**
+     * mountPropagation determines how mounts are propagated from the host to container and the other way around. When not set, MountPropagationNone is used. This field is beta in 1.10. When RecursiveReadOnly is set to IfPossible or to Enabled, MountPropagation must be None or unspecified (which defaults to None).
+     */
     @JsonProperty("mountPropagation")
     public void setMountPropagation(String mountPropagation) {
         this.mountPropagation = mountPropagation;
     }
 
+    /**
+     * This must match the Name of a Volume.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * This must match the Name of a Volume.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Mounted read-only if true, read-write otherwise (false or unspecified). Defaults to false.
+     */
     @JsonProperty("readOnly")
     public Boolean getReadOnly() {
         return readOnly;
     }
 
+    /**
+     * Mounted read-only if true, read-write otherwise (false or unspecified). Defaults to false.
+     */
     @JsonProperty("readOnly")
     public void setReadOnly(Boolean readOnly) {
         this.readOnly = readOnly;
     }
 
+    /**
+     * RecursiveReadOnly specifies whether read-only mounts should be handled recursively.<br><p> <br><p> If ReadOnly is false, this field has no meaning and must be unspecified.<br><p> <br><p> If ReadOnly is true, and this field is set to Disabled, the mount is not made recursively read-only.  If this field is set to IfPossible, the mount is made recursively read-only, if it is supported by the container runtime.  If this field is set to Enabled, the mount is made recursively read-only if it is supported by the container runtime, otherwise the pod will not be started and an error will be generated to indicate the reason.<br><p> <br><p> If this field is set to IfPossible or Enabled, MountPropagation must be set to None (or be unspecified, which defaults to None).<br><p> <br><p> If this field is not specified, it is treated as an equivalent of Disabled.
+     */
     @JsonProperty("recursiveReadOnly")
     public String getRecursiveReadOnly() {
         return recursiveReadOnly;
     }
 
+    /**
+     * RecursiveReadOnly specifies whether read-only mounts should be handled recursively.<br><p> <br><p> If ReadOnly is false, this field has no meaning and must be unspecified.<br><p> <br><p> If ReadOnly is true, and this field is set to Disabled, the mount is not made recursively read-only.  If this field is set to IfPossible, the mount is made recursively read-only, if it is supported by the container runtime.  If this field is set to Enabled, the mount is made recursively read-only if it is supported by the container runtime, otherwise the pod will not be started and an error will be generated to indicate the reason.<br><p> <br><p> If this field is set to IfPossible or Enabled, MountPropagation must be set to None (or be unspecified, which defaults to None).<br><p> <br><p> If this field is not specified, it is treated as an equivalent of Disabled.
+     */
     @JsonProperty("recursiveReadOnly")
     public void setRecursiveReadOnly(String recursiveReadOnly) {
         this.recursiveReadOnly = recursiveReadOnly;
     }
 
+    /**
+     * Path within the volume from which the container's volume should be mounted. Defaults to "" (volume's root).
+     */
     @JsonProperty("subPath")
     public String getSubPath() {
         return subPath;
     }
 
+    /**
+     * Path within the volume from which the container's volume should be mounted. Defaults to "" (volume's root).
+     */
     @JsonProperty("subPath")
     public void setSubPath(String subPath) {
         this.subPath = subPath;
     }
 
+    /**
+     * Expanded path within the volume from which the container's volume should be mounted. Behaves similarly to SubPath but environment variable references $(VAR_NAME) are expanded using the container's environment. Defaults to "" (volume's root). SubPathExpr and SubPath are mutually exclusive.
+     */
     @JsonProperty("subPathExpr")
     public String getSubPathExpr() {
         return subPathExpr;
     }
 
+    /**
+     * Expanded path within the volume from which the container's volume should be mounted. Behaves similarly to SubPath but environment variable references $(VAR_NAME) are expanded using the container's environment. Defaults to "" (volume's root). SubPathExpr and SubPath are mutually exclusive.
+     */
     @JsonProperty("subPathExpr")
     public void setSubPathExpr(String subPathExpr) {
         this.subPathExpr = subPathExpr;

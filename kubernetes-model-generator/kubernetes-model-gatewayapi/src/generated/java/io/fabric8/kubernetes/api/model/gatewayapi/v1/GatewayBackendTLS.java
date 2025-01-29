@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * GatewayBackendTLS describes backend TLS configuration for gateway.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class GatewayBackendTLS implements Editable<GatewayBackendTLSBuilder>, Ku
         this.clientCertificateRef = clientCertificateRef;
     }
 
+    /**
+     * GatewayBackendTLS describes backend TLS configuration for gateway.
+     */
     @JsonProperty("clientCertificateRef")
     public SecretObjectReference getClientCertificateRef() {
         return clientCertificateRef;
     }
 
+    /**
+     * GatewayBackendTLS describes backend TLS configuration for gateway.
+     */
     @JsonProperty("clientCertificateRef")
     public void setClientCertificateRef(SecretObjectReference clientCertificateRef) {
         this.clientCertificateRef = clientCertificateRef;

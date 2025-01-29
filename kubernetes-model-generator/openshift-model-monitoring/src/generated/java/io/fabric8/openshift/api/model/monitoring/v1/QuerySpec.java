@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * QuerySpec defines the query command line flags when starting Prometheus.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class QuerySpec implements Editable<QuerySpecBuilder>, KubernetesResource
         this.timeout = timeout;
     }
 
+    /**
+     * The delta difference allowed for retrieving metrics during expression evaluations.
+     */
     @JsonProperty("lookbackDelta")
     public String getLookbackDelta() {
         return lookbackDelta;
     }
 
+    /**
+     * The delta difference allowed for retrieving metrics during expression evaluations.
+     */
     @JsonProperty("lookbackDelta")
     public void setLookbackDelta(String lookbackDelta) {
         this.lookbackDelta = lookbackDelta;
     }
 
+    /**
+     * Number of concurrent queries that can be run at once.
+     */
     @JsonProperty("maxConcurrency")
     public Integer getMaxConcurrency() {
         return maxConcurrency;
     }
 
+    /**
+     * Number of concurrent queries that can be run at once.
+     */
     @JsonProperty("maxConcurrency")
     public void setMaxConcurrency(Integer maxConcurrency) {
         this.maxConcurrency = maxConcurrency;
     }
 
+    /**
+     * Maximum number of samples a single query can load into memory. Note that queries will fail if they would load more samples than this into memory, so this also limits the number of samples a query can return.
+     */
     @JsonProperty("maxSamples")
     public Integer getMaxSamples() {
         return maxSamples;
     }
 
+    /**
+     * Maximum number of samples a single query can load into memory. Note that queries will fail if they would load more samples than this into memory, so this also limits the number of samples a query can return.
+     */
     @JsonProperty("maxSamples")
     public void setMaxSamples(Integer maxSamples) {
         this.maxSamples = maxSamples;
     }
 
+    /**
+     * Maximum time a query may take before being aborted.
+     */
     @JsonProperty("timeout")
     public String getTimeout() {
         return timeout;
     }
 
+    /**
+     * Maximum time a query may take before being aborted.
+     */
     @JsonProperty("timeout")
     public void setTimeout(String timeout) {
         this.timeout = timeout;

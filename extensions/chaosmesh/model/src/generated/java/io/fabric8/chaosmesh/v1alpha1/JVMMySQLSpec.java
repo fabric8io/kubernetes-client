@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * JVMMySQLSpec is the specification of MySQL fault injection in JVM only when SQL match the Database, Table and SQLType, JVMChaos mesh will inject fault for examle:<br><p> <br><p> 	SQL is "select &#42; from test.t1",<br><p> 	only when ((Database == "test" || Database == "") &amp;&amp; (Table == "t1" || Table == "") &amp;&amp; (SQLType == "select" || SQLType == "")) is true, JVMChaos will inject fault
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class JVMMySQLSpec implements Editable<JVMMySQLSpecBuilder>, KubernetesRe
         this.table = table;
     }
 
+    /**
+     * the match database default value is "", means match all database
+     */
     @JsonProperty("database")
     public String getDatabase() {
         return database;
     }
 
+    /**
+     * the match database default value is "", means match all database
+     */
     @JsonProperty("database")
     public void setDatabase(String database) {
         this.database = database;
     }
 
+    /**
+     * the version of mysql-connector-java, only support 5.X.X(set to "5") and 8.X.X(set to "8") now
+     */
     @JsonProperty("mysqlConnectorVersion")
     public String getMysqlConnectorVersion() {
         return mysqlConnectorVersion;
     }
 
+    /**
+     * the version of mysql-connector-java, only support 5.X.X(set to "5") and 8.X.X(set to "8") now
+     */
     @JsonProperty("mysqlConnectorVersion")
     public void setMysqlConnectorVersion(String mysqlConnectorVersion) {
         this.mysqlConnectorVersion = mysqlConnectorVersion;
     }
 
+    /**
+     * the match sql type default value is "", means match all SQL type. The value can be 'select', 'insert', 'update', 'delete', 'replace'.
+     */
     @JsonProperty("sqlType")
     public String getSqlType() {
         return sqlType;
     }
 
+    /**
+     * the match sql type default value is "", means match all SQL type. The value can be 'select', 'insert', 'update', 'delete', 'replace'.
+     */
     @JsonProperty("sqlType")
     public void setSqlType(String sqlType) {
         this.sqlType = sqlType;
     }
 
+    /**
+     * the match table default value is "", means match all table
+     */
     @JsonProperty("table")
     public String getTable() {
         return table;
     }
 
+    /**
+     * the match table default value is "", means match all table
+     */
     @JsonProperty("table")
     public void setTable(String table) {
         this.table = table;

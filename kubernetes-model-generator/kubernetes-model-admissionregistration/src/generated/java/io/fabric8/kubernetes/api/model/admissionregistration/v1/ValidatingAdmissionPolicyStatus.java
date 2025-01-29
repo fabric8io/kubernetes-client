@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ValidatingAdmissionPolicyStatus represents the status of an admission validation policy.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,32 +93,50 @@ public class ValidatingAdmissionPolicyStatus implements Editable<ValidatingAdmis
         this.typeChecking = typeChecking;
     }
 
+    /**
+     * The conditions represent the latest available observations of a policy's current state.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
 
+    /**
+     * The conditions represent the latest available observations of a policy's current state.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * The generation observed by the controller.
+     */
     @JsonProperty("observedGeneration")
     public Long getObservedGeneration() {
         return observedGeneration;
     }
 
+    /**
+     * The generation observed by the controller.
+     */
     @JsonProperty("observedGeneration")
     public void setObservedGeneration(Long observedGeneration) {
         this.observedGeneration = observedGeneration;
     }
 
+    /**
+     * ValidatingAdmissionPolicyStatus represents the status of an admission validation policy.
+     */
     @JsonProperty("typeChecking")
     public TypeChecking getTypeChecking() {
         return typeChecking;
     }
 
+    /**
+     * ValidatingAdmissionPolicyStatus represents the status of an admission validation policy.
+     */
     @JsonProperty("typeChecking")
     public void setTypeChecking(TypeChecking typeChecking) {
         this.typeChecking = typeChecking;

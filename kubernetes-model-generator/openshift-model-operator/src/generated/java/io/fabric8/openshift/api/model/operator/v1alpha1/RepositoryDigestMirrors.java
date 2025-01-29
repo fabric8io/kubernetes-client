@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * RepositoryDigestMirrors holds cluster-wide information about how to handle mirros in the registries config. Note: the mirrors only work when pulling the images that are referenced by their digests.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class RepositoryDigestMirrors implements Editable<RepositoryDigestMirrors
         this.source = source;
     }
 
+    /**
+     * mirrors is one or more repositories that may also contain the same images. The order of mirrors in this list is treated as the user's desired priority, while source is by default considered lower priority than all mirrors. Other cluster configuration, including (but not limited to) other repositoryDigestMirrors objects, may impact the exact order mirrors are contacted in, or some mirrors may be contacted in parallel, so this should be considered a preference rather than a guarantee of ordering.
+     */
     @JsonProperty("mirrors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getMirrors() {
         return mirrors;
     }
 
+    /**
+     * mirrors is one or more repositories that may also contain the same images. The order of mirrors in this list is treated as the user's desired priority, while source is by default considered lower priority than all mirrors. Other cluster configuration, including (but not limited to) other repositoryDigestMirrors objects, may impact the exact order mirrors are contacted in, or some mirrors may be contacted in parallel, so this should be considered a preference rather than a guarantee of ordering.
+     */
     @JsonProperty("mirrors")
     public void setMirrors(List<String> mirrors) {
         this.mirrors = mirrors;
     }
 
+    /**
+     * source is the repository that users refer to, e.g. in image pull specifications.
+     */
     @JsonProperty("source")
     public String getSource() {
         return source;
     }
 
+    /**
+     * source is the repository that users refer to, e.g. in image pull specifications.
+     */
     @JsonProperty("source")
     public void setSource(String source) {
         this.source = source;

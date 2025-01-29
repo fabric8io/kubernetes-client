@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DNSNameResolverResolvedAddress describes the details of an IP address for a resolved DNS name.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class DNSNameResolverResolvedAddress implements Editable<DNSNameResolverR
         this.ttlSeconds = ttlSeconds;
     }
 
+    /**
+     * ip is an IP address associated with the dnsName. The validity of the IP address expires after lastLookupTime + ttlSeconds. To refresh the information, a DNS lookup will be performed upon the expiration of the IP address's validity. If the information is not refreshed then it will be removed with a grace period after the expiration of the IP address's validity.
+     */
     @JsonProperty("ip")
     public String getIp() {
         return ip;
     }
 
+    /**
+     * ip is an IP address associated with the dnsName. The validity of the IP address expires after lastLookupTime + ttlSeconds. To refresh the information, a DNS lookup will be performed upon the expiration of the IP address's validity. If the information is not refreshed then it will be removed with a grace period after the expiration of the IP address's validity.
+     */
     @JsonProperty("ip")
     public void setIp(String ip) {
         this.ip = ip;
     }
 
+    /**
+     * DNSNameResolverResolvedAddress describes the details of an IP address for a resolved DNS name.
+     */
     @JsonProperty("lastLookupTime")
     public String getLastLookupTime() {
         return lastLookupTime;
     }
 
+    /**
+     * DNSNameResolverResolvedAddress describes the details of an IP address for a resolved DNS name.
+     */
     @JsonProperty("lastLookupTime")
     public void setLastLookupTime(String lastLookupTime) {
         this.lastLookupTime = lastLookupTime;
     }
 
+    /**
+     * ttlSeconds is the time-to-live value of the IP address. The validity of the IP address expires after lastLookupTime + ttlSeconds. On a successful DNS lookup the value of this field will be updated with the current time-to-live value. If the information is not refreshed then it will be removed with a grace period after the expiration of the IP address's validity.
+     */
     @JsonProperty("ttlSeconds")
     public Integer getTtlSeconds() {
         return ttlSeconds;
     }
 
+    /**
+     * ttlSeconds is the time-to-live value of the IP address. The validity of the IP address expires after lastLookupTime + ttlSeconds. On a successful DNS lookup the value of this field will be updated with the current time-to-live value. If the information is not refreshed then it will be removed with a grace period after the expiration of the IP address's validity.
+     */
     @JsonProperty("ttlSeconds")
     public void setTtlSeconds(Integer ttlSeconds) {
         this.ttlSeconds = ttlSeconds;

@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * MachineConfigPoolSpec is the spec for MachineConfigPool resource.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -101,62 +104,98 @@ public class MachineConfigPoolSpec implements Editable<MachineConfigPoolSpecBuil
         this.pinnedImageSets = pinnedImageSets;
     }
 
+    /**
+     * MachineConfigPoolSpec is the spec for MachineConfigPool resource.
+     */
     @JsonProperty("configuration")
     public MachineConfigPoolStatusConfiguration getConfiguration() {
         return configuration;
     }
 
+    /**
+     * MachineConfigPoolSpec is the spec for MachineConfigPool resource.
+     */
     @JsonProperty("configuration")
     public void setConfiguration(MachineConfigPoolStatusConfiguration configuration) {
         this.configuration = configuration;
     }
 
+    /**
+     * MachineConfigPoolSpec is the spec for MachineConfigPool resource.
+     */
     @JsonProperty("machineConfigSelector")
     public LabelSelector getMachineConfigSelector() {
         return machineConfigSelector;
     }
 
+    /**
+     * MachineConfigPoolSpec is the spec for MachineConfigPool resource.
+     */
     @JsonProperty("machineConfigSelector")
     public void setMachineConfigSelector(LabelSelector machineConfigSelector) {
         this.machineConfigSelector = machineConfigSelector;
     }
 
+    /**
+     * MachineConfigPoolSpec is the spec for MachineConfigPool resource.
+     */
     @JsonProperty("maxUnavailable")
     public IntOrString getMaxUnavailable() {
         return maxUnavailable;
     }
 
+    /**
+     * MachineConfigPoolSpec is the spec for MachineConfigPool resource.
+     */
     @JsonProperty("maxUnavailable")
     public void setMaxUnavailable(IntOrString maxUnavailable) {
         this.maxUnavailable = maxUnavailable;
     }
 
+    /**
+     * MachineConfigPoolSpec is the spec for MachineConfigPool resource.
+     */
     @JsonProperty("nodeSelector")
     public LabelSelector getNodeSelector() {
         return nodeSelector;
     }
 
+    /**
+     * MachineConfigPoolSpec is the spec for MachineConfigPool resource.
+     */
     @JsonProperty("nodeSelector")
     public void setNodeSelector(LabelSelector nodeSelector) {
         this.nodeSelector = nodeSelector;
     }
 
+    /**
+     * paused specifies whether or not changes to this machine config pool should be stopped. This includes generating new desiredMachineConfig and update of machines.
+     */
     @JsonProperty("paused")
     public Boolean getPaused() {
         return paused;
     }
 
+    /**
+     * paused specifies whether or not changes to this machine config pool should be stopped. This includes generating new desiredMachineConfig and update of machines.
+     */
     @JsonProperty("paused")
     public void setPaused(Boolean paused) {
         this.paused = paused;
     }
 
+    /**
+     * pinnedImageSets specifies a sequence of PinnedImageSetRef objects for the pool. Nodes within this pool will preload and pin images defined in the PinnedImageSet. Before pulling images the MachineConfigDaemon will ensure the total uncompressed size of all the images does not exceed available resources. If the total size of the images exceeds the available resources the controller will report a Degraded status to the MachineConfigPool and not attempt to pull any images. Also to help ensure the kubelet can mitigate storage risk, the pinned_image configuration and subsequent service reload will happen only after all of the images have been pulled for each set. Images from multiple PinnedImageSets are loaded and pinned sequentially as listed. Duplicate and existing images will be skipped.<br><p> <br><p> Any failure to prefetch or pin images will result in a Degraded pool. Resolving these failures is the responsibility of the user. The admin should be proactive in ensuring adequate storage and proper image authentication exists in advance.
+     */
     @JsonProperty("pinnedImageSets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PinnedImageSetRef> getPinnedImageSets() {
         return pinnedImageSets;
     }
 
+    /**
+     * pinnedImageSets specifies a sequence of PinnedImageSetRef objects for the pool. Nodes within this pool will preload and pin images defined in the PinnedImageSet. Before pulling images the MachineConfigDaemon will ensure the total uncompressed size of all the images does not exceed available resources. If the total size of the images exceeds the available resources the controller will report a Degraded status to the MachineConfigPool and not attempt to pull any images. Also to help ensure the kubelet can mitigate storage risk, the pinned_image configuration and subsequent service reload will happen only after all of the images have been pulled for each set. Images from multiple PinnedImageSets are loaded and pinned sequentially as listed. Duplicate and existing images will be skipped.<br><p> <br><p> Any failure to prefetch or pin images will result in a Degraded pool. Resolving these failures is the responsibility of the user. The admin should be proactive in ensuring adequate storage and proper image authentication exists in advance.
+     */
     @JsonProperty("pinnedImageSets")
     public void setPinnedImageSets(List<PinnedImageSetRef> pinnedImageSets) {
         this.pinnedImageSets = pinnedImageSets;

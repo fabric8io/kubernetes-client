@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * RawTrafficControl represents the traffic control chaos on specific pod
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -114,101 +117,161 @@ public class RawTrafficControl implements Editable<RawTrafficControlBuilder>, Ku
         this.type = type;
     }
 
+    /**
+     * RawTrafficControl represents the traffic control chaos on specific pod
+     */
     @JsonProperty("bandwidth")
     public BandwidthSpec getBandwidth() {
         return bandwidth;
     }
 
+    /**
+     * RawTrafficControl represents the traffic control chaos on specific pod
+     */
     @JsonProperty("bandwidth")
     public void setBandwidth(BandwidthSpec bandwidth) {
         this.bandwidth = bandwidth;
     }
 
+    /**
+     * RawTrafficControl represents the traffic control chaos on specific pod
+     */
     @JsonProperty("corrupt")
     public CorruptSpec getCorrupt() {
         return corrupt;
     }
 
+    /**
+     * RawTrafficControl represents the traffic control chaos on specific pod
+     */
     @JsonProperty("corrupt")
     public void setCorrupt(CorruptSpec corrupt) {
         this.corrupt = corrupt;
     }
 
+    /**
+     * RawTrafficControl represents the traffic control chaos on specific pod
+     */
     @JsonProperty("delay")
     public DelaySpec getDelay() {
         return delay;
     }
 
+    /**
+     * RawTrafficControl represents the traffic control chaos on specific pod
+     */
     @JsonProperty("delay")
     public void setDelay(DelaySpec delay) {
         this.delay = delay;
     }
 
+    /**
+     * Device represents the network device to be affected.
+     */
     @JsonProperty("device")
     public String getDevice() {
         return device;
     }
 
+    /**
+     * Device represents the network device to be affected.
+     */
     @JsonProperty("device")
     public void setDevice(String device) {
         this.device = device;
     }
 
+    /**
+     * RawTrafficControl represents the traffic control chaos on specific pod
+     */
     @JsonProperty("duplicate")
     public DuplicateSpec getDuplicate() {
         return duplicate;
     }
 
+    /**
+     * RawTrafficControl represents the traffic control chaos on specific pod
+     */
     @JsonProperty("duplicate")
     public void setDuplicate(DuplicateSpec duplicate) {
         this.duplicate = duplicate;
     }
 
+    /**
+     * The name of target ipset
+     */
     @JsonProperty("ipset")
     public String getIpset() {
         return ipset;
     }
 
+    /**
+     * The name of target ipset
+     */
     @JsonProperty("ipset")
     public void setIpset(String ipset) {
         this.ipset = ipset;
     }
 
+    /**
+     * RawTrafficControl represents the traffic control chaos on specific pod
+     */
     @JsonProperty("loss")
     public LossSpec getLoss() {
         return loss;
     }
 
+    /**
+     * RawTrafficControl represents the traffic control chaos on specific pod
+     */
     @JsonProperty("loss")
     public void setLoss(LossSpec loss) {
         this.loss = loss;
     }
 
+    /**
+     * RawTrafficControl represents the traffic control chaos on specific pod
+     */
     @JsonProperty("rate")
     public RateSpec getRate() {
         return rate;
     }
 
+    /**
+     * RawTrafficControl represents the traffic control chaos on specific pod
+     */
     @JsonProperty("rate")
     public void setRate(RateSpec rate) {
         this.rate = rate;
     }
 
+    /**
+     * The name and namespace of the source network chaos
+     */
     @JsonProperty("source")
     public String getSource() {
         return source;
     }
 
+    /**
+     * The name and namespace of the source network chaos
+     */
     @JsonProperty("source")
     public void setSource(String source) {
         this.source = source;
     }
 
+    /**
+     * The type of traffic control
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * The type of traffic control
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

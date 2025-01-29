@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * WeChatConfig configures notifications via WeChat. See https://prometheus.io/docs/alerting/latest/configuration/#wechat_config
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -118,111 +121,177 @@ public class WeChatConfig implements Editable<WeChatConfigBuilder>, KubernetesRe
         this.toUser = toUser;
     }
 
+    /**
+     * WeChatConfig configures notifications via WeChat. See https://prometheus.io/docs/alerting/latest/configuration/#wechat_config
+     */
     @JsonProperty("agentID")
     public String getAgentID() {
         return agentID;
     }
 
+    /**
+     * WeChatConfig configures notifications via WeChat. See https://prometheus.io/docs/alerting/latest/configuration/#wechat_config
+     */
     @JsonProperty("agentID")
     public void setAgentID(String agentID) {
         this.agentID = agentID;
     }
 
+    /**
+     * WeChatConfig configures notifications via WeChat. See https://prometheus.io/docs/alerting/latest/configuration/#wechat_config
+     */
     @JsonProperty("apiSecret")
     public SecretKeySelector getApiSecret() {
         return apiSecret;
     }
 
+    /**
+     * WeChatConfig configures notifications via WeChat. See https://prometheus.io/docs/alerting/latest/configuration/#wechat_config
+     */
     @JsonProperty("apiSecret")
     public void setApiSecret(SecretKeySelector apiSecret) {
         this.apiSecret = apiSecret;
     }
 
+    /**
+     * The WeChat API URL.
+     */
     @JsonProperty("apiURL")
     public String getApiURL() {
         return apiURL;
     }
 
+    /**
+     * The WeChat API URL.
+     */
     @JsonProperty("apiURL")
     public void setApiURL(String apiURL) {
         this.apiURL = apiURL;
     }
 
+    /**
+     * The corp id for authentication.
+     */
     @JsonProperty("corpID")
     public String getCorpID() {
         return corpID;
     }
 
+    /**
+     * The corp id for authentication.
+     */
     @JsonProperty("corpID")
     public void setCorpID(String corpID) {
         this.corpID = corpID;
     }
 
+    /**
+     * WeChatConfig configures notifications via WeChat. See https://prometheus.io/docs/alerting/latest/configuration/#wechat_config
+     */
     @JsonProperty("httpConfig")
     public HTTPConfig getHttpConfig() {
         return httpConfig;
     }
 
+    /**
+     * WeChatConfig configures notifications via WeChat. See https://prometheus.io/docs/alerting/latest/configuration/#wechat_config
+     */
     @JsonProperty("httpConfig")
     public void setHttpConfig(HTTPConfig httpConfig) {
         this.httpConfig = httpConfig;
     }
 
+    /**
+     * API request data as defined by the WeChat API.
+     */
     @JsonProperty("message")
     public String getMessage() {
         return message;
     }
 
+    /**
+     * API request data as defined by the WeChat API.
+     */
     @JsonProperty("message")
     public void setMessage(String message) {
         this.message = message;
     }
 
+    /**
+     * WeChatConfig configures notifications via WeChat. See https://prometheus.io/docs/alerting/latest/configuration/#wechat_config
+     */
     @JsonProperty("messageType")
     public String getMessageType() {
         return messageType;
     }
 
+    /**
+     * WeChatConfig configures notifications via WeChat. See https://prometheus.io/docs/alerting/latest/configuration/#wechat_config
+     */
     @JsonProperty("messageType")
     public void setMessageType(String messageType) {
         this.messageType = messageType;
     }
 
+    /**
+     * Whether or not to notify about resolved alerts.
+     */
     @JsonProperty("sendResolved")
     public Boolean getSendResolved() {
         return sendResolved;
     }
 
+    /**
+     * Whether or not to notify about resolved alerts.
+     */
     @JsonProperty("sendResolved")
     public void setSendResolved(Boolean sendResolved) {
         this.sendResolved = sendResolved;
     }
 
+    /**
+     * WeChatConfig configures notifications via WeChat. See https://prometheus.io/docs/alerting/latest/configuration/#wechat_config
+     */
     @JsonProperty("toParty")
     public String getToParty() {
         return toParty;
     }
 
+    /**
+     * WeChatConfig configures notifications via WeChat. See https://prometheus.io/docs/alerting/latest/configuration/#wechat_config
+     */
     @JsonProperty("toParty")
     public void setToParty(String toParty) {
         this.toParty = toParty;
     }
 
+    /**
+     * WeChatConfig configures notifications via WeChat. See https://prometheus.io/docs/alerting/latest/configuration/#wechat_config
+     */
     @JsonProperty("toTag")
     public String getToTag() {
         return toTag;
     }
 
+    /**
+     * WeChatConfig configures notifications via WeChat. See https://prometheus.io/docs/alerting/latest/configuration/#wechat_config
+     */
     @JsonProperty("toTag")
     public void setToTag(String toTag) {
         this.toTag = toTag;
     }
 
+    /**
+     * WeChatConfig configures notifications via WeChat. See https://prometheus.io/docs/alerting/latest/configuration/#wechat_config
+     */
     @JsonProperty("toUser")
     public String getToUser() {
         return toUser;
     }
 
+    /**
+     * WeChatConfig configures notifications via WeChat. See https://prometheus.io/docs/alerting/latest/configuration/#wechat_config
+     */
     @JsonProperty("toUser")
     public void setToUser(String toUser) {
         this.toUser = toUser;

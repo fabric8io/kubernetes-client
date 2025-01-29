@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AzureCustomerManagedBootDiagnostics provides reference to a customer managed storage account.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class AzureCustomerManagedBootDiagnostics implements Editable<AzureCustom
         this.storageAccountURI = storageAccountURI;
     }
 
+    /**
+     * StorageAccountURI is the URI of the customer managed storage account. The URI typically will be `https://&lt;mystorageaccountname&gt;.blob.core.windows.net/` but may differ if you are using Azure DNS zone endpoints. You can find the correct endpoint by looking for the Blob Primary Endpoint in the endpoints tab in the Azure console.
+     */
     @JsonProperty("storageAccountURI")
     public String getStorageAccountURI() {
         return storageAccountURI;
     }
 
+    /**
+     * StorageAccountURI is the URI of the customer managed storage account. The URI typically will be `https://&lt;mystorageaccountname&gt;.blob.core.windows.net/` but may differ if you are using Azure DNS zone endpoints. You can find the correct endpoint by looking for the Blob Primary Endpoint in the endpoints tab in the Azure console.
+     */
     @JsonProperty("storageAccountURI")
     public void setStorageAccountURI(String storageAccountURI) {
         this.storageAccountURI = storageAccountURI;

@@ -39,6 +39,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * RunSpec defines the desired state of Run
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -123,103 +126,163 @@ public class RunSpec implements Editable<RunSpecBuilder>, KubernetesResource
         this.workspaces = workspaces;
     }
 
+    /**
+     * RunSpec defines the desired state of Run
+     */
     @JsonProperty("params")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Param> getParams() {
         return params;
     }
 
+    /**
+     * RunSpec defines the desired state of Run
+     */
     @JsonProperty("params")
     public void setParams(List<Param> params) {
         this.params = params;
     }
 
+    /**
+     * RunSpec defines the desired state of Run
+     */
     @JsonProperty("podTemplate")
     public Template getPodTemplate() {
         return podTemplate;
     }
 
+    /**
+     * RunSpec defines the desired state of Run
+     */
     @JsonProperty("podTemplate")
     public void setPodTemplate(Template podTemplate) {
         this.podTemplate = podTemplate;
     }
 
+    /**
+     * RunSpec defines the desired state of Run
+     */
     @JsonProperty("ref")
     public TaskRef getRef() {
         return ref;
     }
 
+    /**
+     * RunSpec defines the desired state of Run
+     */
     @JsonProperty("ref")
     public void setRef(TaskRef ref) {
         this.ref = ref;
     }
 
+    /**
+     * Used for propagating retries count to custom tasks
+     */
     @JsonProperty("retries")
     public Integer getRetries() {
         return retries;
     }
 
+    /**
+     * Used for propagating retries count to custom tasks
+     */
     @JsonProperty("retries")
     public void setRetries(Integer retries) {
         this.retries = retries;
     }
 
+    /**
+     * RunSpec defines the desired state of Run
+     */
     @JsonProperty("serviceAccountName")
     public String getServiceAccountName() {
         return serviceAccountName;
     }
 
+    /**
+     * RunSpec defines the desired state of Run
+     */
     @JsonProperty("serviceAccountName")
     public void setServiceAccountName(String serviceAccountName) {
         this.serviceAccountName = serviceAccountName;
     }
 
+    /**
+     * RunSpec defines the desired state of Run
+     */
     @JsonProperty("spec")
     public EmbeddedRunSpec getSpec() {
         return spec;
     }
 
+    /**
+     * RunSpec defines the desired state of Run
+     */
     @JsonProperty("spec")
     public void setSpec(EmbeddedRunSpec spec) {
         this.spec = spec;
     }
 
+    /**
+     * Used for cancelling a run (and maybe more later on)
+     */
     @JsonProperty("status")
     public String getStatus() {
         return status;
     }
 
+    /**
+     * Used for cancelling a run (and maybe more later on)
+     */
     @JsonProperty("status")
     public void setStatus(String status) {
         this.status = status;
     }
 
+    /**
+     * Status message for cancellation.
+     */
     @JsonProperty("statusMessage")
     public String getStatusMessage() {
         return statusMessage;
     }
 
+    /**
+     * Status message for cancellation.
+     */
     @JsonProperty("statusMessage")
     public void setStatusMessage(String statusMessage) {
         this.statusMessage = statusMessage;
     }
 
+    /**
+     * RunSpec defines the desired state of Run
+     */
     @JsonProperty("timeout")
     public Duration getTimeout() {
         return timeout;
     }
 
+    /**
+     * RunSpec defines the desired state of Run
+     */
     @JsonProperty("timeout")
     public void setTimeout(Duration timeout) {
         this.timeout = timeout;
     }
 
+    /**
+     * Workspaces is a list of WorkspaceBindings from volumes to workspaces.
+     */
     @JsonProperty("workspaces")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<WorkspaceBinding> getWorkspaces() {
         return workspaces;
     }
 
+    /**
+     * Workspaces is a list of WorkspaceBindings from volumes to workspaces.
+     */
     @JsonProperty("workspaces")
     public void setWorkspaces(List<WorkspaceBinding> workspaces) {
         this.workspaces = workspaces;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * WebConfigFileFields defines the file content for --web.config.file flag.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class WebConfigFileFields implements Editable<WebConfigFileFieldsBuilder>
         this.tlsConfig = tlsConfig;
     }
 
+    /**
+     * WebConfigFileFields defines the file content for --web.config.file flag.
+     */
     @JsonProperty("httpConfig")
     public WebHTTPConfig getHttpConfig() {
         return httpConfig;
     }
 
+    /**
+     * WebConfigFileFields defines the file content for --web.config.file flag.
+     */
     @JsonProperty("httpConfig")
     public void setHttpConfig(WebHTTPConfig httpConfig) {
         this.httpConfig = httpConfig;
     }
 
+    /**
+     * WebConfigFileFields defines the file content for --web.config.file flag.
+     */
     @JsonProperty("tlsConfig")
     public WebTLSConfig getTlsConfig() {
         return tlsConfig;
     }
 
+    /**
+     * WebConfigFileFields defines the file content for --web.config.file flag.
+     */
     @JsonProperty("tlsConfig")
     public void setTlsConfig(WebTLSConfig tlsConfig) {
         this.tlsConfig = tlsConfig;

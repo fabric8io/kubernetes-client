@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ImageImportSpec describes a request to import a specific image.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,51 +97,81 @@ public class ImageImportSpec implements Editable<ImageImportSpecBuilder>, Kubern
         this.to = to;
     }
 
+    /**
+     * ImageImportSpec describes a request to import a specific image.
+     */
     @JsonProperty("from")
     public ObjectReference getFrom() {
         return from;
     }
 
+    /**
+     * ImageImportSpec describes a request to import a specific image.
+     */
     @JsonProperty("from")
     public void setFrom(ObjectReference from) {
         this.from = from;
     }
 
+    /**
+     * ImageImportSpec describes a request to import a specific image.
+     */
     @JsonProperty("importPolicy")
     public TagImportPolicy getImportPolicy() {
         return importPolicy;
     }
 
+    /**
+     * ImageImportSpec describes a request to import a specific image.
+     */
     @JsonProperty("importPolicy")
     public void setImportPolicy(TagImportPolicy importPolicy) {
         this.importPolicy = importPolicy;
     }
 
+    /**
+     * IncludeManifest determines if the manifest for each image is returned in the response
+     */
     @JsonProperty("includeManifest")
     public Boolean getIncludeManifest() {
         return includeManifest;
     }
 
+    /**
+     * IncludeManifest determines if the manifest for each image is returned in the response
+     */
     @JsonProperty("includeManifest")
     public void setIncludeManifest(Boolean includeManifest) {
         this.includeManifest = includeManifest;
     }
 
+    /**
+     * ImageImportSpec describes a request to import a specific image.
+     */
     @JsonProperty("referencePolicy")
     public TagReferencePolicy getReferencePolicy() {
         return referencePolicy;
     }
 
+    /**
+     * ImageImportSpec describes a request to import a specific image.
+     */
     @JsonProperty("referencePolicy")
     public void setReferencePolicy(TagReferencePolicy referencePolicy) {
         this.referencePolicy = referencePolicy;
     }
 
+    /**
+     * ImageImportSpec describes a request to import a specific image.
+     */
     @JsonProperty("to")
     public LocalObjectReference getTo() {
         return to;
     }
 
+    /**
+     * ImageImportSpec describes a request to import a specific image.
+     */
     @JsonProperty("to")
     public void setTo(LocalObjectReference to) {
         this.to = to;

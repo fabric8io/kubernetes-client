@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DeviceConstraint must have exactly one field set besides Requests.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class DeviceConstraint implements Editable<DeviceConstraintBuilder>, Kube
         this.requests = requests;
     }
 
+    /**
+     * MatchAttribute requires that all devices in question have this attribute and that its type and value are the same across those devices.<br><p> <br><p> For example, if you specified "dra.example.com/numa" (a hypothetical example!), then only devices in the same NUMA node will be chosen. A device which does not have that attribute will not be chosen. All devices should use a value of the same type for this attribute because that is part of its specification, but if one device doesn't, then it also will not be chosen.<br><p> <br><p> Must include the domain qualifier.
+     */
     @JsonProperty("matchAttribute")
     public String getMatchAttribute() {
         return matchAttribute;
     }
 
+    /**
+     * MatchAttribute requires that all devices in question have this attribute and that its type and value are the same across those devices.<br><p> <br><p> For example, if you specified "dra.example.com/numa" (a hypothetical example!), then only devices in the same NUMA node will be chosen. A device which does not have that attribute will not be chosen. All devices should use a value of the same type for this attribute because that is part of its specification, but if one device doesn't, then it also will not be chosen.<br><p> <br><p> Must include the domain qualifier.
+     */
     @JsonProperty("matchAttribute")
     public void setMatchAttribute(String matchAttribute) {
         this.matchAttribute = matchAttribute;
     }
 
+    /**
+     * Requests is a list of the one or more requests in this claim which must co-satisfy this constraint. If a request is fulfilled by multiple devices, then all of the devices must satisfy the constraint. If this is not specified, this constraint applies to all requests in this claim.
+     */
     @JsonProperty("requests")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getRequests() {
         return requests;
     }
 
+    /**
+     * Requests is a list of the one or more requests in this claim which must co-satisfy this constraint. If a request is fulfilled by multiple devices, then all of the devices must satisfy the constraint. If this is not specified, this constraint applies to all requests in this claim.
+     */
     @JsonProperty("requests")
     public void setRequests(List<String> requests) {
         this.requests = requests;

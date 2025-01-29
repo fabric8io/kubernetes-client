@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PartialSelector provides label selector(s) that can be used to match machine management resources.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class PartialSelector implements Editable<PartialSelectorBuilder>, Kubern
         this.machineResourceSelector = machineResourceSelector;
     }
 
+    /**
+     * PartialSelector provides label selector(s) that can be used to match machine management resources.
+     */
     @JsonProperty("machineResourceSelector")
     public LabelSelector getMachineResourceSelector() {
         return machineResourceSelector;
     }
 
+    /**
+     * PartialSelector provides label selector(s) that can be used to match machine management resources.
+     */
     @JsonProperty("machineResourceSelector")
     public void setMachineResourceSelector(LabelSelector machineResourceSelector) {
         this.machineResourceSelector = machineResourceSelector;

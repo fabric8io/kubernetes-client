@@ -144,61 +144,97 @@ public class HTTPChaosSpec implements Editable<HTTPChaosSpecBuilder>, Kubernetes
         this.value = value;
     }
 
+    /**
+     * Abort is a rule to abort a http session.
+     */
     @JsonProperty("abort")
     public Boolean getAbort() {
         return abort;
     }
 
+    /**
+     * Abort is a rule to abort a http session.
+     */
     @JsonProperty("abort")
     public void setAbort(Boolean abort) {
         this.abort = abort;
     }
 
+    /**
+     * Code is a rule to select target by http status code in response.
+     */
     @JsonProperty("code")
     public Integer getCode() {
         return code;
     }
 
+    /**
+     * Code is a rule to select target by http status code in response.
+     */
     @JsonProperty("code")
     public void setCode(Integer code) {
         this.code = code;
     }
 
+    /**
+     * Delay represents the delay of the target request/response. A duration string is a possibly unsigned sequence of decimal numbers, each with optional fraction and a unit suffix, such as "300ms", "2h45m". Valid time units are "ns", "us" (or "µs"), "ms", "s", "m", "h".
+     */
     @JsonProperty("delay")
     public String getDelay() {
         return delay;
     }
 
+    /**
+     * Delay represents the delay of the target request/response. A duration string is a possibly unsigned sequence of decimal numbers, each with optional fraction and a unit suffix, such as "300ms", "2h45m". Valid time units are "ns", "us" (or "µs"), "ms", "s", "m", "h".
+     */
     @JsonProperty("delay")
     public void setDelay(String delay) {
         this.delay = delay;
     }
 
+    /**
+     * Duration represents the duration of the chaos action.
+     */
     @JsonProperty("duration")
     public String getDuration() {
         return duration;
     }
 
+    /**
+     * Duration represents the duration of the chaos action.
+     */
     @JsonProperty("duration")
     public void setDuration(String duration) {
         this.duration = duration;
     }
 
+    /**
+     * Method is a rule to select target by http method in request.
+     */
     @JsonProperty("method")
     public String getMethod() {
         return method;
     }
 
+    /**
+     * Method is a rule to select target by http method in request.
+     */
     @JsonProperty("method")
     public void setMethod(String method) {
         this.method = method;
     }
 
+    /**
+     * Mode defines the mode to run chaos action. Supported mode: one / all / fixed / fixed-percent / random-max-percent
+     */
     @JsonProperty("mode")
     public String getMode() {
         return mode;
     }
 
+    /**
+     * Mode defines the mode to run chaos action. Supported mode: one / all / fixed / fixed-percent / random-max-percent
+     */
     @JsonProperty("mode")
     public void setMode(String mode) {
         this.mode = mode;
@@ -214,31 +250,49 @@ public class HTTPChaosSpec implements Editable<HTTPChaosSpecBuilder>, Kubernetes
         this.patch = patch;
     }
 
+    /**
+     * Path is a rule to select target by uri path in http request.
+     */
     @JsonProperty("path")
     public String getPath() {
         return path;
     }
 
+    /**
+     * Path is a rule to select target by uri path in http request.
+     */
     @JsonProperty("path")
     public void setPath(String path) {
         this.path = path;
     }
 
+    /**
+     * Port represents the target port to be proxy of.
+     */
     @JsonProperty("port")
     public Integer getPort() {
         return port;
     }
 
+    /**
+     * Port represents the target port to be proxy of.
+     */
     @JsonProperty("port")
     public void setPort(Integer port) {
         this.port = port;
     }
 
+    /**
+     * RemoteCluster represents the remote cluster where the chaos will be deployed
+     */
     @JsonProperty("remoteCluster")
     public String getRemoteCluster() {
         return remoteCluster;
     }
 
+    /**
+     * RemoteCluster represents the remote cluster where the chaos will be deployed
+     */
     @JsonProperty("remoteCluster")
     public void setRemoteCluster(String remoteCluster) {
         this.remoteCluster = remoteCluster;
@@ -254,23 +308,35 @@ public class HTTPChaosSpec implements Editable<HTTPChaosSpecBuilder>, Kubernetes
         this.replace = replace;
     }
 
+    /**
+     * RequestHeaders is a rule to select target by http headers in request. The key-value pairs represent header name and header value pairs.
+     */
     @JsonProperty("request_headers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getRequestHeaders() {
         return requestHeaders;
     }
 
+    /**
+     * RequestHeaders is a rule to select target by http headers in request. The key-value pairs represent header name and header value pairs.
+     */
     @JsonProperty("request_headers")
     public void setRequestHeaders(Map<String, String> requestHeaders) {
         this.requestHeaders = requestHeaders;
     }
 
+    /**
+     * ResponseHeaders is a rule to select target by http headers in response. The key-value pairs represent header name and header value pairs.
+     */
     @JsonProperty("response_headers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getResponseHeaders() {
         return responseHeaders;
     }
 
+    /**
+     * ResponseHeaders is a rule to select target by http headers in response. The key-value pairs represent header name and header value pairs.
+     */
     @JsonProperty("response_headers")
     public void setResponseHeaders(Map<String, String> responseHeaders) {
         this.responseHeaders = responseHeaders;
@@ -286,11 +352,17 @@ public class HTTPChaosSpec implements Editable<HTTPChaosSpecBuilder>, Kubernetes
         this.selector = selector;
     }
 
+    /**
+     * Target is the object to be selected and injected.
+     */
     @JsonProperty("target")
     public String getTarget() {
         return target;
     }
 
+    /**
+     * Target is the object to be selected and injected.
+     */
     @JsonProperty("target")
     public void setTarget(String target) {
         this.target = target;
@@ -306,11 +378,17 @@ public class HTTPChaosSpec implements Editable<HTTPChaosSpecBuilder>, Kubernetes
         this.tls = tls;
     }
 
+    /**
+     * Value is required when the mode is set to `FixedMode` / `FixedPercentMode` / `RandomMaxPercentMode`. If `FixedMode`, provide an integer of pods to do chaos action. If `FixedPercentMode`, provide a number from 0-100 to specify the percent of pods the server can do chaos action. IF `RandomMaxPercentMode`,  provide a number from 0-100 to specify the max percent of pods to do chaos action
+     */
     @JsonProperty("value")
     public String getValue() {
         return value;
     }
 
+    /**
+     * Value is required when the mode is set to `FixedMode` / `FixedPercentMode` / `RandomMaxPercentMode`. If `FixedMode`, provide an integer of pods to do chaos action. If `FixedPercentMode`, provide a number from 0-100 to specify the percent of pods the server can do chaos action. IF `RandomMaxPercentMode`,  provide a number from 0-100 to specify the max percent of pods to do chaos action
+     */
     @JsonProperty("value")
     public void setValue(String value) {
         this.value = value;

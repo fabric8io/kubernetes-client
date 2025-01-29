@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ClusterEvent shows the PolicyAutomation event on each target cluster.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class ClusterEvent implements Editable<ClusterEventBuilder>, KubernetesRe
         this.eventTime = eventTime;
     }
 
+    /**
+     * AutomationStartTime is the policy automation start time for everyEvent mode.
+     */
     @JsonProperty("automationStartTime")
     public String getAutomationStartTime() {
         return automationStartTime;
     }
 
+    /**
+     * AutomationStartTime is the policy automation start time for everyEvent mode.
+     */
     @JsonProperty("automationStartTime")
     public void setAutomationStartTime(String automationStartTime) {
         this.automationStartTime = automationStartTime;
     }
 
+    /**
+     * EventTime is the last policy compliance transition event time.
+     */
     @JsonProperty("eventTime")
     public String getEventTime() {
         return eventTime;
     }
 
+    /**
+     * EventTime is the last policy compliance transition event time.
+     */
     @JsonProperty("eventTime")
     public void setEventTime(String eventTime) {
         this.eventTime = eventTime;

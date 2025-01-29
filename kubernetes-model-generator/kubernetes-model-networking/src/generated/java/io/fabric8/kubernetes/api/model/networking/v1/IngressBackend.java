@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * IngressBackend describes all endpoints for a given service and port.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -83,21 +86,33 @@ public class IngressBackend implements Editable<IngressBackendBuilder>, Kubernet
         this.service = service;
     }
 
+    /**
+     * IngressBackend describes all endpoints for a given service and port.
+     */
     @JsonProperty("resource")
     public TypedLocalObjectReference getResource() {
         return resource;
     }
 
+    /**
+     * IngressBackend describes all endpoints for a given service and port.
+     */
     @JsonProperty("resource")
     public void setResource(TypedLocalObjectReference resource) {
         this.resource = resource;
     }
 
+    /**
+     * IngressBackend describes all endpoints for a given service and port.
+     */
     @JsonProperty("service")
     public IngressServiceBackend getService() {
         return service;
     }
 
+    /**
+     * IngressBackend describes all endpoints for a given service and port.
+     */
     @JsonProperty("service")
     public void setService(IngressServiceBackend service) {
         this.service = service;

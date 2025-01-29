@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PortworxVolumeSource represents a Portworx volume resource.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -57,31 +60,49 @@ public class PortworxVolumeSource implements Editable<PortworxVolumeSourceBuilde
         this.volumeID = volumeID;
     }
 
+    /**
+     * fSType represents the filesystem type to mount Must be a filesystem type supported by the host operating system. Ex. "ext4", "xfs". Implicitly inferred to be "ext4" if unspecified.
+     */
     @JsonProperty("fsType")
     public String getFsType() {
         return fsType;
     }
 
+    /**
+     * fSType represents the filesystem type to mount Must be a filesystem type supported by the host operating system. Ex. "ext4", "xfs". Implicitly inferred to be "ext4" if unspecified.
+     */
     @JsonProperty("fsType")
     public void setFsType(String fsType) {
         this.fsType = fsType;
     }
 
+    /**
+     * readOnly defaults to false (read/write). ReadOnly here will force the ReadOnly setting in VolumeMounts.
+     */
     @JsonProperty("readOnly")
     public Boolean getReadOnly() {
         return readOnly;
     }
 
+    /**
+     * readOnly defaults to false (read/write). ReadOnly here will force the ReadOnly setting in VolumeMounts.
+     */
     @JsonProperty("readOnly")
     public void setReadOnly(Boolean readOnly) {
         this.readOnly = readOnly;
     }
 
+    /**
+     * volumeID uniquely identifies a Portworx volume
+     */
     @JsonProperty("volumeID")
     public String getVolumeID() {
         return volumeID;
     }
 
+    /**
+     * volumeID uniquely identifies a Portworx volume
+     */
     @JsonProperty("volumeID")
     public void setVolumeID(String volumeID) {
         this.volumeID = volumeID;

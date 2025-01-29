@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * CertificateSpec defines the desired state of a `Certificate`.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -89,32 +92,50 @@ public class CertificateSpec implements Editable<CertificateSpecBuilder>, Kubern
         this.secretName = secretName;
     }
 
+    /**
+     * DNSNames is a list of DNS names the Certificate could support. The wildcard format of DNSNames (e.g. &#42;.default.example.com) is supported.
+     */
     @JsonProperty("dnsNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getDnsNames() {
         return dnsNames;
     }
 
+    /**
+     * DNSNames is a list of DNS names the Certificate could support. The wildcard format of DNSNames (e.g. &#42;.default.example.com) is supported.
+     */
     @JsonProperty("dnsNames")
     public void setDnsNames(List<String> dnsNames) {
         this.dnsNames = dnsNames;
     }
 
+    /**
+     * Domain is the top level domain of the values for DNSNames.
+     */
     @JsonProperty("domain")
     public String getDomain() {
         return domain;
     }
 
+    /**
+     * Domain is the top level domain of the values for DNSNames.
+     */
     @JsonProperty("domain")
     public void setDomain(String domain) {
         this.domain = domain;
     }
 
+    /**
+     * SecretName is the name of the secret resource to store the SSL certificate in.
+     */
     @JsonProperty("secretName")
     public String getSecretName() {
         return secretName;
     }
 
+    /**
+     * SecretName is the name of the secret resource to store the SSL certificate in.
+     */
     @JsonProperty("secretName")
     public void setSecretName(String secretName) {
         this.secretName = secretName;

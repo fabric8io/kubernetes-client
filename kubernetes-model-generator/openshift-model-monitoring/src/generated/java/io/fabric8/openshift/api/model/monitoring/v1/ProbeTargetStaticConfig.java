@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ProbeTargetStaticConfig defines the set of static targets considered for probing.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -91,34 +94,52 @@ public class ProbeTargetStaticConfig implements Editable<ProbeTargetStaticConfig
         this._static = _static;
     }
 
+    /**
+     * Labels assigned to all metrics scraped from the targets.
+     */
     @JsonProperty("labels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getLabels() {
         return labels;
     }
 
+    /**
+     * Labels assigned to all metrics scraped from the targets.
+     */
     @JsonProperty("labels")
     public void setLabels(Map<String, String> labels) {
         this.labels = labels;
     }
 
+    /**
+     * RelabelConfigs to apply to the label set of the targets before it gets scraped. More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config
+     */
     @JsonProperty("relabelingConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<RelabelConfig> getRelabelingConfigs() {
         return relabelingConfigs;
     }
 
+    /**
+     * RelabelConfigs to apply to the label set of the targets before it gets scraped. More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config
+     */
     @JsonProperty("relabelingConfigs")
     public void setRelabelingConfigs(List<RelabelConfig> relabelingConfigs) {
         this.relabelingConfigs = relabelingConfigs;
     }
 
+    /**
+     * The list of hosts to probe.
+     */
     @JsonProperty("static")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getStatic() {
         return _static;
     }
 
+    /**
+     * The list of hosts to probe.
+     */
     @JsonProperty("static")
     public void setStatic(List<String> _static) {
         this._static = _static;

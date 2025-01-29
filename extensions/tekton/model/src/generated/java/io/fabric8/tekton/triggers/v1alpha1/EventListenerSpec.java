@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * EventListenerSpec defines the desired state of the EventListener, represented by a list of Triggers.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -97,52 +100,82 @@ public class EventListenerSpec implements Editable<EventListenerSpecBuilder>, Ku
         this.triggers = triggers;
     }
 
+    /**
+     * EventListenerSpec defines the desired state of the EventListener, represented by a list of Triggers.
+     */
     @JsonProperty("labelSelector")
     public LabelSelector getLabelSelector() {
         return labelSelector;
     }
 
+    /**
+     * EventListenerSpec defines the desired state of the EventListener, represented by a list of Triggers.
+     */
     @JsonProperty("labelSelector")
     public void setLabelSelector(LabelSelector labelSelector) {
         this.labelSelector = labelSelector;
     }
 
+    /**
+     * EventListenerSpec defines the desired state of the EventListener, represented by a list of Triggers.
+     */
     @JsonProperty("namespaceSelector")
     public NamespaceSelector getNamespaceSelector() {
         return namespaceSelector;
     }
 
+    /**
+     * EventListenerSpec defines the desired state of the EventListener, represented by a list of Triggers.
+     */
     @JsonProperty("namespaceSelector")
     public void setNamespaceSelector(NamespaceSelector namespaceSelector) {
         this.namespaceSelector = namespaceSelector;
     }
 
+    /**
+     * EventListenerSpec defines the desired state of the EventListener, represented by a list of Triggers.
+     */
     @JsonProperty("resources")
     public Resources getResources() {
         return resources;
     }
 
+    /**
+     * EventListenerSpec defines the desired state of the EventListener, represented by a list of Triggers.
+     */
     @JsonProperty("resources")
     public void setResources(Resources resources) {
         this.resources = resources;
     }
 
+    /**
+     * EventListenerSpec defines the desired state of the EventListener, represented by a list of Triggers.
+     */
     @JsonProperty("serviceAccountName")
     public String getServiceAccountName() {
         return serviceAccountName;
     }
 
+    /**
+     * EventListenerSpec defines the desired state of the EventListener, represented by a list of Triggers.
+     */
     @JsonProperty("serviceAccountName")
     public void setServiceAccountName(String serviceAccountName) {
         this.serviceAccountName = serviceAccountName;
     }
 
+    /**
+     * EventListenerSpec defines the desired state of the EventListener, represented by a list of Triggers.
+     */
     @JsonProperty("triggers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<EventListenerTrigger> getTriggers() {
         return triggers;
     }
 
+    /**
+     * EventListenerSpec defines the desired state of the EventListener, represented by a list of Triggers.
+     */
     @JsonProperty("triggers")
     public void setTriggers(List<EventListenerTrigger> triggers) {
         this.triggers = triggers;

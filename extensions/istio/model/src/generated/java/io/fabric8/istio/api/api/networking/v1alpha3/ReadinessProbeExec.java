@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Health is determined by how the command that is executed exited.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class ReadinessProbeExec implements IsReadinessProbeHealthCheckMethod, Ed
         this.exec = exec;
     }
 
+    /**
+     * Health is determined by how the command that is executed exited.
+     */
     @JsonProperty("exec")
     public ExecHealthCheckConfig getExec() {
         return exec;
     }
 
+    /**
+     * Health is determined by how the command that is executed exited.
+     */
     @JsonProperty("exec")
     public void setExec(ExecHealthCheckConfig exec) {
         this.exec = exec;

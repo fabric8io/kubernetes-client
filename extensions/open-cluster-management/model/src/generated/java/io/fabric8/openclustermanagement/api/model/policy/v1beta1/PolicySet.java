@@ -37,6 +37,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PolicySet is the schema for the policysets API. A policy set is a logical grouping of policies from the same namespace. The policy set is bound to a placement resource and applies the placement to all policies within the set. The status reports the overall compliance of the set.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -76,14 +79,8 @@ import lombok.experimental.Accessors;
 public class PolicySet implements Editable<PolicySetBuilder>, HasMetadata, Namespaced
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "policy.open-cluster-management.io/v1beta1";
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "PolicySet";
     @JsonProperty("metadata")
@@ -111,7 +108,7 @@ public class PolicySet implements Editable<PolicySetBuilder>, HasMetadata, Names
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -119,7 +116,7 @@ public class PolicySet implements Editable<PolicySetBuilder>, HasMetadata, Names
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -127,7 +124,7 @@ public class PolicySet implements Editable<PolicySetBuilder>, HasMetadata, Names
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -135,38 +132,56 @@ public class PolicySet implements Editable<PolicySetBuilder>, HasMetadata, Names
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * PolicySet is the schema for the policysets API. A policy set is a logical grouping of policies from the same namespace. The policy set is bound to a placement resource and applies the placement to all policies within the set. The status reports the overall compliance of the set.
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * PolicySet is the schema for the policysets API. A policy set is a logical grouping of policies from the same namespace. The policy set is bound to a placement resource and applies the placement to all policies within the set. The status reports the overall compliance of the set.
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * PolicySet is the schema for the policysets API. A policy set is a logical grouping of policies from the same namespace. The policy set is bound to a placement resource and applies the placement to all policies within the set. The status reports the overall compliance of the set.
+     */
     @JsonProperty("spec")
     public PolicySetSpec getSpec() {
         return spec;
     }
 
+    /**
+     * PolicySet is the schema for the policysets API. A policy set is a logical grouping of policies from the same namespace. The policy set is bound to a placement resource and applies the placement to all policies within the set. The status reports the overall compliance of the set.
+     */
     @JsonProperty("spec")
     public void setSpec(PolicySetSpec spec) {
         this.spec = spec;
     }
 
+    /**
+     * PolicySet is the schema for the policysets API. A policy set is a logical grouping of policies from the same namespace. The policy set is bound to a placement resource and applies the placement to all policies within the set. The status reports the overall compliance of the set.
+     */
     @JsonProperty("status")
     public PolicySetStatus getStatus() {
         return status;
     }
 
+    /**
+     * PolicySet is the schema for the policysets API. A policy set is a logical grouping of policies from the same namespace. The policy set is bound to a placement resource and applies the placement to all policies within the set. The status reports the overall compliance of the set.
+     */
     @JsonProperty("status")
     public void setStatus(PolicySetStatus status) {
         this.status = status;

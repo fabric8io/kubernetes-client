@@ -93,22 +93,34 @@ public class PhysicalMachineSelector implements Editable<PhysicalMachineSelector
         this.value = value;
     }
 
+    /**
+     * DEPRECATED: Use Selector instead. Only one of Address and Selector could be specified.
+     */
     @JsonProperty("address")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getAddress() {
         return address;
     }
 
+    /**
+     * DEPRECATED: Use Selector instead. Only one of Address and Selector could be specified.
+     */
     @JsonProperty("address")
     public void setAddress(List<String> address) {
         this.address = address;
     }
 
+    /**
+     * Mode defines the mode to run chaos action. Supported mode: one / all / fixed / fixed-percent / random-max-percent
+     */
     @JsonProperty("mode")
     public String getMode() {
         return mode;
     }
 
+    /**
+     * Mode defines the mode to run chaos action. Supported mode: one / all / fixed / fixed-percent / random-max-percent
+     */
     @JsonProperty("mode")
     public void setMode(String mode) {
         this.mode = mode;
@@ -124,11 +136,17 @@ public class PhysicalMachineSelector implements Editable<PhysicalMachineSelector
         this.selector = selector;
     }
 
+    /**
+     * Value is required when the mode is set to `FixedMode` / `FixedPercentMode` / `RandomMaxPercentMode`. If `FixedMode`, provide an integer of physical machines to do chaos action. If `FixedPercentMode`, provide a number from 0-100 to specify the percent of physical machines the server can do chaos action. IF `RandomMaxPercentMode`,  provide a number from 0-100 to specify the max percent of pods to do chaos action
+     */
     @JsonProperty("value")
     public String getValue() {
         return value;
     }
 
+    /**
+     * Value is required when the mode is set to `FixedMode` / `FixedPercentMode` / `RandomMaxPercentMode`. If `FixedMode`, provide an integer of physical machines to do chaos action. If `FixedPercentMode`, provide a number from 0-100 to specify the percent of physical machines the server can do chaos action. IF `RandomMaxPercentMode`,  provide a number from 0-100 to specify the max percent of pods to do chaos action
+     */
     @JsonProperty("value")
     public void setValue(String value) {
         this.value = value;

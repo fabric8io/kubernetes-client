@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * KlusterletStatus represents the current status of Klusterlet agent.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -96,44 +99,68 @@ public class KlusterletStatus implements Editable<KlusterletStatusBuilder>, Kube
         this.relatedResources = relatedResources;
     }
 
+    /**
+     * Conditions contain the different condition statuses for this Klusterlet. Valid condition types are: Applied: Components have been applied in the managed cluster. Available: Components in the managed cluster are available and ready to serve. Progressing: Components in the managed cluster are in a transitioning state. Degraded: Components in the managed cluster do not match the desired configuration and only provide degraded service.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Conditions contain the different condition statuses for this Klusterlet. Valid condition types are: Applied: Components have been applied in the managed cluster. Available: Components in the managed cluster are available and ready to serve. Progressing: Components in the managed cluster are in a transitioning state. Degraded: Components in the managed cluster do not match the desired configuration and only provide degraded service.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * Generations are used to determine when an item needs to be reconciled or has changed in a way that needs a reaction.
+     */
     @JsonProperty("generations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<GenerationStatus> getGenerations() {
         return generations;
     }
 
+    /**
+     * Generations are used to determine when an item needs to be reconciled or has changed in a way that needs a reaction.
+     */
     @JsonProperty("generations")
     public void setGenerations(List<GenerationStatus> generations) {
         this.generations = generations;
     }
 
+    /**
+     * ObservedGeneration is the last generation change you've dealt with
+     */
     @JsonProperty("observedGeneration")
     public Long getObservedGeneration() {
         return observedGeneration;
     }
 
+    /**
+     * ObservedGeneration is the last generation change you've dealt with
+     */
     @JsonProperty("observedGeneration")
     public void setObservedGeneration(Long observedGeneration) {
         this.observedGeneration = observedGeneration;
     }
 
+    /**
+     * RelatedResources are used to track the resources that are related to this Klusterlet.
+     */
     @JsonProperty("relatedResources")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<RelatedResourceMeta> getRelatedResources() {
         return relatedResources;
     }
 
+    /**
+     * RelatedResources are used to track the resources that are related to this Klusterlet.
+     */
     @JsonProperty("relatedResources")
     public void setRelatedResources(List<RelatedResourceMeta> relatedResources) {
         this.relatedResources = relatedResources;

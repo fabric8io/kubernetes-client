@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Group the created placementDecision into decision groups based on the number of clusters per decision group.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class GroupStrategy implements Editable<GroupStrategyBuilder>, Kubernetes
         this.decisionGroups = decisionGroups;
     }
 
+    /**
+     * Group the created placementDecision into decision groups based on the number of clusters per decision group.
+     */
     @JsonProperty("clustersPerDecisionGroup")
     public IntOrString getClustersPerDecisionGroup() {
         return clustersPerDecisionGroup;
     }
 
+    /**
+     * Group the created placementDecision into decision groups based on the number of clusters per decision group.
+     */
     @JsonProperty("clustersPerDecisionGroup")
     public void setClustersPerDecisionGroup(IntOrString clustersPerDecisionGroup) {
         this.clustersPerDecisionGroup = clustersPerDecisionGroup;
     }
 
+    /**
+     * DecisionGroups represents a list of predefined groups to put decision results. Decision groups will be constructed based on the DecisionGroups field at first. The clusters not included in the DecisionGroups will be divided to other decision groups afterwards. Each decision group should not have the number of clusters larger than the ClustersPerDecisionGroup.
+     */
     @JsonProperty("decisionGroups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<DecisionGroup> getDecisionGroups() {
         return decisionGroups;
     }
 
+    /**
+     * DecisionGroups represents a list of predefined groups to put decision results. Decision groups will be constructed based on the DecisionGroups field at first. The clusters not included in the DecisionGroups will be divided to other decision groups afterwards. Each decision group should not have the number of clusters larger than the ClustersPerDecisionGroup.
+     */
     @JsonProperty("decisionGroups")
     public void setDecisionGroups(List<DecisionGroup> decisionGroups) {
         this.decisionGroups = decisionGroups;

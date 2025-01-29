@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SupplementalGroupsStrategyOptions defines the strategy type and options used to create the strategy.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class SupplementalGroupsStrategyOptions implements Editable<SupplementalG
         this.type = type;
     }
 
+    /**
+     * Ranges are the allowed ranges of supplemental groups.  If you would like to force a single supplemental group then supply a single range with the same start and end.
+     */
     @JsonProperty("ranges")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<IDRange> getRanges() {
         return ranges;
     }
 
+    /**
+     * Ranges are the allowed ranges of supplemental groups.  If you would like to force a single supplemental group then supply a single range with the same start and end.
+     */
     @JsonProperty("ranges")
     public void setRanges(List<IDRange> ranges) {
         this.ranges = ranges;
     }
 
+    /**
+     * Type is the strategy that will dictate what supplemental groups is used in the SecurityContext.
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * Type is the strategy that will dictate what supplemental groups is used in the SecurityContext.
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

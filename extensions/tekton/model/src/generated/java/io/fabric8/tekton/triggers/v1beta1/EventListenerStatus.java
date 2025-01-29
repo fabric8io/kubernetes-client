@@ -36,6 +36,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * EventListenerStatus holds the status of the EventListener
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -105,64 +108,100 @@ public class EventListenerStatus implements Editable<EventListenerStatusBuilder>
         this.observedGeneration = observedGeneration;
     }
 
+    /**
+     * EventListenerStatus holds the status of the EventListener
+     */
     @JsonProperty("address")
     public Addressable getAddress() {
         return address;
     }
 
+    /**
+     * EventListenerStatus holds the status of the EventListener
+     */
     @JsonProperty("address")
     public void setAddress(Addressable address) {
         this.address = address;
     }
 
+    /**
+     * Addresses is a list of addresses for different protocols (HTTP and HTTPS) If Addresses is present, Address must be ignored by clients.
+     */
     @JsonProperty("addresses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Addressable> getAddresses() {
         return addresses;
     }
 
+    /**
+     * Addresses is a list of addresses for different protocols (HTTP and HTTPS) If Addresses is present, Address must be ignored by clients.
+     */
     @JsonProperty("addresses")
     public void setAddresses(List<Addressable> addresses) {
         this.addresses = addresses;
     }
 
+    /**
+     * Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.
+     */
     @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAnnotations() {
         return annotations;
     }
 
+    /**
+     * Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.
+     */
     @JsonProperty("annotations")
     public void setAnnotations(Map<String, String> annotations) {
         this.annotations = annotations;
     }
 
+    /**
+     * Conditions the latest available observations of a resource's current state.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Conditions the latest available observations of a resource's current state.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * EventListenerStatus holds the status of the EventListener
+     */
     @JsonProperty("configuration")
     public EventListenerConfig getConfiguration() {
         return configuration;
     }
 
+    /**
+     * EventListenerStatus holds the status of the EventListener
+     */
     @JsonProperty("configuration")
     public void setConfiguration(EventListenerConfig configuration) {
         this.configuration = configuration;
     }
 
+    /**
+     * ObservedGeneration is the 'Generation' of the Service that was last processed by the controller.
+     */
     @JsonProperty("observedGeneration")
     public Long getObservedGeneration() {
         return observedGeneration;
     }
 
+    /**
+     * ObservedGeneration is the 'Generation' of the Service that was last processed by the controller.
+     */
     @JsonProperty("observedGeneration")
     public void setObservedGeneration(Long observedGeneration) {
         this.observedGeneration = observedGeneration;

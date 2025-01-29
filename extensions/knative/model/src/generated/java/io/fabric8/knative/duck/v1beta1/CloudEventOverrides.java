@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * CloudEventOverrides defines arguments for a Source that control the output format of the CloudEvents produced by the Source.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -79,12 +82,18 @@ public class CloudEventOverrides implements Editable<CloudEventOverridesBuilder>
         this.extensions = extensions;
     }
 
+    /**
+     * Extensions specify what attribute are added or overridden on the outbound event. Each `Extensions` key-value pair are set on the event as an attribute extension independently.
+     */
     @JsonProperty("extensions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getExtensions() {
         return extensions;
     }
 
+    /**
+     * Extensions specify what attribute are added or overridden on the outbound event. Each `Extensions` key-value pair are set on the event as an attribute extension independently.
+     */
     @JsonProperty("extensions")
     public void setExtensions(Map<String, String> extensions) {
         this.extensions = extensions;

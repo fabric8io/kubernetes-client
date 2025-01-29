@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DelegatedAuthorization allows authorization to be disabled.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class DelegatedAuthorization implements Editable<DelegatedAuthorizationBu
         this.disabled = disabled;
     }
 
+    /**
+     * disabled indicates that authorization should be disabled.  By default it will use delegated authorization.
+     */
     @JsonProperty("disabled")
     public Boolean getDisabled() {
         return disabled;
     }
 
+    /**
+     * disabled indicates that authorization should be disabled.  By default it will use delegated authorization.
+     */
     @JsonProperty("disabled")
     public void setDisabled(Boolean disabled) {
         this.disabled = disabled;

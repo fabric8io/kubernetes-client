@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SecretKeySelector selects a key of a Secret.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class SecretKeySelector implements Editable<SecretKeySelectorBuilder>, Ku
         this.name = name;
     }
 
+    /**
+     * The key of the secret to select from.  Must be a valid secret key.
+     */
     @JsonProperty("key")
     public String getKey() {
         return key;
     }
 
+    /**
+     * The key of the secret to select from.  Must be a valid secret key.
+     */
     @JsonProperty("key")
     public void setKey(String key) {
         this.key = key;
     }
 
+    /**
+     * The name of the secret in the object's namespace to select from.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * The name of the secret in the object's namespace to select from.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

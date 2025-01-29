@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ACMEIssuerDNS01ProviderCloudDNS is a structure containing the DNS configuration for Google Cloud DNS
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -87,31 +90,49 @@ public class ACMEIssuerDNS01ProviderCloudDNS implements Editable<ACMEIssuerDNS01
         this.serviceAccountSecretRef = serviceAccountSecretRef;
     }
 
+    /**
+     * HostedZoneName is an optional field that tells cert-manager in which Cloud DNS zone the challenge record has to be created. If left empty cert-manager will automatically choose a zone.
+     */
     @JsonProperty("hostedZoneName")
     public String getHostedZoneName() {
         return hostedZoneName;
     }
 
+    /**
+     * HostedZoneName is an optional field that tells cert-manager in which Cloud DNS zone the challenge record has to be created. If left empty cert-manager will automatically choose a zone.
+     */
     @JsonProperty("hostedZoneName")
     public void setHostedZoneName(String hostedZoneName) {
         this.hostedZoneName = hostedZoneName;
     }
 
+    /**
+     * ACMEIssuerDNS01ProviderCloudDNS is a structure containing the DNS configuration for Google Cloud DNS
+     */
     @JsonProperty("project")
     public String getProject() {
         return project;
     }
 
+    /**
+     * ACMEIssuerDNS01ProviderCloudDNS is a structure containing the DNS configuration for Google Cloud DNS
+     */
     @JsonProperty("project")
     public void setProject(String project) {
         this.project = project;
     }
 
+    /**
+     * ACMEIssuerDNS01ProviderCloudDNS is a structure containing the DNS configuration for Google Cloud DNS
+     */
     @JsonProperty("serviceAccountSecretRef")
     public SecretKeySelector getServiceAccountSecretRef() {
         return serviceAccountSecretRef;
     }
 
+    /**
+     * ACMEIssuerDNS01ProviderCloudDNS is a structure containing the DNS configuration for Google Cloud DNS
+     */
     @JsonProperty("serviceAccountSecretRef")
     public void setServiceAccountSecretRef(SecretKeySelector serviceAccountSecretRef) {
         this.serviceAccountSecretRef = serviceAccountSecretRef;

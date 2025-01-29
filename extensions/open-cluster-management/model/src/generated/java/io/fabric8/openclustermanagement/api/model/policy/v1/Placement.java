@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Placement reports how and what managed cluster placement resources are attached to the policy.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -97,52 +100,82 @@ public class Placement implements Editable<PlacementBuilder>, KubernetesResource
         this.policySet = policySet;
     }
 
+    /**
+     * Decisions is the list of managed clusters returned by the placement resource for this binding.
+     */
     @JsonProperty("decisions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PlacementDecision> getDecisions() {
         return decisions;
     }
 
+    /**
+     * Decisions is the list of managed clusters returned by the placement resource for this binding.
+     */
     @JsonProperty("decisions")
     public void setDecisions(List<PlacementDecision> decisions) {
         this.decisions = decisions;
     }
 
+    /**
+     * Placement is the name of the Placement resource, from the cluster.open-cluster-management.io API group, that is bound to the policy.
+     */
     @JsonProperty("placement")
     public String getPlacement() {
         return placement;
     }
 
+    /**
+     * Placement is the name of the Placement resource, from the cluster.open-cluster-management.io API group, that is bound to the policy.
+     */
     @JsonProperty("placement")
     public void setPlacement(String placement) {
         this.placement = placement;
     }
 
+    /**
+     * PlacementBinding is the name of the PlacementBinding resource, from the policies.open-cluster-management.io API group, that binds the placement resource to the policy.
+     */
     @JsonProperty("placementBinding")
     public String getPlacementBinding() {
         return placementBinding;
     }
 
+    /**
+     * PlacementBinding is the name of the PlacementBinding resource, from the policies.open-cluster-management.io API group, that binds the placement resource to the policy.
+     */
     @JsonProperty("placementBinding")
     public void setPlacementBinding(String placementBinding) {
         this.placementBinding = placementBinding;
     }
 
+    /**
+     * PlacementRule (deprecated) is the name of the PlacementRule resource, from the apps.open-cluster-management.io API group, that is bound to the policy.
+     */
     @JsonProperty("placementRule")
     public String getPlacementRule() {
         return placementRule;
     }
 
+    /**
+     * PlacementRule (deprecated) is the name of the PlacementRule resource, from the apps.open-cluster-management.io API group, that is bound to the policy.
+     */
     @JsonProperty("placementRule")
     public void setPlacementRule(String placementRule) {
         this.placementRule = placementRule;
     }
 
+    /**
+     * PolicySet is the name of the policy set containing this policy and bound to the placement. If specified, then for this placement the policy is being propagated through this policy set rather than the policy being bound directly to a placement and propagated individually.
+     */
     @JsonProperty("policySet")
     public String getPolicySet() {
         return policySet;
     }
 
+    /**
+     * PolicySet is the name of the policy set containing this policy and bound to the placement. If specified, then for this placement the policy is being propagated through this policy set rather than the policy being bound directly to a placement and propagated individually.
+     */
     @JsonProperty("policySet")
     public void setPolicySet(String policySet) {
         this.policySet = policySet;

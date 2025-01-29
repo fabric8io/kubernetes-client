@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ImageSourcePath describes a path to be copied from a source image and its destination within the build directory.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class ImageSourcePath implements Editable<ImageSourcePathBuilder>, Kubern
         this.sourcePath = sourcePath;
     }
 
+    /**
+     * destinationDir is the relative directory within the build directory where files copied from the image are placed.
+     */
     @JsonProperty("destinationDir")
     public String getDestinationDir() {
         return destinationDir;
     }
 
+    /**
+     * destinationDir is the relative directory within the build directory where files copied from the image are placed.
+     */
     @JsonProperty("destinationDir")
     public void setDestinationDir(String destinationDir) {
         this.destinationDir = destinationDir;
     }
 
+    /**
+     * sourcePath is the absolute path of the file or directory inside the image to copy to the build directory.  If the source path ends in /. then the content of the directory will be copied, but the directory itself will not be created at the destination.
+     */
     @JsonProperty("sourcePath")
     public String getSourcePath() {
         return sourcePath;
     }
 
+    /**
+     * sourcePath is the absolute path of the file or directory inside the image to copy to the build directory.  If the source path ends in /. then the content of the directory will be copied, but the directory itself will not be created at the destination.
+     */
     @JsonProperty("sourcePath")
     public void setSourcePath(String sourcePath) {
         this.sourcePath = sourcePath;

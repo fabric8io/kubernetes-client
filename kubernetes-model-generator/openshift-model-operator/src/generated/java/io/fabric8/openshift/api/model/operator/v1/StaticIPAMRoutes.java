@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * StaticIPAMRoutes provides Destination/Gateway pairs for static IPAM routes
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class StaticIPAMRoutes implements Editable<StaticIPAMRoutesBuilder>, Kube
         this.gateway = gateway;
     }
 
+    /**
+     * Destination points the IP route destination
+     */
     @JsonProperty("destination")
     public String getDestination() {
         return destination;
     }
 
+    /**
+     * Destination points the IP route destination
+     */
     @JsonProperty("destination")
     public void setDestination(String destination) {
         this.destination = destination;
     }
 
+    /**
+     * Gateway is the route's next-hop IP address If unset, a default gateway is assumed (as determined by the CNI plugin).
+     */
     @JsonProperty("gateway")
     public String getGateway() {
         return gateway;
     }
 
+    /**
+     * Gateway is the route's next-hop IP address If unset, a default gateway is assumed (as determined by the CNI plugin).
+     */
     @JsonProperty("gateway")
     public void setGateway(String gateway) {
         this.gateway = gateway;

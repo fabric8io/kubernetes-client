@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ConfigMapBuildSource describes a configmap and its destination directory that will be used only at the build time. The content of the configmap referenced here will be copied into the destination directory instead of mounting.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class ConfigMapBuildSource implements Editable<ConfigMapBuildSourceBuilde
         this.destinationDir = destinationDir;
     }
 
+    /**
+     * ConfigMapBuildSource describes a configmap and its destination directory that will be used only at the build time. The content of the configmap referenced here will be copied into the destination directory instead of mounting.
+     */
     @JsonProperty("configMap")
     public LocalObjectReference getConfigMap() {
         return configMap;
     }
 
+    /**
+     * ConfigMapBuildSource describes a configmap and its destination directory that will be used only at the build time. The content of the configmap referenced here will be copied into the destination directory instead of mounting.
+     */
     @JsonProperty("configMap")
     public void setConfigMap(LocalObjectReference configMap) {
         this.configMap = configMap;
     }
 
+    /**
+     * destinationDir is the directory where the files from the configmap should be available for the build time. For the Source build strategy, these will be injected into a container where the assemble script runs. For the container image build strategy, these will be copied into the build directory, where the Dockerfile is located, so users can ADD or COPY them during container image build.
+     */
     @JsonProperty("destinationDir")
     public String getDestinationDir() {
         return destinationDir;
     }
 
+    /**
+     * destinationDir is the directory where the files from the configmap should be available for the build time. For the Source build strategy, these will be injected into a container where the assemble script runs. For the container image build strategy, these will be copied into the build directory, where the Dockerfile is located, so users can ADD or COPY them during container image build.
+     */
     @JsonProperty("destinationDir")
     public void setDestinationDir(String destinationDir) {
         this.destinationDir = destinationDir;

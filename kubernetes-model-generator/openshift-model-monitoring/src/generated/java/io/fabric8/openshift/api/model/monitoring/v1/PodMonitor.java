@@ -37,6 +37,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * The `PodMonitor` custom resource definition (CRD) defines how `Prometheus` and `PrometheusAgent` can scrape metrics from a group of pods. Among other things, it allows to specify: &#42; The pods to scrape via label selectors. &#42; The container ports to scrape. &#42; Authentication credentials to use. &#42; Target and metric relabeling.<br><p> <br><p> `Prometheus` and `PrometheusAgent` objects select `PodMonitor` objects using label and namespace selectors.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -75,14 +78,8 @@ import lombok.experimental.Accessors;
 public class PodMonitor implements Editable<PodMonitorBuilder>, HasMetadata, Namespaced
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "monitoring.coreos.com/v1";
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "PodMonitor";
     @JsonProperty("metadata")
@@ -107,7 +104,7 @@ public class PodMonitor implements Editable<PodMonitorBuilder>, HasMetadata, Nam
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -115,7 +112,7 @@ public class PodMonitor implements Editable<PodMonitorBuilder>, HasMetadata, Nam
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -123,7 +120,7 @@ public class PodMonitor implements Editable<PodMonitorBuilder>, HasMetadata, Nam
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -131,28 +128,40 @@ public class PodMonitor implements Editable<PodMonitorBuilder>, HasMetadata, Nam
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * The `PodMonitor` custom resource definition (CRD) defines how `Prometheus` and `PrometheusAgent` can scrape metrics from a group of pods. Among other things, it allows to specify: &#42; The pods to scrape via label selectors. &#42; The container ports to scrape. &#42; Authentication credentials to use. &#42; Target and metric relabeling.<br><p> <br><p> `Prometheus` and `PrometheusAgent` objects select `PodMonitor` objects using label and namespace selectors.
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * The `PodMonitor` custom resource definition (CRD) defines how `Prometheus` and `PrometheusAgent` can scrape metrics from a group of pods. Among other things, it allows to specify: &#42; The pods to scrape via label selectors. &#42; The container ports to scrape. &#42; Authentication credentials to use. &#42; Target and metric relabeling.<br><p> <br><p> `Prometheus` and `PrometheusAgent` objects select `PodMonitor` objects using label and namespace selectors.
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * The `PodMonitor` custom resource definition (CRD) defines how `Prometheus` and `PrometheusAgent` can scrape metrics from a group of pods. Among other things, it allows to specify: &#42; The pods to scrape via label selectors. &#42; The container ports to scrape. &#42; Authentication credentials to use. &#42; Target and metric relabeling.<br><p> <br><p> `Prometheus` and `PrometheusAgent` objects select `PodMonitor` objects using label and namespace selectors.
+     */
     @JsonProperty("spec")
     public PodMonitorSpec getSpec() {
         return spec;
     }
 
+    /**
+     * The `PodMonitor` custom resource definition (CRD) defines how `Prometheus` and `PrometheusAgent` can scrape metrics from a group of pods. Among other things, it allows to specify: &#42; The pods to scrape via label selectors. &#42; The container ports to scrape. &#42; Authentication credentials to use. &#42; Target and metric relabeling.<br><p> <br><p> `Prometheus` and `PrometheusAgent` objects select `PodMonitor` objects using label and namespace selectors.
+     */
     @JsonProperty("spec")
     public void setSpec(PodMonitorSpec spec) {
         this.spec = spec;

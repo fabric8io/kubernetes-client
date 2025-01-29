@@ -21,6 +21,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * APIService represents a server for a particular GroupVersion. Name must be "version.group".
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -46,14 +49,8 @@ import lombok.experimental.Accessors;
 public class APIService implements Editable<APIServiceBuilder>, HasMetadata
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "apiregistration.k8s.io/v1";
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "APIService";
     @JsonProperty("metadata")
@@ -81,7 +78,7 @@ public class APIService implements Editable<APIServiceBuilder>, HasMetadata
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -89,7 +86,7 @@ public class APIService implements Editable<APIServiceBuilder>, HasMetadata
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -97,7 +94,7 @@ public class APIService implements Editable<APIServiceBuilder>, HasMetadata
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -105,38 +102,56 @@ public class APIService implements Editable<APIServiceBuilder>, HasMetadata
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * APIService represents a server for a particular GroupVersion. Name must be "version.group".
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * APIService represents a server for a particular GroupVersion. Name must be "version.group".
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * APIService represents a server for a particular GroupVersion. Name must be "version.group".
+     */
     @JsonProperty("spec")
     public APIServiceSpec getSpec() {
         return spec;
     }
 
+    /**
+     * APIService represents a server for a particular GroupVersion. Name must be "version.group".
+     */
     @JsonProperty("spec")
     public void setSpec(APIServiceSpec spec) {
         this.spec = spec;
     }
 
+    /**
+     * APIService represents a server for a particular GroupVersion. Name must be "version.group".
+     */
     @JsonProperty("status")
     public APIServiceStatus getStatus() {
         return status;
     }
 
+    /**
+     * APIService represents a server for a particular GroupVersion. Name must be "version.group".
+     */
     @JsonProperty("status")
     public void setStatus(APIServiceStatus status) {
         this.status = status;

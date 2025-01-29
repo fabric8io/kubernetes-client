@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * GCPDNSZoneStatus contains status information specific to GCP Cloud DNS zones
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class GCPDNSZoneStatus implements Editable<GCPDNSZoneStatusBuilder>, Kube
         this.zoneName = zoneName;
     }
 
+    /**
+     * ZoneName is the name of the zone in GCP Cloud DNS
+     */
     @JsonProperty("zoneName")
     public String getZoneName() {
         return zoneName;
     }
 
+    /**
+     * ZoneName is the name of the zone in GCP Cloud DNS
+     */
     @JsonProperty("zoneName")
     public void setZoneName(String zoneName) {
         this.zoneName = zoneName;

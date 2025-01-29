@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * TaskRunResources allows a TaskRun to declare inputs and outputs TaskResourceBinding<br><p> <br><p> Deprecated: Unused, preserved only for backwards compatibility
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,23 +89,35 @@ public class TaskRunResources implements Editable<TaskRunResourcesBuilder>, Kube
         this.outputs = outputs;
     }
 
+    /**
+     * Inputs holds the inputs resources this task was invoked with
+     */
     @JsonProperty("inputs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TaskResourceBinding> getInputs() {
         return inputs;
     }
 
+    /**
+     * Inputs holds the inputs resources this task was invoked with
+     */
     @JsonProperty("inputs")
     public void setInputs(List<TaskResourceBinding> inputs) {
         this.inputs = inputs;
     }
 
+    /**
+     * Outputs holds the inputs resources this task was invoked with
+     */
     @JsonProperty("outputs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TaskResourceBinding> getOutputs() {
         return outputs;
     }
 
+    /**
+     * Outputs holds the inputs resources this task was invoked with
+     */
     @JsonProperty("outputs")
     public void setOutputs(List<TaskResourceBinding> outputs) {
         this.outputs = outputs;

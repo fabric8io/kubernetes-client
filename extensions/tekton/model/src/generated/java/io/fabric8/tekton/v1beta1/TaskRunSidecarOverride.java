@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * TaskRunSidecarOverride is used to override the values of a Sidecar in the corresponding Task.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class TaskRunSidecarOverride implements Editable<TaskRunSidecarOverrideBu
         this.resources = resources;
     }
 
+    /**
+     * The name of the Sidecar to override.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * The name of the Sidecar to override.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * TaskRunSidecarOverride is used to override the values of a Sidecar in the corresponding Task.
+     */
     @JsonProperty("resources")
     public ResourceRequirements getResources() {
         return resources;
     }
 
+    /**
+     * TaskRunSidecarOverride is used to override the values of a Sidecar in the corresponding Task.
+     */
     @JsonProperty("resources")
     public void setResources(ResourceRequirements resources) {
         this.resources = resources;

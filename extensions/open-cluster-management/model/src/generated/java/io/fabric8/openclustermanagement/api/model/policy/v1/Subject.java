@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Subject defines the resource to bind to the placement resource.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class Subject implements Editable<SubjectBuilder>, KubernetesResource
         this.name = name;
     }
 
+    /**
+     * APIGroup is the API group to which the kind belongs. Must be set to "policy.open-cluster-management.io".
+     */
     @JsonProperty("apiGroup")
     public String getApiGroup() {
         return apiGroup;
     }
 
+    /**
+     * APIGroup is the API group to which the kind belongs. Must be set to "policy.open-cluster-management.io".
+     */
     @JsonProperty("apiGroup")
     public void setApiGroup(String apiGroup) {
         this.apiGroup = apiGroup;
     }
 
+    /**
+     * Kind is the kind of the object to bind to the placement resource. Must be set to either "Policy" or "PolicySet".
+     */
     @JsonProperty("kind")
     public String getKind() {
         return kind;
     }
 
+    /**
+     * Kind is the kind of the object to bind to the placement resource. Must be set to either "Policy" or "PolicySet".
+     */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * Name is the name of the policy or policy set to bind to the placement resource.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name is the name of the policy or policy set to bind to the placement resource.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

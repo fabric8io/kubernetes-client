@@ -40,6 +40,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * JobFlowList contains a list of JobFlow
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,17 +81,11 @@ import lombok.experimental.Accessors;
 public class JobFlowList implements Editable<JobFlowListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.volcano.api.model.flow.v1alpha1.JobFlow>
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "flow.volcano.sh/v1alpha1";
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<io.fabric8.volcano.api.model.flow.v1alpha1.JobFlow> items = new ArrayList<>();
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "JobFlowList";
     @JsonProperty("metadata")
@@ -111,7 +108,7 @@ public class JobFlowList implements Editable<JobFlowListBuilder>, KubernetesReso
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -119,26 +116,32 @@ public class JobFlowList implements Editable<JobFlowListBuilder>, KubernetesReso
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
+    /**
+     * JobFlowList contains a list of JobFlow
+     */
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.volcano.api.model.flow.v1alpha1.JobFlow> getItems() {
         return items;
     }
 
+    /**
+     * JobFlowList contains a list of JobFlow
+     */
     @JsonProperty("items")
     public void setItems(List<io.fabric8.volcano.api.model.flow.v1alpha1.JobFlow> items) {
         this.items = items;
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -146,18 +149,24 @@ public class JobFlowList implements Editable<JobFlowListBuilder>, KubernetesReso
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * JobFlowList contains a list of JobFlow
+     */
     @JsonProperty("metadata")
     public ListMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * JobFlowList contains a list of JobFlow
+     */
     @JsonProperty("metadata")
     public void setMetadata(ListMeta metadata) {
         this.metadata = metadata;

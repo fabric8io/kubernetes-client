@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ImageLabel represents a label applied to the resulting image.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class ImageLabel implements Editable<ImageLabelBuilder>, KubernetesResour
         this.value = value;
     }
 
+    /**
+     * name defines the name of the label. It must have non-zero length.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * name defines the name of the label. It must have non-zero length.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * value defines the literal value of the label.
+     */
     @JsonProperty("value")
     public String getValue() {
         return value;
     }
 
+    /**
+     * value defines the literal value of the label.
+     */
     @JsonProperty("value")
     public void setValue(String value) {
         this.value = value;

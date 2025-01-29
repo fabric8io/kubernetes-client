@@ -38,6 +38,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SequenceStatus represents the current state of a Sequence.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -117,86 +120,134 @@ public class SequenceStatus implements Editable<SequenceStatusBuilder>, Kubernet
         this.subscriptionStatuses = subscriptionStatuses;
     }
 
+    /**
+     * SequenceStatus represents the current state of a Sequence.
+     */
     @JsonProperty("address")
     public Addressable getAddress() {
         return address;
     }
 
+    /**
+     * SequenceStatus represents the current state of a Sequence.
+     */
     @JsonProperty("address")
     public void setAddress(Addressable address) {
         this.address = address;
     }
 
+    /**
+     * Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.
+     */
     @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAnnotations() {
         return annotations;
     }
 
+    /**
+     * Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.
+     */
     @JsonProperty("annotations")
     public void setAnnotations(Map<String, String> annotations) {
         this.annotations = annotations;
     }
 
+    /**
+     * SequenceStatus represents the current state of a Sequence.
+     */
     @JsonProperty("auth")
     public AuthStatus getAuth() {
         return auth;
     }
 
+    /**
+     * SequenceStatus represents the current state of a Sequence.
+     */
     @JsonProperty("auth")
     public void setAuth(AuthStatus auth) {
         this.auth = auth;
     }
 
+    /**
+     * ChannelStatuses is an array of corresponding Channel statuses. Matches the Spec.Steps array in the order.
+     */
     @JsonProperty("channelStatuses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<SequenceChannelStatus> getChannelStatuses() {
         return channelStatuses;
     }
 
+    /**
+     * ChannelStatuses is an array of corresponding Channel statuses. Matches the Spec.Steps array in the order.
+     */
     @JsonProperty("channelStatuses")
     public void setChannelStatuses(List<SequenceChannelStatus> channelStatuses) {
         this.channelStatuses = channelStatuses;
     }
 
+    /**
+     * Conditions the latest available observations of a resource's current state.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Conditions the latest available observations of a resource's current state.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * ObservedGeneration is the 'Generation' of the Service that was last processed by the controller.
+     */
     @JsonProperty("observedGeneration")
     public Long getObservedGeneration() {
         return observedGeneration;
     }
 
+    /**
+     * ObservedGeneration is the 'Generation' of the Service that was last processed by the controller.
+     */
     @JsonProperty("observedGeneration")
     public void setObservedGeneration(Long observedGeneration) {
         this.observedGeneration = observedGeneration;
     }
 
+    /**
+     * Policies holds the list of applied EventPolicies
+     */
     @JsonProperty("policies")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<AppliedEventPolicyRef> getPolicies() {
         return policies;
     }
 
+    /**
+     * Policies holds the list of applied EventPolicies
+     */
     @JsonProperty("policies")
     public void setPolicies(List<AppliedEventPolicyRef> policies) {
         this.policies = policies;
     }
 
+    /**
+     * SubscriptionStatuses is an array of corresponding Subscription statuses. Matches the Spec.Steps array in the order.
+     */
     @JsonProperty("subscriptionStatuses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<SequenceSubscriptionStatus> getSubscriptionStatuses() {
         return subscriptionStatuses;
     }
 
+    /**
+     * SubscriptionStatuses is an array of corresponding Subscription statuses. Matches the Spec.Steps array in the order.
+     */
     @JsonProperty("subscriptionStatuses")
     public void setSubscriptionStatuses(List<SequenceSubscriptionStatus> subscriptionStatuses) {
         this.subscriptionStatuses = subscriptionStatuses;

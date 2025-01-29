@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * HourRange defines the time format, refer to https://golang.org/pkg/time/#pkg-constants
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class HourRange implements Editable<HourRangeBuilder>, KubernetesResource
         this.start = start;
     }
 
+    /**
+     * End time of the hour range
+     */
     @JsonProperty("end")
     public String getEnd() {
         return end;
     }
 
+    /**
+     * End time of the hour range
+     */
     @JsonProperty("end")
     public void setEnd(String end) {
         this.end = end;
     }
 
+    /**
+     * Start time of the hour range
+     */
     @JsonProperty("start")
     public String getStart() {
         return start;
     }
 
+    /**
+     * Start time of the hour range
+     */
     @JsonProperty("start")
     public void setStart(String start) {
         this.start = start;

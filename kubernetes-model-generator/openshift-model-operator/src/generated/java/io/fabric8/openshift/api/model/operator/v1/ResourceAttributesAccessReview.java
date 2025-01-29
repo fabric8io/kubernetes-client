@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ResourceAttributesAccessReview defines the visibility of the perspective depending on the access review checks. `required` and  `missing` can work together esp. in the case where the cluster admin wants to show another perspective to users without specific permissions. Out of `required` and `missing` atleast one property should be non-empty.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -87,23 +90,35 @@ public class ResourceAttributesAccessReview implements Editable<ResourceAttribut
         this.required = required;
     }
 
+    /**
+     * missing defines a list of permission checks. The perspective will only be shown when at least one check fails. When omitted, the access review is skipped and the perspective will not be shown unless it is required to do so based on the configuration of the required access review list.
+     */
     @JsonProperty("missing")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ResourceAttributes> getMissing() {
         return missing;
     }
 
+    /**
+     * missing defines a list of permission checks. The perspective will only be shown when at least one check fails. When omitted, the access review is skipped and the perspective will not be shown unless it is required to do so based on the configuration of the required access review list.
+     */
     @JsonProperty("missing")
     public void setMissing(List<ResourceAttributes> missing) {
         this.missing = missing;
     }
 
+    /**
+     * required defines a list of permission checks. The perspective will only be shown when all checks are successful. When omitted, the access review is skipped and the perspective will not be shown unless it is required to do so based on the configuration of the missing access review list.
+     */
     @JsonProperty("required")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ResourceAttributes> getRequired() {
         return required;
     }
 
+    /**
+     * required defines a list of permission checks. The perspective will only be shown when all checks are successful. When omitted, the access review is skipped and the perspective will not be shown unless it is required to do so based on the configuration of the missing access review list.
+     */
     @JsonProperty("required")
     public void setRequired(List<ResourceAttributes> required) {
         this.required = required;

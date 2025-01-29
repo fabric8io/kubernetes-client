@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * VerificationPolicySpec defines the patterns and authorities.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,33 +93,51 @@ public class VerificationPolicySpec implements Editable<VerificationPolicySpecBu
         this.resources = resources;
     }
 
+    /**
+     * Authorities defines the rules for validating signatures.
+     */
     @JsonProperty("authorities")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Authority> getAuthorities() {
         return authorities;
     }
 
+    /**
+     * Authorities defines the rules for validating signatures.
+     */
     @JsonProperty("authorities")
     public void setAuthorities(List<Authority> authorities) {
         this.authorities = authorities;
     }
 
+    /**
+     * Mode controls whether a failing policy will fail the taskrun/pipelinerun, or only log the warnings enforce - fail the taskrun/pipelinerun if verification fails (default) warn - don't fail the taskrun/pipelinerun if verification fails but log warnings
+     */
     @JsonProperty("mode")
     public String getMode() {
         return mode;
     }
 
+    /**
+     * Mode controls whether a failing policy will fail the taskrun/pipelinerun, or only log the warnings enforce - fail the taskrun/pipelinerun if verification fails (default) warn - don't fail the taskrun/pipelinerun if verification fails but log warnings
+     */
     @JsonProperty("mode")
     public void setMode(String mode) {
         this.mode = mode;
     }
 
+    /**
+     * Resources defines the patterns of resources sources that should be subject to this policy. For example, we may want to apply this Policy from a certain GitHub repo. Then the ResourcesPattern should be valid regex. E.g. If using gitresolver, and we want to config keys from a certain git repo. `ResourcesPattern` can be `https://github.com/tektoncd/catalog.git`, we will use regex to filter out those resources.
+     */
     @JsonProperty("resources")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ResourcePattern> getResources() {
         return resources;
     }
 
+    /**
+     * Resources defines the patterns of resources sources that should be subject to this policy. For example, we may want to apply this Policy from a certain GitHub repo. Then the ResourcesPattern should be valid regex. E.g. If using gitresolver, and we want to config keys from a certain git repo. `ResourcesPattern` can be `https://github.com/tektoncd/catalog.git`, we will use regex to filter out those resources.
+     */
     @JsonProperty("resources")
     public void setResources(List<ResourcePattern> resources) {
         this.resources = resources;

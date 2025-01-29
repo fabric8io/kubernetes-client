@@ -90,41 +90,65 @@ public class ChallengeStatus implements Editable<ChallengeStatusBuilder>, Kubern
         this.state = state;
     }
 
+    /**
+     * presented will be set to true if the challenge values for this challenge are currently 'presented'. This &#42;does not&#42; imply the self check is passing. Only that the values have been 'submitted' for the appropriate challenge mechanism (i.e. the DNS01 TXT record has been presented, or the HTTP01 configuration has been configured).
+     */
     @JsonProperty("presented")
     public Boolean getPresented() {
         return presented;
     }
 
+    /**
+     * presented will be set to true if the challenge values for this challenge are currently 'presented'. This &#42;does not&#42; imply the self check is passing. Only that the values have been 'submitted' for the appropriate challenge mechanism (i.e. the DNS01 TXT record has been presented, or the HTTP01 configuration has been configured).
+     */
     @JsonProperty("presented")
     public void setPresented(Boolean presented) {
         this.presented = presented;
     }
 
+    /**
+     * Used to denote whether this challenge should be processed or not. This field will only be set to true by the 'scheduling' component. It will only be set to false by the 'challenges' controller, after the challenge has reached a final state or timed out. If this field is set to false, the challenge controller will not take any more action.
+     */
     @JsonProperty("processing")
     public Boolean getProcessing() {
         return processing;
     }
 
+    /**
+     * Used to denote whether this challenge should be processed or not. This field will only be set to true by the 'scheduling' component. It will only be set to false by the 'challenges' controller, after the challenge has reached a final state or timed out. If this field is set to false, the challenge controller will not take any more action.
+     */
     @JsonProperty("processing")
     public void setProcessing(Boolean processing) {
         this.processing = processing;
     }
 
+    /**
+     * Contains human readable information on why the Challenge is in the current state.
+     */
     @JsonProperty("reason")
     public String getReason() {
         return reason;
     }
 
+    /**
+     * Contains human readable information on why the Challenge is in the current state.
+     */
     @JsonProperty("reason")
     public void setReason(String reason) {
         this.reason = reason;
     }
 
+    /**
+     * Contains the current 'state' of the challenge. If not set, the state of the challenge is unknown.
+     */
     @JsonProperty("state")
     public String getState() {
         return state;
     }
 
+    /**
+     * Contains the current 'state' of the challenge. If not set, the state of the challenge is unknown.
+     */
     @JsonProperty("state")
     public void setState(String state) {
         this.state = state;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Route53KubernetesAuth is a configuration to authenticate against Route53 using a bound Kubernetes ServiceAccount token.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class Route53KubernetesAuth implements Editable<Route53KubernetesAuthBuil
         this.serviceAccountRef = serviceAccountRef;
     }
 
+    /**
+     * Route53KubernetesAuth is a configuration to authenticate against Route53 using a bound Kubernetes ServiceAccount token.
+     */
     @JsonProperty("serviceAccountRef")
     public ServiceAccountRef getServiceAccountRef() {
         return serviceAccountRef;
     }
 
+    /**
+     * Route53KubernetesAuth is a configuration to authenticate against Route53 using a bound Kubernetes ServiceAccount token.
+     */
     @JsonProperty("serviceAccountRef")
     public void setServiceAccountRef(ServiceAccountRef serviceAccountRef) {
         this.serviceAccountRef = serviceAccountRef;

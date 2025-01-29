@@ -82,12 +82,18 @@ public class HelmChartRepositoryStatus implements Editable<HelmChartRepositorySt
         this.conditions = conditions;
     }
 
+    /**
+     * conditions is a list of conditions and their statuses
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
 
+    /**
+     * conditions is a list of conditions and their statuses
+     */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;

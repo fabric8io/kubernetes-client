@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Represents an empty directory for a pod. Empty directory volumes support ownership management and SELinux relabeling.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -53,21 +56,33 @@ public class EmptyDirVolumeSource implements Editable<EmptyDirVolumeSourceBuilde
         this.sizeLimit = sizeLimit;
     }
 
+    /**
+     * medium represents what type of storage medium should back this directory. The default is "" which means to use the node's default medium. Must be an empty string (default) or Memory. More info: https://kubernetes.io/docs/concepts/storage/volumes#emptydir
+     */
     @JsonProperty("medium")
     public String getMedium() {
         return medium;
     }
 
+    /**
+     * medium represents what type of storage medium should back this directory. The default is "" which means to use the node's default medium. Must be an empty string (default) or Memory. More info: https://kubernetes.io/docs/concepts/storage/volumes#emptydir
+     */
     @JsonProperty("medium")
     public void setMedium(String medium) {
         this.medium = medium;
     }
 
+    /**
+     * Represents an empty directory for a pod. Empty directory volumes support ownership management and SELinux relabeling.
+     */
     @JsonProperty("sizeLimit")
     public Quantity getSizeLimit() {
         return sizeLimit;
     }
 
+    /**
+     * Represents an empty directory for a pod. Empty directory volumes support ownership management and SELinux relabeling.
+     */
     @JsonProperty("sizeLimit")
     public void setSizeLimit(Quantity sizeLimit) {
         this.sizeLimit = sizeLimit;

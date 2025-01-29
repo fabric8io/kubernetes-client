@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ClusterPlatformMetadata contains metadata for platfrom.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -115,101 +118,161 @@ public class ClusterPlatformMetadata implements Editable<ClusterPlatformMetadata
         this.vsphere = vsphere;
     }
 
+    /**
+     * ClusterPlatformMetadata contains metadata for platfrom.
+     */
     @JsonProperty("aws")
     public Metadata getAws() {
         return aws;
     }
 
+    /**
+     * ClusterPlatformMetadata contains metadata for platfrom.
+     */
     @JsonProperty("aws")
     public void setAws(Metadata aws) {
         this.aws = aws;
     }
 
+    /**
+     * ClusterPlatformMetadata contains metadata for platfrom.
+     */
     @JsonProperty("azure")
     public io.fabric8.openshift.api.model.installer.azure.v1.Metadata getAzure() {
         return azure;
     }
 
+    /**
+     * ClusterPlatformMetadata contains metadata for platfrom.
+     */
     @JsonProperty("azure")
     public void setAzure(io.fabric8.openshift.api.model.installer.azure.v1.Metadata azure) {
         this.azure = azure;
     }
 
+    /**
+     * ClusterPlatformMetadata contains metadata for platfrom.
+     */
     @JsonProperty("baremetal")
     public io.fabric8.openshift.api.model.installer.baremetal.v1.Metadata getBaremetal() {
         return baremetal;
     }
 
+    /**
+     * ClusterPlatformMetadata contains metadata for platfrom.
+     */
     @JsonProperty("baremetal")
     public void setBaremetal(io.fabric8.openshift.api.model.installer.baremetal.v1.Metadata baremetal) {
         this.baremetal = baremetal;
     }
 
+    /**
+     * ClusterPlatformMetadata contains metadata for platfrom.
+     */
     @JsonProperty("gcp")
     public io.fabric8.openshift.api.model.installer.gcp.v1.Metadata getGcp() {
         return gcp;
     }
 
+    /**
+     * ClusterPlatformMetadata contains metadata for platfrom.
+     */
     @JsonProperty("gcp")
     public void setGcp(io.fabric8.openshift.api.model.installer.gcp.v1.Metadata gcp) {
         this.gcp = gcp;
     }
 
+    /**
+     * ClusterPlatformMetadata contains metadata for platfrom.
+     */
     @JsonProperty("ibmcloud")
     public io.fabric8.openshift.api.model.installer.ibmcloud.v1.Metadata getIbmcloud() {
         return ibmcloud;
     }
 
+    /**
+     * ClusterPlatformMetadata contains metadata for platfrom.
+     */
     @JsonProperty("ibmcloud")
     public void setIbmcloud(io.fabric8.openshift.api.model.installer.ibmcloud.v1.Metadata ibmcloud) {
         this.ibmcloud = ibmcloud;
     }
 
+    /**
+     * ClusterPlatformMetadata contains metadata for platfrom.
+     */
     @JsonProperty("nutanix")
     public io.fabric8.openshift.api.model.installer.nutanix.v1.Metadata getNutanix() {
         return nutanix;
     }
 
+    /**
+     * ClusterPlatformMetadata contains metadata for platfrom.
+     */
     @JsonProperty("nutanix")
     public void setNutanix(io.fabric8.openshift.api.model.installer.nutanix.v1.Metadata nutanix) {
         this.nutanix = nutanix;
     }
 
+    /**
+     * ClusterPlatformMetadata contains metadata for platfrom.
+     */
     @JsonProperty("openstack")
     public io.fabric8.openshift.api.model.installer.openstack.v1.Metadata getOpenstack() {
         return openstack;
     }
 
+    /**
+     * ClusterPlatformMetadata contains metadata for platfrom.
+     */
     @JsonProperty("openstack")
     public void setOpenstack(io.fabric8.openshift.api.model.installer.openstack.v1.Metadata openstack) {
         this.openstack = openstack;
     }
 
+    /**
+     * ClusterPlatformMetadata contains metadata for platfrom.
+     */
     @JsonProperty("ovirt")
     public io.fabric8.openshift.api.model.installer.ovirt.v1.Metadata getOvirt() {
         return ovirt;
     }
 
+    /**
+     * ClusterPlatformMetadata contains metadata for platfrom.
+     */
     @JsonProperty("ovirt")
     public void setOvirt(io.fabric8.openshift.api.model.installer.ovirt.v1.Metadata ovirt) {
         this.ovirt = ovirt;
     }
 
+    /**
+     * ClusterPlatformMetadata contains metadata for platfrom.
+     */
     @JsonProperty("powervs")
     public io.fabric8.openshift.api.model.installer.powervs.v1.Metadata getPowervs() {
         return powervs;
     }
 
+    /**
+     * ClusterPlatformMetadata contains metadata for platfrom.
+     */
     @JsonProperty("powervs")
     public void setPowervs(io.fabric8.openshift.api.model.installer.powervs.v1.Metadata powervs) {
         this.powervs = powervs;
     }
 
+    /**
+     * ClusterPlatformMetadata contains metadata for platfrom.
+     */
     @JsonProperty("vsphere")
     public io.fabric8.openshift.api.model.installer.vsphere.v1.Metadata getVsphere() {
         return vsphere;
     }
 
+    /**
+     * ClusterPlatformMetadata contains metadata for platfrom.
+     */
     @JsonProperty("vsphere")
     public void setVsphere(io.fabric8.openshift.api.model.installer.vsphere.v1.Metadata vsphere) {
         this.vsphere = vsphere;

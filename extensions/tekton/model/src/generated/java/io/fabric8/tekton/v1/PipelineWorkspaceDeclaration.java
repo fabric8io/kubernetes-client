@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * WorkspacePipelineDeclaration creates a named slot in a Pipeline that a PipelineRun is expected to populate with a workspace binding.<br><p> <br><p> Deprecated: use PipelineWorkspaceDeclaration type instead
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class PipelineWorkspaceDeclaration implements Editable<PipelineWorkspaceD
         this.optional = optional;
     }
 
+    /**
+     * Description is a human readable string describing how the workspace will be used in the Pipeline. It can be useful to include a bit of detail about which tasks are intended to have access to the data on the workspace.
+     */
     @JsonProperty("description")
     public String getDescription() {
         return description;
     }
 
+    /**
+     * Description is a human readable string describing how the workspace will be used in the Pipeline. It can be useful to include a bit of detail about which tasks are intended to have access to the data on the workspace.
+     */
     @JsonProperty("description")
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * Name is the name of a workspace to be provided by a PipelineRun.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name is the name of a workspace to be provided by a PipelineRun.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Optional marks a Workspace as not being required in PipelineRuns. By default this field is false and so declared workspaces are required.
+     */
     @JsonProperty("optional")
     public Boolean getOptional() {
         return optional;
     }
 
+    /**
+     * Optional marks a Workspace as not being required in PipelineRuns. By default this field is false and so declared workspaces are required.
+     */
     @JsonProperty("optional")
     public void setOptional(Boolean optional) {
         this.optional = optional;

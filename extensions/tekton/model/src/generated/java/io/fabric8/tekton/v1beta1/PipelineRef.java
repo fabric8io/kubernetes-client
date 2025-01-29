@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PipelineRef can be used to refer to a specific instance of a Pipeline.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class PipelineRef implements Editable<PipelineRefBuilder>, KubernetesReso
         this.name = name;
     }
 
+    /**
+     * API version of the referent
+     */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
         return apiVersion;
     }
 
+    /**
+     * API version of the referent
+     */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
+    /**
+     * Bundle url reference to a Tekton Bundle.<br><p> <br><p> Deprecated: Please use ResolverRef with the bundles resolver instead. The field is staying there for go client backward compatibility, but is not used/allowed anymore.
+     */
     @JsonProperty("bundle")
     public String getBundle() {
         return bundle;
     }
 
+    /**
+     * Bundle url reference to a Tekton Bundle.<br><p> <br><p> Deprecated: Please use ResolverRef with the bundles resolver instead. The field is staying there for go client backward compatibility, but is not used/allowed anymore.
+     */
     @JsonProperty("bundle")
     public void setBundle(String bundle) {
         this.bundle = bundle;
     }
 
+    /**
+     * Name of the referent; More info: http://kubernetes.io/docs/user-guide/identifiers#names
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name of the referent; More info: http://kubernetes.io/docs/user-guide/identifiers#names
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * GCPCSIDriverConfigSpec defines properties that can be configured for the GCP CSI driver.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class GCPCSIDriverConfigSpec implements Editable<GCPCSIDriverConfigSpecBu
         this.kmsKey = kmsKey;
     }
 
+    /**
+     * GCPCSIDriverConfigSpec defines properties that can be configured for the GCP CSI driver.
+     */
     @JsonProperty("kmsKey")
     public GCPKMSKeyReference getKmsKey() {
         return kmsKey;
     }
 
+    /**
+     * GCPCSIDriverConfigSpec defines properties that can be configured for the GCP CSI driver.
+     */
     @JsonProperty("kmsKey")
     public void setKmsKey(GCPKMSKeyReference kmsKey) {
         this.kmsKey = kmsKey;

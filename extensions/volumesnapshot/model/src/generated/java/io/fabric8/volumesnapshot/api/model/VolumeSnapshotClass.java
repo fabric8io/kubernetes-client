@@ -36,6 +36,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * VolumeSnapshotClass specifies parameters that a underlying storage system uses when creating a volume snapshot. A specific VolumeSnapshotClass is used by specifying its name in a VolumeSnapshot object. VolumeSnapshotClasses are non-namespaced
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -76,18 +79,12 @@ import lombok.experimental.Accessors;
 public class VolumeSnapshotClass implements Editable<VolumeSnapshotClassBuilder>, HasMetadata
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "snapshot.storage.k8s.io/v1";
     @JsonProperty("deletionPolicy")
     private String deletionPolicy;
     @JsonProperty("driver")
     private String driver;
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "VolumeSnapshotClass";
     @JsonProperty("metadata")
@@ -115,7 +112,7 @@ public class VolumeSnapshotClass implements Editable<VolumeSnapshotClassBuilder>
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -123,35 +120,47 @@ public class VolumeSnapshotClass implements Editable<VolumeSnapshotClassBuilder>
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
+    /**
+     * deletionPolicy determines whether a VolumeSnapshotContent created through the VolumeSnapshotClass should be deleted when its bound VolumeSnapshot is deleted. Supported values are "Retain" and "Delete". "Retain" means that the VolumeSnapshotContent and its physical snapshot on underlying storage system are kept. "Delete" means that the VolumeSnapshotContent and its physical snapshot on underlying storage system are deleted. Required.
+     */
     @JsonProperty("deletionPolicy")
     public String getDeletionPolicy() {
         return deletionPolicy;
     }
 
+    /**
+     * deletionPolicy determines whether a VolumeSnapshotContent created through the VolumeSnapshotClass should be deleted when its bound VolumeSnapshot is deleted. Supported values are "Retain" and "Delete". "Retain" means that the VolumeSnapshotContent and its physical snapshot on underlying storage system are kept. "Delete" means that the VolumeSnapshotContent and its physical snapshot on underlying storage system are deleted. Required.
+     */
     @JsonProperty("deletionPolicy")
     public void setDeletionPolicy(String deletionPolicy) {
         this.deletionPolicy = deletionPolicy;
     }
 
+    /**
+     * driver is the name of the storage driver that handles this VolumeSnapshotClass. Required.
+     */
     @JsonProperty("driver")
     public String getDriver() {
         return driver;
     }
 
+    /**
+     * driver is the name of the storage driver that handles this VolumeSnapshotClass. Required.
+     */
     @JsonProperty("driver")
     public void setDriver(String driver) {
         this.driver = driver;
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -159,29 +168,41 @@ public class VolumeSnapshotClass implements Editable<VolumeSnapshotClassBuilder>
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * VolumeSnapshotClass specifies parameters that a underlying storage system uses when creating a volume snapshot. A specific VolumeSnapshotClass is used by specifying its name in a VolumeSnapshot object. VolumeSnapshotClasses are non-namespaced
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * VolumeSnapshotClass specifies parameters that a underlying storage system uses when creating a volume snapshot. A specific VolumeSnapshotClass is used by specifying its name in a VolumeSnapshot object. VolumeSnapshotClasses are non-namespaced
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * parameters is a key-value map with storage driver specific parameters for creating snapshots. These values are opaque to Kubernetes.
+     */
     @JsonProperty("parameters")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getParameters() {
         return parameters;
     }
 
+    /**
+     * parameters is a key-value map with storage driver specific parameters for creating snapshots. These values are opaque to Kubernetes.
+     */
     @JsonProperty("parameters")
     public void setParameters(Map<String, String> parameters) {
         this.parameters = parameters;

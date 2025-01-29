@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ManagedClusterSetBindingSpec defines the attributes of ManagedClusterSetBinding.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class ManagedClusterSetBindingSpec implements Editable<ManagedClusterSetB
         this.clusterSet = clusterSet;
     }
 
+    /**
+     * ClusterSet is the name of the ManagedClusterSet to bind. It must match the instance name of the ManagedClusterSetBinding and cannot change once created. User is allowed to set this field if they have an RBAC rule to CREATE on the virtual subresource of managedclustersets/bind.
+     */
     @JsonProperty("clusterSet")
     public String getClusterSet() {
         return clusterSet;
     }
 
+    /**
+     * ClusterSet is the name of the ManagedClusterSet to bind. It must match the instance name of the ManagedClusterSetBinding and cannot change once created. User is allowed to set this field if they have an RBAC rule to CREATE on the virtual subresource of managedclustersets/bind.
+     */
     @JsonProperty("clusterSet")
     public void setClusterSet(String clusterSet) {
         this.clusterSet = clusterSet;

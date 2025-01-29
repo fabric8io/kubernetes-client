@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Represents a StorageOS persistent volume resource.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -65,51 +68,81 @@ public class StorageOSPersistentVolumeSource implements Editable<StorageOSPersis
         this.volumeNamespace = volumeNamespace;
     }
 
+    /**
+     * fsType is the filesystem type to mount. Must be a filesystem type supported by the host operating system. Ex. "ext4", "xfs", "ntfs". Implicitly inferred to be "ext4" if unspecified.
+     */
     @JsonProperty("fsType")
     public String getFsType() {
         return fsType;
     }
 
+    /**
+     * fsType is the filesystem type to mount. Must be a filesystem type supported by the host operating system. Ex. "ext4", "xfs", "ntfs". Implicitly inferred to be "ext4" if unspecified.
+     */
     @JsonProperty("fsType")
     public void setFsType(String fsType) {
         this.fsType = fsType;
     }
 
+    /**
+     * readOnly defaults to false (read/write). ReadOnly here will force the ReadOnly setting in VolumeMounts.
+     */
     @JsonProperty("readOnly")
     public Boolean getReadOnly() {
         return readOnly;
     }
 
+    /**
+     * readOnly defaults to false (read/write). ReadOnly here will force the ReadOnly setting in VolumeMounts.
+     */
     @JsonProperty("readOnly")
     public void setReadOnly(Boolean readOnly) {
         this.readOnly = readOnly;
     }
 
+    /**
+     * Represents a StorageOS persistent volume resource.
+     */
     @JsonProperty("secretRef")
     public ObjectReference getSecretRef() {
         return secretRef;
     }
 
+    /**
+     * Represents a StorageOS persistent volume resource.
+     */
     @JsonProperty("secretRef")
     public void setSecretRef(ObjectReference secretRef) {
         this.secretRef = secretRef;
     }
 
+    /**
+     * volumeName is the human-readable name of the StorageOS volume.  Volume names are only unique within a namespace.
+     */
     @JsonProperty("volumeName")
     public String getVolumeName() {
         return volumeName;
     }
 
+    /**
+     * volumeName is the human-readable name of the StorageOS volume.  Volume names are only unique within a namespace.
+     */
     @JsonProperty("volumeName")
     public void setVolumeName(String volumeName) {
         this.volumeName = volumeName;
     }
 
+    /**
+     * volumeNamespace specifies the scope of the volume within StorageOS.  If no namespace is specified then the Pod's namespace will be used.  This allows the Kubernetes name scoping to be mirrored within StorageOS for tighter integration. Set VolumeName to any name to override the default behaviour. Set to "default" if you are not using namespaces within StorageOS. Namespaces that do not pre-exist within StorageOS will be created.
+     */
     @JsonProperty("volumeNamespace")
     public String getVolumeNamespace() {
         return volumeNamespace;
     }
 
+    /**
+     * volumeNamespace specifies the scope of the volume within StorageOS.  If no namespace is specified then the Pod's namespace will be used.  This allows the Kubernetes name scoping to be mirrored within StorageOS for tighter integration. Set VolumeName to any name to override the default behaviour. Set to "default" if you are not using namespaces within StorageOS. Namespaces that do not pre-exist within StorageOS will be created.
+     */
     @JsonProperty("volumeNamespace")
     public void setVolumeNamespace(String volumeNamespace) {
         this.volumeNamespace = volumeNamespace;

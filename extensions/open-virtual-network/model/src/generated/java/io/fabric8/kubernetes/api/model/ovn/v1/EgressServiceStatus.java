@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * EgressServiceStatus defines the observed state of EgressService
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class EgressServiceStatus implements Editable<EgressServiceStatusBuilder>
         this.host = host;
     }
 
+    /**
+     * The name of the node selected to handle the service's traffic. In case sourceIPBy=Network the field will be set to "ALL".
+     */
     @JsonProperty("host")
     public String getHost() {
         return host;
     }
 
+    /**
+     * The name of the node selected to handle the service's traffic. In case sourceIPBy=Network the field will be set to "ALL".
+     */
     @JsonProperty("host")
     public void setHost(String host) {
         this.host = host;

@@ -94,51 +94,81 @@ public class TriggerSpecBinding implements Editable<TriggerSpecBindingBuilder>, 
         this.value = value;
     }
 
+    /**
+     * APIVersion of the binding ref
+     */
     @JsonProperty("apiversion")
     public String getApiversion() {
         return apiversion;
     }
 
+    /**
+     * APIVersion of the binding ref
+     */
     @JsonProperty("apiversion")
     public void setApiversion(String apiversion) {
         this.apiversion = apiversion;
     }
 
+    /**
+     * Kind can only be provided if Ref is also provided. Defaults to TriggerBinding
+     */
     @JsonProperty("kind")
     public String getKind() {
         return kind;
     }
 
+    /**
+     * Kind can only be provided if Ref is also provided. Defaults to TriggerBinding
+     */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * Name is the name of the binding param Mutually exclusive with Ref
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name is the name of the binding param Mutually exclusive with Ref
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Ref is a reference to a TriggerBinding kind. Mutually exclusive with Name
+     */
     @JsonProperty("ref")
     public String getRef() {
         return ref;
     }
 
+    /**
+     * Ref is a reference to a TriggerBinding kind. Mutually exclusive with Name
+     */
     @JsonProperty("ref")
     public void setRef(String ref) {
         this.ref = ref;
     }
 
+    /**
+     * Value is the value of the binding param. Can contain JSONPath Has to be pointer since "" is a valid value Required if Name is also specified.
+     */
     @JsonProperty("value")
     public String getValue() {
         return value;
     }
 
+    /**
+     * Value is the value of the binding param. Can contain JSONPath Has to be pointer since "" is a valid value Required if Name is also specified.
+     */
     @JsonProperty("value")
     public void setValue(String value) {
         this.value = value;

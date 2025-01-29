@@ -90,41 +90,65 @@ public class JVMStressSpec implements Editable<JVMStressSpecBuilder>, Kubernetes
         this.port = port;
     }
 
+    /**
+     * the CPU core number need to use, only set it when action is stress
+     */
     @JsonProperty("cpu-count")
     public Integer getCpuCount() {
         return cpuCount;
     }
 
+    /**
+     * the CPU core number need to use, only set it when action is stress
+     */
     @JsonProperty("cpu-count")
     public void setCpuCount(Integer cpuCount) {
         this.cpuCount = cpuCount;
     }
 
+    /**
+     * the memory type need to locate, only set it when action is stress, the value can be 'stack' or 'heap'
+     */
     @JsonProperty("mem-type")
     public String getMemType() {
         return memType;
     }
 
+    /**
+     * the memory type need to locate, only set it when action is stress, the value can be 'stack' or 'heap'
+     */
     @JsonProperty("mem-type")
     public void setMemType(String memType) {
         this.memType = memType;
     }
 
+    /**
+     * the pid of Java process which needs to attach
+     */
     @JsonProperty("pid")
     public Integer getPid() {
         return pid;
     }
 
+    /**
+     * the pid of Java process which needs to attach
+     */
     @JsonProperty("pid")
     public void setPid(Integer pid) {
         this.pid = pid;
     }
 
+    /**
+     * the port of agent server, default 9277
+     */
     @JsonProperty("port")
     public Integer getPort() {
         return port;
     }
 
+    /**
+     * the port of agent server, default 9277
+     */
     @JsonProperty("port")
     public void setPort(Integer port) {
         this.port = port;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * webhookTokenAuthenticator holds the necessary configuration options for a remote token authenticator
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class WebhookTokenAuthenticator implements Editable<WebhookTokenAuthentic
         this.kubeConfig = kubeConfig;
     }
 
+    /**
+     * webhookTokenAuthenticator holds the necessary configuration options for a remote token authenticator
+     */
     @JsonProperty("kubeConfig")
     public SecretNameReference getKubeConfig() {
         return kubeConfig;
     }
 
+    /**
+     * webhookTokenAuthenticator holds the necessary configuration options for a remote token authenticator
+     */
     @JsonProperty("kubeConfig")
     public void setKubeConfig(SecretNameReference kubeConfig) {
         this.kubeConfig = kubeConfig;

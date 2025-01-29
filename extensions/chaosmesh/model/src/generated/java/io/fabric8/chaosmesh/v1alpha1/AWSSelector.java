@@ -94,51 +94,81 @@ public class AWSSelector implements Editable<AWSSelectorBuilder>, KubernetesReso
         this.volumeID = volumeID;
     }
 
+    /**
+     * AWSRegion defines the region of aws.
+     */
     @JsonProperty("awsRegion")
     public String getAwsRegion() {
         return awsRegion;
     }
 
+    /**
+     * AWSRegion defines the region of aws.
+     */
     @JsonProperty("awsRegion")
     public void setAwsRegion(String awsRegion) {
         this.awsRegion = awsRegion;
     }
 
+    /**
+     * DeviceName indicates the name of the device. Needed in detach-volume.
+     */
     @JsonProperty("deviceName")
     public String getDeviceName() {
         return deviceName;
     }
 
+    /**
+     * DeviceName indicates the name of the device. Needed in detach-volume.
+     */
     @JsonProperty("deviceName")
     public void setDeviceName(String deviceName) {
         this.deviceName = deviceName;
     }
 
+    /**
+     * Ec2Instance indicates the ID of the ec2 instance.
+     */
     @JsonProperty("ec2Instance")
     public String getEc2Instance() {
         return ec2Instance;
     }
 
+    /**
+     * Ec2Instance indicates the ID of the ec2 instance.
+     */
     @JsonProperty("ec2Instance")
     public void setEc2Instance(String ec2Instance) {
         this.ec2Instance = ec2Instance;
     }
 
+    /**
+     * Endpoint indicates the endpoint of the aws server. Just used it in test now.
+     */
     @JsonProperty("endpoint")
     public String getEndpoint() {
         return endpoint;
     }
 
+    /**
+     * Endpoint indicates the endpoint of the aws server. Just used it in test now.
+     */
     @JsonProperty("endpoint")
     public void setEndpoint(String endpoint) {
         this.endpoint = endpoint;
     }
 
+    /**
+     * EbsVolume indicates the ID of the EBS volume. Needed in detach-volume.
+     */
     @JsonProperty("volumeID")
     public String getVolumeID() {
         return volumeID;
     }
 
+    /**
+     * EbsVolume indicates the ID of the EBS volume. Needed in detach-volume.
+     */
     @JsonProperty("volumeID")
     public void setVolumeID(String volumeID) {
         this.volumeID = volumeID;

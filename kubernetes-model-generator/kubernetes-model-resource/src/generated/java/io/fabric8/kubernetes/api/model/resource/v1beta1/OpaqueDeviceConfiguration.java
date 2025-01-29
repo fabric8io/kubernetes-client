@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * OpaqueDeviceConfiguration contains configuration parameters for a driver in a format defined by the driver vendor.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -83,21 +86,33 @@ public class OpaqueDeviceConfiguration implements Editable<OpaqueDeviceConfigura
         this.parameters = parameters;
     }
 
+    /**
+     * Driver is used to determine which kubelet plugin needs to be passed these configuration parameters.<br><p> <br><p> An admission policy provided by the driver developer could use this to decide whether it needs to validate them.<br><p> <br><p> Must be a DNS subdomain and should end with a DNS domain owned by the vendor of the driver.
+     */
     @JsonProperty("driver")
     public String getDriver() {
         return driver;
     }
 
+    /**
+     * Driver is used to determine which kubelet plugin needs to be passed these configuration parameters.<br><p> <br><p> An admission policy provided by the driver developer could use this to decide whether it needs to validate them.<br><p> <br><p> Must be a DNS subdomain and should end with a DNS domain owned by the vendor of the driver.
+     */
     @JsonProperty("driver")
     public void setDriver(String driver) {
         this.driver = driver;
     }
 
+    /**
+     * OpaqueDeviceConfiguration contains configuration parameters for a driver in a format defined by the driver vendor.
+     */
     @JsonProperty("parameters")
     public Object getParameters() {
         return parameters;
     }
 
+    /**
+     * OpaqueDeviceConfiguration contains configuration parameters for a driver in a format defined by the driver vendor.
+     */
     @JsonProperty("parameters")
     @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
     public void setParameters(Object parameters) {

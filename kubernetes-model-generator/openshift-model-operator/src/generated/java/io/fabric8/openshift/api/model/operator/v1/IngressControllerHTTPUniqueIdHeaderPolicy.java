@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * IngressControllerHTTPUniqueIdHeaderPolicy describes configuration for a unique id header.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class IngressControllerHTTPUniqueIdHeaderPolicy implements Editable<Ingre
         this.name = name;
     }
 
+    /**
+     * format specifies the format for the injected HTTP header's value. This field has no effect unless name is specified.  For the HAProxy-based ingress controller implementation, this format uses the same syntax as the HTTP log format.  If the field is empty, the default value is "%{+X}o\\ %ci:%cp_%fi:%fp_%Ts_%rt:%pid"; see the corresponding HAProxy documentation: http://cbonte.github.io/haproxy-dconv/2.0/configuration.html#8.2.3
+     */
     @JsonProperty("format")
     public String getFormat() {
         return format;
     }
 
+    /**
+     * format specifies the format for the injected HTTP header's value. This field has no effect unless name is specified.  For the HAProxy-based ingress controller implementation, this format uses the same syntax as the HTTP log format.  If the field is empty, the default value is "%{+X}o\\ %ci:%cp_%fi:%fp_%Ts_%rt:%pid"; see the corresponding HAProxy documentation: http://cbonte.github.io/haproxy-dconv/2.0/configuration.html#8.2.3
+     */
     @JsonProperty("format")
     public void setFormat(String format) {
         this.format = format;
     }
 
+    /**
+     * name specifies the name of the HTTP header (for example, "unique-id") that the ingress controller should inject into HTTP requests.  The field's value must be a valid HTTP header name as defined in RFC 2616 section 4.2.  If the field is empty, no header is injected.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * name specifies the name of the HTTP header (for example, "unique-id") that the ingress controller should inject into HTTP requests.  The field's value must be a valid HTTP header name as defined in RFC 2616 section 4.2.  If the field is empty, no header is injected.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * For listeners with multiple filter chains (e.g., inbound listeners on sidecars with permissive mTLS, gateway listeners with multiple SNI matches), the filter chain match can be used to select a specific filter chain to patch.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -98,61 +101,97 @@ public class EnvoyFilterListenerMatchFilterChainMatch implements Editable<EnvoyF
         this.transportProtocol = transportProtocol;
     }
 
+    /**
+     * Applies only to sidecars. If non-empty, a comma separated set of application protocols to consider when determining a filter chain match.  This value will be compared against the application protocols of a new connection, when it's detected by one of the listener filters such as the `http_inspector`.<br><p> <br><p> Accepted values include: h2, http/1.1, http/1.0
+     */
     @JsonProperty("applicationProtocols")
     public String getApplicationProtocols() {
         return applicationProtocols;
     }
 
+    /**
+     * Applies only to sidecars. If non-empty, a comma separated set of application protocols to consider when determining a filter chain match.  This value will be compared against the application protocols of a new connection, when it's detected by one of the listener filters such as the `http_inspector`.<br><p> <br><p> Accepted values include: h2, http/1.1, http/1.0
+     */
     @JsonProperty("applicationProtocols")
     public void setApplicationProtocols(String applicationProtocols) {
         this.applicationProtocols = applicationProtocols;
     }
 
+    /**
+     * The destination_port value used by a filter chain's match condition. This condition will evaluate to false if the filter chain has no destination_port match.
+     */
     @JsonProperty("destinationPort")
     public Long getDestinationPort() {
         return destinationPort;
     }
 
+    /**
+     * The destination_port value used by a filter chain's match condition. This condition will evaluate to false if the filter chain has no destination_port match.
+     */
     @JsonProperty("destinationPort")
     public void setDestinationPort(Long destinationPort) {
         this.destinationPort = destinationPort;
     }
 
+    /**
+     * For listeners with multiple filter chains (e.g., inbound listeners on sidecars with permissive mTLS, gateway listeners with multiple SNI matches), the filter chain match can be used to select a specific filter chain to patch.
+     */
     @JsonProperty("filter")
     public EnvoyFilterListenerMatchFilterMatch getFilter() {
         return filter;
     }
 
+    /**
+     * For listeners with multiple filter chains (e.g., inbound listeners on sidecars with permissive mTLS, gateway listeners with multiple SNI matches), the filter chain match can be used to select a specific filter chain to patch.
+     */
     @JsonProperty("filter")
     public void setFilter(EnvoyFilterListenerMatchFilterMatch filter) {
         this.filter = filter;
     }
 
+    /**
+     * The name assigned to the filter chain.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * The name assigned to the filter chain.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * The SNI value used by a filter chain's match condition.  This condition will evaluate to false if the filter chain has no sni match.
+     */
     @JsonProperty("sni")
     public String getSni() {
         return sni;
     }
 
+    /**
+     * The SNI value used by a filter chain's match condition.  This condition will evaluate to false if the filter chain has no sni match.
+     */
     @JsonProperty("sni")
     public void setSni(String sni) {
         this.sni = sni;
     }
 
+    /**
+     * Applies only to `SIDECAR_INBOUND` context. If non-empty, a transport protocol to consider when determining a filter chain match.  This value will be compared against the transport protocol of a new connection, when it's detected by the `tls_inspector` listener filter.<br><p> <br><p> Accepted values include:<br><p> <br><p> &#42; `raw_buffer` - default, used when no transport protocol is detected. &#42; `tls` - set when TLS protocol is detected by the TLS inspector.
+     */
     @JsonProperty("transportProtocol")
     public String getTransportProtocol() {
         return transportProtocol;
     }
 
+    /**
+     * Applies only to `SIDECAR_INBOUND` context. If non-empty, a transport protocol to consider when determining a filter chain match.  This value will be compared against the transport protocol of a new connection, when it's detected by the `tls_inspector` listener filter.<br><p> <br><p> Accepted values include:<br><p> <br><p> &#42; `raw_buffer` - default, used when no transport protocol is detected. &#42; `tls` - set when TLS protocol is detected by the TLS inspector.
+     */
     @JsonProperty("transportProtocol")
     public void setTransportProtocol(String transportProtocol) {
         this.transportProtocol = transportProtocol;

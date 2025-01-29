@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * CustomResourceConversion describes how to convert different versions of a CR.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class CustomResourceConversion implements Editable<CustomResourceConversi
         this.webhook = webhook;
     }
 
+    /**
+     * strategy specifies how custom resources are converted between versions. Allowed values are: - `"None"`: The converter only change the apiVersion and would not touch any other field in the custom resource. - `"Webhook"`: API Server will call to an external webhook to do the conversion. Additional information<br><p>   is needed for this option. This requires spec.preserveUnknownFields to be false, and spec.conversion.webhook to be set.
+     */
     @JsonProperty("strategy")
     public String getStrategy() {
         return strategy;
     }
 
+    /**
+     * strategy specifies how custom resources are converted between versions. Allowed values are: - `"None"`: The converter only change the apiVersion and would not touch any other field in the custom resource. - `"Webhook"`: API Server will call to an external webhook to do the conversion. Additional information<br><p>   is needed for this option. This requires spec.preserveUnknownFields to be false, and spec.conversion.webhook to be set.
+     */
     @JsonProperty("strategy")
     public void setStrategy(String strategy) {
         this.strategy = strategy;
     }
 
+    /**
+     * CustomResourceConversion describes how to convert different versions of a CR.
+     */
     @JsonProperty("webhook")
     public WebhookConversion getWebhook() {
         return webhook;
     }
 
+    /**
+     * CustomResourceConversion describes how to convert different versions of a CR.
+     */
     @JsonProperty("webhook")
     public void setWebhook(WebhookConversion webhook) {
         this.webhook = webhook;

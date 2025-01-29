@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PipelineRunResult used to describe the results of a pipeline
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class PipelineRunResult implements Editable<PipelineRunResultBuilder>, Ku
         this.value = value;
     }
 
+    /**
+     * Name is the result's name as declared by the Pipeline
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name is the result's name as declared by the Pipeline
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * PipelineRunResult used to describe the results of a pipeline
+     */
     @JsonProperty("value")
     public ParamValue getValue() {
         return value;
     }
 
+    /**
+     * PipelineRunResult used to describe the results of a pipeline
+     */
     @JsonProperty("value")
     public void setValue(ParamValue value) {
         this.value = value;

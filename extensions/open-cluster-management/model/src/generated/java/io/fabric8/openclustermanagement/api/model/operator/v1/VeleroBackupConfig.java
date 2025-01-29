@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * VeleroBackupConfig contains settings for the Velero backup integration.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class VeleroBackupConfig implements Editable<VeleroBackupConfigBuilder>, 
         this.enabled = enabled;
     }
 
+    /**
+     * (Deprecated) Enabled dictates if Velero backup integration is enabled. If not specified, the default is disabled.
+     */
     @JsonProperty("enabled")
     public Boolean getEnabled() {
         return enabled;
     }
 
+    /**
+     * (Deprecated) Enabled dictates if Velero backup integration is enabled. If not specified, the default is disabled.
+     */
     @JsonProperty("enabled")
     public void setEnabled(Boolean enabled) {
         this.enabled = enabled;

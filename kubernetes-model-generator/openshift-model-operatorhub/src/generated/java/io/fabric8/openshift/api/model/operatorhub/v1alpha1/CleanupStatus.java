@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * CleanupStatus represents information about the status of cleanup while a CSV is pending deletion
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -81,12 +84,18 @@ public class CleanupStatus implements Editable<CleanupStatusBuilder>, Kubernetes
         this.pendingDeletion = pendingDeletion;
     }
 
+    /**
+     * PendingDeletion is the list of custom resource objects that are pending deletion and blocked on finalizers. This indicates the progress of cleanup that is blocking CSV deletion or operator uninstall.
+     */
     @JsonProperty("pendingDeletion")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ResourceList> getPendingDeletion() {
         return pendingDeletion;
     }
 
+    /**
+     * PendingDeletion is the list of custom resource objects that are pending deletion and blocked on finalizers. This indicates the progress of cleanup that is blocking CSV deletion or operator uninstall.
+     */
     @JsonProperty("pendingDeletion")
     public void setPendingDeletion(List<ResourceList> pendingDeletion) {
         this.pendingDeletion = pendingDeletion;

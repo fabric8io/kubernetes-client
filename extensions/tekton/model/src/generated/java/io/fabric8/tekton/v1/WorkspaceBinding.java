@@ -38,6 +38,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * WorkspaceBinding maps a Task's declared workspace to a Volume.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -116,91 +119,145 @@ public class WorkspaceBinding implements Editable<WorkspaceBindingBuilder>, Kube
         this.volumeClaimTemplate = volumeClaimTemplate;
     }
 
+    /**
+     * WorkspaceBinding maps a Task's declared workspace to a Volume.
+     */
     @JsonProperty("configMap")
     public ConfigMapVolumeSource getConfigMap() {
         return configMap;
     }
 
+    /**
+     * WorkspaceBinding maps a Task's declared workspace to a Volume.
+     */
     @JsonProperty("configMap")
     public void setConfigMap(ConfigMapVolumeSource configMap) {
         this.configMap = configMap;
     }
 
+    /**
+     * WorkspaceBinding maps a Task's declared workspace to a Volume.
+     */
     @JsonProperty("csi")
     public CSIVolumeSource getCsi() {
         return csi;
     }
 
+    /**
+     * WorkspaceBinding maps a Task's declared workspace to a Volume.
+     */
     @JsonProperty("csi")
     public void setCsi(CSIVolumeSource csi) {
         this.csi = csi;
     }
 
+    /**
+     * WorkspaceBinding maps a Task's declared workspace to a Volume.
+     */
     @JsonProperty("emptyDir")
     public EmptyDirVolumeSource getEmptyDir() {
         return emptyDir;
     }
 
+    /**
+     * WorkspaceBinding maps a Task's declared workspace to a Volume.
+     */
     @JsonProperty("emptyDir")
     public void setEmptyDir(EmptyDirVolumeSource emptyDir) {
         this.emptyDir = emptyDir;
     }
 
+    /**
+     * Name is the name of the workspace populated by the volume.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name is the name of the workspace populated by the volume.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * WorkspaceBinding maps a Task's declared workspace to a Volume.
+     */
     @JsonProperty("persistentVolumeClaim")
     public PersistentVolumeClaimVolumeSource getPersistentVolumeClaim() {
         return persistentVolumeClaim;
     }
 
+    /**
+     * WorkspaceBinding maps a Task's declared workspace to a Volume.
+     */
     @JsonProperty("persistentVolumeClaim")
     public void setPersistentVolumeClaim(PersistentVolumeClaimVolumeSource persistentVolumeClaim) {
         this.persistentVolumeClaim = persistentVolumeClaim;
     }
 
+    /**
+     * WorkspaceBinding maps a Task's declared workspace to a Volume.
+     */
     @JsonProperty("projected")
     public ProjectedVolumeSource getProjected() {
         return projected;
     }
 
+    /**
+     * WorkspaceBinding maps a Task's declared workspace to a Volume.
+     */
     @JsonProperty("projected")
     public void setProjected(ProjectedVolumeSource projected) {
         this.projected = projected;
     }
 
+    /**
+     * WorkspaceBinding maps a Task's declared workspace to a Volume.
+     */
     @JsonProperty("secret")
     public SecretVolumeSource getSecret() {
         return secret;
     }
 
+    /**
+     * WorkspaceBinding maps a Task's declared workspace to a Volume.
+     */
     @JsonProperty("secret")
     public void setSecret(SecretVolumeSource secret) {
         this.secret = secret;
     }
 
+    /**
+     * SubPath is optionally a directory on the volume which should be used for this binding (i.e. the volume will be mounted at this sub directory).
+     */
     @JsonProperty("subPath")
     public String getSubPath() {
         return subPath;
     }
 
+    /**
+     * SubPath is optionally a directory on the volume which should be used for this binding (i.e. the volume will be mounted at this sub directory).
+     */
     @JsonProperty("subPath")
     public void setSubPath(String subPath) {
         this.subPath = subPath;
     }
 
+    /**
+     * WorkspaceBinding maps a Task's declared workspace to a Volume.
+     */
     @JsonProperty("volumeClaimTemplate")
     public PersistentVolumeClaim getVolumeClaimTemplate() {
         return volumeClaimTemplate;
     }
 
+    /**
+     * WorkspaceBinding maps a Task's declared workspace to a Volume.
+     */
     @JsonProperty("volumeClaimTemplate")
     public void setVolumeClaimTemplate(PersistentVolumeClaim volumeClaimTemplate) {
         this.volumeClaimTemplate = volumeClaimTemplate;

@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Storage describes one storage device (disk, SSD, etc.) on the host.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -125,122 +128,194 @@ public class Storage implements Editable<StorageBuilder>, KubernetesResource
         this.wwnWithExtension = wwnWithExtension;
     }
 
+    /**
+     * A list of alternate Linux device names of the disk, e.g. "/dev/sda". Note that this list is not exhaustive, and names may not be stable across reboots.
+     */
     @JsonProperty("alternateNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getAlternateNames() {
         return alternateNames;
     }
 
+    /**
+     * A list of alternate Linux device names of the disk, e.g. "/dev/sda". Note that this list is not exhaustive, and names may not be stable across reboots.
+     */
     @JsonProperty("alternateNames")
     public void setAlternateNames(List<String> alternateNames) {
         this.alternateNames = alternateNames;
     }
 
+    /**
+     * The SCSI location of the device
+     */
     @JsonProperty("hctl")
     public String getHctl() {
         return hctl;
     }
 
+    /**
+     * The SCSI location of the device
+     */
     @JsonProperty("hctl")
     public void setHctl(String hctl) {
         this.hctl = hctl;
     }
 
+    /**
+     * Hardware model
+     */
     @JsonProperty("model")
     public String getModel() {
         return model;
     }
 
+    /**
+     * Hardware model
+     */
     @JsonProperty("model")
     public void setModel(String model) {
         this.model = model;
     }
 
+    /**
+     * A Linux device name of the disk, e.g. "/dev/disk/by-path/pci-0000:01:00.0-scsi-0:2:0:0". This will be a name that is stable across reboots if one is available.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * A Linux device name of the disk, e.g. "/dev/disk/by-path/pci-0000:01:00.0-scsi-0:2:0:0". This will be a name that is stable across reboots if one is available.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Whether this disk represents rotational storage. This field is not recommended for usage, please prefer using 'Type' field instead, this field will be deprecated eventually.
+     */
     @JsonProperty("rotational")
     public Boolean getRotational() {
         return rotational;
     }
 
+    /**
+     * Whether this disk represents rotational storage. This field is not recommended for usage, please prefer using 'Type' field instead, this field will be deprecated eventually.
+     */
     @JsonProperty("rotational")
     public void setRotational(Boolean rotational) {
         this.rotational = rotational;
     }
 
+    /**
+     * The serial number of the device
+     */
     @JsonProperty("serialNumber")
     public String getSerialNumber() {
         return serialNumber;
     }
 
+    /**
+     * The serial number of the device
+     */
     @JsonProperty("serialNumber")
     public void setSerialNumber(String serialNumber) {
         this.serialNumber = serialNumber;
     }
 
+    /**
+     * The size of the disk in Bytes
+     */
     @JsonProperty("sizeBytes")
     public Long getSizeBytes() {
         return sizeBytes;
     }
 
+    /**
+     * The size of the disk in Bytes
+     */
     @JsonProperty("sizeBytes")
     public void setSizeBytes(Long sizeBytes) {
         this.sizeBytes = sizeBytes;
     }
 
+    /**
+     * Device type, one of: HDD, SSD, NVME.
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * Device type, one of: HDD, SSD, NVME.
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;
     }
 
+    /**
+     * The name of the vendor of the device
+     */
     @JsonProperty("vendor")
     public String getVendor() {
         return vendor;
     }
 
+    /**
+     * The name of the vendor of the device
+     */
     @JsonProperty("vendor")
     public void setVendor(String vendor) {
         this.vendor = vendor;
     }
 
+    /**
+     * The WWN of the device
+     */
     @JsonProperty("wwn")
     public String getWwn() {
         return wwn;
     }
 
+    /**
+     * The WWN of the device
+     */
     @JsonProperty("wwn")
     public void setWwn(String wwn) {
         this.wwn = wwn;
     }
 
+    /**
+     * The WWN Vendor extension of the device
+     */
     @JsonProperty("wwnVendorExtension")
     public String getWwnVendorExtension() {
         return wwnVendorExtension;
     }
 
+    /**
+     * The WWN Vendor extension of the device
+     */
     @JsonProperty("wwnVendorExtension")
     public void setWwnVendorExtension(String wwnVendorExtension) {
         this.wwnVendorExtension = wwnVendorExtension;
     }
 
+    /**
+     * The WWN with the extension
+     */
     @JsonProperty("wwnWithExtension")
     public String getWwnWithExtension() {
         return wwnWithExtension;
     }
 
+    /**
+     * The WWN with the extension
+     */
     @JsonProperty("wwnWithExtension")
     public void setWwnWithExtension(String wwnWithExtension) {
         this.wwnWithExtension = wwnWithExtension;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Metal3DataClaimSpec defines the desired state of Metal3DataClaim.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class Metal3DataClaimSpec implements Editable<Metal3DataClaimSpecBuilder>
         this.template = template;
     }
 
+    /**
+     * Metal3DataClaimSpec defines the desired state of Metal3DataClaim.
+     */
     @JsonProperty("template")
     public ObjectReference getTemplate() {
         return template;
     }
 
+    /**
+     * Metal3DataClaimSpec defines the desired state of Metal3DataClaim.
+     */
     @JsonProperty("template")
     public void setTemplate(ObjectReference template) {
         this.template = template;

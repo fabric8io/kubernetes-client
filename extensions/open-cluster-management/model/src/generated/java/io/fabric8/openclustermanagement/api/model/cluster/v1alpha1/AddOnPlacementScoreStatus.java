@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AddOnPlacementScoreStatus represents the current status of AddOnPlacementScore.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -91,33 +94,51 @@ public class AddOnPlacementScoreStatus implements Editable<AddOnPlacementScoreSt
         this.validUntil = validUntil;
     }
 
+    /**
+     * Conditions contain the different condition statuses for this AddOnPlacementScore.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Conditions contain the different condition statuses for this AddOnPlacementScore.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * Scores contain a list of score name and value of this managed cluster.
+     */
     @JsonProperty("scores")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<AddOnPlacementScoreItem> getScores() {
         return scores;
     }
 
+    /**
+     * Scores contain a list of score name and value of this managed cluster.
+     */
     @JsonProperty("scores")
     public void setScores(List<AddOnPlacementScoreItem> scores) {
         this.scores = scores;
     }
 
+    /**
+     * AddOnPlacementScoreStatus represents the current status of AddOnPlacementScore.
+     */
     @JsonProperty("validUntil")
     public String getValidUntil() {
         return validUntil;
     }
 
+    /**
+     * AddOnPlacementScoreStatus represents the current status of AddOnPlacementScore.
+     */
     @JsonProperty("validUntil")
     public void setValidUntil(String validUntil) {
         this.validUntil = validUntil;

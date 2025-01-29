@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * StorageResourceReference holds reference information of a storage resource (storage container, data source image, etc.)
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class StorageResourceReference implements Editable<StorageResourceReferen
         this.uuid = uuid;
     }
 
+    /**
+     * Name is the name of the storage container resource in the Prism Element.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name is the name of the storage container resource in the Prism Element.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * ReferenceName is the identifier of the storage resource configured in the FailureDomain.
+     */
     @JsonProperty("referenceName")
     public String getReferenceName() {
         return referenceName;
     }
 
+    /**
+     * ReferenceName is the identifier of the storage resource configured in the FailureDomain.
+     */
     @JsonProperty("referenceName")
     public void setReferenceName(String referenceName) {
         this.referenceName = referenceName;
     }
 
+    /**
+     * UUID is the UUID of the storage container resource in the Prism Element.
+     */
     @JsonProperty("uuid")
     public String getUuid() {
         return uuid;
     }
 
+    /**
+     * UUID is the UUID of the storage container resource in the Prism Element.
+     */
     @JsonProperty("uuid")
     public void setUuid(String uuid) {
         this.uuid = uuid;

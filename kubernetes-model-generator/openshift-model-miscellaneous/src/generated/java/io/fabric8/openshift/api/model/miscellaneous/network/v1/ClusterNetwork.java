@@ -38,6 +38,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ClusterNetwork was used by OpenShift SDN. DEPRECATED: OpenShift SDN is no longer supported and this object is no longer used in any way by OpenShift.<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,9 +85,6 @@ import lombok.experimental.Accessors;
 public class ClusterNetwork implements Editable<ClusterNetworkBuilder>, HasMetadata
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "network.openshift.io/v1";
     @JsonProperty("clusterNetworks")
@@ -92,9 +92,6 @@ public class ClusterNetwork implements Editable<ClusterNetworkBuilder>, HasMetad
     private List<ClusterNetworkEntry> clusterNetworks = new ArrayList<>();
     @JsonProperty("hostsubnetlength")
     private Long hostsubnetlength;
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "ClusterNetwork";
     @JsonProperty("metadata")
@@ -133,7 +130,7 @@ public class ClusterNetwork implements Editable<ClusterNetworkBuilder>, HasMetad
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -141,36 +138,48 @@ public class ClusterNetwork implements Editable<ClusterNetworkBuilder>, HasMetad
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
+    /**
+     * ClusterNetworks is a list of ClusterNetwork objects that defines the global overlay network's L3 space by specifying a set of CIDR and netmasks that the SDN can allocate addresses from.
+     */
     @JsonProperty("clusterNetworks")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ClusterNetworkEntry> getClusterNetworks() {
         return clusterNetworks;
     }
 
+    /**
+     * ClusterNetworks is a list of ClusterNetwork objects that defines the global overlay network's L3 space by specifying a set of CIDR and netmasks that the SDN can allocate addresses from.
+     */
     @JsonProperty("clusterNetworks")
     public void setClusterNetworks(List<ClusterNetworkEntry> clusterNetworks) {
         this.clusterNetworks = clusterNetworks;
     }
 
+    /**
+     * HostSubnetLength is the number of bits of network to allocate to each node. eg, 8 would mean that each node would have a /24 slice of the overlay network for its pods
+     */
     @JsonProperty("hostsubnetlength")
     public Long getHostsubnetlength() {
         return hostsubnetlength;
     }
 
+    /**
+     * HostSubnetLength is the number of bits of network to allocate to each node. eg, 8 would mean that each node would have a /24 slice of the overlay network for its pods
+     */
     @JsonProperty("hostsubnetlength")
     public void setHostsubnetlength(Long hostsubnetlength) {
         this.hostsubnetlength = hostsubnetlength;
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -178,68 +187,104 @@ public class ClusterNetwork implements Editable<ClusterNetworkBuilder>, HasMetad
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * ClusterNetwork was used by OpenShift SDN. DEPRECATED: OpenShift SDN is no longer supported and this object is no longer used in any way by OpenShift.<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * ClusterNetwork was used by OpenShift SDN. DEPRECATED: OpenShift SDN is no longer supported and this object is no longer used in any way by OpenShift.<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * MTU is the MTU for the overlay network. This should be 50 less than the MTU of the network connecting the nodes. It is normally autodetected by the cluster network operator.
+     */
     @JsonProperty("mtu")
     public Long getMtu() {
         return mtu;
     }
 
+    /**
+     * MTU is the MTU for the overlay network. This should be 50 less than the MTU of the network connecting the nodes. It is normally autodetected by the cluster network operator.
+     */
     @JsonProperty("mtu")
     public void setMtu(Long mtu) {
         this.mtu = mtu;
     }
 
+    /**
+     * Network is a CIDR string specifying the global overlay network's L3 space
+     */
     @JsonProperty("network")
     public String getNetwork() {
         return network;
     }
 
+    /**
+     * Network is a CIDR string specifying the global overlay network's L3 space
+     */
     @JsonProperty("network")
     public void setNetwork(String network) {
         this.network = network;
     }
 
+    /**
+     * PluginName is the name of the network plugin being used
+     */
     @JsonProperty("pluginName")
     public String getPluginName() {
         return pluginName;
     }
 
+    /**
+     * PluginName is the name of the network plugin being used
+     */
     @JsonProperty("pluginName")
     public void setPluginName(String pluginName) {
         this.pluginName = pluginName;
     }
 
+    /**
+     * ServiceNetwork is the CIDR range that Service IP addresses are allocated from
+     */
     @JsonProperty("serviceNetwork")
     public String getServiceNetwork() {
         return serviceNetwork;
     }
 
+    /**
+     * ServiceNetwork is the CIDR range that Service IP addresses are allocated from
+     */
     @JsonProperty("serviceNetwork")
     public void setServiceNetwork(String serviceNetwork) {
         this.serviceNetwork = serviceNetwork;
     }
 
+    /**
+     * VXLANPort sets the VXLAN destination port used by the cluster. It is set by the master configuration file on startup and cannot be edited manually. Valid values for VXLANPort are integers 1-65535 inclusive and if unset defaults to 4789. Changing VXLANPort allows users to resolve issues between openshift SDN and other software trying to use the same VXLAN destination port.
+     */
     @JsonProperty("vxlanPort")
     public Long getVxlanPort() {
         return vxlanPort;
     }
 
+    /**
+     * VXLANPort sets the VXLAN destination port used by the cluster. It is set by the master configuration file on startup and cannot be edited manually. Valid values for VXLANPort are integers 1-65535 inclusive and if unset defaults to 4789. Changing VXLANPort allows users to resolve issues between openshift SDN and other software trying to use the same VXLAN destination port.
+     */
     @JsonProperty("vxlanPort")
     public void setVxlanPort(Long vxlanPort) {
         this.vxlanPort = vxlanPort;

@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Information about the condition of a component.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -61,41 +64,65 @@ public class ComponentCondition implements Editable<ComponentConditionBuilder>, 
         this.type = type;
     }
 
+    /**
+     * Condition error code for a component. For example, a health check error code.
+     */
     @JsonProperty("error")
     public String getError() {
         return error;
     }
 
+    /**
+     * Condition error code for a component. For example, a health check error code.
+     */
     @JsonProperty("error")
     public void setError(String error) {
         this.error = error;
     }
 
+    /**
+     * Message about the condition for a component. For example, information about a health check.
+     */
     @JsonProperty("message")
     public String getMessage() {
         return message;
     }
 
+    /**
+     * Message about the condition for a component. For example, information about a health check.
+     */
     @JsonProperty("message")
     public void setMessage(String message) {
         this.message = message;
     }
 
+    /**
+     * Status of the condition for a component. Valid values for "Healthy": "True", "False", or "Unknown".
+     */
     @JsonProperty("status")
     public String getStatus() {
         return status;
     }
 
+    /**
+     * Status of the condition for a component. Valid values for "Healthy": "True", "False", or "Unknown".
+     */
     @JsonProperty("status")
     public void setStatus(String status) {
         this.status = status;
     }
 
+    /**
+     * Type of condition for a component. Valid value: "Healthy"
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * Type of condition for a component. Valid value: "Healthy"
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

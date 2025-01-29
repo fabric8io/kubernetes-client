@@ -37,6 +37,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * MachinePool stores the configuration for a machine pool installed on Nutanix.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -123,105 +126,165 @@ public class MachinePool implements Editable<MachinePoolBuilder>, KubernetesReso
         this.project = project;
     }
 
+    /**
+     * BootType indicates the boot type (Legacy, UEFI or SecureBoot) the Machine's VM uses to boot. If this field is empty or omitted, the VM will use the default boot type "Legacy" to boot. "SecureBoot" depends on "UEFI" boot, i.e., enabling "SecureBoot" means that "UEFI" boot is also enabled.
+     */
     @JsonProperty("bootType")
     public String getBootType() {
         return bootType;
     }
 
+    /**
+     * BootType indicates the boot type (Legacy, UEFI or SecureBoot) the Machine's VM uses to boot. If this field is empty or omitted, the VM will use the default boot type "Legacy" to boot. "SecureBoot" depends on "UEFI" boot, i.e., enabling "SecureBoot" means that "UEFI" boot is also enabled.
+     */
     @JsonProperty("bootType")
     public void setBootType(String bootType) {
         this.bootType = bootType;
     }
 
+    /**
+     * Categories optionally adds one or more prism categories (each with key and value) for the Machine's VM to associate with. All the category key and value pairs specified must already exist in the prism central.
+     */
     @JsonProperty("categories")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NutanixCategory> getCategories() {
         return categories;
     }
 
+    /**
+     * Categories optionally adds one or more prism categories (each with key and value) for the Machine's VM to associate with. All the category key and value pairs specified must already exist in the prism central.
+     */
     @JsonProperty("categories")
     public void setCategories(List<NutanixCategory> categories) {
         this.categories = categories;
     }
 
+    /**
+     * NumCoresPerSocket is the number of cores per socket in a vm. The number of vCPUs on the vm will be NumCPUs times NumCoresPerSocket. For example: 4 CPUs and 4 Cores per socket will result in 16 VPUs. The AHV scheduler treats socket and core allocation exactly the same so there is no benefit to configuring cores over CPUs.
+     */
     @JsonProperty("coresPerSocket")
     public Long getCoresPerSocket() {
         return coresPerSocket;
     }
 
+    /**
+     * NumCoresPerSocket is the number of cores per socket in a vm. The number of vCPUs on the vm will be NumCPUs times NumCoresPerSocket. For example: 4 CPUs and 4 Cores per socket will result in 16 VPUs. The AHV scheduler treats socket and core allocation exactly the same so there is no benefit to configuring cores over CPUs.
+     */
     @JsonProperty("coresPerSocket")
     public void setCoresPerSocket(Long coresPerSocket) {
         this.coresPerSocket = coresPerSocket;
     }
 
+    /**
+     * NumCPUs is the total number of virtual processor cores to assign a vm.
+     */
     @JsonProperty("cpus")
     public Long getCpus() {
         return cpus;
     }
 
+    /**
+     * NumCPUs is the total number of virtual processor cores to assign a vm.
+     */
     @JsonProperty("cpus")
     public void setCpus(Long cpus) {
         this.cpus = cpus;
     }
 
+    /**
+     * DataDisks holds information of the data disks to attach to the Machine's VM
+     */
     @JsonProperty("dataDisks")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<DataDisk> getDataDisks() {
         return dataDisks;
     }
 
+    /**
+     * DataDisks holds information of the data disks to attach to the Machine's VM
+     */
     @JsonProperty("dataDisks")
     public void setDataDisks(List<DataDisk> dataDisks) {
         this.dataDisks = dataDisks;
     }
 
+    /**
+     * FailureDomains optionally configures a list of failure domain names that will be applied to the MachinePool
+     */
     @JsonProperty("failureDomains")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getFailureDomains() {
         return failureDomains;
     }
 
+    /**
+     * FailureDomains optionally configures a list of failure domain names that will be applied to the MachinePool
+     */
     @JsonProperty("failureDomains")
     public void setFailureDomains(List<String> failureDomains) {
         this.failureDomains = failureDomains;
     }
 
+    /**
+     * GPUs is a list of GPU devices to attach to the machine's VM.
+     */
     @JsonProperty("gpus")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NutanixGPU> getGpus() {
         return gpus;
     }
 
+    /**
+     * GPUs is a list of GPU devices to attach to the machine's VM.
+     */
     @JsonProperty("gpus")
     public void setGpus(List<NutanixGPU> gpus) {
         this.gpus = gpus;
     }
 
+    /**
+     * Memory is the size of a VM's memory in MiB.
+     */
     @JsonProperty("memoryMiB")
     public Long getMemoryMiB() {
         return memoryMiB;
     }
 
+    /**
+     * Memory is the size of a VM's memory in MiB.
+     */
     @JsonProperty("memoryMiB")
     public void setMemoryMiB(Long memoryMiB) {
         this.memoryMiB = memoryMiB;
     }
 
+    /**
+     * MachinePool stores the configuration for a machine pool installed on Nutanix.
+     */
     @JsonProperty("osDisk")
     public OSDisk getOsDisk() {
         return osDisk;
     }
 
+    /**
+     * MachinePool stores the configuration for a machine pool installed on Nutanix.
+     */
     @JsonProperty("osDisk")
     public void setOsDisk(OSDisk osDisk) {
         this.osDisk = osDisk;
     }
 
+    /**
+     * MachinePool stores the configuration for a machine pool installed on Nutanix.
+     */
     @JsonProperty("project")
     public NutanixResourceIdentifier getProject() {
         return project;
     }
 
+    /**
+     * MachinePool stores the configuration for a machine pool installed on Nutanix.
+     */
     @JsonProperty("project")
     public void setProject(NutanixResourceIdentifier project) {
         this.project = project;

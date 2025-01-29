@@ -102,71 +102,113 @@ public class KafkaFloodSpec implements Editable<KafkaFloodSpecBuilder>, Kubernet
         this.username = username;
     }
 
+    /**
+     * The host of kafka server
+     */
     @JsonProperty("host")
     public String getHost() {
         return host;
     }
 
+    /**
+     * The host of kafka server
+     */
     @JsonProperty("host")
     public void setHost(String host) {
         this.host = host;
     }
 
+    /**
+     * The size of each message
+     */
     @JsonProperty("messageSize")
     public Integer getMessageSize() {
         return messageSize;
     }
 
+    /**
+     * The size of each message
+     */
     @JsonProperty("messageSize")
     public void setMessageSize(Integer messageSize) {
         this.messageSize = messageSize;
     }
 
+    /**
+     * The password of kafka client
+     */
     @JsonProperty("password")
     public String getPassword() {
         return password;
     }
 
+    /**
+     * The password of kafka client
+     */
     @JsonProperty("password")
     public void setPassword(String password) {
         this.password = password;
     }
 
+    /**
+     * The port of kafka server
+     */
     @JsonProperty("port")
     public Integer getPort() {
         return port;
     }
 
+    /**
+     * The port of kafka server
+     */
     @JsonProperty("port")
     public void setPort(Integer port) {
         this.port = port;
     }
 
+    /**
+     * The number of worker threads
+     */
     @JsonProperty("threads")
     public Integer getThreads() {
         return threads;
     }
 
+    /**
+     * The number of worker threads
+     */
     @JsonProperty("threads")
     public void setThreads(Integer threads) {
         this.threads = threads;
     }
 
+    /**
+     * The topic to attack
+     */
     @JsonProperty("topic")
     public String getTopic() {
         return topic;
     }
 
+    /**
+     * The topic to attack
+     */
     @JsonProperty("topic")
     public void setTopic(String topic) {
         this.topic = topic;
     }
 
+    /**
+     * The username of kafka client
+     */
     @JsonProperty("username")
     public String getUsername() {
         return username;
     }
 
+    /**
+     * The username of kafka client
+     */
     @JsonProperty("username")
     public void setUsername(String username) {
         this.username = username;

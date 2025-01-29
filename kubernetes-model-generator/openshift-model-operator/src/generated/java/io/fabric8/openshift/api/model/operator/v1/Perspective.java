@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Perspective defines a perspective that cluster admins want to show/hide in the perspective switcher dropdown
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -89,32 +92,50 @@ public class Perspective implements Editable<PerspectiveBuilder>, KubernetesReso
         this.visibility = visibility;
     }
 
+    /**
+     * id defines the id of the perspective. Example: "dev", "admin". The available perspective ids can be found in the code snippet section next to the yaml editor. Incorrect or unknown ids will be ignored.
+     */
     @JsonProperty("id")
     public String getId() {
         return id;
     }
 
+    /**
+     * id defines the id of the perspective. Example: "dev", "admin". The available perspective ids can be found in the code snippet section next to the yaml editor. Incorrect or unknown ids will be ignored.
+     */
     @JsonProperty("id")
     public void setId(String id) {
         this.id = id;
     }
 
+    /**
+     * pinnedResources defines the list of default pinned resources that users will see on the perspective navigation if they have not customized these pinned resources themselves. The list of available Kubernetes resources could be read via `kubectl api-resources`. The console will also provide a configuration UI and a YAML snippet that will list the available resources that can be pinned to the navigation. Incorrect or unknown resources will be ignored.
+     */
     @JsonProperty("pinnedResources")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PinnedResourceReference> getPinnedResources() {
         return pinnedResources;
     }
 
+    /**
+     * pinnedResources defines the list of default pinned resources that users will see on the perspective navigation if they have not customized these pinned resources themselves. The list of available Kubernetes resources could be read via `kubectl api-resources`. The console will also provide a configuration UI and a YAML snippet that will list the available resources that can be pinned to the navigation. Incorrect or unknown resources will be ignored.
+     */
     @JsonProperty("pinnedResources")
     public void setPinnedResources(List<PinnedResourceReference> pinnedResources) {
         this.pinnedResources = pinnedResources;
     }
 
+    /**
+     * Perspective defines a perspective that cluster admins want to show/hide in the perspective switcher dropdown
+     */
     @JsonProperty("visibility")
     public PerspectiveVisibility getVisibility() {
         return visibility;
     }
 
+    /**
+     * Perspective defines a perspective that cluster admins want to show/hide in the perspective switcher dropdown
+     */
     @JsonProperty("visibility")
     public void setVisibility(PerspectiveVisibility visibility) {
         this.visibility = visibility;

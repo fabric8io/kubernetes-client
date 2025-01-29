@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DeviceCapacity describes a quantity associated with a device.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -79,11 +82,17 @@ public class DeviceCapacity implements Editable<DeviceCapacityBuilder>, Kubernet
         this.value = value;
     }
 
+    /**
+     * DeviceCapacity describes a quantity associated with a device.
+     */
     @JsonProperty("value")
     public Quantity getValue() {
         return value;
     }
 
+    /**
+     * DeviceCapacity describes a quantity associated with a device.
+     */
     @JsonProperty("value")
     public void setValue(Quantity value) {
         this.value = value;

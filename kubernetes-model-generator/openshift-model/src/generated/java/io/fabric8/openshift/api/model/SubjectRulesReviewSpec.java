@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SubjectRulesReviewSpec adds information about how to conduct the check
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,33 +93,51 @@ public class SubjectRulesReviewSpec implements Editable<SubjectRulesReviewSpecBu
         this.user = user;
     }
 
+    /**
+     * Groups is optional.  Groups is the list of groups to which the User belongs.  At least one of User and Groups must be specified.
+     */
     @JsonProperty("groups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getGroups() {
         return groups;
     }
 
+    /**
+     * Groups is optional.  Groups is the list of groups to which the User belongs.  At least one of User and Groups must be specified.
+     */
     @JsonProperty("groups")
     public void setGroups(List<String> groups) {
         this.groups = groups;
     }
 
+    /**
+     * Scopes to use for the evaluation.  Empty means "use the unscoped (full) permissions of the user/groups".
+     */
     @JsonProperty("scopes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getScopes() {
         return scopes;
     }
 
+    /**
+     * Scopes to use for the evaluation.  Empty means "use the unscoped (full) permissions of the user/groups".
+     */
     @JsonProperty("scopes")
     public void setScopes(List<String> scopes) {
         this.scopes = scopes;
     }
 
+    /**
+     * User is optional.  At least one of User and Groups must be specified.
+     */
     @JsonProperty("user")
     public String getUser() {
         return user;
     }
 
+    /**
+     * User is optional.  At least one of User and Groups must be specified.
+     */
     @JsonProperty("user")
     public void setUser(String user) {
         this.user = user;

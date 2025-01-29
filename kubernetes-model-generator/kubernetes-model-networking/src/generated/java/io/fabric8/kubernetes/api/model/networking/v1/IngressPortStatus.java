@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * IngressPortStatus represents the error condition of a service port
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class IngressPortStatus implements Editable<IngressPortStatusBuilder>, Ku
         this.protocol = protocol;
     }
 
+    /**
+     * error is to record the problem with the service port The format of the error shall comply with the following rules: - built-in error values shall be specified in this file and those shall use<br><p>   CamelCase names<br><p> - cloud provider specific error values must have names that comply with the<br><p>   format foo.example.com/CamelCase.
+     */
     @JsonProperty("error")
     public String getError() {
         return error;
     }
 
+    /**
+     * error is to record the problem with the service port The format of the error shall comply with the following rules: - built-in error values shall be specified in this file and those shall use<br><p>   CamelCase names<br><p> - cloud provider specific error values must have names that comply with the<br><p>   format foo.example.com/CamelCase.
+     */
     @JsonProperty("error")
     public void setError(String error) {
         this.error = error;
     }
 
+    /**
+     * port is the port number of the ingress port.
+     */
     @JsonProperty("port")
     public Integer getPort() {
         return port;
     }
 
+    /**
+     * port is the port number of the ingress port.
+     */
     @JsonProperty("port")
     public void setPort(Integer port) {
         this.port = port;
     }
 
+    /**
+     * protocol is the protocol of the ingress port. The supported values are: "TCP", "UDP", "SCTP"
+     */
     @JsonProperty("protocol")
     public String getProtocol() {
         return protocol;
     }
 
+    /**
+     * protocol is the protocol of the ingress port. The supported values are: "TCP", "UDP", "SCTP"
+     */
     @JsonProperty("protocol")
     public void setProtocol(String protocol) {
         this.protocol = protocol;

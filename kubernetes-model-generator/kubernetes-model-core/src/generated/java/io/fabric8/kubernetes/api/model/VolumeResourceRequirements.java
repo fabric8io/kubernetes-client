@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * VolumeResourceRequirements describes the storage resource requirements for a volume.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -55,23 +58,35 @@ public class VolumeResourceRequirements implements Editable<VolumeResourceRequir
         this.requests = requests;
     }
 
+    /**
+     * Limits describes the maximum amount of compute resources allowed. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+     */
     @JsonProperty("limits")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Quantity> getLimits() {
         return limits;
     }
 
+    /**
+     * Limits describes the maximum amount of compute resources allowed. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+     */
     @JsonProperty("limits")
     public void setLimits(Map<String, Quantity> limits) {
         this.limits = limits;
     }
 
+    /**
+     * Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. Requests cannot exceed Limits. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+     */
     @JsonProperty("requests")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Quantity> getRequests() {
         return requests;
     }
 
+    /**
+     * Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. Requests cannot exceed Limits. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+     */
     @JsonProperty("requests")
     public void setRequests(Map<String, Quantity> requests) {
         this.requests = requests;

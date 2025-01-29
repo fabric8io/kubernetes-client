@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * KlusterletAddonConfigSpec defines the desired state of KlusterletAddonConfig
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -115,102 +118,162 @@ public class KlusterletAddonConfigSpec implements Editable<KlusterletAddonConfig
         this.version = version;
     }
 
+    /**
+     * KlusterletAddonConfigSpec defines the desired state of KlusterletAddonConfig
+     */
     @JsonProperty("applicationManager")
     public KlusterletAddonAgentConfigSpec getApplicationManager() {
         return applicationManager;
     }
 
+    /**
+     * KlusterletAddonConfigSpec defines the desired state of KlusterletAddonConfig
+     */
     @JsonProperty("applicationManager")
     public void setApplicationManager(KlusterletAddonAgentConfigSpec applicationManager) {
         this.applicationManager = applicationManager;
     }
 
+    /**
+     * KlusterletAddonConfigSpec defines the desired state of KlusterletAddonConfig
+     */
     @JsonProperty("certPolicyController")
     public KlusterletAddonAgentConfigSpec getCertPolicyController() {
         return certPolicyController;
     }
 
+    /**
+     * KlusterletAddonConfigSpec defines the desired state of KlusterletAddonConfig
+     */
     @JsonProperty("certPolicyController")
     public void setCertPolicyController(KlusterletAddonAgentConfigSpec certPolicyController) {
         this.certPolicyController = certPolicyController;
     }
 
+    /**
+     * DEPRECATED in release 2.4 and will be removed in the future since not used anymore.
+     */
     @JsonProperty("clusterLabels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getClusterLabels() {
         return clusterLabels;
     }
 
+    /**
+     * DEPRECATED in release 2.4 and will be removed in the future since not used anymore.
+     */
     @JsonProperty("clusterLabels")
     public void setClusterLabels(Map<String, String> clusterLabels) {
         this.clusterLabels = clusterLabels;
     }
 
+    /**
+     * DEPRECATED in release 2.4 and will be removed in the future since not used anymore.
+     */
     @JsonProperty("clusterName")
     public String getClusterName() {
         return clusterName;
     }
 
+    /**
+     * DEPRECATED in release 2.4 and will be removed in the future since not used anymore.
+     */
     @JsonProperty("clusterName")
     public void setClusterName(String clusterName) {
         this.clusterName = clusterName;
     }
 
+    /**
+     * DEPRECATED in release 2.4 and will be removed in the future since not used anymore.
+     */
     @JsonProperty("clusterNamespace")
     public String getClusterNamespace() {
         return clusterNamespace;
     }
 
+    /**
+     * DEPRECATED in release 2.4 and will be removed in the future since not used anymore.
+     */
     @JsonProperty("clusterNamespace")
     public void setClusterNamespace(String clusterNamespace) {
         this.clusterNamespace = clusterNamespace;
     }
 
+    /**
+     * KlusterletAddonConfigSpec defines the desired state of KlusterletAddonConfig
+     */
     @JsonProperty("iamPolicyController")
     public KlusterletAddonAgentConfigSpec getIamPolicyController() {
         return iamPolicyController;
     }
 
+    /**
+     * KlusterletAddonConfigSpec defines the desired state of KlusterletAddonConfig
+     */
     @JsonProperty("iamPolicyController")
     public void setIamPolicyController(KlusterletAddonAgentConfigSpec iamPolicyController) {
         this.iamPolicyController = iamPolicyController;
     }
 
+    /**
+     * KlusterletAddonConfigSpec defines the desired state of KlusterletAddonConfig
+     */
     @JsonProperty("policyController")
     public KlusterletAddonAgentConfigSpec getPolicyController() {
         return policyController;
     }
 
+    /**
+     * KlusterletAddonConfigSpec defines the desired state of KlusterletAddonConfig
+     */
     @JsonProperty("policyController")
     public void setPolicyController(KlusterletAddonAgentConfigSpec policyController) {
         this.policyController = policyController;
     }
 
+    /**
+     * KlusterletAddonConfigSpec defines the desired state of KlusterletAddonConfig
+     */
     @JsonProperty("proxyConfig")
     public ProxyConfig getProxyConfig() {
         return proxyConfig;
     }
 
+    /**
+     * KlusterletAddonConfigSpec defines the desired state of KlusterletAddonConfig
+     */
     @JsonProperty("proxyConfig")
     public void setProxyConfig(ProxyConfig proxyConfig) {
         this.proxyConfig = proxyConfig;
     }
 
+    /**
+     * KlusterletAddonConfigSpec defines the desired state of KlusterletAddonConfig
+     */
     @JsonProperty("searchCollector")
     public KlusterletAddonAgentConfigSpec getSearchCollector() {
         return searchCollector;
     }
 
+    /**
+     * KlusterletAddonConfigSpec defines the desired state of KlusterletAddonConfig
+     */
     @JsonProperty("searchCollector")
     public void setSearchCollector(KlusterletAddonAgentConfigSpec searchCollector) {
         this.searchCollector = searchCollector;
     }
 
+    /**
+     * DEPRECATED in release 2.4 and will be removed in the future since not used anymore.
+     */
     @JsonProperty("version")
     public String getVersion() {
         return version;
     }
 
+    /**
+     * DEPRECATED in release 2.4 and will be removed in the future since not used anymore.
+     */
     @JsonProperty("version")
     public void setVersion(String version) {
         this.version = version;

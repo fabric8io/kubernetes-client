@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NetworkStatus is for network status annotation for pod
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -114,93 +117,147 @@ public class NetworkStatus implements Editable<NetworkStatusBuilder>, Kubernetes
         this.name = name;
     }
 
+    /**
+     * NetworkStatus is for network status annotation for pod
+     */
     @JsonProperty("default")
     public Boolean getDefault() {
         return _default;
     }
 
+    /**
+     * NetworkStatus is for network status annotation for pod
+     */
     @JsonProperty("default")
     public void setDefault(Boolean _default) {
         this._default = _default;
     }
 
+    /**
+     * NetworkStatus is for network status annotation for pod
+     */
     @JsonProperty("device-info")
     public DeviceInfo getDeviceInfo() {
         return deviceInfo;
     }
 
+    /**
+     * NetworkStatus is for network status annotation for pod
+     */
     @JsonProperty("device-info")
     public void setDeviceInfo(DeviceInfo deviceInfo) {
         this.deviceInfo = deviceInfo;
     }
 
+    /**
+     * NetworkStatus is for network status annotation for pod
+     */
     @JsonProperty("dns")
     public DNS getDns() {
         return dns;
     }
 
+    /**
+     * NetworkStatus is for network status annotation for pod
+     */
     @JsonProperty("dns")
     public void setDns(DNS dns) {
         this.dns = dns;
     }
 
+    /**
+     * NetworkStatus is for network status annotation for pod
+     */
     @JsonProperty("gateway")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getGateway() {
         return gateway;
     }
 
+    /**
+     * NetworkStatus is for network status annotation for pod
+     */
     @JsonProperty("gateway")
     public void setGateway(List<String> gateway) {
         this.gateway = gateway;
     }
 
+    /**
+     * NetworkStatus is for network status annotation for pod
+     */
     @JsonProperty("interface")
     public String getInterface() {
         return _interface;
     }
 
+    /**
+     * NetworkStatus is for network status annotation for pod
+     */
     @JsonProperty("interface")
     public void setInterface(String _interface) {
         this._interface = _interface;
     }
 
+    /**
+     * NetworkStatus is for network status annotation for pod
+     */
     @JsonProperty("ips")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getIps() {
         return ips;
     }
 
+    /**
+     * NetworkStatus is for network status annotation for pod
+     */
     @JsonProperty("ips")
     public void setIps(List<String> ips) {
         this.ips = ips;
     }
 
+    /**
+     * NetworkStatus is for network status annotation for pod
+     */
     @JsonProperty("mac")
     public String getMac() {
         return mac;
     }
 
+    /**
+     * NetworkStatus is for network status annotation for pod
+     */
     @JsonProperty("mac")
     public void setMac(String mac) {
         this.mac = mac;
     }
 
+    /**
+     * NetworkStatus is for network status annotation for pod
+     */
     @JsonProperty("mtu")
     public Integer getMtu() {
         return mtu;
     }
 
+    /**
+     * NetworkStatus is for network status annotation for pod
+     */
     @JsonProperty("mtu")
     public void setMtu(Integer mtu) {
         this.mtu = mtu;
     }
 
+    /**
+     * NetworkStatus is for network status annotation for pod
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * NetworkStatus is for network status annotation for pod
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

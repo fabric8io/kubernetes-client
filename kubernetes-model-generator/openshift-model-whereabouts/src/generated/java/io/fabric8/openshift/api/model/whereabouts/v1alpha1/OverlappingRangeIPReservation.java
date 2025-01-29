@@ -37,6 +37,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * OverlappingRangeIPReservation is the Schema for the OverlappingRangeIPReservations API
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -75,14 +78,8 @@ import lombok.experimental.Accessors;
 public class OverlappingRangeIPReservation implements Editable<OverlappingRangeIPReservationBuilder>, HasMetadata, Namespaced
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "whereabouts.cni.cncf.io/v1alpha1";
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "OverlappingRangeIPReservation";
     @JsonProperty("metadata")
@@ -107,7 +104,7 @@ public class OverlappingRangeIPReservation implements Editable<OverlappingRangeI
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object.<br><p> Servers should convert recognized schemas to the latest internal value, and<br><p> may reject unrecognized values.<br><p> More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -115,7 +112,7 @@ public class OverlappingRangeIPReservation implements Editable<OverlappingRangeI
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object.<br><p> Servers should convert recognized schemas to the latest internal value, and<br><p> may reject unrecognized values.<br><p> More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -123,7 +120,7 @@ public class OverlappingRangeIPReservation implements Editable<OverlappingRangeI
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents.<br><p> Servers may infer this from the endpoint the client submits requests to.<br><p> Cannot be updated.<br><p> In CamelCase.<br><p> More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -131,28 +128,40 @@ public class OverlappingRangeIPReservation implements Editable<OverlappingRangeI
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents.<br><p> Servers may infer this from the endpoint the client submits requests to.<br><p> Cannot be updated.<br><p> In CamelCase.<br><p> More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * OverlappingRangeIPReservation is the Schema for the OverlappingRangeIPReservations API
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * OverlappingRangeIPReservation is the Schema for the OverlappingRangeIPReservations API
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * OverlappingRangeIPReservation is the Schema for the OverlappingRangeIPReservations API
+     */
     @JsonProperty("spec")
     public OverlappingRangeIPReservationSpec getSpec() {
         return spec;
     }
 
+    /**
+     * OverlappingRangeIPReservation is the Schema for the OverlappingRangeIPReservations API
+     */
     @JsonProperty("spec")
     public void setSpec(OverlappingRangeIPReservationSpec spec) {
         this.spec = spec;

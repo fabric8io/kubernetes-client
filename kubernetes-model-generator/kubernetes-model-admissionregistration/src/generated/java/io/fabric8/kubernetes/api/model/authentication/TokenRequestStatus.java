@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * TokenRequestStatus is the result of a token request.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class TokenRequestStatus implements Editable<TokenRequestStatusBuilder>, 
         this.token = token;
     }
 
+    /**
+     * TokenRequestStatus is the result of a token request.
+     */
     @JsonProperty("expirationTimestamp")
     public String getExpirationTimestamp() {
         return expirationTimestamp;
     }
 
+    /**
+     * TokenRequestStatus is the result of a token request.
+     */
     @JsonProperty("expirationTimestamp")
     public void setExpirationTimestamp(String expirationTimestamp) {
         this.expirationTimestamp = expirationTimestamp;
     }
 
+    /**
+     * Token is the opaque bearer token.
+     */
     @JsonProperty("token")
     public String getToken() {
         return token;
     }
 
+    /**
+     * Token is the opaque bearer token.
+     */
     @JsonProperty("token")
     public void setToken(String token) {
         this.token = token;

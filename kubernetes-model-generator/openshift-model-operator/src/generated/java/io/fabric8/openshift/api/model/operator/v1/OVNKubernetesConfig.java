@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ovnKubernetesConfig contains the configuration parameters for networks using the ovn-kubernetes network project
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -122,121 +125,193 @@ public class OVNKubernetesConfig implements Editable<OVNKubernetesConfigBuilder>
         this.v6InternalSubnet = v6InternalSubnet;
     }
 
+    /**
+     * ovnKubernetesConfig contains the configuration parameters for networks using the ovn-kubernetes network project
+     */
     @JsonProperty("egressIPConfig")
     public EgressIPConfig getEgressIPConfig() {
         return egressIPConfig;
     }
 
+    /**
+     * ovnKubernetesConfig contains the configuration parameters for networks using the ovn-kubernetes network project
+     */
     @JsonProperty("egressIPConfig")
     public void setEgressIPConfig(EgressIPConfig egressIPConfig) {
         this.egressIPConfig = egressIPConfig;
     }
 
+    /**
+     * ovnKubernetesConfig contains the configuration parameters for networks using the ovn-kubernetes network project
+     */
     @JsonProperty("gatewayConfig")
     public GatewayConfig getGatewayConfig() {
         return gatewayConfig;
     }
 
+    /**
+     * ovnKubernetesConfig contains the configuration parameters for networks using the ovn-kubernetes network project
+     */
     @JsonProperty("gatewayConfig")
     public void setGatewayConfig(GatewayConfig gatewayConfig) {
         this.gatewayConfig = gatewayConfig;
     }
 
+    /**
+     * geneve port is the UDP port to be used by geneve encapulation. Default is 6081
+     */
     @JsonProperty("genevePort")
     public Long getGenevePort() {
         return genevePort;
     }
 
+    /**
+     * geneve port is the UDP port to be used by geneve encapulation. Default is 6081
+     */
     @JsonProperty("genevePort")
     public void setGenevePort(Long genevePort) {
         this.genevePort = genevePort;
     }
 
+    /**
+     * ovnKubernetesConfig contains the configuration parameters for networks using the ovn-kubernetes network project
+     */
     @JsonProperty("hybridOverlayConfig")
     public HybridOverlayConfig getHybridOverlayConfig() {
         return hybridOverlayConfig;
     }
 
+    /**
+     * ovnKubernetesConfig contains the configuration parameters for networks using the ovn-kubernetes network project
+     */
     @JsonProperty("hybridOverlayConfig")
     public void setHybridOverlayConfig(HybridOverlayConfig hybridOverlayConfig) {
         this.hybridOverlayConfig = hybridOverlayConfig;
     }
 
+    /**
+     * ovnKubernetesConfig contains the configuration parameters for networks using the ovn-kubernetes network project
+     */
     @JsonProperty("ipsecConfig")
     public IPsecConfig getIpsecConfig() {
         return ipsecConfig;
     }
 
+    /**
+     * ovnKubernetesConfig contains the configuration parameters for networks using the ovn-kubernetes network project
+     */
     @JsonProperty("ipsecConfig")
     public void setIpsecConfig(IPsecConfig ipsecConfig) {
         this.ipsecConfig = ipsecConfig;
     }
 
+    /**
+     * ovnKubernetesConfig contains the configuration parameters for networks using the ovn-kubernetes network project
+     */
     @JsonProperty("ipv4")
     public IPv4OVNKubernetesConfig getIpv4() {
         return ipv4;
     }
 
+    /**
+     * ovnKubernetesConfig contains the configuration parameters for networks using the ovn-kubernetes network project
+     */
     @JsonProperty("ipv4")
     public void setIpv4(IPv4OVNKubernetesConfig ipv4) {
         this.ipv4 = ipv4;
     }
 
+    /**
+     * ovnKubernetesConfig contains the configuration parameters for networks using the ovn-kubernetes network project
+     */
     @JsonProperty("ipv6")
     public IPv6OVNKubernetesConfig getIpv6() {
         return ipv6;
     }
 
+    /**
+     * ovnKubernetesConfig contains the configuration parameters for networks using the ovn-kubernetes network project
+     */
     @JsonProperty("ipv6")
     public void setIpv6(IPv6OVNKubernetesConfig ipv6) {
         this.ipv6 = ipv6;
     }
 
+    /**
+     * mtu is the MTU to use for the tunnel interface. This must be 100 bytes smaller than the uplink mtu. Default is 1400
+     */
     @JsonProperty("mtu")
     public Long getMtu() {
         return mtu;
     }
 
+    /**
+     * mtu is the MTU to use for the tunnel interface. This must be 100 bytes smaller than the uplink mtu. Default is 1400
+     */
     @JsonProperty("mtu")
     public void setMtu(Long mtu) {
         this.mtu = mtu;
     }
 
+    /**
+     * ovnKubernetesConfig contains the configuration parameters for networks using the ovn-kubernetes network project
+     */
     @JsonProperty("policyAuditConfig")
     public PolicyAuditConfig getPolicyAuditConfig() {
         return policyAuditConfig;
     }
 
+    /**
+     * ovnKubernetesConfig contains the configuration parameters for networks using the ovn-kubernetes network project
+     */
     @JsonProperty("policyAuditConfig")
     public void setPolicyAuditConfig(PolicyAuditConfig policyAuditConfig) {
         this.policyAuditConfig = policyAuditConfig;
     }
 
+    /**
+     * routeAdvertisements determines if the functionality to advertise cluster network routes through a dynamic routing protocol, such as BGP, is enabled or not. This functionality is configured through the ovn-kubernetes RouteAdvertisements CRD. Requires the 'FRR' routing capability provider to be enabled as an additional routing capability. Allowed values are "Enabled", "Disabled" and ommited. When omitted, this means the user has no opinion and the platform is left to choose reasonable defaults. These defaults are subject to change over time. The current default is "Disabled".
+     */
     @JsonProperty("routeAdvertisements")
     public String getRouteAdvertisements() {
         return routeAdvertisements;
     }
 
+    /**
+     * routeAdvertisements determines if the functionality to advertise cluster network routes through a dynamic routing protocol, such as BGP, is enabled or not. This functionality is configured through the ovn-kubernetes RouteAdvertisements CRD. Requires the 'FRR' routing capability provider to be enabled as an additional routing capability. Allowed values are "Enabled", "Disabled" and ommited. When omitted, this means the user has no opinion and the platform is left to choose reasonable defaults. These defaults are subject to change over time. The current default is "Disabled".
+     */
     @JsonProperty("routeAdvertisements")
     public void setRouteAdvertisements(String routeAdvertisements) {
         this.routeAdvertisements = routeAdvertisements;
     }
 
+    /**
+     * v4InternalSubnet is a v4 subnet used internally by ovn-kubernetes in case the default one is being already used by something else. It must not overlap with any other subnet being used by OpenShift or by the node network. The size of the subnet must be larger than the number of nodes. The value cannot be changed after installation. Default is 100.64.0.0/16
+     */
     @JsonProperty("v4InternalSubnet")
     public String getV4InternalSubnet() {
         return v4InternalSubnet;
     }
 
+    /**
+     * v4InternalSubnet is a v4 subnet used internally by ovn-kubernetes in case the default one is being already used by something else. It must not overlap with any other subnet being used by OpenShift or by the node network. The size of the subnet must be larger than the number of nodes. The value cannot be changed after installation. Default is 100.64.0.0/16
+     */
     @JsonProperty("v4InternalSubnet")
     public void setV4InternalSubnet(String v4InternalSubnet) {
         this.v4InternalSubnet = v4InternalSubnet;
     }
 
+    /**
+     * v6InternalSubnet is a v6 subnet used internally by ovn-kubernetes in case the default one is being already used by something else. It must not overlap with any other subnet being used by OpenShift or by the node network. The size of the subnet must be larger than the number of nodes. The value cannot be changed after installation. Default is fd98::/48
+     */
     @JsonProperty("v6InternalSubnet")
     public String getV6InternalSubnet() {
         return v6InternalSubnet;
     }
 
+    /**
+     * v6InternalSubnet is a v6 subnet used internally by ovn-kubernetes in case the default one is being already used by something else. It must not overlap with any other subnet being used by OpenShift or by the node network. The size of the subnet must be larger than the number of nodes. The value cannot be changed after installation. Default is fd98::/48
+     */
     @JsonProperty("v6InternalSubnet")
     public void setV6InternalSubnet(String v6InternalSubnet) {
         this.v6InternalSubnet = v6InternalSubnet;

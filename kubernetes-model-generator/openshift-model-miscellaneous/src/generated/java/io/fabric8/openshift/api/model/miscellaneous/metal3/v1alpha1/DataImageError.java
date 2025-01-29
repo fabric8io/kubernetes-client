@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Contains the count of errors and the last error message.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class DataImageError implements Editable<DataImageErrorBuilder>, Kubernet
         this.message = message;
     }
 
+    /**
+     * Contains the count of errors and the last error message.
+     */
     @JsonProperty("count")
     public Integer getCount() {
         return count;
     }
 
+    /**
+     * Contains the count of errors and the last error message.
+     */
     @JsonProperty("count")
     public void setCount(Integer count) {
         this.count = count;
     }
 
+    /**
+     * Contains the count of errors and the last error message.
+     */
     @JsonProperty("message")
     public String getMessage() {
         return message;
     }
 
+    /**
+     * Contains the count of errors and the last error message.
+     */
     @JsonProperty("message")
     public void setMessage(String message) {
         this.message = message;

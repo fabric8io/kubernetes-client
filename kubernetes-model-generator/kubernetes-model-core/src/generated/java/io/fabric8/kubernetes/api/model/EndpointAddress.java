@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * EndpointAddress is a tuple that describes single IP address.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -61,41 +64,65 @@ public class EndpointAddress implements Editable<EndpointAddressBuilder>, Kubern
         this.targetRef = targetRef;
     }
 
+    /**
+     * The Hostname of this endpoint
+     */
     @JsonProperty("hostname")
     public String getHostname() {
         return hostname;
     }
 
+    /**
+     * The Hostname of this endpoint
+     */
     @JsonProperty("hostname")
     public void setHostname(String hostname) {
         this.hostname = hostname;
     }
 
+    /**
+     * The IP of this endpoint. May not be loopback (127.0.0.0/8 or ::1), link-local (169.254.0.0/16 or fe80::/10), or link-local multicast (224.0.0.0/24 or ff02::/16).
+     */
     @JsonProperty("ip")
     public String getIp() {
         return ip;
     }
 
+    /**
+     * The IP of this endpoint. May not be loopback (127.0.0.0/8 or ::1), link-local (169.254.0.0/16 or fe80::/10), or link-local multicast (224.0.0.0/24 or ff02::/16).
+     */
     @JsonProperty("ip")
     public void setIp(String ip) {
         this.ip = ip;
     }
 
+    /**
+     * Optional: Node hosting this endpoint. This can be used to determine endpoints local to a node.
+     */
     @JsonProperty("nodeName")
     public String getNodeName() {
         return nodeName;
     }
 
+    /**
+     * Optional: Node hosting this endpoint. This can be used to determine endpoints local to a node.
+     */
     @JsonProperty("nodeName")
     public void setNodeName(String nodeName) {
         this.nodeName = nodeName;
     }
 
+    /**
+     * EndpointAddress is a tuple that describes single IP address.
+     */
     @JsonProperty("targetRef")
     public ObjectReference getTargetRef() {
         return targetRef;
     }
 
+    /**
+     * EndpointAddress is a tuple that describes single IP address.
+     */
     @JsonProperty("targetRef")
     public void setTargetRef(ObjectReference targetRef) {
         this.targetRef = targetRef;

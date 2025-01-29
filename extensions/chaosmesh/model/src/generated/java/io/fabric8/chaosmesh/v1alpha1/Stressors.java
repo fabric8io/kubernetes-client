@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Stressors defines plenty of stressors supported to stress system components out. You can use one or more of them to make up various kinds of stresses
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class Stressors implements Editable<StressorsBuilder>, KubernetesResource
         this.memory = memory;
     }
 
+    /**
+     * Stressors defines plenty of stressors supported to stress system components out. You can use one or more of them to make up various kinds of stresses
+     */
     @JsonProperty("cpu")
     public CPUStressor getCpu() {
         return cpu;
     }
 
+    /**
+     * Stressors defines plenty of stressors supported to stress system components out. You can use one or more of them to make up various kinds of stresses
+     */
     @JsonProperty("cpu")
     public void setCpu(CPUStressor cpu) {
         this.cpu = cpu;
     }
 
+    /**
+     * Stressors defines plenty of stressors supported to stress system components out. You can use one or more of them to make up various kinds of stresses
+     */
     @JsonProperty("memory")
     public MemoryStressor getMemory() {
         return memory;
     }
 
+    /**
+     * Stressors defines plenty of stressors supported to stress system components out. You can use one or more of them to make up various kinds of stresses
+     */
     @JsonProperty("memory")
     public void setMemory(MemoryStressor memory) {
         this.memory = memory;

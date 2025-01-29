@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Conditions specified in RouteConfigurationMatch must be met for the patch to be applied to a route configuration object or a specific virtual host within the route configuration.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,51 +97,81 @@ public class EnvoyFilterRouteConfigurationMatch implements Editable<EnvoyFilterR
         this.vhost = vhost;
     }
 
+    /**
+     * The Istio gateway config's namespace/name for which this route configuration was generated. Applies only if the context is GATEWAY. Should be in the namespace/name format. Use this field in conjunction with the `portNumber` and `portName` to accurately select the Envoy route configuration for a specific HTTPS server within a gateway config object.
+     */
     @JsonProperty("gateway")
     public String getGateway() {
         return gateway;
     }
 
+    /**
+     * The Istio gateway config's namespace/name for which this route configuration was generated. Applies only if the context is GATEWAY. Should be in the namespace/name format. Use this field in conjunction with the `portNumber` and `portName` to accurately select the Envoy route configuration for a specific HTTPS server within a gateway config object.
+     */
     @JsonProperty("gateway")
     public void setGateway(String gateway) {
         this.gateway = gateway;
     }
 
+    /**
+     * Route configuration name to match on. Can be used to match a specific route configuration by name, such as the internally generated `http_proxy` route configuration for all sidecars.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Route configuration name to match on. Can be used to match a specific route configuration by name, such as the internally generated `http_proxy` route configuration for all sidecars.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Applicable only for GATEWAY context. The gateway server port name for which this route configuration was generated.
+     */
     @JsonProperty("portName")
     public String getPortName() {
         return portName;
     }
 
+    /**
+     * Applicable only for GATEWAY context. The gateway server port name for which this route configuration was generated.
+     */
     @JsonProperty("portName")
     public void setPortName(String portName) {
         this.portName = portName;
     }
 
+    /**
+     * The service port number or gateway server port number for which this route configuration was generated. If omitted, applies to route configurations for all ports.
+     */
     @JsonProperty("portNumber")
     public Long getPortNumber() {
         return portNumber;
     }
 
+    /**
+     * The service port number or gateway server port number for which this route configuration was generated. If omitted, applies to route configurations for all ports.
+     */
     @JsonProperty("portNumber")
     public void setPortNumber(Long portNumber) {
         this.portNumber = portNumber;
     }
 
+    /**
+     * Conditions specified in RouteConfigurationMatch must be met for the patch to be applied to a route configuration object or a specific virtual host within the route configuration.
+     */
     @JsonProperty("vhost")
     public EnvoyFilterRouteConfigurationMatchVirtualHostMatch getVhost() {
         return vhost;
     }
 
+    /**
+     * Conditions specified in RouteConfigurationMatch must be met for the patch to be applied to a route configuration object or a specific virtual host within the route configuration.
+     */
     @JsonProperty("vhost")
     public void setVhost(EnvoyFilterRouteConfigurationMatchVirtualHostMatch vhost) {
         this.vhost = vhost;

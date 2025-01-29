@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * FirmwareSchemaSpec defines the desired state of FirmwareSchema.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -87,32 +90,50 @@ public class FirmwareSchemaSpec implements Editable<FirmwareSchemaSpecBuilder>, 
         this.schema = schema;
     }
 
+    /**
+     * The hardware model associated with this schema
+     */
     @JsonProperty("hardwareModel")
     public String getHardwareModel() {
         return hardwareModel;
     }
 
+    /**
+     * The hardware model associated with this schema
+     */
     @JsonProperty("hardwareModel")
     public void setHardwareModel(String hardwareModel) {
         this.hardwareModel = hardwareModel;
     }
 
+    /**
+     * The hardware vendor associated with this schema
+     */
     @JsonProperty("hardwareVendor")
     public String getHardwareVendor() {
         return hardwareVendor;
     }
 
+    /**
+     * The hardware vendor associated with this schema
+     */
     @JsonProperty("hardwareVendor")
     public void setHardwareVendor(String hardwareVendor) {
         this.hardwareVendor = hardwareVendor;
     }
 
+    /**
+     * Map of firmware name to schema
+     */
     @JsonProperty("schema")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, SettingSchema> getSchema() {
         return schema;
     }
 
+    /**
+     * Map of firmware name to schema
+     */
     @JsonProperty("schema")
     public void setSchema(Map<String, SettingSchema> schema) {
         this.schema = schema;

@@ -36,6 +36,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ResourceAccessReview is a means to request a list of which users and groups are authorized to perform the action specified by spec<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,9 +85,6 @@ import lombok.experimental.Accessors;
 public class ResourceAccessReview implements Editable<ResourceAccessReviewBuilder>, HasMetadata
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "authorization.openshift.io/v1";
     @JsonProperty("content")
@@ -92,9 +92,6 @@ public class ResourceAccessReview implements Editable<ResourceAccessReviewBuilde
     private Object content;
     @JsonProperty("isNonResourceURL")
     private Boolean isNonResourceURL;
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "ResourceAccessReview";
     @JsonProperty("metadata")
@@ -139,7 +136,7 @@ public class ResourceAccessReview implements Editable<ResourceAccessReviewBuilde
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -147,36 +144,48 @@ public class ResourceAccessReview implements Editable<ResourceAccessReviewBuilde
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
+    /**
+     * ResourceAccessReview is a means to request a list of which users and groups are authorized to perform the action specified by spec<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("content")
     public Object getContent() {
         return content;
     }
 
+    /**
+     * ResourceAccessReview is a means to request a list of which users and groups are authorized to perform the action specified by spec<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("content")
     @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
     public void setContent(Object content) {
         this.content = content;
     }
 
+    /**
+     * IsNonResourceURL is true if this is a request for a non-resource URL (outside of the resource hierarchy)
+     */
     @JsonProperty("isNonResourceURL")
     public Boolean getIsNonResourceURL() {
         return isNonResourceURL;
     }
 
+    /**
+     * IsNonResourceURL is true if this is a request for a non-resource URL (outside of the resource hierarchy)
+     */
     @JsonProperty("isNonResourceURL")
     public void setIsNonResourceURL(Boolean isNonResourceURL) {
         this.isNonResourceURL = isNonResourceURL;
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -184,88 +193,136 @@ public class ResourceAccessReview implements Editable<ResourceAccessReviewBuilde
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * ResourceAccessReview is a means to request a list of which users and groups are authorized to perform the action specified by spec<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * ResourceAccessReview is a means to request a list of which users and groups are authorized to perform the action specified by spec<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * Namespace is the namespace of the action being requested.  Currently, there is no distinction between no namespace and all namespaces
+     */
     @JsonProperty("namespace")
     public String getNamespace() {
         return namespace;
     }
 
+    /**
+     * Namespace is the namespace of the action being requested.  Currently, there is no distinction between no namespace and all namespaces
+     */
     @JsonProperty("namespace")
     public void setNamespace(String namespace) {
         this.namespace = namespace;
     }
 
+    /**
+     * Path is the path of a non resource URL
+     */
     @JsonProperty("path")
     public String getPath() {
         return path;
     }
 
+    /**
+     * Path is the path of a non resource URL
+     */
     @JsonProperty("path")
     public void setPath(String path) {
         this.path = path;
     }
 
+    /**
+     * Resource is one of the existing resource types
+     */
     @JsonProperty("resource")
     public String getResource() {
         return resource;
     }
 
+    /**
+     * Resource is one of the existing resource types
+     */
     @JsonProperty("resource")
     public void setResource(String resource) {
         this.resource = resource;
     }
 
+    /**
+     * Group is the API group of the resource Serialized as resourceAPIGroup to avoid confusion with the 'groups' field when inlined
+     */
     @JsonProperty("resourceAPIGroup")
     public String getResourceAPIGroup() {
         return resourceAPIGroup;
     }
 
+    /**
+     * Group is the API group of the resource Serialized as resourceAPIGroup to avoid confusion with the 'groups' field when inlined
+     */
     @JsonProperty("resourceAPIGroup")
     public void setResourceAPIGroup(String resourceAPIGroup) {
         this.resourceAPIGroup = resourceAPIGroup;
     }
 
+    /**
+     * Version is the API version of the resource Serialized as resourceAPIVersion to avoid confusion with TypeMeta.apiVersion and ObjectMeta.resourceVersion when inlined
+     */
     @JsonProperty("resourceAPIVersion")
     public String getResourceAPIVersion() {
         return resourceAPIVersion;
     }
 
+    /**
+     * Version is the API version of the resource Serialized as resourceAPIVersion to avoid confusion with TypeMeta.apiVersion and ObjectMeta.resourceVersion when inlined
+     */
     @JsonProperty("resourceAPIVersion")
     public void setResourceAPIVersion(String resourceAPIVersion) {
         this.resourceAPIVersion = resourceAPIVersion;
     }
 
+    /**
+     * ResourceName is the name of the resource being requested for a "get" or deleted for a "delete"
+     */
     @JsonProperty("resourceName")
     public String getResourceName() {
         return resourceName;
     }
 
+    /**
+     * ResourceName is the name of the resource being requested for a "get" or deleted for a "delete"
+     */
     @JsonProperty("resourceName")
     public void setResourceName(String resourceName) {
         this.resourceName = resourceName;
     }
 
+    /**
+     * Verb is one of: get, list, watch, create, update, delete
+     */
     @JsonProperty("verb")
     public String getVerb() {
         return verb;
     }
 
+    /**
+     * Verb is one of: get, list, watch, create, update, delete
+     */
     @JsonProperty("verb")
     public void setVerb(String verb) {
         this.verb = verb;

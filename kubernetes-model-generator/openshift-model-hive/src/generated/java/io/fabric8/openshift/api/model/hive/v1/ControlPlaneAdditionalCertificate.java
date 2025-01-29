@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ControlPlaneAdditionalCertificate defines an additional serving certificate for a control plane
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class ControlPlaneAdditionalCertificate implements Editable<ControlPlaneA
         this.name = name;
     }
 
+    /**
+     * Domain is the domain of the additional control plane certificate
+     */
     @JsonProperty("domain")
     public String getDomain() {
         return domain;
     }
 
+    /**
+     * Domain is the domain of the additional control plane certificate
+     */
     @JsonProperty("domain")
     public void setDomain(String domain) {
         this.domain = domain;
     }
 
+    /**
+     * Name references a CertificateBundle in the ClusterDeployment.Spec that should be used for this additional certificate.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name references a CertificateBundle in the ClusterDeployment.Spec that should be used for this additional certificate.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

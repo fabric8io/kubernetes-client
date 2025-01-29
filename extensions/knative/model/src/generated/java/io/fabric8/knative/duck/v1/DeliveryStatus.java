@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DeliveryStatus contains the Status of an object supporting delivery options. This type is intended to be embedded into a status struct.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class DeliveryStatus implements Editable<DeliveryStatusBuilder>, Kubernet
         this.deadLetterSinkUri = deadLetterSinkUri;
     }
 
+    /**
+     * DeadLetterSinkAudience is the OIDC audience of the DeadLetterSink
+     */
     @JsonProperty("deadLetterSinkAudience")
     public String getDeadLetterSinkAudience() {
         return deadLetterSinkAudience;
     }
 
+    /**
+     * DeadLetterSinkAudience is the OIDC audience of the DeadLetterSink
+     */
     @JsonProperty("deadLetterSinkAudience")
     public void setDeadLetterSinkAudience(String deadLetterSinkAudience) {
         this.deadLetterSinkAudience = deadLetterSinkAudience;
     }
 
+    /**
+     * DeadLetterSinkCACerts are Certification Authority (CA) certificates in PEM format according to https://www.rfc-editor.org/rfc/rfc7468.
+     */
     @JsonProperty("deadLetterSinkCACerts")
     public String getDeadLetterSinkCACerts() {
         return deadLetterSinkCACerts;
     }
 
+    /**
+     * DeadLetterSinkCACerts are Certification Authority (CA) certificates in PEM format according to https://www.rfc-editor.org/rfc/rfc7468.
+     */
     @JsonProperty("deadLetterSinkCACerts")
     public void setDeadLetterSinkCACerts(String deadLetterSinkCACerts) {
         this.deadLetterSinkCACerts = deadLetterSinkCACerts;
     }
 
+    /**
+     * DeliveryStatus contains the Status of an object supporting delivery options. This type is intended to be embedded into a status struct.
+     */
     @JsonProperty("deadLetterSinkUri")
     public String getDeadLetterSinkUri() {
         return deadLetterSinkUri;
     }
 
+    /**
+     * DeliveryStatus contains the Status of an object supporting delivery options. This type is intended to be embedded into a status struct.
+     */
     @JsonProperty("deadLetterSinkUri")
     public void setDeadLetterSinkUri(String deadLetterSinkUri) {
         this.deadLetterSinkUri = deadLetterSinkUri;

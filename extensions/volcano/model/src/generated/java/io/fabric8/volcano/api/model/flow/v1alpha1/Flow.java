@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Flow defines the dependent of jobs
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class Flow implements Editable<FlowBuilder>, KubernetesResource
         this.name = name;
     }
 
+    /**
+     * Flow defines the dependent of jobs
+     */
     @JsonProperty("dependsOn")
     public DependsOn getDependsOn() {
         return dependsOn;
     }
 
+    /**
+     * Flow defines the dependent of jobs
+     */
     @JsonProperty("dependsOn")
     public void setDependsOn(DependsOn dependsOn) {
         this.dependsOn = dependsOn;
     }
 
+    /**
+     * Flow defines the dependent of jobs
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Flow defines the dependent of jobs
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

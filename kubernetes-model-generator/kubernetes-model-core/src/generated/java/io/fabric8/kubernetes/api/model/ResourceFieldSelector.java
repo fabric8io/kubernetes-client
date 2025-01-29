@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ResourceFieldSelector represents container resources (cpu, memory) and their output format
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -57,31 +60,49 @@ public class ResourceFieldSelector implements Editable<ResourceFieldSelectorBuil
         this.resource = resource;
     }
 
+    /**
+     * Container name: required for volumes, optional for env vars
+     */
     @JsonProperty("containerName")
     public String getContainerName() {
         return containerName;
     }
 
+    /**
+     * Container name: required for volumes, optional for env vars
+     */
     @JsonProperty("containerName")
     public void setContainerName(String containerName) {
         this.containerName = containerName;
     }
 
+    /**
+     * ResourceFieldSelector represents container resources (cpu, memory) and their output format
+     */
     @JsonProperty("divisor")
     public Quantity getDivisor() {
         return divisor;
     }
 
+    /**
+     * ResourceFieldSelector represents container resources (cpu, memory) and their output format
+     */
     @JsonProperty("divisor")
     public void setDivisor(Quantity divisor) {
         this.divisor = divisor;
     }
 
+    /**
+     * Required: resource to select
+     */
     @JsonProperty("resource")
     public String getResource() {
         return resource;
     }
 
+    /**
+     * Required: resource to select
+     */
     @JsonProperty("resource")
     public void setResource(String resource) {
         this.resource = resource;

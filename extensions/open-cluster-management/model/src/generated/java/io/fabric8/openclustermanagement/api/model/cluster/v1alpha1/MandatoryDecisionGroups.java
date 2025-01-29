@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * MandatoryDecisionGroups
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -81,12 +84,18 @@ public class MandatoryDecisionGroups implements Editable<MandatoryDecisionGroups
         this.mandatoryDecisionGroups = mandatoryDecisionGroups;
     }
 
+    /**
+     * List of the decision groups names or indexes to apply the workload first and fail if workload did not reach successful state. GroupName or GroupIndex must match with the decisionGroups defined in the placement's decisionStrategy
+     */
     @JsonProperty("mandatoryDecisionGroups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<MandatoryDecisionGroup> getMandatoryDecisionGroups() {
         return mandatoryDecisionGroups;
     }
 
+    /**
+     * List of the decision groups names or indexes to apply the workload first and fail if workload did not reach successful state. GroupName or GroupIndex must match with the decisionGroups defined in the placement's decisionStrategy
+     */
     @JsonProperty("mandatoryDecisionGroups")
     public void setMandatoryDecisionGroups(List<MandatoryDecisionGroup> mandatoryDecisionGroups) {
         this.mandatoryDecisionGroups = mandatoryDecisionGroups;

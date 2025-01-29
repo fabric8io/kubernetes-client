@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * HostFirmwareComponentsSpec defines the desired state of HostFirmwareComponents.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -81,12 +84,18 @@ public class HostFirmwareComponentsSpec implements Editable<HostFirmwareComponen
         this.updates = updates;
     }
 
+    /**
+     * HostFirmwareComponentsSpec defines the desired state of HostFirmwareComponents.
+     */
     @JsonProperty("updates")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<FirmwareUpdate> getUpdates() {
         return updates;
     }
 
+    /**
+     * HostFirmwareComponentsSpec defines the desired state of HostFirmwareComponents.
+     */
     @JsonProperty("updates")
     public void setUpdates(List<FirmwareUpdate> updates) {
         this.updates = updates;

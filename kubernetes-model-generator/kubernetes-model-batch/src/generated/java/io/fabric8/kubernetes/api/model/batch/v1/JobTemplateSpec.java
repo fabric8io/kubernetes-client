@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * JobTemplateSpec describes the data a Job should have when created from a template
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class JobTemplateSpec implements Editable<JobTemplateSpecBuilder>, Kubern
         this.spec = spec;
     }
 
+    /**
+     * JobTemplateSpec describes the data a Job should have when created from a template
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * JobTemplateSpec describes the data a Job should have when created from a template
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * JobTemplateSpec describes the data a Job should have when created from a template
+     */
     @JsonProperty("spec")
     public JobSpec getSpec() {
         return spec;
     }
 
+    /**
+     * JobTemplateSpec describes the data a Job should have when created from a template
+     */
     @JsonProperty("spec")
     public void setSpec(JobSpec spec) {
         this.spec = spec;

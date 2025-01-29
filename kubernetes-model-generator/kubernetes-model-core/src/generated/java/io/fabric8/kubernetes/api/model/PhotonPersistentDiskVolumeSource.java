@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Represents a Photon Controller persistent disk resource.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -53,21 +56,33 @@ public class PhotonPersistentDiskVolumeSource implements Editable<PhotonPersiste
         this.pdID = pdID;
     }
 
+    /**
+     * fsType is the filesystem type to mount. Must be a filesystem type supported by the host operating system. Ex. "ext4", "xfs", "ntfs". Implicitly inferred to be "ext4" if unspecified.
+     */
     @JsonProperty("fsType")
     public String getFsType() {
         return fsType;
     }
 
+    /**
+     * fsType is the filesystem type to mount. Must be a filesystem type supported by the host operating system. Ex. "ext4", "xfs", "ntfs". Implicitly inferred to be "ext4" if unspecified.
+     */
     @JsonProperty("fsType")
     public void setFsType(String fsType) {
         this.fsType = fsType;
     }
 
+    /**
+     * pdID is the ID that identifies Photon Controller persistent disk
+     */
     @JsonProperty("pdID")
     public String getPdID() {
         return pdID;
     }
 
+    /**
+     * pdID is the ID that identifies Photon Controller persistent disk
+     */
     @JsonProperty("pdID")
     public void setPdID(String pdID) {
         this.pdID = pdID;

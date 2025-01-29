@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -167,224 +170,356 @@ public class SlackConfig implements Editable<SlackConfigBuilder>, KubernetesReso
         this.username = username;
     }
 
+    /**
+     * A list of Slack actions that are sent with each notification.
+     */
     @JsonProperty("actions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<SlackAction> getActions() {
         return actions;
     }
 
+    /**
+     * A list of Slack actions that are sent with each notification.
+     */
     @JsonProperty("actions")
     public void setActions(List<SlackAction> actions) {
         this.actions = actions;
     }
 
+    /**
+     * SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config
+     */
     @JsonProperty("apiURL")
     public SecretKeySelector getApiURL() {
         return apiURL;
     }
 
+    /**
+     * SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config
+     */
     @JsonProperty("apiURL")
     public void setApiURL(SecretKeySelector apiURL) {
         this.apiURL = apiURL;
     }
 
+    /**
+     * SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config
+     */
     @JsonProperty("callbackId")
     public String getCallbackId() {
         return callbackId;
     }
 
+    /**
+     * SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config
+     */
     @JsonProperty("callbackId")
     public void setCallbackId(String callbackId) {
         this.callbackId = callbackId;
     }
 
+    /**
+     * The channel or user to send notifications to.
+     */
     @JsonProperty("channel")
     public String getChannel() {
         return channel;
     }
 
+    /**
+     * The channel or user to send notifications to.
+     */
     @JsonProperty("channel")
     public void setChannel(String channel) {
         this.channel = channel;
     }
 
+    /**
+     * SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config
+     */
     @JsonProperty("color")
     public String getColor() {
         return color;
     }
 
+    /**
+     * SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config
+     */
     @JsonProperty("color")
     public void setColor(String color) {
         this.color = color;
     }
 
+    /**
+     * SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config
+     */
     @JsonProperty("fallback")
     public String getFallback() {
         return fallback;
     }
 
+    /**
+     * SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config
+     */
     @JsonProperty("fallback")
     public void setFallback(String fallback) {
         this.fallback = fallback;
     }
 
+    /**
+     * A list of Slack fields that are sent with each notification.
+     */
     @JsonProperty("fields")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<SlackField> getFields() {
         return fields;
     }
 
+    /**
+     * A list of Slack fields that are sent with each notification.
+     */
     @JsonProperty("fields")
     public void setFields(List<SlackField> fields) {
         this.fields = fields;
     }
 
+    /**
+     * SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config
+     */
     @JsonProperty("footer")
     public String getFooter() {
         return footer;
     }
 
+    /**
+     * SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config
+     */
     @JsonProperty("footer")
     public void setFooter(String footer) {
         this.footer = footer;
     }
 
+    /**
+     * SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config
+     */
     @JsonProperty("httpConfig")
     public HTTPConfig getHttpConfig() {
         return httpConfig;
     }
 
+    /**
+     * SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config
+     */
     @JsonProperty("httpConfig")
     public void setHttpConfig(HTTPConfig httpConfig) {
         this.httpConfig = httpConfig;
     }
 
+    /**
+     * SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config
+     */
     @JsonProperty("iconEmoji")
     public String getIconEmoji() {
         return iconEmoji;
     }
 
+    /**
+     * SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config
+     */
     @JsonProperty("iconEmoji")
     public void setIconEmoji(String iconEmoji) {
         this.iconEmoji = iconEmoji;
     }
 
+    /**
+     * SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config
+     */
     @JsonProperty("iconURL")
     public String getIconURL() {
         return iconURL;
     }
 
+    /**
+     * SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config
+     */
     @JsonProperty("iconURL")
     public void setIconURL(String iconURL) {
         this.iconURL = iconURL;
     }
 
+    /**
+     * SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config
+     */
     @JsonProperty("imageURL")
     public String getImageURL() {
         return imageURL;
     }
 
+    /**
+     * SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config
+     */
     @JsonProperty("imageURL")
     public void setImageURL(String imageURL) {
         this.imageURL = imageURL;
     }
 
+    /**
+     * SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config
+     */
     @JsonProperty("linkNames")
     public Boolean getLinkNames() {
         return linkNames;
     }
 
+    /**
+     * SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config
+     */
     @JsonProperty("linkNames")
     public void setLinkNames(Boolean linkNames) {
         this.linkNames = linkNames;
     }
 
+    /**
+     * SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config
+     */
     @JsonProperty("mrkdwnIn")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getMrkdwnIn() {
         return mrkdwnIn;
     }
 
+    /**
+     * SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config
+     */
     @JsonProperty("mrkdwnIn")
     public void setMrkdwnIn(List<String> mrkdwnIn) {
         this.mrkdwnIn = mrkdwnIn;
     }
 
+    /**
+     * SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config
+     */
     @JsonProperty("pretext")
     public String getPretext() {
         return pretext;
     }
 
+    /**
+     * SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config
+     */
     @JsonProperty("pretext")
     public void setPretext(String pretext) {
         this.pretext = pretext;
     }
 
+    /**
+     * Whether or not to notify about resolved alerts.
+     */
     @JsonProperty("sendResolved")
     public Boolean getSendResolved() {
         return sendResolved;
     }
 
+    /**
+     * Whether or not to notify about resolved alerts.
+     */
     @JsonProperty("sendResolved")
     public void setSendResolved(Boolean sendResolved) {
         this.sendResolved = sendResolved;
     }
 
+    /**
+     * SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config
+     */
     @JsonProperty("shortFields")
     public Boolean getShortFields() {
         return shortFields;
     }
 
+    /**
+     * SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config
+     */
     @JsonProperty("shortFields")
     public void setShortFields(Boolean shortFields) {
         this.shortFields = shortFields;
     }
 
+    /**
+     * SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config
+     */
     @JsonProperty("text")
     public String getText() {
         return text;
     }
 
+    /**
+     * SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config
+     */
     @JsonProperty("text")
     public void setText(String text) {
         this.text = text;
     }
 
+    /**
+     * SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config
+     */
     @JsonProperty("thumbURL")
     public String getThumbURL() {
         return thumbURL;
     }
 
+    /**
+     * SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config
+     */
     @JsonProperty("thumbURL")
     public void setThumbURL(String thumbURL) {
         this.thumbURL = thumbURL;
     }
 
+    /**
+     * SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config
+     */
     @JsonProperty("title")
     public String getTitle() {
         return title;
     }
 
+    /**
+     * SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config
+     */
     @JsonProperty("title")
     public void setTitle(String title) {
         this.title = title;
     }
 
+    /**
+     * SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config
+     */
     @JsonProperty("titleLink")
     public String getTitleLink() {
         return titleLink;
     }
 
+    /**
+     * SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config
+     */
     @JsonProperty("titleLink")
     public void setTitleLink(String titleLink) {
         this.titleLink = titleLink;
     }
 
+    /**
+     * SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config
+     */
     @JsonProperty("username")
     public String getUsername() {
         return username;
     }
 
+    /**
+     * SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config
+     */
     @JsonProperty("username")
     public void setUsername(String username) {
         this.username = username;

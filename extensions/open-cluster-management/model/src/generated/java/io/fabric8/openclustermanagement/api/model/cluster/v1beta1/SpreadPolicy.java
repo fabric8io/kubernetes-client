@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SpreadPolicy defines how the placement decision should be spread among the ManagedClusters.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -81,12 +84,18 @@ public class SpreadPolicy implements Editable<SpreadPolicyBuilder>, KubernetesRe
         this.spreadConstraints = spreadConstraints;
     }
 
+    /**
+     * SpreadConstraints defines how the placement decision should be distributed among a set of ManagedClusters. The importance of the SpreadConstraintsTerms follows the natural order of their index in the slice. The scheduler first consider SpreadConstraintsTerms with smaller index then those with larger index to distribute the placement decision.
+     */
     @JsonProperty("spreadConstraints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<SpreadConstraintsTerm> getSpreadConstraints() {
         return spreadConstraints;
     }
 
+    /**
+     * SpreadConstraints defines how the placement decision should be distributed among a set of ManagedClusters. The importance of the SpreadConstraintsTerms follows the natural order of their index in the slice. The scheduler first consider SpreadConstraintsTerms with smaller index then those with larger index to distribute the placement decision.
+     */
     @JsonProperty("spreadConstraints")
     public void setSpreadConstraints(List<SpreadConstraintsTerm> spreadConstraints) {
         this.spreadConstraints = spreadConstraints;

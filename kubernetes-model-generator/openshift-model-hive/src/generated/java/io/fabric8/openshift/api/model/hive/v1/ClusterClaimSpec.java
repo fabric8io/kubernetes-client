@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ClusterClaimSpec defines the desired state of the ClusterClaim.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,42 +97,66 @@ public class ClusterClaimSpec implements Editable<ClusterClaimSpecBuilder>, Kube
         this.subjects = subjects;
     }
 
+    /**
+     * ClusterPoolName is the name of the cluster pool from which to claim a cluster.
+     */
     @JsonProperty("clusterPoolName")
     public String getClusterPoolName() {
         return clusterPoolName;
     }
 
+    /**
+     * ClusterPoolName is the name of the cluster pool from which to claim a cluster.
+     */
     @JsonProperty("clusterPoolName")
     public void setClusterPoolName(String clusterPoolName) {
         this.clusterPoolName = clusterPoolName;
     }
 
+    /**
+     * ClusterClaimSpec defines the desired state of the ClusterClaim.
+     */
     @JsonProperty("lifetime")
     public String getLifetime() {
         return lifetime;
     }
 
+    /**
+     * ClusterClaimSpec defines the desired state of the ClusterClaim.
+     */
     @JsonProperty("lifetime")
     public void setLifetime(String lifetime) {
         this.lifetime = lifetime;
     }
 
+    /**
+     * Namespace is the namespace containing the ClusterDeployment (name will match the namespace) of the claimed cluster. This field will be set as soon as a suitable cluster can be found, however that cluster may still be resuming and not yet ready for use. Wait for the ClusterRunning condition to be true to avoid this issue.
+     */
     @JsonProperty("namespace")
     public String getNamespace() {
         return namespace;
     }
 
+    /**
+     * Namespace is the namespace containing the ClusterDeployment (name will match the namespace) of the claimed cluster. This field will be set as soon as a suitable cluster can be found, however that cluster may still be resuming and not yet ready for use. Wait for the ClusterRunning condition to be true to avoid this issue.
+     */
     @JsonProperty("namespace")
     public void setNamespace(String namespace) {
         this.namespace = namespace;
     }
 
+    /**
+     * Subjects hold references to which to authorize access to the claimed cluster.
+     */
     @JsonProperty("subjects")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Subject> getSubjects() {
         return subjects;
     }
 
+    /**
+     * Subjects hold references to which to authorize access to the claimed cluster.
+     */
     @JsonProperty("subjects")
     public void setSubjects(List<Subject> subjects) {
         this.subjects = subjects;

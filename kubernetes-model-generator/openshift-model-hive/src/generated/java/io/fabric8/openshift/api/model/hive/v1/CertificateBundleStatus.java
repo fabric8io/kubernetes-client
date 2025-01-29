@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * CertificateBundleStatus specifies whether a certificate bundle was generated for this cluster deployment.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class CertificateBundleStatus implements Editable<CertificateBundleStatus
         this.name = name;
     }
 
+    /**
+     * Generated indicates whether the certificate bundle was generated
+     */
     @JsonProperty("generated")
     public Boolean getGenerated() {
         return generated;
     }
 
+    /**
+     * Generated indicates whether the certificate bundle was generated
+     */
     @JsonProperty("generated")
     public void setGenerated(Boolean generated) {
         this.generated = generated;
     }
 
+    /**
+     * Name of the certificate bundle
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name of the certificate bundle
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * RunAsUserStrategyOptions defines the strategy type and any options used to create the strategy.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class RunAsUserStrategyOptions implements Editable<RunAsUserStrategyOptio
         this.uidRangeMin = uidRangeMin;
     }
 
+    /**
+     * Type is the strategy that will dictate what RunAsUser is used in the SecurityContext.
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * Type is the strategy that will dictate what RunAsUser is used in the SecurityContext.
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;
     }
 
+    /**
+     * UID is the user id that containers must run as.  Required for the MustRunAs strategy if not using namespace/service account allocated uids.
+     */
     @JsonProperty("uid")
     public Long getUid() {
         return uid;
     }
 
+    /**
+     * UID is the user id that containers must run as.  Required for the MustRunAs strategy if not using namespace/service account allocated uids.
+     */
     @JsonProperty("uid")
     public void setUid(Long uid) {
         this.uid = uid;
     }
 
+    /**
+     * UIDRangeMax defines the max value for a strategy that allocates by range.
+     */
     @JsonProperty("uidRangeMax")
     public Long getUidRangeMax() {
         return uidRangeMax;
     }
 
+    /**
+     * UIDRangeMax defines the max value for a strategy that allocates by range.
+     */
     @JsonProperty("uidRangeMax")
     public void setUidRangeMax(Long uidRangeMax) {
         this.uidRangeMax = uidRangeMax;
     }
 
+    /**
+     * UIDRangeMin defines the min value for a strategy that allocates by range.
+     */
     @JsonProperty("uidRangeMin")
     public Long getUidRangeMin() {
         return uidRangeMin;
     }
 
+    /**
+     * UIDRangeMin defines the min value for a strategy that allocates by range.
+     */
     @JsonProperty("uidRangeMin")
     public void setUidRangeMin(Long uidRangeMin) {
         this.uidRangeMin = uidRangeMin;

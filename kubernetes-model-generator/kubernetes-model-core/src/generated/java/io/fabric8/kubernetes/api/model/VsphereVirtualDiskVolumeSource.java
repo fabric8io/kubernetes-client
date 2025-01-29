@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Represents a vSphere volume resource.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -61,41 +64,65 @@ public class VsphereVirtualDiskVolumeSource implements Editable<VsphereVirtualDi
         this.volumePath = volumePath;
     }
 
+    /**
+     * fsType is filesystem type to mount. Must be a filesystem type supported by the host operating system. Ex. "ext4", "xfs", "ntfs". Implicitly inferred to be "ext4" if unspecified.
+     */
     @JsonProperty("fsType")
     public String getFsType() {
         return fsType;
     }
 
+    /**
+     * fsType is filesystem type to mount. Must be a filesystem type supported by the host operating system. Ex. "ext4", "xfs", "ntfs". Implicitly inferred to be "ext4" if unspecified.
+     */
     @JsonProperty("fsType")
     public void setFsType(String fsType) {
         this.fsType = fsType;
     }
 
+    /**
+     * storagePolicyID is the storage Policy Based Management (SPBM) profile ID associated with the StoragePolicyName.
+     */
     @JsonProperty("storagePolicyID")
     public String getStoragePolicyID() {
         return storagePolicyID;
     }
 
+    /**
+     * storagePolicyID is the storage Policy Based Management (SPBM) profile ID associated with the StoragePolicyName.
+     */
     @JsonProperty("storagePolicyID")
     public void setStoragePolicyID(String storagePolicyID) {
         this.storagePolicyID = storagePolicyID;
     }
 
+    /**
+     * storagePolicyName is the storage Policy Based Management (SPBM) profile name.
+     */
     @JsonProperty("storagePolicyName")
     public String getStoragePolicyName() {
         return storagePolicyName;
     }
 
+    /**
+     * storagePolicyName is the storage Policy Based Management (SPBM) profile name.
+     */
     @JsonProperty("storagePolicyName")
     public void setStoragePolicyName(String storagePolicyName) {
         this.storagePolicyName = storagePolicyName;
     }
 
+    /**
+     * volumePath is the path that identifies vSphere volume vmdk
+     */
     @JsonProperty("volumePath")
     public String getVolumePath() {
         return volumePath;
     }
 
+    /**
+     * volumePath is the path that identifies vSphere volume vmdk
+     */
     @JsonProperty("volumePath")
     public void setVolumePath(String volumePath) {
         this.volumePath = volumePath;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PolicyTargetReference format as defined by [GEP-2648](https://gateway-api.sigs.k8s.io/geps/gep-2648/#direct-policy-design-rules).<br><p> <br><p> PolicyTargetReference specifies the targeted resource which the policy should be applied to. It must only target a single resource at a time, but it can be used to target larger resources such as Gateways that may apply to multiple child resources. The PolicyTargetReference will be used instead of a WorkloadSelector in the RequestAuthentication, AuthorizationPolicy, Telemetry, and WasmPlugin CRDs to target a Kubernetes Gateway.<br><p> <br><p> The following is an example of an AuthorizationPolicy bound to a waypoint proxy using a PolicyTargetReference. The example sets `action` to `DENY` to create a deny policy. It denies all the requests with `POST` method on port `8080` directed through the `waypoint` Gateway in the `foo` namespace.<br><p> <br><p> ```yaml apiVersion: security.istio.io/v1 kind: AuthorizationPolicy metadata:<br><p> <br><p> 	name: httpbin<br><p> 	namespace: foo<br><p> <br><p> spec:<br><p> <br><p> 	targetRefs:<br><p> 	- name: waypoint<br><p> 	  kind: Gateway<br><p> 	  group: gateway.networking.k8s.io<br><p> 	action: DENY<br><p> 	rules:<br><p> 	- to:<br><p> 	  - operation:<br><p> 	      methods: ["POST"]<br><p> 	      ports: ["8080"]<br><p> <br><p> ```
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class PolicyTargetReference implements Editable<PolicyTargetReferenceBuil
         this.namespace = namespace;
     }
 
+    /**
+     * group is the group of the target resource.
+     */
     @JsonProperty("group")
     public String getGroup() {
         return group;
     }
 
+    /**
+     * group is the group of the target resource.
+     */
     @JsonProperty("group")
     public void setGroup(String group) {
         this.group = group;
     }
 
+    /**
+     * kind is kind of the target resource.
+     */
     @JsonProperty("kind")
     public String getKind() {
         return kind;
     }
 
+    /**
+     * kind is kind of the target resource.
+     */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * name is the name of the target resource.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * name is the name of the target resource.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * namespace is the namespace of the referent. When unspecified, the local namespace is inferred.
+     */
     @JsonProperty("namespace")
     public String getNamespace() {
         return namespace;
     }
 
+    /**
+     * namespace is the namespace of the referent. When unspecified, the local namespace is inferred.
+     */
     @JsonProperty("namespace")
     public void setNamespace(String namespace) {
         this.namespace = namespace;

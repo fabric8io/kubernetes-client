@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * HostFirmwareSettingsStatus defines the observed state of HostFirmwareSettings.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -95,43 +98,67 @@ public class HostFirmwareSettingsStatus implements Editable<HostFirmwareSettings
         this.settings = settings;
     }
 
+    /**
+     * Track whether settings stored in the spec are valid based on the schema
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Track whether settings stored in the spec are valid based on the schema
+     */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * HostFirmwareSettingsStatus defines the observed state of HostFirmwareSettings.
+     */
     @JsonProperty("lastUpdated")
     public String getLastUpdated() {
         return lastUpdated;
     }
 
+    /**
+     * HostFirmwareSettingsStatus defines the observed state of HostFirmwareSettings.
+     */
     @JsonProperty("lastUpdated")
     public void setLastUpdated(String lastUpdated) {
         this.lastUpdated = lastUpdated;
     }
 
+    /**
+     * HostFirmwareSettingsStatus defines the observed state of HostFirmwareSettings.
+     */
     @JsonProperty("schema")
     public SchemaReference getSchema() {
         return schema;
     }
 
+    /**
+     * HostFirmwareSettingsStatus defines the observed state of HostFirmwareSettings.
+     */
     @JsonProperty("schema")
     public void setSchema(SchemaReference schema) {
         this.schema = schema;
     }
 
+    /**
+     * Settings are the firmware settings stored as name/value pairs
+     */
     @JsonProperty("settings")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getSettings() {
         return settings;
     }
 
+    /**
+     * Settings are the firmware settings stored as name/value pairs
+     */
     @JsonProperty("settings")
     public void setSettings(Map<String, String> settings) {
         this.settings = settings;

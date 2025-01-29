@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PipelineTaskParam is used to provide arbitrary string parameters to a Task.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class PipelineTaskParam implements Editable<PipelineTaskParamBuilder>, Ku
         this.value = value;
     }
 
+    /**
+     * PipelineTaskParam is used to provide arbitrary string parameters to a Task.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * PipelineTaskParam is used to provide arbitrary string parameters to a Task.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * PipelineTaskParam is used to provide arbitrary string parameters to a Task.
+     */
     @JsonProperty("value")
     public String getValue() {
         return value;
     }
 
+    /**
+     * PipelineTaskParam is used to provide arbitrary string parameters to a Task.
+     */
     @JsonProperty("value")
     public void setValue(String value) {
         this.value = value;

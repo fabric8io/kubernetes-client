@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Represents an ephemeral volume that is handled by a normal storage driver.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -49,11 +52,17 @@ public class EphemeralVolumeSource implements Editable<EphemeralVolumeSourceBuil
         this.volumeClaimTemplate = volumeClaimTemplate;
     }
 
+    /**
+     * Represents an ephemeral volume that is handled by a normal storage driver.
+     */
     @JsonProperty("volumeClaimTemplate")
     public PersistentVolumeClaimTemplate getVolumeClaimTemplate() {
         return volumeClaimTemplate;
     }
 
+    /**
+     * Represents an ephemeral volume that is handled by a normal storage driver.
+     */
     @JsonProperty("volumeClaimTemplate")
     public void setVolumeClaimTemplate(PersistentVolumeClaimTemplate volumeClaimTemplate) {
         this.volumeClaimTemplate = volumeClaimTemplate;

@@ -158,21 +158,33 @@ public class AdvancedConfig implements Editable<AdvancedConfigBuilder>, Kubernet
         this.compact = compact;
     }
 
+    /**
+     * CustomAlertmanagerHubURL overrides the alertmanager URL to send alerts from the spoke to the hub server. For the alertmanager that runs in the hub this setting has no effect.
+     */
     @JsonProperty("customAlertmanagerHubURL")
     public String getCustomAlertmanagerHubURL() {
         return customAlertmanagerHubURL;
     }
 
+    /**
+     * CustomAlertmanagerHubURL overrides the alertmanager URL to send alerts from the spoke to the hub server. For the alertmanager that runs in the hub this setting has no effect.
+     */
     @JsonProperty("customAlertmanagerHubURL")
     public void setCustomAlertmanagerHubURL(String customAlertmanagerHubURL) {
         this.customAlertmanagerHubURL = customAlertmanagerHubURL;
     }
 
+    /**
+     * CustomObservabilityHubURL overrides the endpoint used by the metrics-collector to send metrics to the hub server. For the metrics-collector that runs in the hub this setting has no effect.
+     */
     @JsonProperty("customObservabilityHubURL")
     public String getCustomObservabilityHubURL() {
         return customObservabilityHubURL;
     }
 
+    /**
+     * CustomObservabilityHubURL overrides the endpoint used by the metrics-collector to send metrics to the hub server. For the metrics-collector that runs in the hub this setting has no effect.
+     */
     @JsonProperty("customObservabilityHubURL")
     public void setCustomObservabilityHubURL(String customObservabilityHubURL) {
         this.customObservabilityHubURL = customObservabilityHubURL;

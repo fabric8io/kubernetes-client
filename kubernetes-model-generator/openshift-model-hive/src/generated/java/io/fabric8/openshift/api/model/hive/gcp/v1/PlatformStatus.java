@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PlatformStatus contains the observed state on GCP platform.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class PlatformStatus implements Editable<PlatformStatusBuilder>, Kubernet
         this.privateServiceConnect = privateServiceConnect;
     }
 
+    /**
+     * PlatformStatus contains the observed state on GCP platform.
+     */
     @JsonProperty("privateServiceConnect")
     public PrivateServiceConnectStatus getPrivateServiceConnect() {
         return privateServiceConnect;
     }
 
+    /**
+     * PlatformStatus contains the observed state on GCP platform.
+     */
     @JsonProperty("privateServiceConnect")
     public void setPrivateServiceConnect(PrivateServiceConnectStatus privateServiceConnect) {
         this.privateServiceConnect = privateServiceConnect;

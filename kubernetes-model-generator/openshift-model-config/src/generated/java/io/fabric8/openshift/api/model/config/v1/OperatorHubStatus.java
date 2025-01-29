@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * OperatorHubStatus defines the observed state of OperatorHub. The current state of the default hub sources will always be reflected here.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -81,12 +84,18 @@ public class OperatorHubStatus implements Editable<OperatorHubStatusBuilder>, Ku
         this.sources = sources;
     }
 
+    /**
+     * sources encapsulates the result of applying the configuration for each hub source
+     */
     @JsonProperty("sources")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<HubSourceStatus> getSources() {
         return sources;
     }
 
+    /**
+     * sources encapsulates the result of applying the configuration for each hub source
+     */
     @JsonProperty("sources")
     public void setSources(List<HubSourceStatus> sources) {
         this.sources = sources;

@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * RunStatusFields holds the fields of Run's status.  This is defined separately and inlined so that other types can readily consume these fields via duck typing.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -99,54 +102,84 @@ public class RunStatusFields implements Editable<RunStatusFieldsBuilder>, Kubern
         this.startTime = startTime;
     }
 
+    /**
+     * RunStatusFields holds the fields of Run's status.  This is defined separately and inlined so that other types can readily consume these fields via duck typing.
+     */
     @JsonProperty("completionTime")
     public String getCompletionTime() {
         return completionTime;
     }
 
+    /**
+     * RunStatusFields holds the fields of Run's status.  This is defined separately and inlined so that other types can readily consume these fields via duck typing.
+     */
     @JsonProperty("completionTime")
     public void setCompletionTime(String completionTime) {
         this.completionTime = completionTime;
     }
 
+    /**
+     * RunStatusFields holds the fields of Run's status.  This is defined separately and inlined so that other types can readily consume these fields via duck typing.
+     */
     @JsonProperty("extraFields")
     public Object getExtraFields() {
         return extraFields;
     }
 
+    /**
+     * RunStatusFields holds the fields of Run's status.  This is defined separately and inlined so that other types can readily consume these fields via duck typing.
+     */
     @JsonProperty("extraFields")
     @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
     public void setExtraFields(Object extraFields) {
         this.extraFields = extraFields;
     }
 
+    /**
+     * Results reports any output result values to be consumed by later tasks in a pipeline.
+     */
     @JsonProperty("results")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<RunResult> getResults() {
         return results;
     }
 
+    /**
+     * Results reports any output result values to be consumed by later tasks in a pipeline.
+     */
     @JsonProperty("results")
     public void setResults(List<RunResult> results) {
         this.results = results;
     }
 
+    /**
+     * RetriesStatus contains the history of RunStatus, in case of a retry.
+     */
     @JsonProperty("retriesStatus")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<RunStatus> getRetriesStatus() {
         return retriesStatus;
     }
 
+    /**
+     * RetriesStatus contains the history of RunStatus, in case of a retry.
+     */
     @JsonProperty("retriesStatus")
     public void setRetriesStatus(List<RunStatus> retriesStatus) {
         this.retriesStatus = retriesStatus;
     }
 
+    /**
+     * RunStatusFields holds the fields of Run's status.  This is defined separately and inlined so that other types can readily consume these fields via duck typing.
+     */
     @JsonProperty("startTime")
     public String getStartTime() {
         return startTime;
     }
 
+    /**
+     * RunStatusFields holds the fields of Run's status.  This is defined separately and inlined so that other types can readily consume these fields via duck typing.
+     */
     @JsonProperty("startTime")
     public void setStartTime(String startTime) {
         this.startTime = startTime;

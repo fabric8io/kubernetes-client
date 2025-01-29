@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AddressesFromPool is an IPAddressPool that will be used to create IPAddressClaims for fulfillment by an external controller.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class AddressesFromPool implements Editable<AddressesFromPoolBuilder>, Ku
         this.resource = resource;
     }
 
+    /**
+     * group of the IP address pool type known to an external IPAM controller. This should be a fully qualified domain name, for example, externalipam.controller.io.
+     */
     @JsonProperty("group")
     public String getGroup() {
         return group;
     }
 
+    /**
+     * group of the IP address pool type known to an external IPAM controller. This should be a fully qualified domain name, for example, externalipam.controller.io.
+     */
     @JsonProperty("group")
     public void setGroup(String group) {
         this.group = group;
     }
 
+    /**
+     * name of an IP address pool, for example, pool-config-1.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * name of an IP address pool, for example, pool-config-1.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * resource of the IP address pool type known to an external IPAM controller. It is normally the plural form of the resource kind in lowercase, for example, ippools.
+     */
     @JsonProperty("resource")
     public String getResource() {
         return resource;
     }
 
+    /**
+     * resource of the IP address pool type known to an external IPAM controller. It is normally the plural form of the resource kind in lowercase, for example, ippools.
+     */
     @JsonProperty("resource")
     public void setResource(String resource) {
         this.resource = resource;

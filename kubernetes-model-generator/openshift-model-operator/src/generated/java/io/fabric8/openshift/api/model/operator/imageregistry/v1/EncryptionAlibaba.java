@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * EncryptionAlibaba this a union type in kube parlance.  Depending on the value for the AlibabaEncryptionMethod, different pointers may be used
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class EncryptionAlibaba implements Editable<EncryptionAlibabaBuilder>, Ku
         this.method = method;
     }
 
+    /**
+     * EncryptionAlibaba this a union type in kube parlance.  Depending on the value for the AlibabaEncryptionMethod, different pointers may be used
+     */
     @JsonProperty("kms")
     public KMSEncryptionAlibaba getKms() {
         return kms;
     }
 
+    /**
+     * EncryptionAlibaba this a union type in kube parlance.  Depending on the value for the AlibabaEncryptionMethod, different pointers may be used
+     */
     @JsonProperty("kms")
     public void setKms(KMSEncryptionAlibaba kms) {
         this.kms = kms;
     }
 
+    /**
+     * Method defines the different encrytion modes available Empty value means no opinion and the platform chooses the a default, which is subject to change over time. Currently the default is `AES256`.
+     */
     @JsonProperty("method")
     public String getMethod() {
         return method;
     }
 
+    /**
+     * Method defines the different encrytion modes available Empty value means no opinion and the platform chooses the a default, which is subject to change over time. Currently the default is `AES256`.
+     */
     @JsonProperty("method")
     public void setMethod(String method) {
         this.method = method;

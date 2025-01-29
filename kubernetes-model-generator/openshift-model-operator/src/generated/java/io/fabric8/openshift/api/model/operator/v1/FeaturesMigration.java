@@ -86,31 +86,49 @@ public class FeaturesMigration implements Editable<FeaturesMigrationBuilder>, Ku
         this.multicast = multicast;
     }
 
+    /**
+     * egressFirewall specified whether or not the Egress Firewall configuration was migrated. DEPRECATED: network type migration is no longer supported.
+     */
     @JsonProperty("egressFirewall")
     public Boolean getEgressFirewall() {
         return egressFirewall;
     }
 
+    /**
+     * egressFirewall specified whether or not the Egress Firewall configuration was migrated. DEPRECATED: network type migration is no longer supported.
+     */
     @JsonProperty("egressFirewall")
     public void setEgressFirewall(Boolean egressFirewall) {
         this.egressFirewall = egressFirewall;
     }
 
+    /**
+     * egressIP specified whether or not the Egress IP configuration was migrated. DEPRECATED: network type migration is no longer supported.
+     */
     @JsonProperty("egressIP")
     public Boolean getEgressIP() {
         return egressIP;
     }
 
+    /**
+     * egressIP specified whether or not the Egress IP configuration was migrated. DEPRECATED: network type migration is no longer supported.
+     */
     @JsonProperty("egressIP")
     public void setEgressIP(Boolean egressIP) {
         this.egressIP = egressIP;
     }
 
+    /**
+     * multicast specified whether or not the multicast configuration was migrated. DEPRECATED: network type migration is no longer supported.
+     */
     @JsonProperty("multicast")
     public Boolean getMulticast() {
         return multicast;
     }
 
+    /**
+     * multicast specified whether or not the multicast configuration was migrated. DEPRECATED: network type migration is no longer supported.
+     */
     @JsonProperty("multicast")
     public void setMulticast(Boolean multicast) {
         this.multicast = multicast;

@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ContainerStateRunning is a running state of a container.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -49,11 +52,17 @@ public class ContainerStateRunning implements Editable<ContainerStateRunningBuil
         this.startedAt = startedAt;
     }
 
+    /**
+     * ContainerStateRunning is a running state of a container.
+     */
     @JsonProperty("startedAt")
     public String getStartedAt() {
         return startedAt;
     }
 
+    /**
+     * ContainerStateRunning is a running state of a container.
+     */
     @JsonProperty("startedAt")
     public void setStartedAt(String startedAt) {
         this.startedAt = startedAt;

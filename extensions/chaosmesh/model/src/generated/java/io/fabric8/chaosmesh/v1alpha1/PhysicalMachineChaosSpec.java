@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -277,502 +280,802 @@ public class PhysicalMachineChaosSpec implements Editable<PhysicalMachineChaosSp
         this.vm = vm;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("action")
     public String getAction() {
         return action;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("action")
     public void setAction(String action) {
         this.action = action;
     }
 
+    /**
+     * DEPRECATED: Use Selector instead. Only one of Address and Selector could be specified.
+     */
     @JsonProperty("address")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getAddress() {
         return address;
     }
 
+    /**
+     * DEPRECATED: Use Selector instead. Only one of Address and Selector could be specified.
+     */
     @JsonProperty("address")
     public void setAddress(List<String> address) {
         this.address = address;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("clock")
     public ClockSpec getClock() {
         return clock;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("clock")
     public void setClock(ClockSpec clock) {
         this.clock = clock;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("disk-fill")
     public DiskFillSpec getDiskFill() {
         return diskFill;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("disk-fill")
     public void setDiskFill(DiskFillSpec diskFill) {
         this.diskFill = diskFill;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("disk-read-payload")
     public DiskPayloadSpec getDiskReadPayload() {
         return diskReadPayload;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("disk-read-payload")
     public void setDiskReadPayload(DiskPayloadSpec diskReadPayload) {
         this.diskReadPayload = diskReadPayload;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("disk-write-payload")
     public DiskPayloadSpec getDiskWritePayload() {
         return diskWritePayload;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("disk-write-payload")
     public void setDiskWritePayload(DiskPayloadSpec diskWritePayload) {
         this.diskWritePayload = diskWritePayload;
     }
 
+    /**
+     * Duration represents the duration of the chaos action
+     */
     @JsonProperty("duration")
     public String getDuration() {
         return duration;
     }
 
+    /**
+     * Duration represents the duration of the chaos action
+     */
     @JsonProperty("duration")
     public void setDuration(String duration) {
         this.duration = duration;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("file-append")
     public FileAppendSpec getFileAppend() {
         return fileAppend;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("file-append")
     public void setFileAppend(FileAppendSpec fileAppend) {
         this.fileAppend = fileAppend;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("file-create")
     public FileCreateSpec getFileCreate() {
         return fileCreate;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("file-create")
     public void setFileCreate(FileCreateSpec fileCreate) {
         this.fileCreate = fileCreate;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("file-delete")
     public FileDeleteSpec getFileDelete() {
         return fileDelete;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("file-delete")
     public void setFileDelete(FileDeleteSpec fileDelete) {
         this.fileDelete = fileDelete;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("file-modify")
     public FileModifyPrivilegeSpec getFileModify() {
         return fileModify;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("file-modify")
     public void setFileModify(FileModifyPrivilegeSpec fileModify) {
         this.fileModify = fileModify;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("file-rename")
     public FileRenameSpec getFileRename() {
         return fileRename;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("file-rename")
     public void setFileRename(FileRenameSpec fileRename) {
         this.fileRename = fileRename;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("file-replace")
     public FileReplaceSpec getFileReplace() {
         return fileReplace;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("file-replace")
     public void setFileReplace(FileReplaceSpec fileReplace) {
         this.fileReplace = fileReplace;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("http-abort")
     public HTTPAbortSpec getHttpAbort() {
         return httpAbort;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("http-abort")
     public void setHttpAbort(HTTPAbortSpec httpAbort) {
         this.httpAbort = httpAbort;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("http-config")
     public HTTPConfigSpec getHttpConfig() {
         return httpConfig;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("http-config")
     public void setHttpConfig(HTTPConfigSpec httpConfig) {
         this.httpConfig = httpConfig;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("http-delay")
     public HTTPDelaySpec getHttpDelay() {
         return httpDelay;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("http-delay")
     public void setHttpDelay(HTTPDelaySpec httpDelay) {
         this.httpDelay = httpDelay;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("http-request")
     public HTTPRequestSpec getHttpRequest() {
         return httpRequest;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("http-request")
     public void setHttpRequest(HTTPRequestSpec httpRequest) {
         this.httpRequest = httpRequest;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("jvm-exception")
     public JVMExceptionSpec getJvmException() {
         return jvmException;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("jvm-exception")
     public void setJvmException(JVMExceptionSpec jvmException) {
         this.jvmException = jvmException;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("jvm-gc")
     public JVMGCSpec getJvmGc() {
         return jvmGc;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("jvm-gc")
     public void setJvmGc(JVMGCSpec jvmGc) {
         this.jvmGc = jvmGc;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("jvm-latency")
     public JVMLatencySpec getJvmLatency() {
         return jvmLatency;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("jvm-latency")
     public void setJvmLatency(JVMLatencySpec jvmLatency) {
         this.jvmLatency = jvmLatency;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("jvm-mysql")
     public PMJVMMySQLSpec getJvmMysql() {
         return jvmMysql;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("jvm-mysql")
     public void setJvmMysql(PMJVMMySQLSpec jvmMysql) {
         this.jvmMysql = jvmMysql;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("jvm-return")
     public JVMReturnSpec getJvmReturn() {
         return jvmReturn;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("jvm-return")
     public void setJvmReturn(JVMReturnSpec jvmReturn) {
         this.jvmReturn = jvmReturn;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("jvm-rule-data")
     public JVMRuleDataSpec getJvmRuleData() {
         return jvmRuleData;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("jvm-rule-data")
     public void setJvmRuleData(JVMRuleDataSpec jvmRuleData) {
         this.jvmRuleData = jvmRuleData;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("jvm-stress")
     public JVMStressSpec getJvmStress() {
         return jvmStress;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("jvm-stress")
     public void setJvmStress(JVMStressSpec jvmStress) {
         this.jvmStress = jvmStress;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("kafka-fill")
     public KafkaFillSpec getKafkaFill() {
         return kafkaFill;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("kafka-fill")
     public void setKafkaFill(KafkaFillSpec kafkaFill) {
         this.kafkaFill = kafkaFill;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("kafka-flood")
     public KafkaFloodSpec getKafkaFlood() {
         return kafkaFlood;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("kafka-flood")
     public void setKafkaFlood(KafkaFloodSpec kafkaFlood) {
         this.kafkaFlood = kafkaFlood;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("kafka-io")
     public KafkaIOSpec getKafkaIo() {
         return kafkaIo;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("kafka-io")
     public void setKafkaIo(KafkaIOSpec kafkaIo) {
         this.kafkaIo = kafkaIo;
     }
 
+    /**
+     * Mode defines the mode to run chaos action. Supported mode: one / all / fixed / fixed-percent / random-max-percent
+     */
     @JsonProperty("mode")
     public String getMode() {
         return mode;
     }
 
+    /**
+     * Mode defines the mode to run chaos action. Supported mode: one / all / fixed / fixed-percent / random-max-percent
+     */
     @JsonProperty("mode")
     public void setMode(String mode) {
         this.mode = mode;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("network-bandwidth")
     public NetworkBandwidthSpec getNetworkBandwidth() {
         return networkBandwidth;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("network-bandwidth")
     public void setNetworkBandwidth(NetworkBandwidthSpec networkBandwidth) {
         this.networkBandwidth = networkBandwidth;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("network-corrupt")
     public NetworkCorruptSpec getNetworkCorrupt() {
         return networkCorrupt;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("network-corrupt")
     public void setNetworkCorrupt(NetworkCorruptSpec networkCorrupt) {
         this.networkCorrupt = networkCorrupt;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("network-delay")
     public NetworkDelaySpec getNetworkDelay() {
         return networkDelay;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("network-delay")
     public void setNetworkDelay(NetworkDelaySpec networkDelay) {
         this.networkDelay = networkDelay;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("network-dns")
     public NetworkDNSSpec getNetworkDns() {
         return networkDns;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("network-dns")
     public void setNetworkDns(NetworkDNSSpec networkDns) {
         this.networkDns = networkDns;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("network-down")
     public NetworkDownSpec getNetworkDown() {
         return networkDown;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("network-down")
     public void setNetworkDown(NetworkDownSpec networkDown) {
         this.networkDown = networkDown;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("network-duplicate")
     public NetworkDuplicateSpec getNetworkDuplicate() {
         return networkDuplicate;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("network-duplicate")
     public void setNetworkDuplicate(NetworkDuplicateSpec networkDuplicate) {
         this.networkDuplicate = networkDuplicate;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("network-flood")
     public NetworkFloodSpec getNetworkFlood() {
         return networkFlood;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("network-flood")
     public void setNetworkFlood(NetworkFloodSpec networkFlood) {
         this.networkFlood = networkFlood;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("network-loss")
     public NetworkLossSpec getNetworkLoss() {
         return networkLoss;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("network-loss")
     public void setNetworkLoss(NetworkLossSpec networkLoss) {
         this.networkLoss = networkLoss;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("network-partition")
     public NetworkPartitionSpec getNetworkPartition() {
         return networkPartition;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("network-partition")
     public void setNetworkPartition(NetworkPartitionSpec networkPartition) {
         this.networkPartition = networkPartition;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("process")
     public ProcessSpec getProcess() {
         return process;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("process")
     public void setProcess(ProcessSpec process) {
         this.process = process;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("redis-cacheLimit")
     public RedisCacheLimitSpec getRedisCacheLimit() {
         return redisCacheLimit;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("redis-cacheLimit")
     public void setRedisCacheLimit(RedisCacheLimitSpec redisCacheLimit) {
         this.redisCacheLimit = redisCacheLimit;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("redis-expiration")
     public RedisExpirationSpec getRedisExpiration() {
         return redisExpiration;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("redis-expiration")
     public void setRedisExpiration(RedisExpirationSpec redisExpiration) {
         this.redisExpiration = redisExpiration;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("redis-penetration")
     public RedisPenetrationSpec getRedisPenetration() {
         return redisPenetration;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("redis-penetration")
     public void setRedisPenetration(RedisPenetrationSpec redisPenetration) {
         this.redisPenetration = redisPenetration;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("redis-restart")
     public RedisSentinelRestartSpec getRedisRestart() {
         return redisRestart;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("redis-restart")
     public void setRedisRestart(RedisSentinelRestartSpec redisRestart) {
         this.redisRestart = redisRestart;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("redis-stop")
     public RedisSentinelStopSpec getRedisStop() {
         return redisStop;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("redis-stop")
     public void setRedisStop(RedisSentinelStopSpec redisStop) {
         this.redisStop = redisStop;
     }
 
+    /**
+     * RemoteCluster represents the remote cluster where the chaos will be deployed
+     */
     @JsonProperty("remoteCluster")
     public String getRemoteCluster() {
         return remoteCluster;
     }
 
+    /**
+     * RemoteCluster represents the remote cluster where the chaos will be deployed
+     */
     @JsonProperty("remoteCluster")
     public void setRemoteCluster(String remoteCluster) {
         this.remoteCluster = remoteCluster;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("selector")
     public PhysicalMachineSelectorSpec getSelector() {
         return selector;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("selector")
     public void setSelector(PhysicalMachineSelectorSpec selector) {
         this.selector = selector;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("stress-cpu")
     public StressCPUSpec getStressCpu() {
         return stressCpu;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("stress-cpu")
     public void setStressCpu(StressCPUSpec stressCpu) {
         this.stressCpu = stressCpu;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("stress-mem")
     public StressMemorySpec getStressMem() {
         return stressMem;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("stress-mem")
     public void setStressMem(StressMemorySpec stressMem) {
         this.stressMem = stressMem;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("user_defined")
     public UserDefinedSpec getUserDefined() {
         return userDefined;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("user_defined")
     public void setUserDefined(UserDefinedSpec userDefined) {
         this.userDefined = userDefined;
     }
 
+    /**
+     * Value is required when the mode is set to `FixedMode` / `FixedPercentMode` / `RandomMaxPercentMode`. If `FixedMode`, provide an integer of physical machines to do chaos action. If `FixedPercentMode`, provide a number from 0-100 to specify the percent of physical machines the server can do chaos action. IF `RandomMaxPercentMode`,  provide a number from 0-100 to specify the max percent of pods to do chaos action
+     */
     @JsonProperty("value")
     public String getValue() {
         return value;
     }
 
+    /**
+     * Value is required when the mode is set to `FixedMode` / `FixedPercentMode` / `RandomMaxPercentMode`. If `FixedMode`, provide an integer of physical machines to do chaos action. If `FixedPercentMode`, provide a number from 0-100 to specify the percent of physical machines the server can do chaos action. IF `RandomMaxPercentMode`,  provide a number from 0-100 to specify the max percent of pods to do chaos action
+     */
     @JsonProperty("value")
     public void setValue(String value) {
         this.value = value;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("vm")
     public VMSpec getVm() {
         return vm;
     }
 
+    /**
+     * PhysicalMachineChaosSpec defines the desired state of PhysicalMachineChaos
+     */
     @JsonProperty("vm")
     public void setVm(VMSpec vm) {
         this.vm = vm;

@@ -78,11 +78,17 @@ public class TokenClaimMapping implements Editable<TokenClaimMappingBuilder>, Ku
         this.claim = claim;
     }
 
+    /**
+     * Claim is a JWT token claim to be used in the mapping
+     */
     @JsonProperty("claim")
     public String getClaim() {
         return claim;
     }
 
+    /**
+     * Claim is a JWT token claim to be used in the mapping
+     */
     @JsonProperty("claim")
     public void setClaim(String claim) {
         this.claim = claim;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * OSDisk defines the disk for machines on GCP.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class OSDisk implements Editable<OSDiskBuilder>, KubernetesResource
         this.encryptionKey = encryptionKey;
     }
 
+    /**
+     * DiskSizeGB defines the size of disk in GB. Defaulted internally to 128.
+     */
     @JsonProperty("diskSizeGB")
     public Long getDiskSizeGB() {
         return diskSizeGB;
     }
 
+    /**
+     * DiskSizeGB defines the size of disk in GB. Defaulted internally to 128.
+     */
     @JsonProperty("diskSizeGB")
     public void setDiskSizeGB(Long diskSizeGB) {
         this.diskSizeGB = diskSizeGB;
     }
 
+    /**
+     * DiskType defines the type of disk. The valid values are pd-standard and pd-ssd. Defaulted internally to pd-ssd.
+     */
     @JsonProperty("diskType")
     public String getDiskType() {
         return diskType;
     }
 
+    /**
+     * DiskType defines the type of disk. The valid values are pd-standard and pd-ssd. Defaulted internally to pd-ssd.
+     */
     @JsonProperty("diskType")
     public void setDiskType(String diskType) {
         this.diskType = diskType;
     }
 
+    /**
+     * OSDisk defines the disk for machines on GCP.
+     */
     @JsonProperty("encryptionKey")
     public EncryptionKeyReference getEncryptionKey() {
         return encryptionKey;
     }
 
+    /**
+     * OSDisk defines the disk for machines on GCP.
+     */
     @JsonProperty("encryptionKey")
     public void setEncryptionKey(EncryptionKeyReference encryptionKey) {
         this.encryptionKey = encryptionKey;

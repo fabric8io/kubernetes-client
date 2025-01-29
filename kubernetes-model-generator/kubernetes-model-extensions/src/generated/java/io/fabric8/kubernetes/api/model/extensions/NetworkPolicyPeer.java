@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DEPRECATED 1.9 - This group version of NetworkPolicyPeer is deprecated by networking/v1/NetworkPolicyPeer.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class NetworkPolicyPeer implements Editable<NetworkPolicyPeerBuilder>, Ku
         this.podSelector = podSelector;
     }
 
+    /**
+     * DEPRECATED 1.9 - This group version of NetworkPolicyPeer is deprecated by networking/v1/NetworkPolicyPeer.
+     */
     @JsonProperty("ipBlock")
     public IPBlock getIpBlock() {
         return ipBlock;
     }
 
+    /**
+     * DEPRECATED 1.9 - This group version of NetworkPolicyPeer is deprecated by networking/v1/NetworkPolicyPeer.
+     */
     @JsonProperty("ipBlock")
     public void setIpBlock(IPBlock ipBlock) {
         this.ipBlock = ipBlock;
     }
 
+    /**
+     * DEPRECATED 1.9 - This group version of NetworkPolicyPeer is deprecated by networking/v1/NetworkPolicyPeer.
+     */
     @JsonProperty("namespaceSelector")
     public LabelSelector getNamespaceSelector() {
         return namespaceSelector;
     }
 
+    /**
+     * DEPRECATED 1.9 - This group version of NetworkPolicyPeer is deprecated by networking/v1/NetworkPolicyPeer.
+     */
     @JsonProperty("namespaceSelector")
     public void setNamespaceSelector(LabelSelector namespaceSelector) {
         this.namespaceSelector = namespaceSelector;
     }
 
+    /**
+     * DEPRECATED 1.9 - This group version of NetworkPolicyPeer is deprecated by networking/v1/NetworkPolicyPeer.
+     */
     @JsonProperty("podSelector")
     public LabelSelector getPodSelector() {
         return podSelector;
     }
 
+    /**
+     * DEPRECATED 1.9 - This group version of NetworkPolicyPeer is deprecated by networking/v1/NetworkPolicyPeer.
+     */
     @JsonProperty("podSelector")
     public void setPodSelector(LabelSelector podSelector) {
         this.podSelector = podSelector;

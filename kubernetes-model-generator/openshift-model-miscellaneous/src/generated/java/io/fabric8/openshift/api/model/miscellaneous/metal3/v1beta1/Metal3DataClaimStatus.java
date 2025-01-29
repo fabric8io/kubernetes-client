@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Metal3DataClaimStatus defines the observed state of Metal3DataClaim.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class Metal3DataClaimStatus implements Editable<Metal3DataClaimStatusBuil
         this.renderedData = renderedData;
     }
 
+    /**
+     * ErrorMessage contains the error message
+     */
     @JsonProperty("errorMessage")
     public String getErrorMessage() {
         return errorMessage;
     }
 
+    /**
+     * ErrorMessage contains the error message
+     */
     @JsonProperty("errorMessage")
     public void setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
     }
 
+    /**
+     * Metal3DataClaimStatus defines the observed state of Metal3DataClaim.
+     */
     @JsonProperty("renderedData")
     public ObjectReference getRenderedData() {
         return renderedData;
     }
 
+    /**
+     * Metal3DataClaimStatus defines the observed state of Metal3DataClaim.
+     */
     @JsonProperty("renderedData")
     public void setRenderedData(ObjectReference renderedData) {
         this.renderedData = renderedData;

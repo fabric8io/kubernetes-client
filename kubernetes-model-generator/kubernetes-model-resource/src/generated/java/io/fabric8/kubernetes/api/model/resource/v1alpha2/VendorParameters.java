@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * VendorParameters are opaque parameters for one particular driver.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -83,21 +86,33 @@ public class VendorParameters implements Editable<VendorParametersBuilder>, Kube
         this.parameters = parameters;
     }
 
+    /**
+     * DriverName is the name used by the DRA driver kubelet plugin.
+     */
     @JsonProperty("driverName")
     public String getDriverName() {
         return driverName;
     }
 
+    /**
+     * DriverName is the name used by the DRA driver kubelet plugin.
+     */
     @JsonProperty("driverName")
     public void setDriverName(String driverName) {
         this.driverName = driverName;
     }
 
+    /**
+     * VendorParameters are opaque parameters for one particular driver.
+     */
     @JsonProperty("parameters")
     public Object getParameters() {
         return parameters;
     }
 
+    /**
+     * VendorParameters are opaque parameters for one particular driver.
+     */
     @JsonProperty("parameters")
     @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
     public void setParameters(Object parameters) {

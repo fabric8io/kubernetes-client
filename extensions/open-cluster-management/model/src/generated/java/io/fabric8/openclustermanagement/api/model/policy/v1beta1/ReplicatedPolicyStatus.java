@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ReplicatedPolicyStatus defines the replicated policy status.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -89,32 +92,50 @@ public class ReplicatedPolicyStatus implements Editable<ReplicatedPolicyStatusBu
         this.violationMessage = violationMessage;
     }
 
+    /**
+     * ReplicatedPolicyStatus defines the replicated policy status.
+     */
     @JsonProperty("compliant")
     public String getCompliant() {
         return compliant;
     }
 
+    /**
+     * ReplicatedPolicyStatus defines the replicated policy status.
+     */
     @JsonProperty("compliant")
     public void setCompliant(String compliant) {
         this.compliant = compliant;
     }
 
+    /**
+     * used by replicated policy
+     */
     @JsonProperty("details")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ReplicatedDetailsPerTemplate> getDetails() {
         return details;
     }
 
+    /**
+     * used by replicated policy
+     */
     @JsonProperty("details")
     public void setDetails(List<ReplicatedDetailsPerTemplate> details) {
         this.details = details;
     }
 
+    /**
+     * used by replicated policy
+     */
     @JsonProperty("violation_message")
     public String getViolationMessage() {
         return violationMessage;
     }
 
+    /**
+     * used by replicated policy
+     */
     @JsonProperty("violation_message")
     public void setViolationMessage(String violationMessage) {
         this.violationMessage = violationMessage;

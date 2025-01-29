@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PodSecurityPolicyReviewSpec defines specification for PodSecurityPolicyReview
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class PodSecurityPolicyReviewSpec implements Editable<PodSecurityPolicyRe
         this.template = template;
     }
 
+    /**
+     * serviceAccountNames is an optional set of ServiceAccounts to run the check with. If serviceAccountNames is empty, the template.spec.serviceAccountName is used, unless it's empty, in which case "default" is used instead. If serviceAccountNames is specified, template.spec.serviceAccountName is ignored.
+     */
     @JsonProperty("serviceAccountNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getServiceAccountNames() {
         return serviceAccountNames;
     }
 
+    /**
+     * serviceAccountNames is an optional set of ServiceAccounts to run the check with. If serviceAccountNames is empty, the template.spec.serviceAccountName is used, unless it's empty, in which case "default" is used instead. If serviceAccountNames is specified, template.spec.serviceAccountName is ignored.
+     */
     @JsonProperty("serviceAccountNames")
     public void setServiceAccountNames(List<String> serviceAccountNames) {
         this.serviceAccountNames = serviceAccountNames;
     }
 
+    /**
+     * PodSecurityPolicyReviewSpec defines specification for PodSecurityPolicyReview
+     */
     @JsonProperty("template")
     public PodTemplateSpec getTemplate() {
         return template;
     }
 
+    /**
+     * PodSecurityPolicyReviewSpec defines specification for PodSecurityPolicyReview
+     */
     @JsonProperty("template")
     public void setTemplate(PodTemplateSpec template) {
         this.template = template;

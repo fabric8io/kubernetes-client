@@ -112,41 +112,65 @@ public class KubeControllerManagerSpec implements Editable<KubeControllerManager
         this.useMoreSecureServiceCA = useMoreSecureServiceCA;
     }
 
+    /**
+     * failedRevisionLimit is the number of failed static pod installer revisions to keep on disk and in the api -1 = unlimited, 0 or unset = 5 (default)
+     */
     @JsonProperty("failedRevisionLimit")
     public Integer getFailedRevisionLimit() {
         return failedRevisionLimit;
     }
 
+    /**
+     * failedRevisionLimit is the number of failed static pod installer revisions to keep on disk and in the api -1 = unlimited, 0 or unset = 5 (default)
+     */
     @JsonProperty("failedRevisionLimit")
     public void setFailedRevisionLimit(Integer failedRevisionLimit) {
         this.failedRevisionLimit = failedRevisionLimit;
     }
 
+    /**
+     * forceRedeploymentReason can be used to force the redeployment of the operand by providing a unique string. This provides a mechanism to kick a previously failed deployment and provide a reason why you think it will work this time instead of failing again on the same config.
+     */
     @JsonProperty("forceRedeploymentReason")
     public String getForceRedeploymentReason() {
         return forceRedeploymentReason;
     }
 
+    /**
+     * forceRedeploymentReason can be used to force the redeployment of the operand by providing a unique string. This provides a mechanism to kick a previously failed deployment and provide a reason why you think it will work this time instead of failing again on the same config.
+     */
     @JsonProperty("forceRedeploymentReason")
     public void setForceRedeploymentReason(String forceRedeploymentReason) {
         this.forceRedeploymentReason = forceRedeploymentReason;
     }
 
+    /**
+     * logLevel is an intent based logging for an overall component.  It does not give fine grained control, but it is a simple way to manage coarse grained logging choices that operators have to interpret for their operands.<br><p> <br><p> Valid values are: "Normal", "Debug", "Trace", "TraceAll". Defaults to "Normal".
+     */
     @JsonProperty("logLevel")
     public String getLogLevel() {
         return logLevel;
     }
 
+    /**
+     * logLevel is an intent based logging for an overall component.  It does not give fine grained control, but it is a simple way to manage coarse grained logging choices that operators have to interpret for their operands.<br><p> <br><p> Valid values are: "Normal", "Debug", "Trace", "TraceAll". Defaults to "Normal".
+     */
     @JsonProperty("logLevel")
     public void setLogLevel(String logLevel) {
         this.logLevel = logLevel;
     }
 
+    /**
+     * managementState indicates whether and how the operator should manage the component
+     */
     @JsonProperty("managementState")
     public String getManagementState() {
         return managementState;
     }
 
+    /**
+     * managementState indicates whether and how the operator should manage the component
+     */
     @JsonProperty("managementState")
     public void setManagementState(String managementState) {
         this.managementState = managementState;
@@ -163,21 +187,33 @@ public class KubeControllerManagerSpec implements Editable<KubeControllerManager
         this.observedConfig = observedConfig;
     }
 
+    /**
+     * operatorLogLevel is an intent based logging for the operator itself.  It does not give fine grained control, but it is a simple way to manage coarse grained logging choices that operators have to interpret for themselves.<br><p> <br><p> Valid values are: "Normal", "Debug", "Trace", "TraceAll". Defaults to "Normal".
+     */
     @JsonProperty("operatorLogLevel")
     public String getOperatorLogLevel() {
         return operatorLogLevel;
     }
 
+    /**
+     * operatorLogLevel is an intent based logging for the operator itself.  It does not give fine grained control, but it is a simple way to manage coarse grained logging choices that operators have to interpret for themselves.<br><p> <br><p> Valid values are: "Normal", "Debug", "Trace", "TraceAll". Defaults to "Normal".
+     */
     @JsonProperty("operatorLogLevel")
     public void setOperatorLogLevel(String operatorLogLevel) {
         this.operatorLogLevel = operatorLogLevel;
     }
 
+    /**
+     * succeededRevisionLimit is the number of successful static pod installer revisions to keep on disk and in the api -1 = unlimited, 0 or unset = 5 (default)
+     */
     @JsonProperty("succeededRevisionLimit")
     public Integer getSucceededRevisionLimit() {
         return succeededRevisionLimit;
     }
 
+    /**
+     * succeededRevisionLimit is the number of successful static pod installer revisions to keep on disk and in the api -1 = unlimited, 0 or unset = 5 (default)
+     */
     @JsonProperty("succeededRevisionLimit")
     public void setSucceededRevisionLimit(Integer succeededRevisionLimit) {
         this.succeededRevisionLimit = succeededRevisionLimit;
@@ -194,11 +230,17 @@ public class KubeControllerManagerSpec implements Editable<KubeControllerManager
         this.unsupportedConfigOverrides = unsupportedConfigOverrides;
     }
 
+    /**
+     * useMoreSecureServiceCA indicates that the service-ca.crt provided in SA token volumes should include only enough certificates to validate service serving certificates. Once set to true, it cannot be set to false. Even if someone finds a way to set it back to false, the service-ca.crt files that previously existed will only have the more secure content.
+     */
     @JsonProperty("useMoreSecureServiceCA")
     public Boolean getUseMoreSecureServiceCA() {
         return useMoreSecureServiceCA;
     }
 
+    /**
+     * useMoreSecureServiceCA indicates that the service-ca.crt provided in SA token volumes should include only enough certificates to validate service serving certificates. Once set to true, it cannot be set to false. Even if someone finds a way to set it back to false, the service-ca.crt files that previously existed will only have the more secure content.
+     */
     @JsonProperty("useMoreSecureServiceCA")
     public void setUseMoreSecureServiceCA(Boolean useMoreSecureServiceCA) {
         this.useMoreSecureServiceCA = useMoreSecureServiceCA;

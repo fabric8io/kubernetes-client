@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * GoogleIdentityProvider provides identities for users authenticating using Google credentials
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class GoogleIdentityProvider implements Editable<GoogleIdentityProviderBu
         this.hostedDomain = hostedDomain;
     }
 
+    /**
+     * clientID is the oauth client ID
+     */
     @JsonProperty("clientID")
     public String getClientID() {
         return clientID;
     }
 
+    /**
+     * clientID is the oauth client ID
+     */
     @JsonProperty("clientID")
     public void setClientID(String clientID) {
         this.clientID = clientID;
     }
 
+    /**
+     * GoogleIdentityProvider provides identities for users authenticating using Google credentials
+     */
     @JsonProperty("clientSecret")
     public SecretNameReference getClientSecret() {
         return clientSecret;
     }
 
+    /**
+     * GoogleIdentityProvider provides identities for users authenticating using Google credentials
+     */
     @JsonProperty("clientSecret")
     public void setClientSecret(SecretNameReference clientSecret) {
         this.clientSecret = clientSecret;
     }
 
+    /**
+     * hostedDomain is the optional Google App domain (e.g. "mycompany.com") to restrict logins to
+     */
     @JsonProperty("hostedDomain")
     public String getHostedDomain() {
         return hostedDomain;
     }
 
+    /**
+     * hostedDomain is the optional Google App domain (e.g. "mycompany.com") to restrict logins to
+     */
     @JsonProperty("hostedDomain")
     public void setHostedDomain(String hostedDomain) {
         this.hostedDomain = hostedDomain;

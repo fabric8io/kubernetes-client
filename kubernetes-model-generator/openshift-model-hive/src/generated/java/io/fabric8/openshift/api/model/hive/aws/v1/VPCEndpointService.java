@@ -93,22 +93,34 @@ public class VPCEndpointService implements Editable<VPCEndpointServiceBuilder>, 
         this.name = name;
     }
 
+    /**
+     * AdditionalAllowedPrincipals is a list of additional allowed principal ARNs that have been configured for the Private Link cluster's VPC Endpoint Service. This list in Status is used to determine if a sync of Allowed Principals is needed outside of the regular reconcile period of 2hrs.
+     */
     @JsonProperty("additionalAllowedPrincipals")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getAdditionalAllowedPrincipals() {
         return additionalAllowedPrincipals;
     }
 
+    /**
+     * AdditionalAllowedPrincipals is a list of additional allowed principal ARNs that have been configured for the Private Link cluster's VPC Endpoint Service. This list in Status is used to determine if a sync of Allowed Principals is needed outside of the regular reconcile period of 2hrs.
+     */
     @JsonProperty("additionalAllowedPrincipals")
     public void setAdditionalAllowedPrincipals(List<String> additionalAllowedPrincipals) {
         this.additionalAllowedPrincipals = additionalAllowedPrincipals;
     }
 
+    /**
+     * DefaultAllowedPrincipal is the ARN of the IAM entity used by Hive as configured for the Private Link cluster's VPC Endpoint Service.
+     */
     @JsonProperty("defaultAllowedPrincipal")
     public String getDefaultAllowedPrincipal() {
         return defaultAllowedPrincipal;
     }
 
+    /**
+     * DefaultAllowedPrincipal is the ARN of the IAM entity used by Hive as configured for the Private Link cluster's VPC Endpoint Service.
+     */
     @JsonProperty("defaultAllowedPrincipal")
     public void setDefaultAllowedPrincipal(String defaultAllowedPrincipal) {
         this.defaultAllowedPrincipal = defaultAllowedPrincipal;

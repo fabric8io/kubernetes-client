@@ -90,21 +90,33 @@ public class Timer implements Editable<TimerBuilder>, KubernetesResource
         this.repeatCount = repeatCount;
     }
 
+    /**
+     * Message to generate
+     */
     @JsonProperty("contentType")
     public String getContentType() {
         return contentType;
     }
 
+    /**
+     * Message to generate
+     */
     @JsonProperty("contentType")
     public void setContentType(String contentType) {
         this.contentType = contentType;
     }
 
+    /**
+     * Interval (in milliseconds) between producing messages
+     */
     @JsonProperty("message")
     public String getMessage() {
         return message;
     }
 
+    /**
+     * Interval (in milliseconds) between producing messages
+     */
     @JsonProperty("message")
     public void setMessage(String message) {
         this.message = message;
@@ -120,11 +132,17 @@ public class Timer implements Editable<TimerBuilder>, KubernetesResource
         this.period = period;
     }
 
+    /**
+     * Content type of generated message
+     */
     @JsonProperty("repeatCount")
     public Integer getRepeatCount() {
         return repeatCount;
     }
 
+    /**
+     * Content type of generated message
+     */
     @JsonProperty("repeatCount")
     public void setRepeatCount(Integer repeatCount) {
         this.repeatCount = repeatCount;

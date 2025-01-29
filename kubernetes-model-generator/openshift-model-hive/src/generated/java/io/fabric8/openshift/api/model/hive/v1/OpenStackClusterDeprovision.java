@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * OpenStackClusterDeprovision contains OpenStack-specific configuration for a ClusterDeprovision
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class OpenStackClusterDeprovision implements Editable<OpenStackClusterDep
         this.credentialsSecretRef = credentialsSecretRef;
     }
 
+    /**
+     * OpenStackClusterDeprovision contains OpenStack-specific configuration for a ClusterDeprovision
+     */
     @JsonProperty("certificatesSecretRef")
     public LocalObjectReference getCertificatesSecretRef() {
         return certificatesSecretRef;
     }
 
+    /**
+     * OpenStackClusterDeprovision contains OpenStack-specific configuration for a ClusterDeprovision
+     */
     @JsonProperty("certificatesSecretRef")
     public void setCertificatesSecretRef(LocalObjectReference certificatesSecretRef) {
         this.certificatesSecretRef = certificatesSecretRef;
     }
 
+    /**
+     * Cloud is the secion in the clouds.yaml secret below to use for auth/connectivity.
+     */
     @JsonProperty("cloud")
     public String getCloud() {
         return cloud;
     }
 
+    /**
+     * Cloud is the secion in the clouds.yaml secret below to use for auth/connectivity.
+     */
     @JsonProperty("cloud")
     public void setCloud(String cloud) {
         this.cloud = cloud;
     }
 
+    /**
+     * OpenStackClusterDeprovision contains OpenStack-specific configuration for a ClusterDeprovision
+     */
     @JsonProperty("credentialsSecretRef")
     public LocalObjectReference getCredentialsSecretRef() {
         return credentialsSecretRef;
     }
 
+    /**
+     * OpenStackClusterDeprovision contains OpenStack-specific configuration for a ClusterDeprovision
+     */
     @JsonProperty("credentialsSecretRef")
     public void setCredentialsSecretRef(LocalObjectReference credentialsSecretRef) {
         this.credentialsSecretRef = credentialsSecretRef;

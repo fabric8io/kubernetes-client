@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * RedirectReference specifies the target in the current namespace that resolves into redirect URIs.  Only the 'Route' kind is currently allowed.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class RedirectReference implements Editable<RedirectReferenceBuilder>, Ku
         this.name = name;
     }
 
+    /**
+     * The group of the target that is being referred to.
+     */
     @JsonProperty("group")
     public String getGroup() {
         return group;
     }
 
+    /**
+     * The group of the target that is being referred to.
+     */
     @JsonProperty("group")
     public void setGroup(String group) {
         this.group = group;
     }
 
+    /**
+     * The kind of the target that is being referred to.  Currently, only 'Route' is allowed.
+     */
     @JsonProperty("kind")
     public String getKind() {
         return kind;
     }
 
+    /**
+     * The kind of the target that is being referred to.  Currently, only 'Route' is allowed.
+     */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * The name of the target that is being referred to. e.g. name of the Route.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * The name of the target that is being referred to. e.g. name of the Route.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

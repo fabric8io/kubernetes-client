@@ -36,6 +36,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * GitLabSourceSpec defines the desired state of GitLabSource
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -111,82 +114,130 @@ public class GitLabSourceSpec implements Editable<GitLabSourceSpecBuilder>, Kube
         this.sslverify = sslverify;
     }
 
+    /**
+     * GitLabSourceSpec defines the desired state of GitLabSource
+     */
     @JsonProperty("accessToken")
     public SecretValueFromSource getAccessToken() {
         return accessToken;
     }
 
+    /**
+     * GitLabSourceSpec defines the desired state of GitLabSource
+     */
     @JsonProperty("accessToken")
     public void setAccessToken(SecretValueFromSource accessToken) {
         this.accessToken = accessToken;
     }
 
+    /**
+     * GitLabSourceSpec defines the desired state of GitLabSource
+     */
     @JsonProperty("ceOverrides")
     public CloudEventOverrides getCeOverrides() {
         return ceOverrides;
     }
 
+    /**
+     * GitLabSourceSpec defines the desired state of GitLabSource
+     */
     @JsonProperty("ceOverrides")
     public void setCeOverrides(CloudEventOverrides ceOverrides) {
         this.ceOverrides = ceOverrides;
     }
 
+    /**
+     * List of webhooks to enable on the selected GitLab project. Those correspond to the attributes enumerated at https://docs.gitlab.com/ee/api/projects.html#add-project-hook
+     */
     @JsonProperty("eventTypes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getEventTypes() {
         return eventTypes;
     }
 
+    /**
+     * List of webhooks to enable on the selected GitLab project. Those correspond to the attributes enumerated at https://docs.gitlab.com/ee/api/projects.html#add-project-hook
+     */
     @JsonProperty("eventTypes")
     public void setEventTypes(List<String> eventTypes) {
         this.eventTypes = eventTypes;
     }
 
+    /**
+     * ProjectURL is the url of the GitLab project for which we are interested to receive events from. Examples:<br><p>   https://gitlab.com/gitlab-org/gitlab-foss
+     */
     @JsonProperty("projectUrl")
     public String getProjectUrl() {
         return projectUrl;
     }
 
+    /**
+     * ProjectURL is the url of the GitLab project for which we are interested to receive events from. Examples:<br><p>   https://gitlab.com/gitlab-org/gitlab-foss
+     */
     @JsonProperty("projectUrl")
     public void setProjectUrl(String projectUrl) {
         this.projectUrl = projectUrl;
     }
 
+    /**
+     * GitLabSourceSpec defines the desired state of GitLabSource
+     */
     @JsonProperty("secretToken")
     public SecretValueFromSource getSecretToken() {
         return secretToken;
     }
 
+    /**
+     * GitLabSourceSpec defines the desired state of GitLabSource
+     */
     @JsonProperty("secretToken")
     public void setSecretToken(SecretValueFromSource secretToken) {
         this.secretToken = secretToken;
     }
 
+    /**
+     * ServiceAccountName holds the name of the Kubernetes service account as which the underlying K8s resources should be run. If unspecified this will default to the "default" service account for the namespace in which the GitLabSource exists.
+     */
     @JsonProperty("serviceAccountName")
     public String getServiceAccountName() {
         return serviceAccountName;
     }
 
+    /**
+     * ServiceAccountName holds the name of the Kubernetes service account as which the underlying K8s resources should be run. If unspecified this will default to the "default" service account for the namespace in which the GitLabSource exists.
+     */
     @JsonProperty("serviceAccountName")
     public void setServiceAccountName(String serviceAccountName) {
         this.serviceAccountName = serviceAccountName;
     }
 
+    /**
+     * GitLabSourceSpec defines the desired state of GitLabSource
+     */
     @JsonProperty("sink")
     public Destination getSink() {
         return sink;
     }
 
+    /**
+     * GitLabSourceSpec defines the desired state of GitLabSource
+     */
     @JsonProperty("sink")
     public void setSink(Destination sink) {
         this.sink = sink;
     }
 
+    /**
+     * SSLVerify if true configure webhook so the ssl verification is done when triggering the hook
+     */
     @JsonProperty("sslverify")
     public Boolean getSslverify() {
         return sslverify;
     }
 
+    /**
+     * SSLVerify if true configure webhook so the ssl verification is done when triggering the hook
+     */
     @JsonProperty("sslverify")
     public void setSslverify(Boolean sslverify) {
         this.sslverify = sslverify;

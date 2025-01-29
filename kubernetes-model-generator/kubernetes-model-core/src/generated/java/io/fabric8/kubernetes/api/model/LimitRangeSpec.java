@@ -19,6 +19,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * LimitRangeSpec defines a min/max usage limit for resources that match on kind.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -52,12 +55,18 @@ public class LimitRangeSpec implements Editable<LimitRangeSpecBuilder>, Kubernet
         this.limits = limits;
     }
 
+    /**
+     * Limits is the list of LimitRangeItem objects that are enforced.
+     */
     @JsonProperty("limits")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<LimitRangeItem> getLimits() {
         return limits;
     }
 
+    /**
+     * Limits is the list of LimitRangeItem objects that are enforced.
+     */
     @JsonProperty("limits")
     public void setLimits(List<LimitRangeItem> limits) {
         this.limits = limits;

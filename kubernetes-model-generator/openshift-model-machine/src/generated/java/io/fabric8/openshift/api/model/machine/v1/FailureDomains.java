@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * FailureDomain represents the different configurations required to spread Machines across failure domains on different platforms.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -110,77 +113,119 @@ public class FailureDomains implements Editable<FailureDomainsBuilder>, Kubernet
         this.vsphere = vsphere;
     }
 
+    /**
+     * AWS configures failure domain information for the AWS platform.
+     */
     @JsonProperty("aws")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<AWSFailureDomain> getAws() {
         return aws;
     }
 
+    /**
+     * AWS configures failure domain information for the AWS platform.
+     */
     @JsonProperty("aws")
     public void setAws(List<AWSFailureDomain> aws) {
         this.aws = aws;
     }
 
+    /**
+     * Azure configures failure domain information for the Azure platform.
+     */
     @JsonProperty("azure")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<AzureFailureDomain> getAzure() {
         return azure;
     }
 
+    /**
+     * Azure configures failure domain information for the Azure platform.
+     */
     @JsonProperty("azure")
     public void setAzure(List<AzureFailureDomain> azure) {
         this.azure = azure;
     }
 
+    /**
+     * GCP configures failure domain information for the GCP platform.
+     */
     @JsonProperty("gcp")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<GCPFailureDomain> getGcp() {
         return gcp;
     }
 
+    /**
+     * GCP configures failure domain information for the GCP platform.
+     */
     @JsonProperty("gcp")
     public void setGcp(List<GCPFailureDomain> gcp) {
         this.gcp = gcp;
     }
 
+    /**
+     * nutanix configures failure domain information for the Nutanix platform.
+     */
     @JsonProperty("nutanix")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NutanixFailureDomainReference> getNutanix() {
         return nutanix;
     }
 
+    /**
+     * nutanix configures failure domain information for the Nutanix platform.
+     */
     @JsonProperty("nutanix")
     public void setNutanix(List<NutanixFailureDomainReference> nutanix) {
         this.nutanix = nutanix;
     }
 
+    /**
+     * OpenStack configures failure domain information for the OpenStack platform.
+     */
     @JsonProperty("openstack")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<OpenStackFailureDomain> getOpenstack() {
         return openstack;
     }
 
+    /**
+     * OpenStack configures failure domain information for the OpenStack platform.
+     */
     @JsonProperty("openstack")
     public void setOpenstack(List<OpenStackFailureDomain> openstack) {
         this.openstack = openstack;
     }
 
+    /**
+     * Platform identifies the platform for which the FailureDomain represents. Currently supported values are AWS, Azure, GCP, OpenStack, VSphere and Nutanix.
+     */
     @JsonProperty("platform")
     public String getPlatform() {
         return platform;
     }
 
+    /**
+     * Platform identifies the platform for which the FailureDomain represents. Currently supported values are AWS, Azure, GCP, OpenStack, VSphere and Nutanix.
+     */
     @JsonProperty("platform")
     public void setPlatform(String platform) {
         this.platform = platform;
     }
 
+    /**
+     * vsphere configures failure domain information for the VSphere platform.
+     */
     @JsonProperty("vsphere")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<VSphereFailureDomain> getVsphere() {
         return vsphere;
     }
 
+    /**
+     * vsphere configures failure domain information for the VSphere platform.
+     */
     @JsonProperty("vsphere")
     public void setVsphere(List<VSphereFailureDomain> vsphere) {
         this.vsphere = vsphere;

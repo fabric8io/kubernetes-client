@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * JVMParameter represents the detail about jvm chaos action definition
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -134,151 +137,241 @@ public class JVMParameter implements Editable<JVMParameterBuilder>, KubernetesRe
         this.table = table;
     }
 
+    /**
+     * Java class
+     */
     @JsonProperty("class")
     public String getClassName() {
         return className;
     }
 
+    /**
+     * Java class
+     */
     @JsonProperty("class")
     public void setClassName(String className) {
         this.className = className;
     }
 
+    /**
+     * the CPU core number needs to use, only set it when action is stress
+     */
     @JsonProperty("cpuCount")
     public Integer getCpuCount() {
         return cpuCount;
     }
 
+    /**
+     * the CPU core number needs to use, only set it when action is stress
+     */
     @JsonProperty("cpuCount")
     public void setCpuCount(Integer cpuCount) {
         this.cpuCount = cpuCount;
     }
 
+    /**
+     * the match database default value is "", means match all database
+     */
     @JsonProperty("database")
     public String getDatabase() {
         return database;
     }
 
+    /**
+     * the match database default value is "", means match all database
+     */
     @JsonProperty("database")
     public void setDatabase(String database) {
         this.database = database;
     }
 
+    /**
+     * the exception which needs to throw for action `exception` or the exception message needs to throw in action `mysql`
+     */
     @JsonProperty("exception")
     public String getException() {
         return exception;
     }
 
+    /**
+     * the exception which needs to throw for action `exception` or the exception message needs to throw in action `mysql`
+     */
     @JsonProperty("exception")
     public void setException(String exception) {
         this.exception = exception;
     }
 
+    /**
+     * the latency duration for action 'latency', unit ms or the latency duration in action `mysql`
+     */
     @JsonProperty("latency")
     public Integer getLatency() {
         return latency;
     }
 
+    /**
+     * the latency duration for action 'latency', unit ms or the latency duration in action `mysql`
+     */
     @JsonProperty("latency")
     public void setLatency(Integer latency) {
         this.latency = latency;
     }
 
+    /**
+     * the memory type needs to locate, only set it when action is stress, the value can be 'stack' or 'heap'
+     */
     @JsonProperty("memType")
     public String getMemType() {
         return memType;
     }
 
+    /**
+     * the memory type needs to locate, only set it when action is stress, the value can be 'stack' or 'heap'
+     */
     @JsonProperty("memType")
     public void setMemType(String memType) {
         this.memType = memType;
     }
 
+    /**
+     * the method in Java class
+     */
     @JsonProperty("method")
     public String getMethod() {
         return method;
     }
 
+    /**
+     * the method in Java class
+     */
     @JsonProperty("method")
     public void setMethod(String method) {
         this.method = method;
     }
 
+    /**
+     * the version of mysql-connector-java, only support 5.X.X(set to "5") and 8.X.X(set to "8") now
+     */
     @JsonProperty("mysqlConnectorVersion")
     public String getMysqlConnectorVersion() {
         return mysqlConnectorVersion;
     }
 
+    /**
+     * the version of mysql-connector-java, only support 5.X.X(set to "5") and 8.X.X(set to "8") now
+     */
     @JsonProperty("mysqlConnectorVersion")
     public void setMysqlConnectorVersion(String mysqlConnectorVersion) {
         this.mysqlConnectorVersion = mysqlConnectorVersion;
     }
 
+    /**
+     * byteman rule name, should be unique, and will generate one if not set
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * byteman rule name, should be unique, and will generate one if not set
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * the pid of Java process which needs to attach
+     */
     @JsonProperty("pid")
     public Integer getPid() {
         return pid;
     }
 
+    /**
+     * the pid of Java process which needs to attach
+     */
     @JsonProperty("pid")
     public void setPid(Integer pid) {
         this.pid = pid;
     }
 
+    /**
+     * the port of agent server, default 9277
+     */
     @JsonProperty("port")
     public Integer getPort() {
         return port;
     }
 
+    /**
+     * the port of agent server, default 9277
+     */
     @JsonProperty("port")
     public void setPort(Integer port) {
         this.port = port;
     }
 
+    /**
+     * the return value for action 'return'
+     */
     @JsonProperty("returnValue")
     public String getReturnValue() {
         return returnValue;
     }
 
+    /**
+     * the return value for action 'return'
+     */
     @JsonProperty("returnValue")
     public void setReturnValue(String returnValue) {
         this.returnValue = returnValue;
     }
 
+    /**
+     * the byteman rule's data for action 'ruleData'
+     */
     @JsonProperty("ruleData")
     public String getRuleData() {
         return ruleData;
     }
 
+    /**
+     * the byteman rule's data for action 'ruleData'
+     */
     @JsonProperty("ruleData")
     public void setRuleData(String ruleData) {
         this.ruleData = ruleData;
     }
 
+    /**
+     * the match sql type default value is "", means match all SQL type. The value can be 'select', 'insert', 'update', 'delete', 'replace'.
+     */
     @JsonProperty("sqlType")
     public String getSqlType() {
         return sqlType;
     }
 
+    /**
+     * the match sql type default value is "", means match all SQL type. The value can be 'select', 'insert', 'update', 'delete', 'replace'.
+     */
     @JsonProperty("sqlType")
     public void setSqlType(String sqlType) {
         this.sqlType = sqlType;
     }
 
+    /**
+     * the match table default value is "", means match all table
+     */
     @JsonProperty("table")
     public String getTable() {
         return table;
     }
 
+    /**
+     * the match table default value is "", means match all table
+     */
     @JsonProperty("table")
     public void setTable(String table) {
         this.table = table;

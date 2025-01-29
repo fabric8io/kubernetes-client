@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Platform stores all the global configuration that all machinesets use.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -180,254 +183,404 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
         this.provisioningNetworkInterface = provisioningNetworkInterface;
     }
 
+    /**
+     * DeprecatedAPIVIP is the VIP to use for internal API communication Deprecated: Use APIVIPs
+     */
     @JsonProperty("apiVIP")
     public String getApiVIP() {
         return apiVIP;
     }
 
+    /**
+     * DeprecatedAPIVIP is the VIP to use for internal API communication Deprecated: Use APIVIPs
+     */
     @JsonProperty("apiVIP")
     public void setApiVIP(String apiVIP) {
         this.apiVIP = apiVIP;
     }
 
+    /**
+     * APIVIPs contains the VIP(s) to use for internal API communication. In dual stack clusters it contains an IPv4 and IPv6 address, otherwise only one VIP
+     */
     @JsonProperty("apiVIPs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getApiVIPs() {
         return apiVIPs;
     }
 
+    /**
+     * APIVIPs contains the VIP(s) to use for internal API communication. In dual stack clusters it contains an IPv4 and IPv6 address, otherwise only one VIP
+     */
     @JsonProperty("apiVIPs")
     public void setApiVIPs(List<String> apiVIPs) {
         this.apiVIPs = apiVIPs;
     }
 
+    /**
+     * BootstrapExternalStaticDNS is the static network DNS of the bootstrap node. This can be useful in environments without a DHCP server.
+     */
     @JsonProperty("bootstrapExternalStaticDNS")
     public String getBootstrapExternalStaticDNS() {
         return bootstrapExternalStaticDNS;
     }
 
+    /**
+     * BootstrapExternalStaticDNS is the static network DNS of the bootstrap node. This can be useful in environments without a DHCP server.
+     */
     @JsonProperty("bootstrapExternalStaticDNS")
     public void setBootstrapExternalStaticDNS(String bootstrapExternalStaticDNS) {
         this.bootstrapExternalStaticDNS = bootstrapExternalStaticDNS;
     }
 
+    /**
+     * BootstrapExternalStaticGateway is the static network gateway of the bootstrap node. This can be useful in environments without a DHCP server.
+     */
     @JsonProperty("bootstrapExternalStaticGateway")
     public String getBootstrapExternalStaticGateway() {
         return bootstrapExternalStaticGateway;
     }
 
+    /**
+     * BootstrapExternalStaticGateway is the static network gateway of the bootstrap node. This can be useful in environments without a DHCP server.
+     */
     @JsonProperty("bootstrapExternalStaticGateway")
     public void setBootstrapExternalStaticGateway(String bootstrapExternalStaticGateway) {
         this.bootstrapExternalStaticGateway = bootstrapExternalStaticGateway;
     }
 
+    /**
+     * BootstrapExternalStaticIP is the static IP address of the bootstrap node. This can be useful in environments without a DHCP server.
+     */
     @JsonProperty("bootstrapExternalStaticIP")
     public String getBootstrapExternalStaticIP() {
         return bootstrapExternalStaticIP;
     }
 
+    /**
+     * BootstrapExternalStaticIP is the static IP address of the bootstrap node. This can be useful in environments without a DHCP server.
+     */
     @JsonProperty("bootstrapExternalStaticIP")
     public void setBootstrapExternalStaticIP(String bootstrapExternalStaticIP) {
         this.bootstrapExternalStaticIP = bootstrapExternalStaticIP;
     }
 
+    /**
+     * BootstrapOSImage is a URL to override the default OS image for the bootstrap node. The URL must contain a sha256 hash of the image e.g https://mirror.example.com/images/qemu.qcow2.gz?sha256=a07bd...
+     */
     @JsonProperty("bootstrapOSImage")
     public String getBootstrapOSImage() {
         return bootstrapOSImage;
     }
 
+    /**
+     * BootstrapOSImage is a URL to override the default OS image for the bootstrap node. The URL must contain a sha256 hash of the image e.g https://mirror.example.com/images/qemu.qcow2.gz?sha256=a07bd...
+     */
     @JsonProperty("bootstrapOSImage")
     public void setBootstrapOSImage(String bootstrapOSImage) {
         this.bootstrapOSImage = bootstrapOSImage;
     }
 
+    /**
+     * BootstrapProvisioningIP is the IP used on the bootstrap VM to bring up provisioning services that are used to create the control-plane machines
+     */
     @JsonProperty("bootstrapProvisioningIP")
     public String getBootstrapProvisioningIP() {
         return bootstrapProvisioningIP;
     }
 
+    /**
+     * BootstrapProvisioningIP is the IP used on the bootstrap VM to bring up provisioning services that are used to create the control-plane machines
+     */
     @JsonProperty("bootstrapProvisioningIP")
     public void setBootstrapProvisioningIP(String bootstrapProvisioningIP) {
         this.bootstrapProvisioningIP = bootstrapProvisioningIP;
     }
 
+    /**
+     * ClusterOSImage is a URL to override the default OS image for cluster nodes. The URL must contain a sha256 hash of the image e.g https://mirror.example.com/images/metal.qcow2.gz?sha256=3b5a8...
+     */
     @JsonProperty("clusterOSImage")
     public String getClusterOSImage() {
         return clusterOSImage;
     }
 
+    /**
+     * ClusterOSImage is a URL to override the default OS image for cluster nodes. The URL must contain a sha256 hash of the image e.g https://mirror.example.com/images/metal.qcow2.gz?sha256=3b5a8...
+     */
     @JsonProperty("clusterOSImage")
     public void setClusterOSImage(String clusterOSImage) {
         this.clusterOSImage = clusterOSImage;
     }
 
+    /**
+     * ClusterProvisioningIP is the IP on the dedicated provisioning network where the baremetal-operator pod runs provisioning services, and an http server to cache some downloaded content e.g RHCOS/IPA images
+     */
     @JsonProperty("clusterProvisioningIP")
     public String getClusterProvisioningIP() {
         return clusterProvisioningIP;
     }
 
+    /**
+     * ClusterProvisioningIP is the IP on the dedicated provisioning network where the baremetal-operator pod runs provisioning services, and an http server to cache some downloaded content e.g RHCOS/IPA images
+     */
     @JsonProperty("clusterProvisioningIP")
     public void setClusterProvisioningIP(String clusterProvisioningIP) {
         this.clusterProvisioningIP = clusterProvisioningIP;
     }
 
+    /**
+     * Platform stores all the global configuration that all machinesets use.
+     */
     @JsonProperty("defaultMachinePlatform")
     public MachinePool getDefaultMachinePlatform() {
         return defaultMachinePlatform;
     }
 
+    /**
+     * Platform stores all the global configuration that all machinesets use.
+     */
     @JsonProperty("defaultMachinePlatform")
     public void setDefaultMachinePlatform(MachinePool defaultMachinePlatform) {
         this.defaultMachinePlatform = defaultMachinePlatform;
     }
 
+    /**
+     * External bridge is used for external communication.
+     */
     @JsonProperty("externalBridge")
     public String getExternalBridge() {
         return externalBridge;
     }
 
+    /**
+     * External bridge is used for external communication.
+     */
     @JsonProperty("externalBridge")
     public void setExternalBridge(String externalBridge) {
         this.externalBridge = externalBridge;
     }
 
+    /**
+     * ExternalMACAddress is used to allow setting a static unicast MAC address for the bootstrap host on the external network. Consider using the QEMU vendor prefix `52:54:00`. If left blank, libvirt will generate one for you.
+     */
     @JsonProperty("externalMACAddress")
     public String getExternalMACAddress() {
         return externalMACAddress;
     }
 
+    /**
+     * ExternalMACAddress is used to allow setting a static unicast MAC address for the bootstrap host on the external network. Consider using the QEMU vendor prefix `52:54:00`. If left blank, libvirt will generate one for you.
+     */
     @JsonProperty("externalMACAddress")
     public void setExternalMACAddress(String externalMACAddress) {
         this.externalMACAddress = externalMACAddress;
     }
 
+    /**
+     * Hosts is the information needed to create the objects in Ironic.
+     */
     @JsonProperty("hosts")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Host> getHosts() {
         return hosts;
     }
 
+    /**
+     * Hosts is the information needed to create the objects in Ironic.
+     */
     @JsonProperty("hosts")
     public void setHosts(List<Host> hosts) {
         this.hosts = hosts;
     }
 
+    /**
+     * DeprecatedIngressVIP is the VIP to use for ingress traffic Deprecated: Use IngressVIPs
+     */
     @JsonProperty("ingressVIP")
     public String getIngressVIP() {
         return ingressVIP;
     }
 
+    /**
+     * DeprecatedIngressVIP is the VIP to use for ingress traffic Deprecated: Use IngressVIPs
+     */
     @JsonProperty("ingressVIP")
     public void setIngressVIP(String ingressVIP) {
         this.ingressVIP = ingressVIP;
     }
 
+    /**
+     * IngressVIPs contains the VIP(s) to use for ingress traffic. In dual stack clusters it contains an IPv4 and IPv6 address, otherwise only one VIP
+     */
     @JsonProperty("ingressVIPs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getIngressVIPs() {
         return ingressVIPs;
     }
 
+    /**
+     * IngressVIPs contains the VIP(s) to use for ingress traffic. In dual stack clusters it contains an IPv4 and IPv6 address, otherwise only one VIP
+     */
     @JsonProperty("ingressVIPs")
     public void setIngressVIPs(List<String> ingressVIPs) {
         this.ingressVIPs = ingressVIPs;
     }
 
+    /**
+     * LibvirtURI is the identifier for the libvirtd connection.  It must be reachable from the host where the installer is run. Default is qemu:///system
+     */
     @JsonProperty("libvirtURI")
     public String getLibvirtURI() {
         return libvirtURI;
     }
 
+    /**
+     * LibvirtURI is the identifier for the libvirtd connection.  It must be reachable from the host where the installer is run. Default is qemu:///system
+     */
     @JsonProperty("libvirtURI")
     public void setLibvirtURI(String libvirtURI) {
         this.libvirtURI = libvirtURI;
     }
 
+    /**
+     * Platform stores all the global configuration that all machinesets use.
+     */
     @JsonProperty("loadBalancer")
     public BareMetalPlatformLoadBalancer getLoadBalancer() {
         return loadBalancer;
     }
 
+    /**
+     * Platform stores all the global configuration that all machinesets use.
+     */
     @JsonProperty("loadBalancer")
     public void setLoadBalancer(BareMetalPlatformLoadBalancer loadBalancer) {
         this.loadBalancer = loadBalancer;
     }
 
+    /**
+     * Provisioning bridge is used for provisioning nodes, on the host that will run the bootstrap VM.
+     */
     @JsonProperty("provisioningBridge")
     public String getProvisioningBridge() {
         return provisioningBridge;
     }
 
+    /**
+     * Provisioning bridge is used for provisioning nodes, on the host that will run the bootstrap VM.
+     */
     @JsonProperty("provisioningBridge")
     public void setProvisioningBridge(String provisioningBridge) {
         this.provisioningBridge = provisioningBridge;
     }
 
+    /**
+     * DeprecatedProvisioningDHCPExternal indicates that DHCP is provided by an external service. This parameter is replaced by ProvisioningNetwork being set to "Unmanaged".
+     */
     @JsonProperty("provisioningDHCPExternal")
     public Boolean getProvisioningDHCPExternal() {
         return provisioningDHCPExternal;
     }
 
+    /**
+     * DeprecatedProvisioningDHCPExternal indicates that DHCP is provided by an external service. This parameter is replaced by ProvisioningNetwork being set to "Unmanaged".
+     */
     @JsonProperty("provisioningDHCPExternal")
     public void setProvisioningDHCPExternal(Boolean provisioningDHCPExternal) {
         this.provisioningDHCPExternal = provisioningDHCPExternal;
     }
 
+    /**
+     * ProvisioningDHCPRange is used to provide DHCP services to hosts for provisioning.
+     */
     @JsonProperty("provisioningDHCPRange")
     public String getProvisioningDHCPRange() {
         return provisioningDHCPRange;
     }
 
+    /**
+     * ProvisioningDHCPRange is used to provide DHCP services to hosts for provisioning.
+     */
     @JsonProperty("provisioningDHCPRange")
     public void setProvisioningDHCPRange(String provisioningDHCPRange) {
         this.provisioningDHCPRange = provisioningDHCPRange;
     }
 
+    /**
+     * DeprecatedProvisioningHostIP is the deprecated version of clusterProvisioningIP. When the baremetal platform was initially added to the installer, the JSON field for ClusterProvisioningIP was incorrectly set to "provisioningHostIP."  This field is here to allow backwards-compatibility.
+     */
     @JsonProperty("provisioningHostIP")
     public String getProvisioningHostIP() {
         return provisioningHostIP;
     }
 
+    /**
+     * DeprecatedProvisioningHostIP is the deprecated version of clusterProvisioningIP. When the baremetal platform was initially added to the installer, the JSON field for ClusterProvisioningIP was incorrectly set to "provisioningHostIP."  This field is here to allow backwards-compatibility.
+     */
     @JsonProperty("provisioningHostIP")
     public void setProvisioningHostIP(String provisioningHostIP) {
         this.provisioningHostIP = provisioningHostIP;
     }
 
+    /**
+     * ProvisioningMACAddress is used to allow setting a static unicast MAC address for the bootstrap host on the provisioning network. Consider using the QEMU vendor prefix `52:54:00`. If left blank, libvirt will generate one for you.
+     */
     @JsonProperty("provisioningMACAddress")
     public String getProvisioningMACAddress() {
         return provisioningMACAddress;
     }
 
+    /**
+     * ProvisioningMACAddress is used to allow setting a static unicast MAC address for the bootstrap host on the provisioning network. Consider using the QEMU vendor prefix `52:54:00`. If left blank, libvirt will generate one for you.
+     */
     @JsonProperty("provisioningMACAddress")
     public void setProvisioningMACAddress(String provisioningMACAddress) {
         this.provisioningMACAddress = provisioningMACAddress;
     }
 
+    /**
+     * ProvisioningNetwork is used to indicate if we will have a provisioning network, and how it will be managed.
+     */
     @JsonProperty("provisioningNetwork")
     public String getProvisioningNetwork() {
         return provisioningNetwork;
     }
 
+    /**
+     * ProvisioningNetwork is used to indicate if we will have a provisioning network, and how it will be managed.
+     */
     @JsonProperty("provisioningNetwork")
     public void setProvisioningNetwork(String provisioningNetwork) {
         this.provisioningNetwork = provisioningNetwork;
     }
 
+    /**
+     * Platform stores all the global configuration that all machinesets use.
+     */
     @JsonProperty("provisioningNetworkCIDR")
     public String getProvisioningNetworkCIDR() {
         return provisioningNetworkCIDR;
     }
 
+    /**
+     * Platform stores all the global configuration that all machinesets use.
+     */
     @JsonProperty("provisioningNetworkCIDR")
     public void setProvisioningNetworkCIDR(String provisioningNetworkCIDR) {
         this.provisioningNetworkCIDR = provisioningNetworkCIDR;
     }
 
+    /**
+     * ProvisioningNetworkInterface is the name of the network interface on a control plane baremetal host that is connected to the provisioning network.
+     */
     @JsonProperty("provisioningNetworkInterface")
     public String getProvisioningNetworkInterface() {
         return provisioningNetworkInterface;
     }
 
+    /**
+     * ProvisioningNetworkInterface is the name of the network interface on a control plane baremetal host that is connected to the provisioning network.
+     */
     @JsonProperty("provisioningNetworkInterface")
     public void setProvisioningNetworkInterface(String provisioningNetworkInterface) {
         this.provisioningNetworkInterface = provisioningNetworkInterface;

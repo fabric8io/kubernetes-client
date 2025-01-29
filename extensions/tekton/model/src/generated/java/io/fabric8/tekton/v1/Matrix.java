@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Matrix is used to fan out Tasks in a Pipeline
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,23 +89,35 @@ public class Matrix implements Editable<MatrixBuilder>, KubernetesResource
         this.params = params;
     }
 
+    /**
+     * Include is a list of IncludeParams which allows passing in specific combinations of Parameters into the Matrix.
+     */
     @JsonProperty("include")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<IncludeParams> getInclude() {
         return include;
     }
 
+    /**
+     * Include is a list of IncludeParams which allows passing in specific combinations of Parameters into the Matrix.
+     */
     @JsonProperty("include")
     public void setInclude(List<IncludeParams> include) {
         this.include = include;
     }
 
+    /**
+     * Params is a list of parameters used to fan out the pipelineTask Params takes only `Parameters` of type `"array"` Each array element is supplied to the `PipelineTask` by substituting `params` of type `"string"` in the underlying `Task`. The names of the `params` in the `Matrix` must match the names of the `params` in the underlying `Task` that they will be substituting.
+     */
     @JsonProperty("params")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Param> getParams() {
         return params;
     }
 
+    /**
+     * Params is a list of parameters used to fan out the pipelineTask Params takes only `Parameters` of type `"array"` Each array element is supplied to the `PipelineTask` by substituting `params` of type `"string"` in the underlying `Task`. The names of the `params` in the `Matrix` must match the names of the `params` in the underlying `Task` that they will be substituting.
+     */
     @JsonProperty("params")
     public void setParams(List<Param> params) {
         this.params = params;

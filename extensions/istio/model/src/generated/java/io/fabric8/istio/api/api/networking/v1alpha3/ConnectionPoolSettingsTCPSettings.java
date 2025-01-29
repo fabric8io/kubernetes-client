@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Settings common to both HTTP and TCP upstream connections.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,51 +97,81 @@ public class ConnectionPoolSettingsTCPSettings implements Editable<ConnectionPoo
         this.tcpKeepalive = tcpKeepalive;
     }
 
+    /**
+     * Settings common to both HTTP and TCP upstream connections.
+     */
     @JsonProperty("connectTimeout")
     public String getConnectTimeout() {
         return connectTimeout;
     }
 
+    /**
+     * Settings common to both HTTP and TCP upstream connections.
+     */
     @JsonProperty("connectTimeout")
     public void setConnectTimeout(String connectTimeout) {
         this.connectTimeout = connectTimeout;
     }
 
+    /**
+     * Settings common to both HTTP and TCP upstream connections.
+     */
     @JsonProperty("idleTimeout")
     public String getIdleTimeout() {
         return idleTimeout;
     }
 
+    /**
+     * Settings common to both HTTP and TCP upstream connections.
+     */
     @JsonProperty("idleTimeout")
     public void setIdleTimeout(String idleTimeout) {
         this.idleTimeout = idleTimeout;
     }
 
+    /**
+     * Settings common to both HTTP and TCP upstream connections.
+     */
     @JsonProperty("maxConnectionDuration")
     public String getMaxConnectionDuration() {
         return maxConnectionDuration;
     }
 
+    /**
+     * Settings common to both HTTP and TCP upstream connections.
+     */
     @JsonProperty("maxConnectionDuration")
     public void setMaxConnectionDuration(String maxConnectionDuration) {
         this.maxConnectionDuration = maxConnectionDuration;
     }
 
+    /**
+     * Maximum number of HTTP1 /TCP connections to a destination host. Default 2^32-1.
+     */
     @JsonProperty("maxConnections")
     public Integer getMaxConnections() {
         return maxConnections;
     }
 
+    /**
+     * Maximum number of HTTP1 /TCP connections to a destination host. Default 2^32-1.
+     */
     @JsonProperty("maxConnections")
     public void setMaxConnections(Integer maxConnections) {
         this.maxConnections = maxConnections;
     }
 
+    /**
+     * Settings common to both HTTP and TCP upstream connections.
+     */
     @JsonProperty("tcpKeepalive")
     public ConnectionPoolSettingsTCPSettingsTcpKeepalive getTcpKeepalive() {
         return tcpKeepalive;
     }
 
+    /**
+     * Settings common to both HTTP and TCP upstream connections.
+     */
     @JsonProperty("tcpKeepalive")
     public void setTcpKeepalive(ConnectionPoolSettingsTCPSettingsTcpKeepalive tcpKeepalive) {
         this.tcpKeepalive = tcpKeepalive;

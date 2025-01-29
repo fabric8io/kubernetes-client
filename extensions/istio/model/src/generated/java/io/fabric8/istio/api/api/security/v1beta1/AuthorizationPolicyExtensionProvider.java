@@ -78,11 +78,17 @@ public class AuthorizationPolicyExtensionProvider implements Editable<Authorizat
         this.name = name;
     }
 
+    /**
+     * Specifies the name of the extension provider. The list of available providers is defined in the MeshConfig. Note, currently at most 1 extension provider is allowed per workload. Different workloads can use different extension provider.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Specifies the name of the extension provider. The list of available providers is defined in the MeshConfig. Note, currently at most 1 extension provider is allowed per workload. Different workloads can use different extension provider.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

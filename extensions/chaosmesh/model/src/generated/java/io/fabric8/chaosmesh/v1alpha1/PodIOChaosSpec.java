@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PodIOChaosSpec defines the desired state of IOChaos
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -89,32 +92,50 @@ public class PodIOChaosSpec implements Editable<PodIOChaosSpecBuilder>, Kubernet
         this.volumeMountPath = volumeMountPath;
     }
 
+    /**
+     * Actions are a list of IOChaos actions
+     */
     @JsonProperty("actions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<IOChaosAction> getActions() {
         return actions;
     }
 
+    /**
+     * Actions are a list of IOChaos actions
+     */
     @JsonProperty("actions")
     public void setActions(List<IOChaosAction> actions) {
         this.actions = actions;
     }
 
+    /**
+     * PodIOChaosSpec defines the desired state of IOChaos
+     */
     @JsonProperty("container")
     public String getContainer() {
         return container;
     }
 
+    /**
+     * PodIOChaosSpec defines the desired state of IOChaos
+     */
     @JsonProperty("container")
     public void setContainer(String container) {
         this.container = container;
     }
 
+    /**
+     * VolumeMountPath represents the target mount path It must be a root of mount path now.
+     */
     @JsonProperty("volumeMountPath")
     public String getVolumeMountPath() {
         return volumeMountPath;
     }
 
+    /**
+     * VolumeMountPath represents the target mount path It must be a root of mount path now.
+     */
     @JsonProperty("volumeMountPath")
     public void setVolumeMountPath(String volumeMountPath) {
         this.volumeMountPath = volumeMountPath;

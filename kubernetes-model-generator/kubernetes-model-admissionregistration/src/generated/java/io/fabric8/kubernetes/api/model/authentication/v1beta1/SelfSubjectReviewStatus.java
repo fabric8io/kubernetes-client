@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SelfSubjectReviewStatus is filled by the kube-apiserver and sent back to a user.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -79,11 +82,17 @@ public class SelfSubjectReviewStatus implements Editable<SelfSubjectReviewStatus
         this.userInfo = userInfo;
     }
 
+    /**
+     * SelfSubjectReviewStatus is filled by the kube-apiserver and sent back to a user.
+     */
     @JsonProperty("userInfo")
     public UserInfo getUserInfo() {
         return userInfo;
     }
 
+    /**
+     * SelfSubjectReviewStatus is filled by the kube-apiserver and sent back to a user.
+     */
     @JsonProperty("userInfo")
     public void setUserInfo(UserInfo userInfo) {
         this.userInfo = userInfo;

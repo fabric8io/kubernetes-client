@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ConsoleSampleContainerImportSourceService let the samples author define defaults for the Service created for this sample.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class ConsoleSampleContainerImportSourceService implements Editable<Conso
         this.targetPort = targetPort;
     }
 
+    /**
+     * targetPort is the port that the service listens on for HTTP requests. This port will be used for Service and Route created for this sample. Port must be in the range 1 to 65535. Default port is 8080.
+     */
     @JsonProperty("targetPort")
     public Integer getTargetPort() {
         return targetPort;
     }
 
+    /**
+     * targetPort is the port that the service listens on for HTTP requests. This port will be used for Service and Route created for this sample. Port must be in the range 1 to 65535. Default port is 8080.
+     */
     @JsonProperty("targetPort")
     public void setTargetPort(Integer targetPort) {
         this.targetPort = targetPort;

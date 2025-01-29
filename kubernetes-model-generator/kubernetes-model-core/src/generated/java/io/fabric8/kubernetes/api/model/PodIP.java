@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PodIP represents a single IP address allocated to the pod.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -49,11 +52,17 @@ public class PodIP implements Editable<PodIPBuilder>, KubernetesResource
         this.ip = ip;
     }
 
+    /**
+     * IP is the IP address assigned to the pod
+     */
     @JsonProperty("ip")
     public String getIp() {
         return ip;
     }
 
+    /**
+     * IP is the IP address assigned to the pod
+     */
     @JsonProperty("ip")
     public void setIp(String ip) {
         this.ip = ip;

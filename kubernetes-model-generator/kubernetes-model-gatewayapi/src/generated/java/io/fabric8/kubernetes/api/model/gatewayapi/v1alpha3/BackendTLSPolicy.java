@@ -38,6 +38,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * BackendTLSPolicy provides a way to configure how a Gateway connects to a Backend via TLS.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -77,14 +80,8 @@ import lombok.experimental.Accessors;
 public class BackendTLSPolicy implements Editable<BackendTLSPolicyBuilder>, HasMetadata, Namespaced
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "gateway.networking.k8s.io/v1alpha3";
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "BackendTLSPolicy";
     @JsonProperty("metadata")
@@ -112,7 +109,7 @@ public class BackendTLSPolicy implements Editable<BackendTLSPolicyBuilder>, HasM
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -120,7 +117,7 @@ public class BackendTLSPolicy implements Editable<BackendTLSPolicyBuilder>, HasM
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -128,7 +125,7 @@ public class BackendTLSPolicy implements Editable<BackendTLSPolicyBuilder>, HasM
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -136,38 +133,56 @@ public class BackendTLSPolicy implements Editable<BackendTLSPolicyBuilder>, HasM
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * BackendTLSPolicy provides a way to configure how a Gateway connects to a Backend via TLS.
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * BackendTLSPolicy provides a way to configure how a Gateway connects to a Backend via TLS.
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * BackendTLSPolicy provides a way to configure how a Gateway connects to a Backend via TLS.
+     */
     @JsonProperty("spec")
     public BackendTLSPolicySpec getSpec() {
         return spec;
     }
 
+    /**
+     * BackendTLSPolicy provides a way to configure how a Gateway connects to a Backend via TLS.
+     */
     @JsonProperty("spec")
     public void setSpec(BackendTLSPolicySpec spec) {
         this.spec = spec;
     }
 
+    /**
+     * BackendTLSPolicy provides a way to configure how a Gateway connects to a Backend via TLS.
+     */
     @JsonProperty("status")
     public PolicyStatus getStatus() {
         return status;
     }
 
+    /**
+     * BackendTLSPolicy provides a way to configure how a Gateway connects to a Backend via TLS.
+     */
     @JsonProperty("status")
     public void setStatus(PolicyStatus status) {
         this.status = status;

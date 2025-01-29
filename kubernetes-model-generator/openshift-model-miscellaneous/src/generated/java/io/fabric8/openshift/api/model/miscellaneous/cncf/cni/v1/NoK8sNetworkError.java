@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NoK8sNetworkError indicates error, no network in kubernetes
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class NoK8sNetworkError implements Editable<NoK8sNetworkErrorBuilder>, Ku
         this.message = message;
     }
 
+    /**
+     * NoK8sNetworkError indicates error, no network in kubernetes
+     */
     @JsonProperty("Message")
     public String getMessage() {
         return message;
     }
 
+    /**
+     * NoK8sNetworkError indicates error, no network in kubernetes
+     */
     @JsonProperty("Message")
     public void setMessage(String message) {
         this.message = message;

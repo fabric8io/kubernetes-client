@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * GitLabWebHookCause has information about a GitLab webhook that triggered a build.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class GitLabWebHookCause implements Editable<GitLabWebHookCauseBuilder>, 
         this.secret = secret;
     }
 
+    /**
+     * GitLabWebHookCause has information about a GitLab webhook that triggered a build.
+     */
     @JsonProperty("revision")
     public SourceRevision getRevision() {
         return revision;
     }
 
+    /**
+     * GitLabWebHookCause has information about a GitLab webhook that triggered a build.
+     */
     @JsonProperty("revision")
     public void setRevision(SourceRevision revision) {
         this.revision = revision;
     }
 
+    /**
+     * Secret is the obfuscated webhook secret that triggered a build.
+     */
     @JsonProperty("secret")
     public String getSecret() {
         return secret;
     }
 
+    /**
+     * Secret is the obfuscated webhook secret that triggered a build.
+     */
     @JsonProperty("secret")
     public void setSecret(String secret) {
         this.secret = secret;

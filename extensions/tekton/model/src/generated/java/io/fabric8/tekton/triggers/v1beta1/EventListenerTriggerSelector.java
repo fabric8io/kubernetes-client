@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * EventListenerTriggerSelector  defines ways to select a group of triggers using their metadata
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class EventListenerTriggerSelector implements Editable<EventListenerTrigg
         this.namespaceSelector = namespaceSelector;
     }
 
+    /**
+     * EventListenerTriggerSelector  defines ways to select a group of triggers using their metadata
+     */
     @JsonProperty("labelSelector")
     public LabelSelector getLabelSelector() {
         return labelSelector;
     }
 
+    /**
+     * EventListenerTriggerSelector  defines ways to select a group of triggers using their metadata
+     */
     @JsonProperty("labelSelector")
     public void setLabelSelector(LabelSelector labelSelector) {
         this.labelSelector = labelSelector;
     }
 
+    /**
+     * EventListenerTriggerSelector  defines ways to select a group of triggers using their metadata
+     */
     @JsonProperty("namespaceSelector")
     public NamespaceSelector getNamespaceSelector() {
         return namespaceSelector;
     }
 
+    /**
+     * EventListenerTriggerSelector  defines ways to select a group of triggers using their metadata
+     */
     @JsonProperty("namespaceSelector")
     public void setNamespaceSelector(NamespaceSelector namespaceSelector) {
         this.namespaceSelector = namespaceSelector;

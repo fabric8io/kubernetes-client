@@ -111,12 +111,18 @@ public class SequenceSpec implements Editable<SequenceSpecBuilder>, KubernetesRe
         this.reply = reply;
     }
 
+    /**
+     * Steps is the list of Destinations (processors / functions) that will be called in the order provided. Each step has its own delivery options
+     */
     @JsonProperty("steps")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<SequenceStep> getSteps() {
         return steps;
     }
 
+    /**
+     * Steps is the list of Destinations (processors / functions) that will be called in the order provided. Each step has its own delivery options
+     */
     @JsonProperty("steps")
     public void setSteps(List<SequenceStep> steps) {
         this.steps = steps;

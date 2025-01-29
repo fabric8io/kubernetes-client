@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * GenericClusterReference - in alignment with kubefed
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class GenericClusterReference implements Editable<GenericClusterReference
         this.name = name;
     }
 
+    /**
+     * GenericClusterReference - in alignment with kubefed
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * GenericClusterReference - in alignment with kubefed
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

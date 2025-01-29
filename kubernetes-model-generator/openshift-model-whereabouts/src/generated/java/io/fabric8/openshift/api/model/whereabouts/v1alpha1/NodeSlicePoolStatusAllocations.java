@@ -82,21 +82,33 @@ public class NodeSlicePoolStatusAllocations implements Editable<NodeSlicePoolSta
         this.sliceRange = sliceRange;
     }
 
+    /**
+     * NodeName is the name of the node assigned to this slice, empty node name is an available slice for assignment
+     */
     @JsonProperty("nodeName")
     public String getNodeName() {
         return nodeName;
     }
 
+    /**
+     * NodeName is the name of the node assigned to this slice, empty node name is an available slice for assignment
+     */
     @JsonProperty("nodeName")
     public void setNodeName(String nodeName) {
         this.nodeName = nodeName;
     }
 
+    /**
+     * SliceRange is the subnet of this slice
+     */
     @JsonProperty("sliceRange")
     public String getSliceRange() {
         return sliceRange;
     }
 
+    /**
+     * SliceRange is the subnet of this slice
+     */
     @JsonProperty("sliceRange")
     public void setSliceRange(String sliceRange) {
         this.sliceRange = sliceRange;

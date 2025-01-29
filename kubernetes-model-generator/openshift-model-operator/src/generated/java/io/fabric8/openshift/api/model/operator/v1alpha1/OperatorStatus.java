@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * OperatorStatus contains common fields for an operator to need.  It is intended to be anonymous included inside of the Status struct for you particular operator. DEPRECATED: Use v1.OperatorStatus instead
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -101,62 +104,98 @@ public class OperatorStatus implements Editable<OperatorStatusBuilder>, Kubernet
         this.taskSummary = taskSummary;
     }
 
+    /**
+     * conditions is a list of conditions and their status
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<OperatorCondition> getConditions() {
         return conditions;
     }
 
+    /**
+     * conditions is a list of conditions and their status
+     */
     @JsonProperty("conditions")
     public void setConditions(List<OperatorCondition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * OperatorStatus contains common fields for an operator to need.  It is intended to be anonymous included inside of the Status struct for you particular operator. DEPRECATED: Use v1.OperatorStatus instead
+     */
     @JsonProperty("currentVersionAvailability")
     public VersionAvailability getCurrentVersionAvailability() {
         return currentVersionAvailability;
     }
 
+    /**
+     * OperatorStatus contains common fields for an operator to need.  It is intended to be anonymous included inside of the Status struct for you particular operator. DEPRECATED: Use v1.OperatorStatus instead
+     */
     @JsonProperty("currentVersionAvailability")
     public void setCurrentVersionAvailability(VersionAvailability currentVersionAvailability) {
         this.currentVersionAvailability = currentVersionAvailability;
     }
 
+    /**
+     * observedGeneration is the last generation change you've dealt with
+     */
     @JsonProperty("observedGeneration")
     public Long getObservedGeneration() {
         return observedGeneration;
     }
 
+    /**
+     * observedGeneration is the last generation change you've dealt with
+     */
     @JsonProperty("observedGeneration")
     public void setObservedGeneration(Long observedGeneration) {
         this.observedGeneration = observedGeneration;
     }
 
+    /**
+     * state indicates what the operator has observed to be its current operational status.
+     */
     @JsonProperty("state")
     public String getState() {
         return state;
     }
 
+    /**
+     * state indicates what the operator has observed to be its current operational status.
+     */
     @JsonProperty("state")
     public void setState(String state) {
         this.state = state;
     }
 
+    /**
+     * OperatorStatus contains common fields for an operator to need.  It is intended to be anonymous included inside of the Status struct for you particular operator. DEPRECATED: Use v1.OperatorStatus instead
+     */
     @JsonProperty("targetVersionAvailability")
     public VersionAvailability getTargetVersionAvailability() {
         return targetVersionAvailability;
     }
 
+    /**
+     * OperatorStatus contains common fields for an operator to need.  It is intended to be anonymous included inside of the Status struct for you particular operator. DEPRECATED: Use v1.OperatorStatus instead
+     */
     @JsonProperty("targetVersionAvailability")
     public void setTargetVersionAvailability(VersionAvailability targetVersionAvailability) {
         this.targetVersionAvailability = targetVersionAvailability;
     }
 
+    /**
+     * taskSummary is a high level summary of what the controller is currently attempting to do.  It is high-level, human-readable and not guaranteed in any way. (I needed this for debugging and realized it made a great summary).
+     */
     @JsonProperty("taskSummary")
     public String getTaskSummary() {
         return taskSummary;
     }
 
+    /**
+     * taskSummary is a high level summary of what the controller is currently attempting to do.  It is high-level, human-readable and not guaranteed in any way. (I needed this for debugging and realized it made a great summary).
+     */
     @JsonProperty("taskSummary")
     public void setTaskSummary(String taskSummary) {
         this.taskSummary = taskSummary;

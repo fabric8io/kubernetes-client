@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * IngressControllerSpec is the specification of the desired behavior of the IngressController.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -145,171 +148,273 @@ public class IngressControllerSpec implements Editable<IngressControllerSpecBuil
         this.unsupportedConfigOverrides = unsupportedConfigOverrides;
     }
 
+    /**
+     * IngressControllerSpec is the specification of the desired behavior of the IngressController.
+     */
     @JsonProperty("clientTLS")
     public ClientTLS getClientTLS() {
         return clientTLS;
     }
 
+    /**
+     * IngressControllerSpec is the specification of the desired behavior of the IngressController.
+     */
     @JsonProperty("clientTLS")
     public void setClientTLS(ClientTLS clientTLS) {
         this.clientTLS = clientTLS;
     }
 
+    /**
+     * IngressControllerSpec is the specification of the desired behavior of the IngressController.
+     */
     @JsonProperty("defaultCertificate")
     public LocalObjectReference getDefaultCertificate() {
         return defaultCertificate;
     }
 
+    /**
+     * IngressControllerSpec is the specification of the desired behavior of the IngressController.
+     */
     @JsonProperty("defaultCertificate")
     public void setDefaultCertificate(LocalObjectReference defaultCertificate) {
         this.defaultCertificate = defaultCertificate;
     }
 
+    /**
+     * domain is a DNS name serviced by the ingress controller and is used to configure multiple features:<br><p> <br><p> &#42; For the LoadBalancerService endpoint publishing strategy, domain is<br><p>   used to configure DNS records. See endpointPublishingStrategy.<br><p> <br><p> &#42; When using a generated default certificate, the certificate will be valid<br><p>   for domain and its subdomains. See defaultCertificate.<br><p> <br><p> &#42; The value is published to individual Route statuses so that end-users<br><p>   know where to target external DNS records.<br><p> <br><p> domain must be unique among all IngressControllers, and cannot be updated.<br><p> <br><p> If empty, defaults to ingress.config.openshift.io/cluster .spec.domain.
+     */
     @JsonProperty("domain")
     public String getDomain() {
         return domain;
     }
 
+    /**
+     * domain is a DNS name serviced by the ingress controller and is used to configure multiple features:<br><p> <br><p> &#42; For the LoadBalancerService endpoint publishing strategy, domain is<br><p>   used to configure DNS records. See endpointPublishingStrategy.<br><p> <br><p> &#42; When using a generated default certificate, the certificate will be valid<br><p>   for domain and its subdomains. See defaultCertificate.<br><p> <br><p> &#42; The value is published to individual Route statuses so that end-users<br><p>   know where to target external DNS records.<br><p> <br><p> domain must be unique among all IngressControllers, and cannot be updated.<br><p> <br><p> If empty, defaults to ingress.config.openshift.io/cluster .spec.domain.
+     */
     @JsonProperty("domain")
     public void setDomain(String domain) {
         this.domain = domain;
     }
 
+    /**
+     * IngressControllerSpec is the specification of the desired behavior of the IngressController.
+     */
     @JsonProperty("endpointPublishingStrategy")
     public EndpointPublishingStrategy getEndpointPublishingStrategy() {
         return endpointPublishingStrategy;
     }
 
+    /**
+     * IngressControllerSpec is the specification of the desired behavior of the IngressController.
+     */
     @JsonProperty("endpointPublishingStrategy")
     public void setEndpointPublishingStrategy(EndpointPublishingStrategy endpointPublishingStrategy) {
         this.endpointPublishingStrategy = endpointPublishingStrategy;
     }
 
+    /**
+     * IngressControllerSpec is the specification of the desired behavior of the IngressController.
+     */
     @JsonProperty("httpCompression")
     public HTTPCompressionPolicy getHttpCompression() {
         return httpCompression;
     }
 
+    /**
+     * IngressControllerSpec is the specification of the desired behavior of the IngressController.
+     */
     @JsonProperty("httpCompression")
     public void setHttpCompression(HTTPCompressionPolicy httpCompression) {
         this.httpCompression = httpCompression;
     }
 
+    /**
+     * httpEmptyRequestsPolicy describes how HTTP connections should be handled if the connection times out before a request is received. Allowed values for this field are "Respond" and "Ignore".  If the field is set to "Respond", the ingress controller sends an HTTP 400 or 408 response, logs the connection (if access logging is enabled), and counts the connection in the appropriate metrics.  If the field is set to "Ignore", the ingress controller closes the connection without sending a response, logging the connection, or incrementing metrics.  The default value is "Respond".<br><p> <br><p> Typically, these connections come from load balancers' health probes or Web browsers' speculative connections ("preconnect") and can be safely ignored.  However, these requests may also be caused by network errors, and so setting this field to "Ignore" may impede detection and diagnosis of problems.  In addition, these requests may be caused by port scans, in which case logging empty requests may aid in detecting intrusion attempts.
+     */
     @JsonProperty("httpEmptyRequestsPolicy")
     public String getHttpEmptyRequestsPolicy() {
         return httpEmptyRequestsPolicy;
     }
 
+    /**
+     * httpEmptyRequestsPolicy describes how HTTP connections should be handled if the connection times out before a request is received. Allowed values for this field are "Respond" and "Ignore".  If the field is set to "Respond", the ingress controller sends an HTTP 400 or 408 response, logs the connection (if access logging is enabled), and counts the connection in the appropriate metrics.  If the field is set to "Ignore", the ingress controller closes the connection without sending a response, logging the connection, or incrementing metrics.  The default value is "Respond".<br><p> <br><p> Typically, these connections come from load balancers' health probes or Web browsers' speculative connections ("preconnect") and can be safely ignored.  However, these requests may also be caused by network errors, and so setting this field to "Ignore" may impede detection and diagnosis of problems.  In addition, these requests may be caused by port scans, in which case logging empty requests may aid in detecting intrusion attempts.
+     */
     @JsonProperty("httpEmptyRequestsPolicy")
     public void setHttpEmptyRequestsPolicy(String httpEmptyRequestsPolicy) {
         this.httpEmptyRequestsPolicy = httpEmptyRequestsPolicy;
     }
 
+    /**
+     * IngressControllerSpec is the specification of the desired behavior of the IngressController.
+     */
     @JsonProperty("httpErrorCodePages")
     public ConfigMapNameReference getHttpErrorCodePages() {
         return httpErrorCodePages;
     }
 
+    /**
+     * IngressControllerSpec is the specification of the desired behavior of the IngressController.
+     */
     @JsonProperty("httpErrorCodePages")
     public void setHttpErrorCodePages(ConfigMapNameReference httpErrorCodePages) {
         this.httpErrorCodePages = httpErrorCodePages;
     }
 
+    /**
+     * IngressControllerSpec is the specification of the desired behavior of the IngressController.
+     */
     @JsonProperty("httpHeaders")
     public IngressControllerHTTPHeaders getHttpHeaders() {
         return httpHeaders;
     }
 
+    /**
+     * IngressControllerSpec is the specification of the desired behavior of the IngressController.
+     */
     @JsonProperty("httpHeaders")
     public void setHttpHeaders(IngressControllerHTTPHeaders httpHeaders) {
         this.httpHeaders = httpHeaders;
     }
 
+    /**
+     * IngressControllerSpec is the specification of the desired behavior of the IngressController.
+     */
     @JsonProperty("logging")
     public IngressControllerLogging getLogging() {
         return logging;
     }
 
+    /**
+     * IngressControllerSpec is the specification of the desired behavior of the IngressController.
+     */
     @JsonProperty("logging")
     public void setLogging(IngressControllerLogging logging) {
         this.logging = logging;
     }
 
+    /**
+     * IngressControllerSpec is the specification of the desired behavior of the IngressController.
+     */
     @JsonProperty("namespaceSelector")
     public LabelSelector getNamespaceSelector() {
         return namespaceSelector;
     }
 
+    /**
+     * IngressControllerSpec is the specification of the desired behavior of the IngressController.
+     */
     @JsonProperty("namespaceSelector")
     public void setNamespaceSelector(LabelSelector namespaceSelector) {
         this.namespaceSelector = namespaceSelector;
     }
 
+    /**
+     * IngressControllerSpec is the specification of the desired behavior of the IngressController.
+     */
     @JsonProperty("nodePlacement")
     public NodePlacement getNodePlacement() {
         return nodePlacement;
     }
 
+    /**
+     * IngressControllerSpec is the specification of the desired behavior of the IngressController.
+     */
     @JsonProperty("nodePlacement")
     public void setNodePlacement(NodePlacement nodePlacement) {
         this.nodePlacement = nodePlacement;
     }
 
+    /**
+     * replicas is the desired number of ingress controller replicas. If unset, the default depends on the value of the defaultPlacement field in the cluster config.openshift.io/v1/ingresses status.<br><p> <br><p> The value of replicas is set based on the value of a chosen field in the Infrastructure CR. If defaultPlacement is set to ControlPlane, the chosen field will be controlPlaneTopology. If it is set to Workers the chosen field will be infrastructureTopology. Replicas will then be set to 1 or 2 based whether the chosen field's value is SingleReplica or HighlyAvailable, respectively.<br><p> <br><p> These defaults are subject to change.
+     */
     @JsonProperty("replicas")
     public Integer getReplicas() {
         return replicas;
     }
 
+    /**
+     * replicas is the desired number of ingress controller replicas. If unset, the default depends on the value of the defaultPlacement field in the cluster config.openshift.io/v1/ingresses status.<br><p> <br><p> The value of replicas is set based on the value of a chosen field in the Infrastructure CR. If defaultPlacement is set to ControlPlane, the chosen field will be controlPlaneTopology. If it is set to Workers the chosen field will be infrastructureTopology. Replicas will then be set to 1 or 2 based whether the chosen field's value is SingleReplica or HighlyAvailable, respectively.<br><p> <br><p> These defaults are subject to change.
+     */
     @JsonProperty("replicas")
     public void setReplicas(Integer replicas) {
         this.replicas = replicas;
     }
 
+    /**
+     * IngressControllerSpec is the specification of the desired behavior of the IngressController.
+     */
     @JsonProperty("routeAdmission")
     public RouteAdmissionPolicy getRouteAdmission() {
         return routeAdmission;
     }
 
+    /**
+     * IngressControllerSpec is the specification of the desired behavior of the IngressController.
+     */
     @JsonProperty("routeAdmission")
     public void setRouteAdmission(RouteAdmissionPolicy routeAdmission) {
         this.routeAdmission = routeAdmission;
     }
 
+    /**
+     * IngressControllerSpec is the specification of the desired behavior of the IngressController.
+     */
     @JsonProperty("routeSelector")
     public LabelSelector getRouteSelector() {
         return routeSelector;
     }
 
+    /**
+     * IngressControllerSpec is the specification of the desired behavior of the IngressController.
+     */
     @JsonProperty("routeSelector")
     public void setRouteSelector(LabelSelector routeSelector) {
         this.routeSelector = routeSelector;
     }
 
+    /**
+     * IngressControllerSpec is the specification of the desired behavior of the IngressController.
+     */
     @JsonProperty("tlsSecurityProfile")
     public TLSSecurityProfile getTlsSecurityProfile() {
         return tlsSecurityProfile;
     }
 
+    /**
+     * IngressControllerSpec is the specification of the desired behavior of the IngressController.
+     */
     @JsonProperty("tlsSecurityProfile")
     public void setTlsSecurityProfile(TLSSecurityProfile tlsSecurityProfile) {
         this.tlsSecurityProfile = tlsSecurityProfile;
     }
 
+    /**
+     * IngressControllerSpec is the specification of the desired behavior of the IngressController.
+     */
     @JsonProperty("tuningOptions")
     public IngressControllerTuningOptions getTuningOptions() {
         return tuningOptions;
     }
 
+    /**
+     * IngressControllerSpec is the specification of the desired behavior of the IngressController.
+     */
     @JsonProperty("tuningOptions")
     public void setTuningOptions(IngressControllerTuningOptions tuningOptions) {
         this.tuningOptions = tuningOptions;
     }
 
+    /**
+     * IngressControllerSpec is the specification of the desired behavior of the IngressController.
+     */
     @JsonProperty("unsupportedConfigOverrides")
     public Object getUnsupportedConfigOverrides() {
         return unsupportedConfigOverrides;
     }
 
+    /**
+     * IngressControllerSpec is the specification of the desired behavior of the IngressController.
+     */
     @JsonProperty("unsupportedConfigOverrides")
     @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
     public void setUnsupportedConfigOverrides(Object unsupportedConfigOverrides) {

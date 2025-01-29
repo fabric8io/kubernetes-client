@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ContainerStateWaiting is a waiting state of a container.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -53,21 +56,33 @@ public class ContainerStateWaiting implements Editable<ContainerStateWaitingBuil
         this.reason = reason;
     }
 
+    /**
+     * Message regarding why the container is not yet running.
+     */
     @JsonProperty("message")
     public String getMessage() {
         return message;
     }
 
+    /**
+     * Message regarding why the container is not yet running.
+     */
     @JsonProperty("message")
     public void setMessage(String message) {
         this.message = message;
     }
 
+    /**
+     * (brief) reason the container is not yet running.
+     */
     @JsonProperty("reason")
     public String getReason() {
         return reason;
     }
 
+    /**
+     * (brief) reason the container is not yet running.
+     */
     @JsonProperty("reason")
     public void setReason(String reason) {
         this.reason = reason;

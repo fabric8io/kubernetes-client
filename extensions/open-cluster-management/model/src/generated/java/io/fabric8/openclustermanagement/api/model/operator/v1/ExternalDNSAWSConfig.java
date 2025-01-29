@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ExternalDNSAWSConfig contains AWS-specific settings for external DNS
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class ExternalDNSAWSConfig implements Editable<ExternalDNSAWSConfigBuilde
         this.credentials = credentials;
     }
 
+    /**
+     * ExternalDNSAWSConfig contains AWS-specific settings for external DNS
+     */
     @JsonProperty("credentials")
     public LocalObjectReference getCredentials() {
         return credentials;
     }
 
+    /**
+     * ExternalDNSAWSConfig contains AWS-specific settings for external DNS
+     */
     @JsonProperty("credentials")
     public void setCredentials(LocalObjectReference credentials) {
         this.credentials = credentials;

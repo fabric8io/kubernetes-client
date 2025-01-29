@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ManageDNSConfig contains the domain being managed, and the cloud-specific details for accessing/managing the domain.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -93,42 +96,66 @@ public class ManageDNSConfig implements Editable<ManageDNSConfigBuilder>, Kubern
         this.gcp = gcp;
     }
 
+    /**
+     * ManageDNSConfig contains the domain being managed, and the cloud-specific details for accessing/managing the domain.
+     */
     @JsonProperty("aws")
     public ManageDNSAWSConfig getAws() {
         return aws;
     }
 
+    /**
+     * ManageDNSConfig contains the domain being managed, and the cloud-specific details for accessing/managing the domain.
+     */
     @JsonProperty("aws")
     public void setAws(ManageDNSAWSConfig aws) {
         this.aws = aws;
     }
 
+    /**
+     * ManageDNSConfig contains the domain being managed, and the cloud-specific details for accessing/managing the domain.
+     */
     @JsonProperty("azure")
     public ManageDNSAzureConfig getAzure() {
         return azure;
     }
 
+    /**
+     * ManageDNSConfig contains the domain being managed, and the cloud-specific details for accessing/managing the domain.
+     */
     @JsonProperty("azure")
     public void setAzure(ManageDNSAzureConfig azure) {
         this.azure = azure;
     }
 
+    /**
+     * Domains is the list of domains that hive will be managing entries for with the provided credentials.
+     */
     @JsonProperty("domains")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getDomains() {
         return domains;
     }
 
+    /**
+     * Domains is the list of domains that hive will be managing entries for with the provided credentials.
+     */
     @JsonProperty("domains")
     public void setDomains(List<String> domains) {
         this.domains = domains;
     }
 
+    /**
+     * ManageDNSConfig contains the domain being managed, and the cloud-specific details for accessing/managing the domain.
+     */
     @JsonProperty("gcp")
     public ManageDNSGCPConfig getGcp() {
         return gcp;
     }
 
+    /**
+     * ManageDNSConfig contains the domain being managed, and the cloud-specific details for accessing/managing the domain.
+     */
     @JsonProperty("gcp")
     public void setGcp(ManageDNSGCPConfig gcp) {
         this.gcp = gcp;

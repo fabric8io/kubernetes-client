@@ -96,21 +96,33 @@ public class SequenceStep implements Editable<SequenceStepBuilder>, KubernetesRe
         this.uri = uri;
     }
 
+    /**
+     * CACerts are Certification Authority (CA) certificates in PEM format according to https://www.rfc-editor.org/rfc/rfc7468. If set, these CAs are appended to the set of CAs provided by the Addressable target, if any.
+     */
     @JsonProperty("CACerts")
     public String getCACerts() {
         return cACerts;
     }
 
+    /**
+     * CACerts are Certification Authority (CA) certificates in PEM format according to https://www.rfc-editor.org/rfc/rfc7468. If set, these CAs are appended to the set of CAs provided by the Addressable target, if any.
+     */
     @JsonProperty("CACerts")
     public void setCACerts(String cACerts) {
         this.cACerts = cACerts;
     }
 
+    /**
+     * Audience is the OIDC audience. This need only be set, if the target is not an Addressable and thus the Audience can't be received from the Addressable itself. In case the Addressable specifies an Audience too, the Destinations Audience takes preference.
+     */
     @JsonProperty("audience")
     public String getAudience() {
         return audience;
     }
 
+    /**
+     * Audience is the OIDC audience. This need only be set, if the target is not an Addressable and thus the Audience can't be received from the Addressable itself. In case the Addressable specifies an Audience too, the Destinations Audience takes preference.
+     */
     @JsonProperty("audience")
     public void setAudience(String audience) {
         this.audience = audience;

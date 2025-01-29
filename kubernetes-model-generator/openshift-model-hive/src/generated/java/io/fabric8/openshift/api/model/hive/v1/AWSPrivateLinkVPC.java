@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AWSPrivateLinkVPC defines an AWS VPC in a region.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class AWSPrivateLinkVPC implements Editable<AWSPrivateLinkVPCBuilder>, Ku
         this.vpcID = vpcID;
     }
 
+    /**
+     * AWSPrivateLinkVPC defines an AWS VPC in a region.
+     */
     @JsonProperty("region")
     public String getRegion() {
         return region;
     }
 
+    /**
+     * AWSPrivateLinkVPC defines an AWS VPC in a region.
+     */
     @JsonProperty("region")
     public void setRegion(String region) {
         this.region = region;
     }
 
+    /**
+     * AWSPrivateLinkVPC defines an AWS VPC in a region.
+     */
     @JsonProperty("vpcID")
     public String getVpcID() {
         return vpcID;
     }
 
+    /**
+     * AWSPrivateLinkVPC defines an AWS VPC in a region.
+     */
     @JsonProperty("vpcID")
     public void setVpcID(String vpcID) {
         this.vpcID = vpcID;

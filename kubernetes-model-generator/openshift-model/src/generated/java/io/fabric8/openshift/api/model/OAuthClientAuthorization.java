@@ -38,6 +38,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * OAuthClientAuthorization describes an authorization created by an OAuth client<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -79,16 +82,10 @@ import lombok.experimental.Accessors;
 public class OAuthClientAuthorization implements Editable<OAuthClientAuthorizationBuilder>, HasMetadata
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "oauth.openshift.io/v1";
     @JsonProperty("clientName")
     private String clientName;
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "OAuthClientAuthorization";
     @JsonProperty("metadata")
@@ -121,7 +118,7 @@ public class OAuthClientAuthorization implements Editable<OAuthClientAuthorizati
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -129,25 +126,31 @@ public class OAuthClientAuthorization implements Editable<OAuthClientAuthorizati
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
+    /**
+     * ClientName references the client that created this authorization
+     */
     @JsonProperty("clientName")
     public String getClientName() {
         return clientName;
     }
 
+    /**
+     * ClientName references the client that created this authorization
+     */
     @JsonProperty("clientName")
     public void setClientName(String clientName) {
         this.clientName = clientName;
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -155,49 +158,73 @@ public class OAuthClientAuthorization implements Editable<OAuthClientAuthorizati
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * OAuthClientAuthorization describes an authorization created by an OAuth client<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * OAuthClientAuthorization describes an authorization created by an OAuth client<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * Scopes is an array of the granted scopes.
+     */
     @JsonProperty("scopes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getScopes() {
         return scopes;
     }
 
+    /**
+     * Scopes is an array of the granted scopes.
+     */
     @JsonProperty("scopes")
     public void setScopes(List<String> scopes) {
         this.scopes = scopes;
     }
 
+    /**
+     * UserName is the user name that authorized this client
+     */
     @JsonProperty("userName")
     public String getUserName() {
         return userName;
     }
 
+    /**
+     * UserName is the user name that authorized this client
+     */
     @JsonProperty("userName")
     public void setUserName(String userName) {
         this.userName = userName;
     }
 
+    /**
+     * UserUID is the unique UID associated with this authorization. UserUID and UserName must both match for this authorization to be valid.
+     */
     @JsonProperty("userUID")
     public String getUserUID() {
         return userUID;
     }
 
+    /**
+     * UserUID is the unique UID associated with this authorization. UserUID and UserName must both match for this authorization to be valid.
+     */
     @JsonProperty("userUID")
     public void setUserUID(String userUID) {
         this.userUID = userUID;

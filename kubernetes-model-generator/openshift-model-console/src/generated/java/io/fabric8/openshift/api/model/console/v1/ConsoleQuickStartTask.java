@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ConsoleQuickStartTask is a single step in a Quick Start.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class ConsoleQuickStartTask implements Editable<ConsoleQuickStartTaskBuil
         this.title = title;
     }
 
+    /**
+     * description describes the steps needed to complete the task. (includes markdown)
+     */
     @JsonProperty("description")
     public String getDescription() {
         return description;
     }
 
+    /**
+     * description describes the steps needed to complete the task. (includes markdown)
+     */
     @JsonProperty("description")
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * ConsoleQuickStartTask is a single step in a Quick Start.
+     */
     @JsonProperty("review")
     public ConsoleQuickStartTaskReview getReview() {
         return review;
     }
 
+    /**
+     * ConsoleQuickStartTask is a single step in a Quick Start.
+     */
     @JsonProperty("review")
     public void setReview(ConsoleQuickStartTaskReview review) {
         this.review = review;
     }
 
+    /**
+     * ConsoleQuickStartTask is a single step in a Quick Start.
+     */
     @JsonProperty("summary")
     public ConsoleQuickStartTaskSummary getSummary() {
         return summary;
     }
 
+    /**
+     * ConsoleQuickStartTask is a single step in a Quick Start.
+     */
     @JsonProperty("summary")
     public void setSummary(ConsoleQuickStartTaskSummary summary) {
         this.summary = summary;
     }
 
+    /**
+     * title describes the task and is displayed as a step heading.
+     */
     @JsonProperty("title")
     public String getTitle() {
         return title;
     }
 
+    /**
+     * title describes the task and is displayed as a step heading.
+     */
     @JsonProperty("title")
     public void setTitle(String title) {
         this.title = title;

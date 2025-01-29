@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * MachinePoolAutoscaling details how the machine pool is to be auto-scaled.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class MachinePoolAutoscaling implements Editable<MachinePoolAutoscalingBu
         this.minReplicas = minReplicas;
     }
 
+    /**
+     * MaxReplicas is the maximum number of replicas for the machine pool.
+     */
     @JsonProperty("maxReplicas")
     public Integer getMaxReplicas() {
         return maxReplicas;
     }
 
+    /**
+     * MaxReplicas is the maximum number of replicas for the machine pool.
+     */
     @JsonProperty("maxReplicas")
     public void setMaxReplicas(Integer maxReplicas) {
         this.maxReplicas = maxReplicas;
     }
 
+    /**
+     * MinReplicas is the minimum number of replicas for the machine pool.
+     */
     @JsonProperty("minReplicas")
     public Integer getMinReplicas() {
         return minReplicas;
     }
 
+    /**
+     * MinReplicas is the minimum number of replicas for the machine pool.
+     */
     @JsonProperty("minReplicas")
     public void setMinReplicas(Integer minReplicas) {
         this.minReplicas = minReplicas;

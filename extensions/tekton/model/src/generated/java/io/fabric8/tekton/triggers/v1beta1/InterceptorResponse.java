@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Do not generate Deepcopy(). See #827
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -88,33 +91,51 @@ public class InterceptorResponse implements Editable<InterceptorResponseBuilder>
         this.status = status;
     }
 
+    /**
+     * Continue indicates if the EventListener should continue processing the Trigger or not
+     */
     @JsonProperty("continue")
     public Boolean getContinue() {
         return _continue;
     }
 
+    /**
+     * Continue indicates if the EventListener should continue processing the Trigger or not
+     */
     @JsonProperty("continue")
     public void setContinue(Boolean _continue) {
         this._continue = _continue;
     }
 
+    /**
+     * Extensions are additional fields that is added to the interceptor event.
+     */
     @JsonProperty("extensions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Object> getExtensions() {
         return extensions;
     }
 
+    /**
+     * Extensions are additional fields that is added to the interceptor event.
+     */
     @JsonProperty("extensions")
     @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializerForMap.class)
     public void setExtensions(Map<String, Object> extensions) {
         this.extensions = extensions;
     }
 
+    /**
+     * Do not generate Deepcopy(). See #827
+     */
     @JsonProperty("status")
     public Status getStatus() {
         return status;
     }
 
+    /**
+     * Do not generate Deepcopy(). See #827
+     */
     @JsonProperty("status")
     public void setStatus(Status status) {
         this.status = status;

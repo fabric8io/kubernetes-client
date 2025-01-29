@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * HorizontalPodAutoscalerStatus describes the current status of a horizontal pod autoscaler.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -102,63 +105,99 @@ public class HorizontalPodAutoscalerStatus implements Editable<HorizontalPodAuto
         this.observedGeneration = observedGeneration;
     }
 
+    /**
+     * conditions is the set of conditions required for this autoscaler to scale its target, and indicates whether or not those conditions are met.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<HorizontalPodAutoscalerCondition> getConditions() {
         return conditions;
     }
 
+    /**
+     * conditions is the set of conditions required for this autoscaler to scale its target, and indicates whether or not those conditions are met.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<HorizontalPodAutoscalerCondition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * currentMetrics is the last read state of the metrics used by this autoscaler.
+     */
     @JsonProperty("currentMetrics")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<MetricStatus> getCurrentMetrics() {
         return currentMetrics;
     }
 
+    /**
+     * currentMetrics is the last read state of the metrics used by this autoscaler.
+     */
     @JsonProperty("currentMetrics")
     public void setCurrentMetrics(List<MetricStatus> currentMetrics) {
         this.currentMetrics = currentMetrics;
     }
 
+    /**
+     * currentReplicas is current number of replicas of pods managed by this autoscaler, as last seen by the autoscaler.
+     */
     @JsonProperty("currentReplicas")
     public Integer getCurrentReplicas() {
         return currentReplicas;
     }
 
+    /**
+     * currentReplicas is current number of replicas of pods managed by this autoscaler, as last seen by the autoscaler.
+     */
     @JsonProperty("currentReplicas")
     public void setCurrentReplicas(Integer currentReplicas) {
         this.currentReplicas = currentReplicas;
     }
 
+    /**
+     * desiredReplicas is the desired number of replicas of pods managed by this autoscaler, as last calculated by the autoscaler.
+     */
     @JsonProperty("desiredReplicas")
     public Integer getDesiredReplicas() {
         return desiredReplicas;
     }
 
+    /**
+     * desiredReplicas is the desired number of replicas of pods managed by this autoscaler, as last calculated by the autoscaler.
+     */
     @JsonProperty("desiredReplicas")
     public void setDesiredReplicas(Integer desiredReplicas) {
         this.desiredReplicas = desiredReplicas;
     }
 
+    /**
+     * HorizontalPodAutoscalerStatus describes the current status of a horizontal pod autoscaler.
+     */
     @JsonProperty("lastScaleTime")
     public String getLastScaleTime() {
         return lastScaleTime;
     }
 
+    /**
+     * HorizontalPodAutoscalerStatus describes the current status of a horizontal pod autoscaler.
+     */
     @JsonProperty("lastScaleTime")
     public void setLastScaleTime(String lastScaleTime) {
         this.lastScaleTime = lastScaleTime;
     }
 
+    /**
+     * observedGeneration is the most recent generation observed by this autoscaler.
+     */
     @JsonProperty("observedGeneration")
     public Long getObservedGeneration() {
         return observedGeneration;
     }
 
+    /**
+     * observedGeneration is the most recent generation observed by this autoscaler.
+     */
     @JsonProperty("observedGeneration")
     public void setObservedGeneration(Long observedGeneration) {
         this.observedGeneration = observedGeneration;

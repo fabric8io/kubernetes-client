@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * GCPDNSZoneSpec contains GCP-specific DNSZone specifications
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class GCPDNSZoneSpec implements Editable<GCPDNSZoneSpecBuilder>, Kubernet
         this.credentialsSecretRef = credentialsSecretRef;
     }
 
+    /**
+     * GCPDNSZoneSpec contains GCP-specific DNSZone specifications
+     */
     @JsonProperty("credentialsSecretRef")
     public LocalObjectReference getCredentialsSecretRef() {
         return credentialsSecretRef;
     }
 
+    /**
+     * GCPDNSZoneSpec contains GCP-specific DNSZone specifications
+     */
     @JsonProperty("credentialsSecretRef")
     public void setCredentialsSecretRef(LocalObjectReference credentialsSecretRef) {
         this.credentialsSecretRef = credentialsSecretRef;

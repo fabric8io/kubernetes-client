@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * GRPC status code to use to abort the request. The supported codes are documented in https://github.com/grpc/grpc/blob/master/doc/statuscodes.md Note: If you want to return the status "Unavailable", then you should specify the code as `UNAVAILABLE`(all caps), but not `14`.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class HTTPFaultInjectionAbortGrpcStatus implements IsHTTPFaultInjectionAb
         this.grpcStatus = grpcStatus;
     }
 
+    /**
+     * GRPC status code to use to abort the request. The supported codes are documented in https://github.com/grpc/grpc/blob/master/doc/statuscodes.md Note: If you want to return the status "Unavailable", then you should specify the code as `UNAVAILABLE`(all caps), but not `14`.
+     */
     @JsonProperty("grpcStatus")
     public String getGrpcStatus() {
         return grpcStatus;
     }
 
+    /**
+     * GRPC status code to use to abort the request. The supported codes are documented in https://github.com/grpc/grpc/blob/master/doc/statuscodes.md Note: If you want to return the status "Unavailable", then you should specify the code as `UNAVAILABLE`(all caps), but not `14`.
+     */
     @JsonProperty("grpcStatus")
     public void setGrpcStatus(String grpcStatus) {
         this.grpcStatus = grpcStatus;

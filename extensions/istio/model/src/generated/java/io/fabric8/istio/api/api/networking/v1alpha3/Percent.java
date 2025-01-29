@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Percent specifies a percentage in the range of [0.0, 100.0].
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class Percent implements Editable<PercentBuilder>, KubernetesResource
         this.value = value;
     }
 
+    /**
+     * Percent specifies a percentage in the range of [0.0, 100.0].
+     */
     @JsonProperty("value")
     public Double getValue() {
         return value;
     }
 
+    /**
+     * Percent specifies a percentage in the range of [0.0, 100.0].
+     */
     @JsonProperty("value")
     public void setValue(Double value) {
         this.value = value;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PrismCentral holds the endpoint and credentials data used to connect to the Prism Central
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class PrismCentral implements Editable<PrismCentralBuilder>, KubernetesRe
         this.username = username;
     }
 
+    /**
+     * PrismCentral holds the endpoint and credentials data used to connect to the Prism Central
+     */
     @JsonProperty("endpoint")
     public PrismEndpoint getEndpoint() {
         return endpoint;
     }
 
+    /**
+     * PrismCentral holds the endpoint and credentials data used to connect to the Prism Central
+     */
     @JsonProperty("endpoint")
     public void setEndpoint(PrismEndpoint endpoint) {
         this.endpoint = endpoint;
     }
 
+    /**
+     * Password is the password for the user to connect to the Prism Central
+     */
     @JsonProperty("password")
     public String getPassword() {
         return password;
     }
 
+    /**
+     * Password is the password for the user to connect to the Prism Central
+     */
     @JsonProperty("password")
     public void setPassword(String password) {
         this.password = password;
     }
 
+    /**
+     * Username is the name of the user to connect to the Prism Central
+     */
     @JsonProperty("username")
     public String getUsername() {
         return username;
     }
 
+    /**
+     * Username is the name of the user to connect to the Prism Central
+     */
     @JsonProperty("username")
     public void setUsername(String username) {
         this.username = username;

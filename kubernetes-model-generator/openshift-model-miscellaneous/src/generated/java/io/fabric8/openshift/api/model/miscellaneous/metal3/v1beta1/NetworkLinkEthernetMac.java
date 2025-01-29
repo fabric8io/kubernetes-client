@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NetworkLinkEthernetMac represents the Mac address content.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class NetworkLinkEthernetMac implements Editable<NetworkLinkEthernetMacBu
         this.string = string;
     }
 
+    /**
+     * NetworkLinkEthernetMac represents the Mac address content.
+     */
     @JsonProperty("fromAnnotation")
     public NetworkLinkEthernetMacFromAnnotation getFromAnnotation() {
         return fromAnnotation;
     }
 
+    /**
+     * NetworkLinkEthernetMac represents the Mac address content.
+     */
     @JsonProperty("fromAnnotation")
     public void setFromAnnotation(NetworkLinkEthernetMacFromAnnotation fromAnnotation) {
         this.fromAnnotation = fromAnnotation;
     }
 
+    /**
+     * FromHostInterface contains the name of the interface in the BareMetalHost Introspection details from which to fetch the MAC address
+     */
     @JsonProperty("fromHostInterface")
     public String getFromHostInterface() {
         return fromHostInterface;
     }
 
+    /**
+     * FromHostInterface contains the name of the interface in the BareMetalHost Introspection details from which to fetch the MAC address
+     */
     @JsonProperty("fromHostInterface")
     public void setFromHostInterface(String fromHostInterface) {
         this.fromHostInterface = fromHostInterface;
     }
 
+    /**
+     * String contains the MAC address given as a string
+     */
     @JsonProperty("string")
     public String getString() {
         return string;
     }
 
+    /**
+     * String contains the MAC address given as a string
+     */
     @JsonProperty("string")
     public void setString(String string) {
         this.string = string;

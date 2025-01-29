@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ProxyTypeServiceConfig holds information on Service to which console's backend will proxy the plugin's requests.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class ConsolePluginProxyServiceConfig implements Editable<ConsolePluginPr
         this.port = port;
     }
 
+    /**
+     * name of Service that the plugin needs to connect to.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * name of Service that the plugin needs to connect to.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * namespace of Service that the plugin needs to connect to
+     */
     @JsonProperty("namespace")
     public String getNamespace() {
         return namespace;
     }
 
+    /**
+     * namespace of Service that the plugin needs to connect to
+     */
     @JsonProperty("namespace")
     public void setNamespace(String namespace) {
         this.namespace = namespace;
     }
 
+    /**
+     * port on which the Service that the plugin needs to connect to is listening on.
+     */
     @JsonProperty("port")
     public Integer getPort() {
         return port;
     }
 
+    /**
+     * port on which the Service that the plugin needs to connect to is listening on.
+     */
     @JsonProperty("port")
     public void setPort(Integer port) {
         this.port = port;

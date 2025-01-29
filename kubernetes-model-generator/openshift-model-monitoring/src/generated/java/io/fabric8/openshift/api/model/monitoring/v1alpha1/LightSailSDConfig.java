@@ -38,6 +38,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * LightSailSDConfig configurations allow retrieving scrape targets from AWS Lightsail instances. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#lightsail_sd_config
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -149,172 +152,274 @@ public class LightSailSDConfig implements Editable<LightSailSDConfigBuilder>, Ku
         this.tlsConfig = tlsConfig;
     }
 
+    /**
+     * LightSailSDConfig configurations allow retrieving scrape targets from AWS Lightsail instances. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#lightsail_sd_config
+     */
     @JsonProperty("accessKey")
     public SecretKeySelector getAccessKey() {
         return accessKey;
     }
 
+    /**
+     * LightSailSDConfig configurations allow retrieving scrape targets from AWS Lightsail instances. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#lightsail_sd_config
+     */
     @JsonProperty("accessKey")
     public void setAccessKey(SecretKeySelector accessKey) {
         this.accessKey = accessKey;
     }
 
+    /**
+     * LightSailSDConfig configurations allow retrieving scrape targets from AWS Lightsail instances. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#lightsail_sd_config
+     */
     @JsonProperty("authorization")
     public SafeAuthorization getAuthorization() {
         return authorization;
     }
 
+    /**
+     * LightSailSDConfig configurations allow retrieving scrape targets from AWS Lightsail instances. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#lightsail_sd_config
+     */
     @JsonProperty("authorization")
     public void setAuthorization(SafeAuthorization authorization) {
         this.authorization = authorization;
     }
 
+    /**
+     * LightSailSDConfig configurations allow retrieving scrape targets from AWS Lightsail instances. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#lightsail_sd_config
+     */
     @JsonProperty("basicAuth")
     public BasicAuth getBasicAuth() {
         return basicAuth;
     }
 
+    /**
+     * LightSailSDConfig configurations allow retrieving scrape targets from AWS Lightsail instances. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#lightsail_sd_config
+     */
     @JsonProperty("basicAuth")
     public void setBasicAuth(BasicAuth basicAuth) {
         this.basicAuth = basicAuth;
     }
 
+    /**
+     * Configure whether to enable HTTP2.
+     */
     @JsonProperty("enableHTTP2")
     public Boolean getEnableHTTP2() {
         return enableHTTP2;
     }
 
+    /**
+     * Configure whether to enable HTTP2.
+     */
     @JsonProperty("enableHTTP2")
     public void setEnableHTTP2(Boolean enableHTTP2) {
         this.enableHTTP2 = enableHTTP2;
     }
 
+    /**
+     * Custom endpoint to be used.
+     */
     @JsonProperty("endpoint")
     public String getEndpoint() {
         return endpoint;
     }
 
+    /**
+     * Custom endpoint to be used.
+     */
     @JsonProperty("endpoint")
     public void setEndpoint(String endpoint) {
         this.endpoint = endpoint;
     }
 
+    /**
+     * Configure whether the HTTP requests should follow HTTP 3xx redirects.
+     */
     @JsonProperty("followRedirects")
     public Boolean getFollowRedirects() {
         return followRedirects;
     }
 
+    /**
+     * Configure whether the HTTP requests should follow HTTP 3xx redirects.
+     */
     @JsonProperty("followRedirects")
     public void setFollowRedirects(Boolean followRedirects) {
         this.followRedirects = followRedirects;
     }
 
+    /**
+     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0 or Alertmanager &gt;= 0.25.0.
+     */
     @JsonProperty("noProxy")
     public String getNoProxy() {
         return noProxy;
     }
 
+    /**
+     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0 or Alertmanager &gt;= 0.25.0.
+     */
     @JsonProperty("noProxy")
     public void setNoProxy(String noProxy) {
         this.noProxy = noProxy;
     }
 
+    /**
+     * LightSailSDConfig configurations allow retrieving scrape targets from AWS Lightsail instances. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#lightsail_sd_config
+     */
     @JsonProperty("oauth2")
     public OAuth2 getOauth2() {
         return oauth2;
     }
 
+    /**
+     * LightSailSDConfig configurations allow retrieving scrape targets from AWS Lightsail instances. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#lightsail_sd_config
+     */
     @JsonProperty("oauth2")
     public void setOauth2(OAuth2 oauth2) {
         this.oauth2 = oauth2;
     }
 
+    /**
+     * Port to scrape the metrics from. If using the public IP address, this must instead be specified in the relabeling rule.
+     */
     @JsonProperty("port")
     public Integer getPort() {
         return port;
     }
 
+    /**
+     * Port to scrape the metrics from. If using the public IP address, this must instead be specified in the relabeling rule.
+     */
     @JsonProperty("port")
     public void setPort(Integer port) {
         this.port = port;
     }
 
+    /**
+     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0 or Alertmanager &gt;= 0.25.0.
+     */
     @JsonProperty("proxyConnectHeader")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, List<SecretKeySelector>> getProxyConnectHeader() {
         return proxyConnectHeader;
     }
 
+    /**
+     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0 or Alertmanager &gt;= 0.25.0.
+     */
     @JsonProperty("proxyConnectHeader")
     public void setProxyConnectHeader(Map<String, List<SecretKeySelector>> proxyConnectHeader) {
         this.proxyConnectHeader = proxyConnectHeader;
     }
 
+    /**
+     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0 or Alertmanager &gt;= 0.25.0.
+     */
     @JsonProperty("proxyFromEnvironment")
     public Boolean getProxyFromEnvironment() {
         return proxyFromEnvironment;
     }
 
+    /**
+     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0 or Alertmanager &gt;= 0.25.0.
+     */
     @JsonProperty("proxyFromEnvironment")
     public void setProxyFromEnvironment(Boolean proxyFromEnvironment) {
         this.proxyFromEnvironment = proxyFromEnvironment;
     }
 
+    /**
+     * `proxyURL` defines the HTTP proxy server to use.
+     */
     @JsonProperty("proxyUrl")
     public String getProxyUrl() {
         return proxyUrl;
     }
 
+    /**
+     * `proxyURL` defines the HTTP proxy server to use.
+     */
     @JsonProperty("proxyUrl")
     public void setProxyUrl(String proxyUrl) {
         this.proxyUrl = proxyUrl;
     }
 
+    /**
+     * Refresh interval to re-read the list of instances.
+     */
     @JsonProperty("refreshInterval")
     public String getRefreshInterval() {
         return refreshInterval;
     }
 
+    /**
+     * Refresh interval to re-read the list of instances.
+     */
     @JsonProperty("refreshInterval")
     public void setRefreshInterval(String refreshInterval) {
         this.refreshInterval = refreshInterval;
     }
 
+    /**
+     * The AWS region.
+     */
     @JsonProperty("region")
     public String getRegion() {
         return region;
     }
 
+    /**
+     * The AWS region.
+     */
     @JsonProperty("region")
     public void setRegion(String region) {
         this.region = region;
     }
 
+    /**
+     * AWS Role ARN, an alternative to using AWS API keys.
+     */
     @JsonProperty("roleARN")
     public String getRoleARN() {
         return roleARN;
     }
 
+    /**
+     * AWS Role ARN, an alternative to using AWS API keys.
+     */
     @JsonProperty("roleARN")
     public void setRoleARN(String roleARN) {
         this.roleARN = roleARN;
     }
 
+    /**
+     * LightSailSDConfig configurations allow retrieving scrape targets from AWS Lightsail instances. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#lightsail_sd_config
+     */
     @JsonProperty("secretKey")
     public SecretKeySelector getSecretKey() {
         return secretKey;
     }
 
+    /**
+     * LightSailSDConfig configurations allow retrieving scrape targets from AWS Lightsail instances. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#lightsail_sd_config
+     */
     @JsonProperty("secretKey")
     public void setSecretKey(SecretKeySelector secretKey) {
         this.secretKey = secretKey;
     }
 
+    /**
+     * LightSailSDConfig configurations allow retrieving scrape targets from AWS Lightsail instances. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#lightsail_sd_config
+     */
     @JsonProperty("tlsConfig")
     public SafeTLSConfig getTlsConfig() {
         return tlsConfig;
     }
 
+    /**
+     * LightSailSDConfig configurations allow retrieving scrape targets from AWS Lightsail instances. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#lightsail_sd_config
+     */
     @JsonProperty("tlsConfig")
     public void setTlsConfig(SafeTLSConfig tlsConfig) {
         this.tlsConfig = tlsConfig;

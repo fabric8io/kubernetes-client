@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * A unique identifier for the type of message. Name is intended to be human-readable, code is intended to be machine readable. There should be a one-to-one mapping between name and code. (i.e. do not re-use names or codes between message types.)
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class AnalysisMessageBaseType implements Editable<AnalysisMessageBaseType
         this.name = name;
     }
 
+    /**
+     * A 7 character code matching `^IST[0-9]{4}$` intended to uniquely identify the message type. (e.g. "IST0001" is mapped to the "InternalError" message type.) 0000-0100 are reserved. Required.
+     */
     @JsonProperty("code")
     public String getCode() {
         return code;
     }
 
+    /**
+     * A 7 character code matching `^IST[0-9]{4}$` intended to uniquely identify the message type. (e.g. "IST0001" is mapped to the "InternalError" message type.) 0000-0100 are reserved. Required.
+     */
     @JsonProperty("code")
     public void setCode(String code) {
         this.code = code;
     }
 
+    /**
+     * A human-readable name for the message type. e.g. "InternalError", "PodMissingProxy". This should be the same for all messages of the same type. Required.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * A human-readable name for the message type. e.g. "InternalError", "PodMissingProxy". This should be the same for all messages of the same type. Required.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

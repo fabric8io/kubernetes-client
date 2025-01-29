@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ResourceHealth represents the health of a resource. It has the latest device health information. This is a part of KEP https://kep.k8s.io/4680.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -53,21 +56,33 @@ public class ResourceHealth implements Editable<ResourceHealthBuilder>, Kubernet
         this.resourceID = resourceID;
     }
 
+    /**
+     * Health of the resource. can be one of:<br><p>  - Healthy: operates as normal<br><p>  - Unhealthy: reported unhealthy. We consider this a temporary health issue<br><p>               since we do not have a mechanism today to distinguish<br><p>               temporary and permanent issues.<br><p>  - Unknown: The status cannot be determined.<br><p>             For example, Device Plugin got unregistered and hasn't been re-registered since.<br><p> <br><p> In future we may want to introduce the PermanentlyUnhealthy Status.
+     */
     @JsonProperty("health")
     public String getHealth() {
         return health;
     }
 
+    /**
+     * Health of the resource. can be one of:<br><p>  - Healthy: operates as normal<br><p>  - Unhealthy: reported unhealthy. We consider this a temporary health issue<br><p>               since we do not have a mechanism today to distinguish<br><p>               temporary and permanent issues.<br><p>  - Unknown: The status cannot be determined.<br><p>             For example, Device Plugin got unregistered and hasn't been re-registered since.<br><p> <br><p> In future we may want to introduce the PermanentlyUnhealthy Status.
+     */
     @JsonProperty("health")
     public void setHealth(String health) {
         this.health = health;
     }
 
+    /**
+     * ResourceID is the unique identifier of the resource. See the ResourceID type for more information.
+     */
     @JsonProperty("resourceID")
     public String getResourceID() {
         return resourceID;
     }
 
+    /**
+     * ResourceID is the unique identifier of the resource. See the ResourceID type for more information.
+     */
     @JsonProperty("resourceID")
     public void setResourceID(String resourceID) {
         this.resourceID = resourceID;

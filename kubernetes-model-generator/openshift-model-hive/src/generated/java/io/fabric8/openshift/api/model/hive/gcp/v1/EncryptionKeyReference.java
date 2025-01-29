@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * EncryptionKeyReference describes the encryptionKey to use for a disk's encryption.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class EncryptionKeyReference implements Editable<EncryptionKeyReferenceBu
         this.kmsKeyServiceAccount = kmsKeyServiceAccount;
     }
 
+    /**
+     * EncryptionKeyReference describes the encryptionKey to use for a disk's encryption.
+     */
     @JsonProperty("kmsKey")
     public KMSKeyReference getKmsKey() {
         return kmsKey;
     }
 
+    /**
+     * EncryptionKeyReference describes the encryptionKey to use for a disk's encryption.
+     */
     @JsonProperty("kmsKey")
     public void setKmsKey(KMSKeyReference kmsKey) {
         this.kmsKey = kmsKey;
     }
 
+    /**
+     * KMSKeyServiceAccount is the service account being used for the encryption request for the given KMS key. If absent, the Compute Engine default service account is used. See https://cloud.google.com/compute/docs/access/service-accounts#compute_engine_service_account for details on the default service account.
+     */
     @JsonProperty("kmsKeyServiceAccount")
     public String getKmsKeyServiceAccount() {
         return kmsKeyServiceAccount;
     }
 
+    /**
+     * KMSKeyServiceAccount is the service account being used for the encryption request for the given KMS key. If absent, the Compute Engine default service account is used. See https://cloud.google.com/compute/docs/access/service-accounts#compute_engine_service_account for details on the default service account.
+     */
     @JsonProperty("kmsKeyServiceAccount")
     public void setKmsKeyServiceAccount(String kmsKeyServiceAccount) {
         this.kmsKeyServiceAccount = kmsKeyServiceAccount;

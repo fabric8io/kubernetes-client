@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ConsolePluginSpec is the desired plugin configuration.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -93,42 +96,66 @@ public class ConsolePluginSpec implements Editable<ConsolePluginSpecBuilder>, Ku
         this.proxy = proxy;
     }
 
+    /**
+     * ConsolePluginSpec is the desired plugin configuration.
+     */
     @JsonProperty("backend")
     public ConsolePluginBackend getBackend() {
         return backend;
     }
 
+    /**
+     * ConsolePluginSpec is the desired plugin configuration.
+     */
     @JsonProperty("backend")
     public void setBackend(ConsolePluginBackend backend) {
         this.backend = backend;
     }
 
+    /**
+     * displayName is the display name of the plugin. The dispalyName should be between 1 and 128 characters.
+     */
     @JsonProperty("displayName")
     public String getDisplayName() {
         return displayName;
     }
 
+    /**
+     * displayName is the display name of the plugin. The dispalyName should be between 1 and 128 characters.
+     */
     @JsonProperty("displayName")
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
     }
 
+    /**
+     * ConsolePluginSpec is the desired plugin configuration.
+     */
     @JsonProperty("i18n")
     public ConsolePluginI18n getI18n() {
         return i18n;
     }
 
+    /**
+     * ConsolePluginSpec is the desired plugin configuration.
+     */
     @JsonProperty("i18n")
     public void setI18n(ConsolePluginI18n i18n) {
         this.i18n = i18n;
     }
 
+    /**
+     * proxy is a list of proxies that describe various service type to which the plugin needs to connect to.
+     */
     @JsonProperty("proxy")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ConsolePluginProxy> getProxy() {
         return proxy;
     }
 
+    /**
+     * proxy is a list of proxies that describe various service type to which the plugin needs to connect to.
+     */
     @JsonProperty("proxy")
     public void setProxy(List<ConsolePluginProxy> proxy) {
         this.proxy = proxy;

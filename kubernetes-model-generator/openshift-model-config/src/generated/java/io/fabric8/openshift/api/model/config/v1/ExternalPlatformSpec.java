@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ExternalPlatformSpec holds the desired state for the generic External infrastructure provider.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class ExternalPlatformSpec implements Editable<ExternalPlatformSpecBuilde
         this.platformName = platformName;
     }
 
+    /**
+     * PlatformName holds the arbitrary string representing the infrastructure provider name, expected to be set at the installation time. This field is solely for informational and reporting purposes and is not expected to be used for decision-making.
+     */
     @JsonProperty("platformName")
     public String getPlatformName() {
         return platformName;
     }
 
+    /**
+     * PlatformName holds the arbitrary string representing the infrastructure provider name, expected to be set at the installation time. This field is solely for informational and reporting purposes and is not expected to be used for decision-making.
+     */
     @JsonProperty("platformName")
     public void setPlatformName(String platformName) {
         this.platformName = platformName;

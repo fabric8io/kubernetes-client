@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * BasicDevice defines one device instance.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,23 +88,35 @@ public class BasicDevice implements Editable<BasicDeviceBuilder>, KubernetesReso
         this.capacity = capacity;
     }
 
+    /**
+     * Attributes defines the set of attributes for this device. The name of each attribute must be unique in that set.<br><p> <br><p> The maximum number of attributes and capacities combined is 32.
+     */
     @JsonProperty("attributes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, DeviceAttribute> getAttributes() {
         return attributes;
     }
 
+    /**
+     * Attributes defines the set of attributes for this device. The name of each attribute must be unique in that set.<br><p> <br><p> The maximum number of attributes and capacities combined is 32.
+     */
     @JsonProperty("attributes")
     public void setAttributes(Map<String, DeviceAttribute> attributes) {
         this.attributes = attributes;
     }
 
+    /**
+     * Capacity defines the set of capacities for this device. The name of each capacity must be unique in that set.<br><p> <br><p> The maximum number of attributes and capacities combined is 32.
+     */
     @JsonProperty("capacity")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, Quantity> getCapacity() {
         return capacity;
     }
 
+    /**
+     * Capacity defines the set of capacities for this device. The name of each capacity must be unique in that set.<br><p> <br><p> The maximum number of attributes and capacities combined is 32.
+     */
     @JsonProperty("capacity")
     public void setCapacity(Map<String, Quantity> capacity) {
         this.capacity = capacity;

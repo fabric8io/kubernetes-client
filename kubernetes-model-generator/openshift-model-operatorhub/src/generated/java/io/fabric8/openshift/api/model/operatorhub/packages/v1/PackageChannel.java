@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PackageChannel defines a single channel under a package, pointing to a version of that package.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -97,52 +100,82 @@ public class PackageChannel implements Editable<PackageChannelBuilder>, Kubernet
         this.name = name;
     }
 
+    /**
+     * CurrentCSV defines a reference to the CSV holding the version of this package currently for the channel.
+     */
     @JsonProperty("currentCSV")
     public String getCurrentCSV() {
         return currentCSV;
     }
 
+    /**
+     * CurrentCSV defines a reference to the CSV holding the version of this package currently for the channel.
+     */
     @JsonProperty("currentCSV")
     public void setCurrentCSV(String currentCSV) {
         this.currentCSV = currentCSV;
     }
 
+    /**
+     * PackageChannel defines a single channel under a package, pointing to a version of that package.
+     */
     @JsonProperty("currentCSVDesc")
     public CSVDescription getCurrentCSVDesc() {
         return currentCSVDesc;
     }
 
+    /**
+     * PackageChannel defines a single channel under a package, pointing to a version of that package.
+     */
     @JsonProperty("currentCSVDesc")
     public void setCurrentCSVDesc(CSVDescription currentCSVDesc) {
         this.currentCSVDesc = currentCSVDesc;
     }
 
+    /**
+     * PackageChannel defines a single channel under a package, pointing to a version of that package.
+     */
     @JsonProperty("deprecation")
     public Deprecation getDeprecation() {
         return deprecation;
     }
 
+    /**
+     * PackageChannel defines a single channel under a package, pointing to a version of that package.
+     */
     @JsonProperty("deprecation")
     public void setDeprecation(Deprecation deprecation) {
         this.deprecation = deprecation;
     }
 
+    /**
+     * Entries lists all CSVs in the channel, with their upgrade edges.
+     */
     @JsonProperty("entries")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ChannelEntry> getEntries() {
         return entries;
     }
 
+    /**
+     * Entries lists all CSVs in the channel, with their upgrade edges.
+     */
     @JsonProperty("entries")
     public void setEntries(List<ChannelEntry> entries) {
         this.entries = entries;
     }
 
+    /**
+     * Name is the name of the channel, e.g. `alpha` or `stable`
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name is the name of the channel, e.g. `alpha` or `stable`
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * MetricsWithDuration represents metrics that report time as values,like transition seconds. The purpose of these metrics should be to track outliers - ensure their duration is not set too low.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class MetricsWithDuration implements Editable<MetricsWithDurationBuilder>
         this.name = name;
     }
 
+    /**
+     * MetricsWithDuration represents metrics that report time as values,like transition seconds. The purpose of these metrics should be to track outliers - ensure their duration is not set too low.
+     */
     @JsonProperty("duration")
     public String getDuration() {
         return duration;
     }
 
+    /**
+     * MetricsWithDuration represents metrics that report time as values,like transition seconds. The purpose of these metrics should be to track outliers - ensure their duration is not set too low.
+     */
     @JsonProperty("duration")
     public void setDuration(String duration) {
         this.duration = duration;
     }
 
+    /**
+     * Name of the metric. It will correspond to an optional relevant metric in hive
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name of the metric. It will correspond to an optional relevant metric in hive
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

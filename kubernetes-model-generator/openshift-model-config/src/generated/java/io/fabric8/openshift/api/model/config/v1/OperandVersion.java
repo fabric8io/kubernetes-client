@@ -82,21 +82,33 @@ public class OperandVersion implements Editable<OperandVersionBuilder>, Kubernet
         this.version = version;
     }
 
+    /**
+     * name is the name of the particular operand this version is for.  It usually matches container images, not operators.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * name is the name of the particular operand this version is for.  It usually matches container images, not operators.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * version indicates which version of a particular operand is currently being managed.  It must always match the Available operand.  If 1.0.0 is Available, then this must indicate 1.0.0 even if the operator is trying to rollout 1.1.0
+     */
     @JsonProperty("version")
     public String getVersion() {
         return version;
     }
 
+    /**
+     * version indicates which version of a particular operand is currently being managed.  It must always match the Available operand.  If 1.0.0 is Available, then this must indicate 1.0.0 even if the operator is trying to rollout 1.1.0
+     */
     @JsonProperty("version")
     public void setVersion(String version) {
         this.version = version;

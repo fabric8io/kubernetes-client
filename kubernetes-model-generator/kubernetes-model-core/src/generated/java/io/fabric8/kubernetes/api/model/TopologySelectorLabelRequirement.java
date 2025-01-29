@@ -19,6 +19,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * A topology selector requirement is a selector that matches given label. This is an alpha feature and may change in the future.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -56,22 +59,34 @@ public class TopologySelectorLabelRequirement implements Editable<TopologySelect
         this.values = values;
     }
 
+    /**
+     * The label key that the selector applies to.
+     */
     @JsonProperty("key")
     public String getKey() {
         return key;
     }
 
+    /**
+     * The label key that the selector applies to.
+     */
     @JsonProperty("key")
     public void setKey(String key) {
         this.key = key;
     }
 
+    /**
+     * An array of string values. One value must match the label to be selected. Each entry in Values is ORed.
+     */
     @JsonProperty("values")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getValues() {
         return values;
     }
 
+    /**
+     * An array of string values. One value must match the label to be selected. Each entry in Values is ORed.
+     */
     @JsonProperty("values")
     public void setValues(List<String> values) {
         this.values = values;

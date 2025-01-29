@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * EgressIPConfig defines the configuration knobs for egressip
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class EgressIPConfig implements Editable<EgressIPConfigBuilder>, Kubernet
         this.reachabilityTotalTimeoutSeconds = reachabilityTotalTimeoutSeconds;
     }
 
+    /**
+     * reachabilityTotalTimeout configures the EgressIP node reachability check total timeout in seconds. If the EgressIP node cannot be reached within this timeout, the node is declared down. Setting a large value may cause the EgressIP feature to react slowly to node changes. In particular, it may react slowly for EgressIP nodes that really have a genuine problem and are unreachable. When omitted, this means the user has no opinion and the platform is left to choose a reasonable default, which is subject to change over time. The current default is 1 second. A value of 0 disables the EgressIP node's reachability check.
+     */
     @JsonProperty("reachabilityTotalTimeoutSeconds")
     public Long getReachabilityTotalTimeoutSeconds() {
         return reachabilityTotalTimeoutSeconds;
     }
 
+    /**
+     * reachabilityTotalTimeout configures the EgressIP node reachability check total timeout in seconds. If the EgressIP node cannot be reached within this timeout, the node is declared down. Setting a large value may cause the EgressIP feature to react slowly to node changes. In particular, it may react slowly for EgressIP nodes that really have a genuine problem and are unreachable. When omitted, this means the user has no opinion and the platform is left to choose a reasonable default, which is subject to change over time. The current default is 1 second. A value of 0 disables the EgressIP node's reachability check.
+     */
     @JsonProperty("reachabilityTotalTimeoutSeconds")
     public void setReachabilityTotalTimeoutSeconds(Long reachabilityTotalTimeoutSeconds) {
         this.reachabilityTotalTimeoutSeconds = reachabilityTotalTimeoutSeconds;

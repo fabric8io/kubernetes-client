@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * BootstrapInPlace defines the configuration for bootstrap-in-place installation
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class BootstrapInPlace implements Editable<BootstrapInPlaceBuilder>, Kube
         this.installationDisk = installationDisk;
     }
 
+    /**
+     * InstallationDisk is the target disk drive for coreos-installer
+     */
     @JsonProperty("installationDisk")
     public String getInstallationDisk() {
         return installationDisk;
     }
 
+    /**
+     * InstallationDisk is the target disk drive for coreos-installer
+     */
     @JsonProperty("installationDisk")
     public void setInstallationDisk(String installationDisk) {
         this.installationDisk = installationDisk;

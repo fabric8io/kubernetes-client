@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ClusterImageSetSpec defines the desired state of ClusterImageSet
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class ClusterImageSetSpec implements Editable<ClusterImageSetSpecBuilder>
         this.releaseImage = releaseImage;
     }
 
+    /**
+     * ReleaseImage is the image that contains the payload to use when installing a cluster.
+     */
     @JsonProperty("releaseImage")
     public String getReleaseImage() {
         return releaseImage;
     }
 
+    /**
+     * ReleaseImage is the image that contains the payload to use when installing a cluster.
+     */
     @JsonProperty("releaseImage")
     public void setReleaseImage(String releaseImage) {
         this.releaseImage = releaseImage;

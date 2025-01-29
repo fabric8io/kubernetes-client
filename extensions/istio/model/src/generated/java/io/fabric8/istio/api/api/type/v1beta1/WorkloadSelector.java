@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * WorkloadSelector specifies the criteria used to determine if a policy can be applied to a proxy. The matching criteria includes the metadata associated with a proxy, workload instance info such as labels attached to the pod/VM, or any other info that the proxy provides to Istio during the initial handshake. If multiple conditions are specified, all conditions need to match in order for the workload instance to be selected. Currently, only label based selection mechanism is supported.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -79,12 +82,18 @@ public class WorkloadSelector implements Editable<WorkloadSelectorBuilder>, Kube
         this.matchLabels = matchLabels;
     }
 
+    /**
+     * One or more labels that indicate a specific set of pods/VMs on which a policy should be applied. The scope of label search is restricted to the configuration namespace in which the resource is present.
+     */
     @JsonProperty("matchLabels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getMatchLabels() {
         return matchLabels;
     }
 
+    /**
+     * One or more labels that indicate a specific set of pods/VMs on which a policy should be applied. The scope of label search is restricted to the configuration namespace in which the resource is present.
+     */
     @JsonProperty("matchLabels")
     public void setMatchLabels(Map<String, String> matchLabels) {
         this.matchLabels = matchLabels;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Used to configure a DNS01 challenge provider to be used when solving DNS01 challenges. Only one DNS provider may be configured per solver.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -114,101 +117,161 @@ public class ACMEChallengeSolverDNS01 implements Editable<ACMEChallengeSolverDNS
         this.webhook = webhook;
     }
 
+    /**
+     * Used to configure a DNS01 challenge provider to be used when solving DNS01 challenges. Only one DNS provider may be configured per solver.
+     */
     @JsonProperty("acmeDNS")
     public ACMEIssuerDNS01ProviderAcmeDNS getAcmeDNS() {
         return acmeDNS;
     }
 
+    /**
+     * Used to configure a DNS01 challenge provider to be used when solving DNS01 challenges. Only one DNS provider may be configured per solver.
+     */
     @JsonProperty("acmeDNS")
     public void setAcmeDNS(ACMEIssuerDNS01ProviderAcmeDNS acmeDNS) {
         this.acmeDNS = acmeDNS;
     }
 
+    /**
+     * Used to configure a DNS01 challenge provider to be used when solving DNS01 challenges. Only one DNS provider may be configured per solver.
+     */
     @JsonProperty("akamai")
     public ACMEIssuerDNS01ProviderAkamai getAkamai() {
         return akamai;
     }
 
+    /**
+     * Used to configure a DNS01 challenge provider to be used when solving DNS01 challenges. Only one DNS provider may be configured per solver.
+     */
     @JsonProperty("akamai")
     public void setAkamai(ACMEIssuerDNS01ProviderAkamai akamai) {
         this.akamai = akamai;
     }
 
+    /**
+     * Used to configure a DNS01 challenge provider to be used when solving DNS01 challenges. Only one DNS provider may be configured per solver.
+     */
     @JsonProperty("azureDNS")
     public ACMEIssuerDNS01ProviderAzureDNS getAzureDNS() {
         return azureDNS;
     }
 
+    /**
+     * Used to configure a DNS01 challenge provider to be used when solving DNS01 challenges. Only one DNS provider may be configured per solver.
+     */
     @JsonProperty("azureDNS")
     public void setAzureDNS(ACMEIssuerDNS01ProviderAzureDNS azureDNS) {
         this.azureDNS = azureDNS;
     }
 
+    /**
+     * Used to configure a DNS01 challenge provider to be used when solving DNS01 challenges. Only one DNS provider may be configured per solver.
+     */
     @JsonProperty("cloudDNS")
     public ACMEIssuerDNS01ProviderCloudDNS getCloudDNS() {
         return cloudDNS;
     }
 
+    /**
+     * Used to configure a DNS01 challenge provider to be used when solving DNS01 challenges. Only one DNS provider may be configured per solver.
+     */
     @JsonProperty("cloudDNS")
     public void setCloudDNS(ACMEIssuerDNS01ProviderCloudDNS cloudDNS) {
         this.cloudDNS = cloudDNS;
     }
 
+    /**
+     * Used to configure a DNS01 challenge provider to be used when solving DNS01 challenges. Only one DNS provider may be configured per solver.
+     */
     @JsonProperty("cloudflare")
     public ACMEIssuerDNS01ProviderCloudflare getCloudflare() {
         return cloudflare;
     }
 
+    /**
+     * Used to configure a DNS01 challenge provider to be used when solving DNS01 challenges. Only one DNS provider may be configured per solver.
+     */
     @JsonProperty("cloudflare")
     public void setCloudflare(ACMEIssuerDNS01ProviderCloudflare cloudflare) {
         this.cloudflare = cloudflare;
     }
 
+    /**
+     * CNAMEStrategy configures how the DNS01 provider should handle CNAME records when found in DNS zones.
+     */
     @JsonProperty("cnameStrategy")
     public String getCnameStrategy() {
         return cnameStrategy;
     }
 
+    /**
+     * CNAMEStrategy configures how the DNS01 provider should handle CNAME records when found in DNS zones.
+     */
     @JsonProperty("cnameStrategy")
     public void setCnameStrategy(String cnameStrategy) {
         this.cnameStrategy = cnameStrategy;
     }
 
+    /**
+     * Used to configure a DNS01 challenge provider to be used when solving DNS01 challenges. Only one DNS provider may be configured per solver.
+     */
     @JsonProperty("digitalocean")
     public ACMEIssuerDNS01ProviderDigitalOcean getDigitalocean() {
         return digitalocean;
     }
 
+    /**
+     * Used to configure a DNS01 challenge provider to be used when solving DNS01 challenges. Only one DNS provider may be configured per solver.
+     */
     @JsonProperty("digitalocean")
     public void setDigitalocean(ACMEIssuerDNS01ProviderDigitalOcean digitalocean) {
         this.digitalocean = digitalocean;
     }
 
+    /**
+     * Used to configure a DNS01 challenge provider to be used when solving DNS01 challenges. Only one DNS provider may be configured per solver.
+     */
     @JsonProperty("rfc2136")
     public ACMEIssuerDNS01ProviderRFC2136 getRfc2136() {
         return rfc2136;
     }
 
+    /**
+     * Used to configure a DNS01 challenge provider to be used when solving DNS01 challenges. Only one DNS provider may be configured per solver.
+     */
     @JsonProperty("rfc2136")
     public void setRfc2136(ACMEIssuerDNS01ProviderRFC2136 rfc2136) {
         this.rfc2136 = rfc2136;
     }
 
+    /**
+     * Used to configure a DNS01 challenge provider to be used when solving DNS01 challenges. Only one DNS provider may be configured per solver.
+     */
     @JsonProperty("route53")
     public ACMEIssuerDNS01ProviderRoute53 getRoute53() {
         return route53;
     }
 
+    /**
+     * Used to configure a DNS01 challenge provider to be used when solving DNS01 challenges. Only one DNS provider may be configured per solver.
+     */
     @JsonProperty("route53")
     public void setRoute53(ACMEIssuerDNS01ProviderRoute53 route53) {
         this.route53 = route53;
     }
 
+    /**
+     * Used to configure a DNS01 challenge provider to be used when solving DNS01 challenges. Only one DNS provider may be configured per solver.
+     */
     @JsonProperty("webhook")
     public ACMEIssuerDNS01ProviderWebhook getWebhook() {
         return webhook;
     }
 
+    /**
+     * Used to configure a DNS01 challenge provider to be used when solving DNS01 challenges. Only one DNS provider may be configured per solver.
+     */
     @JsonProperty("webhook")
     public void setWebhook(ACMEIssuerDNS01ProviderWebhook webhook) {
         this.webhook = webhook;

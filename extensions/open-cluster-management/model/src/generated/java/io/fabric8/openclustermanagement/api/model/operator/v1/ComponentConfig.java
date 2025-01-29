@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ComponentConfig provides optional configuration items for individual components
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class ComponentConfig implements Editable<ComponentConfigBuilder>, Kubern
         this.name = name;
     }
 
+    /**
+     * ComponentConfig provides optional configuration items for individual components
+     */
     @JsonProperty("enabled")
     public Boolean getEnabled() {
         return enabled;
     }
 
+    /**
+     * ComponentConfig provides optional configuration items for individual components
+     */
     @JsonProperty("enabled")
     public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
     }
 
+    /**
+     * ComponentConfig provides optional configuration items for individual components
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * ComponentConfig provides optional configuration items for individual components
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

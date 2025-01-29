@@ -40,6 +40,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AzureMachineProviderStatus is the type that will be embedded in a Machine.Status.ProviderStatus field. It contains Azure-specific status information. Compatibility level 2: Stable within a major release for a minimum of 9 months or 3 minor releases (whichever is longer).
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -80,17 +83,11 @@ import lombok.experimental.Accessors;
 public class AzureMachineProviderStatus implements Editable<AzureMachineProviderStatusBuilder>, HasMetadata, Namespaced
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "machine.openshift.io/v1beta1";
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Condition> conditions = new ArrayList<>();
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "AzureMachineProviderStatus";
     @JsonProperty("metadata")
@@ -119,7 +116,7 @@ public class AzureMachineProviderStatus implements Editable<AzureMachineProvider
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -127,26 +124,32 @@ public class AzureMachineProviderStatus implements Editable<AzureMachineProvider
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
+    /**
+     * Conditions is a set of conditions associated with the Machine to indicate errors or other status.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Conditions is a set of conditions associated with the Machine to indicate errors or other status.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -154,38 +157,56 @@ public class AzureMachineProviderStatus implements Editable<AzureMachineProvider
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * AzureMachineProviderStatus is the type that will be embedded in a Machine.Status.ProviderStatus field. It contains Azure-specific status information. Compatibility level 2: Stable within a major release for a minimum of 9 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * AzureMachineProviderStatus is the type that will be embedded in a Machine.Status.ProviderStatus field. It contains Azure-specific status information. Compatibility level 2: Stable within a major release for a minimum of 9 months or 3 minor releases (whichever is longer).
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * VMID is the ID of the virtual machine created in Azure.
+     */
     @JsonProperty("vmId")
     public String getVmId() {
         return vmId;
     }
 
+    /**
+     * VMID is the ID of the virtual machine created in Azure.
+     */
     @JsonProperty("vmId")
     public void setVmId(String vmId) {
         this.vmId = vmId;
     }
 
+    /**
+     * VMState is the provisioning state of the Azure virtual machine.
+     */
     @JsonProperty("vmState")
     public String getVmState() {
         return vmState;
     }
 
+    /**
+     * VMState is the provisioning state of the Azure virtual machine.
+     */
     @JsonProperty("vmState")
     public void setVmState(String vmState) {
         this.vmState = vmState;

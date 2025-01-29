@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * IDRange provides a min/max of an allowed range of IDs. Deprecated: use IDRange from policy API Group instead.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class IDRange implements Editable<IDRangeBuilder>, KubernetesResource
         this.min = min;
     }
 
+    /**
+     * max is the end of the range, inclusive.
+     */
     @JsonProperty("max")
     public Long getMax() {
         return max;
     }
 
+    /**
+     * max is the end of the range, inclusive.
+     */
     @JsonProperty("max")
     public void setMax(Long max) {
         this.max = max;
     }
 
+    /**
+     * min is the start of the range, inclusive.
+     */
     @JsonProperty("min")
     public Long getMin() {
         return min;
     }
 
+    /**
+     * min is the start of the range, inclusive.
+     */
     @JsonProperty("min")
     public void setMin(Long min) {
         this.min = min;

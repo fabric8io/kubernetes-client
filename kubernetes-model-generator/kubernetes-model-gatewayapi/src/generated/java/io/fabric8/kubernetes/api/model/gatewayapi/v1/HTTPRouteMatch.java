@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * HTTPRouteMatch defines the predicate used to match requests to a given action. Multiple match types are ANDed together, i.e. the match will evaluate to true only if all conditions are satisfied.<br><p> <br><p> For example, the match below will match a HTTP request only if its path starts with `/foo` AND it contains the `version: v1` header:<br><p> <br><p> ``` match:<br><p> <br><p> 	path:<br><p> 	  value: "/foo"<br><p> 	headers:<br><p> 	- name: "version"<br><p> 	  value "v1"<br><p> <br><p> ```
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,43 +97,67 @@ public class HTTPRouteMatch implements Editable<HTTPRouteMatchBuilder>, Kubernet
         this.queryParams = queryParams;
     }
 
+    /**
+     * Headers specifies HTTP request header matchers. Multiple match values are ANDed together, meaning, a request must match all the specified headers to select the route.
+     */
     @JsonProperty("headers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<HTTPHeaderMatch> getHeaders() {
         return headers;
     }
 
+    /**
+     * Headers specifies HTTP request header matchers. Multiple match values are ANDed together, meaning, a request must match all the specified headers to select the route.
+     */
     @JsonProperty("headers")
     public void setHeaders(List<HTTPHeaderMatch> headers) {
         this.headers = headers;
     }
 
+    /**
+     * Method specifies HTTP method matcher. When specified, this route will be matched only if the request has the specified method.<br><p> <br><p> Support: Extended
+     */
     @JsonProperty("method")
     public String getMethod() {
         return method;
     }
 
+    /**
+     * Method specifies HTTP method matcher. When specified, this route will be matched only if the request has the specified method.<br><p> <br><p> Support: Extended
+     */
     @JsonProperty("method")
     public void setMethod(String method) {
         this.method = method;
     }
 
+    /**
+     * HTTPRouteMatch defines the predicate used to match requests to a given action. Multiple match types are ANDed together, i.e. the match will evaluate to true only if all conditions are satisfied.<br><p> <br><p> For example, the match below will match a HTTP request only if its path starts with `/foo` AND it contains the `version: v1` header:<br><p> <br><p> ``` match:<br><p> <br><p> 	path:<br><p> 	  value: "/foo"<br><p> 	headers:<br><p> 	- name: "version"<br><p> 	  value "v1"<br><p> <br><p> ```
+     */
     @JsonProperty("path")
     public HTTPPathMatch getPath() {
         return path;
     }
 
+    /**
+     * HTTPRouteMatch defines the predicate used to match requests to a given action. Multiple match types are ANDed together, i.e. the match will evaluate to true only if all conditions are satisfied.<br><p> <br><p> For example, the match below will match a HTTP request only if its path starts with `/foo` AND it contains the `version: v1` header:<br><p> <br><p> ``` match:<br><p> <br><p> 	path:<br><p> 	  value: "/foo"<br><p> 	headers:<br><p> 	- name: "version"<br><p> 	  value "v1"<br><p> <br><p> ```
+     */
     @JsonProperty("path")
     public void setPath(HTTPPathMatch path) {
         this.path = path;
     }
 
+    /**
+     * QueryParams specifies HTTP query parameter matchers. Multiple match values are ANDed together, meaning, a request must match all the specified query parameters to select the route.<br><p> <br><p> Support: Extended
+     */
     @JsonProperty("queryParams")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<HTTPQueryParamMatch> getQueryParams() {
         return queryParams;
     }
 
+    /**
+     * QueryParams specifies HTTP query parameter matchers. Multiple match values are ANDed together, meaning, a request must match all the specified query parameters to select the route.<br><p> <br><p> Support: Extended
+     */
     @JsonProperty("queryParams")
     public void setQueryParams(List<HTTPQueryParamMatch> queryParams) {
         this.queryParams = queryParams;

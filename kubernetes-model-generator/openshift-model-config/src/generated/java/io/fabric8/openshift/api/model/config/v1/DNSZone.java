@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DNSZone is used to define a DNS hosted zone. A zone can be identified by an ID or tags.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -83,22 +86,34 @@ public class DNSZone implements Editable<DNSZoneBuilder>, KubernetesResource
         this.tags = tags;
     }
 
+    /**
+     * id is the identifier that can be used to find the DNS hosted zone.<br><p> <br><p> on AWS zone can be fetched using `ID` as id in [1] on Azure zone can be fetched using `ID` as a pre-determined name in [2], on GCP zone can be fetched using `ID` as a pre-determined name in [3].<br><p> <br><p> [1]: https://docs.aws.amazon.com/cli/latest/reference/route53/get-hosted-zone.html#options [2]: https://docs.microsoft.com/en-us/cli/azure/network/dns/zone?view=azure-cli-latest#az-network-dns-zone-show [3]: https://cloud.google.com/dns/docs/reference/v1/managedZones/get
+     */
     @JsonProperty("id")
     public String getId() {
         return id;
     }
 
+    /**
+     * id is the identifier that can be used to find the DNS hosted zone.<br><p> <br><p> on AWS zone can be fetched using `ID` as id in [1] on Azure zone can be fetched using `ID` as a pre-determined name in [2], on GCP zone can be fetched using `ID` as a pre-determined name in [3].<br><p> <br><p> [1]: https://docs.aws.amazon.com/cli/latest/reference/route53/get-hosted-zone.html#options [2]: https://docs.microsoft.com/en-us/cli/azure/network/dns/zone?view=azure-cli-latest#az-network-dns-zone-show [3]: https://cloud.google.com/dns/docs/reference/v1/managedZones/get
+     */
     @JsonProperty("id")
     public void setId(String id) {
         this.id = id;
     }
 
+    /**
+     * tags can be used to query the DNS hosted zone.<br><p> <br><p> on AWS, resourcegroupstaggingapi [1] can be used to fetch a zone using `Tags` as tag-filters,<br><p> <br><p> [1]: https://docs.aws.amazon.com/cli/latest/reference/resourcegroupstaggingapi/get-resources.html#options
+     */
     @JsonProperty("tags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getTags() {
         return tags;
     }
 
+    /**
+     * tags can be used to query the DNS hosted zone.<br><p> <br><p> on AWS, resourcegroupstaggingapi [1] can be used to fetch a zone using `Tags` as tag-filters,<br><p> <br><p> [1]: https://docs.aws.amazon.com/cli/latest/reference/resourcegroupstaggingapi/get-resources.html#options
+     */
     @JsonProperty("tags")
     public void setTags(Map<String, String> tags) {
         this.tags = tags;

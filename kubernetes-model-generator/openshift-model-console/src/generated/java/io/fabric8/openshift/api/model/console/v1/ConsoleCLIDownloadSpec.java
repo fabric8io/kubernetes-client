@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ConsoleCLIDownloadSpec is the desired cli download configuration.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -89,32 +92,50 @@ public class ConsoleCLIDownloadSpec implements Editable<ConsoleCLIDownloadSpecBu
         this.links = links;
     }
 
+    /**
+     * description is the description of the CLI download (can include markdown).
+     */
     @JsonProperty("description")
     public String getDescription() {
         return description;
     }
 
+    /**
+     * description is the description of the CLI download (can include markdown).
+     */
     @JsonProperty("description")
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * displayName is the display name of the CLI download.
+     */
     @JsonProperty("displayName")
     public String getDisplayName() {
         return displayName;
     }
 
+    /**
+     * displayName is the display name of the CLI download.
+     */
     @JsonProperty("displayName")
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
     }
 
+    /**
+     * links is a list of objects that provide CLI download link details.
+     */
     @JsonProperty("links")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<CLIDownloadLink> getLinks() {
         return links;
     }
 
+    /**
+     * links is a list of objects that provide CLI download link details.
+     */
     @JsonProperty("links")
     public void setLinks(List<CLIDownloadLink> links) {
         this.links = links;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Port describes the properties of a specific port of a service.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class Port implements Editable<PortBuilder>, KubernetesResource
         this.targetPort = targetPort;
     }
 
+    /**
+     * Label assigned to the port.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Label assigned to the port.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * A valid non-negative integer port number.
+     */
     @JsonProperty("number")
     public Long getNumber() {
         return number;
     }
 
+    /**
+     * A valid non-negative integer port number.
+     */
     @JsonProperty("number")
     public void setNumber(Long number) {
         this.number = number;
     }
 
+    /**
+     * The protocol exposed on the port. MUST BE one of HTTP|HTTPS|GRPC|GRPC-WEB|HTTP2|MONGO|TCP|TLS. TLS can be either used to terminate non-HTTP based connections on a specific port or to route traffic based on SNI header to the destination without terminating the TLS connection.
+     */
     @JsonProperty("protocol")
     public String getProtocol() {
         return protocol;
     }
 
+    /**
+     * The protocol exposed on the port. MUST BE one of HTTP|HTTPS|GRPC|GRPC-WEB|HTTP2|MONGO|TCP|TLS. TLS can be either used to terminate non-HTTP based connections on a specific port or to route traffic based on SNI header to the destination without terminating the TLS connection.
+     */
     @JsonProperty("protocol")
     public void setProtocol(String protocol) {
         this.protocol = protocol;
     }
 
+    /**
+     * The port number on the endpoint where the traffic will be received. Applicable only when used with ServiceEntries. $hide_from_docs<br><p> <br><p> Deprecated: Marked as deprecated in networking/v1alpha3/gateway.proto.
+     */
     @JsonProperty("targetPort")
     public Long getTargetPort() {
         return targetPort;
     }
 
+    /**
+     * The port number on the endpoint where the traffic will be received. Applicable only when used with ServiceEntries. $hide_from_docs<br><p> <br><p> Deprecated: Marked as deprecated in networking/v1alpha3/gateway.proto.
+     */
     @JsonProperty("targetPort")
     public void setTargetPort(Long targetPort) {
         this.targetPort = targetPort;

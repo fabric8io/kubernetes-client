@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NodeFeatures describes the set of features implemented by the CRI implementation. The features contained in the NodeFeatures should depend only on the cri implementation independent of runtime handlers.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -49,11 +52,17 @@ public class NodeFeatures implements Editable<NodeFeaturesBuilder>, KubernetesRe
         this.supplementalGroupsPolicy = supplementalGroupsPolicy;
     }
 
+    /**
+     * SupplementalGroupsPolicy is set to true if the runtime supports SupplementalGroupsPolicy and ContainerUser.
+     */
     @JsonProperty("supplementalGroupsPolicy")
     public Boolean getSupplementalGroupsPolicy() {
         return supplementalGroupsPolicy;
     }
 
+    /**
+     * SupplementalGroupsPolicy is set to true if the runtime supports SupplementalGroupsPolicy and ContainerUser.
+     */
     @JsonProperty("supplementalGroupsPolicy")
     public void setSupplementalGroupsPolicy(Boolean supplementalGroupsPolicy) {
         this.supplementalGroupsPolicy = supplementalGroupsPolicy;

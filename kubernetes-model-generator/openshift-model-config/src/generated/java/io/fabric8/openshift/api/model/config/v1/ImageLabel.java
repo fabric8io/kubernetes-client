@@ -82,21 +82,33 @@ public class ImageLabel implements Editable<ImageLabelBuilder>, KubernetesResour
         this.value = value;
     }
 
+    /**
+     * Name defines the name of the label. It must have non-zero length.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name defines the name of the label. It must have non-zero length.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Value defines the literal value of the label.
+     */
     @JsonProperty("value")
     public String getValue() {
         return value;
     }
 
+    /**
+     * Value defines the literal value of the label.
+     */
     @JsonProperty("value")
     public void setValue(String value) {
         this.value = value;

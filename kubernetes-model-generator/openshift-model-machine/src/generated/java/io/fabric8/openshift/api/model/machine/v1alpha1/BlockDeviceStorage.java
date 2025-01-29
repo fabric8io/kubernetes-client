@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * blockDeviceStorage is the storage type of a block device to create and contains additional storage options.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class BlockDeviceStorage implements Editable<BlockDeviceStorageBuilder>, 
         this.volume = volume;
     }
 
+    /**
+     * type is the type of block device to create. This can be either "Volume" or "Local".
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * type is the type of block device to create. This can be either "Volume" or "Local".
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;
     }
 
+    /**
+     * blockDeviceStorage is the storage type of a block device to create and contains additional storage options.
+     */
     @JsonProperty("volume")
     public BlockDeviceVolume getVolume() {
         return volume;
     }
 
+    /**
+     * blockDeviceStorage is the storage type of a block device to create and contains additional storage options.
+     */
     @JsonProperty("volume")
     public void setVolume(BlockDeviceVolume volume) {
         this.volume = volume;

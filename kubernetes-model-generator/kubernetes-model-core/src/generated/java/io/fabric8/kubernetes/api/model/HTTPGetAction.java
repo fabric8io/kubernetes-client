@@ -19,6 +19,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * HTTPGetAction describes an action based on HTTP Get requests.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -68,52 +71,82 @@ public class HTTPGetAction implements Editable<HTTPGetActionBuilder>, Kubernetes
         this.scheme = scheme;
     }
 
+    /**
+     * Host name to connect to, defaults to the pod IP. You probably want to set "Host" in httpHeaders instead.
+     */
     @JsonProperty("host")
     public String getHost() {
         return host;
     }
 
+    /**
+     * Host name to connect to, defaults to the pod IP. You probably want to set "Host" in httpHeaders instead.
+     */
     @JsonProperty("host")
     public void setHost(String host) {
         this.host = host;
     }
 
+    /**
+     * Custom headers to set in the request. HTTP allows repeated headers.
+     */
     @JsonProperty("httpHeaders")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<HTTPHeader> getHttpHeaders() {
         return httpHeaders;
     }
 
+    /**
+     * Custom headers to set in the request. HTTP allows repeated headers.
+     */
     @JsonProperty("httpHeaders")
     public void setHttpHeaders(List<HTTPHeader> httpHeaders) {
         this.httpHeaders = httpHeaders;
     }
 
+    /**
+     * Path to access on the HTTP server.
+     */
     @JsonProperty("path")
     public String getPath() {
         return path;
     }
 
+    /**
+     * Path to access on the HTTP server.
+     */
     @JsonProperty("path")
     public void setPath(String path) {
         this.path = path;
     }
 
+    /**
+     * HTTPGetAction describes an action based on HTTP Get requests.
+     */
     @JsonProperty("port")
     public IntOrString getPort() {
         return port;
     }
 
+    /**
+     * HTTPGetAction describes an action based on HTTP Get requests.
+     */
     @JsonProperty("port")
     public void setPort(IntOrString port) {
         this.port = port;
     }
 
+    /**
+     * Scheme to use for connecting to the host. Defaults to HTTP.
+     */
     @JsonProperty("scheme")
     public String getScheme() {
         return scheme;
     }
 
+    /**
+     * Scheme to use for connecting to the host. Defaults to HTTP.
+     */
     @JsonProperty("scheme")
     public void setScheme(String scheme) {
         this.scheme = scheme;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * CapabilityVisibility defines the criteria to enable/disable a capability.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class CapabilityVisibility implements Editable<CapabilityVisibilityBuilde
         this.state = state;
     }
 
+    /**
+     * state defines if the capability is enabled or disabled in the console UI. Enabling the capability in the console UI is represented by the "Enabled" value. Disabling the capability in the console UI is represented by the "Disabled" value.
+     */
     @JsonProperty("state")
     public String getState() {
         return state;
     }
 
+    /**
+     * state defines if the capability is enabled or disabled in the console UI. Enabling the capability in the console UI is represented by the "Enabled" value. Disabling the capability in the console UI is represented by the "Disabled" value.
+     */
     @JsonProperty("state")
     public void setState(String state) {
         this.state = state;

@@ -89,12 +89,18 @@ public class RemoteClusterStatus implements Editable<RemoteClusterStatusBuilder>
         this.observedGeneration = observedGeneration;
     }
 
+    /**
+     * Conditions represents the current condition of the remote cluster
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<RemoteClusterCondition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Conditions represents the current condition of the remote cluster
+     */
     @JsonProperty("conditions")
     public void setConditions(List<RemoteClusterCondition> conditions) {
         this.conditions = conditions;

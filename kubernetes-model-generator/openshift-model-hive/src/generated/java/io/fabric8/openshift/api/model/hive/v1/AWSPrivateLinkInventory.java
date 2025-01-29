@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AWSPrivateLinkInventory is a VPC and its corresponding subnets in an AWS region. This VPC will be used to create an AWS VPC Endpoint whenever there is a VPC Endpoint Service created for a ClusterDeployment.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -89,32 +92,50 @@ public class AWSPrivateLinkInventory implements Editable<AWSPrivateLinkInventory
         this.vpcID = vpcID;
     }
 
+    /**
+     * AWSPrivateLinkInventory is a VPC and its corresponding subnets in an AWS region. This VPC will be used to create an AWS VPC Endpoint whenever there is a VPC Endpoint Service created for a ClusterDeployment.
+     */
     @JsonProperty("region")
     public String getRegion() {
         return region;
     }
 
+    /**
+     * AWSPrivateLinkInventory is a VPC and its corresponding subnets in an AWS region. This VPC will be used to create an AWS VPC Endpoint whenever there is a VPC Endpoint Service created for a ClusterDeployment.
+     */
     @JsonProperty("region")
     public void setRegion(String region) {
         this.region = region;
     }
 
+    /**
+     * AWSPrivateLinkInventory is a VPC and its corresponding subnets in an AWS region. This VPC will be used to create an AWS VPC Endpoint whenever there is a VPC Endpoint Service created for a ClusterDeployment.
+     */
     @JsonProperty("subnets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<AWSPrivateLinkSubnet> getSubnets() {
         return subnets;
     }
 
+    /**
+     * AWSPrivateLinkInventory is a VPC and its corresponding subnets in an AWS region. This VPC will be used to create an AWS VPC Endpoint whenever there is a VPC Endpoint Service created for a ClusterDeployment.
+     */
     @JsonProperty("subnets")
     public void setSubnets(List<AWSPrivateLinkSubnet> subnets) {
         this.subnets = subnets;
     }
 
+    /**
+     * AWSPrivateLinkInventory is a VPC and its corresponding subnets in an AWS region. This VPC will be used to create an AWS VPC Endpoint whenever there is a VPC Endpoint Service created for a ClusterDeployment.
+     */
     @JsonProperty("vpcID")
     public String getVpcID() {
         return vpcID;
     }
 
+    /**
+     * AWSPrivateLinkInventory is a VPC and its corresponding subnets in an AWS region. This VPC will be used to create an AWS VPC Endpoint whenever there is a VPC Endpoint Service created for a ClusterDeployment.
+     */
     @JsonProperty("vpcID")
     public void setVpcID(String vpcID) {
         this.vpcID = vpcID;

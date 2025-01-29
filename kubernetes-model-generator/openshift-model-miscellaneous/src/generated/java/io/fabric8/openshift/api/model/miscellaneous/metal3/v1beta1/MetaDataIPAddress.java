@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * MetaDataIPAddress contains the info to render th ip address. It is IP-version agnostic.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,51 +97,81 @@ public class MetaDataIPAddress implements Editable<MetaDataIPAddressBuilder>, Ku
         this.subnet = subnet;
     }
 
+    /**
+     * End is the last IP address that can be rendered. It is used as a validation that the rendered IP is in bound.
+     */
     @JsonProperty("end")
     public String getEnd() {
         return end;
     }
 
+    /**
+     * End is the last IP address that can be rendered. It is used as a validation that the rendered IP is in bound.
+     */
     @JsonProperty("end")
     public void setEnd(String end) {
         this.end = end;
     }
 
+    /**
+     * Key will be used as the key to set in the metadata map for cloud-init
+     */
     @JsonProperty("key")
     public String getKey() {
         return key;
     }
 
+    /**
+     * Key will be used as the key to set in the metadata map for cloud-init
+     */
     @JsonProperty("key")
     public void setKey(String key) {
         this.key = key;
     }
 
+    /**
+     * Start is the first ip address that can be rendered
+     */
     @JsonProperty("start")
     public String getStart() {
         return start;
     }
 
+    /**
+     * Start is the first ip address that can be rendered
+     */
     @JsonProperty("start")
     public void setStart(String start) {
         this.start = start;
     }
 
+    /**
+     * Step is the step between the IP addresses rendered.
+     */
     @JsonProperty("step")
     public Integer getStep() {
         return step;
     }
 
+    /**
+     * Step is the step between the IP addresses rendered.
+     */
     @JsonProperty("step")
     public void setStep(Integer step) {
         this.step = step;
     }
 
+    /**
+     * Subnet is used to validate that the rendered IP is in bounds. In case the Start value is not given, it is derived from the subnet ip incremented by 1 (`192.168.0.1` for `192.168.0.0/24`)
+     */
     @JsonProperty("subnet")
     public String getSubnet() {
         return subnet;
     }
 
+    /**
+     * Subnet is used to validate that the rendered IP is in bounds. In case the Start value is not given, it is derived from the subnet ip incremented by 1 (`192.168.0.1` for `192.168.0.0/24`)
+     */
     @JsonProperty("subnet")
     public void setSubnet(String subnet) {
         this.subnet = subnet;

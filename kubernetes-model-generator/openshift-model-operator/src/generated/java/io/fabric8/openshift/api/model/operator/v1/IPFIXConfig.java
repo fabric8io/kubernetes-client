@@ -81,12 +81,18 @@ public class IPFIXConfig implements Editable<IPFIXConfigBuilder>, KubernetesReso
         this.collectors = collectors;
     }
 
+    /**
+     * ipfixCollectors is list of strings formatted as ip:port with a maximum of ten items
+     */
     @JsonProperty("collectors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getCollectors() {
         return collectors;
     }
 
+    /**
+     * ipfixCollectors is list of strings formatted as ip:port with a maximum of ten items
+     */
     @JsonProperty("collectors")
     public void setCollectors(List<String> collectors) {
         this.collectors = collectors;

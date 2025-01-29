@@ -85,12 +85,18 @@ public class ChaosStatus implements Editable<ChaosStatusBuilder>, KubernetesReso
         this.experiment = experiment;
     }
 
+    /**
+     * Conditions represents the current global condition of the chaos
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ChaosCondition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Conditions represents the current global condition of the chaos
+     */
     @JsonProperty("conditions")
     public void setConditions(List<ChaosCondition> conditions) {
         this.conditions = conditions;

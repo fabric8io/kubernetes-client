@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ImageStreamImportStatus contains information about the status of an image stream import.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -89,32 +92,50 @@ public class ImageStreamImportStatus implements Editable<ImageStreamImportStatus
         this.repository = repository;
     }
 
+    /**
+     * Images is set with the result of importing spec.images
+     */
     @JsonProperty("images")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ImageImportStatus> getImages() {
         return images;
     }
 
+    /**
+     * Images is set with the result of importing spec.images
+     */
     @JsonProperty("images")
     public void setImages(List<ImageImportStatus> images) {
         this.images = images;
     }
 
+    /**
+     * ImageStreamImportStatus contains information about the status of an image stream import.
+     */
     @JsonProperty("import")
     public ImageStream getImport() {
         return _import;
     }
 
+    /**
+     * ImageStreamImportStatus contains information about the status of an image stream import.
+     */
     @JsonProperty("import")
     public void setImport(ImageStream _import) {
         this._import = _import;
     }
 
+    /**
+     * ImageStreamImportStatus contains information about the status of an image stream import.
+     */
     @JsonProperty("repository")
     public RepositoryImportStatus getRepository() {
         return repository;
     }
 
+    /**
+     * ImageStreamImportStatus contains information about the status of an image stream import.
+     */
     @JsonProperty("repository")
     public void setRepository(RepositoryImportStatus repository) {
         this.repository = repository;

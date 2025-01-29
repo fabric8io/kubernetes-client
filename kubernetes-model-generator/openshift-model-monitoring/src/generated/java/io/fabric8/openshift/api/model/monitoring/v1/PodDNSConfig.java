@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PodDNSConfig defines the DNS parameters of a pod in addition to those generated from DNSPolicy.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -91,34 +94,52 @@ public class PodDNSConfig implements Editable<PodDNSConfigBuilder>, KubernetesRe
         this.searches = searches;
     }
 
+    /**
+     * A list of DNS name server IP addresses. This will be appended to the base nameservers generated from DNSPolicy.
+     */
     @JsonProperty("nameservers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getNameservers() {
         return nameservers;
     }
 
+    /**
+     * A list of DNS name server IP addresses. This will be appended to the base nameservers generated from DNSPolicy.
+     */
     @JsonProperty("nameservers")
     public void setNameservers(List<String> nameservers) {
         this.nameservers = nameservers;
     }
 
+    /**
+     * A list of DNS resolver options. This will be merged with the base options generated from DNSPolicy. Resolution options given in Options will override those that appear in the base DNSPolicy.
+     */
     @JsonProperty("options")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PodDNSConfigOption> getOptions() {
         return options;
     }
 
+    /**
+     * A list of DNS resolver options. This will be merged with the base options generated from DNSPolicy. Resolution options given in Options will override those that appear in the base DNSPolicy.
+     */
     @JsonProperty("options")
     public void setOptions(List<PodDNSConfigOption> options) {
         this.options = options;
     }
 
+    /**
+     * A list of DNS search domains for host-name lookup. This will be appended to the base search paths generated from DNSPolicy.
+     */
     @JsonProperty("searches")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getSearches() {
         return searches;
     }
 
+    /**
+     * A list of DNS search domains for host-name lookup. This will be appended to the base search paths generated from DNSPolicy.
+     */
     @JsonProperty("searches")
     public void setSearches(List<String> searches) {
         this.searches = searches;

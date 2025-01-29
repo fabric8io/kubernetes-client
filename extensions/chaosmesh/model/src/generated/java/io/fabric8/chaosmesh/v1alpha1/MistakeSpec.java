@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * MistakeSpec represents one type of mistake
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class MistakeSpec implements Editable<MistakeSpecBuilder>, KubernetesReso
         this.maxOccurrences = maxOccurrences;
     }
 
+    /**
+     * Filling determines what is filled in the mistake data.
+     */
     @JsonProperty("filling")
     public String getFilling() {
         return filling;
     }
 
+    /**
+     * Filling determines what is filled in the mistake data.
+     */
     @JsonProperty("filling")
     public void setFilling(String filling) {
         this.filling = filling;
     }
 
+    /**
+     * Max length of each wrong data segment in bytes
+     */
     @JsonProperty("maxLength")
     public Long getMaxLength() {
         return maxLength;
     }
 
+    /**
+     * Max length of each wrong data segment in bytes
+     */
     @JsonProperty("maxLength")
     public void setMaxLength(Long maxLength) {
         this.maxLength = maxLength;
     }
 
+    /**
+     * There will be [1, MaxOccurrences] segments of wrong data.
+     */
     @JsonProperty("maxOccurrences")
     public Long getMaxOccurrences() {
         return maxOccurrences;
     }
 
+    /**
+     * There will be [1, MaxOccurrences] segments of wrong data.
+     */
     @JsonProperty("maxOccurrences")
     public void setMaxOccurrences(Long maxOccurrences) {
         this.maxOccurrences = maxOccurrences;

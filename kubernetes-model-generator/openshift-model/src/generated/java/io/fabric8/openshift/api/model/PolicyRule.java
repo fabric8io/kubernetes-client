@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PolicyRule holds information that describes a policy rule, but does not contain information about who the rule applies to or which namespace the rule applies to.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -106,67 +109,103 @@ public class PolicyRule implements Editable<PolicyRuleBuilder>, KubernetesResour
         this.verbs = verbs;
     }
 
+    /**
+     * APIGroups is the name of the APIGroup that contains the resources.  If this field is empty, then both kubernetes and origin API groups are assumed. That means that if an action is requested against one of the enumerated resources in either the kubernetes or the origin API group, the request will be allowed
+     */
     @JsonProperty("apiGroups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getApiGroups() {
         return apiGroups;
     }
 
+    /**
+     * APIGroups is the name of the APIGroup that contains the resources.  If this field is empty, then both kubernetes and origin API groups are assumed. That means that if an action is requested against one of the enumerated resources in either the kubernetes or the origin API group, the request will be allowed
+     */
     @JsonProperty("apiGroups")
     public void setApiGroups(List<String> apiGroups) {
         this.apiGroups = apiGroups;
     }
 
+    /**
+     * PolicyRule holds information that describes a policy rule, but does not contain information about who the rule applies to or which namespace the rule applies to.
+     */
     @JsonProperty("attributeRestrictions")
     public Object getAttributeRestrictions() {
         return attributeRestrictions;
     }
 
+    /**
+     * PolicyRule holds information that describes a policy rule, but does not contain information about who the rule applies to or which namespace the rule applies to.
+     */
     @JsonProperty("attributeRestrictions")
     @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
     public void setAttributeRestrictions(Object attributeRestrictions) {
         this.attributeRestrictions = attributeRestrictions;
     }
 
+    /**
+     * NonResourceURLsSlice is a set of partial urls that a user should have access to.  &#42;s are allowed, but only as the full, final step in the path This name is intentionally different than the internal type so that the DefaultConvert works nicely and because the ordering may be different.
+     */
     @JsonProperty("nonResourceURLs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getNonResourceURLs() {
         return nonResourceURLs;
     }
 
+    /**
+     * NonResourceURLsSlice is a set of partial urls that a user should have access to.  &#42;s are allowed, but only as the full, final step in the path This name is intentionally different than the internal type so that the DefaultConvert works nicely and because the ordering may be different.
+     */
     @JsonProperty("nonResourceURLs")
     public void setNonResourceURLs(List<String> nonResourceURLs) {
         this.nonResourceURLs = nonResourceURLs;
     }
 
+    /**
+     * ResourceNames is an optional white list of names that the rule applies to.  An empty set means that everything is allowed.
+     */
     @JsonProperty("resourceNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getResourceNames() {
         return resourceNames;
     }
 
+    /**
+     * ResourceNames is an optional white list of names that the rule applies to.  An empty set means that everything is allowed.
+     */
     @JsonProperty("resourceNames")
     public void setResourceNames(List<String> resourceNames) {
         this.resourceNames = resourceNames;
     }
 
+    /**
+     * Resources is a list of resources this rule applies to.  ResourceAll represents all resources.
+     */
     @JsonProperty("resources")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getResources() {
         return resources;
     }
 
+    /**
+     * Resources is a list of resources this rule applies to.  ResourceAll represents all resources.
+     */
     @JsonProperty("resources")
     public void setResources(List<String> resources) {
         this.resources = resources;
     }
 
+    /**
+     * Verbs is a list of Verbs that apply to ALL the ResourceKinds and AttributeRestrictions contained in this rule.  VerbAll represents all kinds.
+     */
     @JsonProperty("verbs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getVerbs() {
         return verbs;
     }
 
+    /**
+     * Verbs is a list of Verbs that apply to ALL the ResourceKinds and AttributeRestrictions contained in this rule.  VerbAll represents all kinds.
+     */
     @JsonProperty("verbs")
     public void setVerbs(List<String> verbs) {
         this.verbs = verbs;

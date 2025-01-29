@@ -82,21 +82,33 @@ public class NetworkDownSpec implements Editable<NetworkDownSpecBuilder>, Kubern
         this.duration = duration;
     }
 
+    /**
+     * The network interface to impact
+     */
     @JsonProperty("device")
     public String getDevice() {
         return device;
     }
 
+    /**
+     * The network interface to impact
+     */
     @JsonProperty("device")
     public void setDevice(String device) {
         this.device = device;
     }
 
+    /**
+     * NIC down time, time units: ns, us (or µs), ms, s, m, h.
+     */
     @JsonProperty("duration")
     public String getDuration() {
         return duration;
     }
 
+    /**
+     * NIC down time, time units: ns, us (or µs), ms, s, m, h.
+     */
     @JsonProperty("duration")
     public void setDuration(String duration) {
         this.duration = duration;

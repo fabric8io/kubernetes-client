@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Metadata contains Power VS metadata (e.g. for uninstalling the cluster).
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -118,102 +121,162 @@ public class Metadata implements Editable<MetadataBuilder>, KubernetesResource
         this.zone = zone;
     }
 
+    /**
+     * Metadata contains Power VS metadata (e.g. for uninstalling the cluster).
+     */
     @JsonProperty("BaseDomain")
     public String getBaseDomain() {
         return baseDomain;
     }
 
+    /**
+     * Metadata contains Power VS metadata (e.g. for uninstalling the cluster).
+     */
     @JsonProperty("BaseDomain")
     public void setBaseDomain(String baseDomain) {
         this.baseDomain = baseDomain;
     }
 
+    /**
+     * Metadata contains Power VS metadata (e.g. for uninstalling the cluster).
+     */
     @JsonProperty("cisInstanceCRN")
     public String getCisInstanceCRN() {
         return cisInstanceCRN;
     }
 
+    /**
+     * Metadata contains Power VS metadata (e.g. for uninstalling the cluster).
+     */
     @JsonProperty("cisInstanceCRN")
     public void setCisInstanceCRN(String cisInstanceCRN) {
         this.cisInstanceCRN = cisInstanceCRN;
     }
 
+    /**
+     * Metadata contains Power VS metadata (e.g. for uninstalling the cluster).
+     */
     @JsonProperty("dnsInstanceCRN")
     public String getDnsInstanceCRN() {
         return dnsInstanceCRN;
     }
 
+    /**
+     * Metadata contains Power VS metadata (e.g. for uninstalling the cluster).
+     */
     @JsonProperty("dnsInstanceCRN")
     public void setDnsInstanceCRN(String dnsInstanceCRN) {
         this.dnsInstanceCRN = dnsInstanceCRN;
     }
 
+    /**
+     * Metadata contains Power VS metadata (e.g. for uninstalling the cluster).
+     */
     @JsonProperty("powerVSResourceGroup")
     public String getPowerVSResourceGroup() {
         return powerVSResourceGroup;
     }
 
+    /**
+     * Metadata contains Power VS metadata (e.g. for uninstalling the cluster).
+     */
     @JsonProperty("powerVSResourceGroup")
     public void setPowerVSResourceGroup(String powerVSResourceGroup) {
         this.powerVSResourceGroup = powerVSResourceGroup;
     }
 
+    /**
+     * Metadata contains Power VS metadata (e.g. for uninstalling the cluster).
+     */
     @JsonProperty("region")
     public String getRegion() {
         return region;
     }
 
+    /**
+     * Metadata contains Power VS metadata (e.g. for uninstalling the cluster).
+     */
     @JsonProperty("region")
     public void setRegion(String region) {
         this.region = region;
     }
 
+    /**
+     * Metadata contains Power VS metadata (e.g. for uninstalling the cluster).
+     */
     @JsonProperty("serviceEndpoints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PowerVSServiceEndpoint> getServiceEndpoints() {
         return serviceEndpoints;
     }
 
+    /**
+     * Metadata contains Power VS metadata (e.g. for uninstalling the cluster).
+     */
     @JsonProperty("serviceEndpoints")
     public void setServiceEndpoints(List<PowerVSServiceEndpoint> serviceEndpoints) {
         this.serviceEndpoints = serviceEndpoints;
     }
 
+    /**
+     * Metadata contains Power VS metadata (e.g. for uninstalling the cluster).
+     */
     @JsonProperty("serviceInstanceGUID")
     public String getServiceInstanceGUID() {
         return serviceInstanceGUID;
     }
 
+    /**
+     * Metadata contains Power VS metadata (e.g. for uninstalling the cluster).
+     */
     @JsonProperty("serviceInstanceGUID")
     public void setServiceInstanceGUID(String serviceInstanceGUID) {
         this.serviceInstanceGUID = serviceInstanceGUID;
     }
 
+    /**
+     * Metadata contains Power VS metadata (e.g. for uninstalling the cluster).
+     */
     @JsonProperty("transitGatewayName")
     public String getTransitGatewayName() {
         return transitGatewayName;
     }
 
+    /**
+     * Metadata contains Power VS metadata (e.g. for uninstalling the cluster).
+     */
     @JsonProperty("transitGatewayName")
     public void setTransitGatewayName(String transitGatewayName) {
         this.transitGatewayName = transitGatewayName;
     }
 
+    /**
+     * Metadata contains Power VS metadata (e.g. for uninstalling the cluster).
+     */
     @JsonProperty("vpcRegion")
     public String getVpcRegion() {
         return vpcRegion;
     }
 
+    /**
+     * Metadata contains Power VS metadata (e.g. for uninstalling the cluster).
+     */
     @JsonProperty("vpcRegion")
     public void setVpcRegion(String vpcRegion) {
         this.vpcRegion = vpcRegion;
     }
 
+    /**
+     * Metadata contains Power VS metadata (e.g. for uninstalling the cluster).
+     */
     @JsonProperty("zone")
     public String getZone() {
         return zone;
     }
 
+    /**
+     * Metadata contains Power VS metadata (e.g. for uninstalling the cluster).
+     */
     @JsonProperty("zone")
     public void setZone(String zone) {
         this.zone = zone;

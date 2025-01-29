@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NetworkDataLinkVlan represents a vlan link object.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,51 +97,81 @@ public class NetworkDataLinkVlan implements Editable<NetworkDataLinkVlanBuilder>
         this.vlanLink = vlanLink;
     }
 
+    /**
+     * Id is the ID of the interface (used for naming)
+     */
     @JsonProperty("id")
     public String getId() {
         return id;
     }
 
+    /**
+     * Id is the ID of the interface (used for naming)
+     */
     @JsonProperty("id")
     public void setId(String id) {
         this.id = id;
     }
 
+    /**
+     * NetworkDataLinkVlan represents a vlan link object.
+     */
     @JsonProperty("macAddress")
     public NetworkLinkEthernetMac getMacAddress() {
         return macAddress;
     }
 
+    /**
+     * NetworkDataLinkVlan represents a vlan link object.
+     */
     @JsonProperty("macAddress")
     public void setMacAddress(NetworkLinkEthernetMac macAddress) {
         this.macAddress = macAddress;
     }
 
+    /**
+     * MTU is the MTU of the interface
+     */
     @JsonProperty("mtu")
     public Integer getMtu() {
         return mtu;
     }
 
+    /**
+     * MTU is the MTU of the interface
+     */
     @JsonProperty("mtu")
     public void setMtu(Integer mtu) {
         this.mtu = mtu;
     }
 
+    /**
+     * VlanID is the Vlan ID
+     */
     @JsonProperty("vlanID")
     public Integer getVlanID() {
         return vlanID;
     }
 
+    /**
+     * VlanID is the Vlan ID
+     */
     @JsonProperty("vlanID")
     public void setVlanID(Integer vlanID) {
         this.vlanID = vlanID;
     }
 
+    /**
+     * VlanLink is the name of the link on which the vlan should be added
+     */
     @JsonProperty("vlanLink")
     public String getVlanLink() {
         return vlanLink;
     }
 
+    /**
+     * VlanLink is the name of the link on which the vlan should be added
+     */
     @JsonProperty("vlanLink")
     public void setVlanLink(String vlanLink) {
         this.vlanLink = vlanLink;

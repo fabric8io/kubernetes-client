@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ClusterInstallLocalReference provides reference to an object that implements the hivecontract ClusterInstall. The namespace of the object is same as the ClusterDeployment.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class ClusterInstallLocalReference implements Editable<ClusterInstallLoca
         this.version = version;
     }
 
+    /**
+     * ClusterInstallLocalReference provides reference to an object that implements the hivecontract ClusterInstall. The namespace of the object is same as the ClusterDeployment.
+     */
     @JsonProperty("group")
     public String getGroup() {
         return group;
     }
 
+    /**
+     * ClusterInstallLocalReference provides reference to an object that implements the hivecontract ClusterInstall. The namespace of the object is same as the ClusterDeployment.
+     */
     @JsonProperty("group")
     public void setGroup(String group) {
         this.group = group;
     }
 
+    /**
+     * ClusterInstallLocalReference provides reference to an object that implements the hivecontract ClusterInstall. The namespace of the object is same as the ClusterDeployment.
+     */
     @JsonProperty("kind")
     public String getKind() {
         return kind;
     }
 
+    /**
+     * ClusterInstallLocalReference provides reference to an object that implements the hivecontract ClusterInstall. The namespace of the object is same as the ClusterDeployment.
+     */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * ClusterInstallLocalReference provides reference to an object that implements the hivecontract ClusterInstall. The namespace of the object is same as the ClusterDeployment.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * ClusterInstallLocalReference provides reference to an object that implements the hivecontract ClusterInstall. The namespace of the object is same as the ClusterDeployment.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * ClusterInstallLocalReference provides reference to an object that implements the hivecontract ClusterInstall. The namespace of the object is same as the ClusterDeployment.
+     */
     @JsonProperty("version")
     public String getVersion() {
         return version;
     }
 
+    /**
+     * ClusterInstallLocalReference provides reference to an object that implements the hivecontract ClusterInstall. The namespace of the object is same as the ClusterDeployment.
+     */
     @JsonProperty("version")
     public void setVersion(String version) {
         this.version = version;

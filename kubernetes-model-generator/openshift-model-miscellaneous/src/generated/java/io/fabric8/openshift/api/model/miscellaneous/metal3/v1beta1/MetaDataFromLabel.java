@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * MetaDataFromLabel contains the information to fetch a label content, if the label does not exist, it is rendered as empty string.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class MetaDataFromLabel implements Editable<MetaDataFromLabelBuilder>, Ku
         this.object = object;
     }
 
+    /**
+     * Key will be used as the key to set in the metadata map for cloud-init
+     */
     @JsonProperty("key")
     public String getKey() {
         return key;
     }
 
+    /**
+     * Key will be used as the key to set in the metadata map for cloud-init
+     */
     @JsonProperty("key")
     public void setKey(String key) {
         this.key = key;
     }
 
+    /**
+     * Label is the key of the label to fetch
+     */
     @JsonProperty("label")
     public String getLabel() {
         return label;
     }
 
+    /**
+     * Label is the key of the label to fetch
+     */
     @JsonProperty("label")
     public void setLabel(String label) {
         this.label = label;
     }
 
+    /**
+     * Object is the type of the object from which we retrieve the name
+     */
     @JsonProperty("object")
     public String getObject() {
         return object;
     }
 
+    /**
+     * Object is the type of the object from which we retrieve the name
+     */
     @JsonProperty("object")
     public void setObject(String object) {
         this.object = object;

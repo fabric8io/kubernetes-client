@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Platform stores all the global oVirt configuration
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,51 +97,81 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
         this.storageDomainId = storageDomainId;
     }
 
+    /**
+     * Platform stores all the global oVirt configuration
+     */
     @JsonProperty("certificatesSecretRef")
     public LocalObjectReference getCertificatesSecretRef() {
         return certificatesSecretRef;
     }
 
+    /**
+     * Platform stores all the global oVirt configuration
+     */
     @JsonProperty("certificatesSecretRef")
     public void setCertificatesSecretRef(LocalObjectReference certificatesSecretRef) {
         this.certificatesSecretRef = certificatesSecretRef;
     }
 
+    /**
+     * Platform stores all the global oVirt configuration
+     */
     @JsonProperty("credentialsSecretRef")
     public LocalObjectReference getCredentialsSecretRef() {
         return credentialsSecretRef;
     }
 
+    /**
+     * Platform stores all the global oVirt configuration
+     */
     @JsonProperty("credentialsSecretRef")
     public void setCredentialsSecretRef(LocalObjectReference credentialsSecretRef) {
         this.credentialsSecretRef = credentialsSecretRef;
     }
 
+    /**
+     * The target cluster under which all VMs will run
+     */
     @JsonProperty("ovirt_cluster_id")
     public String getOvirtClusterId() {
         return ovirtClusterId;
     }
 
+    /**
+     * The target cluster under which all VMs will run
+     */
     @JsonProperty("ovirt_cluster_id")
     public void setOvirtClusterId(String ovirtClusterId) {
         this.ovirtClusterId = ovirtClusterId;
     }
 
+    /**
+     * The target network of all the network interfaces of the nodes. Omitting defaults to ovirtmgmt network which is a default network for evert ovirt cluster.
+     */
     @JsonProperty("ovirt_network_name")
     public String getOvirtNetworkName() {
         return ovirtNetworkName;
     }
 
+    /**
+     * The target network of all the network interfaces of the nodes. Omitting defaults to ovirtmgmt network which is a default network for evert ovirt cluster.
+     */
     @JsonProperty("ovirt_network_name")
     public void setOvirtNetworkName(String ovirtNetworkName) {
         this.ovirtNetworkName = ovirtNetworkName;
     }
 
+    /**
+     * The target storage domain under which all VM disk would be created.
+     */
     @JsonProperty("storage_domain_id")
     public String getStorageDomainId() {
         return storageDomainId;
     }
 
+    /**
+     * The target storage domain under which all VM disk would be created.
+     */
     @JsonProperty("storage_domain_id")
     public void setStorageDomainId(String storageDomainId) {
         this.storageDomainId = storageDomainId;

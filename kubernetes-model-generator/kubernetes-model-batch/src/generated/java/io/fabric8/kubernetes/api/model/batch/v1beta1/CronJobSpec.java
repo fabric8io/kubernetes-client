@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * CronJobSpec describes how the job execution will look like and when it will actually run.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -102,71 +105,113 @@ public class CronJobSpec implements Editable<CronJobSpecBuilder>, KubernetesReso
         this.suspend = suspend;
     }
 
+    /**
+     * Specifies how to treat concurrent executions of a Job. Valid values are: - "Allow" (default): allows CronJobs to run concurrently; - "Forbid": forbids concurrent runs, skipping next run if previous run hasn't finished yet; - "Replace": cancels currently running job and replaces it with a new one
+     */
     @JsonProperty("concurrencyPolicy")
     public String getConcurrencyPolicy() {
         return concurrencyPolicy;
     }
 
+    /**
+     * Specifies how to treat concurrent executions of a Job. Valid values are: - "Allow" (default): allows CronJobs to run concurrently; - "Forbid": forbids concurrent runs, skipping next run if previous run hasn't finished yet; - "Replace": cancels currently running job and replaces it with a new one
+     */
     @JsonProperty("concurrencyPolicy")
     public void setConcurrencyPolicy(String concurrencyPolicy) {
         this.concurrencyPolicy = concurrencyPolicy;
     }
 
+    /**
+     * The number of failed finished jobs to retain. This is a pointer to distinguish between explicit zero and not specified. Defaults to 1.
+     */
     @JsonProperty("failedJobsHistoryLimit")
     public Integer getFailedJobsHistoryLimit() {
         return failedJobsHistoryLimit;
     }
 
+    /**
+     * The number of failed finished jobs to retain. This is a pointer to distinguish between explicit zero and not specified. Defaults to 1.
+     */
     @JsonProperty("failedJobsHistoryLimit")
     public void setFailedJobsHistoryLimit(Integer failedJobsHistoryLimit) {
         this.failedJobsHistoryLimit = failedJobsHistoryLimit;
     }
 
+    /**
+     * CronJobSpec describes how the job execution will look like and when it will actually run.
+     */
     @JsonProperty("jobTemplate")
     public JobTemplateSpec getJobTemplate() {
         return jobTemplate;
     }
 
+    /**
+     * CronJobSpec describes how the job execution will look like and when it will actually run.
+     */
     @JsonProperty("jobTemplate")
     public void setJobTemplate(JobTemplateSpec jobTemplate) {
         this.jobTemplate = jobTemplate;
     }
 
+    /**
+     * The schedule in Cron format, see https://en.wikipedia.org/wiki/Cron.
+     */
     @JsonProperty("schedule")
     public String getSchedule() {
         return schedule;
     }
 
+    /**
+     * The schedule in Cron format, see https://en.wikipedia.org/wiki/Cron.
+     */
     @JsonProperty("schedule")
     public void setSchedule(String schedule) {
         this.schedule = schedule;
     }
 
+    /**
+     * Optional deadline in seconds for starting the job if it misses scheduled time for any reason.  Missed jobs executions will be counted as failed ones.
+     */
     @JsonProperty("startingDeadlineSeconds")
     public Long getStartingDeadlineSeconds() {
         return startingDeadlineSeconds;
     }
 
+    /**
+     * Optional deadline in seconds for starting the job if it misses scheduled time for any reason.  Missed jobs executions will be counted as failed ones.
+     */
     @JsonProperty("startingDeadlineSeconds")
     public void setStartingDeadlineSeconds(Long startingDeadlineSeconds) {
         this.startingDeadlineSeconds = startingDeadlineSeconds;
     }
 
+    /**
+     * The number of successful finished jobs to retain. This is a pointer to distinguish between explicit zero and not specified. Defaults to 3.
+     */
     @JsonProperty("successfulJobsHistoryLimit")
     public Integer getSuccessfulJobsHistoryLimit() {
         return successfulJobsHistoryLimit;
     }
 
+    /**
+     * The number of successful finished jobs to retain. This is a pointer to distinguish between explicit zero and not specified. Defaults to 3.
+     */
     @JsonProperty("successfulJobsHistoryLimit")
     public void setSuccessfulJobsHistoryLimit(Integer successfulJobsHistoryLimit) {
         this.successfulJobsHistoryLimit = successfulJobsHistoryLimit;
     }
 
+    /**
+     * This flag tells the controller to suspend subsequent executions, it does not apply to already started executions.  Defaults to false.
+     */
     @JsonProperty("suspend")
     public Boolean getSuspend() {
         return suspend;
     }
 
+    /**
+     * This flag tells the controller to suspend subsequent executions, it does not apply to already started executions.  Defaults to false.
+     */
     @JsonProperty("suspend")
     public void setSuspend(Boolean suspend) {
         this.suspend = suspend;

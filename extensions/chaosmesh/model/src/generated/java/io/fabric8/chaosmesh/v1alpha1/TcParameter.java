@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * TcParameter represents the parameters for a traffic control chaos
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -98,61 +101,97 @@ public class TcParameter implements Editable<TcParameterBuilder>, KubernetesReso
         this.rate = rate;
     }
 
+    /**
+     * TcParameter represents the parameters for a traffic control chaos
+     */
     @JsonProperty("bandwidth")
     public BandwidthSpec getBandwidth() {
         return bandwidth;
     }
 
+    /**
+     * TcParameter represents the parameters for a traffic control chaos
+     */
     @JsonProperty("bandwidth")
     public void setBandwidth(BandwidthSpec bandwidth) {
         this.bandwidth = bandwidth;
     }
 
+    /**
+     * TcParameter represents the parameters for a traffic control chaos
+     */
     @JsonProperty("corrupt")
     public CorruptSpec getCorrupt() {
         return corrupt;
     }
 
+    /**
+     * TcParameter represents the parameters for a traffic control chaos
+     */
     @JsonProperty("corrupt")
     public void setCorrupt(CorruptSpec corrupt) {
         this.corrupt = corrupt;
     }
 
+    /**
+     * TcParameter represents the parameters for a traffic control chaos
+     */
     @JsonProperty("delay")
     public DelaySpec getDelay() {
         return delay;
     }
 
+    /**
+     * TcParameter represents the parameters for a traffic control chaos
+     */
     @JsonProperty("delay")
     public void setDelay(DelaySpec delay) {
         this.delay = delay;
     }
 
+    /**
+     * TcParameter represents the parameters for a traffic control chaos
+     */
     @JsonProperty("duplicate")
     public DuplicateSpec getDuplicate() {
         return duplicate;
     }
 
+    /**
+     * TcParameter represents the parameters for a traffic control chaos
+     */
     @JsonProperty("duplicate")
     public void setDuplicate(DuplicateSpec duplicate) {
         this.duplicate = duplicate;
     }
 
+    /**
+     * TcParameter represents the parameters for a traffic control chaos
+     */
     @JsonProperty("loss")
     public LossSpec getLoss() {
         return loss;
     }
 
+    /**
+     * TcParameter represents the parameters for a traffic control chaos
+     */
     @JsonProperty("loss")
     public void setLoss(LossSpec loss) {
         this.loss = loss;
     }
 
+    /**
+     * TcParameter represents the parameters for a traffic control chaos
+     */
     @JsonProperty("rate")
     public RateSpec getRate() {
         return rate;
     }
 
+    /**
+     * TcParameter represents the parameters for a traffic control chaos
+     */
     @JsonProperty("rate")
     public void setRate(RateSpec rate) {
         this.rate = rate;

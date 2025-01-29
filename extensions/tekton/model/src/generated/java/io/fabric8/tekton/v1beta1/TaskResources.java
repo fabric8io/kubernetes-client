@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * TaskResources allows a Pipeline to declare how its DeclaredPipelineResources should be provided to a Task as its inputs and outputs.<br><p> <br><p> Deprecated: Unused, preserved only for backwards compatibility
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,23 +89,35 @@ public class TaskResources implements Editable<TaskResourcesBuilder>, Kubernetes
         this.outputs = outputs;
     }
 
+    /**
+     * Inputs holds the mapping from the PipelineResources declared in DeclaredPipelineResources to the input PipelineResources required by the Task.
+     */
     @JsonProperty("inputs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TaskResource> getInputs() {
         return inputs;
     }
 
+    /**
+     * Inputs holds the mapping from the PipelineResources declared in DeclaredPipelineResources to the input PipelineResources required by the Task.
+     */
     @JsonProperty("inputs")
     public void setInputs(List<TaskResource> inputs) {
         this.inputs = inputs;
     }
 
+    /**
+     * Outputs holds the mapping from the PipelineResources declared in DeclaredPipelineResources to the input PipelineResources required by the Task.
+     */
     @JsonProperty("outputs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TaskResource> getOutputs() {
         return outputs;
     }
 
+    /**
+     * Outputs holds the mapping from the PipelineResources declared in DeclaredPipelineResources to the input PipelineResources required by the Task.
+     */
     @JsonProperty("outputs")
     public void setOutputs(List<TaskResource> outputs) {
         this.outputs = outputs;

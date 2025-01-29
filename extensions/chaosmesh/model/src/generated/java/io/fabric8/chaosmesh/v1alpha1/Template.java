@@ -170,11 +170,17 @@ public class Template implements Editable<TemplateBuilder>, KubernetesResource
         this.timeChaos = timeChaos;
     }
 
+    /**
+     * AbortWithStatusCheck describe whether to abort the workflow when the failure threshold of StatusCheck is exceeded. Only used when Type is TypeStatusCheck.
+     */
     @JsonProperty("abortWithStatusCheck")
     public Boolean getAbortWithStatusCheck() {
         return abortWithStatusCheck;
     }
 
+    /**
+     * AbortWithStatusCheck describe whether to abort the workflow when the failure threshold of StatusCheck is exceeded. Only used when Type is TypeStatusCheck.
+     */
     @JsonProperty("abortWithStatusCheck")
     public void setAbortWithStatusCheck(Boolean abortWithStatusCheck) {
         this.abortWithStatusCheck = abortWithStatusCheck;
@@ -210,23 +216,35 @@ public class Template implements Editable<TemplateBuilder>, KubernetesResource
         this.blockChaos = blockChaos;
     }
 
+    /**
+     * Children describes the children steps of serial or parallel node. Only used when Type is TypeSerial or TypeParallel.
+     */
     @JsonProperty("children")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getChildren() {
         return children;
     }
 
+    /**
+     * Children describes the children steps of serial or parallel node. Only used when Type is TypeSerial or TypeParallel.
+     */
     @JsonProperty("children")
     public void setChildren(List<String> children) {
         this.children = children;
     }
 
+    /**
+     * ConditionalBranches describes the conditional branches of custom tasks. Only used when Type is TypeTask.
+     */
     @JsonProperty("conditionalBranches")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ConditionalBranch> getConditionalBranches() {
         return conditionalBranches;
     }
 
+    /**
+     * ConditionalBranches describes the conditional branches of custom tasks. Only used when Type is TypeTask.
+     */
     @JsonProperty("conditionalBranches")
     public void setConditionalBranches(List<ConditionalBranch> conditionalBranches) {
         this.conditionalBranches = conditionalBranches;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * RemoteClusterSpec defines the specification of a remote cluster
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class RemoteClusterSpec implements Editable<RemoteClusterSpecBuilder>, Ku
         this.version = version;
     }
 
+    /**
+     * RemoteClusterSpec defines the specification of a remote cluster
+     */
     @JsonProperty("configOverride")
     public String getConfigOverride() {
         return configOverride;
     }
 
+    /**
+     * RemoteClusterSpec defines the specification of a remote cluster
+     */
     @JsonProperty("configOverride")
     public void setConfigOverride(String configOverride) {
         this.configOverride = configOverride;
     }
 
+    /**
+     * RemoteClusterSpec defines the specification of a remote cluster
+     */
     @JsonProperty("kubeConfig")
     public RemoteClusterKubeConfig getKubeConfig() {
         return kubeConfig;
     }
 
+    /**
+     * RemoteClusterSpec defines the specification of a remote cluster
+     */
     @JsonProperty("kubeConfig")
     public void setKubeConfig(RemoteClusterKubeConfig kubeConfig) {
         this.kubeConfig = kubeConfig;
     }
 
+    /**
+     * RemoteClusterSpec defines the specification of a remote cluster
+     */
     @JsonProperty("namespace")
     public String getNamespace() {
         return namespace;
     }
 
+    /**
+     * RemoteClusterSpec defines the specification of a remote cluster
+     */
     @JsonProperty("namespace")
     public void setNamespace(String namespace) {
         this.namespace = namespace;
     }
 
+    /**
+     * RemoteClusterSpec defines the specification of a remote cluster
+     */
     @JsonProperty("version")
     public String getVersion() {
         return version;
     }
 
+    /**
+     * RemoteClusterSpec defines the specification of a remote cluster
+     */
     @JsonProperty("version")
     public void setVersion(String version) {
         this.version = version;

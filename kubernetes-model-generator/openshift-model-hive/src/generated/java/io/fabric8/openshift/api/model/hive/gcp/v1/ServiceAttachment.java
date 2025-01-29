@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ServiceAttachment configures the service attachment to be used by the cluster
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class ServiceAttachment implements Editable<ServiceAttachmentBuilder>, Ku
         this.subnet = subnet;
     }
 
+    /**
+     * ServiceAttachment configures the service attachment to be used by the cluster
+     */
     @JsonProperty("subnet")
     public ServiceAttachmentSubnet getSubnet() {
         return subnet;
     }
 
+    /**
+     * ServiceAttachment configures the service attachment to be used by the cluster
+     */
     @JsonProperty("subnet")
     public void setSubnet(ServiceAttachmentSubnet subnet) {
         this.subnet = subnet;

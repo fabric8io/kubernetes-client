@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PodUpdatePolicy describes the rules on how changes are applied to the pods.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class PodUpdatePolicy implements Editable<PodUpdatePolicyBuilder>, Kubern
         this.updateMode = updateMode;
     }
 
+    /**
+     * Controls when autoscaler applies changes to the pod resources. The default is 'Auto'.
+     */
     @JsonProperty("updateMode")
     public String getUpdateMode() {
         return updateMode;
     }
 
+    /**
+     * Controls when autoscaler applies changes to the pod resources. The default is 'Auto'.
+     */
     @JsonProperty("updateMode")
     public void setUpdateMode(String updateMode) {
         this.updateMode = updateMode;

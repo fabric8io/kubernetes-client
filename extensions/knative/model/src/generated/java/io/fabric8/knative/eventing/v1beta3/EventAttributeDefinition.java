@@ -86,31 +86,49 @@ public class EventAttributeDefinition implements Editable<EventAttributeDefiniti
         this.value = value;
     }
 
+    /**
+     * Name is the name of the CloudEvents attribute.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name is the name of the CloudEvents attribute.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Required determines whether this attribute must be set on corresponding CloudEvents.
+     */
     @JsonProperty("required")
     public Boolean getRequired() {
         return required;
     }
 
+    /**
+     * Required determines whether this attribute must be set on corresponding CloudEvents.
+     */
     @JsonProperty("required")
     public void setRequired(Boolean required) {
         this.required = required;
     }
 
+    /**
+     * Value is a string representing the allowable values for the EventType attribute. It may be a single value such as "/apis/v1/namespaces/default/pingsource/ps", or it could be a template for the allowed values, such as "/apis/v1/namespaces/{namespace}/pingsource/{sourceName}. To specify a section of the string value which may change between different CloudEvents you can use curly brackets {} and optionally a variable name between them.
+     */
     @JsonProperty("value")
     public String getValue() {
         return value;
     }
 
+    /**
+     * Value is a string representing the allowable values for the EventType attribute. It may be a single value such as "/apis/v1/namespaces/default/pingsource/ps", or it could be a template for the allowed values, such as "/apis/v1/namespaces/{namespace}/pingsource/{sourceName}. To specify a section of the string value which may change between different CloudEvents you can use curly brackets {} and optionally a variable name between them.
+     */
     @JsonProperty("value")
     public void setValue(String value) {
         this.value = value;

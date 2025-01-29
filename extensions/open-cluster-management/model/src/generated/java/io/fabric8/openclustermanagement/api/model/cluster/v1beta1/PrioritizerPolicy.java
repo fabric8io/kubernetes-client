@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PrioritizerPolicy represents the policy of prioritizer
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class PrioritizerPolicy implements Editable<PrioritizerPolicyBuilder>, Ku
         this.mode = mode;
     }
 
+    /**
+     * PrioritizerPolicy represents the policy of prioritizer
+     */
     @JsonProperty("configurations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PrioritizerConfig> getConfigurations() {
         return configurations;
     }
 
+    /**
+     * PrioritizerPolicy represents the policy of prioritizer
+     */
     @JsonProperty("configurations")
     public void setConfigurations(List<PrioritizerConfig> configurations) {
         this.configurations = configurations;
     }
 
+    /**
+     * Mode is either Exact, Additive, "" where "" is Additive by default. In Additive mode, any prioritizer not explicitly enumerated is enabled in its default Configurations, in which Steady and Balance prioritizers have the weight of 1 while other prioritizers have the weight of 0. Additive doesn't require configuring all prioritizers. The default Configurations may change in the future, and additional prioritization will happen. In Exact mode, any prioritizer not explicitly enumerated is weighted as zero. Exact requires knowing the full set of prioritizers you want, but avoids behavior changes between releases.
+     */
     @JsonProperty("mode")
     public String getMode() {
         return mode;
     }
 
+    /**
+     * Mode is either Exact, Additive, "" where "" is Additive by default. In Additive mode, any prioritizer not explicitly enumerated is enabled in its default Configurations, in which Steady and Balance prioritizers have the weight of 1 while other prioritizers have the weight of 0. Additive doesn't require configuring all prioritizers. The default Configurations may change in the future, and additional prioritization will happen. In Exact mode, any prioritizer not explicitly enumerated is weighted as zero. Exact requires knowing the full set of prioritizers you want, but avoids behavior changes between releases.
+     */
     @JsonProperty("mode")
     public void setMode(String mode) {
         this.mode = mode;

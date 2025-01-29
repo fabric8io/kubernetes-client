@@ -23,6 +23,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Endpoints is a collection of endpoints that implement the actual service. Example:<br><p> <br><p> 	 Name: "mysvc",<br><p> 	 Subsets: [<br><p> 	   {<br><p> 	     Addresses: [{"ip": "10.10.1.1"}, {"ip": "10.10.2.2"}],<br><p> 	     Ports: [{"name": "a", "port": 8675}, {"name": "b", "port": 309}]<br><p> 	   },<br><p> 	   {<br><p> 	     Addresses: [{"ip": "10.10.3.3"}],<br><p> 	     Ports: [{"name": "a", "port": 93}, {"name": "b", "port": 76}]<br><p> 	   },<br><p> 	]
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -47,14 +50,8 @@ import lombok.experimental.Accessors;
 public class Endpoints implements Editable<EndpointsBuilder>, HasMetadata, Namespaced
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "v1";
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "Endpoints";
     @JsonProperty("metadata")
@@ -80,7 +77,7 @@ public class Endpoints implements Editable<EndpointsBuilder>, HasMetadata, Names
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -88,7 +85,7 @@ public class Endpoints implements Editable<EndpointsBuilder>, HasMetadata, Names
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -96,7 +93,7 @@ public class Endpoints implements Editable<EndpointsBuilder>, HasMetadata, Names
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -104,29 +101,41 @@ public class Endpoints implements Editable<EndpointsBuilder>, HasMetadata, Names
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * Endpoints is a collection of endpoints that implement the actual service. Example:<br><p> <br><p> 	 Name: "mysvc",<br><p> 	 Subsets: [<br><p> 	   {<br><p> 	     Addresses: [{"ip": "10.10.1.1"}, {"ip": "10.10.2.2"}],<br><p> 	     Ports: [{"name": "a", "port": 8675}, {"name": "b", "port": 309}]<br><p> 	   },<br><p> 	   {<br><p> 	     Addresses: [{"ip": "10.10.3.3"}],<br><p> 	     Ports: [{"name": "a", "port": 93}, {"name": "b", "port": 76}]<br><p> 	   },<br><p> 	]
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * Endpoints is a collection of endpoints that implement the actual service. Example:<br><p> <br><p> 	 Name: "mysvc",<br><p> 	 Subsets: [<br><p> 	   {<br><p> 	     Addresses: [{"ip": "10.10.1.1"}, {"ip": "10.10.2.2"}],<br><p> 	     Ports: [{"name": "a", "port": 8675}, {"name": "b", "port": 309}]<br><p> 	   },<br><p> 	   {<br><p> 	     Addresses: [{"ip": "10.10.3.3"}],<br><p> 	     Ports: [{"name": "a", "port": 93}, {"name": "b", "port": 76}]<br><p> 	   },<br><p> 	]
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * The set of all endpoints is the union of all subsets. Addresses are placed into subsets according to the IPs they share. A single address with multiple ports, some of which are ready and some of which are not (because they come from different containers) will result in the address being displayed in different subsets for the different ports. No address will appear in both Addresses and NotReadyAddresses in the same subset. Sets of addresses and ports that comprise a service.
+     */
     @JsonProperty("subsets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<EndpointSubset> getSubsets() {
         return subsets;
     }
 
+    /**
+     * The set of all endpoints is the union of all subsets. Addresses are placed into subsets according to the IPs they share. A single address with multiple ports, some of which are ready and some of which are not (because they come from different containers) will result in the address being displayed in different subsets for the different ports. No address will appear in both Addresses and NotReadyAddresses in the same subset. Sets of addresses and ports that comprise a service.
+     */
     @JsonProperty("subsets")
     public void setSubsets(List<EndpointSubset> subsets) {
         this.subsets = subsets;

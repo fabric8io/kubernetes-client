@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * IngressServiceBackend references a Kubernetes Service as a Backend.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class IngressServiceBackend implements Editable<IngressServiceBackendBuil
         this.port = port;
     }
 
+    /**
+     * name is the referenced service. The service must exist in the same namespace as the Ingress object.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * name is the referenced service. The service must exist in the same namespace as the Ingress object.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * IngressServiceBackend references a Kubernetes Service as a Backend.
+     */
     @JsonProperty("port")
     public ServiceBackendPort getPort() {
         return port;
     }
 
+    /**
+     * IngressServiceBackend references a Kubernetes Service as a Backend.
+     */
     @JsonProperty("port")
     public void setPort(ServiceBackendPort port) {
         this.port = port;

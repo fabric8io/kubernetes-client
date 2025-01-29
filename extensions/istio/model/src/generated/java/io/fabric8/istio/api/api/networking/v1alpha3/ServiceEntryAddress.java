@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * minor abstraction to allow for adding hostnames if relevant
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class ServiceEntryAddress implements Editable<ServiceEntryAddressBuilder>
         this.value = value;
     }
 
+    /**
+     * Host is the name associated with this address
+     */
     @JsonProperty("host")
     public String getHost() {
         return host;
     }
 
+    /**
+     * Host is the name associated with this address
+     */
     @JsonProperty("host")
     public void setHost(String host) {
         this.host = host;
     }
 
+    /**
+     * Value is the address (192.168.0.2)
+     */
     @JsonProperty("value")
     public String getValue() {
         return value;
     }
 
+    /**
+     * Value is the address (192.168.0.2)
+     */
     @JsonProperty("value")
     public void setValue(String value) {
         this.value = value;

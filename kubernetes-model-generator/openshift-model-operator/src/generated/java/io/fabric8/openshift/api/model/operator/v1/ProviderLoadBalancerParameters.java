@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ProviderLoadBalancerParameters holds desired load balancer information specific to the underlying infrastructure provider.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class ProviderLoadBalancerParameters implements Editable<ProviderLoadBala
         this.type = type;
     }
 
+    /**
+     * ProviderLoadBalancerParameters holds desired load balancer information specific to the underlying infrastructure provider.
+     */
     @JsonProperty("aws")
     public AWSLoadBalancerParameters getAws() {
         return aws;
     }
 
+    /**
+     * ProviderLoadBalancerParameters holds desired load balancer information specific to the underlying infrastructure provider.
+     */
     @JsonProperty("aws")
     public void setAws(AWSLoadBalancerParameters aws) {
         this.aws = aws;
     }
 
+    /**
+     * ProviderLoadBalancerParameters holds desired load balancer information specific to the underlying infrastructure provider.
+     */
     @JsonProperty("gcp")
     public GCPLoadBalancerParameters getGcp() {
         return gcp;
     }
 
+    /**
+     * ProviderLoadBalancerParameters holds desired load balancer information specific to the underlying infrastructure provider.
+     */
     @JsonProperty("gcp")
     public void setGcp(GCPLoadBalancerParameters gcp) {
         this.gcp = gcp;
     }
 
+    /**
+     * ProviderLoadBalancerParameters holds desired load balancer information specific to the underlying infrastructure provider.
+     */
     @JsonProperty("ibm")
     public IBMLoadBalancerParameters getIbm() {
         return ibm;
     }
 
+    /**
+     * ProviderLoadBalancerParameters holds desired load balancer information specific to the underlying infrastructure provider.
+     */
     @JsonProperty("ibm")
     public void setIbm(IBMLoadBalancerParameters ibm) {
         this.ibm = ibm;
     }
 
+    /**
+     * type is the underlying infrastructure provider for the load balancer. Allowed values are "AWS", "Azure", "BareMetal", "GCP", "IBM", "Nutanix", "OpenStack", and "VSphere".
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * type is the underlying infrastructure provider for the load balancer. Allowed values are "AWS", "Azure", "BareMetal", "GCP", "IBM", "Nutanix", "OpenStack", and "VSphere".
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

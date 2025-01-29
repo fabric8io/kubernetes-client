@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ConsoleSampleSource is the actual sample definition and can hold different sample types. Unsupported sample types will be ignored in the web console.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class ConsoleSampleSource implements Editable<ConsoleSampleSourceBuilder>
         this.type = type;
     }
 
+    /**
+     * ConsoleSampleSource is the actual sample definition and can hold different sample types. Unsupported sample types will be ignored in the web console.
+     */
     @JsonProperty("containerImport")
     public ConsoleSampleContainerImportSource getContainerImport() {
         return containerImport;
     }
 
+    /**
+     * ConsoleSampleSource is the actual sample definition and can hold different sample types. Unsupported sample types will be ignored in the web console.
+     */
     @JsonProperty("containerImport")
     public void setContainerImport(ConsoleSampleContainerImportSource containerImport) {
         this.containerImport = containerImport;
     }
 
+    /**
+     * ConsoleSampleSource is the actual sample definition and can hold different sample types. Unsupported sample types will be ignored in the web console.
+     */
     @JsonProperty("gitImport")
     public ConsoleSampleGitImportSource getGitImport() {
         return gitImport;
     }
 
+    /**
+     * ConsoleSampleSource is the actual sample definition and can hold different sample types. Unsupported sample types will be ignored in the web console.
+     */
     @JsonProperty("gitImport")
     public void setGitImport(ConsoleSampleGitImportSource gitImport) {
         this.gitImport = gitImport;
     }
 
+    /**
+     * type of the sample, currently supported: "GitImport";"ContainerImport"
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * type of the sample, currently supported: "GitImport";"ContainerImport"
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

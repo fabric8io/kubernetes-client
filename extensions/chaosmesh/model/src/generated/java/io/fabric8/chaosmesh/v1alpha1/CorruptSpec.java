@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * CorruptSpec defines detail of a corrupt action
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class CorruptSpec implements Editable<CorruptSpecBuilder>, KubernetesReso
         this.corrupt = corrupt;
     }
 
+    /**
+     * CorruptSpec defines detail of a corrupt action
+     */
     @JsonProperty("correlation")
     public String getCorrelation() {
         return correlation;
     }
 
+    /**
+     * CorruptSpec defines detail of a corrupt action
+     */
     @JsonProperty("correlation")
     public void setCorrelation(String correlation) {
         this.correlation = correlation;
     }
 
+    /**
+     * CorruptSpec defines detail of a corrupt action
+     */
     @JsonProperty("corrupt")
     public String getCorrupt() {
         return corrupt;
     }
 
+    /**
+     * CorruptSpec defines detail of a corrupt action
+     */
     @JsonProperty("corrupt")
     public void setCorrupt(String corrupt) {
         this.corrupt = corrupt;

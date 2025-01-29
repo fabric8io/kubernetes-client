@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DeviceClassSpec is used in a [DeviceClass] to define what can be allocated and how to configure it.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,23 +89,35 @@ public class DeviceClassSpec implements Editable<DeviceClassSpecBuilder>, Kubern
         this.selectors = selectors;
     }
 
+    /**
+     * Config defines configuration parameters that apply to each device that is claimed via this class. Some classses may potentially be satisfied by multiple drivers, so each instance of a vendor configuration applies to exactly one driver.<br><p> <br><p> They are passed to the driver, but are not considered while allocating the claim.
+     */
     @JsonProperty("config")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<DeviceClassConfiguration> getConfig() {
         return config;
     }
 
+    /**
+     * Config defines configuration parameters that apply to each device that is claimed via this class. Some classses may potentially be satisfied by multiple drivers, so each instance of a vendor configuration applies to exactly one driver.<br><p> <br><p> They are passed to the driver, but are not considered while allocating the claim.
+     */
     @JsonProperty("config")
     public void setConfig(List<DeviceClassConfiguration> config) {
         this.config = config;
     }
 
+    /**
+     * Each selector must be satisfied by a device which is claimed via this class.
+     */
     @JsonProperty("selectors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<DeviceSelector> getSelectors() {
         return selectors;
     }
 
+    /**
+     * Each selector must be satisfied by a device which is claimed via this class.
+     */
     @JsonProperty("selectors")
     public void setSelectors(List<DeviceSelector> selectors) {
         this.selectors = selectors;

@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SELinuxStrategyOptions defines the strategy type and any options used to create the strategy. Deprecated: use SELinuxStrategyOptions from policy API Group instead.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -83,21 +86,33 @@ public class SELinuxStrategyOptions implements Editable<SELinuxStrategyOptionsBu
         this.seLinuxOptions = seLinuxOptions;
     }
 
+    /**
+     * rule is the strategy that will dictate the allowable labels that may be set.
+     */
     @JsonProperty("rule")
     public String getRule() {
         return rule;
     }
 
+    /**
+     * rule is the strategy that will dictate the allowable labels that may be set.
+     */
     @JsonProperty("rule")
     public void setRule(String rule) {
         this.rule = rule;
     }
 
+    /**
+     * SELinuxStrategyOptions defines the strategy type and any options used to create the strategy. Deprecated: use SELinuxStrategyOptions from policy API Group instead.
+     */
     @JsonProperty("seLinuxOptions")
     public SELinuxOptions getSeLinuxOptions() {
         return seLinuxOptions;
     }
 
+    /**
+     * SELinuxStrategyOptions defines the strategy type and any options used to create the strategy. Deprecated: use SELinuxStrategyOptions from policy API Group instead.
+     */
     @JsonProperty("seLinuxOptions")
     public void setSeLinuxOptions(SELinuxOptions seLinuxOptions) {
         this.seLinuxOptions = seLinuxOptions;

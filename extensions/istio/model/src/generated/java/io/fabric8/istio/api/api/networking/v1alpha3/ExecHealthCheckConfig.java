@@ -81,12 +81,18 @@ public class ExecHealthCheckConfig implements Editable<ExecHealthCheckConfigBuil
         this.command = command;
     }
 
+    /**
+     * Command to run. Exit status of 0 is treated as live/healthy and non-zero is unhealthy.
+     */
     @JsonProperty("command")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getCommand() {
         return command;
     }
 
+    /**
+     * Command to run. Exit status of 0 is treated as live/healthy and non-zero is unhealthy.
+     */
     @JsonProperty("command")
     public void setCommand(List<String> command) {
         this.command = command;

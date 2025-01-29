@@ -36,6 +36,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * RangeAllocation is used so we can easily expose a RangeAllocation typed for security group<br><p> <br><p> Compatibility level 4: No compatibility is provided, the API can change at any point for any reason. These capabilities should not be used by applications needing long term support.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -75,16 +78,10 @@ import lombok.experimental.Accessors;
 public class RangeAllocation implements Editable<RangeAllocationBuilder>, HasMetadata
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "security.openshift.io/v1";
     @JsonProperty("data")
     private String data;
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "RangeAllocation";
     @JsonProperty("metadata")
@@ -110,7 +107,7 @@ public class RangeAllocation implements Editable<RangeAllocationBuilder>, HasMet
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -118,25 +115,31 @@ public class RangeAllocation implements Editable<RangeAllocationBuilder>, HasMet
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
+    /**
+     * data is a byte array representing the serialized state of a range allocation.  It is a bitmap with each bit set to one to represent a range is taken.
+     */
     @JsonProperty("data")
     public String getData() {
         return data;
     }
 
+    /**
+     * data is a byte array representing the serialized state of a range allocation.  It is a bitmap with each bit set to one to represent a range is taken.
+     */
     @JsonProperty("data")
     public void setData(String data) {
         this.data = data;
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -144,28 +147,40 @@ public class RangeAllocation implements Editable<RangeAllocationBuilder>, HasMet
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * RangeAllocation is used so we can easily expose a RangeAllocation typed for security group<br><p> <br><p> Compatibility level 4: No compatibility is provided, the API can change at any point for any reason. These capabilities should not be used by applications needing long term support.
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * RangeAllocation is used so we can easily expose a RangeAllocation typed for security group<br><p> <br><p> Compatibility level 4: No compatibility is provided, the API can change at any point for any reason. These capabilities should not be used by applications needing long term support.
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * range is a string representing a unique label for a range of uids, "1000000000-2000000000/10000".
+     */
     @JsonProperty("range")
     public String getRange() {
         return range;
     }
 
+    /**
+     * range is a string representing a unique label for a range of uids, "1000000000-2000000000/10000".
+     */
     @JsonProperty("range")
     public void setRange(String range) {
         this.range = range;

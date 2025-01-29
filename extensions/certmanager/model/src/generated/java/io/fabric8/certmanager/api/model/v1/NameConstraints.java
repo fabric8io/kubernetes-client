@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NameConstraints is a type to represent x509 NameConstraints
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class NameConstraints implements Editable<NameConstraintsBuilder>, Kubern
         this.permitted = permitted;
     }
 
+    /**
+     * if true then the name constraints are marked critical.
+     */
     @JsonProperty("critical")
     public Boolean getCritical() {
         return critical;
     }
 
+    /**
+     * if true then the name constraints are marked critical.
+     */
     @JsonProperty("critical")
     public void setCritical(Boolean critical) {
         this.critical = critical;
     }
 
+    /**
+     * NameConstraints is a type to represent x509 NameConstraints
+     */
     @JsonProperty("excluded")
     public NameConstraintItem getExcluded() {
         return excluded;
     }
 
+    /**
+     * NameConstraints is a type to represent x509 NameConstraints
+     */
     @JsonProperty("excluded")
     public void setExcluded(NameConstraintItem excluded) {
         this.excluded = excluded;
     }
 
+    /**
+     * NameConstraints is a type to represent x509 NameConstraints
+     */
     @JsonProperty("permitted")
     public NameConstraintItem getPermitted() {
         return permitted;
     }
 
+    /**
+     * NameConstraints is a type to represent x509 NameConstraints
+     */
     @JsonProperty("permitted")
     public void setPermitted(NameConstraintItem permitted) {
         this.permitted = permitted;

@@ -51,9 +51,6 @@ import lombok.experimental.Accessors;
 public class PodExecOptions implements Editable<PodExecOptionsBuilder>, KubernetesResource
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "v1";
     @JsonProperty("command")
@@ -61,9 +58,6 @@ public class PodExecOptions implements Editable<PodExecOptionsBuilder>, Kubernet
     private List<String> command = new ArrayList<>();
     @JsonProperty("container")
     private String container;
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "PodExecOptions";
     @JsonProperty("stderr")
@@ -95,17 +89,11 @@ public class PodExecOptions implements Editable<PodExecOptionsBuilder>, Kubernet
         this.tty = tty;
     }
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
         return apiVersion;
     }
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
@@ -132,17 +120,11 @@ public class PodExecOptions implements Editable<PodExecOptionsBuilder>, Kubernet
         this.container = container;
     }
 
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     public String getKind() {
         return kind;
     }
 
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;

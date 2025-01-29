@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ImageChangeCause contains information about the image that triggered a build
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class ImageChangeCause implements Editable<ImageChangeCauseBuilder>, Kube
         this.imageID = imageID;
     }
 
+    /**
+     * ImageChangeCause contains information about the image that triggered a build
+     */
     @JsonProperty("fromRef")
     public ObjectReference getFromRef() {
         return fromRef;
     }
 
+    /**
+     * ImageChangeCause contains information about the image that triggered a build
+     */
     @JsonProperty("fromRef")
     public void setFromRef(ObjectReference fromRef) {
         this.fromRef = fromRef;
     }
 
+    /**
+     * imageID is the ID of the image that triggered a new build.
+     */
     @JsonProperty("imageID")
     public String getImageID() {
         return imageID;
     }
 
+    /**
+     * imageID is the ID of the image that triggered a new build.
+     */
     @JsonProperty("imageID")
     public void setImageID(String imageID) {
         this.imageID = imageID;

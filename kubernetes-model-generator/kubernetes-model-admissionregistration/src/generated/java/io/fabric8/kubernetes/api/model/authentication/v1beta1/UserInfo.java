@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * UserInfo holds the information about the user needed to implement the user.Info interface.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,43 +97,67 @@ public class UserInfo implements Editable<UserInfoBuilder>, KubernetesResource
         this.username = username;
     }
 
+    /**
+     * Any additional information provided by the authenticator.
+     */
     @JsonProperty("extra")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, List<String>> getExtra() {
         return extra;
     }
 
+    /**
+     * Any additional information provided by the authenticator.
+     */
     @JsonProperty("extra")
     public void setExtra(Map<String, List<String>> extra) {
         this.extra = extra;
     }
 
+    /**
+     * The names of groups this user is a part of.
+     */
     @JsonProperty("groups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getGroups() {
         return groups;
     }
 
+    /**
+     * The names of groups this user is a part of.
+     */
     @JsonProperty("groups")
     public void setGroups(List<String> groups) {
         this.groups = groups;
     }
 
+    /**
+     * A unique value that identifies this user across time. If this user is deleted and another user by the same name is added, they will have different UIDs.
+     */
     @JsonProperty("uid")
     public String getUid() {
         return uid;
     }
 
+    /**
+     * A unique value that identifies this user across time. If this user is deleted and another user by the same name is added, they will have different UIDs.
+     */
     @JsonProperty("uid")
     public void setUid(String uid) {
         this.uid = uid;
     }
 
+    /**
+     * The name that uniquely identifies this user among all active users.
+     */
     @JsonProperty("username")
     public String getUsername() {
         return username;
     }
 
+    /**
+     * The name that uniquely identifies this user among all active users.
+     */
     @JsonProperty("username")
     public void setUsername(String username) {
         this.username = username;

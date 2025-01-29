@@ -20,10 +20,11 @@ package {{package}};
 {{#imports}}
 import {{.}};
 {{/imports}}
-{{#hasDescription}}
+{{#description}}
+
 /**
- * {{description}}
- */{{/hasDescription}}
+ * {{.}}
+ */{{/description}}
 {{> model_class_annotations}}public {{classInformation.classType}} {{classInformation.classSimpleName}} {{classInformation.implementsExtends}}
 {
 {{>model_enum_body}}

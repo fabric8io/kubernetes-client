@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * JobSpec describes how the job execution will look like and when it will actually run.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -129,125 +132,197 @@ public class JobSpec implements Editable<JobSpecBuilder>, KubernetesResource
         this.volumes = volumes;
     }
 
+    /**
+     * Specifies the maximum number of retries before marking this Job failed. Defaults to 3.
+     */
     @JsonProperty("maxRetry")
     public Integer getMaxRetry() {
         return maxRetry;
     }
 
+    /**
+     * Specifies the maximum number of retries before marking this Job failed. Defaults to 3.
+     */
     @JsonProperty("maxRetry")
     public void setMaxRetry(Integer maxRetry) {
         this.maxRetry = maxRetry;
     }
 
+    /**
+     * The minimal available pods to run for this Job Defaults to the summary of tasks' replicas
+     */
     @JsonProperty("minAvailable")
     public Integer getMinAvailable() {
         return minAvailable;
     }
 
+    /**
+     * The minimal available pods to run for this Job Defaults to the summary of tasks' replicas
+     */
     @JsonProperty("minAvailable")
     public void setMinAvailable(Integer minAvailable) {
         this.minAvailable = minAvailable;
     }
 
+    /**
+     * The minimal success pods to run for this Job
+     */
     @JsonProperty("minSuccess")
     public Integer getMinSuccess() {
         return minSuccess;
     }
 
+    /**
+     * The minimal success pods to run for this Job
+     */
     @JsonProperty("minSuccess")
     public void setMinSuccess(Integer minSuccess) {
         this.minSuccess = minSuccess;
     }
 
+    /**
+     * Specifies the plugin of job Key is plugin name, value is the arguments of the plugin
+     */
     @JsonProperty("plugins")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, List<String>> getPlugins() {
         return plugins;
     }
 
+    /**
+     * Specifies the plugin of job Key is plugin name, value is the arguments of the plugin
+     */
     @JsonProperty("plugins")
     public void setPlugins(Map<String, List<String>> plugins) {
         this.plugins = plugins;
     }
 
+    /**
+     * Specifies the default lifecycle of tasks
+     */
     @JsonProperty("policies")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<LifecyclePolicy> getPolicies() {
         return policies;
     }
 
+    /**
+     * Specifies the default lifecycle of tasks
+     */
     @JsonProperty("policies")
     public void setPolicies(List<LifecyclePolicy> policies) {
         this.policies = policies;
     }
 
+    /**
+     * If specified, indicates the job's priority.
+     */
     @JsonProperty("priorityClassName")
     public String getPriorityClassName() {
         return priorityClassName;
     }
 
+    /**
+     * If specified, indicates the job's priority.
+     */
     @JsonProperty("priorityClassName")
     public void setPriorityClassName(String priorityClassName) {
         this.priorityClassName = priorityClassName;
     }
 
+    /**
+     * Specifies the queue that will be used in the scheduler, "default" queue is used this leaves empty.
+     */
     @JsonProperty("queue")
     public String getQueue() {
         return queue;
     }
 
+    /**
+     * Specifies the queue that will be used in the scheduler, "default" queue is used this leaves empty.
+     */
     @JsonProperty("queue")
     public void setQueue(String queue) {
         this.queue = queue;
     }
 
+    /**
+     * JobSpec describes how the job execution will look like and when it will actually run.
+     */
     @JsonProperty("runningEstimate")
     public Duration getRunningEstimate() {
         return runningEstimate;
     }
 
+    /**
+     * JobSpec describes how the job execution will look like and when it will actually run.
+     */
     @JsonProperty("runningEstimate")
     public void setRunningEstimate(Duration runningEstimate) {
         this.runningEstimate = runningEstimate;
     }
 
+    /**
+     * SchedulerName is the default value of `tasks.template.spec.schedulerName`.
+     */
     @JsonProperty("schedulerName")
     public String getSchedulerName() {
         return schedulerName;
     }
 
+    /**
+     * SchedulerName is the default value of `tasks.template.spec.schedulerName`.
+     */
     @JsonProperty("schedulerName")
     public void setSchedulerName(String schedulerName) {
         this.schedulerName = schedulerName;
     }
 
+    /**
+     * Tasks specifies the task specification of Job
+     */
     @JsonProperty("tasks")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TaskSpec> getTasks() {
         return tasks;
     }
 
+    /**
+     * Tasks specifies the task specification of Job
+     */
     @JsonProperty("tasks")
     public void setTasks(List<TaskSpec> tasks) {
         this.tasks = tasks;
     }
 
+    /**
+     * ttlSecondsAfterFinished limits the lifetime of a Job that has finished execution (either Completed or Failed). If this field is set, ttlSecondsAfterFinished after the Job finishes, it is eligible to be automatically deleted. If this field is unset, the Job won't be automatically deleted. If this field is set to zero, the Job becomes eligible to be deleted immediately after it finishes.
+     */
     @JsonProperty("ttlSecondsAfterFinished")
     public Integer getTtlSecondsAfterFinished() {
         return ttlSecondsAfterFinished;
     }
 
+    /**
+     * ttlSecondsAfterFinished limits the lifetime of a Job that has finished execution (either Completed or Failed). If this field is set, ttlSecondsAfterFinished after the Job finishes, it is eligible to be automatically deleted. If this field is unset, the Job won't be automatically deleted. If this field is set to zero, the Job becomes eligible to be deleted immediately after it finishes.
+     */
     @JsonProperty("ttlSecondsAfterFinished")
     public void setTtlSecondsAfterFinished(Integer ttlSecondsAfterFinished) {
         this.ttlSecondsAfterFinished = ttlSecondsAfterFinished;
     }
 
+    /**
+     * The volumes mount on Job
+     */
     @JsonProperty("volumes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<VolumeSpec> getVolumes() {
         return volumes;
     }
 
+    /**
+     * The volumes mount on Job
+     */
     @JsonProperty("volumes")
     public void setVolumes(List<VolumeSpec> volumes) {
         this.volumes = volumes;

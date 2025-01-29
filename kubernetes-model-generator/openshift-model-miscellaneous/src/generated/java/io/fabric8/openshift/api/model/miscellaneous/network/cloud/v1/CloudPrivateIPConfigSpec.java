@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * CloudPrivateIPConfigSpec consists of a node name which the private IP should be assigned to.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class CloudPrivateIPConfigSpec implements Editable<CloudPrivateIPConfigSp
         this.node = node;
     }
 
+    /**
+     * node is the node name, as specified by the Kubernetes field: node.metadata.name
+     */
     @JsonProperty("node")
     public String getNode() {
         return node;
     }
 
+    /**
+     * node is the node name, as specified by the Kubernetes field: node.metadata.name
+     */
     @JsonProperty("node")
     public void setNode(String node) {
         this.node = node;

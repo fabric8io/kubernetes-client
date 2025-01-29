@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * GlobalSMTPConfig configures global SMTP parameters. See https://prometheus.io/docs/alerting/latest/configuration/#configuration-file
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -107,81 +110,129 @@ public class GlobalSMTPConfig implements Editable<GlobalSMTPConfigBuilder>, Kube
         this.smartHost = smartHost;
     }
 
+    /**
+     * SMTP Auth using PLAIN
+     */
     @JsonProperty("authIdentity")
     public String getAuthIdentity() {
         return authIdentity;
     }
 
+    /**
+     * SMTP Auth using PLAIN
+     */
     @JsonProperty("authIdentity")
     public void setAuthIdentity(String authIdentity) {
         this.authIdentity = authIdentity;
     }
 
+    /**
+     * GlobalSMTPConfig configures global SMTP parameters. See https://prometheus.io/docs/alerting/latest/configuration/#configuration-file
+     */
     @JsonProperty("authPassword")
     public SecretKeySelector getAuthPassword() {
         return authPassword;
     }
 
+    /**
+     * GlobalSMTPConfig configures global SMTP parameters. See https://prometheus.io/docs/alerting/latest/configuration/#configuration-file
+     */
     @JsonProperty("authPassword")
     public void setAuthPassword(SecretKeySelector authPassword) {
         this.authPassword = authPassword;
     }
 
+    /**
+     * GlobalSMTPConfig configures global SMTP parameters. See https://prometheus.io/docs/alerting/latest/configuration/#configuration-file
+     */
     @JsonProperty("authSecret")
     public SecretKeySelector getAuthSecret() {
         return authSecret;
     }
 
+    /**
+     * GlobalSMTPConfig configures global SMTP parameters. See https://prometheus.io/docs/alerting/latest/configuration/#configuration-file
+     */
     @JsonProperty("authSecret")
     public void setAuthSecret(SecretKeySelector authSecret) {
         this.authSecret = authSecret;
     }
 
+    /**
+     * SMTP Auth using CRAM-MD5, LOGIN and PLAIN. If empty, Alertmanager doesn't authenticate to the SMTP server.
+     */
     @JsonProperty("authUsername")
     public String getAuthUsername() {
         return authUsername;
     }
 
+    /**
+     * SMTP Auth using CRAM-MD5, LOGIN and PLAIN. If empty, Alertmanager doesn't authenticate to the SMTP server.
+     */
     @JsonProperty("authUsername")
     public void setAuthUsername(String authUsername) {
         this.authUsername = authUsername;
     }
 
+    /**
+     * The default SMTP From header field.
+     */
     @JsonProperty("from")
     public String getFrom() {
         return from;
     }
 
+    /**
+     * The default SMTP From header field.
+     */
     @JsonProperty("from")
     public void setFrom(String from) {
         this.from = from;
     }
 
+    /**
+     * The default hostname to identify to the SMTP server.
+     */
     @JsonProperty("hello")
     public String getHello() {
         return hello;
     }
 
+    /**
+     * The default hostname to identify to the SMTP server.
+     */
     @JsonProperty("hello")
     public void setHello(String hello) {
         this.hello = hello;
     }
 
+    /**
+     * The default SMTP TLS requirement. Note that Go does not support unencrypted connections to remote SMTP endpoints.
+     */
     @JsonProperty("requireTLS")
     public Boolean getRequireTLS() {
         return requireTLS;
     }
 
+    /**
+     * The default SMTP TLS requirement. Note that Go does not support unencrypted connections to remote SMTP endpoints.
+     */
     @JsonProperty("requireTLS")
     public void setRequireTLS(Boolean requireTLS) {
         this.requireTLS = requireTLS;
     }
 
+    /**
+     * GlobalSMTPConfig configures global SMTP parameters. See https://prometheus.io/docs/alerting/latest/configuration/#configuration-file
+     */
     @JsonProperty("smartHost")
     public HostPort getSmartHost() {
         return smartHost;
     }
 
+    /**
+     * GlobalSMTPConfig configures global SMTP parameters. See https://prometheus.io/docs/alerting/latest/configuration/#configuration-file
+     */
     @JsonProperty("smartHost")
     public void setSmartHost(HostPort smartHost) {
         this.smartHost = smartHost;

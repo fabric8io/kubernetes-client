@@ -78,11 +78,17 @@ public class LoadBalancerSettingsConsistentHashLBMagLev_ implements Editable<Loa
         this.tableSize = tableSize;
     }
 
+    /**
+     * The table size for Maglev hashing. This helps in controlling the disruption when the backend hosts change. Increasing the table size reduces the amount of disruption. The table size must be prime number less than 5000011. If it is not specified, the default is 65537.
+     */
     @JsonProperty("tableSize")
     public Long getTableSize() {
         return tableSize;
     }
 
+    /**
+     * The table size for Maglev hashing. This helps in controlling the disruption when the backend hosts change. Increasing the table size reduces the amount of disruption. The table size must be prime number less than 5000011. If it is not specified, the default is 65537.
+     */
     @JsonProperty("tableSize")
     public void setTableSize(Long tableSize) {
         this.tableSize = tableSize;

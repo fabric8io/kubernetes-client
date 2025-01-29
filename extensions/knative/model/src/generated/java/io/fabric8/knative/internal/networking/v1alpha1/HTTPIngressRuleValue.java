@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * HTTPIngressRuleValue is a list of http selectors pointing to backends. In the example: http://&lt;host&gt;/&lt;path&gt;?&lt;searchpart&gt; -&gt; backend where where parts of the url correspond to RFC 3986, this resource will be used to match against everything after the last '/' and before the first '?' or '#'.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -81,12 +84,18 @@ public class HTTPIngressRuleValue implements Editable<HTTPIngressRuleValueBuilde
         this.paths = paths;
     }
 
+    /**
+     * A collection of paths that map requests to backends.<br><p> <br><p> If they are multiple matching paths, the first match takes precedence.
+     */
     @JsonProperty("paths")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<HTTPIngressPath> getPaths() {
         return paths;
     }
 
+    /**
+     * A collection of paths that map requests to backends.<br><p> <br><p> If they are multiple matching paths, the first match takes precedence.
+     */
     @JsonProperty("paths")
     public void setPaths(List<HTTPIngressPath> paths) {
         this.paths = paths;

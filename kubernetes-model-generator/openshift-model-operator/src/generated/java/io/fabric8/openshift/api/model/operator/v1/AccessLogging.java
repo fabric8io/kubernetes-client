@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AccessLogging describes how client requests should be logged.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -97,52 +100,82 @@ public class AccessLogging implements Editable<AccessLoggingBuilder>, Kubernetes
         this.logEmptyRequests = logEmptyRequests;
     }
 
+    /**
+     * AccessLogging describes how client requests should be logged.
+     */
     @JsonProperty("destination")
     public LoggingDestination getDestination() {
         return destination;
     }
 
+    /**
+     * AccessLogging describes how client requests should be logged.
+     */
     @JsonProperty("destination")
     public void setDestination(LoggingDestination destination) {
         this.destination = destination;
     }
 
+    /**
+     * httpCaptureCookies specifies HTTP cookies that should be captured in access logs.  If this field is empty, no cookies are captured.
+     */
     @JsonProperty("httpCaptureCookies")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<IngressControllerCaptureHTTPCookie> getHttpCaptureCookies() {
         return httpCaptureCookies;
     }
 
+    /**
+     * httpCaptureCookies specifies HTTP cookies that should be captured in access logs.  If this field is empty, no cookies are captured.
+     */
     @JsonProperty("httpCaptureCookies")
     public void setHttpCaptureCookies(List<IngressControllerCaptureHTTPCookie> httpCaptureCookies) {
         this.httpCaptureCookies = httpCaptureCookies;
     }
 
+    /**
+     * AccessLogging describes how client requests should be logged.
+     */
     @JsonProperty("httpCaptureHeaders")
     public IngressControllerCaptureHTTPHeaders getHttpCaptureHeaders() {
         return httpCaptureHeaders;
     }
 
+    /**
+     * AccessLogging describes how client requests should be logged.
+     */
     @JsonProperty("httpCaptureHeaders")
     public void setHttpCaptureHeaders(IngressControllerCaptureHTTPHeaders httpCaptureHeaders) {
         this.httpCaptureHeaders = httpCaptureHeaders;
     }
 
+    /**
+     * httpLogFormat specifies the format of the log message for an HTTP request.<br><p> <br><p> If this field is empty, log messages use the implementation's default HTTP log format.  For HAProxy's default HTTP log format, see the HAProxy documentation: http://cbonte.github.io/haproxy-dconv/2.0/configuration.html#8.2.3<br><p> <br><p> Note that this format only applies to cleartext HTTP connections and to secure HTTP connections for which the ingress controller terminates encryption (that is, edge-terminated or reencrypt connections).  It does not affect the log format for TLS passthrough connections.
+     */
     @JsonProperty("httpLogFormat")
     public String getHttpLogFormat() {
         return httpLogFormat;
     }
 
+    /**
+     * httpLogFormat specifies the format of the log message for an HTTP request.<br><p> <br><p> If this field is empty, log messages use the implementation's default HTTP log format.  For HAProxy's default HTTP log format, see the HAProxy documentation: http://cbonte.github.io/haproxy-dconv/2.0/configuration.html#8.2.3<br><p> <br><p> Note that this format only applies to cleartext HTTP connections and to secure HTTP connections for which the ingress controller terminates encryption (that is, edge-terminated or reencrypt connections).  It does not affect the log format for TLS passthrough connections.
+     */
     @JsonProperty("httpLogFormat")
     public void setHttpLogFormat(String httpLogFormat) {
         this.httpLogFormat = httpLogFormat;
     }
 
+    /**
+     * logEmptyRequests specifies how connections on which no request is received should be logged.  Typically, these empty requests come from load balancers' health probes or Web browsers' speculative connections ("preconnect"), in which case logging these requests may be undesirable.  However, these requests may also be caused by network errors, in which case logging empty requests may be useful for diagnosing the errors.  In addition, these requests may be caused by port scans, in which case logging empty requests may aid in detecting intrusion attempts.  Allowed values for this field are "Log" and "Ignore".  The default value is "Log".
+     */
     @JsonProperty("logEmptyRequests")
     public String getLogEmptyRequests() {
         return logEmptyRequests;
     }
 
+    /**
+     * logEmptyRequests specifies how connections on which no request is received should be logged.  Typically, these empty requests come from load balancers' health probes or Web browsers' speculative connections ("preconnect"), in which case logging these requests may be undesirable.  However, these requests may also be caused by network errors, in which case logging empty requests may be useful for diagnosing the errors.  In addition, these requests may be caused by port scans, in which case logging empty requests may aid in detecting intrusion attempts.  Allowed values for this field are "Log" and "Ignore".  The default value is "Log".
+     */
     @JsonProperty("logEmptyRequests")
     public void setLogEmptyRequests(String logEmptyRequests) {
         this.logEmptyRequests = logEmptyRequests;

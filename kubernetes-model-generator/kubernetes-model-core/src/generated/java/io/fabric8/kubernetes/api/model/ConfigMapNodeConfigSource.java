@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ConfigMapNodeConfigSource contains the information to reference a ConfigMap as a config source for the Node. This API is deprecated since 1.22: https://git.k8s.io/enhancements/keps/sig-node/281-dynamic-kubelet-configuration
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -65,51 +68,81 @@ public class ConfigMapNodeConfigSource implements Editable<ConfigMapNodeConfigSo
         this.uid = uid;
     }
 
+    /**
+     * KubeletConfigKey declares which key of the referenced ConfigMap corresponds to the KubeletConfiguration structure This field is required in all cases.
+     */
     @JsonProperty("kubeletConfigKey")
     public String getKubeletConfigKey() {
         return kubeletConfigKey;
     }
 
+    /**
+     * KubeletConfigKey declares which key of the referenced ConfigMap corresponds to the KubeletConfiguration structure This field is required in all cases.
+     */
     @JsonProperty("kubeletConfigKey")
     public void setKubeletConfigKey(String kubeletConfigKey) {
         this.kubeletConfigKey = kubeletConfigKey;
     }
 
+    /**
+     * Name is the metadata.name of the referenced ConfigMap. This field is required in all cases.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name is the metadata.name of the referenced ConfigMap. This field is required in all cases.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Namespace is the metadata.namespace of the referenced ConfigMap. This field is required in all cases.
+     */
     @JsonProperty("namespace")
     public String getNamespace() {
         return namespace;
     }
 
+    /**
+     * Namespace is the metadata.namespace of the referenced ConfigMap. This field is required in all cases.
+     */
     @JsonProperty("namespace")
     public void setNamespace(String namespace) {
         this.namespace = namespace;
     }
 
+    /**
+     * ResourceVersion is the metadata.ResourceVersion of the referenced ConfigMap. This field is forbidden in Node.Spec, and required in Node.Status.
+     */
     @JsonProperty("resourceVersion")
     public String getResourceVersion() {
         return resourceVersion;
     }
 
+    /**
+     * ResourceVersion is the metadata.ResourceVersion of the referenced ConfigMap. This field is forbidden in Node.Spec, and required in Node.Status.
+     */
     @JsonProperty("resourceVersion")
     public void setResourceVersion(String resourceVersion) {
         this.resourceVersion = resourceVersion;
     }
 
+    /**
+     * UID is the metadata.UID of the referenced ConfigMap. This field is forbidden in Node.Spec, and required in Node.Status.
+     */
     @JsonProperty("uid")
     public String getUid() {
         return uid;
     }
 
+    /**
+     * UID is the metadata.UID of the referenced ConfigMap. This field is forbidden in Node.Spec, and required in Node.Status.
+     */
     @JsonProperty("uid")
     public void setUid(String uid) {
         this.uid = uid;

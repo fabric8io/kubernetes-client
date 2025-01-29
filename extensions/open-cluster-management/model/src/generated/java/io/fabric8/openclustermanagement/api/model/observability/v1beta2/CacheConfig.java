@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * CacheConfig is the spec of memcached.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,51 +97,81 @@ public class CacheConfig implements Editable<CacheConfigBuilder>, KubernetesReso
         this.resources = resources;
     }
 
+    /**
+     * Max simultaneous connections of Memcached.
+     */
     @JsonProperty("connectionLimit")
     public Integer getConnectionLimit() {
         return connectionLimit;
     }
 
+    /**
+     * Max simultaneous connections of Memcached.
+     */
     @JsonProperty("connectionLimit")
     public void setConnectionLimit(Integer connectionLimit) {
         this.connectionLimit = connectionLimit;
     }
 
+    /**
+     * Max item size of Memcached (default: 1m, min: 1k, max: 1024m).
+     */
     @JsonProperty("maxItemSize")
     public String getMaxItemSize() {
         return maxItemSize;
     }
 
+    /**
+     * Max item size of Memcached (default: 1m, min: 1k, max: 1024m).
+     */
     @JsonProperty("maxItemSize")
     public void setMaxItemSize(String maxItemSize) {
         this.maxItemSize = maxItemSize;
     }
 
+    /**
+     * Memory limit of Memcached in megabytes.
+     */
     @JsonProperty("memoryLimitMb")
     public Integer getMemoryLimitMb() {
         return memoryLimitMb;
     }
 
+    /**
+     * Memory limit of Memcached in megabytes.
+     */
     @JsonProperty("memoryLimitMb")
     public void setMemoryLimitMb(Integer memoryLimitMb) {
         this.memoryLimitMb = memoryLimitMb;
     }
 
+    /**
+     * Replicas for this component.
+     */
     @JsonProperty("replicas")
     public Integer getReplicas() {
         return replicas;
     }
 
+    /**
+     * Replicas for this component.
+     */
     @JsonProperty("replicas")
     public void setReplicas(Integer replicas) {
         this.replicas = replicas;
     }
 
+    /**
+     * CacheConfig is the spec of memcached.
+     */
     @JsonProperty("resources")
     public ResourceRequirements getResources() {
         return resources;
     }
 
+    /**
+     * CacheConfig is the spec of memcached.
+     */
     @JsonProperty("resources")
     public void setResources(ResourceRequirements resources) {
         this.resources = resources;

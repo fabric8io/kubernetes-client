@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Condition defines a readiness condition for a Knative resource. See: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#typical-status-properties
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -98,61 +101,97 @@ public class Condition implements Editable<ConditionBuilder>, KubernetesResource
         this.type = type;
     }
 
+    /**
+     * Condition defines a readiness condition for a Knative resource. See: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#typical-status-properties
+     */
     @JsonProperty("lastTransitionTime")
     public VolatileTime getLastTransitionTime() {
         return lastTransitionTime;
     }
 
+    /**
+     * Condition defines a readiness condition for a Knative resource. See: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#typical-status-properties
+     */
     @JsonProperty("lastTransitionTime")
     public void setLastTransitionTime(VolatileTime lastTransitionTime) {
         this.lastTransitionTime = lastTransitionTime;
     }
 
+    /**
+     * A human readable message indicating details about the transition.
+     */
     @JsonProperty("message")
     public String getMessage() {
         return message;
     }
 
+    /**
+     * A human readable message indicating details about the transition.
+     */
     @JsonProperty("message")
     public void setMessage(String message) {
         this.message = message;
     }
 
+    /**
+     * The reason for the condition's last transition.
+     */
     @JsonProperty("reason")
     public String getReason() {
         return reason;
     }
 
+    /**
+     * The reason for the condition's last transition.
+     */
     @JsonProperty("reason")
     public void setReason(String reason) {
         this.reason = reason;
     }
 
+    /**
+     * Severity with which to treat failures of this type of condition. When this is not specified, it defaults to Error.
+     */
     @JsonProperty("severity")
     public String getSeverity() {
         return severity;
     }
 
+    /**
+     * Severity with which to treat failures of this type of condition. When this is not specified, it defaults to Error.
+     */
     @JsonProperty("severity")
     public void setSeverity(String severity) {
         this.severity = severity;
     }
 
+    /**
+     * Status of the condition, one of True, False, Unknown.
+     */
     @JsonProperty("status")
     public String getStatus() {
         return status;
     }
 
+    /**
+     * Status of the condition, one of True, False, Unknown.
+     */
     @JsonProperty("status")
     public void setStatus(String status) {
         this.status = status;
     }
 
+    /**
+     * Type of condition.
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * Type of condition.
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

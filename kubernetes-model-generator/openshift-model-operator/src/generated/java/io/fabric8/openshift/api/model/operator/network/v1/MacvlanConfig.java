@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * MacvlanConfig consists of arguments specific to the macvlan EgressRouterInterfaceType
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class MacvlanConfig implements Editable<MacvlanConfigBuilder>, Kubernetes
         this.mode = mode;
     }
 
+    /**
+     * Name of the master interface. Need not be specified if it can be inferred from the IP address.
+     */
     @JsonProperty("master")
     public String getMaster() {
         return master;
     }
 
+    /**
+     * Name of the master interface. Need not be specified if it can be inferred from the IP address.
+     */
     @JsonProperty("master")
     public void setMaster(String master) {
         this.master = master;
     }
 
+    /**
+     * Mode depicts the mode that is used for the macvlan interface; one of Bridge|Private|VEPA|Passthru. The default mode is "Bridge".
+     */
     @JsonProperty("mode")
     public String getMode() {
         return mode;
     }
 
+    /**
+     * Mode depicts the mode that is used for the macvlan interface; one of Bridge|Private|VEPA|Passthru. The default mode is "Bridge".
+     */
     @JsonProperty("mode")
     public void setMode(String mode) {
         this.mode = mode;

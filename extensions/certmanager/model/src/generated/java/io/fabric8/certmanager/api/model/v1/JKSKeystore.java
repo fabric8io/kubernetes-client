@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * JKS configures options for storing a JKS keystore in the `spec.secretName` Secret resource.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -87,31 +90,49 @@ public class JKSKeystore implements Editable<JKSKeystoreBuilder>, KubernetesReso
         this.passwordSecretRef = passwordSecretRef;
     }
 
+    /**
+     * Alias specifies the alias of the key in the keystore, required by the JKS format. If not provided, the default alias `certificate` will be used.
+     */
     @JsonProperty("alias")
     public String getAlias() {
         return alias;
     }
 
+    /**
+     * Alias specifies the alias of the key in the keystore, required by the JKS format. If not provided, the default alias `certificate` will be used.
+     */
     @JsonProperty("alias")
     public void setAlias(String alias) {
         this.alias = alias;
     }
 
+    /**
+     * Create enables JKS keystore creation for the Certificate. If true, a file named `keystore.jks` will be created in the target Secret resource, encrypted using the password stored in `passwordSecretRef`. The keystore file will be updated immediately. If the issuer provided a CA certificate, a file named `truststore.jks` will also be created in the target Secret resource, encrypted using the password stored in `passwordSecretRef` containing the issuing Certificate Authority
+     */
     @JsonProperty("create")
     public Boolean getCreate() {
         return create;
     }
 
+    /**
+     * Create enables JKS keystore creation for the Certificate. If true, a file named `keystore.jks` will be created in the target Secret resource, encrypted using the password stored in `passwordSecretRef`. The keystore file will be updated immediately. If the issuer provided a CA certificate, a file named `truststore.jks` will also be created in the target Secret resource, encrypted using the password stored in `passwordSecretRef` containing the issuing Certificate Authority
+     */
     @JsonProperty("create")
     public void setCreate(Boolean create) {
         this.create = create;
     }
 
+    /**
+     * JKS configures options for storing a JKS keystore in the `spec.secretName` Secret resource.
+     */
     @JsonProperty("passwordSecretRef")
     public SecretKeySelector getPasswordSecretRef() {
         return passwordSecretRef;
     }
 
+    /**
+     * JKS configures options for storing a JKS keystore in the `spec.secretName` Secret resource.
+     */
     @JsonProperty("passwordSecretRef")
     public void setPasswordSecretRef(SecretKeySelector passwordSecretRef) {
         this.passwordSecretRef = passwordSecretRef;

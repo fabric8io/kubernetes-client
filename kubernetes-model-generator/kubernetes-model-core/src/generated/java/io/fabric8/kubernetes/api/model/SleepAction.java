@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SleepAction describes a "sleep" action.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -49,11 +52,17 @@ public class SleepAction implements Editable<SleepActionBuilder>, KubernetesReso
         this.seconds = seconds;
     }
 
+    /**
+     * Seconds is the number of seconds to sleep.
+     */
     @JsonProperty("seconds")
     public Long getSeconds() {
         return seconds;
     }
 
+    /**
+     * Seconds is the number of seconds to sleep.
+     */
     @JsonProperty("seconds")
     public void setSeconds(Long seconds) {
         this.seconds = seconds;

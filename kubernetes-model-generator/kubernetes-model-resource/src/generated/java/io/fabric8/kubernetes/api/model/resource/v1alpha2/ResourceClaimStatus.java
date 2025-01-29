@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ResourceClaimStatus tracks whether the resource has been allocated and what the resulting attributes are.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -93,42 +96,66 @@ public class ResourceClaimStatus implements Editable<ResourceClaimStatusBuilder>
         this.reservedFor = reservedFor;
     }
 
+    /**
+     * ResourceClaimStatus tracks whether the resource has been allocated and what the resulting attributes are.
+     */
     @JsonProperty("allocation")
     public AllocationResult getAllocation() {
         return allocation;
     }
 
+    /**
+     * ResourceClaimStatus tracks whether the resource has been allocated and what the resulting attributes are.
+     */
     @JsonProperty("allocation")
     public void setAllocation(AllocationResult allocation) {
         this.allocation = allocation;
     }
 
+    /**
+     * DeallocationRequested indicates that a ResourceClaim is to be deallocated.<br><p> <br><p> The driver then must deallocate this claim and reset the field together with clearing the Allocation field.<br><p> <br><p> While DeallocationRequested is set, no new consumers may be added to ReservedFor.
+     */
     @JsonProperty("deallocationRequested")
     public Boolean getDeallocationRequested() {
         return deallocationRequested;
     }
 
+    /**
+     * DeallocationRequested indicates that a ResourceClaim is to be deallocated.<br><p> <br><p> The driver then must deallocate this claim and reset the field together with clearing the Allocation field.<br><p> <br><p> While DeallocationRequested is set, no new consumers may be added to ReservedFor.
+     */
     @JsonProperty("deallocationRequested")
     public void setDeallocationRequested(Boolean deallocationRequested) {
         this.deallocationRequested = deallocationRequested;
     }
 
+    /**
+     * DriverName is a copy of the driver name from the ResourceClass at the time when allocation started.
+     */
     @JsonProperty("driverName")
     public String getDriverName() {
         return driverName;
     }
 
+    /**
+     * DriverName is a copy of the driver name from the ResourceClass at the time when allocation started.
+     */
     @JsonProperty("driverName")
     public void setDriverName(String driverName) {
         this.driverName = driverName;
     }
 
+    /**
+     * ReservedFor indicates which entities are currently allowed to use the claim. A Pod which references a ResourceClaim which is not reserved for that Pod will not be started.<br><p> <br><p> There can be at most 32 such reservations. This may get increased in the future, but not reduced.
+     */
     @JsonProperty("reservedFor")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ResourceClaimConsumerReference> getReservedFor() {
         return reservedFor;
     }
 
+    /**
+     * ReservedFor indicates which entities are currently allowed to use the claim. A Pod which references a ResourceClaim which is not reserved for that Pod will not be started.<br><p> <br><p> There can be at most 32 such reservations. This may get increased in the future, but not reduced.
+     */
     @JsonProperty("reservedFor")
     public void setReservedFor(List<ResourceClaimConsumerReference> reservedFor) {
         this.reservedFor = reservedFor;

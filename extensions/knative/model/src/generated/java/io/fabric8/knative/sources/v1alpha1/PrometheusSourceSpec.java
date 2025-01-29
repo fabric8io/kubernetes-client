@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PrometheusSourceSpec defines the desired state of PrometheusSource
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -107,81 +110,129 @@ public class PrometheusSourceSpec implements Editable<PrometheusSourceSpecBuilde
         this.step = step;
     }
 
+    /**
+     * The name of the file containing the authenication token
+     */
     @JsonProperty("authTokenFile")
     public String getAuthTokenFile() {
         return authTokenFile;
     }
 
+    /**
+     * The name of the file containing the authenication token
+     */
     @JsonProperty("authTokenFile")
     public void setAuthTokenFile(String authTokenFile) {
         this.authTokenFile = authTokenFile;
     }
 
+    /**
+     * The name of the config map containing the CA certificate of the Prometheus service's signer.
+     */
     @JsonProperty("caCertConfigMap")
     public String getCaCertConfigMap() {
         return caCertConfigMap;
     }
 
+    /**
+     * The name of the config map containing the CA certificate of the Prometheus service's signer.
+     */
     @JsonProperty("caCertConfigMap")
     public void setCaCertConfigMap(String caCertConfigMap) {
         this.caCertConfigMap = caCertConfigMap;
     }
 
+    /**
+     * PromQL is the Prometheus query for this source
+     */
     @JsonProperty("promQL")
     public String getPromQL() {
         return promQL;
     }
 
+    /**
+     * PromQL is the Prometheus query for this source
+     */
     @JsonProperty("promQL")
     public void setPromQL(String promQL) {
         this.promQL = promQL;
     }
 
+    /**
+     * A crontab-formatted schedule for running the PromQL query
+     */
     @JsonProperty("schedule")
     public String getSchedule() {
         return schedule;
     }
 
+    /**
+     * A crontab-formatted schedule for running the PromQL query
+     */
     @JsonProperty("schedule")
     public void setSchedule(String schedule) {
         this.schedule = schedule;
     }
 
+    /**
+     * ServerURL is the URL of the Prometheus server
+     */
     @JsonProperty("serverURL")
     public String getServerURL() {
         return serverURL;
     }
 
+    /**
+     * ServerURL is the URL of the Prometheus server
+     */
     @JsonProperty("serverURL")
     public void setServerURL(String serverURL) {
         this.serverURL = serverURL;
     }
 
+    /**
+     * ServiceAccountName holds the name of the Kubernetes service account as which the underlying K8s resources should be run. If unspecified this will default to the "default" service account for the namespace in which the PrometheusSource exists.
+     */
     @JsonProperty("serviceAccountName")
     public String getServiceAccountName() {
         return serviceAccountName;
     }
 
+    /**
+     * ServiceAccountName holds the name of the Kubernetes service account as which the underlying K8s resources should be run. If unspecified this will default to the "default" service account for the namespace in which the PrometheusSource exists.
+     */
     @JsonProperty("serviceAccountName")
     public void setServiceAccountName(String serviceAccountName) {
         this.serviceAccountName = serviceAccountName;
     }
 
+    /**
+     * PrometheusSourceSpec defines the desired state of PrometheusSource
+     */
     @JsonProperty("sink")
     public Destination getSink() {
         return sink;
     }
 
+    /**
+     * PrometheusSourceSpec defines the desired state of PrometheusSource
+     */
     @JsonProperty("sink")
     public void setSink(Destination sink) {
         this.sink = sink;
     }
 
+    /**
+     * Query resolution step width in duration format or float number of seconds. Prometheus duration strings are of the form [0-9]+[smhdwy].
+     */
     @JsonProperty("step")
     public String getStep() {
         return step;
     }
 
+    /**
+     * Query resolution step width in duration format or float number of seconds. Prometheus duration strings are of the form [0-9]+[smhdwy].
+     */
     @JsonProperty("step")
     public void setStep(String step) {
         this.step = step;

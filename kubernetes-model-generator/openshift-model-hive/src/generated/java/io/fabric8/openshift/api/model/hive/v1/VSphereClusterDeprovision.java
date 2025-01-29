@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * VSphereClusterDeprovision contains VMware vSphere-specific configuration for a ClusterDeprovision
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class VSphereClusterDeprovision implements Editable<VSphereClusterDeprovi
         this.vCenter = vCenter;
     }
 
+    /**
+     * VSphereClusterDeprovision contains VMware vSphere-specific configuration for a ClusterDeprovision
+     */
     @JsonProperty("certificatesSecretRef")
     public LocalObjectReference getCertificatesSecretRef() {
         return certificatesSecretRef;
     }
 
+    /**
+     * VSphereClusterDeprovision contains VMware vSphere-specific configuration for a ClusterDeprovision
+     */
     @JsonProperty("certificatesSecretRef")
     public void setCertificatesSecretRef(LocalObjectReference certificatesSecretRef) {
         this.certificatesSecretRef = certificatesSecretRef;
     }
 
+    /**
+     * VSphereClusterDeprovision contains VMware vSphere-specific configuration for a ClusterDeprovision
+     */
     @JsonProperty("credentialsSecretRef")
     public LocalObjectReference getCredentialsSecretRef() {
         return credentialsSecretRef;
     }
 
+    /**
+     * VSphereClusterDeprovision contains VMware vSphere-specific configuration for a ClusterDeprovision
+     */
     @JsonProperty("credentialsSecretRef")
     public void setCredentialsSecretRef(LocalObjectReference credentialsSecretRef) {
         this.credentialsSecretRef = credentialsSecretRef;
     }
 
+    /**
+     * VCenter is the vSphere vCenter hostname.
+     */
     @JsonProperty("vCenter")
     public String getVCenter() {
         return vCenter;
     }
 
+    /**
+     * VCenter is the vSphere vCenter hostname.
+     */
     @JsonProperty("vCenter")
     public void setVCenter(String vCenter) {
         this.vCenter = vCenter;

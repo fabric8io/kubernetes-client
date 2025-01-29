@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ClusterPoolClaimLifetime defines the lifetimes for claims for the cluster pool.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class ClusterPoolClaimLifetime implements Editable<ClusterPoolClaimLifeti
         this.maximum = maximum;
     }
 
+    /**
+     * ClusterPoolClaimLifetime defines the lifetimes for claims for the cluster pool.
+     */
     @JsonProperty("default")
     public String getDefault() {
         return _default;
     }
 
+    /**
+     * ClusterPoolClaimLifetime defines the lifetimes for claims for the cluster pool.
+     */
     @JsonProperty("default")
     public void setDefault(String _default) {
         this._default = _default;
     }
 
+    /**
+     * ClusterPoolClaimLifetime defines the lifetimes for claims for the cluster pool.
+     */
     @JsonProperty("maximum")
     public String getMaximum() {
         return maximum;
     }
 
+    /**
+     * ClusterPoolClaimLifetime defines the lifetimes for claims for the cluster pool.
+     */
     @JsonProperty("maximum")
     public void setMaximum(String maximum) {
         this.maximum = maximum;

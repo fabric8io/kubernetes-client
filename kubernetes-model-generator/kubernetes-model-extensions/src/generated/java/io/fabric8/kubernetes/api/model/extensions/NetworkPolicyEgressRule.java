@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DEPRECATED 1.9 - This group version of NetworkPolicyEgressRule is deprecated by networking/v1/NetworkPolicyEgressRule. NetworkPolicyEgressRule describes a particular set of traffic that is allowed out of pods matched by a NetworkPolicySpec's podSelector. The traffic must match both ports and to. This type is beta-level in 1.8
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,23 +89,35 @@ public class NetworkPolicyEgressRule implements Editable<NetworkPolicyEgressRule
         this.to = to;
     }
 
+    /**
+     * List of destination ports for outgoing traffic. Each item in this list is combined using a logical OR. If this field is empty or missing, this rule matches all ports (traffic not restricted by port). If this field is present and contains at least one item, then this rule allows traffic only if the traffic matches at least one port in the list.
+     */
     @JsonProperty("ports")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NetworkPolicyPort> getPorts() {
         return ports;
     }
 
+    /**
+     * List of destination ports for outgoing traffic. Each item in this list is combined using a logical OR. If this field is empty or missing, this rule matches all ports (traffic not restricted by port). If this field is present and contains at least one item, then this rule allows traffic only if the traffic matches at least one port in the list.
+     */
     @JsonProperty("ports")
     public void setPorts(List<NetworkPolicyPort> ports) {
         this.ports = ports;
     }
 
+    /**
+     * List of destinations for outgoing traffic of pods selected for this rule. Items in this list are combined using a logical OR operation. If this field is empty or missing, this rule matches all destinations (traffic not restricted by destination). If this field is present and contains at least one item, this rule allows traffic only if the traffic matches at least one item in the to list.
+     */
     @JsonProperty("to")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NetworkPolicyPeer> getTo() {
         return to;
     }
 
+    /**
+     * List of destinations for outgoing traffic of pods selected for this rule. Items in this list are combined using a logical OR operation. If this field is empty or missing, this rule matches all destinations (traffic not restricted by destination). If this field is present and contains at least one item, this rule allows traffic only if the traffic matches at least one item in the to list.
+     */
     @JsonProperty("to")
     public void setTo(List<NetworkPolicyPeer> to) {
         this.to = to;

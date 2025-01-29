@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * EgressIPSpec is a desired state description of EgressIP.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -89,32 +92,50 @@ public class EgressIPSpec implements Editable<EgressIPSpecBuilder>, KubernetesRe
         this.podSelector = podSelector;
     }
 
+    /**
+     * EgressIPs is the list of egress IP addresses requested. Can be IPv4 and/or IPv6. This field is mandatory.
+     */
     @JsonProperty("egressIPs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getEgressIPs() {
         return egressIPs;
     }
 
+    /**
+     * EgressIPs is the list of egress IP addresses requested. Can be IPv4 and/or IPv6. This field is mandatory.
+     */
     @JsonProperty("egressIPs")
     public void setEgressIPs(List<String> egressIPs) {
         this.egressIPs = egressIPs;
     }
 
+    /**
+     * EgressIPSpec is a desired state description of EgressIP.
+     */
     @JsonProperty("namespaceSelector")
     public LabelSelector getNamespaceSelector() {
         return namespaceSelector;
     }
 
+    /**
+     * EgressIPSpec is a desired state description of EgressIP.
+     */
     @JsonProperty("namespaceSelector")
     public void setNamespaceSelector(LabelSelector namespaceSelector) {
         this.namespaceSelector = namespaceSelector;
     }
 
+    /**
+     * EgressIPSpec is a desired state description of EgressIP.
+     */
     @JsonProperty("podSelector")
     public LabelSelector getPodSelector() {
         return podSelector;
     }
 
+    /**
+     * EgressIPSpec is a desired state description of EgressIP.
+     */
     @JsonProperty("podSelector")
     public void setPodSelector(LabelSelector podSelector) {
         this.podSelector = podSelector;

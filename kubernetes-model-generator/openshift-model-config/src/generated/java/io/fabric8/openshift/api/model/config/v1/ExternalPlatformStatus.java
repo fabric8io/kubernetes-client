@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ExternalPlatformStatus holds the current status of the generic External infrastructure provider.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class ExternalPlatformStatus implements Editable<ExternalPlatformStatusBu
         this.cloudControllerManager = cloudControllerManager;
     }
 
+    /**
+     * ExternalPlatformStatus holds the current status of the generic External infrastructure provider.
+     */
     @JsonProperty("cloudControllerManager")
     public CloudControllerManagerStatus getCloudControllerManager() {
         return cloudControllerManager;
     }
 
+    /**
+     * ExternalPlatformStatus holds the current status of the generic External infrastructure provider.
+     */
     @JsonProperty("cloudControllerManager")
     public void setCloudControllerManager(CloudControllerManagerStatus cloudControllerManager) {
         this.cloudControllerManager = cloudControllerManager;

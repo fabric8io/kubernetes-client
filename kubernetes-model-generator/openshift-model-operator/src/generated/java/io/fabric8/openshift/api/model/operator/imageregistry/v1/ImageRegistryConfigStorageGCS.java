@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ImageRegistryConfigStorageGCS holds GCS configuration.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class ImageRegistryConfigStorageGCS implements Editable<ImageRegistryConf
         this.region = region;
     }
 
+    /**
+     * bucket is the bucket name in which you want to store the registry's data. Optional, will be generated if not provided.
+     */
     @JsonProperty("bucket")
     public String getBucket() {
         return bucket;
     }
 
+    /**
+     * bucket is the bucket name in which you want to store the registry's data. Optional, will be generated if not provided.
+     */
     @JsonProperty("bucket")
     public void setBucket(String bucket) {
         this.bucket = bucket;
     }
 
+    /**
+     * keyID is the KMS key ID to use for encryption. Optional, buckets are encrypted by default on GCP. This allows for the use of a custom encryption key.
+     */
     @JsonProperty("keyID")
     public String getKeyID() {
         return keyID;
     }
 
+    /**
+     * keyID is the KMS key ID to use for encryption. Optional, buckets are encrypted by default on GCP. This allows for the use of a custom encryption key.
+     */
     @JsonProperty("keyID")
     public void setKeyID(String keyID) {
         this.keyID = keyID;
     }
 
+    /**
+     * projectID is the Project ID of the GCP project that this bucket should be associated with.
+     */
     @JsonProperty("projectID")
     public String getProjectID() {
         return projectID;
     }
 
+    /**
+     * projectID is the Project ID of the GCP project that this bucket should be associated with.
+     */
     @JsonProperty("projectID")
     public void setProjectID(String projectID) {
         this.projectID = projectID;
     }
 
+    /**
+     * region is the GCS location in which your bucket exists. Optional, will be set based on the installed GCS Region.
+     */
     @JsonProperty("region")
     public String getRegion() {
         return region;
     }
 
+    /**
+     * region is the GCS location in which your bucket exists. Optional, will be set based on the installed GCS Region.
+     */
     @JsonProperty("region")
     public void setRegion(String region) {
         this.region = region;

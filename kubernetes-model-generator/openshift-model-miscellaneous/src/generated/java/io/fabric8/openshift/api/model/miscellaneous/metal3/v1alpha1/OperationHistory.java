@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * OperationHistory holds information about operations performed on a host.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class OperationHistory implements Editable<OperationHistoryBuilder>, Kube
         this.register = register;
     }
 
+    /**
+     * OperationHistory holds information about operations performed on a host.
+     */
     @JsonProperty("deprovision")
     public OperationMetric getDeprovision() {
         return deprovision;
     }
 
+    /**
+     * OperationHistory holds information about operations performed on a host.
+     */
     @JsonProperty("deprovision")
     public void setDeprovision(OperationMetric deprovision) {
         this.deprovision = deprovision;
     }
 
+    /**
+     * OperationHistory holds information about operations performed on a host.
+     */
     @JsonProperty("inspect")
     public OperationMetric getInspect() {
         return inspect;
     }
 
+    /**
+     * OperationHistory holds information about operations performed on a host.
+     */
     @JsonProperty("inspect")
     public void setInspect(OperationMetric inspect) {
         this.inspect = inspect;
     }
 
+    /**
+     * OperationHistory holds information about operations performed on a host.
+     */
     @JsonProperty("provision")
     public OperationMetric getProvision() {
         return provision;
     }
 
+    /**
+     * OperationHistory holds information about operations performed on a host.
+     */
     @JsonProperty("provision")
     public void setProvision(OperationMetric provision) {
         this.provision = provision;
     }
 
+    /**
+     * OperationHistory holds information about operations performed on a host.
+     */
     @JsonProperty("register")
     public OperationMetric getRegister() {
         return register;
     }
 
+    /**
+     * OperationHistory holds information about operations performed on a host.
+     */
     @JsonProperty("register")
     public void setRegister(OperationMetric register) {
         this.register = register;

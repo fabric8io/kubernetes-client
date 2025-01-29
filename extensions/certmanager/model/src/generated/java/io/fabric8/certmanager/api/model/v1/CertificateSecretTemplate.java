@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * CertificateSecretTemplate defines the default labels and annotations to be copied to the Kubernetes Secret resource named in `CertificateSpec.secretName`.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -84,23 +87,35 @@ public class CertificateSecretTemplate implements Editable<CertificateSecretTemp
         this.labels = labels;
     }
 
+    /**
+     * Annotations is a key value map to be copied to the target Kubernetes Secret.
+     */
     @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAnnotations() {
         return annotations;
     }
 
+    /**
+     * Annotations is a key value map to be copied to the target Kubernetes Secret.
+     */
     @JsonProperty("annotations")
     public void setAnnotations(Map<String, String> annotations) {
         this.annotations = annotations;
     }
 
+    /**
+     * Labels is a key value map to be copied to the target Kubernetes Secret.
+     */
     @JsonProperty("labels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getLabels() {
         return labels;
     }
 
+    /**
+     * Labels is a key value map to be copied to the target Kubernetes Secret.
+     */
     @JsonProperty("labels")
     public void setLabels(Map<String, String> labels) {
         this.labels = labels;

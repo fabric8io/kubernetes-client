@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * VenafiCloud defines connection configuration details for Venafi Cloud
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -83,21 +86,33 @@ public class VenafiCloud implements Editable<VenafiCloudBuilder>, KubernetesReso
         this.url = url;
     }
 
+    /**
+     * VenafiCloud defines connection configuration details for Venafi Cloud
+     */
     @JsonProperty("apiTokenSecretRef")
     public SecretKeySelector getApiTokenSecretRef() {
         return apiTokenSecretRef;
     }
 
+    /**
+     * VenafiCloud defines connection configuration details for Venafi Cloud
+     */
     @JsonProperty("apiTokenSecretRef")
     public void setApiTokenSecretRef(SecretKeySelector apiTokenSecretRef) {
         this.apiTokenSecretRef = apiTokenSecretRef;
     }
 
+    /**
+     * URL is the base URL for Venafi Cloud. Defaults to "https://api.venafi.cloud/v1".
+     */
     @JsonProperty("url")
     public String getUrl() {
         return url;
     }
 
+    /**
+     * URL is the base URL for Venafi Cloud. Defaults to "https://api.venafi.cloud/v1".
+     */
     @JsonProperty("url")
     public void setUrl(String url) {
         this.url = url;

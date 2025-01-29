@@ -36,6 +36,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ScalewaySDConfig configurations allow retrieving scrape targets from Scaleway instances and baremetal services. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#scaleway_sd_config
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -148,173 +151,275 @@ public class ScalewaySDConfig implements Editable<ScalewaySDConfigBuilder>, Kube
         this.zone = zone;
     }
 
+    /**
+     * Access key to use. https://console.scaleway.com/project/credentials
+     */
     @JsonProperty("accessKey")
     public String getAccessKey() {
         return accessKey;
     }
 
+    /**
+     * Access key to use. https://console.scaleway.com/project/credentials
+     */
     @JsonProperty("accessKey")
     public void setAccessKey(String accessKey) {
         this.accessKey = accessKey;
     }
 
+    /**
+     * API URL to use when doing the server listing requests.
+     */
     @JsonProperty("apiURL")
     public String getApiURL() {
         return apiURL;
     }
 
+    /**
+     * API URL to use when doing the server listing requests.
+     */
     @JsonProperty("apiURL")
     public void setApiURL(String apiURL) {
         this.apiURL = apiURL;
     }
 
+    /**
+     * Whether to enable HTTP2.
+     */
     @JsonProperty("enableHTTP2")
     public Boolean getEnableHTTP2() {
         return enableHTTP2;
     }
 
+    /**
+     * Whether to enable HTTP2.
+     */
     @JsonProperty("enableHTTP2")
     public void setEnableHTTP2(Boolean enableHTTP2) {
         this.enableHTTP2 = enableHTTP2;
     }
 
+    /**
+     * Configure whether HTTP requests follow HTTP 3xx redirects.
+     */
     @JsonProperty("followRedirects")
     public Boolean getFollowRedirects() {
         return followRedirects;
     }
 
+    /**
+     * Configure whether HTTP requests follow HTTP 3xx redirects.
+     */
     @JsonProperty("followRedirects")
     public void setFollowRedirects(Boolean followRedirects) {
         this.followRedirects = followRedirects;
     }
 
+    /**
+     * NameFilter specify a name filter (works as a LIKE) to apply on the server listing request.
+     */
     @JsonProperty("nameFilter")
     public String getNameFilter() {
         return nameFilter;
     }
 
+    /**
+     * NameFilter specify a name filter (works as a LIKE) to apply on the server listing request.
+     */
     @JsonProperty("nameFilter")
     public void setNameFilter(String nameFilter) {
         this.nameFilter = nameFilter;
     }
 
+    /**
+     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0 or Alertmanager &gt;= 0.25.0.
+     */
     @JsonProperty("noProxy")
     public String getNoProxy() {
         return noProxy;
     }
 
+    /**
+     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0 or Alertmanager &gt;= 0.25.0.
+     */
     @JsonProperty("noProxy")
     public void setNoProxy(String noProxy) {
         this.noProxy = noProxy;
     }
 
+    /**
+     * The port to scrape metrics from.
+     */
     @JsonProperty("port")
     public Integer getPort() {
         return port;
     }
 
+    /**
+     * The port to scrape metrics from.
+     */
     @JsonProperty("port")
     public void setPort(Integer port) {
         this.port = port;
     }
 
+    /**
+     * Project ID of the targets.
+     */
     @JsonProperty("projectID")
     public String getProjectID() {
         return projectID;
     }
 
+    /**
+     * Project ID of the targets.
+     */
     @JsonProperty("projectID")
     public void setProjectID(String projectID) {
         this.projectID = projectID;
     }
 
+    /**
+     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0 or Alertmanager &gt;= 0.25.0.
+     */
     @JsonProperty("proxyConnectHeader")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, List<SecretKeySelector>> getProxyConnectHeader() {
         return proxyConnectHeader;
     }
 
+    /**
+     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0 or Alertmanager &gt;= 0.25.0.
+     */
     @JsonProperty("proxyConnectHeader")
     public void setProxyConnectHeader(Map<String, List<SecretKeySelector>> proxyConnectHeader) {
         this.proxyConnectHeader = proxyConnectHeader;
     }
 
+    /**
+     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0 or Alertmanager &gt;= 0.25.0.
+     */
     @JsonProperty("proxyFromEnvironment")
     public Boolean getProxyFromEnvironment() {
         return proxyFromEnvironment;
     }
 
+    /**
+     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0 or Alertmanager &gt;= 0.25.0.
+     */
     @JsonProperty("proxyFromEnvironment")
     public void setProxyFromEnvironment(Boolean proxyFromEnvironment) {
         this.proxyFromEnvironment = proxyFromEnvironment;
     }
 
+    /**
+     * `proxyURL` defines the HTTP proxy server to use.
+     */
     @JsonProperty("proxyUrl")
     public String getProxyUrl() {
         return proxyUrl;
     }
 
+    /**
+     * `proxyURL` defines the HTTP proxy server to use.
+     */
     @JsonProperty("proxyUrl")
     public void setProxyUrl(String proxyUrl) {
         this.proxyUrl = proxyUrl;
     }
 
+    /**
+     * Refresh interval to re-read the list of instances.
+     */
     @JsonProperty("refreshInterval")
     public String getRefreshInterval() {
         return refreshInterval;
     }
 
+    /**
+     * Refresh interval to re-read the list of instances.
+     */
     @JsonProperty("refreshInterval")
     public void setRefreshInterval(String refreshInterval) {
         this.refreshInterval = refreshInterval;
     }
 
+    /**
+     * Service of the targets to retrieve. Must be `Instance` or `Baremetal`.
+     */
     @JsonProperty("role")
     public String getRole() {
         return role;
     }
 
+    /**
+     * Service of the targets to retrieve. Must be `Instance` or `Baremetal`.
+     */
     @JsonProperty("role")
     public void setRole(String role) {
         this.role = role;
     }
 
+    /**
+     * ScalewaySDConfig configurations allow retrieving scrape targets from Scaleway instances and baremetal services. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#scaleway_sd_config
+     */
     @JsonProperty("secretKey")
     public SecretKeySelector getSecretKey() {
         return secretKey;
     }
 
+    /**
+     * ScalewaySDConfig configurations allow retrieving scrape targets from Scaleway instances and baremetal services. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#scaleway_sd_config
+     */
     @JsonProperty("secretKey")
     public void setSecretKey(SecretKeySelector secretKey) {
         this.secretKey = secretKey;
     }
 
+    /**
+     * TagsFilter specify a tag filter (a server needs to have all defined tags to be listed) to apply on the server listing request.
+     */
     @JsonProperty("tagsFilter")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getTagsFilter() {
         return tagsFilter;
     }
 
+    /**
+     * TagsFilter specify a tag filter (a server needs to have all defined tags to be listed) to apply on the server listing request.
+     */
     @JsonProperty("tagsFilter")
     public void setTagsFilter(List<String> tagsFilter) {
         this.tagsFilter = tagsFilter;
     }
 
+    /**
+     * ScalewaySDConfig configurations allow retrieving scrape targets from Scaleway instances and baremetal services. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#scaleway_sd_config
+     */
     @JsonProperty("tlsConfig")
     public SafeTLSConfig getTlsConfig() {
         return tlsConfig;
     }
 
+    /**
+     * ScalewaySDConfig configurations allow retrieving scrape targets from Scaleway instances and baremetal services. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#scaleway_sd_config
+     */
     @JsonProperty("tlsConfig")
     public void setTlsConfig(SafeTLSConfig tlsConfig) {
         this.tlsConfig = tlsConfig;
     }
 
+    /**
+     * Zone is the availability zone of your targets (e.g. fr-par-1).
+     */
     @JsonProperty("zone")
     public String getZone() {
         return zone;
     }
 
+    /**
+     * Zone is the availability zone of your targets (e.g. fr-par-1).
+     */
     @JsonProperty("zone")
     public void setZone(String zone) {
         this.zone = zone;

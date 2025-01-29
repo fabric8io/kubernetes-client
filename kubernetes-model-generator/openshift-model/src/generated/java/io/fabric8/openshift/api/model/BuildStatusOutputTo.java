@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * BuildStatusOutputTo describes the status of the built image with regards to image registry to which it was supposed to be pushed.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class BuildStatusOutputTo implements Editable<BuildStatusOutputToBuilder>
         this.imageDigest = imageDigest;
     }
 
+    /**
+     * imageDigest is the digest of the built container image. The digest uniquely identifies the image in the registry to which it was pushed.<br><p> <br><p> Please note that this field may not always be set even if the push completes successfully - e.g. when the registry returns no digest or returns it in a format that the builder doesn't understand.
+     */
     @JsonProperty("imageDigest")
     public String getImageDigest() {
         return imageDigest;
     }
 
+    /**
+     * imageDigest is the digest of the built container image. The digest uniquely identifies the image in the registry to which it was pushed.<br><p> <br><p> Please note that this field may not always be set even if the push completes successfully - e.g. when the registry returns no digest or returns it in a format that the builder doesn't understand.
+     */
     @JsonProperty("imageDigest")
     public void setImageDigest(String imageDigest) {
         this.imageDigest = imageDigest;

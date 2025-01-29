@@ -36,6 +36,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * TaskRunStatus defines the observed state of TaskRun
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -147,160 +150,250 @@ public class TaskRunStatus implements Editable<TaskRunStatusBuilder>, Kubernetes
         this.taskSpec = taskSpec;
     }
 
+    /**
+     * Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.
+     */
     @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAnnotations() {
         return annotations;
     }
 
+    /**
+     * Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.
+     */
     @JsonProperty("annotations")
     public void setAnnotations(Map<String, String> annotations) {
         this.annotations = annotations;
     }
 
+    /**
+     * CloudEvents describe the state of each cloud event requested via a CloudEventResource.<br><p> <br><p> Deprecated: Removed in v0.44.0.
+     */
     @JsonProperty("cloudEvents")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<CloudEventDelivery> getCloudEvents() {
         return cloudEvents;
     }
 
+    /**
+     * CloudEvents describe the state of each cloud event requested via a CloudEventResource.<br><p> <br><p> Deprecated: Removed in v0.44.0.
+     */
     @JsonProperty("cloudEvents")
     public void setCloudEvents(List<CloudEventDelivery> cloudEvents) {
         this.cloudEvents = cloudEvents;
     }
 
+    /**
+     * TaskRunStatus defines the observed state of TaskRun
+     */
     @JsonProperty("completionTime")
     public String getCompletionTime() {
         return completionTime;
     }
 
+    /**
+     * TaskRunStatus defines the observed state of TaskRun
+     */
     @JsonProperty("completionTime")
     public void setCompletionTime(String completionTime) {
         this.completionTime = completionTime;
     }
 
+    /**
+     * Conditions the latest available observations of a resource's current state.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Conditions the latest available observations of a resource's current state.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * ObservedGeneration is the 'Generation' of the Service that was last processed by the controller.
+     */
     @JsonProperty("observedGeneration")
     public Long getObservedGeneration() {
         return observedGeneration;
     }
 
+    /**
+     * ObservedGeneration is the 'Generation' of the Service that was last processed by the controller.
+     */
     @JsonProperty("observedGeneration")
     public void setObservedGeneration(Long observedGeneration) {
         this.observedGeneration = observedGeneration;
     }
 
+    /**
+     * PodName is the name of the pod responsible for executing this task's steps.
+     */
     @JsonProperty("podName")
     public String getPodName() {
         return podName;
     }
 
+    /**
+     * PodName is the name of the pod responsible for executing this task's steps.
+     */
     @JsonProperty("podName")
     public void setPodName(String podName) {
         this.podName = podName;
     }
 
+    /**
+     * TaskRunStatus defines the observed state of TaskRun
+     */
     @JsonProperty("provenance")
     public Provenance getProvenance() {
         return provenance;
     }
 
+    /**
+     * TaskRunStatus defines the observed state of TaskRun
+     */
     @JsonProperty("provenance")
     public void setProvenance(Provenance provenance) {
         this.provenance = provenance;
     }
 
+    /**
+     * Results from Resources built during the TaskRun. This is tomb-stoned along with the removal of pipelineResources Deprecated: this field is not populated and is preserved only for backwards compatibility
+     */
     @JsonProperty("resourcesResult")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<RunResult> getResourcesResult() {
         return resourcesResult;
     }
 
+    /**
+     * Results from Resources built during the TaskRun. This is tomb-stoned along with the removal of pipelineResources Deprecated: this field is not populated and is preserved only for backwards compatibility
+     */
     @JsonProperty("resourcesResult")
     public void setResourcesResult(List<RunResult> resourcesResult) {
         this.resourcesResult = resourcesResult;
     }
 
+    /**
+     * RetriesStatus contains the history of TaskRunStatus in case of a retry in order to keep record of failures. All TaskRunStatus stored in RetriesStatus will have no date within the RetriesStatus as is redundant.
+     */
     @JsonProperty("retriesStatus")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<io.fabric8.tekton.v1beta1.TaskRunStatus> getRetriesStatus() {
         return retriesStatus;
     }
 
+    /**
+     * RetriesStatus contains the history of TaskRunStatus in case of a retry in order to keep record of failures. All TaskRunStatus stored in RetriesStatus will have no date within the RetriesStatus as is redundant.
+     */
     @JsonProperty("retriesStatus")
     public void setRetriesStatus(List<io.fabric8.tekton.v1beta1.TaskRunStatus> retriesStatus) {
         this.retriesStatus = retriesStatus;
     }
 
+    /**
+     * The list has one entry per sidecar in the manifest. Each entry is represents the imageid of the corresponding sidecar.
+     */
     @JsonProperty("sidecars")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<SidecarState> getSidecars() {
         return sidecars;
     }
 
+    /**
+     * The list has one entry per sidecar in the manifest. Each entry is represents the imageid of the corresponding sidecar.
+     */
     @JsonProperty("sidecars")
     public void setSidecars(List<SidecarState> sidecars) {
         this.sidecars = sidecars;
     }
 
+    /**
+     * SpanContext contains tracing span context fields
+     */
     @JsonProperty("spanContext")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getSpanContext() {
         return spanContext;
     }
 
+    /**
+     * SpanContext contains tracing span context fields
+     */
     @JsonProperty("spanContext")
     public void setSpanContext(Map<String, String> spanContext) {
         this.spanContext = spanContext;
     }
 
+    /**
+     * TaskRunStatus defines the observed state of TaskRun
+     */
     @JsonProperty("startTime")
     public String getStartTime() {
         return startTime;
     }
 
+    /**
+     * TaskRunStatus defines the observed state of TaskRun
+     */
     @JsonProperty("startTime")
     public void setStartTime(String startTime) {
         this.startTime = startTime;
     }
 
+    /**
+     * Steps describes the state of each build step container.
+     */
     @JsonProperty("steps")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<StepState> getSteps() {
         return steps;
     }
 
+    /**
+     * Steps describes the state of each build step container.
+     */
     @JsonProperty("steps")
     public void setSteps(List<StepState> steps) {
         this.steps = steps;
     }
 
+    /**
+     * TaskRunResults are the list of results written out by the task's containers
+     */
     @JsonProperty("taskResults")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TaskRunResult> getTaskResults() {
         return taskResults;
     }
 
+    /**
+     * TaskRunResults are the list of results written out by the task's containers
+     */
     @JsonProperty("taskResults")
     public void setTaskResults(List<TaskRunResult> taskResults) {
         this.taskResults = taskResults;
     }
 
+    /**
+     * TaskRunStatus defines the observed state of TaskRun
+     */
     @JsonProperty("taskSpec")
     public TaskSpec getTaskSpec() {
         return taskSpec;
     }
 
+    /**
+     * TaskRunStatus defines the observed state of TaskRun
+     */
     @JsonProperty("taskSpec")
     public void setTaskSpec(TaskSpec taskSpec) {
         this.taskSpec = taskSpec;

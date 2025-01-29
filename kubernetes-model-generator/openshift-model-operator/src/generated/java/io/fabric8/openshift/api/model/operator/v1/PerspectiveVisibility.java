@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PerspectiveVisibility defines the criteria to show/hide a perspective
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class PerspectiveVisibility implements Editable<PerspectiveVisibilityBuil
         this.state = state;
     }
 
+    /**
+     * PerspectiveVisibility defines the criteria to show/hide a perspective
+     */
     @JsonProperty("accessReview")
     public ResourceAttributesAccessReview getAccessReview() {
         return accessReview;
     }
 
+    /**
+     * PerspectiveVisibility defines the criteria to show/hide a perspective
+     */
     @JsonProperty("accessReview")
     public void setAccessReview(ResourceAttributesAccessReview accessReview) {
         this.accessReview = accessReview;
     }
 
+    /**
+     * state defines the perspective is enabled or disabled or access review check is required.
+     */
     @JsonProperty("state")
     public String getState() {
         return state;
     }
 
+    /**
+     * state defines the perspective is enabled or disabled or access review check is required.
+     */
     @JsonProperty("state")
     public void setState(String state) {
         this.state = state;

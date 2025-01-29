@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ResourceInfo is the sets about resource capacity and allocatable
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class ResourceInfo implements Editable<ResourceInfoBuilder>, KubernetesRe
         this.capacity = capacity;
     }
 
+    /**
+     * ResourceInfo is the sets about resource capacity and allocatable
+     */
     @JsonProperty("allocatable")
     public String getAllocatable() {
         return allocatable;
     }
 
+    /**
+     * ResourceInfo is the sets about resource capacity and allocatable
+     */
     @JsonProperty("allocatable")
     public void setAllocatable(String allocatable) {
         this.allocatable = allocatable;
     }
 
+    /**
+     * ResourceInfo is the sets about resource capacity and allocatable
+     */
     @JsonProperty("capacity")
     public Integer getCapacity() {
         return capacity;
     }
 
+    /**
+     * ResourceInfo is the sets about resource capacity and allocatable
+     */
     @JsonProperty("capacity")
     public void setCapacity(Integer capacity) {
         this.capacity = capacity;

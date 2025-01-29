@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NamedResourcesStringSlice contains a slice of strings.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -81,12 +84,18 @@ public class NamedResourcesStringSlice implements Editable<NamedResourcesStringS
         this.strings = strings;
     }
 
+    /**
+     * Strings is the slice of strings.
+     */
     @JsonProperty("strings")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getStrings() {
         return strings;
     }
 
+    /**
+     * Strings is the slice of strings.
+     */
     @JsonProperty("strings")
     public void setStrings(List<String> strings) {
         this.strings = strings;

@@ -122,11 +122,17 @@ public class ConnectionConfigNamespaceScoped implements Editable<ConnectionConfi
         this.tlsClientConfig = tlsClientConfig;
     }
 
+    /**
+     * Chart repository URL
+     */
     @JsonProperty("url")
     public String getUrl() {
         return url;
     }
 
+    /**
+     * Chart repository URL
+     */
     @JsonProperty("url")
     public void setUrl(String url) {
         this.url = url;

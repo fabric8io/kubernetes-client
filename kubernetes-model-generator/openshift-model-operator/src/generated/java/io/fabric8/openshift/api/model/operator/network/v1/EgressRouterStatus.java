@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * EgressRouterStatus contains the observed status of EgressRouter. Read-only.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -81,12 +84,18 @@ public class EgressRouterStatus implements Editable<EgressRouterStatusBuilder>, 
         this.conditions = conditions;
     }
 
+    /**
+     * Observed status of the egress router
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<EgressRouterStatusCondition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Observed status of the egress router
+     */
     @JsonProperty("conditions")
     public void setConditions(List<EgressRouterStatusCondition> conditions) {
         this.conditions = conditions;

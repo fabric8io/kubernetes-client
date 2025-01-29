@@ -38,6 +38,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * CSVDescription defines a description of a CSV
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -152,169 +155,265 @@ public class CSVDescription implements Editable<CSVDescriptionBuilder>, Kubernet
         this.version = version;
     }
 
+    /**
+     * CSVDescription defines a description of a CSV
+     */
     @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getAnnotations() {
         return annotations;
     }
 
+    /**
+     * CSVDescription defines a description of a CSV
+     */
     @JsonProperty("annotations")
     public void setAnnotations(Map<String, String> annotations) {
         this.annotations = annotations;
     }
 
+    /**
+     * CSVDescription defines a description of a CSV
+     */
     @JsonProperty("apiservicedefinitions")
     public APIServiceDefinitions getApiservicedefinitions() {
         return apiservicedefinitions;
     }
 
+    /**
+     * CSVDescription defines a description of a CSV
+     */
     @JsonProperty("apiservicedefinitions")
     public void setApiservicedefinitions(APIServiceDefinitions apiservicedefinitions) {
         this.apiservicedefinitions = apiservicedefinitions;
     }
 
+    /**
+     * CSVDescription defines a description of a CSV
+     */
     @JsonProperty("customresourcedefinitions")
     public CustomResourceDefinitions getCustomresourcedefinitions() {
         return customresourcedefinitions;
     }
 
+    /**
+     * CSVDescription defines a description of a CSV
+     */
     @JsonProperty("customresourcedefinitions")
     public void setCustomresourcedefinitions(CustomResourceDefinitions customresourcedefinitions) {
         this.customresourcedefinitions = customresourcedefinitions;
     }
 
+    /**
+     * LongDescription is the CSV's description
+     */
     @JsonProperty("description")
     public String getDescription() {
         return description;
     }
 
+    /**
+     * LongDescription is the CSV's description
+     */
     @JsonProperty("description")
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * DisplayName is the CSV's display name
+     */
     @JsonProperty("displayName")
     public String getDisplayName() {
         return displayName;
     }
 
+    /**
+     * DisplayName is the CSV's display name
+     */
     @JsonProperty("displayName")
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
     }
 
+    /**
+     * Icon is the CSV's base64 encoded icon
+     */
     @JsonProperty("icon")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Icon> getIcon() {
         return icon;
     }
 
+    /**
+     * Icon is the CSV's base64 encoded icon
+     */
     @JsonProperty("icon")
     public void setIcon(List<Icon> icon) {
         this.icon = icon;
     }
 
+    /**
+     * InstallModes specify supported installation types
+     */
     @JsonProperty("installModes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<InstallMode> getInstallModes() {
         return installModes;
     }
 
+    /**
+     * InstallModes specify supported installation types
+     */
     @JsonProperty("installModes")
     public void setInstallModes(List<InstallMode> installModes) {
         this.installModes = installModes;
     }
 
+    /**
+     * CSVDescription defines a description of a CSV
+     */
     @JsonProperty("keywords")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getKeywords() {
         return keywords;
     }
 
+    /**
+     * CSVDescription defines a description of a CSV
+     */
     @JsonProperty("keywords")
     public void setKeywords(List<String> keywords) {
         this.keywords = keywords;
     }
 
+    /**
+     * CSVDescription defines a description of a CSV
+     */
     @JsonProperty("links")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<AppLink> getLinks() {
         return links;
     }
 
+    /**
+     * CSVDescription defines a description of a CSV
+     */
     @JsonProperty("links")
     public void setLinks(List<AppLink> links) {
         this.links = links;
     }
 
+    /**
+     * CSVDescription defines a description of a CSV
+     */
     @JsonProperty("maintainers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Maintainer> getMaintainers() {
         return maintainers;
     }
 
+    /**
+     * CSVDescription defines a description of a CSV
+     */
     @JsonProperty("maintainers")
     public void setMaintainers(List<Maintainer> maintainers) {
         this.maintainers = maintainers;
     }
 
+    /**
+     * CSVDescription defines a description of a CSV
+     */
     @JsonProperty("maturity")
     public String getMaturity() {
         return maturity;
     }
 
+    /**
+     * CSVDescription defines a description of a CSV
+     */
     @JsonProperty("maturity")
     public void setMaturity(String maturity) {
         this.maturity = maturity;
     }
 
+    /**
+     * Minimum Kubernetes version for operator installation
+     */
     @JsonProperty("minKubeVersion")
     public String getMinKubeVersion() {
         return minKubeVersion;
     }
 
+    /**
+     * Minimum Kubernetes version for operator installation
+     */
     @JsonProperty("minKubeVersion")
     public void setMinKubeVersion(String minKubeVersion) {
         this.minKubeVersion = minKubeVersion;
     }
 
+    /**
+     * CSVDescription defines a description of a CSV
+     */
     @JsonProperty("nativeApis")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<GroupVersionKind> getNativeApis() {
         return nativeApis;
     }
 
+    /**
+     * CSVDescription defines a description of a CSV
+     */
     @JsonProperty("nativeApis")
     public void setNativeApis(List<GroupVersionKind> nativeApis) {
         this.nativeApis = nativeApis;
     }
 
+    /**
+     * CSVDescription defines a description of a CSV
+     */
     @JsonProperty("provider")
     public AppLink getProvider() {
         return provider;
     }
 
+    /**
+     * CSVDescription defines a description of a CSV
+     */
     @JsonProperty("provider")
     public void setProvider(AppLink provider) {
         this.provider = provider;
     }
 
+    /**
+     * List of related images
+     */
     @JsonProperty("relatedImages")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getRelatedImages() {
         return relatedImages;
     }
 
+    /**
+     * List of related images
+     */
     @JsonProperty("relatedImages")
     public void setRelatedImages(List<String> relatedImages) {
         this.relatedImages = relatedImages;
     }
 
+    /**
+     * CSVDescription defines a description of a CSV
+     */
     @JsonProperty("version")
     public String getVersion() {
         return version;
     }
 
+    /**
+     * CSVDescription defines a description of a CSV
+     */
     @JsonProperty("version")
     public void setVersion(String version) {
         this.version = version;

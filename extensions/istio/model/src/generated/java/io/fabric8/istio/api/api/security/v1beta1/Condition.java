@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Condition specifies additional required attributes.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,33 +93,51 @@ public class Condition implements Editable<ConditionBuilder>, KubernetesResource
         this.values = values;
     }
 
+    /**
+     * The name of an Istio attribute. See the [full list of supported attributes](https://istio.io/docs/reference/config/security/conditions/).
+     */
     @JsonProperty("key")
     public String getKey() {
         return key;
     }
 
+    /**
+     * The name of an Istio attribute. See the [full list of supported attributes](https://istio.io/docs/reference/config/security/conditions/).
+     */
     @JsonProperty("key")
     public void setKey(String key) {
         this.key = key;
     }
 
+    /**
+     * Optional. A list of negative match of values for the attribute. Note: at least one of `values` or `notValues` must be set.
+     */
     @JsonProperty("notValues")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getNotValues() {
         return notValues;
     }
 
+    /**
+     * Optional. A list of negative match of values for the attribute. Note: at least one of `values` or `notValues` must be set.
+     */
     @JsonProperty("notValues")
     public void setNotValues(List<String> notValues) {
         this.notValues = notValues;
     }
 
+    /**
+     * Optional. A list of allowed values for the attribute. Note: at least one of `values` or `notValues` must be set.
+     */
     @JsonProperty("values")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getValues() {
         return values;
     }
 
+    /**
+     * Optional. A list of allowed values for the attribute. Note: at least one of `values` or `notValues` must be set.
+     */
     @JsonProperty("values")
     public void setValues(List<String> values) {
         this.values = values;

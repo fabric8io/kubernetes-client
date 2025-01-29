@@ -23,6 +23,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * APIVersions lists the versions that are available, to allow clients to discover the API at /api, which is the root path of the legacy v1 API.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -47,14 +50,8 @@ import lombok.experimental.Accessors;
 public class APIVersions implements Editable<APIVersionsBuilder>, KubernetesResource
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "v1";
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "APIVersions";
     @JsonProperty("serverAddressByClientCIDRs")
@@ -81,7 +78,7 @@ public class APIVersions implements Editable<APIVersionsBuilder>, KubernetesReso
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -89,7 +86,7 @@ public class APIVersions implements Editable<APIVersionsBuilder>, KubernetesReso
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -97,7 +94,7 @@ public class APIVersions implements Editable<APIVersionsBuilder>, KubernetesReso
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -105,30 +102,42 @@ public class APIVersions implements Editable<APIVersionsBuilder>, KubernetesReso
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * a map of client CIDR to server address that is serving this group. This is to help clients reach servers in the most network-efficient way possible. Clients can use the appropriate server address as per the CIDR that they match. In case of multiple matches, clients should use the longest matching CIDR. The server returns only those CIDRs that it thinks that the client can match. For example: the master will return an internal IP CIDR only, if the client reaches the server using an internal IP. Server looks at X-Forwarded-For header or X-Real-Ip header or request.RemoteAddr (in that order) to get the client IP.
+     */
     @JsonProperty("serverAddressByClientCIDRs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ServerAddressByClientCIDR> getServerAddressByClientCIDRs() {
         return serverAddressByClientCIDRs;
     }
 
+    /**
+     * a map of client CIDR to server address that is serving this group. This is to help clients reach servers in the most network-efficient way possible. Clients can use the appropriate server address as per the CIDR that they match. In case of multiple matches, clients should use the longest matching CIDR. The server returns only those CIDRs that it thinks that the client can match. For example: the master will return an internal IP CIDR only, if the client reaches the server using an internal IP. Server looks at X-Forwarded-For header or X-Real-Ip header or request.RemoteAddr (in that order) to get the client IP.
+     */
     @JsonProperty("serverAddressByClientCIDRs")
     public void setServerAddressByClientCIDRs(List<ServerAddressByClientCIDR> serverAddressByClientCIDRs) {
         this.serverAddressByClientCIDRs = serverAddressByClientCIDRs;
     }
 
+    /**
+     * versions are the api versions that are available.
+     */
     @JsonProperty("versions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getVersions() {
         return versions;
     }
 
+    /**
+     * versions are the api versions that are available.
+     */
     @JsonProperty("versions")
     public void setVersions(List<String> versions) {
         this.versions = versions;

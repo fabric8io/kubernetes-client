@@ -36,6 +36,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * MultiClusterObservabilitySpec defines the desired state of MultiClusterObservability.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -124,113 +127,179 @@ public class MultiClusterObservabilitySpec implements Editable<MultiClusterObser
         this.tolerations = tolerations;
     }
 
+    /**
+     * ReplicaCount for HA support. Does not affect data stores. Enabled will toggle HA support. This will provide better support in cases of failover but consumes more resources. Options are: Basic and High (default).
+     */
     @JsonProperty("availabilityConfig")
     public String getAvailabilityConfig() {
         return availabilityConfig;
     }
 
+    /**
+     * ReplicaCount for HA support. Does not affect data stores. Enabled will toggle HA support. This will provide better support in cases of failover but consumes more resources. Options are: Basic and High (default).
+     */
     @JsonProperty("availabilityConfig")
     public void setAvailabilityConfig(String availabilityConfig) {
         this.availabilityConfig = availabilityConfig;
     }
 
+    /**
+     * Enable or disable the downsample. The default value is false. This is not recommended as querying long time ranges without non-downsampled data is not efficient and useful.
+     */
     @JsonProperty("enableDownSampling")
     public Boolean getEnableDownSampling() {
         return enableDownSampling;
     }
 
+    /**
+     * Enable or disable the downsample. The default value is false. This is not recommended as querying long time ranges without non-downsampled data is not efficient and useful.
+     */
     @JsonProperty("enableDownSampling")
     public void setEnableDownSampling(Boolean enableDownSampling) {
         this.enableDownSampling = enableDownSampling;
     }
 
+    /**
+     * Pull policy of the MultiClusterObservability images
+     */
     @JsonProperty("imagePullPolicy")
     public String getImagePullPolicy() {
         return imagePullPolicy;
     }
 
+    /**
+     * Pull policy of the MultiClusterObservability images
+     */
     @JsonProperty("imagePullPolicy")
     public void setImagePullPolicy(String imagePullPolicy) {
         this.imagePullPolicy = imagePullPolicy;
     }
 
+    /**
+     * Pull secret of the MultiClusterObservability images
+     */
     @JsonProperty("imagePullSecret")
     public String getImagePullSecret() {
         return imagePullSecret;
     }
 
+    /**
+     * Pull secret of the MultiClusterObservability images
+     */
     @JsonProperty("imagePullSecret")
     public void setImagePullSecret(String imagePullSecret) {
         this.imagePullSecret = imagePullSecret;
     }
 
+    /**
+     * Spec of NodeSelector
+     */
     @JsonProperty("nodeSelector")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getNodeSelector() {
         return nodeSelector;
     }
 
+    /**
+     * Spec of NodeSelector
+     */
     @JsonProperty("nodeSelector")
     public void setNodeSelector(Map<String, String> nodeSelector) {
         this.nodeSelector = nodeSelector;
     }
 
+    /**
+     * MultiClusterObservabilitySpec defines the desired state of MultiClusterObservability.
+     */
     @JsonProperty("observabilityAddonSpec")
     public ObservabilityAddonSpec getObservabilityAddonSpec() {
         return observabilityAddonSpec;
     }
 
+    /**
+     * MultiClusterObservabilitySpec defines the desired state of MultiClusterObservability.
+     */
     @JsonProperty("observabilityAddonSpec")
     public void setObservabilityAddonSpec(ObservabilityAddonSpec observabilityAddonSpec) {
         this.observabilityAddonSpec = observabilityAddonSpec;
     }
 
+    /**
+     * How long to retain samples of resolution 2 (1 hour) in bucket.
+     */
     @JsonProperty("retentionResolution1h")
     public String getRetentionResolution1h() {
         return retentionResolution1h;
     }
 
+    /**
+     * How long to retain samples of resolution 2 (1 hour) in bucket.
+     */
     @JsonProperty("retentionResolution1h")
     public void setRetentionResolution1h(String retentionResolution1h) {
         this.retentionResolution1h = retentionResolution1h;
     }
 
+    /**
+     * How long to retain samples of resolution 1 (5 minutes) in bucket.
+     */
     @JsonProperty("retentionResolution5m")
     public String getRetentionResolution5m() {
         return retentionResolution5m;
     }
 
+    /**
+     * How long to retain samples of resolution 1 (5 minutes) in bucket.
+     */
     @JsonProperty("retentionResolution5m")
     public void setRetentionResolution5m(String retentionResolution5m) {
         this.retentionResolution5m = retentionResolution5m;
     }
 
+    /**
+     * How long to retain raw samples in a bucket.
+     */
     @JsonProperty("retentionResolutionRaw")
     public String getRetentionResolutionRaw() {
         return retentionResolutionRaw;
     }
 
+    /**
+     * How long to retain raw samples in a bucket.
+     */
     @JsonProperty("retentionResolutionRaw")
     public void setRetentionResolutionRaw(String retentionResolutionRaw) {
         this.retentionResolutionRaw = retentionResolutionRaw;
     }
 
+    /**
+     * MultiClusterObservabilitySpec defines the desired state of MultiClusterObservability.
+     */
     @JsonProperty("storageConfigObject")
     public StorageConfigObject getStorageConfigObject() {
         return storageConfigObject;
     }
 
+    /**
+     * MultiClusterObservabilitySpec defines the desired state of MultiClusterObservability.
+     */
     @JsonProperty("storageConfigObject")
     public void setStorageConfigObject(StorageConfigObject storageConfigObject) {
         this.storageConfigObject = storageConfigObject;
     }
 
+    /**
+     * Tolerations causes all components to tolerate any taints.
+     */
     @JsonProperty("tolerations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Toleration> getTolerations() {
         return tolerations;
     }
 
+    /**
+     * Tolerations causes all components to tolerate any taints.
+     */
     @JsonProperty("tolerations")
     public void setTolerations(List<Toleration> tolerations) {
         this.tolerations = tolerations;

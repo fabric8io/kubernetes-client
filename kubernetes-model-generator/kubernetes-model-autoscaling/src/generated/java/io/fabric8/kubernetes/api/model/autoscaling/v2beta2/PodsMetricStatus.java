@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PodsMetricStatus indicates the current value of a metric describing each pod in the current scale target (for example, transactions-processed-per-second).
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class PodsMetricStatus implements Editable<PodsMetricStatusBuilder>, Kube
         this.metric = metric;
     }
 
+    /**
+     * PodsMetricStatus indicates the current value of a metric describing each pod in the current scale target (for example, transactions-processed-per-second).
+     */
     @JsonProperty("current")
     public MetricValueStatus getCurrent() {
         return current;
     }
 
+    /**
+     * PodsMetricStatus indicates the current value of a metric describing each pod in the current scale target (for example, transactions-processed-per-second).
+     */
     @JsonProperty("current")
     public void setCurrent(MetricValueStatus current) {
         this.current = current;
     }
 
+    /**
+     * PodsMetricStatus indicates the current value of a metric describing each pod in the current scale target (for example, transactions-processed-per-second).
+     */
     @JsonProperty("metric")
     public MetricIdentifier getMetric() {
         return metric;
     }
 
+    /**
+     * PodsMetricStatus indicates the current value of a metric describing each pod in the current scale target (for example, transactions-processed-per-second).
+     */
     @JsonProperty("metric")
     public void setMetric(MetricIdentifier metric) {
         this.metric = metric;

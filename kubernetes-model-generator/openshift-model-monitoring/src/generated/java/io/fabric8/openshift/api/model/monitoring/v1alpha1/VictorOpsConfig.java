@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * VictorOpsConfig configures notifications via VictorOps. See https://prometheus.io/docs/alerting/latest/configuration/#victorops_config
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -118,102 +121,162 @@ public class VictorOpsConfig implements Editable<VictorOpsConfigBuilder>, Kubern
         this.stateMessage = stateMessage;
     }
 
+    /**
+     * VictorOpsConfig configures notifications via VictorOps. See https://prometheus.io/docs/alerting/latest/configuration/#victorops_config
+     */
     @JsonProperty("apiKey")
     public SecretKeySelector getApiKey() {
         return apiKey;
     }
 
+    /**
+     * VictorOpsConfig configures notifications via VictorOps. See https://prometheus.io/docs/alerting/latest/configuration/#victorops_config
+     */
     @JsonProperty("apiKey")
     public void setApiKey(SecretKeySelector apiKey) {
         this.apiKey = apiKey;
     }
 
+    /**
+     * The VictorOps API URL.
+     */
     @JsonProperty("apiUrl")
     public String getApiUrl() {
         return apiUrl;
     }
 
+    /**
+     * The VictorOps API URL.
+     */
     @JsonProperty("apiUrl")
     public void setApiUrl(String apiUrl) {
         this.apiUrl = apiUrl;
     }
 
+    /**
+     * Additional custom fields for notification.
+     */
     @JsonProperty("customFields")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<KeyValue> getCustomFields() {
         return customFields;
     }
 
+    /**
+     * Additional custom fields for notification.
+     */
     @JsonProperty("customFields")
     public void setCustomFields(List<KeyValue> customFields) {
         this.customFields = customFields;
     }
 
+    /**
+     * Contains summary of the alerted problem.
+     */
     @JsonProperty("entityDisplayName")
     public String getEntityDisplayName() {
         return entityDisplayName;
     }
 
+    /**
+     * Contains summary of the alerted problem.
+     */
     @JsonProperty("entityDisplayName")
     public void setEntityDisplayName(String entityDisplayName) {
         this.entityDisplayName = entityDisplayName;
     }
 
+    /**
+     * VictorOpsConfig configures notifications via VictorOps. See https://prometheus.io/docs/alerting/latest/configuration/#victorops_config
+     */
     @JsonProperty("httpConfig")
     public HTTPConfig getHttpConfig() {
         return httpConfig;
     }
 
+    /**
+     * VictorOpsConfig configures notifications via VictorOps. See https://prometheus.io/docs/alerting/latest/configuration/#victorops_config
+     */
     @JsonProperty("httpConfig")
     public void setHttpConfig(HTTPConfig httpConfig) {
         this.httpConfig = httpConfig;
     }
 
+    /**
+     * Describes the behavior of the alert (CRITICAL, WARNING, INFO).
+     */
     @JsonProperty("messageType")
     public String getMessageType() {
         return messageType;
     }
 
+    /**
+     * Describes the behavior of the alert (CRITICAL, WARNING, INFO).
+     */
     @JsonProperty("messageType")
     public void setMessageType(String messageType) {
         this.messageType = messageType;
     }
 
+    /**
+     * The monitoring tool the state message is from.
+     */
     @JsonProperty("monitoringTool")
     public String getMonitoringTool() {
         return monitoringTool;
     }
 
+    /**
+     * The monitoring tool the state message is from.
+     */
     @JsonProperty("monitoringTool")
     public void setMonitoringTool(String monitoringTool) {
         this.monitoringTool = monitoringTool;
     }
 
+    /**
+     * A key used to map the alert to a team.
+     */
     @JsonProperty("routingKey")
     public String getRoutingKey() {
         return routingKey;
     }
 
+    /**
+     * A key used to map the alert to a team.
+     */
     @JsonProperty("routingKey")
     public void setRoutingKey(String routingKey) {
         this.routingKey = routingKey;
     }
 
+    /**
+     * Whether or not to notify about resolved alerts.
+     */
     @JsonProperty("sendResolved")
     public Boolean getSendResolved() {
         return sendResolved;
     }
 
+    /**
+     * Whether or not to notify about resolved alerts.
+     */
     @JsonProperty("sendResolved")
     public void setSendResolved(Boolean sendResolved) {
         this.sendResolved = sendResolved;
     }
 
+    /**
+     * Contains long explanation of the alerted problem.
+     */
     @JsonProperty("stateMessage")
     public String getStateMessage() {
         return stateMessage;
     }
 
+    /**
+     * Contains long explanation of the alerted problem.
+     */
     @JsonProperty("stateMessage")
     public void setStateMessage(String stateMessage) {
         this.stateMessage = stateMessage;

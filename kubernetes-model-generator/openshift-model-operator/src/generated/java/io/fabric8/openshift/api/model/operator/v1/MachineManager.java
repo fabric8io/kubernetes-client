@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * MachineManager describes a target machine resource that is registered for boot image updates. It stores identifying information such as the resource type and the API Group of the resource. It also provides granular control via the selection field.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class MachineManager implements Editable<MachineManagerBuilder>, Kubernet
         this.selection = selection;
     }
 
+    /**
+     * apiGroup is name of the APIGroup that the machine management resource belongs to. The only current valid value is machine.openshift.io. machine.openshift.io means that the machine manager will only register resources that belong to OpenShift machine API group.
+     */
     @JsonProperty("apiGroup")
     public String getApiGroup() {
         return apiGroup;
     }
 
+    /**
+     * apiGroup is name of the APIGroup that the machine management resource belongs to. The only current valid value is machine.openshift.io. machine.openshift.io means that the machine manager will only register resources that belong to OpenShift machine API group.
+     */
     @JsonProperty("apiGroup")
     public void setApiGroup(String apiGroup) {
         this.apiGroup = apiGroup;
     }
 
+    /**
+     * resource is the machine management resource's type. The only current valid value is machinesets. machinesets means that the machine manager will only register resources of the kind MachineSet.
+     */
     @JsonProperty("resource")
     public String getResource() {
         return resource;
     }
 
+    /**
+     * resource is the machine management resource's type. The only current valid value is machinesets. machinesets means that the machine manager will only register resources of the kind MachineSet.
+     */
     @JsonProperty("resource")
     public void setResource(String resource) {
         this.resource = resource;
     }
 
+    /**
+     * MachineManager describes a target machine resource that is registered for boot image updates. It stores identifying information such as the resource type and the API Group of the resource. It also provides granular control via the selection field.
+     */
     @JsonProperty("selection")
     public MachineManagerSelector getSelection() {
         return selection;
     }
 
+    /**
+     * MachineManager describes a target machine resource that is registered for boot image updates. It stores identifying information such as the resource type and the API Group of the resource. It also provides granular control via the selection field.
+     */
     @JsonProperty("selection")
     public void setSelection(MachineManagerSelector selection) {
         this.selection = selection;

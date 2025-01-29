@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ExternalNetworkSource contains the selectors used to determine the namespaces where the policy will be applied to
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class ExternalNetworkSource implements Editable<ExternalNetworkSourceBuil
         this.namespaceSelector = namespaceSelector;
     }
 
+    /**
+     * ExternalNetworkSource contains the selectors used to determine the namespaces where the policy will be applied to
+     */
     @JsonProperty("namespaceSelector")
     public LabelSelector getNamespaceSelector() {
         return namespaceSelector;
     }
 
+    /**
+     * ExternalNetworkSource contains the selectors used to determine the namespaces where the policy will be applied to
+     */
     @JsonProperty("namespaceSelector")
     public void setNamespaceSelector(LabelSelector namespaceSelector) {
         this.namespaceSelector = namespaceSelector;

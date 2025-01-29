@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Platform stores any global configuration used for Nutanix platforms.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -126,116 +129,182 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
         this.subnetUUIDs = subnetUUIDs;
     }
 
+    /**
+     * DeprecatedAPIVIP is the virtual IP address for the api endpoint Deprecated: use APIVIPs
+     */
     @JsonProperty("apiVIP")
     public String getApiVIP() {
         return apiVIP;
     }
 
+    /**
+     * DeprecatedAPIVIP is the virtual IP address for the api endpoint Deprecated: use APIVIPs
+     */
     @JsonProperty("apiVIP")
     public void setApiVIP(String apiVIP) {
         this.apiVIP = apiVIP;
     }
 
+    /**
+     * APIVIPs contains the VIP(s) for the api endpoint. In dual stack clusters it contains an IPv4 and IPv6 address, otherwise only one VIP
+     */
     @JsonProperty("apiVIPs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getApiVIPs() {
         return apiVIPs;
     }
 
+    /**
+     * APIVIPs contains the VIP(s) for the api endpoint. In dual stack clusters it contains an IPv4 and IPv6 address, otherwise only one VIP
+     */
     @JsonProperty("apiVIPs")
     public void setApiVIPs(List<String> apiVIPs) {
         this.apiVIPs = apiVIPs;
     }
 
+    /**
+     * ClusterOSImage overrides the url provided in rhcos.json to download the RHCOS Image.
+     */
     @JsonProperty("clusterOSImage")
     public String getClusterOSImage() {
         return clusterOSImage;
     }
 
+    /**
+     * ClusterOSImage overrides the url provided in rhcos.json to download the RHCOS Image.
+     */
     @JsonProperty("clusterOSImage")
     public void setClusterOSImage(String clusterOSImage) {
         this.clusterOSImage = clusterOSImage;
     }
 
+    /**
+     * Platform stores any global configuration used for Nutanix platforms.
+     */
     @JsonProperty("defaultMachinePlatform")
     public MachinePool getDefaultMachinePlatform() {
         return defaultMachinePlatform;
     }
 
+    /**
+     * Platform stores any global configuration used for Nutanix platforms.
+     */
     @JsonProperty("defaultMachinePlatform")
     public void setDefaultMachinePlatform(MachinePool defaultMachinePlatform) {
         this.defaultMachinePlatform = defaultMachinePlatform;
     }
 
+    /**
+     * FailureDomains configures failure domains for the Nutanix platform.
+     */
     @JsonProperty("failureDomains")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<FailureDomain> getFailureDomains() {
         return failureDomains;
     }
 
+    /**
+     * FailureDomains configures failure domains for the Nutanix platform.
+     */
     @JsonProperty("failureDomains")
     public void setFailureDomains(List<FailureDomain> failureDomains) {
         this.failureDomains = failureDomains;
     }
 
+    /**
+     * DeprecatedIngressVIP is the virtual IP address for ingress Deprecated: use IngressVIPs
+     */
     @JsonProperty("ingressVIP")
     public String getIngressVIP() {
         return ingressVIP;
     }
 
+    /**
+     * DeprecatedIngressVIP is the virtual IP address for ingress Deprecated: use IngressVIPs
+     */
     @JsonProperty("ingressVIP")
     public void setIngressVIP(String ingressVIP) {
         this.ingressVIP = ingressVIP;
     }
 
+    /**
+     * IngressVIPs contains the VIP(s) for ingress. In dual stack clusters it contains an IPv4 and IPv6 address, otherwise only one VIP
+     */
     @JsonProperty("ingressVIPs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getIngressVIPs() {
         return ingressVIPs;
     }
 
+    /**
+     * IngressVIPs contains the VIP(s) for ingress. In dual stack clusters it contains an IPv4 and IPv6 address, otherwise only one VIP
+     */
     @JsonProperty("ingressVIPs")
     public void setIngressVIPs(List<String> ingressVIPs) {
         this.ingressVIPs = ingressVIPs;
     }
 
+    /**
+     * Platform stores any global configuration used for Nutanix platforms.
+     */
     @JsonProperty("loadBalancer")
     public NutanixPlatformLoadBalancer getLoadBalancer() {
         return loadBalancer;
     }
 
+    /**
+     * Platform stores any global configuration used for Nutanix platforms.
+     */
     @JsonProperty("loadBalancer")
     public void setLoadBalancer(NutanixPlatformLoadBalancer loadBalancer) {
         this.loadBalancer = loadBalancer;
     }
 
+    /**
+     * Platform stores any global configuration used for Nutanix platforms.
+     */
     @JsonProperty("prismCentral")
     public PrismCentral getPrismCentral() {
         return prismCentral;
     }
 
+    /**
+     * Platform stores any global configuration used for Nutanix platforms.
+     */
     @JsonProperty("prismCentral")
     public void setPrismCentral(PrismCentral prismCentral) {
         this.prismCentral = prismCentral;
     }
 
+    /**
+     * PrismElements holds a list of Prism Elements (clusters). A Prism Element encompasses all Nutanix resources (VMs, subnets, etc.) used to host the OpenShift cluster. Currently only a single Prism Element may be defined. This serves as the default Prism-Element.
+     */
     @JsonProperty("prismElements")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PrismElement> getPrismElements() {
         return prismElements;
     }
 
+    /**
+     * PrismElements holds a list of Prism Elements (clusters). A Prism Element encompasses all Nutanix resources (VMs, subnets, etc.) used to host the OpenShift cluster. Currently only a single Prism Element may be defined. This serves as the default Prism-Element.
+     */
     @JsonProperty("prismElements")
     public void setPrismElements(List<PrismElement> prismElements) {
         this.prismElements = prismElements;
     }
 
+    /**
+     * SubnetUUIDs identifies the network subnets to be used by the cluster. Currently we only support one subnet for an OpenShift cluster.
+     */
     @JsonProperty("subnetUUIDs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getSubnetUUIDs() {
         return subnetUUIDs;
     }
 
+    /**
+     * SubnetUUIDs identifies the network subnets to be used by the cluster. Currently we only support one subnet for an OpenShift cluster.
+     */
     @JsonProperty("subnetUUIDs")
     public void setSubnetUUIDs(List<String> subnetUUIDs) {
         this.subnetUUIDs = subnetUUIDs;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * RouteHTTPHeaders defines policy for HTTP headers.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class RouteHTTPHeaders implements Editable<RouteHTTPHeadersBuilder>, Kube
         this.actions = actions;
     }
 
+    /**
+     * RouteHTTPHeaders defines policy for HTTP headers.
+     */
     @JsonProperty("actions")
     public RouteHTTPHeaderActions getActions() {
         return actions;
     }
 
+    /**
+     * RouteHTTPHeaders defines policy for HTTP headers.
+     */
     @JsonProperty("actions")
     public void setActions(RouteHTTPHeaderActions actions) {
         this.actions = actions;

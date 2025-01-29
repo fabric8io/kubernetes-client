@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SubscriberSpec defines a single subscriber to a Subscribable.<br><p> <br><p> At least one of SubscriberURI and ReplyURI must be present
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -118,111 +121,177 @@ public class SubscriberSpec implements Editable<SubscriberSpecBuilder>, Kubernet
         this.uid = uid;
     }
 
+    /**
+     * SubscriberSpec defines a single subscriber to a Subscribable.<br><p> <br><p> At least one of SubscriberURI and ReplyURI must be present
+     */
     @JsonProperty("auth")
     public AuthStatus getAuth() {
         return auth;
     }
 
+    /**
+     * SubscriberSpec defines a single subscriber to a Subscribable.<br><p> <br><p> At least one of SubscriberURI and ReplyURI must be present
+     */
     @JsonProperty("auth")
     public void setAuth(AuthStatus auth) {
         this.auth = auth;
     }
 
+    /**
+     * SubscriberSpec defines a single subscriber to a Subscribable.<br><p> <br><p> At least one of SubscriberURI and ReplyURI must be present
+     */
     @JsonProperty("delivery")
     public DeliverySpec getDelivery() {
         return delivery;
     }
 
+    /**
+     * SubscriberSpec defines a single subscriber to a Subscribable.<br><p> <br><p> At least one of SubscriberURI and ReplyURI must be present
+     */
     @JsonProperty("delivery")
     public void setDelivery(DeliverySpec delivery) {
         this.delivery = delivery;
     }
 
+    /**
+     * Generation of the origin of the subscriber with uid:UID.
+     */
     @JsonProperty("generation")
     public Long getGeneration() {
         return generation;
     }
 
+    /**
+     * Generation of the origin of the subscriber with uid:UID.
+     */
     @JsonProperty("generation")
     public void setGeneration(Long generation) {
         this.generation = generation;
     }
 
+    /**
+     * Name is used to identify the original subscription object.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name is used to identify the original subscription object.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * ReplyAudience is the OIDC audience for the replyUri.
+     */
     @JsonProperty("replyAudience")
     public String getReplyAudience() {
         return replyAudience;
     }
 
+    /**
+     * ReplyAudience is the OIDC audience for the replyUri.
+     */
     @JsonProperty("replyAudience")
     public void setReplyAudience(String replyAudience) {
         this.replyAudience = replyAudience;
     }
 
+    /**
+     * ReplyCACerts is the Certification Authority (CA) certificates in PEM format according to https://www.rfc-editor.org/rfc/rfc7468 for the replyUri.
+     */
     @JsonProperty("replyCACerts")
     public String getReplyCACerts() {
         return replyCACerts;
     }
 
+    /**
+     * ReplyCACerts is the Certification Authority (CA) certificates in PEM format according to https://www.rfc-editor.org/rfc/rfc7468 for the replyUri.
+     */
     @JsonProperty("replyCACerts")
     public void setReplyCACerts(String replyCACerts) {
         this.replyCACerts = replyCACerts;
     }
 
+    /**
+     * SubscriberSpec defines a single subscriber to a Subscribable.<br><p> <br><p> At least one of SubscriberURI and ReplyURI must be present
+     */
     @JsonProperty("replyUri")
     public String getReplyUri() {
         return replyUri;
     }
 
+    /**
+     * SubscriberSpec defines a single subscriber to a Subscribable.<br><p> <br><p> At least one of SubscriberURI and ReplyURI must be present
+     */
     @JsonProperty("replyUri")
     public void setReplyUri(String replyUri) {
         this.replyUri = replyUri;
     }
 
+    /**
+     * SubscriberAudience is the OIDC audience for the subscriberUri.
+     */
     @JsonProperty("subscriberAudience")
     public String getSubscriberAudience() {
         return subscriberAudience;
     }
 
+    /**
+     * SubscriberAudience is the OIDC audience for the subscriberUri.
+     */
     @JsonProperty("subscriberAudience")
     public void setSubscriberAudience(String subscriberAudience) {
         this.subscriberAudience = subscriberAudience;
     }
 
+    /**
+     * SubscriberCACerts is the Certification Authority (CA) certificates in PEM format according to https://www.rfc-editor.org/rfc/rfc7468 for the subscriberUri
+     */
     @JsonProperty("subscriberCACerts")
     public String getSubscriberCACerts() {
         return subscriberCACerts;
     }
 
+    /**
+     * SubscriberCACerts is the Certification Authority (CA) certificates in PEM format according to https://www.rfc-editor.org/rfc/rfc7468 for the subscriberUri
+     */
     @JsonProperty("subscriberCACerts")
     public void setSubscriberCACerts(String subscriberCACerts) {
         this.subscriberCACerts = subscriberCACerts;
     }
 
+    /**
+     * SubscriberSpec defines a single subscriber to a Subscribable.<br><p> <br><p> At least one of SubscriberURI and ReplyURI must be present
+     */
     @JsonProperty("subscriberUri")
     public String getSubscriberUri() {
         return subscriberUri;
     }
 
+    /**
+     * SubscriberSpec defines a single subscriber to a Subscribable.<br><p> <br><p> At least one of SubscriberURI and ReplyURI must be present
+     */
     @JsonProperty("subscriberUri")
     public void setSubscriberUri(String subscriberUri) {
         this.subscriberUri = subscriberUri;
     }
 
+    /**
+     * UID is used to understand the origin of the subscriber.
+     */
     @JsonProperty("uid")
     public String getUid() {
         return uid;
     }
 
+    /**
+     * UID is used to understand the origin of the subscriber.
+     */
     @JsonProperty("uid")
     public void setUid(String uid) {
         this.uid = uid;

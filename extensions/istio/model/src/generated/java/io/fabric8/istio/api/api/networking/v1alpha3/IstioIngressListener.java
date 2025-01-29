@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * `IstioIngressListener` specifies the properties of an inbound traffic listener on the sidecar proxy attached to a workload instance.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -98,61 +101,97 @@ public class IstioIngressListener implements Editable<IstioIngressListenerBuilde
         this.tls = tls;
     }
 
+    /**
+     * The IP(IPv4 or IPv6) to which the listener should be bound. Unix domain socket addresses are not allowed in the bind field for ingress listeners. If omitted, Istio will automatically configure the defaults based on imported services and the workload instances to which this configuration is applied to.
+     */
     @JsonProperty("bind")
     public String getBind() {
         return bind;
     }
 
+    /**
+     * The IP(IPv4 or IPv6) to which the listener should be bound. Unix domain socket addresses are not allowed in the bind field for ingress listeners. If omitted, Istio will automatically configure the defaults based on imported services and the workload instances to which this configuration is applied to.
+     */
     @JsonProperty("bind")
     public void setBind(String bind) {
         this.bind = bind;
     }
 
+    /**
+     * `IstioIngressListener` specifies the properties of an inbound traffic listener on the sidecar proxy attached to a workload instance.
+     */
     @JsonProperty("captureMode")
     public CaptureMode getCaptureMode() {
         return captureMode;
     }
 
+    /**
+     * `IstioIngressListener` specifies the properties of an inbound traffic listener on the sidecar proxy attached to a workload instance.
+     */
     @JsonProperty("captureMode")
     public void setCaptureMode(CaptureMode captureMode) {
         this.captureMode = captureMode;
     }
 
+    /**
+     * `IstioIngressListener` specifies the properties of an inbound traffic listener on the sidecar proxy attached to a workload instance.
+     */
     @JsonProperty("connectionPool")
     public ConnectionPoolSettings getConnectionPool() {
         return connectionPool;
     }
 
+    /**
+     * `IstioIngressListener` specifies the properties of an inbound traffic listener on the sidecar proxy attached to a workload instance.
+     */
     @JsonProperty("connectionPool")
     public void setConnectionPool(ConnectionPoolSettings connectionPool) {
         this.connectionPool = connectionPool;
     }
 
+    /**
+     * The IP endpoint or Unix domain socket to which traffic should be forwarded to. This configuration can be used to redirect traffic arriving at the bind `IP:Port` on the sidecar to a `localhost:port` or Unix domain socket where the application workload instance is listening for connections. Arbitrary IPs are not supported. Format should be one of `127.0.0.1:PORT`, `[::1]:PORT` (forward to localhost), `0.0.0.0:PORT`, `[::]:PORT` (forward to the instance IP), or `unix:///path/to/socket` (forward to Unix domain socket).
+     */
     @JsonProperty("defaultEndpoint")
     public String getDefaultEndpoint() {
         return defaultEndpoint;
     }
 
+    /**
+     * The IP endpoint or Unix domain socket to which traffic should be forwarded to. This configuration can be used to redirect traffic arriving at the bind `IP:Port` on the sidecar to a `localhost:port` or Unix domain socket where the application workload instance is listening for connections. Arbitrary IPs are not supported. Format should be one of `127.0.0.1:PORT`, `[::1]:PORT` (forward to localhost), `0.0.0.0:PORT`, `[::]:PORT` (forward to the instance IP), or `unix:///path/to/socket` (forward to Unix domain socket).
+     */
     @JsonProperty("defaultEndpoint")
     public void setDefaultEndpoint(String defaultEndpoint) {
         this.defaultEndpoint = defaultEndpoint;
     }
 
+    /**
+     * `IstioIngressListener` specifies the properties of an inbound traffic listener on the sidecar proxy attached to a workload instance.
+     */
     @JsonProperty("port")
     public SidecarPort getPort() {
         return port;
     }
 
+    /**
+     * `IstioIngressListener` specifies the properties of an inbound traffic listener on the sidecar proxy attached to a workload instance.
+     */
     @JsonProperty("port")
     public void setPort(SidecarPort port) {
         this.port = port;
     }
 
+    /**
+     * `IstioIngressListener` specifies the properties of an inbound traffic listener on the sidecar proxy attached to a workload instance.
+     */
     @JsonProperty("tls")
     public ServerTLSSettings getTls() {
         return tls;
     }
 
+    /**
+     * `IstioIngressListener` specifies the properties of an inbound traffic listener on the sidecar proxy attached to a workload instance.
+     */
     @JsonProperty("tls")
     public void setTls(ServerTLSSettings tls) {
         this.tls = tls;

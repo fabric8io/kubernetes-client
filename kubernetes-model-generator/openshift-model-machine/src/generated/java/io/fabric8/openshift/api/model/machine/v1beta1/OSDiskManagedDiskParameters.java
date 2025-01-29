@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * OSDiskManagedDiskParameters is the parameters of a OSDisk managed disk.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class OSDiskManagedDiskParameters implements Editable<OSDiskManagedDiskPa
         this.storageAccountType = storageAccountType;
     }
 
+    /**
+     * OSDiskManagedDiskParameters is the parameters of a OSDisk managed disk.
+     */
     @JsonProperty("diskEncryptionSet")
     public DiskEncryptionSetParameters getDiskEncryptionSet() {
         return diskEncryptionSet;
     }
 
+    /**
+     * OSDiskManagedDiskParameters is the parameters of a OSDisk managed disk.
+     */
     @JsonProperty("diskEncryptionSet")
     public void setDiskEncryptionSet(DiskEncryptionSetParameters diskEncryptionSet) {
         this.diskEncryptionSet = diskEncryptionSet;
     }
 
+    /**
+     * OSDiskManagedDiskParameters is the parameters of a OSDisk managed disk.
+     */
     @JsonProperty("securityProfile")
     public VMDiskSecurityProfile getSecurityProfile() {
         return securityProfile;
     }
 
+    /**
+     * OSDiskManagedDiskParameters is the parameters of a OSDisk managed disk.
+     */
     @JsonProperty("securityProfile")
     public void setSecurityProfile(VMDiskSecurityProfile securityProfile) {
         this.securityProfile = securityProfile;
     }
 
+    /**
+     * StorageAccountType is the storage account type to use. Possible values include "Standard_LRS", "Premium_LRS".
+     */
     @JsonProperty("storageAccountType")
     public String getStorageAccountType() {
         return storageAccountType;
     }
 
+    /**
+     * StorageAccountType is the storage account type to use. Possible values include "Standard_LRS", "Premium_LRS".
+     */
     @JsonProperty("storageAccountType")
     public void setStorageAccountType(String storageAccountType) {
         this.storageAccountType = storageAccountType;

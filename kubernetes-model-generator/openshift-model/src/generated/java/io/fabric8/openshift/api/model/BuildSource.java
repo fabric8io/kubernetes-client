@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * BuildSource is the SCM used for the build.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -115,94 +118,148 @@ public class BuildSource implements Editable<BuildSourceBuilder>, KubernetesReso
         this.type = type;
     }
 
+    /**
+     * BuildSource is the SCM used for the build.
+     */
     @JsonProperty("binary")
     public BinaryBuildSource getBinary() {
         return binary;
     }
 
+    /**
+     * BuildSource is the SCM used for the build.
+     */
     @JsonProperty("binary")
     public void setBinary(BinaryBuildSource binary) {
         this.binary = binary;
     }
 
+    /**
+     * configMaps represents a list of configMaps and their destinations that will be used for the build.
+     */
     @JsonProperty("configMaps")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ConfigMapBuildSource> getConfigMaps() {
         return configMaps;
     }
 
+    /**
+     * configMaps represents a list of configMaps and their destinations that will be used for the build.
+     */
     @JsonProperty("configMaps")
     public void setConfigMaps(List<ConfigMapBuildSource> configMaps) {
         this.configMaps = configMaps;
     }
 
+    /**
+     * contextDir specifies the sub-directory where the source code for the application exists. This allows to have buildable sources in directory other than root of repository.
+     */
     @JsonProperty("contextDir")
     public String getContextDir() {
         return contextDir;
     }
 
+    /**
+     * contextDir specifies the sub-directory where the source code for the application exists. This allows to have buildable sources in directory other than root of repository.
+     */
     @JsonProperty("contextDir")
     public void setContextDir(String contextDir) {
         this.contextDir = contextDir;
     }
 
+    /**
+     * dockerfile is the raw contents of a Dockerfile which should be built. When this option is specified, the FROM may be modified based on your strategy base image and additional ENV stanzas from your strategy environment will be added after the FROM, but before the rest of your Dockerfile stanzas. The Dockerfile source type may be used with other options like git - in those cases the Git repo will have any innate Dockerfile replaced in the context dir.
+     */
     @JsonProperty("dockerfile")
     public String getDockerfile() {
         return dockerfile;
     }
 
+    /**
+     * dockerfile is the raw contents of a Dockerfile which should be built. When this option is specified, the FROM may be modified based on your strategy base image and additional ENV stanzas from your strategy environment will be added after the FROM, but before the rest of your Dockerfile stanzas. The Dockerfile source type may be used with other options like git - in those cases the Git repo will have any innate Dockerfile replaced in the context dir.
+     */
     @JsonProperty("dockerfile")
     public void setDockerfile(String dockerfile) {
         this.dockerfile = dockerfile;
     }
 
+    /**
+     * BuildSource is the SCM used for the build.
+     */
     @JsonProperty("git")
     public GitBuildSource getGit() {
         return git;
     }
 
+    /**
+     * BuildSource is the SCM used for the build.
+     */
     @JsonProperty("git")
     public void setGit(GitBuildSource git) {
         this.git = git;
     }
 
+    /**
+     * images describes a set of images to be used to provide source for the build
+     */
     @JsonProperty("images")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ImageSource> getImages() {
         return images;
     }
 
+    /**
+     * images describes a set of images to be used to provide source for the build
+     */
     @JsonProperty("images")
     public void setImages(List<ImageSource> images) {
         this.images = images;
     }
 
+    /**
+     * secrets represents a list of secrets and their destinations that will be used only for the build.
+     */
     @JsonProperty("secrets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<SecretBuildSource> getSecrets() {
         return secrets;
     }
 
+    /**
+     * secrets represents a list of secrets and their destinations that will be used only for the build.
+     */
     @JsonProperty("secrets")
     public void setSecrets(List<SecretBuildSource> secrets) {
         this.secrets = secrets;
     }
 
+    /**
+     * BuildSource is the SCM used for the build.
+     */
     @JsonProperty("sourceSecret")
     public LocalObjectReference getSourceSecret() {
         return sourceSecret;
     }
 
+    /**
+     * BuildSource is the SCM used for the build.
+     */
     @JsonProperty("sourceSecret")
     public void setSourceSecret(LocalObjectReference sourceSecret) {
         this.sourceSecret = sourceSecret;
     }
 
+    /**
+     * type of build input to accept
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * type of build input to accept
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

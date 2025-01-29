@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * MetricValueStatus holds the current value for a metric
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -87,31 +90,49 @@ public class MetricValueStatus implements Editable<MetricValueStatusBuilder>, Ku
         this.value = value;
     }
 
+    /**
+     * currentAverageUtilization is the current value of the average of the resource metric across all relevant pods, represented as a percentage of the requested value of the resource for the pods.
+     */
     @JsonProperty("averageUtilization")
     public Integer getAverageUtilization() {
         return averageUtilization;
     }
 
+    /**
+     * currentAverageUtilization is the current value of the average of the resource metric across all relevant pods, represented as a percentage of the requested value of the resource for the pods.
+     */
     @JsonProperty("averageUtilization")
     public void setAverageUtilization(Integer averageUtilization) {
         this.averageUtilization = averageUtilization;
     }
 
+    /**
+     * MetricValueStatus holds the current value for a metric
+     */
     @JsonProperty("averageValue")
     public Quantity getAverageValue() {
         return averageValue;
     }
 
+    /**
+     * MetricValueStatus holds the current value for a metric
+     */
     @JsonProperty("averageValue")
     public void setAverageValue(Quantity averageValue) {
         this.averageValue = averageValue;
     }
 
+    /**
+     * MetricValueStatus holds the current value for a metric
+     */
     @JsonProperty("value")
     public Quantity getValue() {
         return value;
     }
 
+    /**
+     * MetricValueStatus holds the current value for a metric
+     */
     @JsonProperty("value")
     public void setValue(Quantity value) {
         this.value = value;

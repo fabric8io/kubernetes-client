@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PodDisruptionBudgetStatus represents information about the status of a PodDisruptionBudget. Status may trail the actual state of a system.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -107,73 +110,115 @@ public class PodDisruptionBudgetStatus implements Editable<PodDisruptionBudgetSt
         this.observedGeneration = observedGeneration;
     }
 
+    /**
+     * Conditions contain conditions for PDB. The disruption controller sets the DisruptionAllowed condition. The following are known values for the reason field (additional reasons could be added in the future): - SyncFailed: The controller encountered an error and wasn't able to compute<br><p>               the number of allowed disruptions. Therefore no disruptions are<br><p>               allowed and the status of the condition will be False.<br><p> - InsufficientPods: The number of pods are either at or below the number<br><p>                     required by the PodDisruptionBudget. No disruptions are<br><p>                     allowed and the status of the condition will be False.<br><p> - SufficientPods: There are more pods than required by the PodDisruptionBudget.<br><p>                   The condition will be True, and the number of allowed<br><p>                   disruptions are provided by the disruptionsAllowed property.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Conditions contain conditions for PDB. The disruption controller sets the DisruptionAllowed condition. The following are known values for the reason field (additional reasons could be added in the future): - SyncFailed: The controller encountered an error and wasn't able to compute<br><p>               the number of allowed disruptions. Therefore no disruptions are<br><p>               allowed and the status of the condition will be False.<br><p> - InsufficientPods: The number of pods are either at or below the number<br><p>                     required by the PodDisruptionBudget. No disruptions are<br><p>                     allowed and the status of the condition will be False.<br><p> - SufficientPods: There are more pods than required by the PodDisruptionBudget.<br><p>                   The condition will be True, and the number of allowed<br><p>                   disruptions are provided by the disruptionsAllowed property.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * current number of healthy pods
+     */
     @JsonProperty("currentHealthy")
     public Integer getCurrentHealthy() {
         return currentHealthy;
     }
 
+    /**
+     * current number of healthy pods
+     */
     @JsonProperty("currentHealthy")
     public void setCurrentHealthy(Integer currentHealthy) {
         this.currentHealthy = currentHealthy;
     }
 
+    /**
+     * minimum desired number of healthy pods
+     */
     @JsonProperty("desiredHealthy")
     public Integer getDesiredHealthy() {
         return desiredHealthy;
     }
 
+    /**
+     * minimum desired number of healthy pods
+     */
     @JsonProperty("desiredHealthy")
     public void setDesiredHealthy(Integer desiredHealthy) {
         this.desiredHealthy = desiredHealthy;
     }
 
+    /**
+     * DisruptedPods contains information about pods whose eviction was processed by the API server eviction subresource handler but has not yet been observed by the PodDisruptionBudget controller. A pod will be in this map from the time when the API server processed the eviction request to the time when the pod is seen by PDB controller as having been marked for deletion (or after a timeout). The key in the map is the name of the pod and the value is the time when the API server processed the eviction request. If the deletion didn't occur and a pod is still there it will be removed from the list automatically by PodDisruptionBudget controller after some time. If everything goes smooth this map should be empty for the most of the time. Large number of entries in the map may indicate problems with pod deletions.
+     */
     @JsonProperty("disruptedPods")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getDisruptedPods() {
         return disruptedPods;
     }
 
+    /**
+     * DisruptedPods contains information about pods whose eviction was processed by the API server eviction subresource handler but has not yet been observed by the PodDisruptionBudget controller. A pod will be in this map from the time when the API server processed the eviction request to the time when the pod is seen by PDB controller as having been marked for deletion (or after a timeout). The key in the map is the name of the pod and the value is the time when the API server processed the eviction request. If the deletion didn't occur and a pod is still there it will be removed from the list automatically by PodDisruptionBudget controller after some time. If everything goes smooth this map should be empty for the most of the time. Large number of entries in the map may indicate problems with pod deletions.
+     */
     @JsonProperty("disruptedPods")
     public void setDisruptedPods(Map<String, String> disruptedPods) {
         this.disruptedPods = disruptedPods;
     }
 
+    /**
+     * Number of pod disruptions that are currently allowed.
+     */
     @JsonProperty("disruptionsAllowed")
     public Integer getDisruptionsAllowed() {
         return disruptionsAllowed;
     }
 
+    /**
+     * Number of pod disruptions that are currently allowed.
+     */
     @JsonProperty("disruptionsAllowed")
     public void setDisruptionsAllowed(Integer disruptionsAllowed) {
         this.disruptionsAllowed = disruptionsAllowed;
     }
 
+    /**
+     * total number of pods counted by this disruption budget
+     */
     @JsonProperty("expectedPods")
     public Integer getExpectedPods() {
         return expectedPods;
     }
 
+    /**
+     * total number of pods counted by this disruption budget
+     */
     @JsonProperty("expectedPods")
     public void setExpectedPods(Integer expectedPods) {
         this.expectedPods = expectedPods;
     }
 
+    /**
+     * Most recent generation observed when updating this PDB status. DisruptionsAllowed and other status information is valid only if observedGeneration equals to PDB's object generation.
+     */
     @JsonProperty("observedGeneration")
     public Long getObservedGeneration() {
         return observedGeneration;
     }
 
+    /**
+     * Most recent generation observed when updating this PDB status. DisruptionsAllowed and other status information is valid only if observedGeneration equals to PDB's object generation.
+     */
     @JsonProperty("observedGeneration")
     public void setObservedGeneration(Long observedGeneration) {
         this.observedGeneration = observedGeneration;

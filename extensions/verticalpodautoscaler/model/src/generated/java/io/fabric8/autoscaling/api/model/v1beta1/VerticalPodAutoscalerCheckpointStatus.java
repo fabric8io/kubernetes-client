@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * VerticalPodAutoscalerCheckpointStatus contains data of the checkpoint.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -102,71 +105,113 @@ public class VerticalPodAutoscalerCheckpointStatus implements Editable<VerticalP
         this.version = version;
     }
 
+    /**
+     * VerticalPodAutoscalerCheckpointStatus contains data of the checkpoint.
+     */
     @JsonProperty("cpuHistogram")
     public HistogramCheckpoint getCpuHistogram() {
         return cpuHistogram;
     }
 
+    /**
+     * VerticalPodAutoscalerCheckpointStatus contains data of the checkpoint.
+     */
     @JsonProperty("cpuHistogram")
     public void setCpuHistogram(HistogramCheckpoint cpuHistogram) {
         this.cpuHistogram = cpuHistogram;
     }
 
+    /**
+     * VerticalPodAutoscalerCheckpointStatus contains data of the checkpoint.
+     */
     @JsonProperty("firstSampleStart")
     public String getFirstSampleStart() {
         return firstSampleStart;
     }
 
+    /**
+     * VerticalPodAutoscalerCheckpointStatus contains data of the checkpoint.
+     */
     @JsonProperty("firstSampleStart")
     public void setFirstSampleStart(String firstSampleStart) {
         this.firstSampleStart = firstSampleStart;
     }
 
+    /**
+     * VerticalPodAutoscalerCheckpointStatus contains data of the checkpoint.
+     */
     @JsonProperty("lastSampleStart")
     public String getLastSampleStart() {
         return lastSampleStart;
     }
 
+    /**
+     * VerticalPodAutoscalerCheckpointStatus contains data of the checkpoint.
+     */
     @JsonProperty("lastSampleStart")
     public void setLastSampleStart(String lastSampleStart) {
         this.lastSampleStart = lastSampleStart;
     }
 
+    /**
+     * VerticalPodAutoscalerCheckpointStatus contains data of the checkpoint.
+     */
     @JsonProperty("lastUpdateTime")
     public String getLastUpdateTime() {
         return lastUpdateTime;
     }
 
+    /**
+     * VerticalPodAutoscalerCheckpointStatus contains data of the checkpoint.
+     */
     @JsonProperty("lastUpdateTime")
     public void setLastUpdateTime(String lastUpdateTime) {
         this.lastUpdateTime = lastUpdateTime;
     }
 
+    /**
+     * VerticalPodAutoscalerCheckpointStatus contains data of the checkpoint.
+     */
     @JsonProperty("memoryHistogram")
     public HistogramCheckpoint getMemoryHistogram() {
         return memoryHistogram;
     }
 
+    /**
+     * VerticalPodAutoscalerCheckpointStatus contains data of the checkpoint.
+     */
     @JsonProperty("memoryHistogram")
     public void setMemoryHistogram(HistogramCheckpoint memoryHistogram) {
         this.memoryHistogram = memoryHistogram;
     }
 
+    /**
+     * Total number of samples in the histograms.
+     */
     @JsonProperty("totalSamplesCount")
     public Integer getTotalSamplesCount() {
         return totalSamplesCount;
     }
 
+    /**
+     * Total number of samples in the histograms.
+     */
     @JsonProperty("totalSamplesCount")
     public void setTotalSamplesCount(Integer totalSamplesCount) {
         this.totalSamplesCount = totalSamplesCount;
     }
 
+    /**
+     * Version of the format of the stored data.
+     */
     @JsonProperty("version")
     public String getVersion() {
         return version;
     }
 
+    /**
+     * Version of the format of the stored data.
+     */
     @JsonProperty("version")
     public void setVersion(String version) {
         this.version = version;

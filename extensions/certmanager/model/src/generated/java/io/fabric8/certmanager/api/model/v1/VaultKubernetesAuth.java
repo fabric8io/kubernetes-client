@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Authenticate against Vault using a Kubernetes ServiceAccount token stored in a Secret.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -91,41 +94,65 @@ public class VaultKubernetesAuth implements Editable<VaultKubernetesAuthBuilder>
         this.serviceAccountRef = serviceAccountRef;
     }
 
+    /**
+     * The Vault mountPath here is the mount path to use when authenticating with Vault. For example, setting a value to `/v1/auth/foo`, will use the path `/v1/auth/foo/login` to authenticate with Vault. If unspecified, the default value "/v1/auth/kubernetes" will be used.
+     */
     @JsonProperty("mountPath")
     public String getMountPath() {
         return mountPath;
     }
 
+    /**
+     * The Vault mountPath here is the mount path to use when authenticating with Vault. For example, setting a value to `/v1/auth/foo`, will use the path `/v1/auth/foo/login` to authenticate with Vault. If unspecified, the default value "/v1/auth/kubernetes" will be used.
+     */
     @JsonProperty("mountPath")
     public void setMountPath(String mountPath) {
         this.mountPath = mountPath;
     }
 
+    /**
+     * A required field containing the Vault Role to assume. A Role binds a Kubernetes ServiceAccount with a set of Vault policies.
+     */
     @JsonProperty("role")
     public String getRole() {
         return role;
     }
 
+    /**
+     * A required field containing the Vault Role to assume. A Role binds a Kubernetes ServiceAccount with a set of Vault policies.
+     */
     @JsonProperty("role")
     public void setRole(String role) {
         this.role = role;
     }
 
+    /**
+     * Authenticate against Vault using a Kubernetes ServiceAccount token stored in a Secret.
+     */
     @JsonProperty("secretRef")
     public SecretKeySelector getSecretRef() {
         return secretRef;
     }
 
+    /**
+     * Authenticate against Vault using a Kubernetes ServiceAccount token stored in a Secret.
+     */
     @JsonProperty("secretRef")
     public void setSecretRef(SecretKeySelector secretRef) {
         this.secretRef = secretRef;
     }
 
+    /**
+     * Authenticate against Vault using a Kubernetes ServiceAccount token stored in a Secret.
+     */
     @JsonProperty("serviceAccountRef")
     public ServiceAccountRef getServiceAccountRef() {
         return serviceAccountRef;
     }
 
+    /**
+     * Authenticate against Vault using a Kubernetes ServiceAccount token stored in a Secret.
+     */
     @JsonProperty("serviceAccountRef")
     public void setServiceAccountRef(ServiceAccountRef serviceAccountRef) {
         this.serviceAccountRef = serviceAccountRef;

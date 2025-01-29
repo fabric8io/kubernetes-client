@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PrometheusStatus is the most recent observed status of the Prometheus cluster. More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -114,93 +117,147 @@ public class PrometheusStatus implements Editable<PrometheusStatusBuilder>, Kube
         this.updatedReplicas = updatedReplicas;
     }
 
+    /**
+     * Total number of available pods (ready for at least minReadySeconds) targeted by this Prometheus deployment.
+     */
     @JsonProperty("availableReplicas")
     public Integer getAvailableReplicas() {
         return availableReplicas;
     }
 
+    /**
+     * Total number of available pods (ready for at least minReadySeconds) targeted by this Prometheus deployment.
+     */
     @JsonProperty("availableReplicas")
     public void setAvailableReplicas(Integer availableReplicas) {
         this.availableReplicas = availableReplicas;
     }
 
+    /**
+     * The current state of the Prometheus deployment.
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
 
+    /**
+     * The current state of the Prometheus deployment.
+     */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * Represents whether any actions on the underlying managed objects are being performed. Only delete actions will be performed.
+     */
     @JsonProperty("paused")
     public Boolean getPaused() {
         return paused;
     }
 
+    /**
+     * Represents whether any actions on the underlying managed objects are being performed. Only delete actions will be performed.
+     */
     @JsonProperty("paused")
     public void setPaused(Boolean paused) {
         this.paused = paused;
     }
 
+    /**
+     * Total number of non-terminated pods targeted by this Prometheus deployment (their labels match the selector).
+     */
     @JsonProperty("replicas")
     public Integer getReplicas() {
         return replicas;
     }
 
+    /**
+     * Total number of non-terminated pods targeted by this Prometheus deployment (their labels match the selector).
+     */
     @JsonProperty("replicas")
     public void setReplicas(Integer replicas) {
         this.replicas = replicas;
     }
 
+    /**
+     * The selector used to match the pods targeted by this Prometheus resource.
+     */
     @JsonProperty("selector")
     public String getSelector() {
         return selector;
     }
 
+    /**
+     * The selector used to match the pods targeted by this Prometheus resource.
+     */
     @JsonProperty("selector")
     public void setSelector(String selector) {
         this.selector = selector;
     }
 
+    /**
+     * The list has one entry per shard. Each entry provides a summary of the shard status.
+     */
     @JsonProperty("shardStatuses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<ShardStatus> getShardStatuses() {
         return shardStatuses;
     }
 
+    /**
+     * The list has one entry per shard. Each entry provides a summary of the shard status.
+     */
     @JsonProperty("shardStatuses")
     public void setShardStatuses(List<ShardStatus> shardStatuses) {
         this.shardStatuses = shardStatuses;
     }
 
+    /**
+     * Shards is the most recently observed number of shards.
+     */
     @JsonProperty("shards")
     public Integer getShards() {
         return shards;
     }
 
+    /**
+     * Shards is the most recently observed number of shards.
+     */
     @JsonProperty("shards")
     public void setShards(Integer shards) {
         this.shards = shards;
     }
 
+    /**
+     * Total number of unavailable pods targeted by this Prometheus deployment.
+     */
     @JsonProperty("unavailableReplicas")
     public Integer getUnavailableReplicas() {
         return unavailableReplicas;
     }
 
+    /**
+     * Total number of unavailable pods targeted by this Prometheus deployment.
+     */
     @JsonProperty("unavailableReplicas")
     public void setUnavailableReplicas(Integer unavailableReplicas) {
         this.unavailableReplicas = unavailableReplicas;
     }
 
+    /**
+     * Total number of non-terminated pods targeted by this Prometheus deployment that have the desired version spec.
+     */
     @JsonProperty("updatedReplicas")
     public Integer getUpdatedReplicas() {
         return updatedReplicas;
     }
 
+    /**
+     * Total number of non-terminated pods targeted by this Prometheus deployment that have the desired version spec.
+     */
     @JsonProperty("updatedReplicas")
     public void setUpdatedReplicas(Integer updatedReplicas) {
         this.updatedReplicas = updatedReplicas;

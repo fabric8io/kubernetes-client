@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PipelineRunRunStatus contains the name of the PipelineTask for this Run and the Run's Status
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,32 +93,50 @@ public class PipelineRunRunStatus implements Editable<PipelineRunRunStatusBuilde
         this.whenExpressions = whenExpressions;
     }
 
+    /**
+     * PipelineTaskName is the name of the PipelineTask.
+     */
     @JsonProperty("pipelineTaskName")
     public String getPipelineTaskName() {
         return pipelineTaskName;
     }
 
+    /**
+     * PipelineTaskName is the name of the PipelineTask.
+     */
     @JsonProperty("pipelineTaskName")
     public void setPipelineTaskName(String pipelineTaskName) {
         this.pipelineTaskName = pipelineTaskName;
     }
 
+    /**
+     * PipelineRunRunStatus contains the name of the PipelineTask for this Run and the Run's Status
+     */
     @JsonProperty("status")
     public CustomRunStatus getStatus() {
         return status;
     }
 
+    /**
+     * PipelineRunRunStatus contains the name of the PipelineTask for this Run and the Run's Status
+     */
     @JsonProperty("status")
     public void setStatus(CustomRunStatus status) {
         this.status = status;
     }
 
+    /**
+     * WhenExpressions is the list of checks guarding the execution of the PipelineTask
+     */
     @JsonProperty("whenExpressions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<WhenExpression> getWhenExpressions() {
         return whenExpressions;
     }
 
+    /**
+     * WhenExpressions is the list of checks guarding the execution of the PipelineTask
+     */
     @JsonProperty("whenExpressions")
     public void setWhenExpressions(List<WhenExpression> whenExpressions) {
         this.whenExpressions = whenExpressions;

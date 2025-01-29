@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * GRPCMethodMatch describes how to select a gRPC route by matching the gRPC request service and/or method.<br><p> <br><p> At least one of Service and Method MUST be a non-empty string.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class GRPCMethodMatch implements Editable<GRPCMethodMatchBuilder>, Kubern
         this.type = type;
     }
 
+    /**
+     * Value of the method to match against. If left empty or omitted, will match all services.<br><p> <br><p> At least one of Service and Method MUST be a non-empty string.
+     */
     @JsonProperty("method")
     public String getMethod() {
         return method;
     }
 
+    /**
+     * Value of the method to match against. If left empty or omitted, will match all services.<br><p> <br><p> At least one of Service and Method MUST be a non-empty string.
+     */
     @JsonProperty("method")
     public void setMethod(String method) {
         this.method = method;
     }
 
+    /**
+     * Value of the service to match against. If left empty or omitted, will match any service.<br><p> <br><p> At least one of Service and Method MUST be a non-empty string.
+     */
     @JsonProperty("service")
     public String getService() {
         return service;
     }
 
+    /**
+     * Value of the service to match against. If left empty or omitted, will match any service.<br><p> <br><p> At least one of Service and Method MUST be a non-empty string.
+     */
     @JsonProperty("service")
     public void setService(String service) {
         this.service = service;
     }
 
+    /**
+     * Type specifies how to match against the service and/or method. Support: Core (Exact with service and method specified)<br><p> <br><p> Support: Implementation-specific (Exact with method specified but no service specified)<br><p> <br><p> Support: Implementation-specific (RegularExpression)
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * Type specifies how to match against the service and/or method. Support: Core (Exact with service and method specified)<br><p> <br><p> Support: Implementation-specific (Exact with method specified but no service specified)<br><p> <br><p> Support: Implementation-specific (RegularExpression)
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

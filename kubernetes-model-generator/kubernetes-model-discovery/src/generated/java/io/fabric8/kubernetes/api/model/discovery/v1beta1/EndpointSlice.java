@@ -39,6 +39,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * EndpointSlice represents a subset of the endpoints that implement a service. For a given service there may be multiple EndpointSlice objects, selected by labels, which must be joined to produce the full set of endpoints.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -81,17 +84,11 @@ public class EndpointSlice implements Editable<EndpointSliceBuilder>, HasMetadat
 
     @JsonProperty("addressType")
     private String addressType;
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "discovery.k8s.io/v1beta1";
     @JsonProperty("endpoints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Endpoint> endpoints = new ArrayList<>();
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "EndpointSlice";
     @JsonProperty("metadata")
@@ -118,18 +115,24 @@ public class EndpointSlice implements Editable<EndpointSliceBuilder>, HasMetadat
         this.ports = ports;
     }
 
+    /**
+     * addressType specifies the type of address carried by this EndpointSlice. All addresses in this slice must be the same type. This field is immutable after creation. The following address types are currently supported: &#42; IPv4: Represents an IPv4 Address. &#42; IPv6: Represents an IPv6 Address. &#42; FQDN: Represents a Fully Qualified Domain Name.
+     */
     @JsonProperty("addressType")
     public String getAddressType() {
         return addressType;
     }
 
+    /**
+     * addressType specifies the type of address carried by this EndpointSlice. All addresses in this slice must be the same type. This field is immutable after creation. The following address types are currently supported: &#42; IPv4: Represents an IPv4 Address. &#42; IPv6: Represents an IPv6 Address. &#42; FQDN: Represents a Fully Qualified Domain Name.
+     */
     @JsonProperty("addressType")
     public void setAddressType(String addressType) {
         this.addressType = addressType;
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -137,26 +140,32 @@ public class EndpointSlice implements Editable<EndpointSliceBuilder>, HasMetadat
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
     }
 
+    /**
+     * endpoints is a list of unique endpoints in this slice. Each slice may include a maximum of 1000 endpoints.
+     */
     @JsonProperty("endpoints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Endpoint> getEndpoints() {
         return endpoints;
     }
 
+    /**
+     * endpoints is a list of unique endpoints in this slice. Each slice may include a maximum of 1000 endpoints.
+     */
     @JsonProperty("endpoints")
     public void setEndpoints(List<Endpoint> endpoints) {
         this.endpoints = endpoints;
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -164,29 +173,41 @@ public class EndpointSlice implements Editable<EndpointSliceBuilder>, HasMetadat
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * EndpointSlice represents a subset of the endpoints that implement a service. For a given service there may be multiple EndpointSlice objects, selected by labels, which must be joined to produce the full set of endpoints.
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * EndpointSlice represents a subset of the endpoints that implement a service. For a given service there may be multiple EndpointSlice objects, selected by labels, which must be joined to produce the full set of endpoints.
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * ports specifies the list of network ports exposed by each endpoint in this slice. Each port must have a unique name. When ports is empty, it indicates that there are no defined ports. When a port is defined with a nil port value, it indicates "all ports". Each slice may include a maximum of 100 ports.
+     */
     @JsonProperty("ports")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<EndpointPort> getPorts() {
         return ports;
     }
 
+    /**
+     * ports specifies the list of network ports exposed by each endpoint in this slice. Each port must have a unique name. When ports is empty, it indicates that there are no defined ports. When a port is defined with a nil port value, it indicates "all ports". Each slice may include a maximum of 100 ports.
+     */
     @JsonProperty("ports")
     public void setPorts(List<EndpointPort> ports) {
         this.ports = ports;

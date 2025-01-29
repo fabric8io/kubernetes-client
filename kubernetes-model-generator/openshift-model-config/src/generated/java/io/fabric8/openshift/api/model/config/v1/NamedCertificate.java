@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NamedCertificate specifies a certificate/key, and the names it should be served for
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -89,32 +92,50 @@ public class NamedCertificate implements Editable<NamedCertificateBuilder>, Kube
         this.names = names;
     }
 
+    /**
+     * CertFile is a file containing a PEM-encoded certificate
+     */
     @JsonProperty("certFile")
     public String getCertFile() {
         return certFile;
     }
 
+    /**
+     * CertFile is a file containing a PEM-encoded certificate
+     */
     @JsonProperty("certFile")
     public void setCertFile(String certFile) {
         this.certFile = certFile;
     }
 
+    /**
+     * KeyFile is a file containing a PEM-encoded private key for the certificate specified by CertFile
+     */
     @JsonProperty("keyFile")
     public String getKeyFile() {
         return keyFile;
     }
 
+    /**
+     * KeyFile is a file containing a PEM-encoded private key for the certificate specified by CertFile
+     */
     @JsonProperty("keyFile")
     public void setKeyFile(String keyFile) {
         this.keyFile = keyFile;
     }
 
+    /**
+     * Names is a list of DNS names this certificate should be used to secure A name can be a normal DNS name, or can contain leading wildcard segments.
+     */
     @JsonProperty("names")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getNames() {
         return names;
     }
 
+    /**
+     * Names is a list of DNS names this certificate should be used to secure A name can be a normal DNS name, or can contain leading wildcard segments.
+     */
     @JsonProperty("names")
     public void setNames(List<String> names) {
         this.names = names;

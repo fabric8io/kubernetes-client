@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * $hide_from_docs
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class HTTPFaultInjectionDelayExponentialDelay implements IsHTTPFaultInjec
         this.exponentialDelay = exponentialDelay;
     }
 
+    /**
+     * $hide_from_docs
+     */
     @JsonProperty("exponentialDelay")
     public String getExponentialDelay() {
         return exponentialDelay;
     }
 
+    /**
+     * $hide_from_docs
+     */
     @JsonProperty("exponentialDelay")
     public void setExponentialDelay(String exponentialDelay) {
         this.exponentialDelay = exponentialDelay;

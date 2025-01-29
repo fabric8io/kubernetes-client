@@ -41,6 +41,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * &lt;!-- crd generation tags is a timestamp representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -116,65 +119,101 @@ public class Telemetry implements Editable<TelemetryBuilder>, KubernetesResource
         this.tracing = tracing;
     }
 
+    /**
+     * Optional. Access logging configures the access logging behavior for all selected workloads.
+     */
     @JsonProperty("accessLogging")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<AccessLogging> getAccessLogging() {
         return accessLogging;
     }
 
+    /**
+     * Optional. Access logging configures the access logging behavior for all selected workloads.
+     */
     @JsonProperty("accessLogging")
     public void setAccessLogging(List<AccessLogging> accessLogging) {
         this.accessLogging = accessLogging;
     }
 
+    /**
+     * Optional. Metrics configures the metrics behavior for all selected workloads.
+     */
     @JsonProperty("metrics")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Metrics> getMetrics() {
         return metrics;
     }
 
+    /**
+     * Optional. Metrics configures the metrics behavior for all selected workloads.
+     */
     @JsonProperty("metrics")
     public void setMetrics(List<Metrics> metrics) {
         this.metrics = metrics;
     }
 
+    /**
+     * &lt;!-- crd generation tags is a timestamp representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+     */
     @JsonProperty("selector")
     public WorkloadSelector getSelector() {
         return selector;
     }
 
+    /**
+     * &lt;!-- crd generation tags is a timestamp representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+     */
     @JsonProperty("selector")
     public void setSelector(WorkloadSelector selector) {
         this.selector = selector;
     }
 
+    /**
+     * &lt;!-- crd generation tags is a timestamp representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+     */
     @JsonProperty("targetRef")
     public PolicyTargetReference getTargetRef() {
         return targetRef;
     }
 
+    /**
+     * &lt;!-- crd generation tags is a timestamp representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
+     */
     @JsonProperty("targetRef")
     public void setTargetRef(PolicyTargetReference targetRef) {
         this.targetRef = targetRef;
     }
 
+    /**
+     * Optional. The targetRefs specifies a list of resources the policy should be applied to. The targeted resources specified will determine which workloads the policy applies to.<br><p> <br><p> Currently, the following resource attachment types are supported: &#42; `kind: Gateway` with `group: gateway.networking.k8s.io` in the same namespace. &#42; `kind: Service` with `group: ""` or `group: "core"` in the same namespace. This type is only supported for waypoints.<br><p> <br><p> If not set, the policy is applied as defined by the selector. At most one of the selector and targetRefs can be set.<br><p> <br><p> NOTE: If you are using the `targetRefs` field in a multi-revision environment with Istio versions prior to 1.22, it is highly recommended that you pin the policy to a revision running 1.22+ via the `istio.io/rev` label. This is to prevent proxies connected to older control planes (that don't know about the `targetRefs` field) from misinterpreting the policy as namespace-wide during the upgrade process.<br><p> <br><p> NOTE: Waypoint proxies are required to use this field for policies to apply; `selector` policies will be ignored.
+     */
     @JsonProperty("targetRefs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PolicyTargetReference> getTargetRefs() {
         return targetRefs;
     }
 
+    /**
+     * Optional. The targetRefs specifies a list of resources the policy should be applied to. The targeted resources specified will determine which workloads the policy applies to.<br><p> <br><p> Currently, the following resource attachment types are supported: &#42; `kind: Gateway` with `group: gateway.networking.k8s.io` in the same namespace. &#42; `kind: Service` with `group: ""` or `group: "core"` in the same namespace. This type is only supported for waypoints.<br><p> <br><p> If not set, the policy is applied as defined by the selector. At most one of the selector and targetRefs can be set.<br><p> <br><p> NOTE: If you are using the `targetRefs` field in a multi-revision environment with Istio versions prior to 1.22, it is highly recommended that you pin the policy to a revision running 1.22+ via the `istio.io/rev` label. This is to prevent proxies connected to older control planes (that don't know about the `targetRefs` field) from misinterpreting the policy as namespace-wide during the upgrade process.<br><p> <br><p> NOTE: Waypoint proxies are required to use this field for policies to apply; `selector` policies will be ignored.
+     */
     @JsonProperty("targetRefs")
     public void setTargetRefs(List<PolicyTargetReference> targetRefs) {
         this.targetRefs = targetRefs;
     }
 
+    /**
+     * Optional. Tracing configures the tracing behavior for all selected workloads.
+     */
     @JsonProperty("tracing")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Tracing> getTracing() {
         return tracing;
     }
 
+    /**
+     * Optional. Tracing configures the tracing behavior for all selected workloads.
+     */
     @JsonProperty("tracing")
     public void setTracing(List<Tracing> tracing) {
         this.tracing = tracing;

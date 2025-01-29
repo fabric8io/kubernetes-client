@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Route53Auth is configuration used to authenticate with a Route53.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class Route53Auth implements Editable<Route53AuthBuilder>, KubernetesReso
         this.kubernetes = kubernetes;
     }
 
+    /**
+     * Route53Auth is configuration used to authenticate with a Route53.
+     */
     @JsonProperty("kubernetes")
     public Route53KubernetesAuth getKubernetes() {
         return kubernetes;
     }
 
+    /**
+     * Route53Auth is configuration used to authenticate with a Route53.
+     */
     @JsonProperty("kubernetes")
     public void setKubernetes(Route53KubernetesAuth kubernetes) {
         this.kubernetes = kubernetes;

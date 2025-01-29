@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * GatewayAddress describes an address that can be bound to a Gateway.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class GatewayAddress implements Editable<GatewayAddressBuilder>, Kubernet
         this.value = value;
     }
 
+    /**
+     * Type of the address.
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * Type of the address.
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;
     }
 
+    /**
+     * Value of the address. The validity of the values will depend on the type and support by the controller.<br><p> <br><p> Examples: `1.2.3.4`, `128::1`, `my-ip-address`.
+     */
     @JsonProperty("value")
     public String getValue() {
         return value;
     }
 
+    /**
+     * Value of the address. The validity of the values will depend on the type and support by the controller.<br><p> <br><p> Examples: `1.2.3.4`, `128::1`, `my-ip-address`.
+     */
     @JsonProperty("value")
     public void setValue(String value) {
         this.value = value;

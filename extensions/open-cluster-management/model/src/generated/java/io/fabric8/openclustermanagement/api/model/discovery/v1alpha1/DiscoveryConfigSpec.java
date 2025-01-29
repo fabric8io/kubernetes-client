@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DiscoveryConfigSpec defines the desired state of DiscoveryConfig
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class DiscoveryConfigSpec implements Editable<DiscoveryConfigSpecBuilder>
         this.filters = filters;
     }
 
+    /**
+     * Credential is the secret containing credentials to connect to the OCM api on behalf of a user
+     */
     @JsonProperty("credential")
     public String getCredential() {
         return credential;
     }
 
+    /**
+     * Credential is the secret containing credentials to connect to the OCM api on behalf of a user
+     */
     @JsonProperty("credential")
     public void setCredential(String credential) {
         this.credential = credential;
     }
 
+    /**
+     * DiscoveryConfigSpec defines the desired state of DiscoveryConfig
+     */
     @JsonProperty("filters")
     public Filter getFilters() {
         return filters;
     }
 
+    /**
+     * DiscoveryConfigSpec defines the desired state of DiscoveryConfig
+     */
     @JsonProperty("filters")
     public void setFilters(Filter filters) {
         this.filters = filters;

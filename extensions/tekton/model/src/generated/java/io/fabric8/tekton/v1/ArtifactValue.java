@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ArtifactValue represents a specific value or data element within an Artifact.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -83,22 +86,34 @@ public class ArtifactValue implements Editable<ArtifactValueBuilder>, Kubernetes
         this.uri = uri;
     }
 
+    /**
+     * ArtifactValue represents a specific value or data element within an Artifact.
+     */
     @JsonProperty("digest")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getDigest() {
         return digest;
     }
 
+    /**
+     * ArtifactValue represents a specific value or data element within an Artifact.
+     */
     @JsonProperty("digest")
     public void setDigest(Map<String, String> digest) {
         this.digest = digest;
     }
 
+    /**
+     * Algorithm-specific digests for verifying the content (e.g., SHA256)
+     */
     @JsonProperty("uri")
     public String getUri() {
         return uri;
     }
 
+    /**
+     * Algorithm-specific digests for verifying the content (e.g., SHA256)
+     */
     @JsonProperty("uri")
     public void setUri(String uri) {
         this.uri = uri;

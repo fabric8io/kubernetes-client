@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * VSpherePlatformStatus holds the current status of the vSphere infrastructure provider.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -107,74 +110,116 @@ public class VSpherePlatformStatus implements Editable<VSpherePlatformStatusBuil
         this.nodeDNSIP = nodeDNSIP;
     }
 
+    /**
+     * apiServerInternalIP is an IP address to contact the Kubernetes API server that can be used by components inside the cluster, like kubelets using the infrastructure rather than Kubernetes networking. It is the IP that the Infrastructure.status.apiServerInternalURI points to. It is the IP for a self-hosted load balancer in front of the API servers.<br><p> <br><p> Deprecated: Use APIServerInternalIPs instead.
+     */
     @JsonProperty("apiServerInternalIP")
     public String getApiServerInternalIP() {
         return apiServerInternalIP;
     }
 
+    /**
+     * apiServerInternalIP is an IP address to contact the Kubernetes API server that can be used by components inside the cluster, like kubelets using the infrastructure rather than Kubernetes networking. It is the IP that the Infrastructure.status.apiServerInternalURI points to. It is the IP for a self-hosted load balancer in front of the API servers.<br><p> <br><p> Deprecated: Use APIServerInternalIPs instead.
+     */
     @JsonProperty("apiServerInternalIP")
     public void setApiServerInternalIP(String apiServerInternalIP) {
         this.apiServerInternalIP = apiServerInternalIP;
     }
 
+    /**
+     * apiServerInternalIPs are the IP addresses to contact the Kubernetes API server that can be used by components inside the cluster, like kubelets using the infrastructure rather than Kubernetes networking. These are the IPs for a self-hosted load balancer in front of the API servers. In dual stack clusters this list contains two IPs otherwise only one.
+     */
     @JsonProperty("apiServerInternalIPs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getApiServerInternalIPs() {
         return apiServerInternalIPs;
     }
 
+    /**
+     * apiServerInternalIPs are the IP addresses to contact the Kubernetes API server that can be used by components inside the cluster, like kubelets using the infrastructure rather than Kubernetes networking. These are the IPs for a self-hosted load balancer in front of the API servers. In dual stack clusters this list contains two IPs otherwise only one.
+     */
     @JsonProperty("apiServerInternalIPs")
     public void setApiServerInternalIPs(List<String> apiServerInternalIPs) {
         this.apiServerInternalIPs = apiServerInternalIPs;
     }
 
+    /**
+     * ingressIP is an external IP which routes to the default ingress controller. The IP is a suitable target of a wildcard DNS record used to resolve default route host names.<br><p> <br><p> Deprecated: Use IngressIPs instead.
+     */
     @JsonProperty("ingressIP")
     public String getIngressIP() {
         return ingressIP;
     }
 
+    /**
+     * ingressIP is an external IP which routes to the default ingress controller. The IP is a suitable target of a wildcard DNS record used to resolve default route host names.<br><p> <br><p> Deprecated: Use IngressIPs instead.
+     */
     @JsonProperty("ingressIP")
     public void setIngressIP(String ingressIP) {
         this.ingressIP = ingressIP;
     }
 
+    /**
+     * ingressIPs are the external IPs which route to the default ingress controller. The IPs are suitable targets of a wildcard DNS record used to resolve default route host names. In dual stack clusters this list contains two IPs otherwise only one.
+     */
     @JsonProperty("ingressIPs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getIngressIPs() {
         return ingressIPs;
     }
 
+    /**
+     * ingressIPs are the external IPs which route to the default ingress controller. The IPs are suitable targets of a wildcard DNS record used to resolve default route host names. In dual stack clusters this list contains two IPs otherwise only one.
+     */
     @JsonProperty("ingressIPs")
     public void setIngressIPs(List<String> ingressIPs) {
         this.ingressIPs = ingressIPs;
     }
 
+    /**
+     * VSpherePlatformStatus holds the current status of the vSphere infrastructure provider.
+     */
     @JsonProperty("loadBalancer")
     public VSpherePlatformLoadBalancer getLoadBalancer() {
         return loadBalancer;
     }
 
+    /**
+     * VSpherePlatformStatus holds the current status of the vSphere infrastructure provider.
+     */
     @JsonProperty("loadBalancer")
     public void setLoadBalancer(VSpherePlatformLoadBalancer loadBalancer) {
         this.loadBalancer = loadBalancer;
     }
 
+    /**
+     * machineNetworks are IP networks used to connect all the OpenShift cluster nodes.
+     */
     @JsonProperty("machineNetworks")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getMachineNetworks() {
         return machineNetworks;
     }
 
+    /**
+     * machineNetworks are IP networks used to connect all the OpenShift cluster nodes.
+     */
     @JsonProperty("machineNetworks")
     public void setMachineNetworks(List<String> machineNetworks) {
         this.machineNetworks = machineNetworks;
     }
 
+    /**
+     * nodeDNSIP is the IP address for the internal DNS used by the nodes. Unlike the one managed by the DNS operator, `NodeDNSIP` provides name resolution for the nodes themselves. There is no DNS-as-a-service for vSphere deployments. In order to minimize necessary changes to the datacenter DNS, a DNS service is hosted as a static pod to serve those hostnames to the nodes in the cluster.
+     */
     @JsonProperty("nodeDNSIP")
     public String getNodeDNSIP() {
         return nodeDNSIP;
     }
 
+    /**
+     * nodeDNSIP is the IP address for the internal DNS used by the nodes. Unlike the one managed by the DNS operator, `NodeDNSIP` provides name resolution for the nodes themselves. There is no DNS-as-a-service for vSphere deployments. In order to minimize necessary changes to the datacenter DNS, a DNS service is hosted as a static pod to serve those hostnames to the nodes in the cluster.
+     */
     @JsonProperty("nodeDNSIP")
     public void setNodeDNSIP(String nodeDNSIP) {
         this.nodeDNSIP = nodeDNSIP;

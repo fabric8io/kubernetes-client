@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DaemonSetUpdateStrategy is a struct used to control the update strategy for a DaemonSet.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class DaemonSetUpdateStrategy implements Editable<DaemonSetUpdateStrategy
         this.type = type;
     }
 
+    /**
+     * DaemonSetUpdateStrategy is a struct used to control the update strategy for a DaemonSet.
+     */
     @JsonProperty("rollingUpdate")
     public RollingUpdateDaemonSet getRollingUpdate() {
         return rollingUpdate;
     }
 
+    /**
+     * DaemonSetUpdateStrategy is a struct used to control the update strategy for a DaemonSet.
+     */
     @JsonProperty("rollingUpdate")
     public void setRollingUpdate(RollingUpdateDaemonSet rollingUpdate) {
         this.rollingUpdate = rollingUpdate;
     }
 
+    /**
+     * Type of daemon set update. Can be "RollingUpdate" or "OnDelete". Default is RollingUpdate.
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * Type of daemon set update. Can be "RollingUpdate" or "OnDelete". Default is RollingUpdate.
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

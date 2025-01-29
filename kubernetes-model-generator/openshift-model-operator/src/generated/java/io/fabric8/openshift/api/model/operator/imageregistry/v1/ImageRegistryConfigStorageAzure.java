@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ImageRegistryConfigStorageAzure holds the information to configure the registry to use Azure Blob Storage for backend storage.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class ImageRegistryConfigStorageAzure implements Editable<ImageRegistryCo
         this.networkAccess = networkAccess;
     }
 
+    /**
+     * accountName defines the account to be used by the registry.
+     */
     @JsonProperty("accountName")
     public String getAccountName() {
         return accountName;
     }
 
+    /**
+     * accountName defines the account to be used by the registry.
+     */
     @JsonProperty("accountName")
     public void setAccountName(String accountName) {
         this.accountName = accountName;
     }
 
+    /**
+     * cloudName is the name of the Azure cloud environment to be used by the registry. If empty, the operator will set it based on the infrastructure object.
+     */
     @JsonProperty("cloudName")
     public String getCloudName() {
         return cloudName;
     }
 
+    /**
+     * cloudName is the name of the Azure cloud environment to be used by the registry. If empty, the operator will set it based on the infrastructure object.
+     */
     @JsonProperty("cloudName")
     public void setCloudName(String cloudName) {
         this.cloudName = cloudName;
     }
 
+    /**
+     * container defines Azure's container to be used by registry.
+     */
     @JsonProperty("container")
     public String getContainer() {
         return container;
     }
 
+    /**
+     * container defines Azure's container to be used by registry.
+     */
     @JsonProperty("container")
     public void setContainer(String container) {
         this.container = container;
     }
 
+    /**
+     * ImageRegistryConfigStorageAzure holds the information to configure the registry to use Azure Blob Storage for backend storage.
+     */
     @JsonProperty("networkAccess")
     public AzureNetworkAccess getNetworkAccess() {
         return networkAccess;
     }
 
+    /**
+     * ImageRegistryConfigStorageAzure holds the information to configure the registry to use Azure Blob Storage for backend storage.
+     */
     @JsonProperty("networkAccess")
     public void setNetworkAccess(AzureNetworkAccess networkAccess) {
         this.networkAccess = networkAccess;

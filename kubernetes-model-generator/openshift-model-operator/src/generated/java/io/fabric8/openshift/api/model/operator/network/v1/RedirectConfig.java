@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * RedirectConfig represents the configuration parameters specific to redirect mode.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class RedirectConfig implements Editable<RedirectConfigBuilder>, Kubernet
         this.redirectRules = redirectRules;
     }
 
+    /**
+     * FallbackIP specifies the remote destination's IP address. Can be IPv4 or IPv6. If no redirect rules are specified, all traffic from the router are redirected to this IP. If redirect rules are specified, then any connections on any other port (undefined in the rules) on the router will be redirected to this IP. If redirect rules are specified and no fallback IP is provided, connections on other ports will simply be rejected.
+     */
     @JsonProperty("fallbackIP")
     public String getFallbackIP() {
         return fallbackIP;
     }
 
+    /**
+     * FallbackIP specifies the remote destination's IP address. Can be IPv4 or IPv6. If no redirect rules are specified, all traffic from the router are redirected to this IP. If redirect rules are specified, then any connections on any other port (undefined in the rules) on the router will be redirected to this IP. If redirect rules are specified and no fallback IP is provided, connections on other ports will simply be rejected.
+     */
     @JsonProperty("fallbackIP")
     public void setFallbackIP(String fallbackIP) {
         this.fallbackIP = fallbackIP;
     }
 
+    /**
+     * List of L4RedirectRules that define the DNAT redirection from the pod to the destination in redirect mode.
+     */
     @JsonProperty("redirectRules")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<L4RedirectRule> getRedirectRules() {
         return redirectRules;
     }
 
+    /**
+     * List of L4RedirectRules that define the DNAT redirection from the pod to the destination in redirect mode.
+     */
     @JsonProperty("redirectRules")
     public void setRedirectRules(List<L4RedirectRule> redirectRules) {
         this.redirectRules = redirectRules;

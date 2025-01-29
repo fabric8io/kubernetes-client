@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * HardwareDetails collects all of the information about hardware discovered on the host.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -106,73 +109,115 @@ public class HardwareDetails implements Editable<HardwareDetailsBuilder>, Kubern
         this.systemVendor = systemVendor;
     }
 
+    /**
+     * HardwareDetails collects all of the information about hardware discovered on the host.
+     */
     @JsonProperty("cpu")
     public CPU getCpu() {
         return cpu;
     }
 
+    /**
+     * HardwareDetails collects all of the information about hardware discovered on the host.
+     */
     @JsonProperty("cpu")
     public void setCpu(CPU cpu) {
         this.cpu = cpu;
     }
 
+    /**
+     * HardwareDetails collects all of the information about hardware discovered on the host.
+     */
     @JsonProperty("firmware")
     public Firmware getFirmware() {
         return firmware;
     }
 
+    /**
+     * HardwareDetails collects all of the information about hardware discovered on the host.
+     */
     @JsonProperty("firmware")
     public void setFirmware(Firmware firmware) {
         this.firmware = firmware;
     }
 
+    /**
+     * HardwareDetails collects all of the information about hardware discovered on the host.
+     */
     @JsonProperty("hostname")
     public String getHostname() {
         return hostname;
     }
 
+    /**
+     * HardwareDetails collects all of the information about hardware discovered on the host.
+     */
     @JsonProperty("hostname")
     public void setHostname(String hostname) {
         this.hostname = hostname;
     }
 
+    /**
+     * List of network interfaces for the host.
+     */
     @JsonProperty("nics")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<NIC> getNics() {
         return nics;
     }
 
+    /**
+     * List of network interfaces for the host.
+     */
     @JsonProperty("nics")
     public void setNics(List<NIC> nics) {
         this.nics = nics;
     }
 
+    /**
+     * The host's amount of memory in Mebibytes.
+     */
     @JsonProperty("ramMebibytes")
     public Integer getRamMebibytes() {
         return ramMebibytes;
     }
 
+    /**
+     * The host's amount of memory in Mebibytes.
+     */
     @JsonProperty("ramMebibytes")
     public void setRamMebibytes(Integer ramMebibytes) {
         this.ramMebibytes = ramMebibytes;
     }
 
+    /**
+     * List of storage (disk, SSD, etc.) available to the host.
+     */
     @JsonProperty("storage")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Storage> getStorage() {
         return storage;
     }
 
+    /**
+     * List of storage (disk, SSD, etc.) available to the host.
+     */
     @JsonProperty("storage")
     public void setStorage(List<Storage> storage) {
         this.storage = storage;
     }
 
+    /**
+     * HardwareDetails collects all of the information about hardware discovered on the host.
+     */
     @JsonProperty("systemVendor")
     public HardwareSystemVendor getSystemVendor() {
         return systemVendor;
     }
 
+    /**
+     * HardwareDetails collects all of the information about hardware discovered on the host.
+     */
     @JsonProperty("systemVendor")
     public void setSystemVendor(HardwareSystemVendor systemVendor) {
         this.systemVendor = systemVendor;

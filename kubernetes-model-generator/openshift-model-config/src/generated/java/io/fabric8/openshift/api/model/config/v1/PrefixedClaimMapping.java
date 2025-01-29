@@ -82,21 +82,33 @@ public class PrefixedClaimMapping implements Editable<PrefixedClaimMappingBuilde
         this.prefix = prefix;
     }
 
+    /**
+     * Claim is a JWT token claim to be used in the mapping
+     */
     @JsonProperty("claim")
     public String getClaim() {
         return claim;
     }
 
+    /**
+     * Claim is a JWT token claim to be used in the mapping
+     */
     @JsonProperty("claim")
     public void setClaim(String claim) {
         this.claim = claim;
     }
 
+    /**
+     * Prefix is a string to prefix the value from the token in the result of the claim mapping.<br><p> <br><p> By default, no prefixing occurs.<br><p> <br><p> Example: if `prefix` is set to "myoidc:"" and the `claim` in JWT contains an array of strings "a", "b" and  "c", the mapping will result in an array of string "myoidc:a", "myoidc:b" and "myoidc:c".
+     */
     @JsonProperty("prefix")
     public String getPrefix() {
         return prefix;
     }
 
+    /**
+     * Prefix is a string to prefix the value from the token in the result of the claim mapping.<br><p> <br><p> By default, no prefixing occurs.<br><p> <br><p> Example: if `prefix` is set to "myoidc:"" and the `claim` in JWT contains an array of strings "a", "b" and  "c", the mapping will result in an array of string "myoidc:a", "myoidc:b" and "myoidc:c".
+     */
     @JsonProperty("prefix")
     public void setPrefix(String prefix) {
         this.prefix = prefix;

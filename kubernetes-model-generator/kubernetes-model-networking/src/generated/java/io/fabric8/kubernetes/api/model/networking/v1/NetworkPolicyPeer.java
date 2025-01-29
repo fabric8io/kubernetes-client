@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NetworkPolicyPeer describes a peer to allow traffic to/from. Only certain combinations of fields are allowed
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class NetworkPolicyPeer implements Editable<NetworkPolicyPeerBuilder>, Ku
         this.podSelector = podSelector;
     }
 
+    /**
+     * NetworkPolicyPeer describes a peer to allow traffic to/from. Only certain combinations of fields are allowed
+     */
     @JsonProperty("ipBlock")
     public IPBlock getIpBlock() {
         return ipBlock;
     }
 
+    /**
+     * NetworkPolicyPeer describes a peer to allow traffic to/from. Only certain combinations of fields are allowed
+     */
     @JsonProperty("ipBlock")
     public void setIpBlock(IPBlock ipBlock) {
         this.ipBlock = ipBlock;
     }
 
+    /**
+     * NetworkPolicyPeer describes a peer to allow traffic to/from. Only certain combinations of fields are allowed
+     */
     @JsonProperty("namespaceSelector")
     public LabelSelector getNamespaceSelector() {
         return namespaceSelector;
     }
 
+    /**
+     * NetworkPolicyPeer describes a peer to allow traffic to/from. Only certain combinations of fields are allowed
+     */
     @JsonProperty("namespaceSelector")
     public void setNamespaceSelector(LabelSelector namespaceSelector) {
         this.namespaceSelector = namespaceSelector;
     }
 
+    /**
+     * NetworkPolicyPeer describes a peer to allow traffic to/from. Only certain combinations of fields are allowed
+     */
     @JsonProperty("podSelector")
     public LabelSelector getPodSelector() {
         return podSelector;
     }
 
+    /**
+     * NetworkPolicyPeer describes a peer to allow traffic to/from. Only certain combinations of fields are allowed
+     */
     @JsonProperty("podSelector")
     public void setPodSelector(LabelSelector podSelector) {
         this.podSelector = podSelector;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Metal3ClusterTemplateResource describes the data for creating a Metal3Cluster from a template.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class Metal3ClusterTemplateResource implements Editable<Metal3ClusterTemp
         this.spec = spec;
     }
 
+    /**
+     * Metal3ClusterTemplateResource describes the data for creating a Metal3Cluster from a template.
+     */
     @JsonProperty("spec")
     public Metal3ClusterSpec getSpec() {
         return spec;
     }
 
+    /**
+     * Metal3ClusterTemplateResource describes the data for creating a Metal3Cluster from a template.
+     */
     @JsonProperty("spec")
     public void setSpec(Metal3ClusterSpec spec) {
         this.spec = spec;

@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PreprovisioningImageSpec defines the desired state of PreprovisioningImage.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -89,32 +92,50 @@ public class PreprovisioningImageSpec implements Editable<PreprovisioningImageSp
         this.networkDataName = networkDataName;
     }
 
+    /**
+     * acceptFormats is a list of acceptable image formats.
+     */
     @JsonProperty("acceptFormats")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getAcceptFormats() {
         return acceptFormats;
     }
 
+    /**
+     * acceptFormats is a list of acceptable image formats.
+     */
     @JsonProperty("acceptFormats")
     public void setAcceptFormats(List<String> acceptFormats) {
         this.acceptFormats = acceptFormats;
     }
 
+    /**
+     * architecture is the processor architecture for which to build the image.
+     */
     @JsonProperty("architecture")
     public String getArchitecture() {
         return architecture;
     }
 
+    /**
+     * architecture is the processor architecture for which to build the image.
+     */
     @JsonProperty("architecture")
     public void setArchitecture(String architecture) {
         this.architecture = architecture;
     }
 
+    /**
+     * networkDataName is the name of a Secret in the local namespace that contains network data to build in to the image.
+     */
     @JsonProperty("networkDataName")
     public String getNetworkDataName() {
         return networkDataName;
     }
 
+    /**
+     * networkDataName is the name of a Secret in the local namespace that contains network data to build in to the image.
+     */
     @JsonProperty("networkDataName")
     public void setNetworkDataName(String networkDataName) {
         this.networkDataName = networkDataName;

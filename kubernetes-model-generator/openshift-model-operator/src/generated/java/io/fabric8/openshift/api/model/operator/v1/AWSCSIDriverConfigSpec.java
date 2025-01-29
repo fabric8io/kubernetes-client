@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AWSCSIDriverConfigSpec defines properties that can be configured for the AWS CSI driver.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class AWSCSIDriverConfigSpec implements Editable<AWSCSIDriverConfigSpecBu
         this.kmsKeyARN = kmsKeyARN;
     }
 
+    /**
+     * AWSCSIDriverConfigSpec defines properties that can be configured for the AWS CSI driver.
+     */
     @JsonProperty("efsVolumeMetrics")
     public AWSEFSVolumeMetrics getEfsVolumeMetrics() {
         return efsVolumeMetrics;
     }
 
+    /**
+     * AWSCSIDriverConfigSpec defines properties that can be configured for the AWS CSI driver.
+     */
     @JsonProperty("efsVolumeMetrics")
     public void setEfsVolumeMetrics(AWSEFSVolumeMetrics efsVolumeMetrics) {
         this.efsVolumeMetrics = efsVolumeMetrics;
     }
 
+    /**
+     * kmsKeyARN sets the cluster default storage class to encrypt volumes with a user-defined KMS key, rather than the default KMS key used by AWS. The value may be either the ARN or Alias ARN of a KMS key.
+     */
     @JsonProperty("kmsKeyARN")
     public String getKmsKeyARN() {
         return kmsKeyARN;
     }
 
+    /**
+     * kmsKeyARN sets the cluster default storage class to encrypt volumes with a user-defined KMS key, rather than the default KMS key used by AWS. The value may be either the ARN or Alias ARN of a KMS key.
+     */
     @JsonProperty("kmsKeyARN")
     public void setKmsKeyARN(String kmsKeyARN) {
         this.kmsKeyARN = kmsKeyARN;

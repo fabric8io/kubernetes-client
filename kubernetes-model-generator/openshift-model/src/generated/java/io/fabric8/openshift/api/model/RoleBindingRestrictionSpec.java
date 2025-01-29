@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * RoleBindingRestrictionSpec defines a rolebinding restriction.  Exactly one field must be non-nil.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class RoleBindingRestrictionSpec implements Editable<RoleBindingRestricti
         this.userrestriction = userrestriction;
     }
 
+    /**
+     * RoleBindingRestrictionSpec defines a rolebinding restriction.  Exactly one field must be non-nil.
+     */
     @JsonProperty("grouprestriction")
     public GroupRestriction getGrouprestriction() {
         return grouprestriction;
     }
 
+    /**
+     * RoleBindingRestrictionSpec defines a rolebinding restriction.  Exactly one field must be non-nil.
+     */
     @JsonProperty("grouprestriction")
     public void setGrouprestriction(GroupRestriction grouprestriction) {
         this.grouprestriction = grouprestriction;
     }
 
+    /**
+     * RoleBindingRestrictionSpec defines a rolebinding restriction.  Exactly one field must be non-nil.
+     */
     @JsonProperty("serviceaccountrestriction")
     public ServiceAccountRestriction getServiceaccountrestriction() {
         return serviceaccountrestriction;
     }
 
+    /**
+     * RoleBindingRestrictionSpec defines a rolebinding restriction.  Exactly one field must be non-nil.
+     */
     @JsonProperty("serviceaccountrestriction")
     public void setServiceaccountrestriction(ServiceAccountRestriction serviceaccountrestriction) {
         this.serviceaccountrestriction = serviceaccountrestriction;
     }
 
+    /**
+     * RoleBindingRestrictionSpec defines a rolebinding restriction.  Exactly one field must be non-nil.
+     */
     @JsonProperty("userrestriction")
     public UserRestriction getUserrestriction() {
         return userrestriction;
     }
 
+    /**
+     * RoleBindingRestrictionSpec defines a rolebinding restriction.  Exactly one field must be non-nil.
+     */
     @JsonProperty("userrestriction")
     public void setUserrestriction(UserRestriction userrestriction) {
         this.userrestriction = userrestriction;

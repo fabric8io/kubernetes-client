@@ -37,6 +37,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Trigger defines a mapping of an input event to parameters. This is used to extract information from events to be passed to TriggerTemplates within a Trigger.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -75,14 +78,8 @@ import lombok.experimental.Accessors;
 public class Trigger implements Editable<TriggerBuilder>, HasMetadata, Namespaced
 {
 
-    /**
-     * (Required)
-     */
     @JsonProperty("apiVersion")
     private String apiVersion = "triggers.tekton.dev/v1alpha1";
-    /**
-     * (Required)
-     */
     @JsonProperty("kind")
     private String kind = "Trigger";
     @JsonProperty("metadata")
@@ -107,7 +104,7 @@ public class Trigger implements Editable<TriggerBuilder>, HasMetadata, Namespace
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -115,7 +112,7 @@ public class Trigger implements Editable<TriggerBuilder>, HasMetadata, Namespace
     }
 
     /**
-     * (Required)
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -123,7 +120,7 @@ public class Trigger implements Editable<TriggerBuilder>, HasMetadata, Namespace
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -131,28 +128,40 @@ public class Trigger implements Editable<TriggerBuilder>, HasMetadata, Namespace
     }
 
     /**
-     * (Required)
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
         this.kind = kind;
     }
 
+    /**
+     * Trigger defines a mapping of an input event to parameters. This is used to extract information from events to be passed to TriggerTemplates within a Trigger.
+     */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * Trigger defines a mapping of an input event to parameters. This is used to extract information from events to be passed to TriggerTemplates within a Trigger.
+     */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;
     }
 
+    /**
+     * Trigger defines a mapping of an input event to parameters. This is used to extract information from events to be passed to TriggerTemplates within a Trigger.
+     */
     @JsonProperty("spec")
     public TriggerSpec getSpec() {
         return spec;
     }
 
+    /**
+     * Trigger defines a mapping of an input event to parameters. This is used to extract information from events to be passed to TriggerTemplates within a Trigger.
+     */
     @JsonProperty("spec")
     public void setSpec(TriggerSpec spec) {
         this.spec = spec;

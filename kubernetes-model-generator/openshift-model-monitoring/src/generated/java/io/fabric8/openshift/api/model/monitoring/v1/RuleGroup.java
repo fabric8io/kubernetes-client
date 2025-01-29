@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * RuleGroup is a list of sequentially evaluated recording and alerting rules.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -106,73 +109,115 @@ public class RuleGroup implements Editable<RuleGroupBuilder>, KubernetesResource
         this.rules = rules;
     }
 
+    /**
+     * Interval determines how often rules in the group are evaluated.
+     */
     @JsonProperty("interval")
     public String getInterval() {
         return interval;
     }
 
+    /**
+     * Interval determines how often rules in the group are evaluated.
+     */
     @JsonProperty("interval")
     public void setInterval(String interval) {
         this.interval = interval;
     }
 
+    /**
+     * Labels to add or overwrite before storing the result for its rules. The labels defined at the rule level take precedence.<br><p> <br><p> It requires Prometheus &gt;= 3.0.0. The field is ignored for Thanos Ruler.
+     */
     @JsonProperty("labels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, String> getLabels() {
         return labels;
     }
 
+    /**
+     * Labels to add or overwrite before storing the result for its rules. The labels defined at the rule level take precedence.<br><p> <br><p> It requires Prometheus &gt;= 3.0.0. The field is ignored for Thanos Ruler.
+     */
     @JsonProperty("labels")
     public void setLabels(Map<String, String> labels) {
         this.labels = labels;
     }
 
+    /**
+     * Limit the number of alerts an alerting rule and series a recording rule can produce. Limit is supported starting with Prometheus &gt;= 2.31 and Thanos Ruler &gt;= 0.24.
+     */
     @JsonProperty("limit")
     public Integer getLimit() {
         return limit;
     }
 
+    /**
+     * Limit the number of alerts an alerting rule and series a recording rule can produce. Limit is supported starting with Prometheus &gt;= 2.31 and Thanos Ruler &gt;= 0.24.
+     */
     @JsonProperty("limit")
     public void setLimit(Integer limit) {
         this.limit = limit;
     }
 
+    /**
+     * Name of the rule group.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name of the rule group.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * PartialResponseStrategy is only used by ThanosRuler and will be ignored by Prometheus instances. More info: https://github.com/thanos-io/thanos/blob/main/docs/components/rule.md#partial-response
+     */
     @JsonProperty("partial_response_strategy")
     public String getPartialResponseStrategy() {
         return partialResponseStrategy;
     }
 
+    /**
+     * PartialResponseStrategy is only used by ThanosRuler and will be ignored by Prometheus instances. More info: https://github.com/thanos-io/thanos/blob/main/docs/components/rule.md#partial-response
+     */
     @JsonProperty("partial_response_strategy")
     public void setPartialResponseStrategy(String partialResponseStrategy) {
         this.partialResponseStrategy = partialResponseStrategy;
     }
 
+    /**
+     * Defines the offset the rule evaluation timestamp of this particular group by the specified duration into the past.<br><p> <br><p> It requires Prometheus &gt;= v2.53.0. It is not supported for ThanosRuler.
+     */
     @JsonProperty("query_offset")
     public String getQueryOffset() {
         return queryOffset;
     }
 
+    /**
+     * Defines the offset the rule evaluation timestamp of this particular group by the specified duration into the past.<br><p> <br><p> It requires Prometheus &gt;= v2.53.0. It is not supported for ThanosRuler.
+     */
     @JsonProperty("query_offset")
     public void setQueryOffset(String queryOffset) {
         this.queryOffset = queryOffset;
     }
 
+    /**
+     * List of alerting and recording rules.
+     */
     @JsonProperty("rules")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Rule> getRules() {
         return rules;
     }
 
+    /**
+     * List of alerting and recording rules.
+     */
     @JsonProperty("rules")
     public void setRules(List<Rule> rules) {
         this.rules = rules;

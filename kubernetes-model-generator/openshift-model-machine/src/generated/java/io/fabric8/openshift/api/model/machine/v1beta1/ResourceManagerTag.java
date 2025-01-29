@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ResourceManagerTag is a tag to apply to GCP resources created for the cluster.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class ResourceManagerTag implements Editable<ResourceManagerTagBuilder>, 
         this.value = value;
     }
 
+    /**
+     * key is the key part of the tag. A tag key can have a maximum of 63 characters and cannot be empty. Tag key must begin and end with an alphanumeric character, and must contain only uppercase, lowercase alphanumeric characters, and the following special characters `._-`.
+     */
     @JsonProperty("key")
     public String getKey() {
         return key;
     }
 
+    /**
+     * key is the key part of the tag. A tag key can have a maximum of 63 characters and cannot be empty. Tag key must begin and end with an alphanumeric character, and must contain only uppercase, lowercase alphanumeric characters, and the following special characters `._-`.
+     */
     @JsonProperty("key")
     public void setKey(String key) {
         this.key = key;
     }
 
+    /**
+     * parentID is the ID of the hierarchical resource where the tags are defined e.g. at the Organization or the Project level. To find the Organization or Project ID ref https://cloud.google.com/resource-manager/docs/creating-managing-organization#retrieving_your_organization_id https://cloud.google.com/resource-manager/docs/creating-managing-projects#identifying_projects An OrganizationID can have a maximum of 32 characters and must consist of decimal numbers, and cannot have leading zeroes. A ProjectID must be 6 to 30 characters in length, can only contain lowercase letters, numbers, and hyphens, and must start with a letter, and cannot end with a hyphen.
+     */
     @JsonProperty("parentID")
     public String getParentID() {
         return parentID;
     }
 
+    /**
+     * parentID is the ID of the hierarchical resource where the tags are defined e.g. at the Organization or the Project level. To find the Organization or Project ID ref https://cloud.google.com/resource-manager/docs/creating-managing-organization#retrieving_your_organization_id https://cloud.google.com/resource-manager/docs/creating-managing-projects#identifying_projects An OrganizationID can have a maximum of 32 characters and must consist of decimal numbers, and cannot have leading zeroes. A ProjectID must be 6 to 30 characters in length, can only contain lowercase letters, numbers, and hyphens, and must start with a letter, and cannot end with a hyphen.
+     */
     @JsonProperty("parentID")
     public void setParentID(String parentID) {
         this.parentID = parentID;
     }
 
+    /**
+     * value is the value part of the tag. A tag value can have a maximum of 63 characters and cannot be empty. Tag value must begin and end with an alphanumeric character, and must contain only uppercase, lowercase alphanumeric characters, and the following special characters `_-.@%=+:,&#42;#&amp;(){}[]` and spaces.
+     */
     @JsonProperty("value")
     public String getValue() {
         return value;
     }
 
+    /**
+     * value is the value part of the tag. A tag value can have a maximum of 63 characters and cannot be empty. Tag value must begin and end with an alphanumeric character, and must contain only uppercase, lowercase alphanumeric characters, and the following special characters `_-.@%=+:,&#42;#&amp;(){}[]` and spaces.
+     */
     @JsonProperty("value")
     public void setValue(String value) {
         this.value = value;

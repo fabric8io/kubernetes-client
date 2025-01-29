@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * RuntimeClassStrategyOptions define the strategy that will dictate the allowable RuntimeClasses for a pod.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class RuntimeClassStrategyOptions implements Editable<RuntimeClassStrateg
         this.defaultRuntimeClassName = defaultRuntimeClassName;
     }
 
+    /**
+     * allowedRuntimeClassNames is a whitelist of RuntimeClass names that may be specified on a pod. A value of "&#42;" means that any RuntimeClass name is allowed, and must be the only item in the list. An empty list requires the RuntimeClassName field to be unset.
+     */
     @JsonProperty("allowedRuntimeClassNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getAllowedRuntimeClassNames() {
         return allowedRuntimeClassNames;
     }
 
+    /**
+     * allowedRuntimeClassNames is a whitelist of RuntimeClass names that may be specified on a pod. A value of "&#42;" means that any RuntimeClass name is allowed, and must be the only item in the list. An empty list requires the RuntimeClassName field to be unset.
+     */
     @JsonProperty("allowedRuntimeClassNames")
     public void setAllowedRuntimeClassNames(List<String> allowedRuntimeClassNames) {
         this.allowedRuntimeClassNames = allowedRuntimeClassNames;
     }
 
+    /**
+     * defaultRuntimeClassName is the default RuntimeClassName to set on the pod. The default MUST be allowed by the allowedRuntimeClassNames list. A value of nil does not mutate the Pod.
+     */
     @JsonProperty("defaultRuntimeClassName")
     public String getDefaultRuntimeClassName() {
         return defaultRuntimeClassName;
     }
 
+    /**
+     * defaultRuntimeClassName is the default RuntimeClassName to set on the pod. The default MUST be allowed by the allowedRuntimeClassNames list. A value of nil does not mutate the Pod.
+     */
     @JsonProperty("defaultRuntimeClassName")
     public void setDefaultRuntimeClassName(String defaultRuntimeClassName) {
         this.defaultRuntimeClassName = defaultRuntimeClassName;

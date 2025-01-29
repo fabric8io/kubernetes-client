@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Param declares an ParamValues to use for the parameter called name.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class Param implements Editable<ParamBuilder>, KubernetesResource
         this.value = value;
     }
 
+    /**
+     * Param declares an ParamValues to use for the parameter called name.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Param declares an ParamValues to use for the parameter called name.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Param declares an ParamValues to use for the parameter called name.
+     */
     @JsonProperty("value")
     public ParamValue getValue() {
         return value;
     }
 
+    /**
+     * Param declares an ParamValues to use for the parameter called name.
+     */
     @JsonProperty("value")
     public void setValue(ParamValue value) {
         this.value = value;

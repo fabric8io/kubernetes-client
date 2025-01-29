@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * MetricsOverrides defines custom metric generation behavior for an individual metric or the set of all standard metrics.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -87,32 +90,50 @@ public class MetricsOverrides implements Editable<MetricsOverridesBuilder>, Kube
         this.tagOverrides = tagOverrides;
     }
 
+    /**
+     * MetricsOverrides defines custom metric generation behavior for an individual metric or the set of all standard metrics.
+     */
     @JsonProperty("disabled")
     public Boolean getDisabled() {
         return disabled;
     }
 
+    /**
+     * MetricsOverrides defines custom metric generation behavior for an individual metric or the set of all standard metrics.
+     */
     @JsonProperty("disabled")
     public void setDisabled(Boolean disabled) {
         this.disabled = disabled;
     }
 
+    /**
+     * MetricsOverrides defines custom metric generation behavior for an individual metric or the set of all standard metrics.
+     */
     @JsonProperty("match")
     public MetricSelector getMatch() {
         return match;
     }
 
+    /**
+     * MetricsOverrides defines custom metric generation behavior for an individual metric or the set of all standard metrics.
+     */
     @JsonProperty("match")
     public void setMatch(MetricSelector match) {
         this.match = match;
     }
 
+    /**
+     * Optional. Collection of tag names and tag expressions to override in the selected metric(s). The key in the map is the name of the tag. The value in the map is the operation to perform on the the tag. WARNING: some providers may not support adding/removing tags. See also: https://istio.io/latest/docs/reference/config/metrics/#labels
+     */
     @JsonProperty("tagOverrides")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public Map<String, MetricsOverridesTagOverride> getTagOverrides() {
         return tagOverrides;
     }
 
+    /**
+     * Optional. Collection of tag names and tag expressions to override in the selected metric(s). The key in the map is the name of the tag. The value in the map is the operation to perform on the the tag. WARNING: some providers may not support adding/removing tags. See also: https://istio.io/latest/docs/reference/config/metrics/#labels
+     */
     @JsonProperty("tagOverrides")
     public void setTagOverrides(Map<String, MetricsOverridesTagOverride> tagOverrides) {
         this.tagOverrides = tagOverrides;

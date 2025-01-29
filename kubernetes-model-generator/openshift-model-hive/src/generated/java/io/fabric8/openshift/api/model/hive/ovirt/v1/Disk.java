@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Disk defines a VM disk
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class Disk implements Editable<DiskBuilder>, KubernetesResource
         this.sizeGB = sizeGB;
     }
 
+    /**
+     * SizeGB size of the bootable disk in GiB.
+     */
     @JsonProperty("sizeGB")
     public Long getSizeGB() {
         return sizeGB;
     }
 
+    /**
+     * SizeGB size of the bootable disk in GiB.
+     */
     @JsonProperty("sizeGB")
     public void setSizeGB(Long sizeGB) {
         this.sizeGB = sizeGB;

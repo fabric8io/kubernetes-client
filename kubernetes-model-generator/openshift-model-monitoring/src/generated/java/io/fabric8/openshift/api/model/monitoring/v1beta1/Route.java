@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Route defines a node in the routing tree.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -122,106 +125,166 @@ public class Route implements Editable<RouteBuilder>, KubernetesResource
         this.routes = routes;
     }
 
+    /**
+     * ActiveTimeIntervals is a list of TimeInterval names when this route should be active.
+     */
     @JsonProperty("activeTimeIntervals")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getActiveTimeIntervals() {
         return activeTimeIntervals;
     }
 
+    /**
+     * ActiveTimeIntervals is a list of TimeInterval names when this route should be active.
+     */
     @JsonProperty("activeTimeIntervals")
     public void setActiveTimeIntervals(List<String> activeTimeIntervals) {
         this.activeTimeIntervals = activeTimeIntervals;
     }
 
+    /**
+     * Boolean indicating whether an alert should continue matching subsequent sibling nodes. It will always be overridden to true for the first-level route by the Prometheus operator.
+     */
     @JsonProperty("continue")
     public Boolean getContinue() {
         return _continue;
     }
 
+    /**
+     * Boolean indicating whether an alert should continue matching subsequent sibling nodes. It will always be overridden to true for the first-level route by the Prometheus operator.
+     */
     @JsonProperty("continue")
     public void setContinue(Boolean _continue) {
         this._continue = _continue;
     }
 
+    /**
+     * List of labels to group by. Labels must not be repeated (unique list). Special label "..." (aggregate by all possible labels), if provided, must be the only element in the list.
+     */
     @JsonProperty("groupBy")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getGroupBy() {
         return groupBy;
     }
 
+    /**
+     * List of labels to group by. Labels must not be repeated (unique list). Special label "..." (aggregate by all possible labels), if provided, must be the only element in the list.
+     */
     @JsonProperty("groupBy")
     public void setGroupBy(List<String> groupBy) {
         this.groupBy = groupBy;
     }
 
+    /**
+     * How long to wait before sending an updated notification. Must match the regular expression`^(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?$` Example: "5m"
+     */
     @JsonProperty("groupInterval")
     public String getGroupInterval() {
         return groupInterval;
     }
 
+    /**
+     * How long to wait before sending an updated notification. Must match the regular expression`^(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?$` Example: "5m"
+     */
     @JsonProperty("groupInterval")
     public void setGroupInterval(String groupInterval) {
         this.groupInterval = groupInterval;
     }
 
+    /**
+     * How long to wait before sending the initial notification. Must match the regular expression`^(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?$` Example: "30s"
+     */
     @JsonProperty("groupWait")
     public String getGroupWait() {
         return groupWait;
     }
 
+    /**
+     * How long to wait before sending the initial notification. Must match the regular expression`^(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?$` Example: "30s"
+     */
     @JsonProperty("groupWait")
     public void setGroupWait(String groupWait) {
         this.groupWait = groupWait;
     }
 
+    /**
+     * List of matchers that the alert's labels should match. For the first level route, the operator removes any existing equality and regexp matcher on the `namespace` label and adds a `namespace: &lt;object namespace&gt;` matcher.
+     */
     @JsonProperty("matchers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Matcher> getMatchers() {
         return matchers;
     }
 
+    /**
+     * List of matchers that the alert's labels should match. For the first level route, the operator removes any existing equality and regexp matcher on the `namespace` label and adds a `namespace: &lt;object namespace&gt;` matcher.
+     */
     @JsonProperty("matchers")
     public void setMatchers(List<Matcher> matchers) {
         this.matchers = matchers;
     }
 
+    /**
+     * Note: this comment applies to the field definition above but appears below otherwise it gets included in the generated manifest. CRD schema doesn't support self-referential types for now (see https://github.com/kubernetes/kubernetes/issues/62872). We have to use an alternative type to circumvent the limitation. The downside is that the Kube API can't validate the data beyond the fact that it is a valid JSON representation. MuteTimeIntervals is a list of TimeInterval names that will mute this route when matched.
+     */
     @JsonProperty("muteTimeIntervals")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getMuteTimeIntervals() {
         return muteTimeIntervals;
     }
 
+    /**
+     * Note: this comment applies to the field definition above but appears below otherwise it gets included in the generated manifest. CRD schema doesn't support self-referential types for now (see https://github.com/kubernetes/kubernetes/issues/62872). We have to use an alternative type to circumvent the limitation. The downside is that the Kube API can't validate the data beyond the fact that it is a valid JSON representation. MuteTimeIntervals is a list of TimeInterval names that will mute this route when matched.
+     */
     @JsonProperty("muteTimeIntervals")
     public void setMuteTimeIntervals(List<String> muteTimeIntervals) {
         this.muteTimeIntervals = muteTimeIntervals;
     }
 
+    /**
+     * Name of the receiver for this route. If not empty, it should be listed in the `receivers` field.
+     */
     @JsonProperty("receiver")
     public String getReceiver() {
         return receiver;
     }
 
+    /**
+     * Name of the receiver for this route. If not empty, it should be listed in the `receivers` field.
+     */
     @JsonProperty("receiver")
     public void setReceiver(String receiver) {
         this.receiver = receiver;
     }
 
+    /**
+     * How long to wait before repeating the last notification. Must match the regular expression`^(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?$` Example: "4h"
+     */
     @JsonProperty("repeatInterval")
     public String getRepeatInterval() {
         return repeatInterval;
     }
 
+    /**
+     * How long to wait before repeating the last notification. Must match the regular expression`^(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?$` Example: "4h"
+     */
     @JsonProperty("repeatInterval")
     public void setRepeatInterval(String repeatInterval) {
         this.repeatInterval = repeatInterval;
     }
 
+    /**
+     * Child routes.
+     */
     @JsonProperty("routes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<JsonNode> getRoutes() {
         return routes;
     }
 
+    /**
+     * Child routes.
+     */
     @JsonProperty("routes")
     public void setRoutes(List<JsonNode> routes) {
         this.routes = routes;

@@ -19,6 +19,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ServiceStatus represents the current status of a service.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -56,22 +59,34 @@ public class ServiceStatus implements Editable<ServiceStatusBuilder>, Kubernetes
         this.loadBalancer = loadBalancer;
     }
 
+    /**
+     * Current service state
+     */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Condition> getConditions() {
         return conditions;
     }
 
+    /**
+     * Current service state
+     */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
     }
 
+    /**
+     * ServiceStatus represents the current status of a service.
+     */
     @JsonProperty("loadBalancer")
     public LoadBalancerStatus getLoadBalancer() {
         return loadBalancer;
     }
 
+    /**
+     * ServiceStatus represents the current status of a service.
+     */
     @JsonProperty("loadBalancer")
     public void setLoadBalancer(LoadBalancerStatus loadBalancer) {
         this.loadBalancer = loadBalancer;

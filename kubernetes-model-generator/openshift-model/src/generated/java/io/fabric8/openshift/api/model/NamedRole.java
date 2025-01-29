@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NamedRole relates a Role with a name
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class NamedRole implements Editable<NamedRoleBuilder>, KubernetesResource
         this.role = role;
     }
 
+    /**
+     * Name is the name of the role
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name is the name of the role
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * NamedRole relates a Role with a name
+     */
     @JsonProperty("role")
     public Role getRole() {
         return role;
     }
 
+    /**
+     * NamedRole relates a Role with a name
+     */
     @JsonProperty("role")
     public void setRole(Role role) {
         this.role = role;

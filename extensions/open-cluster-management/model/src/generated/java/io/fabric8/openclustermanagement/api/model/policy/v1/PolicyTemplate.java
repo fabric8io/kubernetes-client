@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PolicyTemplate is the definition of the policy engine resource to apply to the managed cluster, along with configurations on how it should be applied.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,32 +93,50 @@ public class PolicyTemplate implements Editable<PolicyTemplateBuilder>, Kubernet
         this.objectDefinition = objectDefinition;
     }
 
+    /**
+     * ExtraDependencies is additional PolicyDependencies that only apply to this policy template. ExtraDependencies is a list of dependency objects detailed with extra considerations for compliance that should be fulfilled before applying the policy template to the managed clusters.
+     */
     @JsonProperty("extraDependencies")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<PolicyDependency> getExtraDependencies() {
         return extraDependencies;
     }
 
+    /**
+     * ExtraDependencies is additional PolicyDependencies that only apply to this policy template. ExtraDependencies is a list of dependency objects detailed with extra considerations for compliance that should be fulfilled before applying the policy template to the managed clusters.
+     */
     @JsonProperty("extraDependencies")
     public void setExtraDependencies(List<PolicyDependency> extraDependencies) {
         this.extraDependencies = extraDependencies;
     }
 
+    /**
+     * IgnorePending is a boolean parameter to specify whether to ignore the "Pending" status of this template when calculating the overall policy status. The default value is "false" to not ignore a "Pending" status.
+     */
     @JsonProperty("ignorePending")
     public Boolean getIgnorePending() {
         return ignorePending;
     }
 
+    /**
+     * IgnorePending is a boolean parameter to specify whether to ignore the "Pending" status of this template when calculating the overall policy status. The default value is "false" to not ignore a "Pending" status.
+     */
     @JsonProperty("ignorePending")
     public void setIgnorePending(Boolean ignorePending) {
         this.ignorePending = ignorePending;
     }
 
+    /**
+     * PolicyTemplate is the definition of the policy engine resource to apply to the managed cluster, along with configurations on how it should be applied.
+     */
     @JsonProperty("objectDefinition")
     public Object getObjectDefinition() {
         return objectDefinition;
     }
 
+    /**
+     * PolicyTemplate is the definition of the policy engine resource to apply to the managed cluster, along with configurations on how it should be applied.
+     */
     @JsonProperty("objectDefinition")
     @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
     public void setObjectDefinition(Object objectDefinition) {

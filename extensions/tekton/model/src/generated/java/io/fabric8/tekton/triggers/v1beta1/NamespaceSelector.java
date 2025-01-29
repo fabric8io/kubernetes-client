@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NamespaceSelector is a selector for selecting either all namespaces or a list of namespaces.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -81,12 +84,18 @@ public class NamespaceSelector implements Editable<NamespaceSelectorBuilder>, Ku
         this.matchNames = matchNames;
     }
 
+    /**
+     * List of namespace names.
+     */
     @JsonProperty("matchNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getMatchNames() {
         return matchNames;
     }
 
+    /**
+     * List of namespace names.
+     */
     @JsonProperty("matchNames")
     public void setMatchNames(List<String> matchNames) {
         this.matchNames = matchNames;

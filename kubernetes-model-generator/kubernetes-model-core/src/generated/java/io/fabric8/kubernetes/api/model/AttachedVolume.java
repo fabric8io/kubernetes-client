@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AttachedVolume describes a volume attached to a node
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -53,21 +56,33 @@ public class AttachedVolume implements Editable<AttachedVolumeBuilder>, Kubernet
         this.name = name;
     }
 
+    /**
+     * DevicePath represents the device path where the volume should be available
+     */
     @JsonProperty("devicePath")
     public String getDevicePath() {
         return devicePath;
     }
 
+    /**
+     * DevicePath represents the device path where the volume should be available
+     */
     @JsonProperty("devicePath")
     public void setDevicePath(String devicePath) {
         this.devicePath = devicePath;
     }
 
+    /**
+     * Name of the attached volume
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name of the attached volume
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

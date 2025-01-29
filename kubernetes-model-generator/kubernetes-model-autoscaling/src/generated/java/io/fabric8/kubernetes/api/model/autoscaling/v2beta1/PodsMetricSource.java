@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PodsMetricSource indicates how to scale on a metric describing each pod in the current scale target (for example, transactions-processed-per-second). The values will be averaged together before being compared to the target value.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -87,31 +90,49 @@ public class PodsMetricSource implements Editable<PodsMetricSourceBuilder>, Kube
         this.targetAverageValue = targetAverageValue;
     }
 
+    /**
+     * metricName is the name of the metric in question
+     */
     @JsonProperty("metricName")
     public String getMetricName() {
         return metricName;
     }
 
+    /**
+     * metricName is the name of the metric in question
+     */
     @JsonProperty("metricName")
     public void setMetricName(String metricName) {
         this.metricName = metricName;
     }
 
+    /**
+     * PodsMetricSource indicates how to scale on a metric describing each pod in the current scale target (for example, transactions-processed-per-second). The values will be averaged together before being compared to the target value.
+     */
     @JsonProperty("selector")
     public LabelSelector getSelector() {
         return selector;
     }
 
+    /**
+     * PodsMetricSource indicates how to scale on a metric describing each pod in the current scale target (for example, transactions-processed-per-second). The values will be averaged together before being compared to the target value.
+     */
     @JsonProperty("selector")
     public void setSelector(LabelSelector selector) {
         this.selector = selector;
     }
 
+    /**
+     * PodsMetricSource indicates how to scale on a metric describing each pod in the current scale target (for example, transactions-processed-per-second). The values will be averaged together before being compared to the target value.
+     */
     @JsonProperty("targetAverageValue")
     public Quantity getTargetAverageValue() {
         return targetAverageValue;
     }
 
+    /**
+     * PodsMetricSource indicates how to scale on a metric describing each pod in the current scale target (for example, transactions-processed-per-second). The values will be averaged together before being compared to the target value.
+     */
     @JsonProperty("targetAverageValue")
     public void setTargetAverageValue(Quantity targetAverageValue) {
         this.targetAverageValue = targetAverageValue;

@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * IOChaosSpec defines the desired state of IOChaos
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -138,153 +141,243 @@ public class IOChaosSpec implements Editable<IOChaosSpecBuilder>, KubernetesReso
         this.volumePath = volumePath;
     }
 
+    /**
+     * Action defines the specific pod chaos action. Supported action: latency / fault / attrOverride / mistake
+     */
     @JsonProperty("action")
     public String getAction() {
         return action;
     }
 
+    /**
+     * Action defines the specific pod chaos action. Supported action: latency / fault / attrOverride / mistake
+     */
     @JsonProperty("action")
     public void setAction(String action) {
         this.action = action;
     }
 
+    /**
+     * IOChaosSpec defines the desired state of IOChaos
+     */
     @JsonProperty("attr")
     public AttrOverrideSpec getAttr() {
         return attr;
     }
 
+    /**
+     * IOChaosSpec defines the desired state of IOChaos
+     */
     @JsonProperty("attr")
     public void setAttr(AttrOverrideSpec attr) {
         this.attr = attr;
     }
 
+    /**
+     * ContainerNames indicates list of the name of affected container. If not set, the first container will be injected
+     */
     @JsonProperty("containerNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getContainerNames() {
         return containerNames;
     }
 
+    /**
+     * ContainerNames indicates list of the name of affected container. If not set, the first container will be injected
+     */
     @JsonProperty("containerNames")
     public void setContainerNames(List<String> containerNames) {
         this.containerNames = containerNames;
     }
 
+    /**
+     * Delay defines the value of I/O chaos action delay. A delay string is a possibly signed sequence of decimal numbers, each with optional fraction and a unit suffix, such as "300ms". Valid time units are "ns", "us" (or "µs"), "ms", "s", "m", "h".
+     */
     @JsonProperty("delay")
     public String getDelay() {
         return delay;
     }
 
+    /**
+     * Delay defines the value of I/O chaos action delay. A delay string is a possibly signed sequence of decimal numbers, each with optional fraction and a unit suffix, such as "300ms". Valid time units are "ns", "us" (or "µs"), "ms", "s", "m", "h".
+     */
     @JsonProperty("delay")
     public void setDelay(String delay) {
         this.delay = delay;
     }
 
+    /**
+     * Duration represents the duration of the chaos action. It is required when the action is `PodFailureAction`. A duration string is a possibly signed sequence of decimal numbers, each with optional fraction and a unit suffix, such as "300ms", "-1.5h" or "2h45m". Valid time units are "ns", "us" (or "µs"), "ms", "s", "m", "h".
+     */
     @JsonProperty("duration")
     public String getDuration() {
         return duration;
     }
 
+    /**
+     * Duration represents the duration of the chaos action. It is required when the action is `PodFailureAction`. A duration string is a possibly signed sequence of decimal numbers, each with optional fraction and a unit suffix, such as "300ms", "-1.5h" or "2h45m". Valid time units are "ns", "us" (or "µs"), "ms", "s", "m", "h".
+     */
     @JsonProperty("duration")
     public void setDuration(String duration) {
         this.duration = duration;
     }
 
+    /**
+     * Errno defines the error code that returned by I/O action. refer to: https://www-numi.fnal.gov/offline_software/srt_public_context/WebDocs/Errors/unix_system_errors.html
+     */
     @JsonProperty("errno")
     public Long getErrno() {
         return errno;
     }
 
+    /**
+     * Errno defines the error code that returned by I/O action. refer to: https://www-numi.fnal.gov/offline_software/srt_public_context/WebDocs/Errors/unix_system_errors.html
+     */
     @JsonProperty("errno")
     public void setErrno(Long errno) {
         this.errno = errno;
     }
 
+    /**
+     * Methods defines the I/O methods for injecting I/O chaos action. default: all I/O methods.
+     */
     @JsonProperty("methods")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getMethods() {
         return methods;
     }
 
+    /**
+     * Methods defines the I/O methods for injecting I/O chaos action. default: all I/O methods.
+     */
     @JsonProperty("methods")
     public void setMethods(List<String> methods) {
         this.methods = methods;
     }
 
+    /**
+     * IOChaosSpec defines the desired state of IOChaos
+     */
     @JsonProperty("mistake")
     public MistakeSpec getMistake() {
         return mistake;
     }
 
+    /**
+     * IOChaosSpec defines the desired state of IOChaos
+     */
     @JsonProperty("mistake")
     public void setMistake(MistakeSpec mistake) {
         this.mistake = mistake;
     }
 
+    /**
+     * Mode defines the mode to run chaos action. Supported mode: one / all / fixed / fixed-percent / random-max-percent
+     */
     @JsonProperty("mode")
     public String getMode() {
         return mode;
     }
 
+    /**
+     * Mode defines the mode to run chaos action. Supported mode: one / all / fixed / fixed-percent / random-max-percent
+     */
     @JsonProperty("mode")
     public void setMode(String mode) {
         this.mode = mode;
     }
 
+    /**
+     * Path defines the path of files for injecting I/O chaos action.
+     */
     @JsonProperty("path")
     public String getPath() {
         return path;
     }
 
+    /**
+     * Path defines the path of files for injecting I/O chaos action.
+     */
     @JsonProperty("path")
     public void setPath(String path) {
         this.path = path;
     }
 
+    /**
+     * Percent defines the percentage of injection errors and provides a number from 0-100. default: 100.
+     */
     @JsonProperty("percent")
     public Integer getPercent() {
         return percent;
     }
 
+    /**
+     * Percent defines the percentage of injection errors and provides a number from 0-100. default: 100.
+     */
     @JsonProperty("percent")
     public void setPercent(Integer percent) {
         this.percent = percent;
     }
 
+    /**
+     * RemoteCluster represents the remote cluster where the chaos will be deployed
+     */
     @JsonProperty("remoteCluster")
     public String getRemoteCluster() {
         return remoteCluster;
     }
 
+    /**
+     * RemoteCluster represents the remote cluster where the chaos will be deployed
+     */
     @JsonProperty("remoteCluster")
     public void setRemoteCluster(String remoteCluster) {
         this.remoteCluster = remoteCluster;
     }
 
+    /**
+     * IOChaosSpec defines the desired state of IOChaos
+     */
     @JsonProperty("selector")
     public PodSelectorSpec getSelector() {
         return selector;
     }
 
+    /**
+     * IOChaosSpec defines the desired state of IOChaos
+     */
     @JsonProperty("selector")
     public void setSelector(PodSelectorSpec selector) {
         this.selector = selector;
     }
 
+    /**
+     * Value is required when the mode is set to `FixedMode` / `FixedPercentMode` / `RandomMaxPercentMode`. If `FixedMode`, provide an integer of pods to do chaos action. If `FixedPercentMode`, provide a number from 0-100 to specify the percent of pods the server can do chaos action. IF `RandomMaxPercentMode`,  provide a number from 0-100 to specify the max percent of pods to do chaos action
+     */
     @JsonProperty("value")
     public String getValue() {
         return value;
     }
 
+    /**
+     * Value is required when the mode is set to `FixedMode` / `FixedPercentMode` / `RandomMaxPercentMode`. If `FixedMode`, provide an integer of pods to do chaos action. If `FixedPercentMode`, provide a number from 0-100 to specify the percent of pods the server can do chaos action. IF `RandomMaxPercentMode`,  provide a number from 0-100 to specify the max percent of pods to do chaos action
+     */
     @JsonProperty("value")
     public void setValue(String value) {
         this.value = value;
     }
 
+    /**
+     * VolumePath represents the mount path of injected volume
+     */
     @JsonProperty("volumePath")
     public String getVolumePath() {
         return volumePath;
     }
 
+    /**
+     * VolumePath represents the mount path of injected volume
+     */
     @JsonProperty("volumePath")
     public void setVolumePath(String volumePath) {
         this.volumePath = volumePath;

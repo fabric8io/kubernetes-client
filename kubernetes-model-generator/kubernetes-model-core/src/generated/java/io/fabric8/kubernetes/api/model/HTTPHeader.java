@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * HTTPHeader describes a custom header to be used in HTTP probes
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -53,21 +56,33 @@ public class HTTPHeader implements Editable<HTTPHeaderBuilder>, KubernetesResour
         this.value = value;
     }
 
+    /**
+     * The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * The header field value
+     */
     @JsonProperty("value")
     public String getValue() {
         return value;
     }
 
+    /**
+     * The header field value
+     */
     @JsonProperty("value")
     public void setValue(String value) {
         this.value = value;

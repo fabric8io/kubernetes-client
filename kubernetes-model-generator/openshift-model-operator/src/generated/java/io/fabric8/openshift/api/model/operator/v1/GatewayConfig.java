@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * GatewayConfig holds node gateway-related parsed config file parameters and command-line overrides
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class GatewayConfig implements Editable<GatewayConfigBuilder>, Kubernetes
         this.routingViaHost = routingViaHost;
     }
 
+    /**
+     * IPForwarding controls IP forwarding for all traffic on OVN-Kubernetes managed interfaces (such as br-ex). By default this is set to Restricted, and Kubernetes related traffic is still forwarded appropriately, but other IP traffic will not be routed by the OCP node. If there is a desire to allow the host to forward traffic across OVN-Kubernetes managed interfaces, then set this field to "Global". The supported values are "Restricted" and "Global".
+     */
     @JsonProperty("ipForwarding")
     public String getIpForwarding() {
         return ipForwarding;
     }
 
+    /**
+     * IPForwarding controls IP forwarding for all traffic on OVN-Kubernetes managed interfaces (such as br-ex). By default this is set to Restricted, and Kubernetes related traffic is still forwarded appropriately, but other IP traffic will not be routed by the OCP node. If there is a desire to allow the host to forward traffic across OVN-Kubernetes managed interfaces, then set this field to "Global". The supported values are "Restricted" and "Global".
+     */
     @JsonProperty("ipForwarding")
     public void setIpForwarding(String ipForwarding) {
         this.ipForwarding = ipForwarding;
     }
 
+    /**
+     * GatewayConfig holds node gateway-related parsed config file parameters and command-line overrides
+     */
     @JsonProperty("ipv4")
     public IPv4GatewayConfig getIpv4() {
         return ipv4;
     }
 
+    /**
+     * GatewayConfig holds node gateway-related parsed config file parameters and command-line overrides
+     */
     @JsonProperty("ipv4")
     public void setIpv4(IPv4GatewayConfig ipv4) {
         this.ipv4 = ipv4;
     }
 
+    /**
+     * GatewayConfig holds node gateway-related parsed config file parameters and command-line overrides
+     */
     @JsonProperty("ipv6")
     public IPv6GatewayConfig getIpv6() {
         return ipv6;
     }
 
+    /**
+     * GatewayConfig holds node gateway-related parsed config file parameters and command-line overrides
+     */
     @JsonProperty("ipv6")
     public void setIpv6(IPv6GatewayConfig ipv6) {
         this.ipv6 = ipv6;
     }
 
+    /**
+     * RoutingViaHost allows pod egress traffic to exit via the ovn-k8s-mp0 management port into the host before sending it out. If this is not set, traffic will always egress directly from OVN to outside without touching the host stack. Setting this to true means hardware offload will not be supported. Default is false if GatewayConfig is specified.
+     */
     @JsonProperty("routingViaHost")
     public Boolean getRoutingViaHost() {
         return routingViaHost;
     }
 
+    /**
+     * RoutingViaHost allows pod egress traffic to exit via the ovn-k8s-mp0 management port into the host before sending it out. If this is not set, traffic will always egress directly from OVN to outside without touching the host stack. Setting this to true means hardware offload will not be supported. Default is false if GatewayConfig is specified.
+     */
     @JsonProperty("routingViaHost")
     public void setRoutingViaHost(Boolean routingViaHost) {
         this.routingViaHost = routingViaHost;

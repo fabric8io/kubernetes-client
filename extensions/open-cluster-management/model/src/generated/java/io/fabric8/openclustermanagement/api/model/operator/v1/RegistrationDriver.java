@@ -82,11 +82,17 @@ public class RegistrationDriver implements Editable<RegistrationDriverBuilder>, 
         this.awsIrsa = awsIrsa;
     }
 
+    /**
+     * Type of the authentication used by managedcluster to register as well as pull work from hub. Possible values are csr and awsirsa.
+     */
     @JsonProperty("authType")
     public String getAuthType() {
         return authType;
     }
 
+    /**
+     * Type of the authentication used by managedcluster to register as well as pull work from hub. Possible values are csr and awsirsa.
+     */
     @JsonProperty("authType")
     public void setAuthType(String authType) {
         this.authType = authType;

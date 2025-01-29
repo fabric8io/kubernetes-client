@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ControllersConfig contains default as well as controller specific configurations
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class ControllersConfig implements Editable<ControllersConfigBuilder>, Ku
         this._default = _default;
     }
 
+    /**
+     * Controllers contains a list of configurations for different controllers
+     */
     @JsonProperty("controllers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<SpecificControllerConfig> getControllers() {
         return controllers;
     }
 
+    /**
+     * Controllers contains a list of configurations for different controllers
+     */
     @JsonProperty("controllers")
     public void setControllers(List<SpecificControllerConfig> controllers) {
         this.controllers = controllers;
     }
 
+    /**
+     * ControllersConfig contains default as well as controller specific configurations
+     */
     @JsonProperty("default")
     public ControllerConfig getDefault() {
         return _default;
     }
 
+    /**
+     * ControllersConfig contains default as well as controller specific configurations
+     */
     @JsonProperty("default")
     public void setDefault(ControllerConfig _default) {
         this._default = _default;

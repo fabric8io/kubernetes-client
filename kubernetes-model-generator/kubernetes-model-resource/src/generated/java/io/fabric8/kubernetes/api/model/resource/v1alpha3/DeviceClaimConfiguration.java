@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DeviceClaimConfiguration is used for configuration parameters in DeviceClaim.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class DeviceClaimConfiguration implements Editable<DeviceClaimConfigurati
         this.requests = requests;
     }
 
+    /**
+     * DeviceClaimConfiguration is used for configuration parameters in DeviceClaim.
+     */
     @JsonProperty("opaque")
     public OpaqueDeviceConfiguration getOpaque() {
         return opaque;
     }
 
+    /**
+     * DeviceClaimConfiguration is used for configuration parameters in DeviceClaim.
+     */
     @JsonProperty("opaque")
     public void setOpaque(OpaqueDeviceConfiguration opaque) {
         this.opaque = opaque;
     }
 
+    /**
+     * Requests lists the names of requests where the configuration applies. If empty, it applies to all requests.
+     */
     @JsonProperty("requests")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getRequests() {
         return requests;
     }
 
+    /**
+     * Requests lists the names of requests where the configuration applies. If empty, it applies to all requests.
+     */
     @JsonProperty("requests")
     public void setRequests(List<String> requests) {
         this.requests = requests;

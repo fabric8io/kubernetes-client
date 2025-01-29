@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ResourceRequest is a request for resources from one particular driver.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -83,21 +86,33 @@ public class ResourceRequest implements Editable<ResourceRequestBuilder>, Kubern
         this.vendorParameters = vendorParameters;
     }
 
+    /**
+     * ResourceRequest is a request for resources from one particular driver.
+     */
     @JsonProperty("namedResources")
     public NamedResourcesRequest getNamedResources() {
         return namedResources;
     }
 
+    /**
+     * ResourceRequest is a request for resources from one particular driver.
+     */
     @JsonProperty("namedResources")
     public void setNamedResources(NamedResourcesRequest namedResources) {
         this.namedResources = namedResources;
     }
 
+    /**
+     * ResourceRequest is a request for resources from one particular driver.
+     */
     @JsonProperty("vendorParameters")
     public Object getVendorParameters() {
         return vendorParameters;
     }
 
+    /**
+     * ResourceRequest is a request for resources from one particular driver.
+     */
     @JsonProperty("vendorParameters")
     @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
     public void setVendorParameters(Object vendorParameters) {

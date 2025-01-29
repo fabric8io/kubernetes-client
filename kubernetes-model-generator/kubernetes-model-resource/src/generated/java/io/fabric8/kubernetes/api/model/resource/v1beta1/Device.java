@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Device represents one individual hardware instance that can be selected based on its attributes. Besides the name, exactly one field must be set.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class Device implements Editable<DeviceBuilder>, KubernetesResource
         this.name = name;
     }
 
+    /**
+     * Device represents one individual hardware instance that can be selected based on its attributes. Besides the name, exactly one field must be set.
+     */
     @JsonProperty("basic")
     public BasicDevice getBasic() {
         return basic;
     }
 
+    /**
+     * Device represents one individual hardware instance that can be selected based on its attributes. Besides the name, exactly one field must be set.
+     */
     @JsonProperty("basic")
     public void setBasic(BasicDevice basic) {
         this.basic = basic;
     }
 
+    /**
+     * Name is unique identifier among all devices managed by the driver in the pool. It must be a DNS label.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name is unique identifier among all devices managed by the driver in the pool. It must be a DNS label.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

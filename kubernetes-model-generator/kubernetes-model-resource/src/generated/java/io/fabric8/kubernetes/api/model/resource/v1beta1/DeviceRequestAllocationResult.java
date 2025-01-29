@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DeviceRequestAllocationResult contains the allocation result for one request.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,51 +97,81 @@ public class DeviceRequestAllocationResult implements Editable<DeviceRequestAllo
         this.request = request;
     }
 
+    /**
+     * AdminAccess indicates that this device was allocated for administrative access. See the corresponding request field for a definition of mode.<br><p> <br><p> This is an alpha field and requires enabling the DRAAdminAccess feature gate. Admin access is disabled if this field is unset or set to false, otherwise it is enabled.
+     */
     @JsonProperty("adminAccess")
     public Boolean getAdminAccess() {
         return adminAccess;
     }
 
+    /**
+     * AdminAccess indicates that this device was allocated for administrative access. See the corresponding request field for a definition of mode.<br><p> <br><p> This is an alpha field and requires enabling the DRAAdminAccess feature gate. Admin access is disabled if this field is unset or set to false, otherwise it is enabled.
+     */
     @JsonProperty("adminAccess")
     public void setAdminAccess(Boolean adminAccess) {
         this.adminAccess = adminAccess;
     }
 
+    /**
+     * Device references one device instance via its name in the driver's resource pool. It must be a DNS label.
+     */
     @JsonProperty("device")
     public String getDevice() {
         return device;
     }
 
+    /**
+     * Device references one device instance via its name in the driver's resource pool. It must be a DNS label.
+     */
     @JsonProperty("device")
     public void setDevice(String device) {
         this.device = device;
     }
 
+    /**
+     * Driver specifies the name of the DRA driver whose kubelet plugin should be invoked to process the allocation once the claim is needed on a node.<br><p> <br><p> Must be a DNS subdomain and should end with a DNS domain owned by the vendor of the driver.
+     */
     @JsonProperty("driver")
     public String getDriver() {
         return driver;
     }
 
+    /**
+     * Driver specifies the name of the DRA driver whose kubelet plugin should be invoked to process the allocation once the claim is needed on a node.<br><p> <br><p> Must be a DNS subdomain and should end with a DNS domain owned by the vendor of the driver.
+     */
     @JsonProperty("driver")
     public void setDriver(String driver) {
         this.driver = driver;
     }
 
+    /**
+     * This name together with the driver name and the device name field identify which device was allocated (`&lt;driver name&gt;/&lt;pool name&gt;/&lt;device name&gt;`).<br><p> <br><p> Must not be longer than 253 characters and may contain one or more DNS sub-domains separated by slashes.
+     */
     @JsonProperty("pool")
     public String getPool() {
         return pool;
     }
 
+    /**
+     * This name together with the driver name and the device name field identify which device was allocated (`&lt;driver name&gt;/&lt;pool name&gt;/&lt;device name&gt;`).<br><p> <br><p> Must not be longer than 253 characters and may contain one or more DNS sub-domains separated by slashes.
+     */
     @JsonProperty("pool")
     public void setPool(String pool) {
         this.pool = pool;
     }
 
+    /**
+     * Request is the name of the request in the claim which caused this device to be allocated. Multiple devices may have been allocated per request.
+     */
     @JsonProperty("request")
     public String getRequest() {
         return request;
     }
 
+    /**
+     * Request is the name of the request in the claim which caused this device to be allocated. Multiple devices may have been allocated per request.
+     */
     @JsonProperty("request")
     public void setRequest(String request) {
         this.request = request;

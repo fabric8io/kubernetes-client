@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * LeaderElection provides information to elect a leader
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -98,61 +101,97 @@ public class LeaderElection implements Editable<LeaderElectionBuilder>, Kubernet
         this.retryPeriod = retryPeriod;
     }
 
+    /**
+     * disable allows leader election to be suspended while allowing a fully defaulted "normal" startup case.
+     */
     @JsonProperty("disable")
     public Boolean getDisable() {
         return disable;
     }
 
+    /**
+     * disable allows leader election to be suspended while allowing a fully defaulted "normal" startup case.
+     */
     @JsonProperty("disable")
     public void setDisable(Boolean disable) {
         this.disable = disable;
     }
 
+    /**
+     * LeaderElection provides information to elect a leader
+     */
     @JsonProperty("leaseDuration")
     public String getLeaseDuration() {
         return leaseDuration;
     }
 
+    /**
+     * LeaderElection provides information to elect a leader
+     */
     @JsonProperty("leaseDuration")
     public void setLeaseDuration(String leaseDuration) {
         this.leaseDuration = leaseDuration;
     }
 
+    /**
+     * name indicates what name to use for the resource
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * name indicates what name to use for the resource
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * namespace indicates which namespace the resource is in
+     */
     @JsonProperty("namespace")
     public String getNamespace() {
         return namespace;
     }
 
+    /**
+     * namespace indicates which namespace the resource is in
+     */
     @JsonProperty("namespace")
     public void setNamespace(String namespace) {
         this.namespace = namespace;
     }
 
+    /**
+     * LeaderElection provides information to elect a leader
+     */
     @JsonProperty("renewDeadline")
     public String getRenewDeadline() {
         return renewDeadline;
     }
 
+    /**
+     * LeaderElection provides information to elect a leader
+     */
     @JsonProperty("renewDeadline")
     public void setRenewDeadline(String renewDeadline) {
         this.renewDeadline = renewDeadline;
     }
 
+    /**
+     * LeaderElection provides information to elect a leader
+     */
     @JsonProperty("retryPeriod")
     public String getRetryPeriod() {
         return retryPeriod;
     }
 
+    /**
+     * LeaderElection provides information to elect a leader
+     */
     @JsonProperty("retryPeriod")
     public void setRetryPeriod(String retryPeriod) {
         this.retryPeriod = retryPeriod;

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * DeploymentCauseImageTrigger represents details about the cause of a deployment originating from an image change trigger
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class DeploymentCauseImageTrigger implements Editable<DeploymentCauseImag
         this.from = from;
     }
 
+    /**
+     * DeploymentCauseImageTrigger represents details about the cause of a deployment originating from an image change trigger
+     */
     @JsonProperty("from")
     public ObjectReference getFrom() {
         return from;
     }
 
+    /**
+     * DeploymentCauseImageTrigger represents details about the cause of a deployment originating from an image change trigger
+     */
     @JsonProperty("from")
     public void setFrom(ObjectReference from) {
         this.from = from;

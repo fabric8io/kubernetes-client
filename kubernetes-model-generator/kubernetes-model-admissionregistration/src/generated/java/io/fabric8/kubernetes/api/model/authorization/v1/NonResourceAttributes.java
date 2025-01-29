@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NonResourceAttributes includes the authorization attributes available for non-resource requests to the Authorizer interface
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class NonResourceAttributes implements Editable<NonResourceAttributesBuil
         this.verb = verb;
     }
 
+    /**
+     * Path is the URL path of the request
+     */
     @JsonProperty("path")
     public String getPath() {
         return path;
     }
 
+    /**
+     * Path is the URL path of the request
+     */
     @JsonProperty("path")
     public void setPath(String path) {
         this.path = path;
     }
 
+    /**
+     * Verb is the standard HTTP verb
+     */
     @JsonProperty("verb")
     public String getVerb() {
         return verb;
     }
 
+    /**
+     * Verb is the standard HTTP verb
+     */
     @JsonProperty("verb")
     public void setVerb(String verb) {
         this.verb = verb;

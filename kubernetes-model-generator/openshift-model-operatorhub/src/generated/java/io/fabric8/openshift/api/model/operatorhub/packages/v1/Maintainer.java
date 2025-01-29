@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Maintainer defines a project maintainer
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class Maintainer implements Editable<MaintainerBuilder>, KubernetesResour
         this.name = name;
     }
 
+    /**
+     * Maintainer defines a project maintainer
+     */
     @JsonProperty("email")
     public String getEmail() {
         return email;
     }
 
+    /**
+     * Maintainer defines a project maintainer
+     */
     @JsonProperty("email")
     public void setEmail(String email) {
         this.email = email;
     }
 
+    /**
+     * Maintainer defines a project maintainer
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Maintainer defines a project maintainer
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;

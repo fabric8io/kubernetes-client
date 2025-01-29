@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * RouteSpec holds the desired state of the Route (from the client).
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -81,12 +84,18 @@ public class RouteSpec implements Editable<RouteSpecBuilder>, KubernetesResource
         this.traffic = traffic;
     }
 
+    /**
+     * Traffic specifies how to distribute traffic over a collection of revisions and configurations.
+     */
     @JsonProperty("traffic")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TrafficTarget> getTraffic() {
         return traffic;
     }
 
+    /**
+     * Traffic specifies how to distribute traffic over a collection of revisions and configurations.
+     */
     @JsonProperty("traffic")
     public void setTraffic(List<TrafficTarget> traffic) {
         this.traffic = traffic;

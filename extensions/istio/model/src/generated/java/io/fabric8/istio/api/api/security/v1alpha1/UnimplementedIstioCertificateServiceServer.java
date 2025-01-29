@@ -31,6 +31,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * UnimplementedIstioCertificateServiceServer must be embedded to have forward compatible implementations.<br><p> <br><p> NOTE: this should be embedded by value instead of pointer to avoid a nil pointer dereference when methods are called.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({

@@ -78,11 +78,17 @@ public class RegistryPoll implements Editable<RegistryPollBuilder>, KubernetesRe
         this.interval = interval;
     }
 
+    /**
+     * Interval is used to determine the time interval between checks of the latest catalog source version. The catalog operator polls to see if a new version of the catalog source is available. If available, the latest image is pulled and gRPC traffic is directed to the latest catalog source.
+     */
     @JsonProperty("interval")
     public String getInterval() {
         return interval;
     }
 
+    /**
+     * Interval is used to determine the time interval between checks of the latest catalog source version. The catalog operator polls to see if a new version of the catalog source is available. If available, the latest image is pulled and gRPC traffic is directed to the latest catalog source.
+     */
     @JsonProperty("interval")
     public void setInterval(String interval) {
         this.interval = interval;

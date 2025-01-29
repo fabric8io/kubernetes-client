@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * MachinePool stores the configuration for a machine pool installed on ovirt.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -121,112 +124,178 @@ public class MachinePool implements Editable<MachinePoolBuilder>, KubernetesReso
         this.vmType = vmType;
     }
 
+    /**
+     * AffinityGroupsNames contains a list of oVirt affinity group names that the newly created machines will join. The affinity groups should exist on the oVirt cluster or created by the OpenShift installer.
+     */
     @JsonProperty("affinityGroupsNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getAffinityGroupsNames() {
         return affinityGroupsNames;
     }
 
+    /**
+     * AffinityGroupsNames contains a list of oVirt affinity group names that the newly created machines will join. The affinity groups should exist on the oVirt cluster or created by the OpenShift installer.
+     */
     @JsonProperty("affinityGroupsNames")
     public void setAffinityGroupsNames(List<String> affinityGroupsNames) {
         this.affinityGroupsNames = affinityGroupsNames;
     }
 
+    /**
+     * AutoPinningPolicy defines the policy to automatically set the CPU and NUMA including pinning to the host for the instance. When the field is omitted the default will be "none".
+     */
     @JsonProperty("autoPinningPolicy")
     public String getAutoPinningPolicy() {
         return autoPinningPolicy;
     }
 
+    /**
+     * AutoPinningPolicy defines the policy to automatically set the CPU and NUMA including pinning to the host for the instance. When the field is omitted the default will be "none".
+     */
     @JsonProperty("autoPinningPolicy")
     public void setAutoPinningPolicy(String autoPinningPolicy) {
         this.autoPinningPolicy = autoPinningPolicy;
     }
 
+    /**
+     * Clone makes sure that the disks are cloned from the template and are not linked. Defaults to true for high performance and server VM types, false for desktop types.<br><p> <br><p> Note: this option is not documented in the OpenShift documentation. This is intentional as it has sane defaults that shouldn't be changed unless needed for debugging or resolving issues in cooperation with Red Hat support.
+     */
     @JsonProperty("clone")
     public Boolean getClone() {
         return clone;
     }
 
+    /**
+     * Clone makes sure that the disks are cloned from the template and are not linked. Defaults to true for high performance and server VM types, false for desktop types.<br><p> <br><p> Note: this option is not documented in the OpenShift documentation. This is intentional as it has sane defaults that shouldn't be changed unless needed for debugging or resolving issues in cooperation with Red Hat support.
+     */
     @JsonProperty("clone")
     public void setClone(Boolean clone) {
         this.clone = clone;
     }
 
+    /**
+     * MachinePool stores the configuration for a machine pool installed on ovirt.
+     */
     @JsonProperty("cpu")
     public CPU getCpu() {
         return cpu;
     }
 
+    /**
+     * MachinePool stores the configuration for a machine pool installed on ovirt.
+     */
     @JsonProperty("cpu")
     public void setCpu(CPU cpu) {
         this.cpu = cpu;
     }
 
+    /**
+     * Format is the disk format that the disks are in. Can be "cow" or "raw". "raw" disables several features that may be needed, such as incremental backups.
+     */
     @JsonProperty("format")
     public String getFormat() {
         return format;
     }
 
+    /**
+     * Format is the disk format that the disks are in. Can be "cow" or "raw". "raw" disables several features that may be needed, such as incremental backups.
+     */
     @JsonProperty("format")
     public void setFormat(String format) {
         this.format = format;
     }
 
+    /**
+     * Hugepages is the size of a VM's hugepages to use in KiBs.
+     */
     @JsonProperty("hugepages")
     public Integer getHugepages() {
         return hugepages;
     }
 
+    /**
+     * Hugepages is the size of a VM's hugepages to use in KiBs.
+     */
     @JsonProperty("hugepages")
     public void setHugepages(Integer hugepages) {
         this.hugepages = hugepages;
     }
 
+    /**
+     * InstanceTypeID defines the VM instance type and overrides the hardware parameters of the created VM, including cpu and memory. If InstanceTypeID is passed, all memory and cpu variables will be ignored.
+     */
     @JsonProperty("instanceTypeID")
     public String getInstanceTypeID() {
         return instanceTypeID;
     }
 
+    /**
+     * InstanceTypeID defines the VM instance type and overrides the hardware parameters of the created VM, including cpu and memory. If InstanceTypeID is passed, all memory and cpu variables will be ignored.
+     */
     @JsonProperty("instanceTypeID")
     public void setInstanceTypeID(String instanceTypeID) {
         this.instanceTypeID = instanceTypeID;
     }
 
+    /**
+     * MemoryMB is the size of a VM's memory in MiBs.
+     */
     @JsonProperty("memoryMB")
     public Integer getMemoryMB() {
         return memoryMB;
     }
 
+    /**
+     * MemoryMB is the size of a VM's memory in MiBs.
+     */
     @JsonProperty("memoryMB")
     public void setMemoryMB(Integer memoryMB) {
         this.memoryMB = memoryMB;
     }
 
+    /**
+     * MachinePool stores the configuration for a machine pool installed on ovirt.
+     */
     @JsonProperty("osDisk")
     public Disk getOsDisk() {
         return osDisk;
     }
 
+    /**
+     * MachinePool stores the configuration for a machine pool installed on ovirt.
+     */
     @JsonProperty("osDisk")
     public void setOsDisk(Disk osDisk) {
         this.osDisk = osDisk;
     }
 
+    /**
+     * Sparse indicates that sparse provisioning should be used and disks should be not preallocated.
+     */
     @JsonProperty("sparse")
     public Boolean getSparse() {
         return sparse;
     }
 
+    /**
+     * Sparse indicates that sparse provisioning should be used and disks should be not preallocated.
+     */
     @JsonProperty("sparse")
     public void setSparse(Boolean sparse) {
         this.sparse = sparse;
     }
 
+    /**
+     * VMType defines the workload type of the VM.
+     */
     @JsonProperty("vmType")
     public String getVmType() {
         return vmType;
     }
 
+    /**
+     * VMType defines the workload type of the VM.
+     */
     @JsonProperty("vmType")
     public void setVmType(String vmType) {
         this.vmType = vmType;

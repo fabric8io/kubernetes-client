@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PodsMetricStatus indicates the current value of a metric describing each pod in the current scale target (for example, transactions-processed-per-second).
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -87,31 +90,49 @@ public class PodsMetricStatus implements Editable<PodsMetricStatusBuilder>, Kube
         this.selector = selector;
     }
 
+    /**
+     * PodsMetricStatus indicates the current value of a metric describing each pod in the current scale target (for example, transactions-processed-per-second).
+     */
     @JsonProperty("currentAverageValue")
     public Quantity getCurrentAverageValue() {
         return currentAverageValue;
     }
 
+    /**
+     * PodsMetricStatus indicates the current value of a metric describing each pod in the current scale target (for example, transactions-processed-per-second).
+     */
     @JsonProperty("currentAverageValue")
     public void setCurrentAverageValue(Quantity currentAverageValue) {
         this.currentAverageValue = currentAverageValue;
     }
 
+    /**
+     * metricName is the name of the metric in question
+     */
     @JsonProperty("metricName")
     public String getMetricName() {
         return metricName;
     }
 
+    /**
+     * metricName is the name of the metric in question
+     */
     @JsonProperty("metricName")
     public void setMetricName(String metricName) {
         this.metricName = metricName;
     }
 
+    /**
+     * PodsMetricStatus indicates the current value of a metric describing each pod in the current scale target (for example, transactions-processed-per-second).
+     */
     @JsonProperty("selector")
     public LabelSelector getSelector() {
         return selector;
     }
 
+    /**
+     * PodsMetricStatus indicates the current value of a metric describing each pod in the current scale target (for example, transactions-processed-per-second).
+     */
     @JsonProperty("selector")
     public void setSelector(LabelSelector selector) {
         this.selector = selector;

@@ -126,43 +126,67 @@ public class ScrapeClass implements Editable<ScrapeClassBuilder>, KubernetesReso
         this.authorization = authorization;
     }
 
+    /**
+     * Default indicates that the scrape applies to all scrape objects that don't configure an explicit scrape class name.<br><p> <br><p> Only one scrape class can be set as the default.
+     */
     @JsonProperty("default")
     public Boolean getDefault() {
         return _default;
     }
 
+    /**
+     * Default indicates that the scrape applies to all scrape objects that don't configure an explicit scrape class name.<br><p> <br><p> Only one scrape class can be set as the default.
+     */
     @JsonProperty("default")
     public void setDefault(Boolean _default) {
         this._default = _default;
     }
 
+    /**
+     * MetricRelabelings configures the relabeling rules to apply to all samples before ingestion.<br><p> <br><p> The Operator adds the scrape class metric relabelings defined here. Then the Operator adds the target-specific metric relabelings defined in ServiceMonitors, PodMonitors, Probes and ScrapeConfigs. Then the Operator adds namespace enforcement relabeling rule, specified in '.spec.enforcedNamespaceLabel'.<br><p> <br><p> More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#metric_relabel_configs
+     */
     @JsonProperty("metricRelabelings")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<RelabelConfig> getMetricRelabelings() {
         return metricRelabelings;
     }
 
+    /**
+     * MetricRelabelings configures the relabeling rules to apply to all samples before ingestion.<br><p> <br><p> The Operator adds the scrape class metric relabelings defined here. Then the Operator adds the target-specific metric relabelings defined in ServiceMonitors, PodMonitors, Probes and ScrapeConfigs. Then the Operator adds namespace enforcement relabeling rule, specified in '.spec.enforcedNamespaceLabel'.<br><p> <br><p> More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#metric_relabel_configs
+     */
     @JsonProperty("metricRelabelings")
     public void setMetricRelabelings(List<RelabelConfig> metricRelabelings) {
         this.metricRelabelings = metricRelabelings;
     }
 
+    /**
+     * Name of the scrape class.
+     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    /**
+     * Name of the scrape class.
+     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Relabelings configures the relabeling rules to apply to all scrape targets.<br><p> <br><p> The Operator automatically adds relabelings for a few standard Kubernetes fields like `__meta_kubernetes_namespace` and `__meta_kubernetes_service_name`. Then the Operator adds the scrape class relabelings defined here. Then the Operator adds the target-specific relabelings defined in the scrape object.<br><p> <br><p> More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config
+     */
     @JsonProperty("relabelings")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<RelabelConfig> getRelabelings() {
         return relabelings;
     }
 
+    /**
+     * Relabelings configures the relabeling rules to apply to all scrape targets.<br><p> <br><p> The Operator automatically adds relabelings for a few standard Kubernetes fields like `__meta_kubernetes_namespace` and `__meta_kubernetes_service_name`. Then the Operator adds the scrape class relabelings defined here. Then the Operator adds the target-specific relabelings defined in the scrape object.<br><p> <br><p> More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config
+     */
     @JsonProperty("relabelings")
     public void setRelabelings(List<RelabelConfig> relabelings) {
         this.relabelings = relabelings;

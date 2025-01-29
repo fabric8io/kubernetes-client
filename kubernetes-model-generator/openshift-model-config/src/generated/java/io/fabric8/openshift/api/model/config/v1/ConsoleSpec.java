@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ConsoleSpec is the specification of the desired behavior of the Console.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class ConsoleSpec implements Editable<ConsoleSpecBuilder>, KubernetesReso
         this.authentication = authentication;
     }
 
+    /**
+     * ConsoleSpec is the specification of the desired behavior of the Console.
+     */
     @JsonProperty("authentication")
     public ConsoleAuthentication getAuthentication() {
         return authentication;
     }
 
+    /**
+     * ConsoleSpec is the specification of the desired behavior of the Console.
+     */
     @JsonProperty("authentication")
     public void setAuthentication(ConsoleAuthentication authentication) {
         this.authentication = authentication;

@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * TaskRunInputs holds the input values that this task was invoked with.<br><p> <br><p> Deprecated: Unused, preserved only for backwards compatibility
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,23 +89,35 @@ public class TaskRunInputs implements Editable<TaskRunInputsBuilder>, Kubernetes
         this.resources = resources;
     }
 
+    /**
+     * TaskRunInputs holds the input values that this task was invoked with.<br><p> <br><p> Deprecated: Unused, preserved only for backwards compatibility
+     */
     @JsonProperty("params")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<Param> getParams() {
         return params;
     }
 
+    /**
+     * TaskRunInputs holds the input values that this task was invoked with.<br><p> <br><p> Deprecated: Unused, preserved only for backwards compatibility
+     */
     @JsonProperty("params")
     public void setParams(List<Param> params) {
         this.params = params;
     }
 
+    /**
+     * TaskRunInputs holds the input values that this task was invoked with.<br><p> <br><p> Deprecated: Unused, preserved only for backwards compatibility
+     */
     @JsonProperty("resources")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TaskResourceBinding> getResources() {
         return resources;
     }
 
+    /**
+     * TaskRunInputs holds the input values that this task was invoked with.<br><p> <br><p> Deprecated: Unused, preserved only for backwards compatibility
+     */
     @JsonProperty("resources")
     public void setResources(List<TaskResourceBinding> resources) {
         this.resources = resources;

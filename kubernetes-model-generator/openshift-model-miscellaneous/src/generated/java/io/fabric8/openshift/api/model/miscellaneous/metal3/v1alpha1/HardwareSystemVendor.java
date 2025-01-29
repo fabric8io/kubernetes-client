@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * HardwareSystemVendor stores details about the whole hardware system.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class HardwareSystemVendor implements Editable<HardwareSystemVendorBuilde
         this.serialNumber = serialNumber;
     }
 
+    /**
+     * HardwareSystemVendor stores details about the whole hardware system.
+     */
     @JsonProperty("manufacturer")
     public String getManufacturer() {
         return manufacturer;
     }
 
+    /**
+     * HardwareSystemVendor stores details about the whole hardware system.
+     */
     @JsonProperty("manufacturer")
     public void setManufacturer(String manufacturer) {
         this.manufacturer = manufacturer;
     }
 
+    /**
+     * HardwareSystemVendor stores details about the whole hardware system.
+     */
     @JsonProperty("productName")
     public String getProductName() {
         return productName;
     }
 
+    /**
+     * HardwareSystemVendor stores details about the whole hardware system.
+     */
     @JsonProperty("productName")
     public void setProductName(String productName) {
         this.productName = productName;
     }
 
+    /**
+     * HardwareSystemVendor stores details about the whole hardware system.
+     */
     @JsonProperty("serialNumber")
     public String getSerialNumber() {
         return serialNumber;
     }
 
+    /**
+     * HardwareSystemVendor stores details about the whole hardware system.
+     */
     @JsonProperty("serialNumber")
     public void setSerialNumber(String serialNumber) {
         this.serialNumber = serialNumber;

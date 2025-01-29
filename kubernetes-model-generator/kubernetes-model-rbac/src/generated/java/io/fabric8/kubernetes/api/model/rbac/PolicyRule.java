@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PolicyRule holds information that describes a policy rule, but does not contain information about who the rule applies to or which namespace the rule applies to.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -101,56 +104,86 @@ public class PolicyRule implements Editable<PolicyRuleBuilder>, KubernetesResour
         this.verbs = verbs;
     }
 
+    /**
+     * APIGroups is the name of the APIGroup that contains the resources.  If multiple API groups are specified, any action requested against one of the enumerated resources in any API group will be allowed. "" represents the core API group and "&#42;" represents all API groups.
+     */
     @JsonProperty("apiGroups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getApiGroups() {
         return apiGroups;
     }
 
+    /**
+     * APIGroups is the name of the APIGroup that contains the resources.  If multiple API groups are specified, any action requested against one of the enumerated resources in any API group will be allowed. "" represents the core API group and "&#42;" represents all API groups.
+     */
     @JsonProperty("apiGroups")
     public void setApiGroups(List<String> apiGroups) {
         this.apiGroups = apiGroups;
     }
 
+    /**
+     * NonResourceURLs is a set of partial urls that a user should have access to.  &#42;s are allowed, but only as the full, final step in the path Since non-resource URLs are not namespaced, this field is only applicable for ClusterRoles referenced from a ClusterRoleBinding. Rules can either apply to API resources (such as "pods" or "secrets") or non-resource URL paths (such as "/api"),  but not both.
+     */
     @JsonProperty("nonResourceURLs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getNonResourceURLs() {
         return nonResourceURLs;
     }
 
+    /**
+     * NonResourceURLs is a set of partial urls that a user should have access to.  &#42;s are allowed, but only as the full, final step in the path Since non-resource URLs are not namespaced, this field is only applicable for ClusterRoles referenced from a ClusterRoleBinding. Rules can either apply to API resources (such as "pods" or "secrets") or non-resource URL paths (such as "/api"),  but not both.
+     */
     @JsonProperty("nonResourceURLs")
     public void setNonResourceURLs(List<String> nonResourceURLs) {
         this.nonResourceURLs = nonResourceURLs;
     }
 
+    /**
+     * ResourceNames is an optional white list of names that the rule applies to.  An empty set means that everything is allowed.
+     */
     @JsonProperty("resourceNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getResourceNames() {
         return resourceNames;
     }
 
+    /**
+     * ResourceNames is an optional white list of names that the rule applies to.  An empty set means that everything is allowed.
+     */
     @JsonProperty("resourceNames")
     public void setResourceNames(List<String> resourceNames) {
         this.resourceNames = resourceNames;
     }
 
+    /**
+     * Resources is a list of resources this rule applies to. '&#42;' represents all resources.
+     */
     @JsonProperty("resources")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getResources() {
         return resources;
     }
 
+    /**
+     * Resources is a list of resources this rule applies to. '&#42;' represents all resources.
+     */
     @JsonProperty("resources")
     public void setResources(List<String> resources) {
         this.resources = resources;
     }
 
+    /**
+     * Verbs is a list of Verbs that apply to ALL the ResourceKinds contained in this rule. '&#42;' represents all verbs.
+     */
     @JsonProperty("verbs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<String> getVerbs() {
         return verbs;
     }
 
+    /**
+     * Verbs is a list of Verbs that apply to ALL the ResourceKinds contained in this rule. '&#42;' represents all verbs.
+     */
     @JsonProperty("verbs")
     public void setVerbs(List<String> verbs) {
         this.verbs = verbs;

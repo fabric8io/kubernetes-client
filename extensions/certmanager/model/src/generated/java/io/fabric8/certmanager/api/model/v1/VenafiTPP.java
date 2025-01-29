@@ -33,6 +33,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * VenafiTPP defines connection configuration details for a Venafi TPP instance
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -91,41 +94,65 @@ public class VenafiTPP implements Editable<VenafiTPPBuilder>, KubernetesResource
         this.url = url;
     }
 
+    /**
+     * Base64-encoded bundle of PEM CAs which will be used to validate the certificate chain presented by the TPP server. Only used if using HTTPS; ignored for HTTP. If undefined, the certificate bundle in the cert-manager controller container is used to validate the chain.
+     */
     @JsonProperty("caBundle")
     public String getCaBundle() {
         return caBundle;
     }
 
+    /**
+     * Base64-encoded bundle of PEM CAs which will be used to validate the certificate chain presented by the TPP server. Only used if using HTTPS; ignored for HTTP. If undefined, the certificate bundle in the cert-manager controller container is used to validate the chain.
+     */
     @JsonProperty("caBundle")
     public void setCaBundle(String caBundle) {
         this.caBundle = caBundle;
     }
 
+    /**
+     * VenafiTPP defines connection configuration details for a Venafi TPP instance
+     */
     @JsonProperty("caBundleSecretRef")
     public SecretKeySelector getCaBundleSecretRef() {
         return caBundleSecretRef;
     }
 
+    /**
+     * VenafiTPP defines connection configuration details for a Venafi TPP instance
+     */
     @JsonProperty("caBundleSecretRef")
     public void setCaBundleSecretRef(SecretKeySelector caBundleSecretRef) {
         this.caBundleSecretRef = caBundleSecretRef;
     }
 
+    /**
+     * VenafiTPP defines connection configuration details for a Venafi TPP instance
+     */
     @JsonProperty("credentialsRef")
     public LocalObjectReference getCredentialsRef() {
         return credentialsRef;
     }
 
+    /**
+     * VenafiTPP defines connection configuration details for a Venafi TPP instance
+     */
     @JsonProperty("credentialsRef")
     public void setCredentialsRef(LocalObjectReference credentialsRef) {
         this.credentialsRef = credentialsRef;
     }
 
+    /**
+     * URL is the base URL for the vedsdk endpoint of the Venafi TPP instance, for example: "https://tpp.example.com/vedsdk".
+     */
     @JsonProperty("url")
     public String getUrl() {
         return url;
     }
 
+    /**
+     * URL is the base URL for the vedsdk endpoint of the Venafi TPP instance, for example: "https://tpp.example.com/vedsdk".
+     */
     @JsonProperty("url")
     public void setUrl(String url) {
         this.url = url;

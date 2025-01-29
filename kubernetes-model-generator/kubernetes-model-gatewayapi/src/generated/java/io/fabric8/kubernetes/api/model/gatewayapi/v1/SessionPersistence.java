@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * SessionPersistence defines the desired state of SessionPersistence.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,51 +97,81 @@ public class SessionPersistence implements Editable<SessionPersistenceBuilder>, 
         this.type = type;
     }
 
+    /**
+     * AbsoluteTimeout defines the absolute timeout of the persistent session. Once the AbsoluteTimeout duration has elapsed, the session becomes invalid.<br><p> <br><p> Support: Extended
+     */
     @JsonProperty("absoluteTimeout")
     public String getAbsoluteTimeout() {
         return absoluteTimeout;
     }
 
+    /**
+     * AbsoluteTimeout defines the absolute timeout of the persistent session. Once the AbsoluteTimeout duration has elapsed, the session becomes invalid.<br><p> <br><p> Support: Extended
+     */
     @JsonProperty("absoluteTimeout")
     public void setAbsoluteTimeout(String absoluteTimeout) {
         this.absoluteTimeout = absoluteTimeout;
     }
 
+    /**
+     * SessionPersistence defines the desired state of SessionPersistence.
+     */
     @JsonProperty("cookieConfig")
     public CookieConfig getCookieConfig() {
         return cookieConfig;
     }
 
+    /**
+     * SessionPersistence defines the desired state of SessionPersistence.
+     */
     @JsonProperty("cookieConfig")
     public void setCookieConfig(CookieConfig cookieConfig) {
         this.cookieConfig = cookieConfig;
     }
 
+    /**
+     * IdleTimeout defines the idle timeout of the persistent session. Once the session has been idle for more than the specified IdleTimeout duration, the session becomes invalid.<br><p> <br><p> Support: Extended
+     */
     @JsonProperty("idleTimeout")
     public String getIdleTimeout() {
         return idleTimeout;
     }
 
+    /**
+     * IdleTimeout defines the idle timeout of the persistent session. Once the session has been idle for more than the specified IdleTimeout duration, the session becomes invalid.<br><p> <br><p> Support: Extended
+     */
     @JsonProperty("idleTimeout")
     public void setIdleTimeout(String idleTimeout) {
         this.idleTimeout = idleTimeout;
     }
 
+    /**
+     * SessionName defines the name of the persistent session token which may be reflected in the cookie or the header. Users should avoid reusing session names to prevent unintended consequences, such as rejection or unpredictable behavior.<br><p> <br><p> Support: Implementation-specific
+     */
     @JsonProperty("sessionName")
     public String getSessionName() {
         return sessionName;
     }
 
+    /**
+     * SessionName defines the name of the persistent session token which may be reflected in the cookie or the header. Users should avoid reusing session names to prevent unintended consequences, such as rejection or unpredictable behavior.<br><p> <br><p> Support: Implementation-specific
+     */
     @JsonProperty("sessionName")
     public void setSessionName(String sessionName) {
         this.sessionName = sessionName;
     }
 
+    /**
+     * Type defines the type of session persistence such as through the use a header or cookie. Defaults to cookie based session persistence.<br><p> <br><p> Support: Core for "Cookie" type<br><p> <br><p> Support: Extended for "Header" type
+     */
     @JsonProperty("type")
     public String getType() {
         return type;
     }
 
+    /**
+     * Type defines the type of session persistence such as through the use a header or cookie. Defaults to cookie based session persistence.<br><p> <br><p> Support: Core for "Cookie" type<br><p> <br><p> Support: Extended for "Header" type
+     */
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;

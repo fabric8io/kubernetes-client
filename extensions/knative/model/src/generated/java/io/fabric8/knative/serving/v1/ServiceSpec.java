@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ServiceSpec represents the configuration for the Service object. A Service's specification is the union of the specifications for a Route and Configuration.  The Service restricts what can be expressed in these fields, e.g. the Route must reference the provided Configuration; however, these limitations also enable friendlier defaulting, e.g. Route never needs a Configuration name, and may be defaulted to the appropriate "run latest" spec.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -85,22 +88,34 @@ public class ServiceSpec implements Editable<ServiceSpecBuilder>, KubernetesReso
         this.traffic = traffic;
     }
 
+    /**
+     * ServiceSpec represents the configuration for the Service object. A Service's specification is the union of the specifications for a Route and Configuration.  The Service restricts what can be expressed in these fields, e.g. the Route must reference the provided Configuration; however, these limitations also enable friendlier defaulting, e.g. Route never needs a Configuration name, and may be defaulted to the appropriate "run latest" spec.
+     */
     @JsonProperty("template")
     public RevisionTemplateSpec getTemplate() {
         return template;
     }
 
+    /**
+     * ServiceSpec represents the configuration for the Service object. A Service's specification is the union of the specifications for a Route and Configuration.  The Service restricts what can be expressed in these fields, e.g. the Route must reference the provided Configuration; however, these limitations also enable friendlier defaulting, e.g. Route never needs a Configuration name, and may be defaulted to the appropriate "run latest" spec.
+     */
     @JsonProperty("template")
     public void setTemplate(RevisionTemplateSpec template) {
         this.template = template;
     }
 
+    /**
+     * Traffic specifies how to distribute traffic over a collection of revisions and configurations.
+     */
     @JsonProperty("traffic")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<TrafficTarget> getTraffic() {
         return traffic;
     }
 
+    /**
+     * Traffic specifies how to distribute traffic over a collection of revisions and configurations.
+     */
     @JsonProperty("traffic")
     public void setTraffic(List<TrafficTarget> traffic) {
         this.traffic = traffic;

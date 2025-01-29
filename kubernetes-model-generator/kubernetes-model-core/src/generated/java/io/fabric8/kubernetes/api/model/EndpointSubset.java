@@ -19,6 +19,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * EndpointSubset is a group of addresses with a common set of ports. The expanded set of endpoints is the Cartesian product of Addresses x Ports. For example, given:<br><p> <br><p> 	{<br><p> 	  Addresses: [{"ip": "10.10.1.1"}, {"ip": "10.10.2.2"}],<br><p> 	  Ports:     [{"name": "a", "port": 8675}, {"name": "b", "port": 309}]<br><p> 	}<br><p> <br><p> The resulting set of endpoints can be viewed as:<br><p> <br><p> 	a: [ 10.10.1.1:8675, 10.10.2.2:8675 ],<br><p> 	b: [ 10.10.1.1:309, 10.10.2.2:309 ]
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -62,34 +65,52 @@ public class EndpointSubset implements Editable<EndpointSubsetBuilder>, Kubernet
         this.ports = ports;
     }
 
+    /**
+     * IP addresses which offer the related ports that are marked as ready. These endpoints should be considered safe for load balancers and clients to utilize.
+     */
     @JsonProperty("addresses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<EndpointAddress> getAddresses() {
         return addresses;
     }
 
+    /**
+     * IP addresses which offer the related ports that are marked as ready. These endpoints should be considered safe for load balancers and clients to utilize.
+     */
     @JsonProperty("addresses")
     public void setAddresses(List<EndpointAddress> addresses) {
         this.addresses = addresses;
     }
 
+    /**
+     * IP addresses which offer the related ports but are not currently marked as ready because they have not yet finished starting, have recently failed a readiness check, or have recently failed a liveness check.
+     */
     @JsonProperty("notReadyAddresses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<EndpointAddress> getNotReadyAddresses() {
         return notReadyAddresses;
     }
 
+    /**
+     * IP addresses which offer the related ports but are not currently marked as ready because they have not yet finished starting, have recently failed a readiness check, or have recently failed a liveness check.
+     */
     @JsonProperty("notReadyAddresses")
     public void setNotReadyAddresses(List<EndpointAddress> notReadyAddresses) {
         this.notReadyAddresses = notReadyAddresses;
     }
 
+    /**
+     * Port numbers available on the related IP addresses.
+     */
     @JsonProperty("ports")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<EndpointPort> getPorts() {
         return ports;
     }
 
+    /**
+     * Port numbers available on the related IP addresses.
+     */
     @JsonProperty("ports")
     public void setPorts(List<EndpointPort> ports) {
         this.ports = ports;

@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * LifecycleHandler defines a specific action that should be taken in a lifecycle hook. One and only one of the fields, except TCPSocket must be specified.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -61,41 +64,65 @@ public class LifecycleHandler implements Editable<LifecycleHandlerBuilder>, Kube
         this.tcpSocket = tcpSocket;
     }
 
+    /**
+     * LifecycleHandler defines a specific action that should be taken in a lifecycle hook. One and only one of the fields, except TCPSocket must be specified.
+     */
     @JsonProperty("exec")
     public ExecAction getExec() {
         return exec;
     }
 
+    /**
+     * LifecycleHandler defines a specific action that should be taken in a lifecycle hook. One and only one of the fields, except TCPSocket must be specified.
+     */
     @JsonProperty("exec")
     public void setExec(ExecAction exec) {
         this.exec = exec;
     }
 
+    /**
+     * LifecycleHandler defines a specific action that should be taken in a lifecycle hook. One and only one of the fields, except TCPSocket must be specified.
+     */
     @JsonProperty("httpGet")
     public HTTPGetAction getHttpGet() {
         return httpGet;
     }
 
+    /**
+     * LifecycleHandler defines a specific action that should be taken in a lifecycle hook. One and only one of the fields, except TCPSocket must be specified.
+     */
     @JsonProperty("httpGet")
     public void setHttpGet(HTTPGetAction httpGet) {
         this.httpGet = httpGet;
     }
 
+    /**
+     * LifecycleHandler defines a specific action that should be taken in a lifecycle hook. One and only one of the fields, except TCPSocket must be specified.
+     */
     @JsonProperty("sleep")
     public SleepAction getSleep() {
         return sleep;
     }
 
+    /**
+     * LifecycleHandler defines a specific action that should be taken in a lifecycle hook. One and only one of the fields, except TCPSocket must be specified.
+     */
     @JsonProperty("sleep")
     public void setSleep(SleepAction sleep) {
         this.sleep = sleep;
     }
 
+    /**
+     * LifecycleHandler defines a specific action that should be taken in a lifecycle hook. One and only one of the fields, except TCPSocket must be specified.
+     */
     @JsonProperty("tcpSocket")
     public TCPSocketAction getTcpSocket() {
         return tcpSocket;
     }
 
+    /**
+     * LifecycleHandler defines a specific action that should be taken in a lifecycle hook. One and only one of the fields, except TCPSocket must be specified.
+     */
     @JsonProperty("tcpSocket")
     public void setTcpSocket(TCPSocketAction tcpSocket) {
         this.tcpSocket = tcpSocket;

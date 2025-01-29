@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * ImageRegistryConfigStorage describes how the storage should be configured for the image registry.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -110,91 +113,145 @@ public class ImageRegistryConfigStorage implements Editable<ImageRegistryConfigS
         this.swift = swift;
     }
 
+    /**
+     * ImageRegistryConfigStorage describes how the storage should be configured for the image registry.
+     */
     @JsonProperty("azure")
     public ImageRegistryConfigStorageAzure getAzure() {
         return azure;
     }
 
+    /**
+     * ImageRegistryConfigStorage describes how the storage should be configured for the image registry.
+     */
     @JsonProperty("azure")
     public void setAzure(ImageRegistryConfigStorageAzure azure) {
         this.azure = azure;
     }
 
+    /**
+     * ImageRegistryConfigStorage describes how the storage should be configured for the image registry.
+     */
     @JsonProperty("emptyDir")
     public ImageRegistryConfigStorageEmptyDir getEmptyDir() {
         return emptyDir;
     }
 
+    /**
+     * ImageRegistryConfigStorage describes how the storage should be configured for the image registry.
+     */
     @JsonProperty("emptyDir")
     public void setEmptyDir(ImageRegistryConfigStorageEmptyDir emptyDir) {
         this.emptyDir = emptyDir;
     }
 
+    /**
+     * ImageRegistryConfigStorage describes how the storage should be configured for the image registry.
+     */
     @JsonProperty("gcs")
     public ImageRegistryConfigStorageGCS getGcs() {
         return gcs;
     }
 
+    /**
+     * ImageRegistryConfigStorage describes how the storage should be configured for the image registry.
+     */
     @JsonProperty("gcs")
     public void setGcs(ImageRegistryConfigStorageGCS gcs) {
         this.gcs = gcs;
     }
 
+    /**
+     * ImageRegistryConfigStorage describes how the storage should be configured for the image registry.
+     */
     @JsonProperty("ibmcos")
     public ImageRegistryConfigStorageIBMCOS getIbmcos() {
         return ibmcos;
     }
 
+    /**
+     * ImageRegistryConfigStorage describes how the storage should be configured for the image registry.
+     */
     @JsonProperty("ibmcos")
     public void setIbmcos(ImageRegistryConfigStorageIBMCOS ibmcos) {
         this.ibmcos = ibmcos;
     }
 
+    /**
+     * managementState indicates if the operator manages the underlying storage unit. If Managed the operator will remove the storage when this operator gets Removed.
+     */
     @JsonProperty("managementState")
     public String getManagementState() {
         return managementState;
     }
 
+    /**
+     * managementState indicates if the operator manages the underlying storage unit. If Managed the operator will remove the storage when this operator gets Removed.
+     */
     @JsonProperty("managementState")
     public void setManagementState(String managementState) {
         this.managementState = managementState;
     }
 
+    /**
+     * ImageRegistryConfigStorage describes how the storage should be configured for the image registry.
+     */
     @JsonProperty("oss")
     public ImageRegistryConfigStorageAlibabaOSS getOss() {
         return oss;
     }
 
+    /**
+     * ImageRegistryConfigStorage describes how the storage should be configured for the image registry.
+     */
     @JsonProperty("oss")
     public void setOss(ImageRegistryConfigStorageAlibabaOSS oss) {
         this.oss = oss;
     }
 
+    /**
+     * ImageRegistryConfigStorage describes how the storage should be configured for the image registry.
+     */
     @JsonProperty("pvc")
     public ImageRegistryConfigStoragePVC getPvc() {
         return pvc;
     }
 
+    /**
+     * ImageRegistryConfigStorage describes how the storage should be configured for the image registry.
+     */
     @JsonProperty("pvc")
     public void setPvc(ImageRegistryConfigStoragePVC pvc) {
         this.pvc = pvc;
     }
 
+    /**
+     * ImageRegistryConfigStorage describes how the storage should be configured for the image registry.
+     */
     @JsonProperty("s3")
     public ImageRegistryConfigStorageS3 getS3() {
         return s3;
     }
 
+    /**
+     * ImageRegistryConfigStorage describes how the storage should be configured for the image registry.
+     */
     @JsonProperty("s3")
     public void setS3(ImageRegistryConfigStorageS3 s3) {
         this.s3 = s3;
     }
 
+    /**
+     * ImageRegistryConfigStorage describes how the storage should be configured for the image registry.
+     */
     @JsonProperty("swift")
     public ImageRegistryConfigStorageSwift getSwift() {
         return swift;
     }
 
+    /**
+     * ImageRegistryConfigStorage describes how the storage should be configured for the image registry.
+     */
     @JsonProperty("swift")
     public void setSwift(ImageRegistryConfigStorageSwift swift) {
         this.swift = swift;

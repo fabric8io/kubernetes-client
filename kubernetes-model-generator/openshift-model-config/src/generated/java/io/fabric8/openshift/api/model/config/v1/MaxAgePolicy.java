@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * MaxAgePolicy contains a numeric range for specifying a compliant HSTS max-age for the enclosing RequiredHSTSPolicy
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class MaxAgePolicy implements Editable<MaxAgePolicyBuilder>, KubernetesRe
         this.smallestMaxAge = smallestMaxAge;
     }
 
+    /**
+     * The largest allowed value (in seconds) of the RequiredHSTSPolicy max-age This value can be left unspecified, in which case no upper limit is enforced.
+     */
     @JsonProperty("largestMaxAge")
     public Integer getLargestMaxAge() {
         return largestMaxAge;
     }
 
+    /**
+     * The largest allowed value (in seconds) of the RequiredHSTSPolicy max-age This value can be left unspecified, in which case no upper limit is enforced.
+     */
     @JsonProperty("largestMaxAge")
     public void setLargestMaxAge(Integer largestMaxAge) {
         this.largestMaxAge = largestMaxAge;
     }
 
+    /**
+     * The smallest allowed value (in seconds) of the RequiredHSTSPolicy max-age Setting max-age=0 allows the deletion of an existing HSTS header from a host.  This is a necessary tool for administrators to quickly correct mistakes. This value can be left unspecified, in which case no lower limit is enforced.
+     */
     @JsonProperty("smallestMaxAge")
     public Integer getSmallestMaxAge() {
         return smallestMaxAge;
     }
 
+    /**
+     * The smallest allowed value (in seconds) of the RequiredHSTSPolicy max-age Setting max-age=0 allows the deletion of an existing HSTS header from a host.  This is a necessary tool for administrators to quickly correct mistakes. This value can be left unspecified, in which case no lower limit is enforced.
+     */
     @JsonProperty("smallestMaxAge")
     public void setSmallestMaxAge(Integer smallestMaxAge) {
         this.smallestMaxAge = smallestMaxAge;

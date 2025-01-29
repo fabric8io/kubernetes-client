@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * NetworkPolicyPort describes a port to allow traffic on
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,31 +89,49 @@ public class NetworkPolicyPort implements Editable<NetworkPolicyPortBuilder>, Ku
         this.protocol = protocol;
     }
 
+    /**
+     * endPort indicates that the range of ports from port to endPort if set, inclusive, should be allowed by the policy. This field cannot be defined if the port field is not defined or if the port field is defined as a named (string) port. The endPort must be equal or greater than port.
+     */
     @JsonProperty("endPort")
     public Integer getEndPort() {
         return endPort;
     }
 
+    /**
+     * endPort indicates that the range of ports from port to endPort if set, inclusive, should be allowed by the policy. This field cannot be defined if the port field is not defined or if the port field is defined as a named (string) port. The endPort must be equal or greater than port.
+     */
     @JsonProperty("endPort")
     public void setEndPort(Integer endPort) {
         this.endPort = endPort;
     }
 
+    /**
+     * NetworkPolicyPort describes a port to allow traffic on
+     */
     @JsonProperty("port")
     public IntOrString getPort() {
         return port;
     }
 
+    /**
+     * NetworkPolicyPort describes a port to allow traffic on
+     */
     @JsonProperty("port")
     public void setPort(IntOrString port) {
         this.port = port;
     }
 
+    /**
+     * protocol represents the protocol (TCP, UDP, or SCTP) which traffic must match. If not specified, this field defaults to TCP.
+     */
     @JsonProperty("protocol")
     public String getProtocol() {
         return protocol;
     }
 
+    /**
+     * protocol represents the protocol (TCP, UDP, or SCTP) which traffic must match. If not specified, this field defaults to TCP.
+     */
     @JsonProperty("protocol")
     public void setProtocol(String protocol) {
         this.protocol = protocol;

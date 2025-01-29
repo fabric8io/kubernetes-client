@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * PodHttpChaosRule defines the injection rule for http.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,51 +97,81 @@ public class PodHttpChaosRule implements Editable<PodHttpChaosRuleBuilder>, Kube
         this.target = target;
     }
 
+    /**
+     * PodHttpChaosRule defines the injection rule for http.
+     */
     @JsonProperty("actions")
     public PodHttpChaosActions getActions() {
         return actions;
     }
 
+    /**
+     * PodHttpChaosRule defines the injection rule for http.
+     */
     @JsonProperty("actions")
     public void setActions(PodHttpChaosActions actions) {
         this.actions = actions;
     }
 
+    /**
+     * Port represents the target port to be proxy of.
+     */
     @JsonProperty("port")
     public Integer getPort() {
         return port;
     }
 
+    /**
+     * Port represents the target port to be proxy of.
+     */
     @JsonProperty("port")
     public void setPort(Integer port) {
         this.port = port;
     }
 
+    /**
+     * PodHttpChaosRule defines the injection rule for http.
+     */
     @JsonProperty("selector")
     public PodHttpChaosSelector getSelector() {
         return selector;
     }
 
+    /**
+     * PodHttpChaosRule defines the injection rule for http.
+     */
     @JsonProperty("selector")
     public void setSelector(PodHttpChaosSelector selector) {
         this.selector = selector;
     }
 
+    /**
+     * Source represents the source of current rules
+     */
     @JsonProperty("source")
     public String getSource() {
         return source;
     }
 
+    /**
+     * Source represents the source of current rules
+     */
     @JsonProperty("source")
     public void setSource(String source) {
         this.source = source;
     }
 
+    /**
+     * Target is the object to be selected and injected, &lt;Request|Response&gt;.
+     */
     @JsonProperty("target")
     public String getTarget() {
         return target;
     }
 
+    /**
+     * Target is the object to be selected and injected, &lt;Request|Response&gt;.
+     */
     @JsonProperty("target")
     public void setTarget(String target) {
         this.target = target;

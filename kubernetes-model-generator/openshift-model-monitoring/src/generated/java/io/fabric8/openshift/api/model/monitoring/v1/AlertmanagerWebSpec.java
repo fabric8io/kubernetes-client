@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AlertmanagerWebSpec defines the web command line flags when starting Alertmanager.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -90,41 +93,65 @@ public class AlertmanagerWebSpec implements Editable<AlertmanagerWebSpecBuilder>
         this.tlsConfig = tlsConfig;
     }
 
+    /**
+     * Maximum number of GET requests processed concurrently. This corresponds to the Alertmanager's `--web.get-concurrency` flag.
+     */
     @JsonProperty("getConcurrency")
     public Long getGetConcurrency() {
         return getConcurrency;
     }
 
+    /**
+     * Maximum number of GET requests processed concurrently. This corresponds to the Alertmanager's `--web.get-concurrency` flag.
+     */
     @JsonProperty("getConcurrency")
     public void setGetConcurrency(Long getConcurrency) {
         this.getConcurrency = getConcurrency;
     }
 
+    /**
+     * AlertmanagerWebSpec defines the web command line flags when starting Alertmanager.
+     */
     @JsonProperty("httpConfig")
     public WebHTTPConfig getHttpConfig() {
         return httpConfig;
     }
 
+    /**
+     * AlertmanagerWebSpec defines the web command line flags when starting Alertmanager.
+     */
     @JsonProperty("httpConfig")
     public void setHttpConfig(WebHTTPConfig httpConfig) {
         this.httpConfig = httpConfig;
     }
 
+    /**
+     * Timeout for HTTP requests. This corresponds to the Alertmanager's `--web.timeout` flag.
+     */
     @JsonProperty("timeout")
     public Long getTimeout() {
         return timeout;
     }
 
+    /**
+     * Timeout for HTTP requests. This corresponds to the Alertmanager's `--web.timeout` flag.
+     */
     @JsonProperty("timeout")
     public void setTimeout(Long timeout) {
         this.timeout = timeout;
     }
 
+    /**
+     * AlertmanagerWebSpec defines the web command line flags when starting Alertmanager.
+     */
     @JsonProperty("tlsConfig")
     public WebTLSConfig getTlsConfig() {
         return tlsConfig;
     }
 
+    /**
+     * AlertmanagerWebSpec defines the web command line flags when starting Alertmanager.
+     */
     @JsonProperty("tlsConfig")
     public void setTlsConfig(WebTLSConfig tlsConfig) {
         this.tlsConfig = tlsConfig;

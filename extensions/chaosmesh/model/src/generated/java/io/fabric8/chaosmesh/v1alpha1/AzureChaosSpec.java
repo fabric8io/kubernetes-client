@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AzureChaosSpec is the content of the specification for an AzureChaos
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -110,91 +113,145 @@ public class AzureChaosSpec implements Editable<AzureChaosSpecBuilder>, Kubernet
         this.vmName = vmName;
     }
 
+    /**
+     * Action defines the specific azure chaos action. Supported action: vm-stop / vm-restart / disk-detach Default action: vm-stop
+     */
     @JsonProperty("action")
     public String getAction() {
         return action;
     }
 
+    /**
+     * Action defines the specific azure chaos action. Supported action: vm-stop / vm-restart / disk-detach Default action: vm-stop
+     */
     @JsonProperty("action")
     public void setAction(String action) {
         this.action = action;
     }
 
+    /**
+     * DiskName indicates the name of the disk. Needed in disk-detach.
+     */
     @JsonProperty("diskName")
     public String getDiskName() {
         return diskName;
     }
 
+    /**
+     * DiskName indicates the name of the disk. Needed in disk-detach.
+     */
     @JsonProperty("diskName")
     public void setDiskName(String diskName) {
         this.diskName = diskName;
     }
 
+    /**
+     * Duration represents the duration of the chaos action.
+     */
     @JsonProperty("duration")
     public String getDuration() {
         return duration;
     }
 
+    /**
+     * Duration represents the duration of the chaos action.
+     */
     @JsonProperty("duration")
     public void setDuration(String duration) {
         this.duration = duration;
     }
 
+    /**
+     * LUN indicates the Logical Unit Number of the data disk. Needed in disk-detach.
+     */
     @JsonProperty("lun")
     public Integer getLun() {
         return lun;
     }
 
+    /**
+     * LUN indicates the Logical Unit Number of the data disk. Needed in disk-detach.
+     */
     @JsonProperty("lun")
     public void setLun(Integer lun) {
         this.lun = lun;
     }
 
+    /**
+     * RemoteCluster represents the remote cluster where the chaos will be deployed
+     */
     @JsonProperty("remoteCluster")
     public String getRemoteCluster() {
         return remoteCluster;
     }
 
+    /**
+     * RemoteCluster represents the remote cluster where the chaos will be deployed
+     */
     @JsonProperty("remoteCluster")
     public void setRemoteCluster(String remoteCluster) {
         this.remoteCluster = remoteCluster;
     }
 
+    /**
+     * ResourceGroupName defines the name of ResourceGroup
+     */
     @JsonProperty("resourceGroupName")
     public String getResourceGroupName() {
         return resourceGroupName;
     }
 
+    /**
+     * ResourceGroupName defines the name of ResourceGroup
+     */
     @JsonProperty("resourceGroupName")
     public void setResourceGroupName(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
     }
 
+    /**
+     * SecretName defines the name of kubernetes secret. It is used for Azure credentials.
+     */
     @JsonProperty("secretName")
     public String getSecretName() {
         return secretName;
     }
 
+    /**
+     * SecretName defines the name of kubernetes secret. It is used for Azure credentials.
+     */
     @JsonProperty("secretName")
     public void setSecretName(String secretName) {
         this.secretName = secretName;
     }
 
+    /**
+     * SubscriptionID defines the id of Azure subscription.
+     */
     @JsonProperty("subscriptionID")
     public String getSubscriptionID() {
         return subscriptionID;
     }
 
+    /**
+     * SubscriptionID defines the id of Azure subscription.
+     */
     @JsonProperty("subscriptionID")
     public void setSubscriptionID(String subscriptionID) {
         this.subscriptionID = subscriptionID;
     }
 
+    /**
+     * VMName defines the name of Virtual Machine
+     */
     @JsonProperty("vmName")
     public String getVmName() {
         return vmName;
     }
 
+    /**
+     * VMName defines the name of Virtual Machine
+     */
     @JsonProperty("vmName")
     public void setVmName(String vmName) {
         this.vmName = vmName;

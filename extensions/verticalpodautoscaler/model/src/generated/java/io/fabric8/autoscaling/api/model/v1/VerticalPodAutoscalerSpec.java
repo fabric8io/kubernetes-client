@@ -35,6 +35,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * VerticalPodAutoscalerSpec is the specification of the behavior of the autoscaler.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -94,42 +97,66 @@ public class VerticalPodAutoscalerSpec implements Editable<VerticalPodAutoscaler
         this.updatePolicy = updatePolicy;
     }
 
+    /**
+     * Recommender responsible for generating recommendation for this object. List should be empty (then the default recommender will generate the recommendation) or contain exactly one recommender.
+     */
     @JsonProperty("recommenders")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     public List<VerticalPodAutoscalerRecommenderSelector> getRecommenders() {
         return recommenders;
     }
 
+    /**
+     * Recommender responsible for generating recommendation for this object. List should be empty (then the default recommender will generate the recommendation) or contain exactly one recommender.
+     */
     @JsonProperty("recommenders")
     public void setRecommenders(List<VerticalPodAutoscalerRecommenderSelector> recommenders) {
         this.recommenders = recommenders;
     }
 
+    /**
+     * VerticalPodAutoscalerSpec is the specification of the behavior of the autoscaler.
+     */
     @JsonProperty("resourcePolicy")
     public PodResourcePolicy getResourcePolicy() {
         return resourcePolicy;
     }
 
+    /**
+     * VerticalPodAutoscalerSpec is the specification of the behavior of the autoscaler.
+     */
     @JsonProperty("resourcePolicy")
     public void setResourcePolicy(PodResourcePolicy resourcePolicy) {
         this.resourcePolicy = resourcePolicy;
     }
 
+    /**
+     * VerticalPodAutoscalerSpec is the specification of the behavior of the autoscaler.
+     */
     @JsonProperty("targetRef")
     public CrossVersionObjectReference getTargetRef() {
         return targetRef;
     }
 
+    /**
+     * VerticalPodAutoscalerSpec is the specification of the behavior of the autoscaler.
+     */
     @JsonProperty("targetRef")
     public void setTargetRef(CrossVersionObjectReference targetRef) {
         this.targetRef = targetRef;
     }
 
+    /**
+     * VerticalPodAutoscalerSpec is the specification of the behavior of the autoscaler.
+     */
     @JsonProperty("updatePolicy")
     public PodUpdatePolicy getUpdatePolicy() {
         return updatePolicy;
     }
 
+    /**
+     * VerticalPodAutoscalerSpec is the specification of the behavior of the autoscaler.
+     */
     @JsonProperty("updatePolicy")
     public void setUpdatePolicy(PodUpdatePolicy updatePolicy) {
         this.updatePolicy = updatePolicy;

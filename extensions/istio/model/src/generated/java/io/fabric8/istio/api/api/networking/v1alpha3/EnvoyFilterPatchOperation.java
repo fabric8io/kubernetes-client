@@ -4,6 +4,9 @@ package io.fabric8.istio.api.api.networking.v1alpha3;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
+/**
+ * Operation denotes how the patch should be applied to the selected configuration.
+ */
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
 public enum EnvoyFilterPatchOperation 
 {

@@ -32,6 +32,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * AWSEFSVolumeMetricsRecursiveWalkConfig defines options for volume metrics in the EFS CSI Driver.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -82,21 +85,33 @@ public class AWSEFSVolumeMetricsRecursiveWalkConfig implements Editable<AWSEFSVo
         this.refreshPeriodMinutes = refreshPeriodMinutes;
     }
 
+    /**
+     * fsRateLimit defines the rate limit, in goroutines per file system, for processing volume metrics. When omitted, this means no opinion and the platform is left to choose a reasonable default, which is subject to change over time. The current default is 5. The valid range is from 1 to 100 goroutines.
+     */
     @JsonProperty("fsRateLimit")
     public Integer getFsRateLimit() {
         return fsRateLimit;
     }
 
+    /**
+     * fsRateLimit defines the rate limit, in goroutines per file system, for processing volume metrics. When omitted, this means no opinion and the platform is left to choose a reasonable default, which is subject to change over time. The current default is 5. The valid range is from 1 to 100 goroutines.
+     */
     @JsonProperty("fsRateLimit")
     public void setFsRateLimit(Integer fsRateLimit) {
         this.fsRateLimit = fsRateLimit;
     }
 
+    /**
+     * refreshPeriodMinutes specifies the frequency, in minutes, at which volume metrics are refreshed. When omitted, this means no opinion and the platform is left to choose a reasonable default, which is subject to change over time. The current default is 240. The valid range is from 1 to 43200 minutes (30 days).
+     */
     @JsonProperty("refreshPeriodMinutes")
     public Integer getRefreshPeriodMinutes() {
         return refreshPeriodMinutes;
     }
 
+    /**
+     * refreshPeriodMinutes specifies the frequency, in minutes, at which volume metrics are refreshed. When omitted, this means no opinion and the platform is left to choose a reasonable default, which is subject to change over time. The current default is 240. The valid range is from 1 to 43200 minutes (30 days).
+     */
     @JsonProperty("refreshPeriodMinutes")
     public void setRefreshPeriodMinutes(Integer refreshPeriodMinutes) {
         this.refreshPeriodMinutes = refreshPeriodMinutes;
