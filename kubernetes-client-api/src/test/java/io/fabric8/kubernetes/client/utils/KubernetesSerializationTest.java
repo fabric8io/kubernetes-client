@@ -79,12 +79,11 @@ class KubernetesSerializationTest {
       String result = kubernetesSerialization.asYaml(crd);
       assertThat(result).asString().contains("\"widgets.test.fabric8.io\"");
 
-      result = kubernetesSerialization.asYaml(crd, false);
+      result = kubernetesSerialization.asYaml(crd, new YamlDumpSettingsBuilder());
       assertThat(result).asString().contains("\"widgets.test.fabric8.io\"");
 
-      result = kubernetesSerialization.asYaml(crd, true);
-      assertThat(result).asString().doesNotContain("\"widgets.test.fabric8.io\"");
-      assertThat(result).asString().contains("widgets.test.fabric8.io");
+      result = kubernetesSerialization.asYaml(crd, new YamlDumpSettingsBuilder().setMinimizeQuotes(true));
+      assertThat(result).asString().contains("widgets.test.fabric8.io").doesNotContain("\"widgets.test.fabric8.io\"");
     }
 
     private String readYamlToString(String path) throws IOException {
